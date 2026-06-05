@@ -1,0 +1,338 @@
+{
+    "layerManager": {
+        "collisionMatrix": [
+            {
+                "layer": 0,
+                "mask": 4294967295
+            },
+            {
+                "layer": 1,
+                "mask": 4294967295
+            },
+            {
+                "layer": 2,
+                "mask": 4294967295
+            },
+            {
+                "layer": 3,
+                "mask": 4294967295
+            },
+            {
+                "layer": 4,
+                "mask": 4294967295
+            },
+            {
+                "layer": 5,
+                "mask": 4294967295
+            },
+            {
+                "layer": 6,
+                "mask": 4294967295
+            },
+            {
+                "layer": 7,
+                "mask": 4294967295
+            },
+            {
+                "layer": 8,
+                "mask": 0
+            },
+            {
+                "layer": 9,
+                "mask": 0
+            },
+            {
+                "layer": 10,
+                "mask": 0
+            },
+            {
+                "layer": 11,
+                "mask": 0
+            },
+            {
+                "layer": 12,
+                "mask": 0
+            },
+            {
+                "layer": 13,
+                "mask": 0
+            },
+            {
+                "layer": 14,
+                "mask": 0
+            },
+            {
+                "layer": 15,
+                "mask": 0
+            },
+            {
+                "layer": 16,
+                "mask": 0
+            },
+            {
+                "layer": 17,
+                "mask": 0
+            },
+            {
+                "layer": 18,
+                "mask": 0
+            },
+            {
+                "layer": 19,
+                "mask": 0
+            },
+            {
+                "layer": 20,
+                "mask": 0
+            },
+            {
+                "layer": 21,
+                "mask": 0
+            },
+            {
+                "layer": 22,
+                "mask": 0
+            },
+            {
+                "layer": 23,
+                "mask": 0
+            },
+            {
+                "layer": 24,
+                "mask": 0
+            },
+            {
+                "layer": 25,
+                "mask": 0
+            },
+            {
+                "layer": 26,
+                "mask": 0
+            },
+            {
+                "layer": 27,
+                "mask": 0
+            },
+            {
+                "layer": 28,
+                "mask": 0
+            },
+            {
+                "layer": 29,
+                "mask": 0
+            },
+            {
+                "layer": 30,
+                "mask": 0
+            },
+            {
+                "layer": 31,
+                "mask": 0
+            }
+        ],
+        "layers": [
+            {
+                "id": 0,
+                "name": "Default"
+            },
+            {
+                "id": 1,
+                "name": "TransparentFX"
+            },
+            {
+                "id": 2,
+                "name": "Ignore Raycast"
+            },
+            {
+                "id": 3,
+                "name": "UI"
+            },
+            {
+                "id": 4,
+                "name": "Player"
+            },
+            {
+                "id": 5,
+                "name": "Pin\u0000r5"
+            },
+            {
+                "id": 6,
+                "name": "NotEquipPin"
+            },
+            {
+                "id": 7,
+                "name": "ObtrusiveOnly"
+            },
+            {
+                "id": 8,
+                "name": ""
+            },
+            {
+                "id": 9,
+                "name": ""
+            },
+            {
+                "id": 10,
+                "name": ""
+            },
+            {
+                "id": 11,
+                "name": ""
+            },
+            {
+                "id": 12,
+                "name": ""
+            },
+            {
+                "id": 13,
+                "name": ""
+            },
+            {
+                "id": 14,
+                "name": ""
+            },
+            {
+                "id": 15,
+                "name": ""
+            },
+            {
+                "id": 16,
+                "name": ""
+            },
+            {
+                "id": 17,
+                "name": ""
+            },
+            {
+                "id": 18,
+                "name": ""
+            },
+            {
+                "id": 19,
+                "name": ""
+            },
+            {
+                "id": 20,
+                "name": ""
+            },
+            {
+                "id": 21,
+                "name": ""
+            },
+            {
+                "id": 22,
+                "name": ""
+            },
+            {
+                "id": 23,
+                "name": ""
+            },
+            {
+                "id": 24,
+                "name": ""
+            },
+            {
+                "id": 25,
+                "name": ""
+            },
+            {
+                "id": 26,
+                "name": ""
+            },
+            {
+                "id": 27,
+                "name": ""
+            },
+            {
+                "id": 28,
+                "name": ""
+            },
+            {
+                "id": 29,
+                "name": ""
+            },
+            {
+                "id": 30,
+                "name": ""
+            },
+            {
+                "id": 31,
+                "name": ""
+            }
+        ]
+    },
+    "materials": [
+        {
+            "bounceCombineMode": 3,
+            "bounciness": 0.5,
+            "dynamicFriction": 0.05000000074505806,
+            "frictionCombineMode": 1,
+            "handle": 8,
+            "name": "Bumper",
+            "staticFriction": 0.05000000074505806
+        },
+        {
+            "bounceCombineMode": 1,
+            "bounciness": 0.10000000149011612,
+            "dynamicFriction": 0.20000000298023224,
+            "frictionCombineMode": 1,
+            "handle": 1,
+            "name": "Floor",
+            "staticFriction": 0.20000000298023224
+        },
+        {
+            "bounceCombineMode": 0,
+            "bounciness": 0.30000001192092896,
+            "dynamicFriction": 0.05000000074505806,
+            "frictionCombineMode": 1,
+            "handle": 2,
+            "name": "Ball",
+            "staticFriction": 0.05000000074505806
+        },
+        {
+            "bounceCombineMode": 3,
+            "bounciness": 0.5,
+            "dynamicFriction": 0.10000000149011612,
+            "frictionCombineMode": 1,
+            "handle": 4,
+            "name": "pin",
+            "staticFriction": 0.10000000149011612
+        },
+        {
+            "bounceCombineMode": 3,
+            "bounciness": 0.699999988079071,
+            "dynamicFriction": 0.20000000298023224,
+            "frictionCombineMode": 3,
+            "handle": 3,
+            "name": "Stopper",
+            "staticFriction": 0.20000000298023224
+        },
+        {
+            "bounceCombineMode": 0,
+            "bounciness": 0.30000001192092896,
+            "dynamicFriction": 0.05000000074505806,
+            "frictionCombineMode": 1,
+            "handle": 5,
+            "name": "Frame",
+            "staticFriction": 0.05000000074505806
+        },
+        {
+            "bounceCombineMode": 3,
+            "bounciness": 0.20000000298023224,
+            "dynamicFriction": 0.05000000074505806,
+            "frictionCombineMode": 1,
+            "handle": 6,
+            "name": "SpringPlunger",
+            "staticFriction": 0.05000000074505806
+        },
+        {
+            "bounceCombineMode": 1,
+            "bounciness": 0.20000000298023224,
+            "dynamicFriction": 0.800000011920929,
+            "frictionCombineMode": 1,
+            "handle": 7,
+            "name": "Coin",
+            "staticFriction": 0.800000011920929
+        }
+    ]
+}

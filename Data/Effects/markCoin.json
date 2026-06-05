@@ -1,0 +1,135 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 1,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "emitCount": [
+                1,
+                1
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    3.0,
+                    3.0
+                ],
+                [
+                    3.0,
+                    3.0
+                ]
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "lifeTime": [
+                0.699999988079071,
+                0.699999988079071
+            ],
+            "maxParticles": 300,
+            "name": "ring",
+            "positionOffset": [
+                0.0,
+                0.10000000149011612,
+                -3.0
+            ],
+            "radius": 0.10000000149011612,
+            "renderingMode": 2,
+            "rotationEuler": [
+                [
+                    90.0,
+                    180.0,
+                    0.0
+                ],
+                [
+                    90.0,
+                    180.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 0,
+            "speed": [
+                10.0,
+                10.0
+            ],
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    3.0,
+                    3.0
+                ],
+                [
+                    3.0,
+                    3.0
+                ]
+            ],
+            "texturePath": ".\\Data\\Effects\\coin.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "markCoin"
+}

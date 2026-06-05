@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ランキングサイト</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --green: #00c853;
+        --green-dark: #009624;
+        --green-glow: rgba(0, 200, 83, 0.35);
+        --purple: #aa00ff;
+        --purple-dark: #7200ca;
+        --purple-glow: rgba(170, 0, 255, 0.35);
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface2: #21262d;
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #e6edf3;
+        --muted: #8b949e;
+        --gold: #ffd700;
+        --silver: #c0c0c0;
+        --bronze: #cd7f32;
+        /* active accent (changes by mode) */
+        --accent: var(--green);
+        --accent-glow: var(--green-glow);
+      }
+
+      /* ===== ENDLESS MODE ACCENT OVERRIDE ===== */
+      body.endless-mode {
+        --accent: var(--purple);
+        --accent-glow: var(--purple-glow);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Noto Sans JP", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ===== HEADER ===== */
+      header {
+        position: relative;
+        padding: 40px 20px 20px;
+        text-align: center;
+        overflow: hidden;
+      }
+      header::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 260px;
+        background: radial-gradient(
+          ellipse,
+          var(--accent-glow) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+        transition: background 0.4s ease;
+      }
+      .site-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.4rem, 8vw, 4rem);
+        letter-spacing: 4px;
+        background: linear-gradient(
+          135deg,
+          #00e676 0%,
+          #00c853 50%,
+          #69f0ae 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+        text-shadow: none;
+        transition: background 0.4s ease;
+      }
+      body.endless-mode .site-title {
+        background: linear-gradient(135deg, #e040fb 0%, #aa00ff 50%, #ce93d8 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+      .site-sub {
+        font-size: 0.75rem;
+        color: var(--muted);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-top: 6px;
+      }
+
+      /* ===== MODE SWITCHER ===== */
+      .mode-switcher {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        margin: 0 auto 0;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        padding: 4px;
+        width: fit-content;
+        margin-top: 14px;
+      }
+      .mode-btn {
+        padding: 7px 20px;
+        font-size: 0.78rem;
+        font-family: "Noto Sans JP", sans-serif;
+        font-weight: 700;
+        color: var(--muted);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        background: transparent;
+        letter-spacing: 0.5px;
+        box-shadow: none;
+        white-space: nowrap;
+      }
+      .mode-btn:hover {
+        color: var(--text);
+        background: transparent;
+        transform: none;
+        box-shadow: none;
+      }
+      .mode-btn.active {
+        color: #000;
+        transform: none;
+      }
+      .mode-btn.normal.active {
+        background: var(--green);
+        box-shadow: 0 0 12px var(--green-glow);
+      }
+      .mode-btn.endless.active {
+        background: var(--purple);
+        box-shadow: 0 0 12px var(--purple-glow);
+      }
+
+      /* ===== TABS ===== */
+      .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px 20px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+      }
+      .tab {
+        flex: 1;
+        max-width: 140px;
+        padding: 10px 16px;
+        font-size: 0.85rem;
+        font-family: "Noto Sans JP", sans-serif;
+        font-weight: 700;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        background: transparent;
+        letter-spacing: 0.5px;
+        text-align: center;
+        user-select: none;
+        box-shadow: none;
+      }
+      .tab:hover {
+        color: var(--text);
+        border-color: var(--accent);
+        background: transparent;
+        transform: none;
+        box-shadow: none;
+      }
+      .tab.active {
+        background: var(--accent);
+        color: #000;
+        border-color: var(--accent);
+        box-shadow: 0 0 18px var(--accent-glow);
+      }
+
+      /* ===== PAGES ===== */
+      .page {
+        display: none;
+        padding: 28px 20px 60px;
+        max-width: 520px;
+        margin: 0 auto;
+        animation: fadeSlideIn 0.35s ease forwards;
+      }
+      .page.active {
+        display: block;
+      }
+
+      @keyframes fadeSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.6rem;
+        letter-spacing: 3px;
+        color: var(--accent);
+        margin-bottom: 20px;
+        text-align: center;
+        transition: color 0.3s ease;
+      }
+
+      /* ===== INPUT / BUTTON ===== */
+      .input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      input {
+        flex: 1;
+        padding: 14px 16px;
+        font-size: 1rem;
+        font-family: "Noto Sans JP", sans-serif;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        min-width: 0;
+      }
+      input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+      input::placeholder {
+        color: var(--muted);
+      }
+
+      button {
+        padding: 14px 22px;
+        font-size: 0.95rem;
+        font-family: "Noto Sans JP", sans-serif;
+        font-weight: 700;
+        background: var(--accent);
+        color: #000;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition:
+          background 0.2s,
+          transform 0.1s,
+          box-shadow 0.2s;
+        box-shadow: 0 0 12px var(--accent-glow);
+      }
+      button:hover {
+        box-shadow: 0 0 22px var(--accent-glow);
+        filter: brightness(1.15);
+      }
+      button:active {
+        transform: scale(0.97);
+      }
+
+      /* ===== RANKING TABLE ===== */
+      .rank-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .rank-header {
+        display: grid;
+        grid-template-columns: 60px 1fr 90px;
+        padding: 12px 16px;
+        background: var(--surface2);
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid var(--border);
+      }
+      .rank-row {
+        display: grid;
+        grid-template-columns: 60px 1fr 90px;
+        align-items: center;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.2s;
+        opacity: 0;
+        transform: translateX(-20px);
+        animation: rowSlideIn 0.4s ease forwards;
+      }
+      .rank-row:last-child {
+        border-bottom: none;
+      }
+      .rank-row:hover {
+        background: var(--surface2);
+      }
+
+      @keyframes rowSlideIn {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .rank-num {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.4rem;
+        line-height: 1;
+      }
+      .rank-num.gold {
+        color: var(--gold);
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      }
+      .rank-num.silver {
+        color: var(--silver);
+        text-shadow: 0 0 10px rgba(192, 192, 192, 0.4);
+      }
+      .rank-num.bronze {
+        color: var(--bronze);
+        text-shadow: 0 0 10px rgba(205, 127, 50, 0.4);
+      }
+
+      .rank-name {
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+      .rank-score {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.1rem;
+        color: var(--accent);
+        text-align: right;
+        transition: color 0.3s ease;
+      }
+
+      /* ===== SEARCH RESULT ===== */
+      .result-multi-header {
+        font-size: 0.85rem;
+        color: var(--muted);
+        text-align: center;
+        margin-bottom: 4px;
+        letter-spacing: 0.5px;
+      }
+      .result-card {
+        background: var(--surface);
+        border: 1px solid var(--accent);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        animation: fadeSlideIn 0.3s ease;
+        box-shadow: 0 0 24px var(--accent-glow);
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      .result-card .result-name {
+        font-size: 1rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .result-card .result-rank {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 4rem;
+        color: var(--accent);
+        line-height: 1;
+        text-shadow: 0 0 20px var(--accent-glow);
+        transition: color 0.3s ease;
+      }
+      .result-card .result-rank-label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+      .result-card .result-score {
+        font-size: 1rem;
+        color: var(--text);
+      }
+      .result-card .result-score span {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.5rem;
+        color: var(--accent);
+        transition: color 0.3s ease;
+      }
+      .error-msg {
+        text-align: center;
+        color: #f85149;
+        padding: 20px;
+        background: rgba(248, 81, 73, 0.1);
+        border: 1px solid rgba(248, 81, 73, 0.3);
+        border-radius: 12px;
+        animation: fadeSlideIn 0.3s ease;
+      }
+
+      /* ===== CHART ===== */
+      .chart-wrap {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px 16px;
+      }
+
+      /* ===== LOADING ===== */
+      .loading-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 40px;
+      }
+      .loading-dots span {
+        width: 10px;
+        height: 10px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: bounce 1.2s ease-in-out infinite;
+        transition: background 0.3s ease;
+      }
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .rank-name-wrap {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+      .rank-name-link {
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: 3px;
+        transition: color 0.2s, text-decoration-color 0.2s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .rank-name-link:hover {
+        color: var(--accent);
+        text-decoration-color: var(--accent);
+      }
+      .rank-actions {
+        display: flex;
+        gap: 2px;
+        opacity: 0;
+        transition: opacity 0.2s;
+        flex-shrink: 0;
+      }
+      .rank-row:hover .rank-actions {
+        opacity: 1;
+      }
+      .rank-action-btn {
+        font-size: 0.85rem;
+        cursor: pointer;
+        padding: 2px 4px;
+        border-radius: 6px;
+        transition: background 0.15s;
+      }
+      .rank-action-btn:hover {
+        background: var(--surface2);
+      }
+
+      /* ===== RELOAD BUTTON ===== */
+      .reload-btn {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: none;
+        transition: color 0.2s, border-color 0.2s, transform 0.3s, box-shadow 0.2s;
+        cursor: pointer;
+      }
+      .reload-btn:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+        background: var(--surface2);
+        box-shadow: 0 0 10px var(--accent-glow);
+        filter: none;
+      }
+      .reload-btn:active {
+        transform: translateY(-50%) scale(0.92);
+      }
+      .reload-btn.spinning svg {
+        animation: spin 0.6s linear;
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+
+      @keyframes bounce {
+        0%,
+        80%,
+        100% {
+          transform: scale(0.6);
+          opacity: 0.4;
+        }
+        40% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="site-title">RANKING</div>
+      <div class="site-sub">スコアランキング</div>
+
+      <!-- モード切り替え -->
+      <div class="mode-switcher">
+        <button class="mode-btn normal active" onclick="switchMode('normal')">ノーマル</button>
+        <button class="mode-btn endless" onclick="switchMode('endless')">エンドレス</button>
+      </div>
+    </header>
+
+    <div class="tabs" style="position:relative;">
+      <div class="tab active" onclick="showPage(0)">TOP 10</div>
+      <div class="tab" onclick="showPage(1)">順位検索</div>
+      <div class="tab" onclick="showPage(2)">スコア推移</div>
+      <button class="reload-btn" id="reloadBtn" onclick="reloadCurrentPage()" title="リロード">
+        <svg id="reloadIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ページ1：TOP10 -->
+    <div class="page active" id="page1">
+      <div class="section-title">TOP 10</div>
+      <div class="rank-card">
+        <div class="rank-header">
+          <span>順位</span><span>名前</span
+          ><span style="text-align: right">スコア</span>
+        </div>
+        <div id="loading">
+          <div class="loading-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div id="rank-body"></div>
+      </div>
+    </div>
+
+    <!-- ページ2：順位検索 -->
+    <div class="page" id="page2">
+      <div class="section-title">順位検索</div>
+      <div class="input-row">
+        <input id="searchName" placeholder="名前を入力" />
+        <button onclick="searchRank()">検索</button>
+      </div>
+      <div id="searchResult"></div>
+    </div>
+
+    <!-- ページ3：スコア推移 -->
+    <div class="page" id="page3">
+      <div class="section-title">スコア推移</div>
+      <div class="input-row">
+        <input id="historyName" placeholder="名前を入力" />
+        <button onclick="loadHistory()">表示</button>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+    <script>
+      const API_NORMAL =
+        "https://script.google.com/macros/s/AKfycbxjss6DnoB95y-dFGA4flXAxqARj6hPx3GWiiwLpW3JlBRVJhKB8PSFKePNM-2etujB/exec";
+      const API_ENDLESS =
+        "https://script.google.com/macros/s/AKfycbw_N3M41DXfrhOR2HRLrzkWcBc2LQpGd6Qs1C2XnzLI4AEmC6VU7Uuo0gNmtgsOJgro6g/exec";
+
+      let currentMode = "normal"; // 'normal' | 'endless'
+      let currentPageIndex = 0;
+      let chart;
+
+      function getAPI() {
+        return currentMode === "endless" ? API_ENDLESS : API_NORMAL;
+      }
+
+      // ===== モード切り替え =====
+      function switchMode(mode) {
+        if (mode === currentMode) return;
+        currentMode = mode;
+
+        // ボタンの active 切り替え
+        document.querySelectorAll(".mode-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.classList.contains(mode));
+        });
+
+        // body クラスで accent カラー切り替え
+        document.body.classList.toggle("endless-mode", mode === "endless");
+
+        // 現在のページをリロード
+        const activePage = [...document.querySelectorAll(".page")].findIndex(
+          (p) => p.classList.contains("active")
+        );
+        refreshCurrentPage(activePage);
+      }
+
+      function refreshCurrentPage(pageIndex) {
+        if (pageIndex === 0) {
+          // TOP10 リロード
+          const body = document.getElementById("rank-body");
+          body.innerHTML = "";
+          // loading dots を再挿入
+          const rankCard = body.parentElement;
+          if (!document.getElementById("loading")) {
+            const loadingDiv = document.createElement("div");
+            loadingDiv.id = "loading";
+            loadingDiv.innerHTML =
+              '<div class="loading-dots"><span></span><span></span><span></span></div>';
+            rankCard.insertBefore(loadingDiv, body);
+          }
+          loadRanking();
+        } else if (pageIndex === 1) {
+          document.getElementById("searchResult").innerHTML = "";
+        } else if (pageIndex === 2) {
+          if (chart) {
+            chart.destroy();
+            chart = null;
+          }
+          const chartWrap = document.querySelector(".chart-wrap");
+          chartWrap.innerHTML = '<canvas id="chart"></canvas>';
+        }
+      }
+
+      // ===== リロード =====
+      function reloadCurrentPage() {
+        const btn = document.getElementById("reloadBtn");
+        btn.classList.add("spinning");
+        btn.addEventListener("animationend", () => btn.classList.remove("spinning"), { once: true });
+        refreshCurrentPage(currentPageIndex);
+      }
+
+      // ===== タブ切り替え =====
+      function showPage(n) {
+        currentPageIndex = n;
+        document
+          .querySelectorAll(".tab")
+          .forEach((t, i) => t.classList.toggle("active", i === n));
+        document.querySelectorAll(".page").forEach((p, i) => {
+          const wasActive = p.classList.contains("active");
+          p.classList.toggle("active", i === n);
+          if (i === n && !wasActive) {
+            p.style.animation = "none";
+            requestAnimationFrame(() => {
+              p.style.animation = "";
+            });
+          }
+        });
+        // タブを押すたびにリロード
+        refreshCurrentPage(n);
+      }
+
+      // ===== 名前クリック → タブ移動 =====
+      function openNameDetail(name, tab = 1) {
+        // tab: 1=順位検索, 2=スコア推移
+        showPage(tab);
+        if (tab === 1) {
+          document.getElementById("searchName").value = name;
+          searchRank();
+        } else {
+          document.getElementById("historyName").value = name;
+          loadHistory();
+        }
+      }
+
+      // ===== TOP10 読み込み =====
+      async function loadRanking() {
+        const loadingEl = document.getElementById("loading");
+        try {
+          const res = await fetch(`${getAPI()}?action=ranking`);
+          const list = await res.json();
+
+          if (document.getElementById("loading")) {
+            document.getElementById("loading").remove();
+          }
+          const body = document.getElementById("rank-body");
+          body.innerHTML = "";
+
+          list.forEach((item, i) => {
+            const row = document.createElement("div");
+            row.className = "rank-row";
+            row.style.animationDelay = `${i * 0.07}s`;
+
+            let rankClass = "";
+            let rankIcon = i + 1;
+            if (i === 0) { rankClass = "gold";   rankIcon = "🥇"; }
+            if (i === 1) { rankClass = "silver"; rankIcon = "🥈"; }
+            if (i === 2) { rankClass = "bronze"; rankIcon = "🥉"; }
+
+            row.innerHTML = `
+              <div class="rank-num ${rankClass}">${rankIcon}</div>
+              <div class="rank-name-wrap">
+                <span class="rank-name rank-name-link" data-name="${item.name}">${item.name}</span>
+                <span class="rank-actions">
+                  <span class="rank-action-btn" title="順位検索" data-name="${item.name}" data-tab="1">🔍</span>
+                  <span class="rank-action-btn" title="スコア推移" data-name="${item.name}" data-tab="2">📈</span>
+                </span>
+              </div>
+              <div class="rank-score">${Number(item.score).toLocaleString()}</div>
+            `;
+            row.querySelector(".rank-name-link").addEventListener("click", (e) => openNameDetail(e.currentTarget.dataset.name, 1));
+            row.querySelectorAll(".rank-action-btn").forEach(btn => {
+              btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                openNameDetail(btn.dataset.name, Number(btn.dataset.tab));
+              });
+            });
+            body.appendChild(row);
+          });
+        } catch (e) {
+          if (document.getElementById("loading")) {
+            document.getElementById("loading").innerHTML =
+              `<div class="error-msg">データを取得できませんでした</div>`;
+          }
+        }
+      }
+      loadRanking();
+
+      // ===== 順位検索 =====
+      async function searchRank() {
+        const name = document.getElementById("searchName").value.trim();
+        const resultEl = document.getElementById("searchResult");
+        if (!name) return;
+
+        resultEl.innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div>`;
+
+        try {
+          const res = await fetch(
+            `${getAPI()}?action=search&name=${encodeURIComponent(name)}`
+          );
+          const data = await res.json();
+
+          if (!Array.isArray(data) || data.error) {
+            resultEl.innerHTML = `<div class="error-msg">「${name}」は見つかりませんでした</div>`;
+            return;
+          }
+          if (data.length === 0) {
+            resultEl.innerHTML = `<div class="error-msg">「${name}」は見つかりませんでした</div>`;
+            return;
+          }
+
+          if (data.length === 1) {
+            const d = data[0];
+            resultEl.innerHTML = `
+              <div class="result-card">
+                <div class="result-name">${d.name} さんの順位</div>
+                <div class="result-rank">${d.rank}</div>
+                <div class="result-rank-label">位</div>
+                <div class="result-score">スコア <span>${Number(d.score).toLocaleString()}</span></div>
+              </div>
+            `;
+            return;
+          }
+
+          const header = `<div class="result-multi-header">「${name}」さんのエントリ一覧 (${data.length}件)</div>`;
+          const rows = data
+            .map(
+              (d, i) => `
+            <div class="rank-row" style="animation-delay:${i * 0.07}s">
+              <div class="rank-num ${d.rank === 1 ? "gold" : d.rank === 2 ? "silver" : d.rank === 3 ? "bronze" : ""}">${
+                d.rank === 1 ? "🥇" : d.rank === 2 ? "🥈" : d.rank === 3 ? "🥉" : d.rank
+              }</div>
+              <div class="rank-name">${d.name}</div>
+              <div class="rank-score">${Number(d.score).toLocaleString()}</div>
+            </div>
+          `
+            )
+            .join("");
+
+          resultEl.innerHTML = `
+            ${header}
+            <div class="rank-card" style="margin-top:12px">
+              <div class="rank-header">
+                <span>順位</span><span>名前</span><span style="text-align:right">スコア</span>
+              </div>
+              ${rows}
+            </div>
+          `;
+        } catch (e) {
+          resultEl.innerHTML = `<div class="error-msg">通信エラーが発生しました</div>`;
+        }
+      }
+
+      // Enter キー対応
+      document.getElementById("searchName").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") searchRank();
+      });
+      document.getElementById("historyName").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") loadHistory();
+      });
+
+      // ===== スコア推移グラフ =====
+      async function loadHistory() {
+        const name = document.getElementById("historyName").value.trim();
+        if (!name) return;
+
+        const chartWrap = document.querySelector(".chart-wrap");
+        if (chart) {
+          chart.destroy();
+          chart = null;
+        }
+        chartWrap.innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div>`;
+
+        try {
+          const res = await fetch(
+            `${getAPI()}?action=history&name=${encodeURIComponent(name)}`
+          );
+          const list = await res.json();
+
+          if (!list || list.length === 0) {
+            chartWrap.innerHTML = `<div class="error-msg">「${name}」のデータが見つかりませんでした</div>`;
+            return;
+          }
+
+          chartWrap.innerHTML = `<canvas id="chart"></canvas>`;
+
+          const labels = list.map((x) => {
+            const d = new Date(x.date);
+            const date = d.toLocaleDateString("ja-JP", { month: "numeric", day: "numeric" });
+            const time = d.toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" });
+            return `${date} ${time}`;
+          });
+          const scores = list.map((x) => x.score);
+
+          const accentColor = currentMode === "endless" ? "#aa00ff" : "#00c853";
+          const accentBg = currentMode === "endless"
+            ? "rgba(170,0,255,0.1)"
+            : "rgba(0,200,83,0.1)";
+
+          chart = new Chart(document.getElementById("chart"), {
+            type: "line",
+            data: {
+              labels,
+              datasets: [
+                {
+                  label: `${name} のスコア推移`,
+                  data: scores,
+                  borderColor: accentColor,
+                  backgroundColor: accentBg,
+                  borderWidth: 2.5,
+                  fill: true,
+                  tension: 0.4,
+                  pointBackgroundColor: accentColor,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              animation: { duration: 800, easing: "easeOutQuart" },
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "#e6edf3",
+                    font: { family: "'Noto Sans JP'" },
+                  },
+                },
+              },
+              scales: {
+                x: {
+                  ticks: { color: "#8b949e" },
+                  grid: { color: "rgba(255,255,255,0.05)" },
+                },
+                y: {
+                  ticks: { color: "#8b949e" },
+                  grid: { color: "rgba(255,255,255,0.05)" },
+                },
+              },
+            },
+          });
+        } catch (e) {
+          chartWrap.innerHTML = `<div class="error-msg">通信エラーが発生しました</div>`;
+          console.error(e);
+        }
+      }
+    </script>
+  </body>
+</html>

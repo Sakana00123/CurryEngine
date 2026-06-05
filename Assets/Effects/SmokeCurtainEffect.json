@@ -1,0 +1,210 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 1,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "duration": 0.800000011920929,
+            "emitCount": [
+                1,
+                1
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "enableFadeIn": true,
+            "enableFadeOut": true,
+            "endColor": [
+                [
+                    1.0,
+                    0.6548042297363281,
+                    0.7948482632637024,
+                    1.0
+                ],
+                [
+                    0.6085408926010132,
+                    0.8704425096511841,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    55.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    55.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.4000000059604645,
+                    0.4000000059604645
+                ],
+                [
+                    0.4000000059604645,
+                    0.4000000059604645
+                ]
+            ],
+            "endSpeed": [
+                1.0,
+                1.0
+            ],
+            "fadeInTime": [
+                0.10000000149011612,
+                0.10000000149011612
+            ],
+            "fadeOutTime": [
+                0.30000001192092896,
+                0.30000001192092896
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "intensity": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.5,
+                2.0
+            ],
+            "loop": true,
+            "maxParticles": 16,
+            "name": "smoke",
+            "positionOffset": [
+                0.0,
+                0.05000000074505806,
+                0.0
+            ],
+            "radius": 0.02500000037252903,
+            "renderingMode": 2,
+            "rotationEasingTime": [
+                0.0,
+                0.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    55.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    55.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 2,
+            "sizeEasingTime": [
+                3.0,
+                3.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                1.0,
+                1.0
+            ],
+            "speedEasingTime": [
+                0.0,
+                0.0
+            ],
+            "speedEasingType": 0,
+            "startColor": [
+                [
+                    1.0,
+                    0.708185076713562,
+                    0.9200365543365479,
+                    1.0
+                ],
+                [
+                    0.6156584024429321,
+                    0.8727979063987732,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.15000000596046448,
+                    0.15000000596046448
+                ],
+                [
+                    0.18000000715255737,
+                    0.18000000715255737
+                ]
+            ],
+            "texturePath": ".\\Assets\\Texture\\Effect\\aura.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": true,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "SmokeCurtainEfc"
+}

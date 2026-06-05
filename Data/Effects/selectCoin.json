@@ -1,0 +1,135 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 1,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 1,
+            "emitCount": [
+                100,
+                100
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0
+                ]
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.5
+            ],
+            "lifeTime": [
+                0.20000000298023224,
+                0.699999988079071
+            ],
+            "maxParticles": 1000,
+            "name": "ring",
+            "positionOffset": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "radius": 18.0,
+            "renderingMode": 0,
+            "rotationEuler": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 1,
+            "speed": [
+                10.0,
+                20.0
+            ],
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    2.0,
+                    2.0
+                ],
+                [
+                    5.0,
+                    5.0
+                ]
+            ],
+            "texturePath": "",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "selectCoin"
+}

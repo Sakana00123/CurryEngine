@@ -1,0 +1,657 @@
+{
+    "editorCamera": {
+        "aspect": 1.7777777910232544,
+        "distance": 4.0,
+        "farZ": 1000.0,
+        "fieldOfView": 60.0,
+        "maxAngleX": 70.0,
+        "maxDistance": 1000.0,
+        "minAngleX": -70.0,
+        "minDistance": 0.10000000149011612,
+        "nearZ": 0.10000000149011612,
+        "position": [
+            0.0,
+            3.521866798400879,
+            -4.6634931564331055
+        ],
+        "rotateSpeed": 30.0,
+        "rotation": [
+            0.15980708599090576,
+            0.006065198220312595,
+            -0.0009822509018704295,
+            0.9871290922164917
+        ],
+        "speed": 3.0
+    },
+    "name": "LoadingScene",
+    "objects": [
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "2301942279032147236",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        10.0,
+                        -6.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.5000000596046448,
+                        0.0,
+                        0.0,
+                        0.8660253286361694
+                    ],
+                    "scale": [
+                        1.0,
+                        0.9999982714653015,
+                        0.9999982714653015
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "aspect": 1.7777777910232544,
+                    "enabledSelf": true,
+                    "farClip": 1000.0,
+                    "fieldOfView": 60.0,
+                    "id": "16392258771335762048",
+                    "isMainCamera": true,
+                    "name": "CameraComponent",
+                    "nearClip": 0.10000000149011612,
+                    "priority": 1000,
+                    "type": "CameraComponent"
+                }
+            ],
+            "id": "1090944489610871583",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "MainCamera",
+            "parent": "0",
+            "priority": 0,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "anchorMax": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchorMin": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchoredPosition": [
+                        0.0,
+                        0.0
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "12627174205291303093",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.5,
+                        0.5
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        1920.0,
+                        1080.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "enableMask": false,
+                    "enabledSelf": true,
+                    "id": "14725458836759402100",
+                    "isInputEnabled": true,
+                    "isRaycastTarget": true,
+                    "maskMaterial": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/SpriteMaskPS.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "colorMap": "",
+                                "maskTexture": ""
+                            }
+                        }
+                    },
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/sprite_ps.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "color_map": ""
+                            }
+                        }
+                    },
+                    "name": "Image",
+                    "priority": 1000,
+                    "sh": 100.0,
+                    "sw": 100.0,
+                    "sx": 0.0,
+                    "sy": 0.0,
+                    "type": "Image",
+                    "uv": [
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "id": "7682232371922727475",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Image",
+            "parent": "9932065460216646871",
+            "priority": 1000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "anchorMax": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchorMin": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchoredPosition": [
+                        907.2470092773438,
+                        489.4540100097656
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "13608987986903641232",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.5,
+                        0.5
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        100.0,
+                        100.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enableMask": false,
+                    "enabledSelf": true,
+                    "id": "10705996633602437783",
+                    "isInputEnabled": true,
+                    "isRaycastTarget": true,
+                    "maskMaterial": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/SpriteMaskPS.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "colorMap": "",
+                                "maskTexture": ""
+                            }
+                        }
+                    },
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/sprite_ps.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "color_map": ".\\Assets\\Texture\\Ball.png"
+                            }
+                        }
+                    },
+                    "name": "Image",
+                    "priority": 1000,
+                    "sh": 1024.0,
+                    "sw": 1024.0,
+                    "sx": 0.0,
+                    "sy": 0.0,
+                    "type": "Image",
+                    "uv": [
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "18031084911076105323",
+                    "isInputEnabled": true,
+                    "name": "BouncingBall",
+                    "priority": 2000,
+                    "type": "BouncingBall"
+                }
+            ],
+            "id": "15217147815196294216",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Image (1)",
+            "parent": "9932065460216646871",
+            "priority": 2000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "anchorMax": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchorMin": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchoredPosition": [
+                        349.0,
+                        549.0
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "5965515256191885594",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.5,
+                        0.5
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        200.0,
+                        200.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "alignment": 0,
+                    "autoSize": false,
+                    "bestFit": false,
+                    "characterLimit": 256,
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "fontFilePath": "./Assets/Fonts/madoufmg.fnt",
+                    "fontSize": 64.0,
+                    "horizontalOverflow": 1,
+                    "id": "14102141279502037387",
+                    "isInputEnabled": true,
+                    "isRaycastTarget": false,
+                    "name": "Text",
+                    "priority": 1000,
+                    "text": [
+                        76,
+                        111,
+                        97,
+                        100,
+                        105,
+                        110,
+                        103,
+                        46,
+                        46,
+                        46,
+                        46,
+                        0
+                    ],
+                    "type": "Text"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "14956316846343386939",
+                    "name": "TextWave",
+                    "priority": 2000,
+                    "type": "TextWave"
+                }
+            ],
+            "id": "5371388781711330982",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Text",
+            "parent": "9932065460216646871",
+            "priority": 3000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "anchorMax": [
+                        0.0,
+                        0.0
+                    ],
+                    "anchorMin": [
+                        0.0,
+                        0.0
+                    ],
+                    "anchoredPosition": [
+                        0.0,
+                        0.0
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "5752488589693452460",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.0,
+                        0.0
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        1920.0,
+                        1080.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "13792766597283336493",
+                    "isInputEnabled": true,
+                    "name": "Canvas",
+                    "priority": 1000,
+                    "type": "Canvas"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "17723715293903900878",
+                    "isInputEnabled": true,
+                    "name": "GraphicRaycaster",
+                    "priority": 2000,
+                    "type": "GraphicRaycaster"
+                }
+            ],
+            "id": "9932065460216646871",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Canvas",
+            "parent": "0",
+            "priority": 4000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "9950283289731841711",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "14869319516362038552",
+                    "name": "InputModule",
+                    "priority": 1000,
+                    "type": "InputModule"
+                }
+            ],
+            "id": "9000441959525398569",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "EventSystem",
+            "parent": "0",
+            "priority": 5000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "17408614610901668900",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        5.0,
+                        10.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.38268348574638367,
+                        0.0,
+                        0.0,
+                        0.9238795638084412
+                    ],
+                    "scale": [
+                        1.0,
+                        0.9999991059303284,
+                        0.9999991059303284
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "8308275198604288093",
+                    "name": "DirectionalLightComponent",
+                    "priority": 1000,
+                    "type": "DirectionalLightComponent"
+                }
+            ],
+            "id": "11871762788865648593",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Directional Light",
+            "parent": "0",
+            "priority": 6000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "9688652511205286867",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "8944311349150792657",
+                    "name": "LoadingController",
+                    "priority": 1000,
+                    "type": "LoadingController"
+                }
+            ],
+            "id": "10459576345660866147",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "LoadingController",
+            "parent": "0",
+            "priority": 7000,
+            "version": 1
+        }
+    ]
+}

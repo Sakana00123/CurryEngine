@@ -1,0 +1,1007 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0DDBE550-8551-4506-9A5A-4DD100C00C48}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>My3dgp</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(SolutionDir)\CurryEngine.GeneratedFiles.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <MultiProcFXC>true</MultiProcFXC>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <MultiProcFXC>true</MultiProcFXC>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;nethost.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>.\Assets\Shaders\%(Filename).cso</ObjectFileOutput>
+      <AssemblerOutput>AssemblyCode</AssemblerOutput>
+      <AssemblerOutputFile>.\Data\Shaders\%(Filename).cod</AssemblerOutputFile>
+    </FxCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>pushed "$(SolutionDir)"
+"parse.bat"
+popd</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;nethost.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>.\Assets\Shaders\%(Filename).cso</ObjectFileOutput>
+      <AssemblerOutput>AssemblyCode</AssemblerOutput>
+      <AssemblerOutputFile>.\Data\Shaders\%(Filename).cod</AssemblerOutputFile>
+    </FxCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>pushed "$(SolutionDir)"
+"parse.bat"
+popd</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Archive\geometric_primitive.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Archive\gltf_model.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Archive\skinned_mesh.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Archive\sprite.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Archive\sprite_batch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Archive\static_mesh.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Animation\RhythmAnimationController.cpp" />
+    <ClCompile Include="Engine\Animation\RhythmStateMachine.cpp" />
+    <ClCompile Include="Engine\Audio\3DAudio.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\AudioAnalyzer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\AudioListener.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\BeatManager.cpp" />
+    <ClCompile Include="Engine\Audio\ThirdPerty\kfc.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\ThirdPerty\kiss_fft.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\ThirdPerty\kiss_fftnd.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\ThirdPerty\kiss_fftndr.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\ThirdPerty\kiss_fftr.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Automation\SolutionGenerator.cpp" />
+    <ClCompile Include="Engine\BuildSettings.cpp" />
+    <ClCompile Include="Engine\Core\Math\Quaternion.cpp" />
+    <ClCompile Include="Engine\EditorSupport\ImGuiHelpers.cpp" />
+    <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
+    <ClCompile Include="Engine\Events\PointerEventData.cpp" />
+    <ClCompile Include="Engine\Events\RaycastResult.cpp" />
+    <ClCompile Include="Engine\Physics\FixedJoint.cpp" />
+    <ClCompile Include="Engine\Physics\HingeJoint.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\PFX_CrtPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\PFX_OutLinePass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\PostProcessPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\RenderPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\TransitionPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Renderers\TrailRenderer.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\GameObjectExports.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\TransformExports.cpp" />
+    <ClCompile Include="Engine\UI\CanvasScaler.cpp" />
+    <ClCompile Include="Engine\UI\Graphic.cpp" />
+    <ClCompile Include="Engine\UI\GridLayoutGroup.cpp" />
+    <ClCompile Include="Engine\UI\HorizontalLayoutGroup.cpp" />
+    <ClCompile Include="Engine\UI\LayoutGroup.cpp" />
+    <ClCompile Include="Engine\UI\ScrollView.cpp" />
+    <ClCompile Include="Engine\UI\VerticalLayoutGroup.cpp" />
+    <ClCompile Include="External\imgui-docking\ImGradientHDR.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Layer.cpp" />
+    <ClCompile Include="Engine\Core\Math\Vector2.cpp" />
+    <ClCompile Include="Engine\Core\Math\Vector3.cpp" />
+    <ClCompile Include="Engine\Core\ObjectId.cpp" />
+    <ClCompile Include="Engine\Core\Reflection\Meta.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Reflection\TypeSerializerRegistry.cpp" />
+    <ClCompile Include="Engine\Core\ScriptComponent.cpp" />
+    <ClCompile Include="Engine\Core\Time.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Easing\BeatScaler2DComponent.cpp" />
+    <ClCompile Include="Engine\Easing\BeatScalerComponent.cpp" />
+    <ClCompile Include="Engine\Easing\EasingColor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Easing\EasingTransform.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Easing\EasingUI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Easing\Tween.cpp" />
+    <ClCompile Include="Engine\EditorSupport\ComponentFactory.cpp" />
+    <ClCompile Include="Engine\EditorSupport\CompoundCommand.cpp" />
+    <ClCompile Include="Engine\EditorSupport\EditorSelection.cpp" />
+    <ClCompile Include="Engine\EditorSupport\OrderManager.cpp" />
+    <ClCompile Include="Engine\EditorSupport\VcxprojHelper.cpp" />
+    <ClCompile Include="Engine\EditorSupport\VSProjectReloader.cpp" />
+    <ClCompile Include="Engine\Editor\AnimationEditor.cpp" />
+    <ClCompile Include="Engine\Editor\AssetBrowser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\Console.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\Dialog.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\EditorGUI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\EffectEditor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\FileOpener.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\History.cpp" />
+    <ClCompile Include="Engine\Editor\HlslEditor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\Audio.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\AudioSource.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Color.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Component.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Framework.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\GameObject.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\ObjectManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Transform.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\ImGuiTheme.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\SceneParametersEditor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\Timeline.cpp" />
+    <ClCompile Include="Engine\Effects\ComputeParticleSystem.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Easing\EasingComponent.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Easing\EasingHandler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Effects\EffectManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Effects\ParticleComponent.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Events\BaseInputModule.cpp" />
+    <ClCompile Include="Engine\Events\EventSystem.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Events\InputModule.cpp" />
+    <ClCompile Include="Engine\Factory\GameObjectFactory.cpp" />
+    <ClCompile Include="Engine\Factory\ScriptFactory.cpp" />
+    <ClCompile Include="Engine\Input\InputSystem.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Physics\BoxCollider.cpp" />
+    <ClCompile Include="Engine\Physics\CapsuleCollider.cpp" />
+    <ClCompile Include="Engine\Physics\MeshCollider.cpp" />
+    <ClCompile Include="Engine\Physics\Physics.cpp" />
+    <ClCompile Include="Engine\Physics\SphereCollider.cpp" />
+    <ClCompile Include="Engine\ProjectSettings.cpp" />
+    <ClCompile Include="Engine\Rendering\Buffers\RenderTexture.cpp" />
+    <ClCompile Include="Engine\Rendering\Camera\CameraComponent.cpp" />
+    <ClCompile Include="Engine\Rendering\Camera\CameraSystem.cpp" />
+    <ClCompile Include="Engine\Rendering\Camera\EditorCamera.cpp" />
+    <ClCompile Include="Engine\Rendering\Camera\ThirdPersonCameraController.cpp" />
+    <ClCompile Include="Engine\Rendering\Lights\DirectionalLightComponent.cpp" />
+    <ClCompile Include="Engine\Rendering\Lights\PointLightComponent.cpp" />
+    <ClCompile Include="Engine\Rendering\Lights\SpotLightComponent.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\ConstantBufferPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\DebugRenderPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\FinalPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\OpaquePass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\ParticlePass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\PreRenderPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\ShadowApplyPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\ShadowMapPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\SkyBoxPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\Pass\UIPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\RenderContext.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\RenderPipeline.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\RenderSystem.cpp" />
+    <ClCompile Include="Engine\Rendering\Renderers\DebugRenderer.cpp" />
+    <ClCompile Include="Engine\Rendering\Renderers\Renderer.cpp" />
+    <ClCompile Include="Engine\Resources\AnimationClip.cpp" />
+    <ClCompile Include="Engine\Scenes\SceneMigrator.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\CameraExports.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\ComponentExports.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\InputExports.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\LoggerExports.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\ScriptExports.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\TimeExports.cpp" />
+    <ClCompile Include="Engine\Scripting\ScriptHost.cpp" />
+    <ClCompile Include="Engine\Scripting\ScriptSystem.cpp" />
+    <ClCompile Include="Engine\Scripting\ScriptWatcher.cpp" />
+    <ClCompile Include="Engine\UI\Slider.cpp" />
+    <ClCompile Include="Engine\UI\Toggle.cpp" />
+    <ClCompile Include="Engine\Utils\UniqueIdGenerator.cpp" />
+    <ClCompile Include="External\imgui-docking\implot.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\implot_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\implot_items.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Physics\Collider.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Physics\Rigidbody.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Renderers\GltfModelRenderer.cpp" />
+    <ClCompile Include="Engine\Rendering\Pipeline\FullScreenQuad.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Pipeline\Graphics.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Pipeline\RenderState.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Renderers\PrimitiveRenderer.cpp" />
+    <ClCompile Include="Engine\Rendering\Buffers\CascadedShadowMaps.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Buffers\FrameBuffer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Material.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Resources\ResourceManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Resources\Shader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Resources\Texture.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Renderers\Skymap.cpp" />
+    <ClCompile Include="Engine\Scenes\Scene.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Scenes\SceneManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\Button.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\Canvas.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\GraphicRaycaster.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\Image.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\InputField.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\Mask.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\RectTransform.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\Selectable.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\Text.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\UIAnimationController.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\UIComponent.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Utils\RectTransformUtils.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\ImCurveEdit.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\ImGradient.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\ImGuizmo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_impl_dx11.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_impl_win32.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_ja_gryph_ranges.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imnodes.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\ImSequencer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\profiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\timer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Archive\geometric_primitive.h" />
+    <ClInclude Include="Archive\gltf_model.h" />
+    <ClInclude Include="Archive\high_resolution_timer.h" />
+    <ClInclude Include="Archive\skinned_mesh.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Archive\sprite.h" />
+    <ClInclude Include="Archive\sprite_batch.h" />
+    <ClInclude Include="Archive\static_mesh.h" />
+    <ClInclude Include="Engine\Animation\RhythmAnimationController.h" />
+    <ClInclude Include="Engine\Animation\RhythmAnimationClip.h" />
+    <ClInclude Include="Engine\Animation\RhythmAnimState.h" />
+    <ClInclude Include="Engine\Animation\RhythmStateMachine.h" />
+    <ClInclude Include="Engine\Animation\StateTransition.h" />
+    <ClInclude Include="Engine\Audio\3DAudio.h" />
+    <ClInclude Include="Engine\Audio\AudioAnalyzer.h" />
+    <ClInclude Include="Engine\Audio\AudioListener.h" />
+    <ClInclude Include="Engine\Audio\BeatManager.h" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\kfc.h" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\kissfft.hh" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\kissfft_i32.hh" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\kiss_fft.h" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\kiss_fftnd.h" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\kiss_fftndr.h" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\kiss_fftr.h" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\kiss_fft_log.h" />
+    <ClInclude Include="Engine\Audio\ThirdPerty\_kiss_fft_guts.h" />
+    <ClInclude Include="Engine\Automation\SolutionGenerator.h" />
+    <ClInclude Include="Engine\BuildSettings.h" />
+    <ClInclude Include="Engine\Core\Math\Quaternion.h" />
+    <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
+    <ClInclude Include="Engine\Physics\FixedJoint.h" />
+    <ClInclude Include="Engine\Physics\HingeJoint.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\PFX_CrtPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\PFX_OutLinePass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\PostProcessPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\TransitionPass.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\TrailRenderer.h" />
+    <ClInclude Include="Engine\Scripting\ScriptFieldSerializer.h" />
+    <ClInclude Include="Engine\UI\CanvasScaler.h" />
+    <ClInclude Include="Engine\UI\GridLayoutGroup.h" />
+    <ClInclude Include="Engine\UI\HorizontalLayoutGroup.h" />
+    <ClInclude Include="Engine\UI\LayoutGroup.h" />
+    <ClInclude Include="Engine\UI\VerticalLayoutGroup.h" />
+    <ClInclude Include="External\imgui-docking\ImGradientHDR.h" />
+    <ClInclude Include="Engine\Core\EnginePaths.h" />
+    <ClInclude Include="Engine\Core\Layer.h" />
+    <ClInclude Include="Engine\Core\Math\BoundingBox.h" />
+    <ClInclude Include="Engine\Core\Math\Vector2.h" />
+    <ClInclude Include="Engine\Core\Math\Vector3.h" />
+    <ClInclude Include="Engine\Core\ObjectId.h" />
+    <ClInclude Include="Engine\Core\Reflection\TypeSerializerRegistry.h" />
+    <ClInclude Include="Engine\Core\ScriptComponent.h" />
+    <ClInclude Include="Engine\Easing\BeatScaler2DComponent.h" />
+    <ClInclude Include="Engine\Easing\BeatScalerComponent.h" />
+    <ClInclude Include="Engine\Easing\EasingColor.h" />
+    <ClInclude Include="Engine\Easing\EasingTransform.h" />
+    <ClInclude Include="Engine\Easing\EasingUI.h" />
+    <ClInclude Include="Engine\Easing\Tween.h" />
+    <ClInclude Include="Engine\EditorSupport\CompoundCommand.h" />
+    <ClInclude Include="Engine\EditorSupport\EditorSelection.h" />
+    <ClInclude Include="Engine\EditorSupport\IEditorCommand.h" />
+    <ClInclude Include="Engine\EditorSupport\ImGuiHelpers.h" />
+    <ClInclude Include="Engine\EditorSupport\OrderManager.h" />
+    <ClInclude Include="Engine\EditorSupport\SetValueCommand.h" />
+    <ClInclude Include="Engine\EditorSupport\UndoRedoStack.h" />
+    <ClInclude Include="Engine\EditorSupport\VcxprojHelper.h" />
+    <ClInclude Include="Engine\EditorSupport\VSProjectReloader.h" />
+    <ClInclude Include="Engine\Editor\AnimationEditor.h" />
+    <ClInclude Include="Engine\Editor\AnimationTimeline.h" />
+    <ClInclude Include="Engine\Editor\AssetBrowser.h" />
+    <ClInclude Include="Engine\Editor\AssetBrowserDropTarget.h" />
+    <ClInclude Include="Engine\Editor\Dialog.h" />
+    <ClInclude Include="Engine\Editor\EditorGUI.h" />
+    <ClInclude Include="Engine\Editor\EffectEditor.h" />
+    <ClInclude Include="Engine\Editor\FileOpener.h" />
+    <ClInclude Include="Engine\Editor\History.h" />
+    <ClInclude Include="Engine\Editor\HlslEditor.h" />
+    <ClInclude Include="Engine\Editor\Console.h" />
+    <ClInclude Include="Engine\Attributes\ComponentAttributes.h" />
+    <ClInclude Include="Engine\Audio\Audio.h" />
+    <ClInclude Include="Engine\Audio\AudioSource.h" />
+    <ClInclude Include="Engine\Core\Color.h" />
+    <ClInclude Include="Engine\Core\Component.h" />
+    <ClInclude Include="Engine\Core\Framework.h" />
+    <ClInclude Include="Engine\Core\GameObject.h" />
+    <ClInclude Include="Engine\Core\Misc.h" />
+    <ClInclude Include="Engine\Core\Object.h" />
+    <ClInclude Include="Engine\Core\ObjectManager.h" />
+    <ClInclude Include="Engine\Core\PersistentObjectManager.h" />
+    <ClInclude Include="Engine\Core\Reflection\Meta.h" />
+    <ClInclude Include="Engine\Core\Time.h" />
+    <ClInclude Include="Engine\Core\Transform.h" />
+    <ClInclude Include="Engine\EditorSupport\AutoRegisterComponent.h" />
+    <ClInclude Include="Engine\EditorSupport\ComponentFactory.h" />
+    <ClInclude Include="Engine\Editor\ImGuiTheme.h" />
+    <ClInclude Include="Engine\Editor\SceneParametersEditor.h" />
+    <ClInclude Include="Engine\Editor\Timeline.h" />
+    <ClInclude Include="Engine\Effects\ComputeParticleSystem.h" />
+    <ClInclude Include="Engine\Easing\easing.h" />
+    <ClInclude Include="Engine\Easing\EasingComponent.h" />
+    <ClInclude Include="Engine\Easing\EasingHandler.h" />
+    <ClInclude Include="Engine\Effects\EffectManager.h" />
+    <ClInclude Include="Engine\Effects\ParticleComponent.h" />
+    <ClInclude Include="Engine\Factory\GameObjectFactory.h" />
+    <ClInclude Include="Engine\Physics\BoxCollider.h" />
+    <ClInclude Include="Engine\Physics\CapsuleCollider.h" />
+    <ClInclude Include="Engine\Physics\CollisionEvent.h" />
+    <ClInclude Include="Engine\Physics\MeshCollider.h" />
+    <ClInclude Include="Engine\Physics\Physics.h" />
+    <ClInclude Include="Engine\Physics\SphereCollider.h" />
+    <ClInclude Include="Engine\ProjectSettings.h" />
+    <ClInclude Include="Engine\Rendering\Buffers\RenderTexture.h" />
+    <ClInclude Include="Engine\Rendering\Camera\ThirdPersonCameraController.h" />
+    <ClInclude Include="Engine\Rendering\Lights\DirectionalLightComponent.h" />
+    <ClInclude Include="Engine\Rendering\Lights\LightBase.h" />
+    <ClInclude Include="Engine\Rendering\Lights\PointLightComponent.h" />
+    <ClInclude Include="Engine\Rendering\Lights\SpotLightComponent.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\LightData.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\ConstantBufferPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\DebugRenderPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\FinalPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\OpaquePass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\ParticlePass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\PreRenderPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\RenderPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\ShadowApplyPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\ShadowMapPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\SkyBoxPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Pass\UIPass.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\RenderPipeline.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\RenderSystem.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\DebugRenderer.h" />
+    <ClInclude Include="Engine\Resources\AnimationClip.h" />
+    <ClInclude Include="Engine\Scenes\SceneMigrator.h" />
+    <ClInclude Include="Engine\Scripting\Exports\ScriptBridgeTypes.h" />
+    <ClInclude Include="Engine\Scripting\ScriptHost.h" />
+    <ClInclude Include="Engine\Scripting\ScriptWatcher.h" />
+    <ClInclude Include="External\imgui-docking\implot.h" />
+    <ClInclude Include="External\imgui-docking\implot_internal.h" />
+    <ClInclude Include="Engine\Events\AxisEventData.h" />
+    <ClInclude Include="Engine\Events\BaseEventData.h" />
+    <ClInclude Include="Engine\Events\BaseInputModule.h" />
+    <ClInclude Include="Engine\Events\Event.h" />
+    <ClInclude Include="Engine\Events\EventHandlers.h" />
+    <ClInclude Include="Engine\Events\EventSequence.h" />
+    <ClInclude Include="Engine\Events\EventSystem.h" />
+    <ClInclude Include="Engine\Events\InputModule.h" />
+    <ClInclude Include="Engine\Events\PointerEventData.h" />
+    <ClInclude Include="Engine\Events\RaycastResult.h" />
+    <ClInclude Include="Engine\Factory\ScriptFactory.h" />
+    <ClInclude Include="Engine\Input\InputSystem.h" />
+    <ClInclude Include="Engine\Rendering\Camera\CameraComponent.h" />
+    <ClInclude Include="Engine\Rendering\Camera\CameraSystem.h" />
+    <ClInclude Include="Engine\Rendering\Camera\EditorCamera.h" />
+    <ClInclude Include="Engine\Scripting\ScriptSystem.h" />
+    <ClInclude Include="Engine\Utils\JsonUtils.h" />
+    <ClInclude Include="Generated\ReflectionGenerated.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Engine\Physics\Collider.h" />
+    <ClInclude Include="Engine\Physics\Rigidbody.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\RenderContext.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\GltfModelRenderer.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\FullScreenQuad.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\Graphics.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\RenderState.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\PrimitiveRenderer.h" />
+    <ClInclude Include="Engine\Rendering\Buffers\CascadedShadowMaps.h" />
+    <ClInclude Include="Engine\Rendering\Buffers\FrameBuffer.h" />
+    <ClInclude Include="Engine\Rendering\Material.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\Renderer.h" />
+    <ClInclude Include="Engine\Resources\Shader.h" />
+    <ClInclude Include="Engine\Resources\Texture.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\Skymap.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\SpriteRenderer.h" />
+    <ClInclude Include="Engine\Resources\Resource.h" />
+    <ClInclude Include="Engine\Resources\ResourceManager.h" />
+    <ClInclude Include="Engine\Scenes\Scene.h" />
+    <ClInclude Include="Engine\Scenes\SceneManager.h" />
+    <ClInclude Include="Engine\UI\Button.h" />
+    <ClInclude Include="Engine\UI\Canvas.h" />
+    <ClInclude Include="Engine\UI\Graphic.h" />
+    <ClInclude Include="Engine\UI\GraphicRaycaster.h" />
+    <ClInclude Include="Engine\UI\Image.h" />
+    <ClInclude Include="Engine\UI\InputField.h" />
+    <ClInclude Include="Engine\UI\Mask.h" />
+    <ClInclude Include="Engine\UI\RectTransform.h" />
+    <ClInclude Include="Engine\UI\ScrollView.h" />
+    <ClInclude Include="Engine\UI\Selectable.h" />
+    <ClInclude Include="Engine\UI\Slider.h" />
+    <ClInclude Include="Engine\UI\Text.h" />
+    <ClInclude Include="Engine\UI\Toggle.h" />
+    <ClInclude Include="Engine\UI\UIAnimationController.h" />
+    <ClInclude Include="Engine\UI\UIComponent.h" />
+    <ClInclude Include="Engine\Utils\JsonFileHandler.h" />
+    <ClInclude Include="Engine\Utils\RectTransformUtils.h" />
+    <ClInclude Include="Engine\Utils\stdUtiles.h" />
+    <ClInclude Include="Engine\Utils\UniqueIdGenerator.h" />
+    <ClInclude Include="External\imgui-docking\imconfig.h" />
+    <ClInclude Include="External\imgui-docking\ImCurveEdit.h" />
+    <ClInclude Include="External\imgui-docking\ImGradient.h" />
+    <ClInclude Include="External\imgui-docking\imgui.h" />
+    <ClInclude Include="External\imgui-docking\ImGuizmo.h" />
+    <ClInclude Include="External\imgui-docking\imgui_curve.hpp" />
+    <ClInclude Include="External\imgui-docking\imgui_impl_dx11.h" />
+    <ClInclude Include="External\imgui-docking\imgui_impl_win32.h" />
+    <ClInclude Include="External\imgui-docking\imgui_internal.h" />
+    <ClInclude Include="External\imgui-docking\imnodes.h" />
+    <ClInclude Include="External\imgui-docking\imnodes_internal.h" />
+    <ClInclude Include="External\imgui-docking\ImSequencer.h" />
+    <ClInclude Include="External\imgui-docking\imstb_rectpack.h" />
+    <ClInclude Include="External\imgui-docking\imstb_textedit.h" />
+    <ClInclude Include="External\imgui-docking\imstb_truetype.h" />
+    <ClInclude Include="External\imgui-docking\profiler.h" />
+    <ClInclude Include="External\imgui-docking\timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\BackgroundShaderPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\blur_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\CascadedShadowPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleBeginFrameCS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleBitonicSortB2CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleBitonicSortC2CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleEmitCS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleEndFrameCS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleInitCS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleRenderGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleRenderPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleRenderVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleSortCS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ComputeParticleUpdateCS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\DebugRendererPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\debug_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\DebugRendererVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\FinalPassPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\fullscreen_quad_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\fullscreen_quad_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\geometric_primitive_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\geometric_primitive_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\gltf_model_csm_gs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\gltf_model_csm_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\gltf_model_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\gltf_model_static_batching_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\gltf_model_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\luminance_extraction_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\OutLinePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\OutLineVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\PFX_CrtPassPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\pin.ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\ShaderToyPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\skinned_mesh_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\skinned_mesh_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\skybox_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\skymap_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\skymap_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\SpriteMaskPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\sprite_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\sprite_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\static_mesh_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\static_mesh_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\TransitionPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="Shader\bidirectional_reflectance_distribution_function.hlsli" />
+    <None Include="Shader\ComputeParticle.hlsli" />
+    <None Include="Shader\ComputeParticleBitonicSort.hlsli" />
+    <None Include="Shader\Constants.hlsli" />
+    <None Include="Shader\DebugRenderer.hlsli" />
+    <None Include="Shader\fullscreen_quad.hlsli" />
+    <None Include="Shader\geometric_primitive.hlsli" />
+    <None Include="Shader\gltf_model.hlsli" />
+    <None Include="Shader\image_based_lighting.hlsli" />
+    <None Include="Shader\Lights.hlsli" />
+    <None Include="Shader\OutLine.hlsli" />
+    <None Include="Shader\Sampler.hlsli" />
+    <None Include="Shader\ShaderFunctions.hlsli" />
+    <None Include="Shader\skinned_mesh.hlsli" />
+    <None Include="Shader\skymap.hlsli" />
+    <None Include="Shader\sprite.hlsli" />
+    <None Include="Shader\static_mesh.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BuildSetting\icon.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

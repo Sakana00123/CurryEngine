@@ -1,0 +1,816 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 0,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "duration": 0.9800000190734863,
+            "emitCount": [
+                1,
+                1
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "enableFadeIn": false,
+            "enableFadeOut": false,
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.15000000596046448,
+                    0.15000000596046448
+                ],
+                [
+                    0.15000000596046448,
+                    0.15000000596046448
+                ]
+            ],
+            "endSpeed": [
+                1.0,
+                1.0
+            ],
+            "fadeInTime": [
+                0.0,
+                0.0
+            ],
+            "fadeOutTime": [
+                0.0,
+                0.0
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        0.982206404209137,
+                        0.709354043006897,
+                        0.2656501233577728
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "color": [
+                        0.9644128084182739,
+                        0.5553974509239197,
+                        0.25054141879081726
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.3642534017562866
+                },
+                {
+                    "color": [
+                        0.9644128084182739,
+                        0.5553974509239197,
+                        0.25054141879081726
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.6244351863861084
+                },
+                {
+                    "color": [
+                        0.982206404209137,
+                        0.709354043006897,
+                        0.2656501233577728
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.8823533654212952
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.0,
+                1.0
+            ],
+            "loop": true,
+            "maxParticles": 1000,
+            "name": "field_base",
+            "positionOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 1.0,
+            "renderingMode": 2,
+            "rotationEasingTime": [
+                0.0,
+                0.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 0,
+            "sizeEasingTime": [
+                0.0,
+                0.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                1.0,
+                1.0
+            ],
+            "speedEasingTime": [
+                0.0,
+                0.0
+            ],
+            "speedEasingType": 0,
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.15000000596046448,
+                    0.15000000596046448
+                ],
+                [
+                    0.15000000596046448,
+                    0.15000000596046448
+                ]
+            ],
+            "texturePath": "",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": true,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        },
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 0,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "duration": 0.9800000190734863,
+            "emitCount": [
+                1,
+                1
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "enableFadeIn": false,
+            "enableFadeOut": false,
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.019999999552965164,
+                    0.15000000596046448
+                ],
+                [
+                    0.019999999552965164,
+                    0.15000000596046448
+                ]
+            ],
+            "endSpeed": [
+                1.0,
+                1.0
+            ],
+            "fadeInTime": [
+                0.0,
+                0.0
+            ],
+            "fadeOutTime": [
+                0.0,
+                0.0
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        0.30000001192092896,
+                        0.30000001192092896,
+                        0.30000001192092896
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.0,
+                1.0
+            ],
+            "loop": true,
+            "maxParticles": 1000,
+            "name": "frame_left",
+            "positionOffset": [
+                -0.06499999761581421,
+                0.0010000000474974513,
+                0.0
+            ],
+            "radius": 1.0,
+            "renderingMode": 2,
+            "rotationEasingTime": [
+                0.0,
+                0.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 0,
+            "sizeEasingTime": [
+                1.0,
+                1.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                1.0,
+                1.0
+            ],
+            "speedEasingTime": [
+                0.0,
+                0.0
+            ],
+            "speedEasingType": 0,
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.019999999552965164,
+                    0.15000000596046448
+                ],
+                [
+                    0.019999999552965164,
+                    0.15000000596046448
+                ]
+            ],
+            "texturePath": "",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": true,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        },
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 0,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "duration": 0.9800000190734863,
+            "emitCount": [
+                10,
+                10
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "enableFadeIn": false,
+            "enableFadeOut": false,
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.019999999552965164,
+                    0.15000000596046448
+                ],
+                [
+                    0.019999999552965164,
+                    0.15000000596046448
+                ]
+            ],
+            "endSpeed": [
+                1.0,
+                1.0
+            ],
+            "fadeInTime": [
+                0.0,
+                0.0
+            ],
+            "fadeOutTime": [
+                0.0,
+                0.0
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        0.30000001192092896,
+                        0.30000001192092896,
+                        0.30000001192092896
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.0,
+                1.0
+            ],
+            "loop": true,
+            "maxParticles": 1000,
+            "name": "frame_right",
+            "positionOffset": [
+                0.06499999761581421,
+                0.0010000000474974513,
+                0.0
+            ],
+            "radius": 1.0,
+            "renderingMode": 2,
+            "rotationEasingTime": [
+                0.0,
+                0.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 0,
+            "sizeEasingTime": [
+                0.0,
+                0.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                1.0,
+                1.0
+            ],
+            "speedEasingTime": [
+                0.0,
+                0.0
+            ],
+            "speedEasingType": 0,
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.019999999552965164,
+                    0.15000000596046448
+                ],
+                [
+                    0.019999999552965164,
+                    0.15000000596046448
+                ]
+            ],
+            "texturePath": "",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": true,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        },
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 1,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "duration": 0.6000000238418579,
+            "emitCount": [
+                1,
+                1
+            ],
+            "emitInterval": [
+                0.4000000059604645,
+                0.4000000059604645
+            ],
+            "enableFadeIn": true,
+            "enableFadeOut": true,
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.10000000149011612,
+                    0.10000000149011612
+                ],
+                [
+                    0.10000000149011612,
+                    0.10000000149011612
+                ]
+            ],
+            "endSpeed": [
+                1.0,
+                1.0
+            ],
+            "fadeInTime": [
+                0.20000000298023224,
+                0.20000000298023224
+            ],
+            "fadeOutTime": [
+                0.20000000298023224,
+                0.20000000298023224
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        1.0,
+                        0.8912754058837891,
+                        0.6975089311599731
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.0,
+                1.0
+            ],
+            "loop": true,
+            "maxParticles": 1000,
+            "name": "arrow",
+            "positionOffset": [
+                0.0,
+                0.0010000000474974513,
+                -0.07000000029802322
+            ],
+            "radius": 1.0,
+            "renderingMode": 2,
+            "rotationEasingTime": [
+                1.0,
+                1.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 0,
+            "sizeEasingTime": [
+                2.0,
+                2.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                1.0,
+                1.0
+            ],
+            "speedEasingTime": [
+                0.0,
+                0.0
+            ],
+            "speedEasingType": 0,
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.10000000149011612,
+                    0.10000000149011612
+                ],
+                [
+                    0.10000000149011612,
+                    0.10000000149011612
+                ]
+            ],
+            "texturePath": ".\\Assets\\Texture\\Effect\\arrow.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": true,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.11999999731779099
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.11999999731779099
+                ]
+            ]
+        }
+    ],
+    "name": "GravityUpEfc"
+}

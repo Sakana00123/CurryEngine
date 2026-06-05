@@ -1,0 +1,122 @@
+{
+    "editorCamera": {
+        "aspect": 1.7777777910232544,
+        "distance": 4.0,
+        "farZ": 1000.0,
+        "fieldOfView": 60.0,
+        "maxAngleX": 70.0,
+        "maxDistance": 1000.0,
+        "minAngleX": -70.0,
+        "minDistance": 1.0,
+        "nearZ": 0.10000000149011612,
+        "position": [
+            0.0,
+            3.521866798400879,
+            -4.6634931564331055
+        ],
+        "rotateSpeed": 30.0,
+        "rotation": [
+            0.15980708599090576,
+            0.006065198220312595,
+            -0.0009822509018704295,
+            0.9871290922164917
+        ],
+        "speed": 3.0
+    },
+    "name": "DefaultScene",
+    "objects": [
+        {
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "2301942279032147236",
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        10.0,
+                        -6.0
+                    ],
+                    "priority": -2147483648,
+                    "rotation": [
+                        0.5000000596046448,
+                        0.0,
+                        0.0,
+                        0.8660253286361694
+                    ],
+                    "scale": [
+                        1.0,
+                        0.9999982714653015,
+                        0.9999982714653015
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "aspect": 1.7777777910232544,
+                    "enabledSelf": true,
+                    "farClip": 1000.0,
+                    "fieldOfView": 60.0,
+                    "id": "16392258771335762048",
+                    "isMainCamera": false,
+                    "name": "CameraComponent",
+                    "nearClip": 0.10000000149011612,
+                    "priority": 2,
+                    "type": "CameraComponent"
+                }
+            ],
+            "id": "1090944489610871583",
+            "isActive": true,
+            "layer": 0,
+            "name": "MainCamera",
+            "parent": "0",
+            "priority": 0
+        },
+        {
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "17408614610901668900",
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        5.0,
+                        10.0
+                    ],
+                    "priority": -2147483648,
+                    "rotation": [
+                        0.38268348574638367,
+                        0.0,
+                        0.0,
+                        0.9238795638084412
+                    ],
+                    "scale": [
+                        1.0,
+                        0.9999991059303284,
+                        0.9999991059303284
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "8308275198604288093",
+                    "name": "DirectionalLightComponent",
+                    "priority": 2,
+                    "type": "DirectionalLightComponent"
+                }
+            ],
+            "id": "11871762788865648593",
+            "isActive": true,
+            "layer": 0,
+            "name": "Directional Light",
+            "parent": "0",
+            "priority": 0
+        }
+    ]
+}

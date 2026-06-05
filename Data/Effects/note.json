@@ -1,0 +1,128 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 1,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "emitCount": [
+                3,
+                3
+            ],
+            "emitInterval": [
+                0.15000000596046448,
+                0.15000000596046448
+            ],
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    7.0,
+                    7.0
+                ],
+                [
+                    8.0,
+                    8.0
+                ]
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "lifeTime": [
+                0.5,
+                0.5
+            ],
+            "maxParticles": 1000,
+            "name": "ring",
+            "positionOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 0.10000000149011612,
+            "renderingMode": 2,
+            "rotationEuler": [
+                90.0,
+                0.0,
+                0.0
+            ],
+            "shapeType": 0,
+            "speed": [
+                10.0,
+                10.0
+            ],
+            "startColor": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    5.0,
+                    5.0
+                ],
+                [
+                    6.0,
+                    6.0
+                ]
+            ],
+            "texturePath": ".\\Data\\Effects\\ring.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "note"
+}

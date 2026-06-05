@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+	<AssemblyName>CurryEngine.Runtime</AssemblyName>
+	<RootNamespace>CurryEngine</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<EnableDynamicLoading>true</EnableDynamicLoading>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<BaseOutputPath>$(SolutionDir)</BaseOutputPath>
+	<Platforms>x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\CurryEngine.API\CurryEngine.API.csproj" />
+    <Compile Include="Components\ComponentAccess.cs" />
+    <Compile Include="ComponentAccessorAdapter.cs" />
+    <Compile Include="Components\ComponentRegistry.cs" />
+    <Compile Include="EngineRuntime.cs" />
+    <Compile Include="HotReload\HotReloadManager.cs" />
+    <Compile Include="HotReload\ScriptLoadContext.cs" />
+    <Compile Include="BehaviourMethodCache.cs" />
+    <Compile Include="Interop\CollisionConverter.cs" />
+    <Compile Include="Interop\CollisionInfoDto.cs" />
+    <Compile Include="Interop\ScriptBridge.cs" />
+    <Compile Include="Reflection\FieldMeta.cs" />
+    <Compile Include="Reflection\ScriptInspector.cs" />
+    <Compile Include="ScriptEventQueue.cs" />
+    <Compile Include="ScriptRegistry.cs" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y &quot;$(SolutionDir)x64\$(Configuration)\net9.0\CurryEngine.Runtime.dll&quot; &quot;$(SolutionDir)x64\$(Configuration)\&quot;&#xD;&#xA;xcopy /y &quot;$(SolutionDir)x64\$(Configuration)\net9.0\CurryEngine.Runtime.runtimeconfig.json&quot; &quot;$(SolutionDir)x64\$(Configuration)\&quot;" />
+  </Target>
+
+</Project>

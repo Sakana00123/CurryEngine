@@ -1,0 +1,213 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 694,
+      "max": [
+        3.615626811981201,
+        1.1789523363113403,
+        3.6335573196411133
+      ],
+      "min": [
+        -3.615626811981201,
+        -2.9929370880126953,
+        -3.6335577964782715
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 694,
+      "max": [
+        0.8983914256095886,
+        1.0,
+        0.8976633548736572
+      ],
+      "min": [
+        -0.8983914256095886,
+        0.43918269872665405,
+        -0.8976633548736572
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 694,
+      "max": [
+        1.0,
+        0.280432790517807,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.27537524700164795,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 694,
+      "max": [
+        1.0000001192092896,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5125,
+      "count": 3240,
+      "max": [
+        693
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 8328,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 8328,
+      "byteOffset": 8328,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 11104,
+      "byteOffset": 16656,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5552,
+      "byteOffset": 27760,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 12960,
+      "byteOffset": 33312,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 46272,
+      "uri": "result_island.bin"
+    }
+  ],
+  "materials": [
+    {
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "m_island",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          1.0,
+          0.9446583390235901,
+          0.7837837934494019,
+          1.0
+        ],
+        "metallicFactor": 0.0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "island.001",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        0.0,
+        0.0002537965774536133,
+        0.0
+      ]
+    },
+    {
+      "children": [
+        0
+      ],
+      "name": "island",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1238.891845703125,
+        155.43724060058594,
+        1238.891845703125
+      ],
+      "translation": [
+        0.0,
+        -183.25308227539063,
+        0.0
+      ]
+    }
+  ],
+  "samplers": [
+    {
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        1
+      ]
+    }
+  ]
+}

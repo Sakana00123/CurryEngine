@@ -1,0 +1,209 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 977,
+      "max": [
+        26.118026733398438,
+        25.496919631958008,
+        19.351688385009766
+      ],
+      "min": [
+        -26.118026733398438,
+        -0.07745128870010376,
+        -18.78436279296875
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 977,
+      "max": [
+        1.0,
+        1.0,
+        0.9969760179519653
+      ],
+      "min": [
+        -1.0,
+        -0.9999575614929199,
+        -0.9969760179519653
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 977,
+      "max": [
+        1.0,
+        0.9958134293556213,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9958214163780212,
+        -1.0,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 977,
+      "max": [
+        0.989411473274231,
+        0.9881311655044556
+      ],
+      "min": [
+        0.008227750658988953,
+        0.010822117328643799
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5125,
+      "count": 2772,
+      "max": [
+        976
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 11724,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 11724,
+      "byteOffset": 11724,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 15632,
+      "byteOffset": 23448,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 7816,
+      "byteOffset": 39080,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 11088,
+      "byteOffset": 46896,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 57984,
+      "uri": "treature_box_down.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "BaseColor.png"
+    },
+    {
+      "uri": "Metalness.png"
+    }
+  ],
+  "materials": [
+    {
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "m_treasure_box",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "treature_box_down",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        0.0,
+        0.07708339393138885,
+        -0.2836627960205078
+      ]
+    }
+  ],
+  "samplers": [
+    {
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    }
+  ]
+}

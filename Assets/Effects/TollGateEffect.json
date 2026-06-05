@@ -1,0 +1,223 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 1,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 1,
+            "duration": 0.5,
+            "emitCount": [
+                32,
+                32
+            ],
+            "emitInterval": [
+                0.05999999865889549,
+                0.05999999865889549
+            ],
+            "enableFadeIn": true,
+            "enableFadeOut": true,
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.004999999888241291,
+                    0.004999999888241291
+                ],
+                [
+                    0.004999999888241291,
+                    0.004999999888241291
+                ]
+            ],
+            "endSpeed": [
+                0.0,
+                0.10000000149011612
+            ],
+            "fadeInTime": [
+                0.10000000149011612,
+                0.10000000149011612
+            ],
+            "fadeOutTime": [
+                0.20000000298023224,
+                0.20000000298023224
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 1.0,
+                    "position": 0.5972845554351807
+                },
+                {
+                    "alpha": 0.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        0.573232114315033,
+                        0.1799875944852829,
+                        0.7437722682952881
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "color": [
+                        0.3772242069244385,
+                        0.408252477645874,
+                        1.0
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.40497735142707825
+                },
+                {
+                    "color": [
+                        0.373665452003479,
+                        0.7258393168449402,
+                        1.0
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.7217190265655518
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.0,
+                1.0
+            ],
+            "loop": true,
+            "maxParticles": 128,
+            "name": "ring",
+            "positionOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 0.05000000074505806,
+            "renderingMode": 1,
+            "rotationEasingTime": [
+                1.0,
+                1.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    90.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 1,
+            "sizeEasingTime": [
+                1.0,
+                1.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                0.0,
+                0.07999999821186066
+            ],
+            "speedEasingTime": [
+                1.0,
+                1.0
+            ],
+            "speedEasingType": 4,
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.012000000104308128,
+                    0.012000000104308128
+                ],
+                [
+                    0.012000000104308128,
+                    0.012000000104308128
+                ]
+            ],
+            "texturePath": ".\\Assets\\Texture\\Effect\\circle.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": true,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "TollGateEfc"
+}

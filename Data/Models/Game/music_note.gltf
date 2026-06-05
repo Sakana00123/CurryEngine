@@ -1,0 +1,208 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 692,
+      "max": [
+        1.0712538957595825,
+        7.338156223297119,
+        2.106621026992798
+      ],
+      "min": [
+        -1.0712541341781616,
+        -1.4660590887069702,
+        -4.424168586730957
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 692,
+      "max": [
+        1.0,
+        0.9999977946281433,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9993733167648315,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 692,
+      "max": [
+        1.0,
+        0.9853746891021729,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9853747487068176,
+        -1.0,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 692,
+      "max": [
+        0.8517539501190186,
+        0.3432716131210327
+      ],
+      "min": [
+        0.5781823396682739,
+        0.06970012187957764
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5125,
+      "count": 3336,
+      "max": [
+        691
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 8304,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 8304,
+      "byteOffset": 8304,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 11072,
+      "byteOffset": 16608,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5536,
+      "byteOffset": 27680,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 13344,
+      "byteOffset": 33216,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 46560,
+      "uri": "music_note.bin"
+    }
+  ],
+  "materials": [
+    {
+      "name": "L_brack",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "name": "group2",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        2.6350326538085938,
+        2.6350326538085938,
+        2.6350326538085938
+      ],
+      "translation": [
+        8.790306651462743e-07,
+        -7.5125627517700195,
+        1.318545969297702e-06
+      ]
+    },
+    {
+      "mesh": 0,
+      "name": "music_note",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        0.8713682889938354,
+        0.8713682889938354,
+        0.8713682889938354
+      ],
+      "translation": [
+        -1.638674795856332e-08,
+        0.37766894698143005,
+        0.7863405346870422
+      ]
+    }
+  ],
+  "samplers": [
+    {
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

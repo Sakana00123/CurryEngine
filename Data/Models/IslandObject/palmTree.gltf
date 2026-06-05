@@ -1,0 +1,240 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 1159,
+      "max": [
+        8.227741241455078,
+        15.108829498291016,
+        7.53104829788208
+      ],
+      "min": [
+        -7.787106037139893,
+        -2.737672805786133,
+        -6.937479496002197
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1159,
+      "max": [
+        0.9986639618873596,
+        1.0,
+        0.99907386302948
+      ],
+      "min": [
+        -0.9986609816551208,
+        -0.99869704246521,
+        -0.9999755620956421
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1159,
+      "max": [
+        0.9999630451202393,
+        0.9565489888191223,
+        0.9984622597694397,
+        1.0
+      ],
+      "min": [
+        -0.9946951270103455,
+        -0.9607104063034058,
+        -0.9979808330535889,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1159,
+      "max": [
+        0.5825617909431458,
+        0.9904382228851318
+      ],
+      "min": [
+        0.005592525005340576,
+        0.005195319652557373
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5125,
+      "count": 5130,
+      "max": [
+        1158
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 13908,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 13908,
+      "byteOffset": 13908,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 18544,
+      "byteOffset": 27816,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 9272,
+      "byteOffset": 46360,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 20520,
+      "byteOffset": 55632,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 76152,
+      "uri": "palmTree.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "m_palm_tree_BaseColor.png"
+    },
+    {
+      "uri": "m_palm_tree_Roughness.png"
+    },
+    {
+      "uri": "m_palm_tree_Normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "alphaMode": "BLEND",
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "m_palm_tree.001",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "island",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1238.891845703125,
+        155.43724060058594,
+        1238.891845703125
+      ],
+      "translation": [
+        0.0,
+        -12.827715873718262,
+        0.0
+      ]
+    },
+    {
+      "mesh": 0,
+      "name": "palm_tree2",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "samplers": [
+    {
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        0,
+        1
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

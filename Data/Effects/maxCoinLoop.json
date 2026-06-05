@@ -1,0 +1,135 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    5.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    10.0,
+                    0.0
+                ]
+            ],
+            "blendState": 1,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "emitCount": [
+                25,
+                25
+            ],
+            "emitInterval": [
+                0.0,
+                0.05000000074505806
+            ],
+            "endColor": [
+                [
+                    1.0,
+                    0.0,
+                    0.3529411852359772,
+                    0.0
+                ],
+                [
+                    1.0,
+                    0.0,
+                    0.3529411852359772,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0
+                ]
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "lifeTime": [
+                0.5,
+                0.699999988079071
+            ],
+            "maxParticles": 1000,
+            "name": "Emitter0",
+            "positionOffset": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "radius": 2.0,
+            "renderingMode": 0,
+            "rotationEuler": [
+                [
+                    0.0,
+                    0.0,
+                    -10.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    10.0
+                ]
+            ],
+            "shapeType": 1,
+            "speed": [
+                10.0,
+                15.0
+            ],
+            "startColor": [
+                [
+                    0.9968841671943665,
+                    0.12455517053604126,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    0.501960813999176,
+                    0.980504035949707,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    2.0,
+                    2.0
+                ],
+                [
+                    2.0,
+                    2.0
+                ]
+            ],
+            "texturePath": ".\\Data\\Effects\\starClear.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    10.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    15.0,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "maxCoinLoop"
+}

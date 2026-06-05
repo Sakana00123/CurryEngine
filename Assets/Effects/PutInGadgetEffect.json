@@ -1,0 +1,410 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    -0.10000000149011612,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -0.10000000149011612,
+                    0.0
+                ]
+            ],
+            "blendState": 2,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 3,
+            "duration": 1.0,
+            "emitCount": [
+                12,
+                12
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "enableFadeIn": true,
+            "enableFadeOut": true,
+            "endColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.05999999865889549,
+                    0.15000000596046448
+                ],
+                [
+                    0.05999999865889549,
+                    0.15000000596046448
+                ]
+            ],
+            "endSpeed": [
+                0.0,
+                0.0
+            ],
+            "fadeInTime": [
+                0.10000000149011612,
+                0.10000000149011612
+            ],
+            "fadeOutTime": [
+                0.5,
+                0.5
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 0.800000011920929,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 0.800000011920929,
+                    "position": 0.4027148187160492
+                },
+                {
+                    "alpha": 0.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        1.0,
+                        0.7779536247253418,
+                        0.29893237352371216
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.0,
+                1.0
+            ],
+            "loop": false,
+            "maxParticles": 1000,
+            "name": "aura",
+            "positionOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 0.10000000149011612,
+            "renderingMode": 1,
+            "rotationEasingTime": [
+                0.0,
+                0.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 1,
+            "sizeEasingTime": [
+                0.0,
+                0.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                0.019999999552965164,
+                0.019999999552965164
+            ],
+            "speedEasingTime": [
+                1.0,
+                1.0
+            ],
+            "speedEasingType": 5,
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.05999999865889549,
+                    0.15000000596046448
+                ],
+                [
+                    0.05999999865889549,
+                    0.15000000596046448
+                ]
+            ],
+            "texturePath": ".\\Assets\\Texture\\Effect\\aura_02.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": true,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    -0.20000000298023224,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -0.20000000298023224,
+                    0.0
+                ]
+            ]
+        },
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 2,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "duration": 1.0,
+            "emitCount": [
+                16,
+                16
+            ],
+            "emitInterval": [
+                0.0,
+                0.05000000074505806
+            ],
+            "enableFadeIn": true,
+            "enableFadeOut": true,
+            "endColor": [
+                [
+                    1.0,
+                    0.1494661569595337,
+                    0.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    0.4911031723022461,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSpeed": [
+                1.0,
+                1.0
+            ],
+            "fadeInTime": [
+                0.10000000149011612,
+                0.10000000149011612
+            ],
+            "fadeOutTime": [
+                0.5,
+                0.5
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "intensity": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.0,
+                1.0
+            ],
+            "loop": false,
+            "maxParticles": 1000,
+            "name": "particle",
+            "positionOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 0.11999999731779099,
+            "renderingMode": 0,
+            "rotationEasingTime": [
+                0.0,
+                0.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    3.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 2,
+            "sizeEasingTime": [
+                1.0,
+                1.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                1.0,
+                1.0
+            ],
+            "speedEasingTime": [
+                0.0,
+                0.0
+            ],
+            "speedEasingType": 0,
+            "startColor": [
+                [
+                    1.0,
+                    0.27758002281188965,
+                    0.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    0.5978647470474243,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                [
+                    0.009999999776482582,
+                    0.009999999776482582
+                ]
+            ],
+            "texturePath": ".\\Assets\\Texture\\Effect\\aura_02.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": false,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.03999999910593033,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.07999999821186066,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "PutInGadgetEfc"
+}

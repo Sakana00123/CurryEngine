@@ -1,0 +1,242 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 1187,
+      "max": [
+        6.044209957122803,
+        15.003683090209961,
+        5.837753772735596
+      ],
+      "min": [
+        -6.584316730499268,
+        -0.5126218795776367,
+        -6.079761981964111
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1187,
+      "max": [
+        0.9999631643295288,
+        0.9969497919082642,
+        0.9938281774520874
+      ],
+      "min": [
+        -0.9989085793495178,
+        -0.9957849383354187,
+        -0.9965254664421082
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1187,
+      "max": [
+        0.9989859461784363,
+        0.9050394296646118,
+        0.9977181553840637,
+        1.0
+      ],
+      "min": [
+        -0.9987507462501526,
+        -0.9563383460044861,
+        -0.999721348285675,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1187,
+      "max": [
+        0.5825617909431458,
+        0.9904382228851318
+      ],
+      "min": [
+        0.005592525005340576,
+        0.005195319652557373
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5125,
+      "count": 5130,
+      "max": [
+        1186
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 14244,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 14244,
+      "byteOffset": 14244,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 18992,
+      "byteOffset": 28488,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 9496,
+      "byteOffset": 47480,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 20520,
+      "byteOffset": 56976,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 77496,
+      "uri": "palmTree3.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "m_palm_tree_BaseColor.png"
+    },
+    {
+      "uri": "m_palm_tree_Roughness.png"
+    },
+    {
+      "uri": "m_palm_tree_Normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "alphaMode": "BLEND",
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "m_palm_tree",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "palm_tree1",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "children": [
+        0
+      ],
+      "name": "stage",
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "samplers": [
+    {
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        1
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

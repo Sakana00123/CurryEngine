@@ -1,0 +1,2793 @@
+{
+    "editorCamera": {
+        "aspect": 1.7777777910232544,
+        "distance": 4.799999237060547,
+        "farZ": 1000.0,
+        "fieldOfView": 60.0,
+        "maxAngleX": 70.0,
+        "maxDistance": 1000.0,
+        "minAngleX": -70.0,
+        "minDistance": 0.10000000149011612,
+        "nearZ": 0.10000000149011612,
+        "position": [
+            -2.0705056190490723,
+            2.565406084060669,
+            -0.43069374561309814
+        ],
+        "rotateSpeed": 30.0,
+        "rotation": [
+            0.08171113580465317,
+            0.8981910943984985,
+            -0.1889488697052002,
+            0.3884255886077881
+        ],
+        "speed": 3.0
+    },
+    "name": "SampleScene",
+    "objects": [
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "246",
+                    "m_eulerAngles": [
+                        0.002969292923808098,
+                        -179.9999542236328,
+                        -0.08500026911497116
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        3.740788770301151e-06,
+                        1.0002710819244385,
+                        5.2300004959106445
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0007417673477903008,
+                        -0.9999996423721313,
+                        2.5911698685376905e-05,
+                        3.7684841913687706e-07
+                    ],
+                    "scale": [
+                        0.9992026090621948,
+                        0.9997247457504272,
+                        0.9993247389793396
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "aspect": 1.7777777910232544,
+                    "enabledSelf": true,
+                    "farClip": 1000.0,
+                    "fieldOfView": 60.0,
+                    "id": "247",
+                    "isMainCamera": true,
+                    "name": "CameraComponent",
+                    "nearClip": 0.10000000149011612,
+                    "priority": 1000,
+                    "type": "CameraComponent"
+                },
+                {
+                    "distance": 5.230000019073486,
+                    "enabledSelf": true,
+                    "followSpeed": 10.0,
+                    "id": "248",
+                    "invertX": false,
+                    "invertY": false,
+                    "invertZoom": false,
+                    "isEnableAxisInput": true,
+                    "isEnableZoomInput": true,
+                    "lookAtSpeed": 10.0,
+                    "lookAtTransformId": "0",
+                    "maxAngleX": 45.0,
+                    "maxDistance": 7.892000198364258,
+                    "minAngleX": 0.0,
+                    "minDistance": 4.958000183105469,
+                    "name": "ThirdPersonCameraController",
+                    "priority": 2000,
+                    "rotationSpeed": 10.0,
+                    "targetDistance": 4.958000183105469,
+                    "targetTransformId": "279",
+                    "type": "ThirdPersonCameraController",
+                    "useSmoothMovement": false,
+                    "useSmoothZoom": true,
+                    "zoomAmount": 1.0,
+                    "zoomSpeed": 10.0
+                }
+            ],
+            "id": "4392846669974874113",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Camera",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 0,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "anchorMax": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchorMin": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchoredPosition": [
+                        0.0,
+                        0.0
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "249",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.5,
+                        0.5
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        100.0,
+                        100.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enableMask": false,
+                    "enabledSelf": true,
+                    "id": "250",
+                    "isInputEnabled": true,
+                    "isRaycastTarget": true,
+                    "maskMaterial": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/SpriteMaskPS.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "colorMap": "",
+                                "maskTexture": ""
+                            }
+                        }
+                    },
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/sprite_ps.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "color_map": ".\\Assets\\curry.png"
+                            }
+                        }
+                    },
+                    "name": "Image",
+                    "priority": 1000,
+                    "sh": 256.0,
+                    "sw": 256.0,
+                    "sx": 0.0,
+                    "sy": 0.0,
+                    "type": "Image",
+                    "uv": [
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "id": "4856918573820523207",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Image",
+            "parent": "7259945798134130901",
+            "parentId": "0",
+            "priority": 1000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "anchorMax": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchorMin": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchoredPosition": [
+                        0.0,
+                        0.0
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "251",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.5,
+                        0.5
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        1920.0,
+                        1061.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "252",
+                    "isInputEnabled": true,
+                    "name": "Canvas",
+                    "priority": 1000,
+                    "type": "Canvas"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "253",
+                    "isInputEnabled": true,
+                    "name": "GraphicRaycaster",
+                    "priority": 2000,
+                    "type": "GraphicRaycaster"
+                }
+            ],
+            "id": "7259945798134130901",
+            "isDefaultOpenOnHierarchy": false,
+            "layer": 0,
+            "name": "Canvas",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 2000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "254",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "15027803695028964241",
+                    "name": "InputModule",
+                    "priority": 1000,
+                    "type": "InputModule"
+                }
+            ],
+            "id": "11755943186125024969",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "EventSystem",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 3000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "255",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        -55.327999114990234,
+                        6.382866859436035,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -3.019805949354068e-14,
+                        -7.105431592765738e-15,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        12.0,
+                        12.0,
+                        12.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "256",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "enabledSelf": true,
+                    "filePath": ".\\Data\\Sounds\\BGM\\title.wav\u0000",
+                    "id": "257",
+                    "loop": true,
+                    "name": "AudioSource",
+                    "playOnStart": false,
+                    "priority": 2000,
+                    "soundType": 0,
+                    "type": "AudioSource",
+                    "use3DAudio": false,
+                    "volume": 1.0
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "259",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 3000,
+                    "size": [
+                        12.0,
+                        12.0,
+                        12.0
+                    ],
+                    "type": "BoxCollider"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "260",
+                    "name": "BeatScalerComponent",
+                    "priority": 4000,
+                    "scaleFrequency": 1,
+                    "scaleIntensity": 0.20000000298023224,
+                    "scaleSpeed": 5.0,
+                    "type": "BeatScalerComponent"
+                }
+            ],
+            "id": "13355272945522657531",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Cube",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 4000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "261",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        2.797980785369873,
+                        18.258268356323242,
+                        -26.271451950073242
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        5.519999980926514,
+                        5.519999980926514,
+                        5.519999980926514
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": ".\\Data\\Models\\Blocks\\cube_brown.gltf",
+                    "id": "262",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": "",
+                                "materialTextures[1]": "",
+                                "materialTextures[2]": "",
+                                "materialTextures[3]": "",
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                },
+                {
+                    "autoFit": false,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "263",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        12.0,
+                        12.0,
+                        12.0
+                    ],
+                    "type": "BoxCollider"
+                },
+                {
+                    "constraints": 0,
+                    "enabledSelf": true,
+                    "id": "264",
+                    "isKinematic": false,
+                    "mass": 1.0,
+                    "name": "Rigidbody",
+                    "priority": 3000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": false,
+                    "useGravity": true
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "265",
+                    "name": "BeatScalerComponent",
+                    "priority": 4000,
+                    "scaleFrequency": 1,
+                    "scaleIntensity": 1.0,
+                    "scaleSpeed": 5.0,
+                    "type": "BeatScalerComponent"
+                }
+            ],
+            "id": "11879039147041574446",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "GltfModel",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 5000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "anchorMax": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchorMin": [
+                        0.5,
+                        0.5
+                    ],
+                    "anchoredPosition": [
+                        0.0,
+                        0.0
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "266",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.5,
+                        0.5
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        100.0,
+                        100.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enableMask": false,
+                    "enabledSelf": true,
+                    "id": "267",
+                    "isInputEnabled": true,
+                    "isRaycastTarget": true,
+                    "maskMaterial": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/SpriteMaskPS.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "colorMap": "",
+                                "maskTexture": ""
+                            }
+                        }
+                    },
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/sprite_ps.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "color_map": ""
+                            }
+                        }
+                    },
+                    "name": "Image",
+                    "priority": 1000,
+                    "sh": 100.0,
+                    "sw": 100.0,
+                    "sx": 0.0,
+                    "sy": 0.0,
+                    "type": "Image",
+                    "uv": [
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "268",
+                    "name": "BeatScaler2DComponent",
+                    "priority": 2000,
+                    "scaleFrequency": 1,
+                    "scaleIntensity": 1.0,
+                    "scaleSpeed": 10.0,
+                    "type": "BeatScaler2DComponent"
+                }
+            ],
+            "id": "14451548589337357633",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Image(1)",
+            "parent": "7259945798134130901",
+            "parentId": "0",
+            "priority": 6000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "269",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.20000000298023224,
+                        0.20000000298023224,
+                        0.20000000298023224
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": false,
+                    "filePath": ".\\Assets\\Models\\TestMap.gltf",
+                    "id": "270",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": "",
+                                "materialTextures[1]": "",
+                                "materialTextures[2]": "",
+                                "materialTextures[3]": "",
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                }
+            ],
+            "id": "6814250820388163604",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "TestMap",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 7000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "271",
+                    "m_eulerAngles": [
+                        -0.0,
+                        -179.99996948242188,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        1.0,
+                        0.0,
+                        -2.3841860752327193e-07
+                    ],
+                    "scale": [
+                        0.009999999776482582,
+                        0.009999999776482582,
+                        0.009999999776482582
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": "./Assets\\Models\\character.gltf",
+                    "id": "272",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": "",
+                                "materialTextures[1]": "",
+                                "materialTextures[2]": "",
+                                "materialTextures[3]": "",
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                },
+                {
+                    "attackPower": 20,
+                    "attackRange": 0.20000000298023224,
+                    "enabledSelf": false,
+                    "id": "273",
+                    "jumpPower": 130.0,
+                    "maxHealth": 500,
+                    "moveSpeed": 5.0,
+                    "name": "CharacterMovement",
+                    "priority": 2000,
+                    "type": "CharacterMovement"
+                },
+                {
+                    "constraints": 0,
+                    "enabledSelf": true,
+                    "id": "274",
+                    "isKinematic": true,
+                    "mass": 85.0,
+                    "name": "Rigidbody",
+                    "priority": 3000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": false,
+                    "useGravity": false
+                },
+                {
+                    "autoFit": false,
+                    "center": [
+                        -0.004999999888241291,
+                        0.7693279385566711,
+                        0.10000000149011612
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "275",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 4000,
+                    "size": [
+                        0.4788226783275604,
+                        1.5386558771133423,
+                        0.6100000143051147
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "764446376338619070",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "character",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 8000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "276",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        -5.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    "scale": [
+                        110.0,
+                        10.0,
+                        110.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": false,
+                    "id": "277",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "278",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        110.0,
+                        10.0,
+                        110.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "6604601834711518397",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Floor",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 9000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "279",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        100.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                }
+            ],
+            "id": "1858576939899204181",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "followTarget",
+            "parent": "764446376338619070",
+            "parentId": "0",
+            "priority": 10000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "280",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "filePath": ".\\Data\\Sounds\\BGM\\game3.wav\u0000",
+                    "id": "281",
+                    "loop": true,
+                    "name": "AudioSource",
+                    "playOnStart": true,
+                    "priority": 1000,
+                    "soundType": 0,
+                    "type": "AudioSource",
+                    "use3DAudio": false,
+                    "volume": 1.0
+                }
+            ],
+            "id": "3484264388968491083",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "BGM",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 11000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "282",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        -3.5310222301632166e-08,
+                        100.0,
+                        100.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "filePath": ".\\Assets\\Effects\\box.json",
+                    "id": "283",
+                    "name": "ParticleComponent",
+                    "playOnAwake": false,
+                    "priority": 1000,
+                    "type": "ParticleComponent"
+                }
+            ],
+            "id": "3064615656871838569",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "boxEffect",
+            "parent": "764446376338619070",
+            "parentId": "0",
+            "priority": 12000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "284",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        -15.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.010016155429184437,
+                        0.009999996982514858,
+                        0.01001276820898056
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": ".\\Assets\\Models\\character.gltf",
+                    "id": "285",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": "",
+                                "materialTextures[1]": "",
+                                "materialTextures[2]": "",
+                                "materialTextures[3]": "",
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                },
+                {
+                    "autoFit": false,
+                    "center": [
+                        -0.058854907751083374,
+                        0.8507527709007263,
+                        -0.0065742433071136475
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "286",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        0.677554726600647,
+                        1.7022022008895874,
+                        0.608288586139679
+                    ],
+                    "type": "BoxCollider"
+                },
+                {
+                    "constraints": 0,
+                    "enabledSelf": true,
+                    "id": "288",
+                    "isKinematic": true,
+                    "mass": 50.0,
+                    "name": "Rigidbody",
+                    "priority": 3000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": false,
+                    "useGravity": true
+                }
+            ],
+            "id": "11083766010456336052",
+            "isDefaultOpenOnHierarchy": false,
+            "layer": 0,
+            "name": "Enemy",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 13000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "289",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.00537109375,
+                        0.0033569319639354944,
+                        -0.00927734375
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        8.940696716308594e-08,
+                        0.0,
+                        0.9999998807907104
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "autoFit": false,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": false,
+                    "id": "290",
+                    "isTrigger": true,
+                    "material": 0,
+                    "name": "SphereCollider",
+                    "priority": 1000,
+                    "radius": 0.20000000298023224,
+                    "type": "SphereCollider"
+                }
+            ],
+            "id": "10572156758033030136",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "GameObject",
+            "parent": "11083766010456336052",
+            "parentId": "0",
+            "priority": 14000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "291",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        -0.1318359673023224,
+                        0.0500946007668972,
+                        9.23718547821045
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "autoFit": false,
+                    "center": [
+                        -0.06096886470913887,
+                        1.2520674467086792,
+                        0.3665527403354645
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": false,
+                    "id": "292",
+                    "isTrigger": true,
+                    "material": 0,
+                    "name": "SphereCollider",
+                    "priority": 1000,
+                    "radius": 0.20000000298023224,
+                    "type": "SphereCollider"
+                }
+            ],
+            "id": "12948581611406324958",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "colliderPoint",
+            "parent": "764446376338619070",
+            "parentId": "0",
+            "priority": 15000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "293",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                }
+            ],
+            "id": "3034822772207237679",
+            "isDefaultOpenOnHierarchy": false,
+            "layer": 0,
+            "name": "Collisions",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 16000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "294",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        35.0,
+                        54.5
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        110.0,
+                        70.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": false,
+                    "id": "295",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "296",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        110.0,
+                        70.0,
+                        1.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "6164413177043003783",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Wall",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 17000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "297",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        -54.5,
+                        35.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        2.9802318834981634e-08,
+                        0.0,
+                        -1.7763568394002505e-15,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        69.99999237060547,
+                        110.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": false,
+                    "id": "298",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "299",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        1.0,
+                        69.99999237060547,
+                        110.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "1854406840466007507",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Wall(1)",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 18000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "300",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        120.0,
+                        35.0,
+                        -15.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -1.4210853021136109e-14,
+                        1.1920926112907182e-07,
+                        -1.1920926112907182e-07,
+                        1.0
+                    ],
+                    "scale": [
+                        130.0,
+                        70.0,
+                        90.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "301",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "302",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        130.0,
+                        70.0,
+                        90.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "13196067682616614422",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Wall(2)",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 19000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "303",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        75.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    "scale": [
+                        110.0,
+                        10.0,
+                        110.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": false,
+                    "id": "304",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "305",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        110.0,
+                        10.0,
+                        110.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "18221524943216391883",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Ceiling",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 20000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "306",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        105.0,
+                        35.0,
+                        90.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -1.4210853021136109e-14,
+                        1.1920926112907182e-07,
+                        -1.1920926112907182e-07,
+                        1.0
+                    ],
+                    "scale": [
+                        100.0,
+                        70.0,
+                        120.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "307",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "308",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        100.0,
+                        70.0,
+                        120.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "16711887201430343578",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Wall(3)",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 21000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "309",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        35.0,
+                        -54.5
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -1.4210853021136109e-14,
+                        1.1920927533992653e-07,
+                        -1.1920926112907182e-07,
+                        1.0
+                    ],
+                    "scale": [
+                        110.0,
+                        70.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": false,
+                    "id": "310",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "311",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        110.0,
+                        70.0,
+                        1.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "3842145308928880491",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Wall(4)",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 22000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "312",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        150.0,
+                        35.0,
+                        -165.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -1.4210853021136109e-14,
+                        1.1920927533992653e-07,
+                        -1.1920926112907182e-07,
+                        1.0
+                    ],
+                    "scale": [
+                        65.0,
+                        70.0,
+                        30.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "313",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "314",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        65.0,
+                        70.0,
+                        30.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "17839689992738125795",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Wall(5)",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 23000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "315",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        -33.0,
+                        35.0,
+                        -165.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -1.4210853021136109e-14,
+                        1.1920927533992653e-07,
+                        -1.1920926112907182e-07,
+                        1.0
+                    ],
+                    "scale": [
+                        40.0,
+                        70.0,
+                        30.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "316",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "317",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        40.0,
+                        70.0,
+                        30.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "17738425276542079841",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Wall(6)",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 24000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "318",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        54.5,
+                        35.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -1.4210853021136109e-14,
+                        1.1920927533992653e-07,
+                        -1.1920926112907182e-07,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        70.0,
+                        110.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": false,
+                    "id": "319",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "320",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 2000,
+                    "size": [
+                        1.0,
+                        70.0,
+                        110.0
+                    ],
+                    "type": "BoxCollider"
+                }
+            ],
+            "id": "11735175692710490191",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Wall(7)",
+            "parent": "3034822772207237679",
+            "parentId": "0",
+            "priority": 25000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "321",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.009999999776482582,
+                        0.009999999776482582,
+                        0.009999999776482582
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": "./Assets\\Models\\Stage.gltf",
+                    "id": "322",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": "",
+                                "materialTextures[1]": "",
+                                "materialTextures[2]": "",
+                                "materialTextures[3]": "",
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                }
+            ],
+            "id": "18388201800064693738",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Stage",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 26000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "323",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        3.0,
+                        3.0,
+                        3.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.0729999989271164,
+                        0.0729999989271164,
+                        0.0729999989271164
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "324",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 2,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": false,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "325",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "SphereCollider",
+                    "priority": 2000,
+                    "radius": 0.0729999989271164,
+                    "type": "SphereCollider"
+                },
+                {
+                    "constraints": 0,
+                    "enabledSelf": true,
+                    "id": "326",
+                    "isKinematic": false,
+                    "mass": 0.14499999582767487,
+                    "name": "Rigidbody",
+                    "priority": 3000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": false,
+                    "useGravity": true
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "audioSource": null,
+                        "initialPos": {
+                            "x": 3,
+                            "y": 3,
+                            "z": 3
+                        },
+                        "speed": 2,
+                        "volume": 0.3
+                    },
+                    "id": "15643403378687879750",
+                    "name": "ScriptComponent",
+                    "priority": 4000,
+                    "scriptName": "TestBehaviour",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "1134959075487293025",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Sphere",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 27000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "3815107826100795423",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.5,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "14644856552394572340",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "behaviour": "Component(objectId: 0, ownerId: 0)",
+                        "prefab": "GameObject(objectId: 1134959075487293025)",
+                        "prefabPath": "./Assets/Prefabs/Enemy.prefab",
+                        "speed": 5
+                    },
+                    "id": "1095733137633036224",
+                    "name": "ScriptComponent",
+                    "priority": 2000,
+                    "scriptName": "NewScript",
+                    "type": "ScriptComponent"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "audioSource": null,
+                        "initialPos": {
+                            "x": 3,
+                            "y": 3,
+                            "z": 3
+                        },
+                        "speed": 2,
+                        "volume": 0.3
+                    },
+                    "id": "15938255856519200721",
+                    "name": "ScriptComponent",
+                    "priority": 3000,
+                    "scriptName": "TestBehaviour",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "1854703920727140432",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Cube(1)",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 28000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "15261732910492172977",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        -1.5119359493255615,
+                        0.5,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "12653187464503269750",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "behaviour": "Component(objectId: 0, ownerId: 0)",
+                        "prefab": "GameObject(objectId: 1134959075487293025)",
+                        "prefabPath": "./Assets/Prefabs/Enemy.prefab",
+                        "speed": 5
+                    },
+                    "id": "7219215722663599486",
+                    "name": "ScriptComponent",
+                    "priority": 2000,
+                    "scriptName": "NewScript",
+                    "type": "ScriptComponent"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "audioSource": null,
+                        "initialPos": {
+                            "x": 1.5,
+                            "y": 3,
+                            "z": 3
+                        },
+                        "speed": 2,
+                        "volume": 0.3
+                    },
+                    "id": "15771536980638809118",
+                    "name": "ScriptComponent",
+                    "priority": 3000,
+                    "scriptName": "TestBehaviour",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "14921510983766617769",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Cube(1)(1)",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 29000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "7827248597718004172",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        -2.9769535064697266,
+                        0.5,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "2159201534275487811",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "behaviour": "Component(objectId: 0, ownerId: 0)",
+                        "prefab": "GameObject(objectId: 1134959075487293025)",
+                        "prefabPath": "./Assets/Prefabs/Enemy.prefab",
+                        "speed": 5
+                    },
+                    "id": "9073905542698923268",
+                    "name": "ScriptComponent",
+                    "priority": 2000,
+                    "scriptName": "NewScript",
+                    "type": "ScriptComponent"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "audioSource": null,
+                        "initialPos": {
+                            "x": -5.3,
+                            "y": 3,
+                            "z": 5.5
+                        },
+                        "speed": 2,
+                        "volume": 0.3
+                    },
+                    "id": "14847417668127437239",
+                    "name": "ScriptComponent",
+                    "priority": 3000,
+                    "scriptName": "TestBehaviour",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "9913710514635868174",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Cube(1)(1)(1)",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 30000,
+            "version": 1
+        }
+    ]
+}

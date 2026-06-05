@@ -1,0 +1,23 @@
+{
+    "appName": "COIN BALLER",
+    "copyItems": [
+        {
+            "exclude": [
+                "*.scene",
+                "player_name.json",
+                "Saves",
+                "curry.png"
+            ],
+            "src": "Assets/",
+            "type": "folder"
+        },
+        {
+            "exclude": [],
+            "src": "Settings/",
+            "type": "folder"
+        }
+    ],
+    "iconPath": ".\\BuildSetting\\CoinBallerIcon.ico",
+    "outputDir": "..\\Test",
+    "zipToolPath": "C:/Program Files/7-Zip/7z.exe"
+}

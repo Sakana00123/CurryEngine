@@ -10,19 +10,22 @@
 # Precompiled Headers
 *.gch
 *.pch
-
-# Linker files
-*.ilk
-
-# Debugger Files
+*.icph
 *.pdb
+*.ipdb
+*.log
+*.iobj
+*.recipe
+*.tlog
+*.exp
+*.res
+*.ilk
+*.idb
 
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
-*.so.*
-
+#*.dll
 
 # Fortran module files
 *.mod
@@ -32,38 +35,25 @@
 *.lai
 *.la
 *.a
-*.lib
+#*.lib
 
 # Executables
-*.exe
+#*.exe
 *.out
 *.app
-
-# Build directories
-build/
-Build/
-build-*/
-
-# CMake generated files
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-install_manifest.txt
-compile_commands.json
-
-# Temporary files
-*.tmp
-*.log
-*.bak
-*.swp
-
-# vcpkg
-vcpkg_installed/
-
-# debug information files
-*.dwo
-
-# test output & cache
-Testing/
-.cache/
+*.filters
+x64/
+.vs/
+reflection_capture_tool/
+Data/Shaders/
+Assets/Shaders/
+BuildOutput/
+imgui.ini
+CurryEngine/x64/
+Document/latex/
+EngineAPI/obj/
+UserScripts/obj/
+CurryEngine.API/obj/
+Generated/
+Assets/Saves/Achievements.json
+Assets/Saves/Achievements.bin

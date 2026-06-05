@@ -1,0 +1,200 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 209,
+      "max": [
+        0.019755281507968903,
+        0.019999999552965164,
+        0.019755281507968903
+      ],
+      "min": [
+        -0.0197552852332592,
+        -0.019999999552965164,
+        -0.0197552889585495
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 209,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        0.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 209,
+      "max": [
+        1.0,
+        1.0,
+        0.11213701218366623,
+        1.0
+      ],
+      "min": [
+        -4.757972419611178e-06,
+        -1.0,
+        -0.11213701218366623,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 209,
+      "max": [
+        0.9817509651184082,
+        0.9816657304763794
+      ],
+      "min": [
+        0.013738185167312622,
+        0.018048524856567383
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5125,
+      "count": 600,
+      "max": [
+        208
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 2508,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2508,
+      "byteOffset": 2508,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 3344,
+      "byteOffset": 5016,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1672,
+      "byteOffset": 8360,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2400,
+      "byteOffset": 10032,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 12432,
+      "uri": "footCenter.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "footCenter.fbm\\ashiba_tex.png"
+    }
+  ],
+  "materials": [
+    {
+      "name": "L_ashiba",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "pCylinder3",
+      "rotation": [
+        -0.003144530113786459,
+        0.9998624324798584,
+        -0.01111975684762001,
+        0.011897193267941475
+      ],
+      "scale": [
+        21.08770751953125,
+        2.372295379638672,
+        21.08770751953125
+      ],
+      "translation": [
+        0.0002857955696526915,
+        -0.04743324592709541,
+        0.0010585789568722248
+      ]
+    }
+  ],
+  "samplers": [
+    {
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    }
+  ]
+}

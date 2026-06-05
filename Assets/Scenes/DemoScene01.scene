@@ -1,0 +1,345 @@
+{
+    "editorCamera": {
+        "aspect": 1.7777777910232544,
+        "distance": 3.1000006198883057,
+        "farZ": 1000.0,
+        "fieldOfView": 60.0,
+        "maxAngleX": 70.0,
+        "maxDistance": 1000.0,
+        "minAngleX": -70.0,
+        "minDistance": 0.10000000149011612,
+        "nearZ": 0.10000000149011612,
+        "position": [
+            1.099045991897583,
+            7.958776950836182,
+            -7.120517730712891
+        ],
+        "rotateSpeed": 30.0,
+        "rotation": [
+            0.2041957825422287,
+            -0.025228608399629593,
+            0.005263909697532654,
+            0.9785907864570618
+        ],
+        "speed": 3.0
+    },
+    "name": "DemoScene01",
+    "objects": [
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "2301942279032147236",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        10.0,
+                        -6.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.5000000596046448,
+                        0.0,
+                        0.0,
+                        0.8660253286361694
+                    ],
+                    "scale": [
+                        1.0,
+                        0.9999982714653015,
+                        0.9999982714653015
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "aspect": 1.7777777910232544,
+                    "enabledSelf": true,
+                    "farClip": 1000.0,
+                    "fieldOfView": 60.0,
+                    "id": "16392258771335762048",
+                    "isMainCamera": true,
+                    "name": "CameraComponent",
+                    "nearClip": 0.10000000149011612,
+                    "priority": 1000,
+                    "type": "CameraComponent"
+                }
+            ],
+            "id": "1090944489610871583",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "MainCamera",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 0,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "17408614610901668900",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        5.0,
+                        10.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.38268348574638367,
+                        0.0,
+                        0.0,
+                        0.9238795638084412
+                    ],
+                    "scale": [
+                        1.0,
+                        0.9999991059303284,
+                        0.9999991059303284
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "8308275198604288093",
+                    "name": "DirectionalLightComponent",
+                    "priority": 1000,
+                    "type": "DirectionalLightComponent"
+                }
+            ],
+            "id": "11871762788865648593",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Directional Light",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 1000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "7948444234705762577",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.10000000149011612,
+                        0.10000000149011612,
+                        0.10000000149011612
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": ".\\Assets\\Models\\TestMap.gltf",
+                    "id": "16219029536892235715",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": "",
+                                "materialTextures[1]": "",
+                                "materialTextures[2]": "",
+                                "materialTextures[3]": "",
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                },
+                {
+                    "autoFit": false,
+                    "contactOffset": 0.019999999552965164,
+                    "convex": false,
+                    "enabledSelf": true,
+                    "id": "9538777813978394765",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "MeshCollider",
+                    "priority": 2000,
+                    "type": "MeshCollider"
+                }
+            ],
+            "id": "5014888969781250791",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "GltfModel",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 2000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "17333692718395959171",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        3.5742416381835938,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "14870497938516746917",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 2,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "1927350386422610291",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "SphereCollider",
+                    "priority": 2000,
+                    "radius": 1.0,
+                    "type": "SphereCollider"
+                },
+                {
+                    "constraints": 0,
+                    "enabledSelf": true,
+                    "id": "17320545747237242675",
+                    "isKinematic": false,
+                    "mass": 1.0,
+                    "name": "Rigidbody",
+                    "priority": 3000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": true,
+                    "useGravity": true
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "audioSource": "Component(objectId: 0, ownerId: 0)",
+                        "initialPos": {
+                            "x": 0,
+                            "y": 3,
+                            "z": 0
+                        },
+                        "rigidbody": "Component(objectId: 17320545747237242675, ownerId: 16307591980589268425)",
+                        "speed": 20,
+                        "volume": 0.3
+                    },
+                    "id": "993365420848331848",
+                    "name": "ScriptComponent",
+                    "priority": 4000,
+                    "scriptName": "TestBehaviour",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "16307591980589268425",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Sphere",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 3000,
+            "version": 1
+        }
+    ]
+}

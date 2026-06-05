@@ -1,0 +1,128 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 3,
+            "directionAxis": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "directionMode": 3,
+            "emitCount": [
+                1,
+                11
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "endColor": [
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.5,
+                    0.5
+                ]
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "lifeTime": [
+                0.0,
+                0.4000000059604645
+            ],
+            "maxParticles": 1000,
+            "name": "judge",
+            "positionOffset": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "radius": 0.10000000149011612,
+            "renderingMode": 0,
+            "rotationEuler": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "shapeType": 2,
+            "speed": [
+                0.0,
+                0.10000000149011612
+            ],
+            "startColor": [
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    2.0,
+                    2.0
+                ],
+                [
+                    3.0,
+                    3.0
+                ]
+            ],
+            "texturePath": ".\\Data\\Effects\\particle.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "judgeParticle"
+}

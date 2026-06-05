@@ -1,0 +1,29 @@
+{
+    "firstScene": "DemoScene01",
+    "scenesInBuild": {
+        "firstScene": "Title",
+        "loadingScene": {
+            "name": "LoadingScene"
+        },
+        "scenes": [
+            {
+                "enabled": true,
+                "index": 0,
+                "name": "Title",
+                "path": "./Assets/Scenes\\Title.scene"
+            },
+            {
+                "enabled": true,
+                "index": 1,
+                "name": "DemoGame0",
+                "path": "./Assets/Scenes\\DemoGame0.scene"
+            },
+            {
+                "enabled": true,
+                "index": 2,
+                "name": "LoadingScene",
+                "path": "./Assets/Scenes\\LoadingScene.scene"
+            }
+        ]
+    }
+}

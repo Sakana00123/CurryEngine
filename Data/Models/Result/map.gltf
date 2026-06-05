@@ -1,0 +1,216 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 243,
+      "max": [
+        0.5437142848968506,
+        8.411977767944336,
+        0.5141774415969849
+      ],
+      "min": [
+        -0.500079333782196,
+        0.11609530448913574,
+        -0.5023030638694763
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 243,
+      "max": [
+        0.9435980319976807,
+        0.9886363744735718,
+        0.405197411775589
+      ],
+      "min": [
+        -0.999977707862854,
+        -0.04176482558250427,
+        -0.8733073472976685
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 243,
+      "max": [
+        0.041419319808483124,
+        0.9451949596405029,
+        0.2637714445590973,
+        1.0
+      ],
+      "min": [
+        -0.9999651312828064,
+        -0.9999999403953552,
+        -0.1945953220129013,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 243,
+      "max": [
+        0.9887609481811523,
+        0.9870509505271912
+      ],
+      "min": [
+        0.01789677143096924,
+        0.412463903427124
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5125,
+      "count": 1248,
+      "max": [
+        242
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 2916,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2916,
+      "byteOffset": 2916,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 3888,
+      "byteOffset": 5832,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1944,
+      "byteOffset": 9720,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 4992,
+      "byteOffset": 11664,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 16656,
+      "uri": "map.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "m_resultMAP_BaseColor.png"
+    },
+    {
+      "uri": "m_resultMAP_Normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "alphaMode": "BLEND",
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "m_resultMAP",
+      "normalTexture": {
+        "index": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.9305019378662109,
+          0.9033139944076538,
+          0.7867950797080994,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "chizu",
+      "rotation": [
+        0.01006749365478754,
+        0.2206076830625534,
+        -0.015236209146678448,
+        0.9751916527748108
+      ],
+      "scale": [
+        160.68614196777344,
+        3.3812835216522217,
+        109.27546691894531
+      ],
+      "translation": [
+        0.0,
+        -2.409658670425415,
+        -82.83905792236328
+      ]
+    }
+  ],
+  "samplers": [
+    {
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    }
+  ]
+}

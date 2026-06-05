@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CurryEngine.GeneratedFiles.props
+  
+  自動生成ファイルをコンパイル対象に追加するプロパティシート。
+  .vcxproj の <Import> に1行追加するだけで有効になる:
+  
+    <Import Project="$(SolutionDir)Build\CurryEngine.GeneratedFiles.props" />
+  
+  追加場所は既存の <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /> の直後が推奨。
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- ============================================================
+       パス定義
+       GeneratedRoot を変更すれば全体のパスが追従する
+  ============================================================ -->
+  <PropertyGroup>
+    <GeneratedRoot Condition="'$(GeneratedRoot)' == ''">$(MSBuildProjectDirectory)\Generated</GeneratedRoot>
+    <GeneratedInteropDir>$(GeneratedRoot)\Interop</GeneratedInteropDir>
+    <GeneratedReflectionDir>$(GeneratedRoot)\Reflection</GeneratedReflectionDir>
+  </PropertyGroup>
+
+  <!-- ============================================================
+       コンパイル対象に追加
+       *.generated.cpp  : Exports など自動生成されたC++ソース
+       *.generated.h      : ヘッダーオンリーなので ClCompile 不要
+                          (インクルードパスのみ追加)
+  ============================================================ -->
+  <ItemGroup>
+    <!-- Interop 層 (Export関数) -->
+	<_WildCardClCompile Include="$(GeneratedInteropDir)\*.generated.cpp">
+	  <PrecompiledHeader>NotUsing</PrecompiledHeader>
+	</_WildCardClCompile>
+
+    <!-- Reflection 層 (REGISTER_CLASS 展開) -->
+    <!-- .generated.h はヘッダーなので ClInclude として認識させる -->
+    <_WildCardClInclude Include="$(GeneratedReflectionDir)\*.generated.h" />
+  </ItemGroup>
+
+  <!-- ============================================================
+       インクルードパスに Generated フォルダを追加
+       #include "Rigidbody.generated.h" などが解決できるようになる
+  ============================================================ -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+        $(GeneratedRoot);
+        $(GeneratedInteropDir);
+        $(GeneratedReflectionDir);
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+</Project>
