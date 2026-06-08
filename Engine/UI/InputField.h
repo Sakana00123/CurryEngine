@@ -3,7 +3,6 @@
 #include "Text.h"
 #include "Archive/sprite.h"
 #include <memory>
-#include "Engine/Events/EventSystem.h"
 #include "Selectable.h"
 #include "Engine/Utils/stdUtiles.h"
 

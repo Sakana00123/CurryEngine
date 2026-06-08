@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ComponentFactory.h"
 #include "Engine/Core/Component.h"
+#include "Engine/Editor/Console.h"
 
 void ComponentFactory::Register(
 	const std::string& name,

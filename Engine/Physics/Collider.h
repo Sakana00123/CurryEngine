@@ -11,9 +11,6 @@
 
 #define USE_PHYSX // PhysX を使用する場合は定義を有効にしてください。未定義の場合は独自の簡易物理エンジンが使用されます。
 #include "Engine/Physics/Physics.h"
-#include "Engine/Physics/CollisionEvent.h"
-#include "Engine/Core/Layer.h"
-#include "Engine/Core/ScriptComponent.h"
 
 /**
  * @brief コライダ基底クラス。
@@ -152,129 +149,39 @@ public:
 
 public:
 	/** @brief 衝突開始イベントを追加。*/
-	void AddOnCollisionEnterEvent(std::function<void(const CollisionInfo&)> func) {
-		onCollisionEnterEvents.push_back(func);
-	}
+	void AddOnCollisionEnterEvent(const std::function<void(const CollisionInfo&)>& func);
 
 	/** @brief 衝突継続イベントを追加。*/
-	void AddOnCollisionStayEvent(std::function<void(const CollisionInfo&)> func) {
-		onCollisionStayEvents.push_back(func);
-	}
+	void AddOnCollisionStayEvent(const std::function<void(const CollisionInfo&)>& func);
 
 	/** @brief 衝突終了イベントを追加。*/
-	void AddOnCollisionExitEvent(std::function<void(const CollisionInfo&)> func) {
-		onCollisionExitEvents.push_back(func);
-	}
+	void AddOnCollisionExitEvent(const std::function<void(const CollisionInfo&)>& func);
 
 	/** @brief トリガー開始イベントを追加。*/
-	void AddOnTriggerEnterEvent(std::function<void(const TriggerInfo&)> func) {
-		onTriggerEnterEvents.push_back(func);
-	}
+	void AddOnTriggerEnterEvent(const std::function<void(const TriggerInfo&)>& func);
 
 	/** @brief トリガー継続イベントを追加。*/
-	void AddOnTriggerStayEvent(std::function<void(const TriggerInfo&)> func) {
-		onTriggerStayEvents.push_back(func);
-	}
+	void AddOnTriggerStayEvent(const std::function<void(const TriggerInfo&)>& func);
 
 	/** @brief トリガー終了イベントを追加。*/
-	void AddOnTriggerExitEvent(std::function<void(const TriggerInfo&)> func) {
-		onTriggerExitEvents.push_back(func);
-	}
+	void AddOnTriggerExitEvent(const std::function<void(const TriggerInfo&)>& func);
 
 private:
 	//friend class Physics; // 内部から直接イベントを呼び出すためのフレンド宣言
 	friend class SimulationEventCallback; // 内部から直接イベントを呼び出すためのフレンド宣言
 	friend class Physics; // 内部から直接イベントを呼び出すためのフレンド宣言
 	/** @brief 直近フレームの衝突開始を通知。*/
-	void OnCollisionEnter(const CollisionInfo& info) {
-		for (auto& event : onCollisionEnterEvents) {
-			event(info);
-		}
-		for (auto& callback : GetOwner()->GetComponents<ICollisionEventCallback>()) {
-			if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
-				callback->OnCollisionEnter(info);
-			}
-		}
-		/*if (!onCollisionEnterEvents.empty())
-		{
-			Console::Log("OnCollisionEnter: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
-		}*/
-	}
+	void OnCollisionEnter(const CollisionInfo& info);
 	/** @brief 直近フレームの衝突継続を通知。*/
-	void OnCollisionStay(const CollisionInfo& info) {
-		for (auto& event : onCollisionStayEvents) {
-			event(info);
-		}
-		for (auto& callback : GetOwner()->GetComponents<ICollisionEventCallback>()) {
-			if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
-				callback->OnCollisionStay(info);
-			}
-		}
-		/*if (!onCollisionStayEvents.empty())
-		{
-			Console::Log("OnCollisionStay: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
-		}*/
-	}
+	void OnCollisionStay(const CollisionInfo& info);
 	/** @brief 直近フレームの衝突終了を通知。*/
-	void OnCollisionExit(const CollisionInfo& info) {
-		for (auto& event : onCollisionExitEvents) {
-			event(info);
-		}
-		for (auto& callback : GetOwner()->GetComponents<ICollisionEventCallback>()) {
-			if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
-				callback->OnCollisionExit(info);
-			}
-		}
-		/*if (!onCollisionExitEvents.empty())
-		{
-			Console::Log("OnCollisionExit: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
-		}*/
-	}
+	void OnCollisionExit(const CollisionInfo& info);
 	/** @brief 直近フレームのトリガー開始を通知。*/
-	void OnTriggerEnter(const TriggerInfo& info) {
-		for (auto& event : onTriggerEnterEvents) {
-			event(info);
-		}
-		for (auto& callback : GetOwner()->GetComponents<ITriggerEventCallback>()) {
-			if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
-				callback->OnTriggerEnter(info);
-			}
-		}
-		/*if (!onTriggerEnterEvents.empty())
-		{
-			Console::Log("OnTriggerEnter: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
-		}*/
-	}
+	void OnTriggerEnter(const TriggerInfo& info);
 	/** @brief 直近フレームのトリガー継続を通知。*/
-	void OnTriggerStay(const TriggerInfo& info) {
-		for (auto& event : onTriggerStayEvents) {
-			event(info);
-		}
-		for (auto& callback : GetOwner()->GetComponents<ITriggerEventCallback>()) {
-			if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
-				callback->OnTriggerStay(info);
-			}
-		}
-		/*if (!onTriggerStayEvents.empty())
-		{
-			Console::Log("OnTriggerStay: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
-		}*/
-	}
+	void OnTriggerStay(const TriggerInfo& info);
 	/** @brief 直近フレームのトリガー終了を通知。*/
-	void OnTriggerExit(const TriggerInfo& info) {
-		for (auto& event : onTriggerExitEvents) {
-			event(info);
-		}
-		for (auto& callback : GetOwner()->GetComponents<ITriggerEventCallback>()) {
-			if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
-				callback->OnTriggerExit(info);
-			}
-		}
-		/*if (!onTriggerExitEvents.empty())
-		{
-			Console::Log("OnTriggerExit: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
-		}*/
-	}
+	void OnTriggerExit(const TriggerInfo& info);
 public:
 	/** @brief 物理的に反応せず通知のみを行う場合に true。*/
 	C_PROPERTY()

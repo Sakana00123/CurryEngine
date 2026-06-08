@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Rigidbody.h"
+#include "Physics.h"
+#include "Collider.h"
 
 REGISTER_COMPONENT(Rigidbody, "Physics")
 

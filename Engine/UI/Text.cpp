@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Text.h"
-//#include "Canvas.h"
-//#include "CanvasScaler.h"
+#include "Engine/Rendering/Pipeline/Graphics.h"
+#include "Engine/Core/EnginePaths.h"
+#include "Engine/Editor/Dialog.h"
 
 #ifdef USE_IMGUI
 #include "Engine/Scenes/Scene.h"

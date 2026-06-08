@@ -611,6 +611,7 @@ popd</Command>
     <ClInclude Include="Engine\Audio\ThirdPerty\_kiss_fft_guts.h" />
     <ClInclude Include="Engine\Automation\SolutionGenerator.h" />
     <ClInclude Include="Engine\BuildSettings.h" />
+    <ClInclude Include="Engine\Common\EngineCommon.h" />
     <ClInclude Include="Engine\Core\Math\Quaternion.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
     <ClInclude Include="Engine\Physics\FixedJoint.h" />
@@ -651,7 +652,6 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\VcxprojHelper.h" />
     <ClInclude Include="Engine\EditorSupport\VSProjectReloader.h" />
     <ClInclude Include="Engine\Editor\AnimationEditor.h" />
-    <ClInclude Include="Engine\Editor\AnimationTimeline.h" />
     <ClInclude Include="Engine\Editor\AssetBrowser.h" />
     <ClInclude Include="Engine\Editor\AssetBrowserDropTarget.h" />
     <ClInclude Include="Engine\Editor\Dialog.h" />
@@ -727,7 +727,6 @@ popd</Command>
     <ClInclude Include="Engine\Events\BaseInputModule.h" />
     <ClInclude Include="Engine\Events\Event.h" />
     <ClInclude Include="Engine\Events\EventHandlers.h" />
-    <ClInclude Include="Engine\Events\EventSequence.h" />
     <ClInclude Include="Engine\Events\EventSystem.h" />
     <ClInclude Include="Engine\Events\InputModule.h" />
     <ClInclude Include="Engine\Events\PointerEventData.h" />

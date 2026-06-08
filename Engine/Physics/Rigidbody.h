@@ -1,8 +1,9 @@
 #pragma once
 #include "Engine/Core/Component.h"
-#include "Engine/Core/GameObject.h"
-#include "Collider.h"
 #include "Physics.h"
+//#include "Engine/Core/Math/Vector3.h"
+//#include "Engine/Core/Math/Quaternion.h"
+//#include "Engine/Core/Reflection/TypeSerializerRegistry.h"
 
 C_ENUM()
 enum class ForceMode

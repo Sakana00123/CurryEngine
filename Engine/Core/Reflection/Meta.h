@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include "Engine/EditorSupport/AutoRegisterComponent.h"
+#include "Engine/Editor/Console.h"
 
 // C_REFLECT マクロをクラスに付けると、そのクラスのメタ情報が自動的に登録されるようになります。
 #define C_REFLECT(ClassName) \

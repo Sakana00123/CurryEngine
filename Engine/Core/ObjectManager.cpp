@@ -32,6 +32,8 @@
 #include "Engine/EditorSupport/OrderManager.h"
 #include <imgui_internal.h>
 #include <Engine\Rendering\Renderers\GltfModelRenderer.h>
+#include "Engine/Editor/Dialog.h"
+#include "Engine/UI/Mask.h"
 
 ObjectManager::ObjectManager(Scene* scene) : scene(scene), selectNode(nullptr), inspectorNode(nullptr)
 {

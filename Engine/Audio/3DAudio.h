@@ -1,9 +1,10 @@
 #pragma once
-#include "Engine/Core/GameObject.h"
 
 #define X3DAUDIO
 #ifdef X3DAUDIO
 #include <x3daudio.h>
+
+class GameObject;
 
 class C3DAudio
 {

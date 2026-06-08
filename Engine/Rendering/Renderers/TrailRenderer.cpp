@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TrailRenderer.h"
 #include "DebugRenderer.h"
+#include "Engine/Core/Transform.h"
 
 REGISTER_COMPONENT(TrailRenderer, "Renderer");
 

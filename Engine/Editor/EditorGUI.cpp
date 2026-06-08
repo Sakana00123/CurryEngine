@@ -23,10 +23,10 @@
 #include "Engine/Core/ObjectManager.h"
 #include "Engine/Factory/GameObjectFactory.h"
 
-#include "Engine/Editor/AnimationTimeline.h"
 #include "Engine/Resources/ResourceManager.h"
 #include "Engine/Resources/Texture.h"
 #include "Engine/EditorSupport/EditorSelection.h"
+#include "Engine/Rendering/Pipeline/Graphics.h"
 
 #include "BuildSettingsWindow.h"
 
@@ -403,10 +403,6 @@ void EditorGUI::DrawWindowMenu()
 	{
 		ImGuiTheme::Show();
 	}
-	//if (ImGui::MenuItem("Animation Timeline"))
-	//{
-	//	AnimationTimelineEditor::Show();
-	//}
 	ImGui::EndMenu();
 #endif // USE_IMGUI
 }

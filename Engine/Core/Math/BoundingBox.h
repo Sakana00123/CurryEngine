@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Core/Transform.h"
+#include "Vector3.h"
 
 #undef min
 #undef max

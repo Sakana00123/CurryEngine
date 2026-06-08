@@ -12,9 +12,6 @@
 #include "Engine/Editor/Console.h"
 #include "Engine/Editor/SceneParametersEditor.h"
 #include "Engine/Editor/BuildSettingsWindow.h"
-//#include "Engine/Editor/SceneHierarchy.h"
-//#include "Game/Editor/EnemySpawnTimeline.h"
-//#include "Engine/Editor/AnimationTimeline.h"
 #include "Engine/Effects/EffectManager.h"
 #include <profiler.h>
 
@@ -465,9 +462,6 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 
 	BuildSettingsWindow::Get().DrawGUI();
 
-	//AnimationEditor::DrawGUI();
-
-	//AnimationTimelineEditor::DrawGUI();
 
 	if (currentScene != nullptr) {
 		currentScene->objectManager->DrawHierarchy();

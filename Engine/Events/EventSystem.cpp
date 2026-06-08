@@ -5,6 +5,8 @@
 #include "InputModule.h"
 #include "Engine/Scenes/SceneManager.h"
 #include "Engine/Core/GameObject.h"
+#include "EventHandlers.h"
+
 EventSystem EventSystem::current;
 
 void EventSystem::SetSelectedGameObject(GameObject* obj)

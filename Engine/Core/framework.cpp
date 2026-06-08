@@ -37,6 +37,8 @@
 #include "Engine/Rendering/Renderers/DebugRenderer.h"
 #include "Engine/EditorSupport/VcxprojHelper.h"
 
+#include "Engine/Rendering/Pipeline/RenderSystem.h"
+
 
 CONST LONG SHADOWMAP_WIDTH{ 2048 };
 CONST LONG SHADOWMAP_HEIGHT{ 2048 };
@@ -70,7 +72,7 @@ bool Framework::Initialize()
     auto device = Graphics::GetDevice();
 
 	// レンダリングシステム
-	renderSystem = std::make_unique<RenderSystem>();
+	renderSystem = new RenderSystem;
 	renderSystem->Initialize(&time);
 
     //Audio
@@ -153,7 +155,7 @@ int Framework::Run()
                 }
             }
 #else
-            calculate_frame_stats();
+            CalculateFrameStatus();
             BeginFrame();
             Update(time.DeltaTime());
             Render(time.UnscaledDeltaTime());
@@ -170,6 +172,32 @@ int Framework::Run()
 #endif
 
     return Uninitialize(msg.hwnd) ? static_cast<int>(msg.wParam) : 0;
+}
+
+size_t Framework::VideoMemoryUsage()
+{
+    DXGI_QUERY_VIDEO_MEMORY_INFO video_memory_info;
+    Graphics::GetAdapter()->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &video_memory_info);
+    return video_memory_info.CurrentUsage / 1024 / 1024;
+}
+
+void Framework::CalculateFrameStatus()
+{
+    if (++frames, (time.TimeStamp() - elapsedTime) >= 1.0f)
+    {
+        float fps = static_cast<float>(frames);
+        std::wostringstream outs;
+        outs.precision(6);
+#ifdef _DEBUG
+        outs << APPLICATION_NAME << L" : FPS : " << fps << L" / " << L"Frame Time : " << 1000.0f / fps << L" (ms)";
+#else
+        outs << APPLICATION_NAME;
+#endif // _DEBUG
+        SetWindowTextW(Graphics::GetHwnd(), outs.str().c_str());
+
+        frames = 0;
+        elapsedTime += 1.0f;
+    }
 }
 
 LRESULT CALLBACK Framework::HandleMessage(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -345,6 +373,7 @@ bool Framework::Uninitialize(HWND hwnd)
 	
     // レンダリングシステム終了
 	renderSystem->Finalize();
+	if (renderSystem) { delete renderSystem; renderSystem = nullptr; }
 
     // スクリプトシステム終了
     ScriptSystem::Shutdown();

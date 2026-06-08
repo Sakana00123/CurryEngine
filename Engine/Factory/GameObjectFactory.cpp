@@ -27,6 +27,7 @@
 #include "Engine/Rendering/Lights/PointLightComponent.h"
 #include "Engine/Rendering/Lights/SpotLightComponent.h"
 #include "Engine/Utils/RectTransformUtils.h"
+#include "Engine/UI/Mask.h"
 
 GameObject* GameObjectFactory::Create(Scene* scene, const std::string& name) {
 	std::shared_ptr<GameObject> object = std::make_shared<GameObject>();

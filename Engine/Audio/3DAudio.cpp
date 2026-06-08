@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "3DAudio.h"
+#include "Engine/Core/GameObject.h"
 #ifdef X3DAUDIO
 #include "Audio.h"
 #include "AudioListener.h"
