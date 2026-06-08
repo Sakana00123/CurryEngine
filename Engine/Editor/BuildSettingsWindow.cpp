@@ -56,6 +56,22 @@ void BuildSettingsWindow::DrawGUI()
 		DrawSettings();
 		ImGui::Separator();
 		DrawBuildButton();
+
+		ImGui::Spacing();
+		if (m_isBuilding || m_buildProgress.finished)
+		{
+			// mutex 越しにコピー
+			ProcessProgress snap;
+			{ std::lock_guard lock(m_progressMutex); snap = m_buildProgress; }
+			DrawProgressPanel("##build_log", snap, m_isBuilding);
+		}
+		if (m_isPackaging || m_packageProgress.finished)
+		{
+			ImGui::SeparatorText("Package Progress");
+			ProcessProgress snap;
+			{ std::lock_guard lock(m_progressMutex); snap = m_packageProgress; }
+			DrawProgressPanel("##pack_log", snap, m_isPackaging);
+		}
 	}
 	ImGui::End();
 
@@ -457,6 +473,78 @@ void BuildSettingsWindow::DrawBuildButton()
 	}
 }
 
+void BuildSettingsWindow::DrawProgressPanel(const char* id, const ProcessProgress& prog, bool isRunning)
+{
+	// --- ステータス行 ---
+	if (isRunning)
+	{
+		const char* spinner = "|/-\\";
+		char sp = spinner[(int)(ImGui::GetTime() * 8.0f) % 4];
+		ImGui::TextColored({ 1.0f, 0.8f, 0.2f, 1.0f }, "[%c] Building...", sp);
+	}
+	else
+	{
+		if (prog.succeeded)
+			ImGui::TextColored({ 0.2f, 1.0f, 0.4f, 1.0f }, "[\xe2\x9c\x93] Build Succeeded");
+		else
+			ImGui::TextColored({ 1.0f, 0.3f, 0.3f, 1.0f }, "[\xe2\x9c\x97] Build Failed");
+	}
+
+	// --- プログレスバー ---
+	float fraction = (prog.progressTotal > 0)
+		? std::clamp((float)prog.progressCurrent / (float)prog.progressTotal, 0.0f, 1.0f)
+		: (prog.finished ? 1.0f : 0.0f);
+
+	char overlay[32];
+	if (prog.progressTotal > 0)
+		snprintf(overlay, sizeof(overlay), "%d / %d  (%.0f%%)",
+			prog.progressCurrent, prog.progressTotal, fraction * 100.0f);
+	else
+		snprintf(overlay, sizeof(overlay), prog.finished ? "100%%" : "Waiting...");
+
+	ImVec4 barColor = prog.finished
+		? (prog.succeeded ? ImVec4{ 0.2f, 0.75f, 0.35f, 1.0f }
+			: ImVec4{ 0.8f, 0.25f, 0.25f, 1.0f })
+		: ImVec4{ 0.2f, 0.55f, 0.9f, 1.0f };
+
+	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, barColor);
+	ImGui::ProgressBar(fraction, ImVec2(-1.0f, 0.0f), overlay);
+	ImGui::PopStyleColor();
+
+	ImGui::Spacing();
+
+	// --- ログ表示 ---
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.08f, 0.08f, 0.08f, 1.0f));
+	if (ImGui::BeginChild(id, { 0, 180 }, true, ImGuiWindowFlags_HorizontalScrollbar))
+	{
+		// mutex を最小限にしてスナップショットコピー
+		std::vector<std::string> snapshot;
+		{
+			std::lock_guard lock(m_progressMutex);
+			snapshot = prog.logs;
+		}
+
+		for (const auto& line : snapshot)
+		{
+			if (line.find("error") != std::string::npos ||
+				line.find("Error") != std::string::npos ||
+				line.find("\xe2\x9c\x97") != std::string::npos)
+				ImGui::TextColored({ 1.0f, 0.4f, 0.4f, 1.0f }, "%s", line.c_str());
+			else if (line.find("warning") != std::string::npos ||
+				line.find("Warning") != std::string::npos)
+				ImGui::TextColored({ 1.0f, 0.85f, 0.3f, 1.0f }, "%s", line.c_str());
+			else if (line.find("\xe2\x9c\x93") != std::string::npos)
+				ImGui::TextColored({ 0.2f, 1.0f, 0.4f, 1.0f }, "%s", line.c_str());
+			else
+				ImGui::TextUnformatted(line.c_str());
+		}
+
+		if (isRunning) ImGui::SetScrollHereY(1.0f);
+	}
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+}
+
 #endif // USE_IMGUI
 
 void BuildSettingsWindow::SaveBuildSettings()
@@ -481,6 +569,9 @@ void BuildSettingsWindow::RunBuild()
 		Console::LogWarning("[Build] Build is already in progress.");
 		return;
 	}
+
+	std::lock_guard lock(m_progressMutex);
+	m_buildProgress = {};   // リセット
 
 	// 設定を保存してからビルドを実行する
 	SaveBuildSettings();
@@ -567,35 +658,78 @@ void BuildSettingsWindow::RunBuild()
 	// --- 読み取りスレッド ---
 	std::thread([this, hReadPipe, pi]() mutable
 		{
-			// パイプからの出力を読み取るループ(OutputDebugStringAに出力)
-			char buffer[256]{};
+			auto pushLog = [this](std::string line)
+				{
+					std::lock_guard lock(m_progressMutex);
+					m_buildProgress.logs.push_back(std::move(line));
+				};
+
+			std::string remainder;
+			char buffer[512]{};
 			DWORD bytesRead = 0;
+
 			while (ReadFile(hReadPipe, buffer, sizeof(buffer) - 1, &bytesRead, nullptr) && bytesRead > 0)
 			{
-				OutputDebugStringA(buffer); // デバッグ出力に流す
+				buffer[bytesRead] = '\0';
+				remainder += SjisToUtf8(std::string(buffer, bytesRead));
+
+				size_t pos;
+				while ((pos = remainder.find('\n')) != std::string::npos)
+				{
+					std::string line = remainder.substr(0, pos);
+					if (!line.empty() && line.back() == '\r') line.pop_back();
+					remainder = remainder.substr(pos + 1);
+					if (line.empty()) continue;
+
+					// [PROGRESS_TOTAL N] → トータルをセット
+					if (line.rfind("[PROGRESS_TOTAL ", 0) == 0)
+					{
+						int total = 0;
+						if (sscanf_s(line.c_str(), "[PROGRESS_TOTAL %d]", &total) == 1)
+						{
+							std::lock_guard lock(m_progressMutex);
+							m_buildProgress.progressTotal = total;
+						}
+					}
+					// [PROGRESS N] → 現在ステップをセット
+					else if (line.rfind("[PROGRESS ", 0) == 0)
+					{
+						int cur = 0;
+						if (sscanf_s(line.c_str(), "[PROGRESS %d]", &cur) == 1)
+						{
+							std::lock_guard lock(m_progressMutex);
+							m_buildProgress.progressCurrent = cur;
+						}
+						// ラベル部分だけログに流す
+						auto labelStart = line.find("] ");
+						if (labelStart != std::string::npos)
+							pushLog(line.substr(labelStart + 2));
+					}
+					else
+					{
+						pushLog(line);
+					}
+				}
 			}
+			if (!remainder.empty()) pushLog(remainder);
 
-			// ビルドプロセスの終了を待機
 			WaitForSingleObject(pi.hProcess, INFINITE);
-
-			// 終了コード取得
 			DWORD exitCode = 0;
 			GetExitCodeProcess(pi.hProcess, &exitCode);
-			if (exitCode == 0)
-				Console::Log("[Build] Build succeeded.");
-			else
-				Console::LogError(std::format("[Build] Build failed. (exit code: {})", exitCode));
+
+			bool ok = (exitCode == 0);
+			pushLog(ok ? "[Build] Build succeeded." : std::format("[Build] Build failed. (exit code: {})", exitCode));
+
+			if (ok) Console::Log("[Build] Build succeeded.");
+			else    Console::LogError(std::format("[Build] Build failed. (exit code: {})", exitCode));
 
 			CloseHandle(hReadPipe);
+			CloseHandle(pi.hProcess);
+			CloseHandle(pi.hThread);
 
-			// ハンドルリーク防止: pi.hProcess, pi.hThread を必ず閉じる
-			if (pi.hProcess) {
-				CloseHandle(pi.hProcess);
-			}
-			if (pi.hThread) {
-				CloseHandle(pi.hThread);
-			}
-
+			std::lock_guard lock(m_progressMutex);
+			m_buildProgress.succeeded = ok;
+			m_buildProgress.finished = true;
 			m_isBuilding = false;
 
 		}).detach();
