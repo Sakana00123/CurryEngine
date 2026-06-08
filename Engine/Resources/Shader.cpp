@@ -392,11 +392,13 @@ void Shader::ReflectConstantBufferLayouts(ID3D11ShaderReflection* pReflection, D
 			ShaderReflectionData::ShaderVariable var;
 			
 			// 変数の基本情報を取得
+			// TODO: テクスチャやサンプラなどのリソース変数も処理する場合はここを変更
 			D3D11_SHADER_VARIABLE_DESC varDesc;
 			pVar->GetDesc(&varDesc);
 			var.name = varDesc.Name;
 			var.size = varDesc.Size;
 			var.offset = varDesc.StartOffset;
+			var.defaultValue = varDesc.DefaultValue;
 			
 			// 変数の型情報を取得
 			pVar->GetType()->GetDesc(&var.typeDesc);

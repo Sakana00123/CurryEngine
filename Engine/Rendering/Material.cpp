@@ -719,6 +719,7 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 		}
 
 		// 定数バッファを作成
+		auto& cbData = binding.cbuffers[layout.name];
 		D3D11_BUFFER_DESC bufferDesc{};
 		bufferDesc.ByteWidth = static_cast<UINT>(alignedSize);
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -726,11 +727,31 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 		bufferDesc.CPUAccessFlags = 0;
 		bufferDesc.MiscFlags = 0;
 		bufferDesc.StructureByteStride = 0;
-		HRESULT hr = device->CreateBuffer(&bufferDesc, nullptr, binding.cbuffers[layout.name].buffer.ReleaseAndGetAddressOf());
+		HRESULT hr = device->CreateBuffer(&bufferDesc, nullptr, cbData.buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 		// CPU 側のローカルコピー用バッファを確保
-		binding.cbuffers[layout.name].localData.resize(alignedSize);
+		cbData.localData.resize(alignedSize);
+
+		// ZeroMemory で初期化
+		ZeroMemory(cbData.localData.data(), alignedSize);
+
+		// 初期値がシェーダに定義されている場合はローカルバッファにコピーしておく
+		for (const ShaderReflectionData::ShaderVariable& var : layout.variables)
+		{
+			if (var.defaultValue == nullptr) continue; // 初期値が定義されていない場合はスキップ
+			if (var.offset + var.size > layout.size) // 初期値がバッファサイズを超えている場合は警告を出してスキップ
+			{
+				Console::LogWarning("Warning: Default value of variable " + var.name + " in CBuffer " + layout.name +
+					" exceeds buffer size. Variable offset: " + std::to_string(var.offset) +
+					", Variable size: " + std::to_string(var.size) +
+					", Buffer size: " + std::to_string(layout.size));
+				continue;
+			}
+			memcpy(cbData.localData.data() + var.offset, var.defaultValue, var.size);
+			cbData.dirty = true; // 初期値をコピーしたので GPU 側に更新が必要
+		}
+
 	}
 }
 

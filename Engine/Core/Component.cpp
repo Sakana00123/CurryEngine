@@ -793,6 +793,7 @@ void Component::DrawProperty()
 		IMGUI_PROPERTY_END();
 
 
+#if 0
 		// テスト用で関数呼び出しのImGui::Buttonを追加
 		if (ImGui::CollapsingHeader("Test Functions"))
 		{
@@ -814,6 +815,7 @@ void Component::DrawProperty()
 				}
 			}
 		}
+#endif // 0
 
 
 	}

@@ -8,10 +8,10 @@ void SkyBoxPass::Initialize()
 	skymap = std::make_unique<Skymap>(Graphics::GetDevice());
 
 	// ゲーム背景テクスチャのロード
-	gameBackgroundTexture = ResourceManager::GetOrLoad<AssetTexture>("./Assets/Texture/image2.png");
+	/*gameBackgroundTexture = ResourceManager::GetOrLoad<AssetTexture>("./Assets/Texture/image2.png");
 	backgroundMaterial = std::make_unique<Material>();
 	backgroundMaterial->SetShader(Graphics::GetDevice(), ResourceManager::GetOrLoadShader<PixelShader>("BackgroundShaderPS"));
-	backgroundMaterial->SetTexture("texture_map", gameBackgroundTexture);
+	backgroundMaterial->SetTexture("texture_map", gameBackgroundTexture);*/
 }
 
 void SkyBoxPass::Execute(RenderContext* rtx, Scene* scene)
@@ -27,20 +27,20 @@ void SkyBoxPass::Execute(RenderContext* rtx, Scene* scene)
 		skymap->Draw(immediateContext);
 	}
 
-	if (gameBackgroundTexture)
-	{
-		// ゲーム背景テクスチャの描画
-		renderState->BindDepthStencilState(immediateContext, DepthStencilState::NoTestNoWrite);
-		renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
+	//if (gameBackgroundTexture)
+	//{
+	//	// ゲーム背景テクスチャの描画
+	//	renderState->BindDepthStencilState(immediateContext, DepthStencilState::NoTestNoWrite);
+	//	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
 
-		//Vector2 offset = { 0.0f, 0.0f }; // オフセットを必要に応じて変更
-		//offset.x -= rtx->totalTime * 0.01f; // 時間経過に応じてオフセットを変更（例: ゆっくりと右にスクロール）
-		//offset.y += rtx->totalTime * 0.01f; 
-		//backgroundMaterial->SetValue("uvOffset", offset);
+	//	//Vector2 offset = { 0.0f, 0.0f }; // オフセットを必要に応じて変更
+	//	//offset.x -= rtx->totalTime * 0.01f; // 時間経過に応じてオフセットを変更（例: ゆっくりと右にスクロール）
+	//	//offset.y += rtx->totalTime * 0.01f; 
+	//	//backgroundMaterial->SetValue("uvOffset", offset);
 
-		// フルスクリーンクアッドを描画
-		rtx->DrawFullScreenQuad(backgroundMaterial.get());
-	}
+	//	// フルスクリーンクアッドを描画
+	//	rtx->DrawFullScreenQuad(backgroundMaterial.get());
+	//}
 }
 
 void SkyBoxPass::DrawProperty()

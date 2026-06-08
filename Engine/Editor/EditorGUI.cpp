@@ -281,7 +281,8 @@ void EditorGUI::DrawGameObjectMenu()
 			createdObj = GameObjectFactory::CreateUIObject(scene, "GameObject2D", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		}
 		if (ImGui::MenuItem("Button")) {
-			createdObj = GameObjectFactory::CreateButton(scene, "Button", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
+			createdObj = GameObjectFactory::CreateButton(scene, "Button", selectedCanvas ? selectedCanvas->GetOwner() : nullptr,
+				L"./Data/Default/button.png");
 			// ボタンの子にテキストを作成
 			GameObjectFactory::CreateText(scene, "Text", createdObj);
 		}

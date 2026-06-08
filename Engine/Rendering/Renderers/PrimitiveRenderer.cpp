@@ -260,41 +260,53 @@ void PrimitiveRenderer::CreateCylinder(ID3D11Device* device, int segmentCount)
 
 void PrimitiveRenderer::CreateSphere(ID3D11Device* device, int stackCount, int sliceCount)
 {
-	//頂点データ、インデックスデータの生成(半径1の単位球を生成する)
-	std::vector<Vertex> vertices;
-	for (int stack = 0; stack <= stackCount; ++stack) {
-		float phi = XM_PI * stack / stackCount;//緯度
+    //頂点データ、インデックスデータの生成(半径1の単位球を生成する)
+    std::vector<Vertex> vertices;
+    vertices.reserve(static_cast<size_t>(stackCount + 1) * static_cast<size_t>(sliceCount + 1));
 
-		for (int slice = 0; slice <= sliceCount; ++slice) {
-			float theta = XM_2PI * slice / sliceCount;//経度
-			//極座標から直交座標に変換
-			XMFLOAT3 position = {
-				sinf(phi) * cosf(theta),//x
-				cosf(phi),				//y
-				sinf(phi) * sinf(theta)	//z
-			};
-			XMFLOAT3 normal = position;
-			vertices.push_back({ position, normal });
-		}
-	}
-	std::vector<uint32_t> indices;
-	for (int stack = 0; stack < stackCount; ++stack) {
-		for (int slice = 0; slice < sliceCount; ++slice) {
-			int a = stack * (sliceCount + 1) + slice;
-			int b = a + sliceCount + 1;
+    for (int stack = 0; stack <= stackCount; ++stack) {
+        float phi = XM_PI * stack / stackCount; // 緯度
 
-			indices.push_back(a);
-			indices.push_back(b);
-			indices.push_back(a + 1);
+        for (int slice = 0; slice <= sliceCount; ++slice) {
+            float theta = XM_2PI * slice / sliceCount; // 経度
+            // 極座標から直交座標に変換
+            XMFLOAT3 position = {
+                sinf(phi) * cosf(theta), // x
+                cosf(phi),                // y
+                sinf(phi) * sinf(theta)  // z
+            };
+            // 明示的に正規化して法線を求める（安全策）
+            DirectX::XMVECTOR vpos = DirectX::XMLoadFloat3(&position);
+            DirectX::XMVECTOR vnorm = DirectX::XMVector3Normalize(vpos);
+            XMFLOAT3 normal;
+            DirectX::XMStoreFloat3(&normal, vnorm);
 
-			indices.push_back(a + 1);
-			indices.push_back(b);
-			indices.push_back(b + 1);
-		}
-	}
-	CreateComBuffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
+            vertices.push_back({ position, normal });
+        }
+    }
 
-	shape = Shape::Sphere;
+    std::vector<uint32_t> indices;
+    indices.reserve(static_cast<size_t>(stackCount) * static_cast<size_t>(sliceCount) * 6);
+
+    for (int stack = 0; stack < stackCount; ++stack) {
+        for (int slice = 0; slice < sliceCount; ++slice) {
+            int a = stack * (sliceCount + 1) + slice;
+            int b = a + sliceCount + 1;
+
+            // トライアングルの生成
+            indices.push_back(a);
+            indices.push_back(b);
+            indices.push_back(a + 1);
+
+            indices.push_back(a + 1);
+            indices.push_back(b);
+            indices.push_back(b + 1);
+        }
+    }
+
+    CreateComBuffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
+
+    shape = Shape::Sphere;
 }
 
 void PrimitiveRenderer::CreateComBuffers(ID3D11Device* device, Vertex* vertices, size_t vertexCount,

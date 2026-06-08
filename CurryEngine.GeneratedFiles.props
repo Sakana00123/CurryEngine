@@ -2,18 +2,12 @@
 <!--
   CurryEngine.GeneratedFiles.props
   
-  自動生成ファイルをコンパイル対象に追加するプロパティシート。
-  .vcxproj の <Import> に1行追加するだけで有効になる:
-  
-    <Import Project="$(SolutionDir)Build\CurryEngine.GeneratedFiles.props" />
-  
-  追加場所は既存の <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /> の直後が推奨。
+  自動生成ファイルをコンパイル対象に追加するプロパティシート
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!-- ============================================================
        パス定義
-       GeneratedRoot を変更すれば全体のパスが追従する
   ============================================================ -->
   <PropertyGroup>
     <GeneratedRoot Condition="'$(GeneratedRoot)' == ''">$(MSBuildProjectDirectory)\Generated</GeneratedRoot>
@@ -24,8 +18,7 @@
   <!-- ============================================================
        コンパイル対象に追加
        *.generated.cpp  : Exports など自動生成されたC++ソース
-       *.generated.h      : ヘッダーオンリーなので ClCompile 不要
-                          (インクルードパスのみ追加)
+       *.generated.h    : ヘッダーオンリーなので ClCompile 不要
   ============================================================ -->
   <ItemGroup>
     <!-- Interop 層 (Export関数) -->
