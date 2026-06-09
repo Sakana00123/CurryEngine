@@ -4,6 +4,7 @@
 #include "Graphic.h"
 #include "Engine/Events/PointerEventData.h"
 #include "Engine/Events/RaycastResult.h"
+#include "Engine/Events/EventSystem.h"
 
 REGISTER_COMPONENT_WITH_ATTRIBUTES(GraphicRaycaster, "UI", ComponentAttributes::DisallowMultiple | ComponentAttributes::RequiredComponent, { "RectTransform" });
 

@@ -333,6 +333,15 @@
             "handle": 7,
             "name": "Coin",
             "staticFriction": 0.800000011920929
+        },
+        {
+            "bounceCombineMode": 0,
+            "bounciness": 0.8500000238418579,
+            "dynamicFriction": 0.6000000238418579,
+            "frictionCombineMode": 0,
+            "handle": 9,
+            "name": "Test",
+            "staticFriction": 0.5
         }
     ]
 }

@@ -11,6 +11,9 @@ public:
 	// ツールバーの描画
 	static float DrawToolbar(float offsetY);
 
+	// シーンビューのツールバーの描画
+	static float DrawSceneViewToolbar();
+
 public:
 	// ファイルメニューの描画
 	static void DrawFileMenu();

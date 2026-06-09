@@ -190,6 +190,8 @@ popd</Command>
     <ClCompile Include="Engine\Automation\SolutionGenerator.cpp" />
     <ClCompile Include="Engine\BuildSettings.cpp" />
     <ClCompile Include="Engine\Core\Math\Quaternion.cpp" />
+    <ClCompile Include="Engine\EditorConfig\EditorConfigManager.cpp" />
+    <ClCompile Include="Engine\EditorConfig\SceneViewConfig.cpp" />
     <ClCompile Include="Engine\EditorSupport\ImGuiHelpers.cpp" />
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
     <ClCompile Include="Engine\Events\PointerEventData.cpp" />
@@ -611,7 +613,11 @@ popd</Command>
     <ClInclude Include="Engine\Audio\ThirdPerty\_kiss_fft_guts.h" />
     <ClInclude Include="Engine\Automation\SolutionGenerator.h" />
     <ClInclude Include="Engine\BuildSettings.h" />
+    <ClInclude Include="Engine\Common\EngineCommon.h" />
     <ClInclude Include="Engine\Core\Math\Quaternion.h" />
+    <ClInclude Include="Engine\EditorConfig\EditorConfigManager.h" />
+    <ClInclude Include="Engine\EditorConfig\IEditorConfig.h" />
+    <ClInclude Include="Engine\EditorConfig\SceneViewConfig.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
     <ClInclude Include="Engine\Physics\FixedJoint.h" />
     <ClInclude Include="Engine\Physics\HingeJoint.h" />
@@ -651,7 +657,6 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\VcxprojHelper.h" />
     <ClInclude Include="Engine\EditorSupport\VSProjectReloader.h" />
     <ClInclude Include="Engine\Editor\AnimationEditor.h" />
-    <ClInclude Include="Engine\Editor\AnimationTimeline.h" />
     <ClInclude Include="Engine\Editor\AssetBrowser.h" />
     <ClInclude Include="Engine\Editor\AssetBrowserDropTarget.h" />
     <ClInclude Include="Engine\Editor\Dialog.h" />
@@ -727,7 +732,6 @@ popd</Command>
     <ClInclude Include="Engine\Events\BaseInputModule.h" />
     <ClInclude Include="Engine\Events\Event.h" />
     <ClInclude Include="Engine\Events\EventHandlers.h" />
-    <ClInclude Include="Engine\Events\EventSequence.h" />
     <ClInclude Include="Engine\Events\EventSystem.h" />
     <ClInclude Include="Engine\Events\InputModule.h" />
     <ClInclude Include="Engine\Events\PointerEventData.h" />

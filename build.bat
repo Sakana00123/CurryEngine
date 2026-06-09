@@ -1,8 +1,10 @@
 @echo off
+echo [PROGRESS_TOTAL 5]
 setlocal EnableDelayedExpansion
 chcp 65001 > nul
 
 REM ===== build_settings.json をパース =====
+echo [PROGRESS 1] Parsing build_settings.json ...
 set "SETTINGS=%~dp0BuildSetting\build_settings.json"
 
 for /f "delims=" %%i in ('powershell -NoProfile -Command ^
@@ -35,7 +37,7 @@ powershell -NoProfile -Command ^
     "(Get-Content '%~dp0BuildSetting\icon.rc.template') -replace '{{ICON_PATH}}','%ICON_PATH%' | Set-Content '%~dp0BuildSetting\icon.rc'"
 
 REM ===== MSBuild =====
-echo [Build] Building ...
+echo [PROGRESS 2] Searching for MSBuild ...
 set VSWHERE="C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
 for /f "delims=" %%i in ('%VSWHERE% -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe') do set "MSBUILD=%%i"
 
@@ -44,6 +46,7 @@ if not defined MSBUILD (
     exit /b 1
 )
 
+echo [PROGRESS 3] Building C++ project ...
 "%MSBUILD%" "%~dp0CurryEngine.sln" /p:Configuration=Release /p:Platform=x64 /nologo /v:m
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Build failed.
@@ -61,6 +64,7 @@ if exist "%OUTPUT_FULL%\CurryEngine.exe" (
     move /Y "%OUTPUT_FULL%\CurryEngine.exe" "%OUTPUT_FULL%\%APP_NAME%.exe" > nul
 )
 
+echo [PROGRESS 4] Copying additional files ...
 REM ===== copyItems をループ =====
 powershell -NoProfile -Command ^
     "$settings='%SETTINGS%'.Replace('/', '\');" ^
@@ -97,6 +101,7 @@ powershell -NoProfile -Command ^
     "}"
 
 REM ===== ZIP 圧縮 =====
+echo [PROGRESS 5] Compressing output ...
 set "ZIP_FILE=%OUTPUT_FULL%.zip"
 echo [Build] Compressing to %ZIP_FILE% ...
 

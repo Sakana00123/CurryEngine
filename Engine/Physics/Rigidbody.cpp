@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Rigidbody.h"
+#include "Physics.h"
+#include "Collider.h"
 
 REGISTER_COMPONENT(Rigidbody, "Physics")
 
@@ -499,13 +501,18 @@ void Rigidbody::DrawProperty()
 	IMGUI_PROPERTY_END();
 
 	// --- テスト用のGUI要素 ---
-	ImGui::SeparatorText(reinterpret_cast<const char*>(u8"テスト用"));
-
-	// テスト用の力を加えるボタン
-	if (ImGui::Button("Add Force Up"))
 	{
-		// 上方向に力を加える処理をここに追加します。
-		AddForce(Vector3(0, 1000, 0), ForceMode::Impulse);
+		ImGui::SeparatorText(reinterpret_cast<const char*>(u8"テスト用"));
+
+		// テスト用の力を加えるボタン
+		static Vector3 forceToAdd(0, 0, 10);
+
+		ImGui::InputFloat3("Force to Add", &forceToAdd.x);
+
+		if (ImGui::Button("Add Force"))
+		{
+			AddForce(forceToAdd, ForceMode::Impulse);
+		}
 	}
 
 #endif // USE_IMGUI

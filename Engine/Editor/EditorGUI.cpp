@@ -23,12 +23,14 @@
 #include "Engine/Core/ObjectManager.h"
 #include "Engine/Factory/GameObjectFactory.h"
 
-#include "Engine/Editor/AnimationTimeline.h"
 #include "Engine/Resources/ResourceManager.h"
 #include "Engine/Resources/Texture.h"
 #include "Engine/EditorSupport/EditorSelection.h"
+#include "Engine/Rendering/Pipeline/Graphics.h"
 
 #include "BuildSettingsWindow.h"
+#include <Engine\EditorConfig\EditorConfigManager.h>
+#include "Engine/EditorConfig/SceneViewconfig.h"
 
 float EditorGUI::DrawMainMenu()
 {
@@ -182,6 +184,172 @@ float EditorGUI::DrawToolbar(float offsetY)
 	return toolbarHeight;
 }
 
+float EditorGUI::DrawSceneViewToolbar()
+{
+	float toolbarHeight = 30.0f;
+#ifdef USE_IMGUI
+	// ツールバーの内容をここに描画
+	ImGui::BeginChild("SceneToolbar", ImVec2(0, toolbarHeight), false);
+	{
+		// ここにシーンビューのツールバーの内容を描画
+		// ギズモのLocal/World切り替えや、スナップ設定などを配置
+		SceneViewConfig* config = EditorConfigManager::GetSceneViewConfig();
+		if (!config) {
+			ImGui::EndChild();
+			return toolbarHeight;
+		}
+
+		auto iconTex = ResourceManager::GetOrLoad<AssetTexture>("./Data/Icon/editorIcons.png");
+		float buttonSize = 22.0f;
+		ImVec2 snapIconUV0 = ImVec2(0.5f, 0.0f);
+		ImVec2 snapIconUV1 = ImVec2(0.75f, 0.25f);
+
+		ImVec2 linkIconUV0 = ImVec2(0.75f, 0.0f);
+		ImVec2 linkIconUV1 = ImVec2(1.0f, 0.25f);
+
+		ImVec2 unLinkIconUV0 = ImVec2(0.0f, 0.25f);
+		ImVec2 unLinkIconUV1 = ImVec2(0.25f, 0.5f);
+
+		ImVec4 backGroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+		ImVec4 tintColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+		// ピボットモードの切り替え
+		ImGui::SetNextItemWidth(75.0f); // コンボボックスの幅を指定
+		if (ImGui::Combo("##Pivot", &config->guizmoPivotMode, "Local\0World\0")) {
+
+		}
+		ImGui::SameLine();
+
+		// スナップ設定ボタン
+		if (ImGui::ImageButton("##snap", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize), snapIconUV0, snapIconUV1, backGroundColor, tintColor)) {
+			ImGui::OpenPopup("SnapSettingsPopup");
+		}
+		ImGui::SetNextWindowSize(ImVec2(350, 0));
+		if (ImGui::BeginPopup("SnapSettingsPopup")) {
+			ImGui::Text("Snap Settings");
+
+			// ポップアップの右上に詳細設定ボタンを配置
+			{
+				float padding = ImGui::GetStyle().WindowPadding.x;
+				ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x - buttonSize - padding);
+				ImGui::SetCursorPosY(padding);
+				if (ImGui::Button("..."))
+				{
+					ImGui::OpenPopup("SnapSettingsDetailPopup");
+				}
+				if (ImGui::BeginPopup("SnapSettingsDetailPopup"))
+				{
+					// 詳細設定の内容をここに描画
+					if (ImGui::MenuItem("Reset"))
+					{
+						config->ResetToDefault();
+					}
+
+					ImGui::EndPopup();
+				}
+			}
+
+			ImGui::Separator();
+
+			// 移動スナップ設定
+			{
+				ImGui::Checkbox("Enable Translation Snap", &config->translationSnap.enabled);
+				ImGui::BeginDisabled(!config->translationSnap.enabled);
+				IMGUI_PROPERTY_BEGIN();
+				IMGUI_PROPERTY("Translation");
+
+				if (ImGui::ImageButton("##linkTranslationSnap", iconTex->GetSRV(), ImVec2(16, 16),
+					config->translationSnap.snapAllAxes ? linkIconUV0 : unLinkIconUV0,
+					config->translationSnap.snapAllAxes ? linkIconUV1 : unLinkIconUV1,
+					backGroundColor, tintColor))
+				{
+					config->translationSnap.snapAllAxes = !config->translationSnap.snapAllAxes;
+				}
+				ImGui::SameLine();
+				if (config->translationSnap.snapAllAxes)
+				{
+					ImGui::DragFloat("##Translation Snap", &config->translationSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+					config->translationSnap.snapValue.y = config->translationSnap.snapValue.x;
+					config->translationSnap.snapValue.z = config->translationSnap.snapValue.x;
+				}
+				else
+				{
+					ImGui::DragFloat3("##Translation Snap", &config->translationSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+				}
+				IMGUI_PROPERTY_END();
+				ImGui::EndDisabled();
+			}
+
+			// 回転スナップ設定
+			{
+				ImGui::Checkbox("Enable Rotation Snap", &config->rotationSnap.enabled);
+				ImGui::BeginDisabled(!config->rotationSnap.enabled);
+				IMGUI_PROPERTY_BEGIN();
+				IMGUI_PROPERTY("Rotation");
+				if (ImGui::ImageButton("##linkRotationSnap", iconTex->GetSRV(), ImVec2(16, 16),
+					config->rotationSnap.snapAllAxes ? linkIconUV0 :
+					unLinkIconUV0,
+					config->rotationSnap.snapAllAxes ? linkIconUV1 :
+					unLinkIconUV1,
+					backGroundColor, tintColor))
+				{
+					config->rotationSnap.snapAllAxes = !config->rotationSnap.snapAllAxes;
+				}
+				ImGui::SameLine();
+				if (config->rotationSnap.snapAllAxes)
+				{
+					ImGui::DragFloat("##Rotation Snap", &config->rotationSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+					config->rotationSnap.snapValue.y = config->rotationSnap.snapValue.x;
+					config->rotationSnap.snapValue.z = config->rotationSnap.snapValue.x;
+				}
+				else
+				{
+					ImGui::DragFloat3("##Rotation Snap", &config->rotationSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+				}
+				IMGUI_PROPERTY_END();
+				ImGui::EndDisabled();
+			}
+
+			// スケールスナップ設定
+			{
+				ImGui::Checkbox("Enable Scale Snap", &config->scaleSnap.enabled);
+				ImGui::BeginDisabled(!config->scaleSnap.enabled);
+				IMGUI_PROPERTY_BEGIN();
+				IMGUI_PROPERTY("Scale");
+				if (ImGui::ImageButton("##linkScaleSnap", iconTex->GetSRV(), ImVec2(16, 16),
+					config->scaleSnap.snapAllAxes ? linkIconUV0 :
+					unLinkIconUV0,
+					config->scaleSnap.snapAllAxes ? linkIconUV1 :
+					unLinkIconUV1,
+					backGroundColor, tintColor))
+				{
+					config->scaleSnap.snapAllAxes = !config->scaleSnap.snapAllAxes;
+				}
+				ImGui::SameLine();
+				if (config->scaleSnap.snapAllAxes)
+				{
+					ImGui::DragFloat("##Scale Snap", &config->scaleSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+					config->scaleSnap.snapValue.y = config->scaleSnap.snapValue.x;
+					config->scaleSnap.snapValue.z = config->scaleSnap.snapValue.x;
+				}
+				else
+				{
+					ImGui::DragFloat3("##Scale Snap", &config->scaleSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+				}
+				IMGUI_PROPERTY_END();
+				ImGui::EndDisabled();
+			}
+
+			ImGui::EndPopup();
+		}
+
+		
+	}
+	ImGui::EndChild();
+#endif // USE_IMGUI
+	return toolbarHeight;
+}
+
 void EditorGUI::DrawFileMenu()
 {
 #ifdef USE_IMGUI
@@ -281,7 +449,8 @@ void EditorGUI::DrawGameObjectMenu()
 			createdObj = GameObjectFactory::CreateUIObject(scene, "GameObject2D", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		}
 		if (ImGui::MenuItem("Button")) {
-			createdObj = GameObjectFactory::CreateButton(scene, "Button", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
+			createdObj = GameObjectFactory::CreateButton(scene, "Button", selectedCanvas ? selectedCanvas->GetOwner() : nullptr,
+				L"./Data/Default/button.png");
 			// ボタンの子にテキストを作成
 			GameObjectFactory::CreateText(scene, "Text", createdObj);
 		}
@@ -403,10 +572,6 @@ void EditorGUI::DrawWindowMenu()
 	{
 		ImGuiTheme::Show();
 	}
-	//if (ImGui::MenuItem("Animation Timeline"))
-	//{
-	//	AnimationTimelineEditor::Show();
-	//}
 	ImGui::EndMenu();
 #endif // USE_IMGUI
 }

@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Collider.h"
-#include "Physics.h"
 #include "Engine/Rendering/Renderers/Renderer.h"
 #include "Engine/Physics/Rigidbody.h"
+#include "Engine/Physics/CollisionEvent.h"
+#include "Engine/Core/Layer.h"
+#include "Engine/Core/ScriptComponent.h"
 
 void Collider::OnEnable()
 {
@@ -289,5 +291,111 @@ void Collider::Deserialize(const json& j)
 	if (j.contains("material"))
 	{
 		m_materialHandle = j["material"].get<MaterialHandle>();
+	}
+}
+
+void Collider::AddOnCollisionEnterEvent(const std::function<void(const CollisionInfo&)>& callback)
+{
+	onCollisionEnterEvents.push_back(callback);
+}
+
+void Collider::AddOnCollisionStayEvent(const std::function<void(const CollisionInfo&)>& callback)
+{
+	onCollisionStayEvents.push_back(callback);
+}
+
+void Collider::AddOnCollisionExitEvent(const std::function<void(const CollisionInfo&)>& callback)
+{
+	onCollisionExitEvents.push_back(callback);
+}
+
+void Collider::AddOnTriggerEnterEvent(const std::function<void(const TriggerInfo&)>& callback)
+{
+	onTriggerEnterEvents.push_back(callback);
+}
+
+void Collider::AddOnTriggerStayEvent(const std::function<void(const TriggerInfo&)>& callback)
+{
+	onTriggerStayEvents.push_back(callback);
+}
+
+void Collider::AddOnTriggerExitEvent(const std::function<void(const TriggerInfo&)>& callback)
+{
+	onTriggerExitEvents.push_back(callback);
+}
+
+void Collider::OnCollisionEnter(const CollisionInfo& info)
+{
+	for (auto& event : onCollisionEnterEvents) {
+		event(info);
+	}
+	for (auto& callback : GetOwner()->GetComponents<ICollisionEventCallback>()) {
+		if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
+			callback->OnCollisionEnter(info);
+		}
+	}
+	/*if (!onCollisionEnterEvents.empty())
+	{
+		Console::Log("OnCollisionEnter: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
+	}*/
+}
+
+void Collider::OnCollisionStay(const CollisionInfo& info)
+{
+	for (auto& event : onCollisionStayEvents) {
+		event(info);
+	}
+	for (auto& callback : GetOwner()->GetComponents<ICollisionEventCallback>()) {
+		if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
+			callback->OnCollisionStay(info);
+		}
+	}
+}
+
+void Collider::OnCollisionExit(const CollisionInfo& info)
+{
+	for (auto& event : onCollisionExitEvents) {
+		event(info);
+	}
+	for (auto& callback : GetOwner()->GetComponents<ICollisionEventCallback>()) {
+		if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
+			callback->OnCollisionExit(info);
+		}
+	}
+}
+
+void Collider::OnTriggerEnter(const TriggerInfo& info)
+{
+	for (auto& event : onTriggerEnterEvents) {
+		event(info);
+	}
+	for (auto& callback : GetOwner()->GetComponents<ITriggerEventCallback>()) {
+		if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
+			callback->OnTriggerEnter(info);
+		}
+	}
+}
+
+void Collider::OnTriggerStay(const TriggerInfo& info)
+{
+	for (auto& event : onTriggerStayEvents) {
+		event(info);
+	}
+	for (auto& callback : GetOwner()->GetComponents<ITriggerEventCallback>()) {
+		if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
+			callback->OnTriggerStay(info);
+		}
+	}
+}
+
+void Collider::OnTriggerExit(const TriggerInfo& info)
+{
+	for (auto& event : onTriggerExitEvents) {
+		event(info);
+	}
+	for (auto& callback : GetOwner()->GetComponents<ITriggerEventCallback>()) {
+		if (auto component = dynamic_cast<Component*>(callback); component && component->IsEnabled()) {
+			callback->OnTriggerExit(info);
+		}
 	}
 }

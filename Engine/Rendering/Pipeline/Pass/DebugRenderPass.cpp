@@ -26,7 +26,7 @@ void DebugRenderPass::Execute(RenderContext* rtx, Scene* scene)
 	auto renderState = rtx->renderState;
 
 	// 深度ステンシルステート設定
-	renderState->BindDepthStencilState(immediateContext, DepthStencilState::NoTestNoWrite);
+	renderState->BindDepthStencilState(immediateContext, DepthStencilState::TestOnly);
 	// ラスタライザ設定
 	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
 	// ブレンドステート設定

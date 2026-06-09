@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Canvas.h"
+#include "Engine/Core/GameObject.h"
 #include "Graphic.h"
 #include "Engine/Rendering/Pipeline/Graphics.h"
 

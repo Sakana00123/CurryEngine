@@ -87,7 +87,9 @@ void RenderSystem::Render()
 #endif // DEBUG
             {
                 // ƒQ[ƒ€ƒrƒ…[—p‚Ì•`‰æˆ—
+#ifdef _DEBUG
                 ProfileScopedSection_2(0, "GameView::Rendering", ImGuiControl::Profiler::Purple);
+#endif // _DEBUG
                 auto* cam = scene->cameraSystem.GetMainCamera();
                 if (cam)
                 {

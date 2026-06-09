@@ -88,6 +88,7 @@ struct ShaderReflectionData
 		size_t offset;              //!< cbuffer 内オフセット（バイト）
 		size_t size;                //!< サイズ（バイト）
 		D3D11_SHADER_TYPE_DESC typeDesc;//!< 型情報
+		void* defaultValue;        //!< デフォルト値（型は typeDesc に基づく）
 	};
 	/**
 	 * @brief 定数バッファのレイアウト情報。

@@ -23,6 +23,7 @@
 
 
 // 他にほぼ全体で使うヘッダーがあればここに追加
+#include "Engine/Common/EngineCommon.h"
 
 #ifndef ENGINE_API
 #define ENGINE_API extern "C" __declspec(dllexport)

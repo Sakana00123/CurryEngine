@@ -12,9 +12,6 @@
 #include "Engine/Editor/Console.h"
 #include "Engine/Editor/SceneParametersEditor.h"
 #include "Engine/Editor/BuildSettingsWindow.h"
-//#include "Engine/Editor/SceneHierarchy.h"
-//#include "Game/Editor/EnemySpawnTimeline.h"
-//#include "Engine/Editor/AnimationTimeline.h"
 #include "Engine/Effects/EffectManager.h"
 #include <profiler.h>
 
@@ -22,6 +19,7 @@
 #include "Engine/Editor/AnimationEditor.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Camera/CameraSystem.h"
+#include <Engine\EditorConfig\EditorConfigManager.h>
 
 void SceneManager::Initialize()
 {
@@ -29,20 +27,6 @@ void SceneManager::Initialize()
 	CleanRuntimeFiles();
 
 	// デシリアライズ
-	/*json sceneListJson;
-	if (JsonFileHandler::LoadJsonFromFile(sceneListJson, "./Assets/Scenes/scene_list.json"))
-	{
-		for (const auto& sceneEntry : sceneListJson["scenes"])
-		{
-			std::string sceneName = sceneEntry["name"].get<std::string>();
-			sceneNames.push_back(sceneName);
-		}
-	}
-	else
-	{
-		LOG_ERROR("Failed to load scene list.");
-	}*/
-
 	json settingsJson;
 #ifdef _DEBUG
 	std::string settingsPath = "./ProjectSettings/settings.json";
@@ -105,10 +89,6 @@ void SceneManager::SetFirstScene(const std::string& name)
 	UpdateFirstSceneName();
 }
 
-void SceneManager::SetEditorFirstScene(const std::string& name)
-{
-	editorFirstSceneName = name;
-}
 
 void SceneManager::UpdateFirstSceneName()
 {
@@ -125,7 +105,7 @@ void SceneManager::UpdateFirstSceneName()
 
 void SceneManager::LoadFirstScene()
 {
-	std::string sceneToLoad = state == State::Editing ? editorFirstSceneName : firstSceneName;
+	std::string sceneToLoad = state == State::Editing ? EditorConfigManager::GetLastOpenedScene() : firstSceneName;
 	if (!sceneToLoad.empty())
 	{
 #ifdef _DEBUG
@@ -305,7 +285,11 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 	// -------------------- Scene View Window --------------------
 	{
 		ImGui::Begin("Scene");
+		
+		// シーンビューを表示する前に、上部にツールバーを配置
+		float sceneViewToolbarHeight = EditorGUI::DrawSceneViewToolbar();
 
+		// 16:9のアスペクト比を維持しつつ、利用可能なスペースに最大限表示するための計算
 		const float targetAspect = 16.0f / 9.0f;
 		ImVec2 avail = ImGui::GetContentRegionAvail();
 		ImVec2 displaySize;
@@ -465,9 +449,6 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 
 	BuildSettingsWindow::Get().DrawGUI();
 
-	//AnimationEditor::DrawGUI();
-
-	//AnimationTimelineEditor::DrawGUI();
 
 	if (currentScene != nullptr) {
 		currentScene->objectManager->DrawHierarchy();
@@ -617,13 +598,15 @@ json SceneManager::Serialize()
 {
 	json j;
 	// エディタで、最初に開くシーンを保存する。
+	std::string editorFirstSceneName;
 	if (state == State::Editing) {
 		editorFirstSceneName = currentScene ? currentScene->name : "";
 	}
 	else if (state == State::Playing) {
 		editorFirstSceneName = previousData.sceneName;
 	}
-	j["firstScene"] = editorFirstSceneName;
+	//j["firstScene"] = editorFirstSceneName;
+	EditorConfigManager::SetLastOpenedScene(editorFirstSceneName);
 
 	// ビルド設定のシーンリストを保存する。
 	json scenesInBuild;
@@ -675,8 +658,8 @@ void SceneManager::Deserialize(const json& j)
 
 #ifdef _DEBUG
 	// エディタで、最初に開くシーンを読み込む。
-	editorFirstSceneName = j.value("firstScene", "");
-	SetEditorFirstScene(editorFirstSceneName);
+	//editorFirstSceneName = j.value("firstScene", "");
+	//SetEditorFirstScene(editorFirstSceneName);
 #else
 	SetFirstScene(firstSceneName);
 #endif // _DEBUG

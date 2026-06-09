@@ -3,6 +3,7 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include "Engine/Scenes/SceneManager.h"
 #include "Canvas.h"
+#include "Engine/Resources/ResourceManager.h"
 //#include "CanvasScaler.h"
 
 REGISTER_COMPONENT_WITH_ATTRIBUTES(Image, "UI", ComponentAttributes::RequiredComponent , { "RectTransform" });

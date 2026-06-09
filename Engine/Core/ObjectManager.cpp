@@ -32,6 +32,13 @@
 #include "Engine/EditorSupport/OrderManager.h"
 #include <imgui_internal.h>
 #include <Engine\Rendering\Renderers\GltfModelRenderer.h>
+#include "Engine/Editor/Dialog.h"
+#include "Engine/UI/Mask.h"
+
+#include "Engine/EditorConfig/EditorConfigManager.h"
+#include "Engine/EditorConfig/IEditorConfig.h"
+#include "Engine/EditorConfig/SceneViewConfig.h"
+
 
 ObjectManager::ObjectManager(Scene* scene) : scene(scene), selectNode(nullptr), inspectorNode(nullptr)
 {
@@ -501,7 +508,10 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 			return; // 選択されたオブジェクトの中にTransformを持たないものがある場合はギズモを表示しない
 		}
 
-		//Transform* transform = inspectorNode->GetTransform();
+		const auto* configPtr = EditorConfigManager::GetSceneViewConfig();
+		const SceneViewConfig& config = configPtr ? *configPtr : SceneViewConfig{}; // 設定がない場合はデフォルト値を使用
+		
+		ImGuizmo::MODE mode = static_cast<ImGuizmo::MODE>(config.guizmoPivotMode);
 
 		static ImGuizmo::OPERATION operation = ImGuizmo::TRANSLATE;
 		// ショートカットキーで操作モードを切り替える (Q: BOUNDS, W: TRANSLATE, E: ROTATE, R: SCALE)
@@ -538,6 +548,15 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 				operation = ImGuizmo::SCALE;
 			}
 		}
+
+		// スナップ値
+		Vector3 snapValue{};
+		switch (operation)
+		{
+		case ImGuizmo::TRANSLATE: if (config.translationSnap.enabled) snapValue = config.translationSnap.snapValue; break;
+		case ImGuizmo::ROTATE: if (config.rotationSnap.enabled) snapValue = config.rotationSnap.snapValue; break;
+		case ImGuizmo::SCALE: if (config.scaleSnap.enabled) snapValue = config.scaleSnap.snapValue; break;
+		};
 
 		//UI系のオブジェクトを選択しているとき
 		bool hasRectTransform = false;
@@ -582,9 +601,10 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 			&view._11,
 			&projection._11,
 			operation,
-			ImGuizmo::WORLD,
+			mode,
 			&pivotMatrix._11,
-			&deltaPivotMatrix._11
+			&deltaPivotMatrix._11,
+			(snapValue.Length() > 0) ? &snapValue.x : nullptr
 		);
 
 		bool isDragging = ImGuizmo::IsUsing(); // ギズモを操作中かどうか

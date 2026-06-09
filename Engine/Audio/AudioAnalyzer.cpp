@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AudioAnalyzer.h"
+#include "Engine/Audio/Audio.h"
 
 void AudioAnalyzer::Initialize(IXAudio2SourceVoice* voice, const Audio::AudioBuffer* buffer)
 {

@@ -3,9 +3,7 @@
 #include "UIComponent.h"
 #include "Image.h"
 #include "Engine/Core/Color.h"
-#include "Mask.h"
 #include "Engine/Events/EventHandlers.h"
-#include "Engine/Events/EventSystem.h"
 
 /**
  * @file

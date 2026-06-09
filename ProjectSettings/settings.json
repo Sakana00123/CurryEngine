@@ -1,5 +1,4 @@
 {
-    "firstScene": "DemoScene01",
     "scenesInBuild": {
         "firstScene": "Title",
         "loadingScene": {

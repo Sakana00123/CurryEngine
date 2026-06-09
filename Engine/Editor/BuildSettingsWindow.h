@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/Core/EnginePaths.h"
 #include "Engine/BuildSettings.h"
+#include <vector>
+#include <mutex>
 
 class BuildSettingsWindow
 {
@@ -20,6 +22,20 @@ public:
 
 private:
 
+	// --- Build/Package 進捗 ---
+	struct ProcessProgress
+	{
+		std::vector<std::string> logs;
+		int  progressCurrent = 0;
+		int  progressTotal = 0;
+		bool finished = false;
+		bool succeeded = false;
+	};
+
+	std::mutex      m_progressMutex;
+	ProcessProgress m_buildProgress;    // RunBuild() 用
+	ProcessProgress m_packageProgress;  // PackageBuildOutput() 用
+
 #ifdef USE_IMGUI
 
 	/** @brief 設定を描画します。*/
@@ -36,6 +52,9 @@ private:
 
 	/** @brief ビルドボタンを描画します。*/
 	void DrawBuildButton();
+
+	/** @brief ビルド/パッケージ進捗パネルを描画します。*/
+	void DrawProgressPanel(const char* id, const ProcessProgress& prog, bool isRunning);
 
 #endif // USE_IMGUI
 

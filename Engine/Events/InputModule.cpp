@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "InputModule.h"
+#include "EventSystem.h"
+#include "EventHandlers.h"
 
 REGISTER_COMPONENT(InputModule, "EventSystem")
 

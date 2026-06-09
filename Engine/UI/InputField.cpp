@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "InputField.h"
 #include "Text.h"
+#include "Engine/Rendering/Pipeline/Graphics.h"
 #include "Engine/Scenes/Scene.h"
 
 REGISTER_COMPONENT_WITH_ATTRIBUTES(InputField, "UI", ComponentAttributes::DisallowMultiple, {})

@@ -4,6 +4,7 @@
 #include "Engine/Rendering/Pipeline/RenderContext.h"
 #include "Engine/Scenes/Scene.h"
 #include "Engine/Audio/Audio.h"
+#include "Engine/Events/EventSystem.h"
 
 REGISTER_COMPONENT_WITH_ATTRIBUTES(Selectable, "UI", ComponentAttributes::HideInAddComponentMenu | ComponentAttributes::RequiredComponent, { "RectTransform" });
 

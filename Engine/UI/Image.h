@@ -1,17 +1,6 @@
 #pragma once
 #include "Graphic.h"
-#include "Engine/Resources/Texture.h"
-#include "Engine/Resources/Shader.h"
-#include "Engine/Core/Color.h"
-#if 1
-#include "Engine/Core/ObjectManager.h"
-#include "Engine/Rendering/Pipeline/Graphics.h"
-#include "Engine/Editor/Dialog.h"
-#include "Engine/Utils/stdUtiles.h"
 #include "Engine/Rendering/Material.h"
-#include "Engine/Editor/HlslEditor.h"
-#include "Engine/Resources/ResourceManager.h"
-#endif
 
 /**
  * @file

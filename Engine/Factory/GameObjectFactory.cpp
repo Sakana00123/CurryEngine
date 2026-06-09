@@ -27,6 +27,7 @@
 #include "Engine/Rendering/Lights/PointLightComponent.h"
 #include "Engine/Rendering/Lights/SpotLightComponent.h"
 #include "Engine/Utils/RectTransformUtils.h"
+#include "Engine/UI/Mask.h"
 
 GameObject* GameObjectFactory::Create(Scene* scene, const std::string& name) {
 	std::shared_ptr<GameObject> object = std::make_shared<GameObject>();
@@ -88,7 +89,10 @@ GameObject* GameObjectFactory::CreateImage(Scene* scene, const std::string& name
 GameObject* GameObjectFactory::CreateButton(Scene* scene, const std::string& name, GameObject* canvas, const wchar_t* sourceImage) {
 	GameObject* obj = CreateImage(scene, name, canvas, sourceImage);
 	Button* button = obj->AddComponent<Button>();
-	button->imageReference = obj->GetComponent<Image>()->GetId();
+	Image* image = obj->GetComponent<Image>();
+	button->imageReference = image->GetId();
+	image->GetRectTransform()->SetSize({ 300, 150 });
+
 	return obj;
 }
 GameObject* GameObjectFactory::CreateToggle(Scene* scene, const std::string& name, GameObject* canvas, const wchar_t* background, const wchar_t* check) {
@@ -189,6 +193,9 @@ GameObject* GameObjectFactory::CreateText(Scene* scene, const std::string& name,
 	textComponent->Setup(fontFilePath, customPsName, customVsName);
 	textComponent->text = text;
 	textComponent->isRaycastTarget = false;
+	textComponent->alignment = Text::Alignment::MiddleCenter;
+	textComponent->color = Color::Black;
+
 	return obj;
 }
 GameObject* GameObjectFactory::CreateInputField(Scene* scene, const std::string& name, GameObject* canvas, const std::string& fontFilePath, const wchar_t* backGroundImage,

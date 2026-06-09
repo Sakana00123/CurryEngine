@@ -1,6 +1,5 @@
 #pragma once
 #include "UIComponent.h"
-#include "Engine/Events/EventSystem.h"
 
 /**
  * @file

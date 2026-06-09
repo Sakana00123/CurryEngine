@@ -1,6 +1,5 @@
 #pragma once
 #include "UIComponent.h"
-#include "Engine/Core/GameObject.h"
 
 /**
  * @file

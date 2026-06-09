@@ -17,7 +17,7 @@
             "type": "folder"
         }
     ],
-    "iconPath": ".\\BuildSetting\\CoinBallerIcon.ico",
+    "iconPath": ".\\BuildSetting\\CurryEngine.ico",
     "outputDir": "..\\Test",
     "zipToolPath": "C:/Program Files/7-Zip/7z.exe"
 }

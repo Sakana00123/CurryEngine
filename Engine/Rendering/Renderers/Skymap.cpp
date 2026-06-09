@@ -10,7 +10,16 @@
 Skymap::Skymap(ID3D11Device* device)
 {
 	// デフォルトのスカイマップテクスチャを読み込み
-	texture = ResourceManager::GetOrLoad<AssetTexture>("./Assets/environments/sky_blue.DDS");
+	texture = ResourceManager::GetOrLoad<AssetTexture>("./Assets/environments/skybox.dds");
+	const auto& texture2dDesc = texture->GetDesc();
+	if (texture2dDesc.MiscFlags & D3D11_RESOURCE_MISC_TEXTURECUBE)
+	{
+		isTextureCube = true;
+	}
+	else
+	{
+		isTextureCube = false;
+	}
 	
 	std::string dir = EnginePaths::ShadersDataDir;
 	CreateVertexShaderFromCSO(device,(dir + "skymap_vs.cso").c_str(), skymap_vs.GetAddressOf(), NULL, NULL, 0);
@@ -92,7 +101,7 @@ json Skymap::Serialize() const
 
 void Skymap::Deserialize(const json& j)
 {
-	std::string filePath = j.value("filePath", "./Assets/environments/sky_blue.DDS");
+	std::string filePath = j.value("filePath", "./Assets/environments/skybox.dds");
 	// テクスチャを再読み込み
 	texture = ResourceManager::GetOrLoad<AssetTexture>(filePath);
 }

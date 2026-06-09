@@ -16,16 +16,6 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 extern ImWchar glyphRangesJapanese[];
 #endif
 
-#include <d3d11_1.h>
-#include <wrl.h>
-#include <dxgi1_6.h>
-
-#include <vector>
-#include <memory>
-
-#include "Engine/Rendering/Pipeline/Graphics.h"
-#include "Engine/Rendering/Pipeline/RenderSystem.h"
-
 #if 0
 #ifdef _DEBUG
 CONST LONG SCREEN_WIDTH{ 1280 };
@@ -70,15 +60,11 @@ public:
     bool timerActive = true;
 #endif
 
-    size_t VideoMemoryUsage()
-    {
-        DXGI_QUERY_VIDEO_MEMORY_INFO video_memory_info;
-        Graphics::GetAdapter()->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &video_memory_info);
-        return video_memory_info.CurrentUsage / 1024 / 1024;
-    }
+	// ビデオメモリ使用量をMB単位で取得
+    size_t VideoMemoryUsage();
 
 	// 仮 RenderSystem
-	std::unique_ptr<RenderSystem> renderSystem;
+	class RenderSystem* renderSystem;
 
 	// コンストラクタ・デストラクタ
     Framework(HWND hwnd);
@@ -113,22 +99,6 @@ private:
     Time time;
     uint32_t frames{ 0 };
     float elapsedTime{ 0.0f };
-    void calculate_frame_stats()
-    {
-        if (++frames, (time.TimeStamp() - elapsedTime) >= 1.0f)
-        {
-            float fps = static_cast<float>(frames);
-            std::wostringstream outs;
-            outs.precision(6);
-#ifdef _DEBUG
-            outs << APPLICATION_NAME << L" : FPS : " << fps << L" / " << L"Frame Time : " << 1000.0f / fps << L" (ms)";
-#else
-            outs << APPLICATION_NAME;
-#endif // _DEBUG
-            SetWindowTextW(Graphics::GetHwnd(), outs.str().c_str());
-
-            frames = 0;
-            elapsedTime += 1.0f;
-        }
-    }
+    void CalculateFrameStatus();
+    
 };
