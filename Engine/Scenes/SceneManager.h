@@ -65,8 +65,6 @@ private:
 	friend class BuildSettingsWindow;
 	/** @brief 最初に起動するシーン名。*/
 	static inline std::string firstSceneName;
-	/** @brief エディタで最初に起動するシーン名。*/
-	static inline std::string editorFirstSceneName;
 	/** @brief 登録されているシーン名のリスト。*/
 	static inline std::vector<std::string> sceneNames;
 	/** @brief 現在のシーン。*/
@@ -133,12 +131,6 @@ public:
 	 * @param name シーン名（登録名）。
 	 */
 	static void SetFirstScene(const std::string& name);
-
-	/**
-	 * @brief エディタで最初に起動するシーンを設定します。
-	 * @param name シーン名（登録名）。
-	 */
-	static void SetEditorFirstScene(const std::string& name);
 
 	/**
 	 * @brief 最初のシーン名を更新します。

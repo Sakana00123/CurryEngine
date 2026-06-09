@@ -13,7 +13,7 @@ struct SnapParameters
 /** @brief シーンビューの設定構造体。*/
 struct SceneViewConfig : public IEditorConfig
 {
-	int guizmoPivotMode; //!< ギズモのピボットモード（0: オブジェクト中心、1: ワールド原点）
+	int guizmoPivotMode{ 1 }; //!< ギズモのピボットモード（0: オブジェクト中心、1: ワールド原点）
 	SnapParameters translationSnap; //!< ギズモの移動スナップ設定
 	SnapParameters rotationSnap; //!< ギズモの回転スナップ設定
 	SnapParameters scaleSnap; //!< ギズモのスケールスナップ設定

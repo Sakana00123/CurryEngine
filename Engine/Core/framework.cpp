@@ -98,7 +98,7 @@ bool Framework::Initialize()
     // エディタカメラ初期化
     EditorCamera::Initialize();
 
-	// 最初のシーンをロード
+	// 最初のシーンをロード(EditorConfigManagerの初期化後に呼び出す必要がある)
 	SceneManager::LoadFirstScene();
 
     return true;
