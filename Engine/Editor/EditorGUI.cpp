@@ -29,6 +29,8 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 
 #include "BuildSettingsWindow.h"
+#include <Engine\EditorConfig\EditorConfigManager.h>
+#include "Engine/EditorConfig/SceneViewconfig.h"
 
 float EditorGUI::DrawMainMenu()
 {
@@ -191,7 +193,11 @@ float EditorGUI::DrawSceneViewToolbar()
 	{
 		// ここにシーンビューのツールバーの内容を描画
 		// ギズモのLocal/World切り替えや、スナップ設定などを配置
-		SceneViewConfig& config = SceneManager::viewConfig;
+		SceneViewConfig* config = EditorConfigManager::GetSceneViewConfig();
+		if (!config) {
+			ImGui::EndChild();
+			return toolbarHeight;
+		}
 
 		auto iconTex = ResourceManager::GetOrLoad<AssetTexture>("./Data/Icon/editorIcons.png");
 		float buttonSize = 22.0f;
@@ -208,8 +214,8 @@ float EditorGUI::DrawSceneViewToolbar()
 		ImVec4 tintColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		// ピボットモードの切り替え
-		ImGui::SetNextItemWidth(50.0f); // コンボボックスの幅を指定
-		if (ImGui::Combo("Pivot", &config.guizmoPivotMode, "Local\0World\0")) {
+		ImGui::SetNextItemWidth(75.0f); // コンボボックスの幅を指定
+		if (ImGui::Combo("##Pivot", &config->guizmoPivotMode, "Local\0World\0")) {
 
 		}
 		ImGui::SameLine();
@@ -218,79 +224,121 @@ float EditorGUI::DrawSceneViewToolbar()
 		if (ImGui::ImageButton("##snap", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize), snapIconUV0, snapIconUV1, backGroundColor, tintColor)) {
 			ImGui::OpenPopup("SnapSettingsPopup");
 		}
+		ImGui::SetNextWindowSize(ImVec2(350, 0));
 		if (ImGui::BeginPopup("SnapSettingsPopup")) {
 			ImGui::Text("Snap Settings");
+
+			// ポップアップの右上に詳細設定ボタンを配置
+			{
+				float padding = ImGui::GetStyle().WindowPadding.x;
+				ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x - buttonSize - padding);
+				ImGui::SetCursorPosY(padding);
+				if (ImGui::Button("..."))
+				{
+					ImGui::OpenPopup("SnapSettingsDetailPopup");
+				}
+				if (ImGui::BeginPopup("SnapSettingsDetailPopup"))
+				{
+					// 詳細設定の内容をここに描画
+					if (ImGui::MenuItem("Reset"))
+					{
+						config->ResetToDefault();
+					}
+
+					ImGui::EndPopup();
+				}
+			}
+
 			ImGui::Separator();
 
-			ImGui::Checkbox("Enable Translation Snap", &config.enableGuizmoTranslationSnapping);
-			ImGui::BeginDisabled(!config.enableGuizmoTranslationSnapping);
-			if (ImGui::ImageButton("##linkTranslationSnap", iconTex->GetSRV(), ImVec2(16, 16), 
-				config.guizmoTranslationSnapAllAxes ? linkIconUV0 : unLinkIconUV0,
-				config.guizmoTranslationSnapAllAxes ? linkIconUV1 : unLinkIconUV1,
-				backGroundColor, tintColor))
+			// 移動スナップ設定
 			{
-				config.guizmoTranslationSnapAllAxes = !config.guizmoTranslationSnapAllAxes;
-			}
-			ImGui::SameLine();
-			if (config.guizmoTranslationSnapAllAxes)
-			{
-				ImGui::DragFloat("Translation Snap", &config.guizmoTranslationSnapValue.x, 0.1f, 0.0f, FLT_MAX);
-				config.guizmoTranslationSnapValue.y = config.guizmoTranslationSnapValue.x;
-				config.guizmoTranslationSnapValue.z = config.guizmoTranslationSnapValue.x;
-			}
-			else
-			{
-				ImGui::DragFloat3("Translation Snap", &config.guizmoTranslationSnapValue.x, 0.1f, 0.0f, FLT_MAX);
-			}
-			ImGui::EndDisabled();
+				ImGui::Checkbox("Enable Translation Snap", &config->translationSnap.enabled);
+				ImGui::BeginDisabled(!config->translationSnap.enabled);
+				IMGUI_PROPERTY_BEGIN();
+				IMGUI_PROPERTY("Translation");
 
-			ImGui::Checkbox("Enable Rotation Snap", &config.enableGuizmoRotationSnapping);
-			ImGui::BeginDisabled(!config.enableGuizmoRotationSnapping);
-			if (ImGui::ImageButton("##linkRotationSnap", iconTex->GetSRV(), ImVec2(16, 16),
-				config.guizmoRotationSnapAllAxes ? linkIconUV0 :
-				unLinkIconUV0,
-				config.guizmoRotationSnapAllAxes ? linkIconUV1 :
-				unLinkIconUV1,
-				backGroundColor, tintColor))
-			{
-				config.guizmoRotationSnapAllAxes = !config.guizmoRotationSnapAllAxes;
+				if (ImGui::ImageButton("##linkTranslationSnap", iconTex->GetSRV(), ImVec2(16, 16),
+					config->translationSnap.snapAllAxes ? linkIconUV0 : unLinkIconUV0,
+					config->translationSnap.snapAllAxes ? linkIconUV1 : unLinkIconUV1,
+					backGroundColor, tintColor))
+				{
+					config->translationSnap.snapAllAxes = !config->translationSnap.snapAllAxes;
+				}
+				ImGui::SameLine();
+				if (config->translationSnap.snapAllAxes)
+				{
+					ImGui::DragFloat("##Translation Snap", &config->translationSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+					config->translationSnap.snapValue.y = config->translationSnap.snapValue.x;
+					config->translationSnap.snapValue.z = config->translationSnap.snapValue.x;
+				}
+				else
+				{
+					ImGui::DragFloat3("##Translation Snap", &config->translationSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+				}
+				IMGUI_PROPERTY_END();
+				ImGui::EndDisabled();
 			}
-			ImGui::SameLine();
-			if (config.guizmoRotationSnapAllAxes)
-			{
-				ImGui::DragFloat("Rotation Snap", &config.guizmoRotationSnapValue.x, 0.1f, 0.0f, FLT_MAX);
-				config.guizmoRotationSnapValue.y = config.guizmoRotationSnapValue.x;
-				config.guizmoRotationSnapValue.z = config.guizmoRotationSnapValue.x;
-			}
-			else
-			{
-				ImGui::DragFloat3("Rotation Snap", &config.guizmoRotationSnapValue.x, 0.1f, 0.0f, FLT_MAX);
-			}
-			ImGui::EndDisabled();
 
-			ImGui::Checkbox("Enable Scale Snap", &config.enableGuizmoScaleSnapping);
-			ImGui::BeginDisabled(!config.enableGuizmoScaleSnapping);
-			if (ImGui::ImageButton("##linkScaleSnap", iconTex->GetSRV(), ImVec2(16, 16),
-				config.guizmoScaleSnapAllAxes ? linkIconUV0 :
-				unLinkIconUV0,
-				config.guizmoScaleSnapAllAxes ? linkIconUV1 :
-				unLinkIconUV1,
-				backGroundColor, tintColor))
+			// 回転スナップ設定
 			{
-				config.guizmoScaleSnapAllAxes = !config.guizmoScaleSnapAllAxes;
+				ImGui::Checkbox("Enable Rotation Snap", &config->rotationSnap.enabled);
+				ImGui::BeginDisabled(!config->rotationSnap.enabled);
+				IMGUI_PROPERTY_BEGIN();
+				IMGUI_PROPERTY("Rotation");
+				if (ImGui::ImageButton("##linkRotationSnap", iconTex->GetSRV(), ImVec2(16, 16),
+					config->rotationSnap.snapAllAxes ? linkIconUV0 :
+					unLinkIconUV0,
+					config->rotationSnap.snapAllAxes ? linkIconUV1 :
+					unLinkIconUV1,
+					backGroundColor, tintColor))
+				{
+					config->rotationSnap.snapAllAxes = !config->rotationSnap.snapAllAxes;
+				}
+				ImGui::SameLine();
+				if (config->rotationSnap.snapAllAxes)
+				{
+					ImGui::DragFloat("##Rotation Snap", &config->rotationSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+					config->rotationSnap.snapValue.y = config->rotationSnap.snapValue.x;
+					config->rotationSnap.snapValue.z = config->rotationSnap.snapValue.x;
+				}
+				else
+				{
+					ImGui::DragFloat3("##Rotation Snap", &config->rotationSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+				}
+				IMGUI_PROPERTY_END();
+				ImGui::EndDisabled();
 			}
-			ImGui::SameLine();
-			if (config.guizmoScaleSnapAllAxes)
+
+			// スケールスナップ設定
 			{
-				ImGui::DragFloat("Scale Snap", &config.guizmoScaleSnapValue.x, 0.1f, 0.0f, FLT_MAX);
-				config.guizmoScaleSnapValue.y = config.guizmoScaleSnapValue.x;
-				config.guizmoScaleSnapValue.z = config.guizmoScaleSnapValue.x;
+				ImGui::Checkbox("Enable Scale Snap", &config->scaleSnap.enabled);
+				ImGui::BeginDisabled(!config->scaleSnap.enabled);
+				IMGUI_PROPERTY_BEGIN();
+				IMGUI_PROPERTY("Scale");
+				if (ImGui::ImageButton("##linkScaleSnap", iconTex->GetSRV(), ImVec2(16, 16),
+					config->scaleSnap.snapAllAxes ? linkIconUV0 :
+					unLinkIconUV0,
+					config->scaleSnap.snapAllAxes ? linkIconUV1 :
+					unLinkIconUV1,
+					backGroundColor, tintColor))
+				{
+					config->scaleSnap.snapAllAxes = !config->scaleSnap.snapAllAxes;
+				}
+				ImGui::SameLine();
+				if (config->scaleSnap.snapAllAxes)
+				{
+					ImGui::DragFloat("##Scale Snap", &config->scaleSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+					config->scaleSnap.snapValue.y = config->scaleSnap.snapValue.x;
+					config->scaleSnap.snapValue.z = config->scaleSnap.snapValue.x;
+				}
+				else
+				{
+					ImGui::DragFloat3("##Scale Snap", &config->scaleSnap.snapValue.x, 0.1f, 0.0f, FLT_MAX);
+				}
+				IMGUI_PROPERTY_END();
+				ImGui::EndDisabled();
 			}
-			else
-			{
-				ImGui::DragFloat3("Scale Snap", &config.guizmoScaleSnapValue.x, 0.1f, 0.0f, FLT_MAX);
-			}
-			ImGui::EndDisabled();
 
 			ImGui::EndPopup();
 		}

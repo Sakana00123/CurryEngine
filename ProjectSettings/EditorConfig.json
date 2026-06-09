@@ -1,0 +1,33 @@
+{
+    "lastOpenedScenePath": "",
+    "viewConfig": {
+        "guizmoPivotMode": 1,
+        "rotationSnap": {
+            "enabled": true,
+            "snapAllAxes": false,
+            "snapValue": [
+                15.0,
+                15.0,
+                15.0
+            ]
+        },
+        "scaleSnap": {
+            "enabled": true,
+            "snapAllAxes": true,
+            "snapValue": [
+                0.10000000149011612,
+                0.10000000149011612,
+                0.10000000149011612
+            ]
+        },
+        "translationSnap": {
+            "enabled": true,
+            "snapAllAxes": false,
+            "snapValue": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    }
+}

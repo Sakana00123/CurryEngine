@@ -35,6 +35,11 @@
 #include "Engine/Editor/Dialog.h"
 #include "Engine/UI/Mask.h"
 
+#include "Engine/EditorConfig/EditorConfigManager.h"
+#include "Engine/EditorConfig/IEditorConfig.h"
+#include "Engine/EditorConfig/SceneViewConfig.h"
+
+
 ObjectManager::ObjectManager(Scene* scene) : scene(scene), selectNode(nullptr), inspectorNode(nullptr)
 {
 	// 選択管理の初期化
@@ -503,7 +508,9 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 			return; // 選択されたオブジェクトの中にTransformを持たないものがある場合はギズモを表示しない
 		}
 
-		const SceneViewConfig& config = SceneManager::GetSceneViewConfig();
+		const auto* configPtr = EditorConfigManager::GetSceneViewConfig();
+		const SceneViewConfig& config = configPtr ? *configPtr : SceneViewConfig{}; // 設定がない場合はデフォルト値を使用
+		
 		ImGuizmo::MODE mode = static_cast<ImGuizmo::MODE>(config.guizmoPivotMode);
 
 		static ImGuizmo::OPERATION operation = ImGuizmo::TRANSLATE;
@@ -546,9 +553,9 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 		Vector3 snapValue{};
 		switch (operation)
 		{
-		case ImGuizmo::TRANSLATE: if (config.enableGuizmoTranslationSnapping) snapValue = config.guizmoTranslationSnapValue; break;
-		case ImGuizmo::ROTATE: if (config.enableGuizmoRotationSnapping) snapValue = config.guizmoRotationSnapValue; break;
-		case ImGuizmo::SCALE: if (config.enableGuizmoScaleSnapping) snapValue = config.guizmoScaleSnapValue; break;
+		case ImGuizmo::TRANSLATE: if (config.translationSnap.enabled) snapValue = config.translationSnap.snapValue; break;
+		case ImGuizmo::ROTATE: if (config.rotationSnap.enabled) snapValue = config.rotationSnap.snapValue; break;
+		case ImGuizmo::SCALE: if (config.scaleSnap.enabled) snapValue = config.scaleSnap.snapValue; break;
 		};
 
 		//UI系のオブジェクトを選択しているとき

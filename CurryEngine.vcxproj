@@ -190,6 +190,8 @@ popd</Command>
     <ClCompile Include="Engine\Automation\SolutionGenerator.cpp" />
     <ClCompile Include="Engine\BuildSettings.cpp" />
     <ClCompile Include="Engine\Core\Math\Quaternion.cpp" />
+    <ClCompile Include="Engine\EditorConfig\EditorConfigManager.cpp" />
+    <ClCompile Include="Engine\EditorConfig\SceneViewConfig.cpp" />
     <ClCompile Include="Engine\EditorSupport\ImGuiHelpers.cpp" />
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
     <ClCompile Include="Engine\Events\PointerEventData.cpp" />
@@ -613,6 +615,9 @@ popd</Command>
     <ClInclude Include="Engine\BuildSettings.h" />
     <ClInclude Include="Engine\Common\EngineCommon.h" />
     <ClInclude Include="Engine\Core\Math\Quaternion.h" />
+    <ClInclude Include="Engine\EditorConfig\EditorConfigManager.h" />
+    <ClInclude Include="Engine\EditorConfig\IEditorConfig.h" />
+    <ClInclude Include="Engine\EditorConfig\SceneViewConfig.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
     <ClInclude Include="Engine\Physics\FixedJoint.h" />
     <ClInclude Include="Engine\Physics\HingeJoint.h" />

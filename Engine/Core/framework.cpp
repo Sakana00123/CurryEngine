@@ -39,6 +39,8 @@
 
 #include "Engine/Rendering/Pipeline/RenderSystem.h"
 
+#include "Engine/EditorConfig/EditorConfigManager.h"
+
 
 CONST LONG SHADOWMAP_WIDTH{ 2048 };
 CONST LONG SHADOWMAP_HEIGHT{ 2048 };
@@ -64,6 +66,11 @@ Framework::Framework(HWND hwnd)
 
     AssetBrowser::Initialize();
     AssetBrowser::InitializeDropTarget(hwnd);
+
+
+#ifdef _DEBUG
+    EditorConfigManager::Initialize();
+#endif // _DEBUG
 }
 
 bool Framework::Initialize()
@@ -402,6 +409,11 @@ bool Framework::Uninitialize(HWND hwnd)
 
     //コンソール終了
     Console::Shutdown();
+
+	// EditorConfigManager終了
+#ifdef _DEBUG
+	EditorConfigManager::Shutdown();
+#endif // _DEBUG
 
     return true;
 }
