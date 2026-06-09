@@ -90,6 +90,12 @@ void GameObject::SetParent(GameObject* newParent) {
     if (parent) {
         newParent->children.push_back(this);
     }
+	// 親子関係が変わったので、再計算が必要な状態にする
+	if (Transform* transform = GetTransform())
+    {
+        transform->MarkNeedsUpdate();
+    }
+
 	// 階層構造の変更に伴い、アクティブ状態を更新する
 	this->RefreshActiveInHierarchy();
 }

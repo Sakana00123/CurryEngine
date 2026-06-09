@@ -302,7 +302,11 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 	// -------------------- Scene View Window --------------------
 	{
 		ImGui::Begin("Scene");
+		
+		// シーンビューを表示する前に、上部にツールバーを配置
+		float sceneViewToolbarHeight = EditorGUI::DrawSceneViewToolbar();
 
+		// 16:9のアスペクト比を維持しつつ、利用可能なスペースに最大限表示するための計算
 		const float targetAspect = 16.0f / 9.0f;
 		ImVec2 avail = ImGui::GetContentRegionAvail();
 		ImVec2 displaySize;

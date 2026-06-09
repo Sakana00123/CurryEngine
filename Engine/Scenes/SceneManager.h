@@ -7,6 +7,21 @@
 #include "Engine/Utils/JsonFileHandler.h"
 #include "Scene.h"
 
+/** @brief シーンビューの設定構造体。*/
+struct SceneViewConfig
+{
+	int guizmoPivotMode = 0; //!< ギズモのピボットモード（0: オブジェクト中心、1: ワールド原点）
+	bool enableGuizmoTranslationSnapping = true; //!< ギズモの移動スナッピングの有効化フラグ
+	bool guizmoTranslationSnapAllAxes = false; //!< ギズモの移動スナップを全軸に適用するかどうかのフラグ
+	Vector3 guizmoTranslationSnapValue = { 1,1,1 }; //!< ギズモの移動スナップ値
+	bool enableGuizmoRotationSnapping = true; //!< ギズモの回転スナッピングの有効化フラグ
+	bool guizmoRotationSnapAllAxes = false; //!< ギズモの回転スナップを全軸に適用するかどうかのフラグ
+	Vector3 guizmoRotationSnapValue = { 15, 15, 15 }; //!< ギズモの回転スナップ値（度単位）
+	bool enableGuizmoScaleSnapping = true; //!< ギズモのスケールスナッピングの有効化フラグ
+	bool guizmoScaleSnapAllAxes = false; //!< ギズモのスケールスナップを全軸に適用するかどうかのフラグ
+	Vector3 guizmoScaleSnapValue = { 0.5f, 0.5f, 0.5f }; //!< ギズモのスケールスナップ値
+};
+
 /**
  * @file
  * @brief シーンの生成・切替・更新・描画を管理するマネージャ。
@@ -16,6 +31,10 @@
 class SceneManager
 {
 public:
+	/** @brief シーンビューの設定。*/
+	static inline SceneViewConfig viewConfig;
+	static SceneViewConfig GetSceneViewConfig() { return viewConfig; }
+
 	/** @brief シーンの状態列挙型。*/
 	enum class State
 	{

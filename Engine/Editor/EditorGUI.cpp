@@ -182,6 +182,126 @@ float EditorGUI::DrawToolbar(float offsetY)
 	return toolbarHeight;
 }
 
+float EditorGUI::DrawSceneViewToolbar()
+{
+	float toolbarHeight = 30.0f;
+#ifdef USE_IMGUI
+	// ツールバーの内容をここに描画
+	ImGui::BeginChild("SceneToolbar", ImVec2(0, toolbarHeight), false);
+	{
+		// ここにシーンビューのツールバーの内容を描画
+		// ギズモのLocal/World切り替えや、スナップ設定などを配置
+		SceneViewConfig& config = SceneManager::viewConfig;
+
+		auto iconTex = ResourceManager::GetOrLoad<AssetTexture>("./Data/Icon/editorIcons.png");
+		float buttonSize = 22.0f;
+		ImVec2 snapIconUV0 = ImVec2(0.5f, 0.0f);
+		ImVec2 snapIconUV1 = ImVec2(0.75f, 0.25f);
+
+		ImVec2 linkIconUV0 = ImVec2(0.75f, 0.0f);
+		ImVec2 linkIconUV1 = ImVec2(1.0f, 0.25f);
+
+		ImVec2 unLinkIconUV0 = ImVec2(0.0f, 0.25f);
+		ImVec2 unLinkIconUV1 = ImVec2(0.25f, 0.5f);
+
+		ImVec4 backGroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+		ImVec4 tintColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+		// ピボットモードの切り替え
+		ImGui::SetNextItemWidth(50.0f); // コンボボックスの幅を指定
+		if (ImGui::Combo("Pivot", &config.guizmoPivotMode, "Local\0World\0")) {
+
+		}
+		ImGui::SameLine();
+
+		// スナップ設定ボタン
+		if (ImGui::ImageButton("##snap", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize), snapIconUV0, snapIconUV1, backGroundColor, tintColor)) {
+			ImGui::OpenPopup("SnapSettingsPopup");
+		}
+		if (ImGui::BeginPopup("SnapSettingsPopup")) {
+			ImGui::Text("Snap Settings");
+			ImGui::Separator();
+
+			ImGui::Checkbox("Enable Translation Snap", &config.enableGuizmoTranslationSnapping);
+			ImGui::BeginDisabled(!config.enableGuizmoTranslationSnapping);
+			if (ImGui::ImageButton("##linkTranslationSnap", iconTex->GetSRV(), ImVec2(16, 16), 
+				config.guizmoTranslationSnapAllAxes ? linkIconUV0 : unLinkIconUV0,
+				config.guizmoTranslationSnapAllAxes ? linkIconUV1 : unLinkIconUV1,
+				backGroundColor, tintColor))
+			{
+				config.guizmoTranslationSnapAllAxes = !config.guizmoTranslationSnapAllAxes;
+			}
+			ImGui::SameLine();
+			if (config.guizmoTranslationSnapAllAxes)
+			{
+				ImGui::DragFloat("Translation Snap", &config.guizmoTranslationSnapValue.x, 0.1f, 0.0f, FLT_MAX);
+				config.guizmoTranslationSnapValue.y = config.guizmoTranslationSnapValue.x;
+				config.guizmoTranslationSnapValue.z = config.guizmoTranslationSnapValue.x;
+			}
+			else
+			{
+				ImGui::DragFloat3("Translation Snap", &config.guizmoTranslationSnapValue.x, 0.1f, 0.0f, FLT_MAX);
+			}
+			ImGui::EndDisabled();
+
+			ImGui::Checkbox("Enable Rotation Snap", &config.enableGuizmoRotationSnapping);
+			ImGui::BeginDisabled(!config.enableGuizmoRotationSnapping);
+			if (ImGui::ImageButton("##linkRotationSnap", iconTex->GetSRV(), ImVec2(16, 16),
+				config.guizmoRotationSnapAllAxes ? linkIconUV0 :
+				unLinkIconUV0,
+				config.guizmoRotationSnapAllAxes ? linkIconUV1 :
+				unLinkIconUV1,
+				backGroundColor, tintColor))
+			{
+				config.guizmoRotationSnapAllAxes = !config.guizmoRotationSnapAllAxes;
+			}
+			ImGui::SameLine();
+			if (config.guizmoRotationSnapAllAxes)
+			{
+				ImGui::DragFloat("Rotation Snap", &config.guizmoRotationSnapValue.x, 0.1f, 0.0f, FLT_MAX);
+				config.guizmoRotationSnapValue.y = config.guizmoRotationSnapValue.x;
+				config.guizmoRotationSnapValue.z = config.guizmoRotationSnapValue.x;
+			}
+			else
+			{
+				ImGui::DragFloat3("Rotation Snap", &config.guizmoRotationSnapValue.x, 0.1f, 0.0f, FLT_MAX);
+			}
+			ImGui::EndDisabled();
+
+			ImGui::Checkbox("Enable Scale Snap", &config.enableGuizmoScaleSnapping);
+			ImGui::BeginDisabled(!config.enableGuizmoScaleSnapping);
+			if (ImGui::ImageButton("##linkScaleSnap", iconTex->GetSRV(), ImVec2(16, 16),
+				config.guizmoScaleSnapAllAxes ? linkIconUV0 :
+				unLinkIconUV0,
+				config.guizmoScaleSnapAllAxes ? linkIconUV1 :
+				unLinkIconUV1,
+				backGroundColor, tintColor))
+			{
+				config.guizmoScaleSnapAllAxes = !config.guizmoScaleSnapAllAxes;
+			}
+			ImGui::SameLine();
+			if (config.guizmoScaleSnapAllAxes)
+			{
+				ImGui::DragFloat("Scale Snap", &config.guizmoScaleSnapValue.x, 0.1f, 0.0f, FLT_MAX);
+				config.guizmoScaleSnapValue.y = config.guizmoScaleSnapValue.x;
+				config.guizmoScaleSnapValue.z = config.guizmoScaleSnapValue.x;
+			}
+			else
+			{
+				ImGui::DragFloat3("Scale Snap", &config.guizmoScaleSnapValue.x, 0.1f, 0.0f, FLT_MAX);
+			}
+			ImGui::EndDisabled();
+
+			ImGui::EndPopup();
+		}
+
+		
+	}
+	ImGui::EndChild();
+#endif // USE_IMGUI
+	return toolbarHeight;
+}
+
 void EditorGUI::DrawFileMenu()
 {
 #ifdef USE_IMGUI

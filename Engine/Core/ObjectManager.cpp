@@ -503,7 +503,8 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 			return; // 選択されたオブジェクトの中にTransformを持たないものがある場合はギズモを表示しない
 		}
 
-		//Transform* transform = inspectorNode->GetTransform();
+		const SceneViewConfig& config = SceneManager::GetSceneViewConfig();
+		ImGuizmo::MODE mode = static_cast<ImGuizmo::MODE>(config.guizmoPivotMode);
 
 		static ImGuizmo::OPERATION operation = ImGuizmo::TRANSLATE;
 		// ショートカットキーで操作モードを切り替える (Q: BOUNDS, W: TRANSLATE, E: ROTATE, R: SCALE)
@@ -540,6 +541,15 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 				operation = ImGuizmo::SCALE;
 			}
 		}
+
+		// スナップ値
+		Vector3 snapValue{};
+		switch (operation)
+		{
+		case ImGuizmo::TRANSLATE: if (config.enableGuizmoTranslationSnapping) snapValue = config.guizmoTranslationSnapValue; break;
+		case ImGuizmo::ROTATE: if (config.enableGuizmoRotationSnapping) snapValue = config.guizmoRotationSnapValue; break;
+		case ImGuizmo::SCALE: if (config.enableGuizmoScaleSnapping) snapValue = config.guizmoScaleSnapValue; break;
+		};
 
 		//UI系のオブジェクトを選択しているとき
 		bool hasRectTransform = false;
@@ -584,9 +594,10 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 			&view._11,
 			&projection._11,
 			operation,
-			ImGuizmo::WORLD,
+			mode,
 			&pivotMatrix._11,
-			&deltaPivotMatrix._11
+			&deltaPivotMatrix._11,
+			(snapValue.Length() > 0) ? &snapValue.x : nullptr
 		);
 
 		bool isDragging = ImGuizmo::IsUsing(); // ギズモを操作中かどうか
