@@ -65,6 +65,11 @@ protected:
 	Vector3 worldPosition;
 	Quaternion worldRotation;
 	Vector3 worldScale;
+private:
+#ifdef USE_IMGUI
+	bool enableScaleLink = false; // スケールのリンクを有効にするか。true の場合、エディタ上で編集するとき、X/Y/Z すべてのスケールを同時に変更します。
+	Vector3 lastValidScale = Vector3(1, 1, 1);// 最後に保存された有効なスケールの値(0を含まない)。スケールのリンクが有効な場合、これを基準にスケールを変更します。
+#endif // _DEBUG
 public:
 	/**
 	 * @brief 既定コンストラクタ。初期値を設定します。

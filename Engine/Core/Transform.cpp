@@ -4,6 +4,8 @@
 #ifdef USE_IMGUI
 #include <ImGuizmo.h>
 #include "Engine/Rendering/Pipeline/Graphics.h"
+#include <Engine\Resources\ResourceManager.h>
+#include <imgui_internal.h>
 #endif // USE_IMGUI
 
 #include "Engine/Physics/Physics.h"
@@ -388,6 +390,54 @@ Vector3 Transform::GetUp()
 	return u;
 }
 
+#ifdef USE_IMGUI
+// ImGuiのSliderScalarNは、複数のスカラー値を同時に編集するための関数ですが、デフォルトでは、スカラー値が変更されたときにコマンドを発行する機能がありません。そこで、SliderCustomScalarN関数を定義して、スカラー値が変更されたときにコマンドを発行できるようにします。
+namespace ImGui
+{
+	inline bool DragCustomScalarN(const char* label, ImGuiDataType data_type, void* p_data, int components, float v_speed, const void* p_min, const void* p_max, const char* format, ImGuiSliderFlags flags[3])
+	{
+		ImGuiWindow* window = GetCurrentWindow();
+		if (window->SkipItems)
+			return false;
+
+		ImGuiContext& g = *GImGui;
+		bool value_changed = false;
+		BeginGroup();
+		PushID(label);
+		PushMultiItemsWidths(components, CalcItemWidth());
+		size_t type_size = DataTypeGetInfo(data_type)->Size;
+		for (int i = 0; i < components; i++)
+		{
+			PushID(i);
+			BeginDisabled(flags[i] & ImGuiSliderFlags_ReadOnly);
+			if (i > 0)
+				SameLine(0, g.Style.ItemInnerSpacing.x);
+			value_changed |= DragScalar("", data_type, p_data, v_speed, p_min, p_max, format, flags[i]);
+			EndDisabled();
+			PopID();
+			PopItemWidth();
+			p_data = (void*)((char*)p_data + type_size);
+		}
+		PopID();
+
+		const char* label_end = FindRenderedTextEnd(label);
+		if (label != label_end)
+		{
+			SameLine(0, g.Style.ItemInnerSpacing.x);
+			TextEx(label, label_end);
+		}
+
+		EndGroup();
+		return value_changed;
+	}
+
+	inline bool DragCustomFloat3(const char* label, float v[3], float v_speed, float v_min, float v_max, const char* format, ImGuiSliderFlags flags[3])
+	{
+		return DragCustomScalarN(label, ImGuiDataType_Float, v, 3, v_speed, &v_min, &v_max, format, flags);
+	}
+}
+#endif // USE_IMGUI
+
 void Transform::DrawProperty()
 {
 #ifdef USE_IMGUI
@@ -492,7 +542,61 @@ void Transform::DrawProperty()
 	{
 		static Vector3 prevScale;
 		IMGUI_PROPERTY("Scale");
-		if (ImGui::DragFloat3("##Scale", &scale.x)) {
+		if (scale.LengthSq() != 0)
+		{
+			lastValidScale = scale;
+		}
+		Vector3 prevThisFrameScale = scale;
+		ImGuiSliderFlags flags[3] = { 
+			(!enableScaleLink || (lastValidScale.x != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly,
+			(!enableScaleLink || (lastValidScale.y != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly,
+			(!enableScaleLink || (lastValidScale.z != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly
+		};
+		if (ImGui::DragCustomFloat3("##Scale", &scale.x, 0.01f, 0.0f, 0.0f, "%.3f", flags)) {
+			if (scale.LengthSq() == 0 && prevThisFrameScale.LengthSq() != 0)
+			{
+				lastValidScale = prevThisFrameScale; // スケールが0になった場合は、最後に有効だったスケールを保存しておく
+			}
+			if (enableScaleLink) {
+				// スケールリンクが有効な場合、どの軸が変更されたかを判定して、変更された軸のスケールの変化率を計算し、他の軸にも同じ変化率を適用する
+				if (prevThisFrameScale.x == prevThisFrameScale.y && prevThisFrameScale.y == prevThisFrameScale.z) {
+					// すべての軸が同じ値の場合、どの軸が変更されたかを判定できないため、最後に保存された有効なスケールの値を基準に変更する
+					if (scale.x != prevThisFrameScale.x) {
+						scale.y = scale.z = scale.x;
+					}
+					else if (scale.y != prevThisFrameScale.y) {
+						scale.x = scale.z = scale.y;
+					}
+					else if (scale.z != prevThisFrameScale.z) {
+						scale.x = scale.y = scale.z;
+					}
+				}
+				else if (lastValidScale.LengthSq() != 0)
+				{
+					int changedAxis = -1;
+					if (scale.x != lastValidScale.x) changedAxis = 0;
+					else if (scale.y != lastValidScale.y) changedAxis = 1;
+					else if (scale.z != lastValidScale.z) changedAxis = 2;
+
+					if (changedAxis != -1) {
+						float scaleFactor = 1.0f;
+						switch (changedAxis) {
+						case 0: scaleFactor = scale.x / lastValidScale.x; break;
+						case 1: scaleFactor = scale.y / lastValidScale.y; break;
+						case 2: scaleFactor = scale.z / lastValidScale.z; break;
+						}
+						for (int i = 0; i < 3; i++) {
+							if (i != changedAxis) {
+								switch (i) {
+								case 0: scale.x = lastValidScale.x * scaleFactor; break;
+								case 1: scale.y = lastValidScale.y * scaleFactor; break;
+								case 2: scale.z = lastValidScale.z * scaleFactor; break;
+								}
+							}
+						}
+					}
+				}
+			}
 			MarkNeedsUpdate();
 		}
 
@@ -512,6 +616,27 @@ void Transform::DrawProperty()
 			}
 			prevScale = newScale;
 		}
+
+		// スケールリンクフラグの編集
+		{
+			ImGui::SameLine();
+			auto iconTex = ResourceManager::GetOrLoad<AssetTexture>("./Data/Icon/editorIcons.png");
+			float buttonSize = 22.0f;
+			float paddingX = 4.0f;
+
+			ImVec2 linkIconUV0 = ImVec2(0.75f, 0.0f);
+			ImVec2 linkIconUV1 = ImVec2(1.0f, 0.25f);
+
+			ImVec2 unLinkIconUV0 = ImVec2(0.0f, 0.25f);
+			ImVec2 unLinkIconUV1 = ImVec2(0.25f, 0.5f);
+
+			if (ImGui::ImageButton("##ScaleLink", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize),
+				enableScaleLink ? linkIconUV0 : unLinkIconUV0,
+				enableScaleLink ? linkIconUV1 : unLinkIconUV1))
+			{
+				enableScaleLink = !enableScaleLink;
+			}
+		}
 	}
 
 	IMGUI_PROPERTY_END();
@@ -520,54 +645,13 @@ void Transform::DrawProperty()
 
 json Transform::Serialize() const
 {
-	/*json j;
-	j["position"] = { position.x, position.y, position.z };
-	j["rotation"] = { rotation.x, rotation.y, rotation.z, rotation.w };
-	j["scale"] = { scale.x, scale.y, scale.z };
-	j["eulerAngles"] = { eulerAngles.x, eulerAngles.y, eulerAngles.z };
-	j["coordinateSystem"] = static_cast<int>(coordinateSystem);
-	return j;*/
+	json j = Component::Serialize();
+	j["enableScaleLink"] = enableScaleLink;
 	return {};
 }
 
 void Transform::Deserialize(const json& j)
 {
-	/*if (j.contains("position")) {
-		json arr = j["position"];
-		if (arr.is_array() && arr.size() == 3) {
-			position.x = arr[0].get<float>();
-			position.y = arr[1].get<float>();
-			position.z = arr[2].get<float>();
-		}
-	}
-	if (j.contains("rotation")) {
-		json arr = j["rotation"];
-		if (arr.is_array() && arr.size() == 4) {
-			rotation.x = arr[0].get<float>();
-			rotation.y = arr[1].get<float>();
-			rotation.z = arr[2].get<float>();
-			rotation.w = arr[3].get<float>();
-		}
-	}
-	if (j.contains("scale")) {
-		json arr = j["scale"];
-		if (arr.is_array() && arr.size() == 3) {
-			scale.x = arr[0].get<float>();
-			scale.y = arr[1].get<float>();
-			scale.z = arr[2].get<float>();
-		}
-	}
-	if (j.contains("eulerAngles")) {
-		json arr = j["eulerAngles"];
-		if (arr.is_array() && arr.size() == 3) {
-			eulerAngles.x = arr[0].get<float>();
-			eulerAngles.y = arr[1].get<float>();
-			eulerAngles.z = arr[2].get<float>();
-		}
-	}
-	if (j.contains("coordinateSystem")) {
-		int cs = j["coordinateSystem"].get<int>();
-		if (cs >= 0 && cs <= 3) coordinateSystem = static_cast<CoordinateSystem>(cs);
-	}
-	MarkNeedsUpdate();*/
+	Component::Deserialize(j);
+	enableScaleLink = j.value("enableScaleLink", false);
 }
