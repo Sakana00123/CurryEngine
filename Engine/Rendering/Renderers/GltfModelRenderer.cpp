@@ -1481,9 +1481,9 @@ void GltfModelRenderer::CastShadow(RenderContext* rtx)
     immediateContext->GSSetShader(NULL, NULL, 0);
 }
 
-void GltfModelRenderer::DrawProperty()
-{
 #ifdef USE_IMGUI
+void GltfModelRenderer::DrawProperty(const PropertyDrawContext& context)
+{
 	// 静的バッチング用フラグチェックボックス
 	ImGui::Checkbox("StaticBatching", &editorStaticBatchingFlag);
 	// 読み込むモデルのパス
@@ -1529,11 +1529,11 @@ void GltfModelRenderer::DrawProperty()
     }
 
     // 基底クラスの呼び出し
-    Renderer::DrawProperty();
+    Renderer::DrawProperty(context);
 
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json GltfModelRenderer::Serialize() const
 {

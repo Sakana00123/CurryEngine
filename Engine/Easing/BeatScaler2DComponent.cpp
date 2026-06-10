@@ -39,14 +39,14 @@ void BeatScaler2DComponent::Update(float deltaTime)
 	}
 }
 
-void BeatScaler2DComponent::DrawProperty()
-{
 #ifdef USE_IMGUI
+void BeatScaler2DComponent::DrawProperty(const PropertyDrawContext& context)
+{
 	ImGui::DragFloat("Scale Intensity", &scaleIntensity, 0.0f, 10.0f);
 	ImGui::DragFloat("Scale Speed", &scaleSpeed, 0.1f, 200.0f);
 	ImGui::DragInt("Scale Frequency", &scaleFrequency, 1, 1, 16);
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 void BeatScaler2DComponent::OnBeat()
 {

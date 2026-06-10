@@ -83,10 +83,12 @@ public:
 	 */
 	void Update(float elapsedTime) override;
 
+#ifdef USE_IMGUI
 	/**
 	 * @brief インスペクタ用プロパティ描画。
 	 */
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
 
 	/**
 	 * @brief アンカープリセット UI を描画します。

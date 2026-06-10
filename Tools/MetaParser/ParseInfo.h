@@ -13,6 +13,8 @@ struct FieldInfo
 	std::string type;
 	std::string name;
 	std::vector<AttributeInfo> attributes;
+	std::string customGetter; // Getter属性で指定されたゲッターメソッドの名前（なければ空文字列）
+	std::string customSetter; // Setter属性で指定されたセッターメソッドの名前（なければ空文字列）
 };
 
 struct ParameterInfo
@@ -28,6 +30,7 @@ struct MethodInfo
 	std::string name;
 	std::vector<ParameterInfo> parameters;
 	std::vector<AttributeInfo> attributes;
+	bool isConst = false; // const メソッドかどうか
 };
 
 struct ClassInfo

@@ -79,6 +79,28 @@ namespace CurryEngine
 			const char* targetType; // 参照先の型名 (例: "Component", "GameObject")
 			constexpr ObjectReference(const char* target) : targetType(target) {}
 		};
+
+		// プロパティの表示フォーマットを指定する（例: "%.3f" など）。エディタでの数値表示に使用します。
+		struct Format
+		{
+			const char* formatString; // 表示フォーマット (例: "%.3f" など)
+			constexpr Format(const char* fmt) : formatString(fmt) {}
+		};
+
+		// ゲッターメソッドを指定する属性。C# のプロパティのように、フィールドではなくゲッターメソッドで値を取得する場合に使用します。
+		struct Getter
+		{
+			const char* functionName; // ゲッターメソッドの名前 (例: "GetHealth")
+			constexpr Getter(const char* fn) : functionName(fn) {}
+		};
+
+		// セッターメソッドを指定する属性。C# のプロパティのように、フィールドではなくセッターメソッドで値を設定する場合に使用します。
+		struct Setter
+		{
+			const char* functionName; // セッターメソッドの名前 (例: "SetHealth")
+			constexpr Setter(const char* fn) : functionName(fn) {}
+		};
+
 	}
 }
 
@@ -100,6 +122,8 @@ struct PropertyInfo
 	std::string name;
 	size_t offset = 0; // クラス内のオフセット (C++のメンバ変数のアドレスを計算するために使用。C#では不要のため0のまま)
 	std::vector<AttributeInfo> attributes{};
+	bool hasCustomGetter = false; // ゲッターメソッドが指定されているかどうか
+	bool hasCustomSetter = false; // セッターメソッドが指定されているかどうか
 
 	// --- アクセサ (C++はoffsetを使って直接アクセス、C#は P / Invoke ラムダ式でアクセス) ---
 	std::function<std::any(void* instance)> getter; // プロパティの値を取得する関数オブジェクト。引数はインスタンスポインタで、戻り値は any。
@@ -305,7 +329,7 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
         meta.properties.push_back(p); \
     }
 
-#define REGISTER_METHOD(ClassName, MethodName, ReturnType, ...)                                                           \
+#define REGISTER_METHOD(ClassName, MethodName, ReturnType, CastExpr, ...)                                                           \
 	{                                                                                                                     \
 		MethodInfo m;                                                                                                     \
 		m.name = #MethodName;                                                                                             \
@@ -331,7 +355,7 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 				}                                                                                                         \
 			}                                                                                                             \
 		}                                                                                                                 \
-		m.invoker = MakeInvoker(&ClassName::MethodName);                                                                  \
+		m.invoker = MakeInvoker(##CastExpr);																				  \
 		meta.methods.push_back(m);                                                                                        \
 	}
 
@@ -349,6 +373,54 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 			}; \
 			p.setter = [](void* inst, std::any val) { \
 			    static_cast<ClassName*>(inst)->propName = std::any_cast<propType>(val); \
+			}; \
+			meta.properties.push_back(p); \
+		}
+
+#define REGISTER_PROPERTY_WITH_CUSTOM_GETTER(ClassName, propName, propType, GetterFunc, ...) \
+		{ \
+			PropertyInfo p; \
+			p.type = #propType; \
+			p.name = #propName; \
+			p.offset = GetOffset(&ClassName::propName); \
+			p.attributes = std::vector<AttributeInfo>{ __VA_ARGS__  }; \
+			p.getter = [](void* inst) -> std::any { \
+				return static_cast<ClassName*>(inst)->GetterFunc(); \
+			}; \
+			p.setter = [](void* inst, std::any val) { \
+				static_cast<ClassName*>(inst)->propName = std::any_cast<propType>(val); /* セッターは通常通りフィールドにアクセス */ \
+			}; \
+			meta.properties.push_back(p); \
+		}
+
+#define REGISTER_PROPERTY_WITH_CUSTOM_SETTER(ClassName, propName, propType, SetterFunc, ...) \
+		{ \
+			PropertyInfo p; \
+			p.type = #propType; \
+			p.name = #propName; \
+			p.offset = GetOffset(&ClassName::propName); \
+			p.attributes = std::vector<AttributeInfo>{ __VA_ARGS__  }; \
+			p.getter = [](void* inst) -> std::any { \
+				return static_cast<ClassName*>(inst)->propName; /* ゲッターは通常通りフィールドにアクセス */ \
+			}; \
+			p.setter = [](void* inst, std::any val) { \
+				static_cast<ClassName*>(inst)->SetterFunc(std::any_cast<propType>(val)); \
+			}; \
+			meta.properties.push_back(p); \
+		}
+
+#define REGISTER_PROPERTY_WITH_CUSTOM_ACCESSOR(ClassName, propName, propType, GetterFunc, SetterFunc, ...) \
+		{ \
+			PropertyInfo p; \
+			p.type = #propType; \
+			p.name = #propName; \
+			p.offset = GetOffset(&ClassName::propName); \
+			p.attributes = std::vector<AttributeInfo>{ __VA_ARGS__ }; \
+			p.getter = [](void* inst) -> std::any { \
+				return static_cast<ClassName*>(inst)->GetterFunc(); \
+			}; \
+			p.setter = [](void* inst, std::any val) { \
+				static_cast<ClassName*>(inst)->SetterFunc(std::any_cast<propType>(val)); \
 			}; \
 			meta.properties.push_back(p); \
 		}

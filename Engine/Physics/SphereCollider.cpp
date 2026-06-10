@@ -73,11 +73,11 @@ void SphereCollider::Render(RenderContext* rtx)
 #endif // DEBUG
 }
 
-void SphereCollider::DrawProperty()
-{
 #ifdef USE_IMGUI
+void SphereCollider::DrawProperty(const PropertyDrawContext& context)
+{
 	IMGUI_PROPERTY_BEGIN();
-	Collider::DrawProperty();
+	Collider::DrawProperty(context);
 	bool isChanged = false;
 	//isChanged |= ImGui::DragFloat3("Center", &center.x);
 	//isChanged |= ImGui::DragFloat("Radius", &radius, 0.1f, 0.0f, FLT_MAX);
@@ -90,8 +90,8 @@ void SphereCollider::DrawProperty()
 		SetNeedSync();
 	}
 	IMGUI_PROPERTY_END();
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json SphereCollider::Serialize() const
 {

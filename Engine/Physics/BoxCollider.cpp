@@ -78,11 +78,11 @@ void BoxCollider::Render(RenderContext* rtx)
 }
 
 
-void BoxCollider::DrawProperty()
-{
 #ifdef USE_IMGUI
+void BoxCollider::DrawProperty(const PropertyDrawContext& context)
+{
 	IMGUI_PROPERTY_BEGIN();
-	Collider::DrawProperty();
+	Collider::DrawProperty(context);
 
 	bool isChanged = false;
 
@@ -98,8 +98,8 @@ void BoxCollider::DrawProperty()
 		SetNeedSync();
 	}
 	IMGUI_PROPERTY_END();
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json BoxCollider::Serialize() const
 {

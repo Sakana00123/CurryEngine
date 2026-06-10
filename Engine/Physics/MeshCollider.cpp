@@ -156,12 +156,12 @@ void MeshCollider::Render(RenderContext* rtx)
 #endif
 }
 
-void MeshCollider::DrawProperty()
-{
 #ifdef USE_IMGUI
+void MeshCollider::DrawProperty(const PropertyDrawContext& context)
+{
 	IMGUI_PROPERTY_BEGIN();
 
-	Collider::DrawProperty();
+	Collider::DrawProperty(context);
 
 	bool edited = false;
 	IMGUI_PROPERTY_BOOL("Convex", convex, edited);
@@ -171,9 +171,9 @@ void MeshCollider::DrawProperty()
 	}
 
 	IMGUI_PROPERTY_END();
-#endif // USE_IMGUI
 
 }
+#endif // USE_IMGUI
 
 json MeshCollider::Serialize() const
 {

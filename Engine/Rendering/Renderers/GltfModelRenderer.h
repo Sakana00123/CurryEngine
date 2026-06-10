@@ -236,7 +236,10 @@ public:
     void Render(RenderContext* rtx) override;
 
     void CastShadow(RenderContext* rtx);
-    void DrawProperty() override;
+#ifdef USE_IMGUI
+    void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	// シリアライズ
 	json Serialize() const override;

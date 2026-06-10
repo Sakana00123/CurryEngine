@@ -83,11 +83,11 @@ void CapsuleCollider::Render(RenderContext* rtx)
 #endif // _DEBUG
 }
 
-void CapsuleCollider::DrawProperty()
-{
 #ifdef USE_IMGUI
+void CapsuleCollider::DrawProperty(const PropertyDrawContext& context)
+{
 	IMGUI_PROPERTY_BEGIN();
-	Collider::DrawProperty();
+	Collider::DrawProperty(context);
 	bool isChanged = false;
 
 	//isChanged |= ImGui::DragFloat3("Center", &center.x);
@@ -102,8 +102,8 @@ void CapsuleCollider::DrawProperty()
 		SetNeedSync(); // 物理エンジンとの状態同期が必要なことをマーク
 	}
 	IMGUI_PROPERTY_END();
-#endif
 }
+#endif
 
 json CapsuleCollider::Serialize() const
 {

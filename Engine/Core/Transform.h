@@ -40,17 +40,17 @@ class Transform : public Component
 	C_REFLECT(Transform)
 public:
 	/** @brief ローカル座標の位置。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetPosition"), CurryEngine::PropertyAttributes::Setter("SetPosition"))
 	Vector3 position;
 	/** @brief ローカル回転（クォータニオン）。*/
 	C_PROPERTY()
 	Quaternion rotation;
 	/** @brief ローカルスケール。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetScale"), CurryEngine::PropertyAttributes::Setter("SetScale"))
 	Vector3 scale;
 
 	/** @brief ローカル回転（オイラー角、度）。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::ReadOnly)
 	Vector3 m_eulerAngles;
 
 	/** @brief 座標系の設定。*/
@@ -117,15 +117,20 @@ public:
 	bool IsChangedThisFrame() const;
 
 	/** @brief ローカル位置を取得。*/
+	C_FUNCTION()
 	Vector3 GetPosition();
 	/** @brief ローカル回転（クォータニオン）を取得。*/
+	C_FUNCTION()
 	Quaternion GetRotation();
 	/** @brief ローカル回転（オイラー角）を取得。*/
+	C_FUNCTION()
 	Vector3 GetEulerAngles();
 	/** @brief ローカルスケールを取得。*/
+	C_FUNCTION()
 	Vector3 GetScale();
 
 	/** @brief ローカル位置を設定。*/
+	C_FUNCTION()
 	void SetPosition(const Vector3& position);
 	/** @brief ローカル位置に加算（移動）。*/
 	void Translate(const Vector3& translate);
@@ -139,6 +144,7 @@ public:
 	void Rotate(const Vector3& eulerAngles);
 
 	/** @brief ローカルスケールを設定。*/
+	C_FUNCTION()
 	void SetScale(const Vector3& scale);
 	/** @brief ローカルスケールを等倍で設定。*/
 	void SetScale(float scale);
@@ -193,8 +199,10 @@ public:
 	/** @brief ワールド回転（オイラー角）を設定。*/
 	void SetWorldRotation(const Vector3& worldEuler);
 
+#ifdef USE_IMGUI
 	/** @brief インスペクタ用プロパティ表示。*/
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
 
 	/** @brief シリアライズ。*/
 	json Serialize() const override;

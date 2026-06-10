@@ -121,9 +121,9 @@ Image* Selectable::GetImage() const
 }
 
 
-void Selectable::DrawProperty()
-{
 #ifdef USE_IMGUI
+void Selectable::DrawProperty(const PropertyDrawContext& context)
+{
 #if 0
 	bool isInteractable = IsInteractable();
 	if (ImGui::Checkbox("interactable", &isInteractable)) {
@@ -183,7 +183,7 @@ void Selectable::DrawProperty()
 	bool isInteractable = IsInteractable(); // 現在のインタラクティブ状態を取得
 	
 	// 自動生成されたプロパティ描画を呼び出す
-	Component::DrawProperty();
+	Component::DrawProperty(context);
 
 	// インタラクティブ状態の変更を検出して反映
 	if (isInteractable != IsInteractable()) {
@@ -194,5 +194,5 @@ void Selectable::DrawProperty()
 
 #endif // 0
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

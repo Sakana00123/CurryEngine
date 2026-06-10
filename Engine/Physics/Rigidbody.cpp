@@ -391,9 +391,9 @@ void Rigidbody::OnGround()
 	isGround = true;
 }
 
-void Rigidbody::DrawProperty()
-{
 #ifdef USE_IMGUI
+void Rigidbody::DrawProperty(const PropertyDrawContext& context)
+{
 	IMGUI_PROPERTY_BEGIN();
 	//ImGui::Text("Actor Handle: %d", m_actorHandle);
 	// 物理エンジンのプロパティを編集するGUI要素をここに追加します。
@@ -515,5 +515,5 @@ void Rigidbody::DrawProperty()
 		}
 	}
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

@@ -5,6 +5,27 @@
 #include <sstream>
 static const std::string generatedExtension = ".generated";
 
+
+inline static std::string BuildAttributeList(const std::vector<AttributeInfo>& attributes)
+{
+	std::stringstream out;
+	for (size_t i = 0; i < attributes.size(); i++)
+	{
+		const auto& attr = attributes[i];
+		out << "ATTR(" << attr.name;
+		for (const auto& arg : attr.args)
+		{
+			out << ", \"" << arg << "\"";
+		}
+		out << ")";
+		if (i < attributes.size() - 1)
+		{
+			out << ", ";
+		}
+	}
+	return out.str();
+}
+
 Generater::Generater(const std::string& outputDir)
 	: outputDirectory(outputDir)
 {
@@ -108,46 +129,102 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 	ofs << ")\n";
 	for (const auto& field : info.fields)
 	{
-		if (field.attributes.empty())
+		// customGetter/customSetter の有無で4パターンに分岐
+		bool hasGetter = !field.customGetter.empty();
+		bool hasSetter = !field.customSetter.empty();
+		bool hasAttributes = !field.attributes.empty();
+
+		if (!hasGetter && !hasSetter)
 		{
-			// 属性がない場合は通常のマクロを使用
-			ofs << "    REGISTER_PROPERTY(" 
+			if (!hasAttributes)
+			{
+				// 属性がない場合は通常のマクロを使用
+				ofs << "    REGISTER_PROPERTY("
+					<< info.name << ", "
+					<< field.name << ", "
+					<< field.type << ")\n";
+			}
+			else
+			{
+				// 属性がある場合は属性付きマクロを使用
+				ofs << "    REGISTER_PROPERTY_WITH_ATTR("
+					<< info.name << ", "
+					<< field.name << ", "
+					<< field.type << ", "
+					<< BuildAttributeList(field.attributes) << ")\n";
+			}
+		}
+		else if (hasGetter && !hasSetter)
+		{
+			// Getter のみ指定されている場合はセッターファンクションに空文字列を渡す
+			ofs << "    REGISTER_PROPERTY_WITH_CUSTOM_GETTER("
 				<< info.name << ", "
 				<< field.name << ", "
-				<< field.type << ")\n";
+				<< field.type << ", "
+				<< field.customGetter;
+			// 属性リストを出力
+			if (hasAttributes)
+			{
+				ofs << ", " << BuildAttributeList(field.attributes);
+			}
+			ofs << ")\n";
+		}
+		else if (!hasGetter && hasSetter)
+		{
+			// Setter のみ指定されている場合はゲッターファンクションに空文字列を渡す
+			ofs << "    REGISTER_PROPERTY_WITH_CUSTOM_SETTER("
+				<< info.name << ", "
+				<< field.name << ", "
+				<< field.type << ", "
+				<< field.customSetter;
+			// 属性リストを出力
+			if (hasAttributes)
+			{
+				ofs << ", " << BuildAttributeList(field.attributes);
+			}
+			ofs << ")\n";
 		}
 		else
 		{
-			// 属性がある場合は属性付きマクロを使用
-			ofs << "    REGISTER_PROPERTY_WITH_ATTR("
+			// Getter と Setter の両方が指定されている場合は両方を渡す
+			ofs << "    REGISTER_PROPERTY_WITH_CUSTOM_ACCESSOR("
 				<< info.name << ", "
 				<< field.name << ", "
-				<< field.type << ", ";
-
+				<< field.type << ", "
+				<< field.customGetter << ", "
+				<< field.customSetter;
 			// 属性リストを出力
-			for (size_t i = 0; i < field.attributes.size(); i++)
+			if (hasAttributes)
 			{
-				const auto& attr = field.attributes[i];
-				ofs << "ATTR(" << attr.name;
-				for (const auto& arg : attr.args)
-				{
-					ofs << ", \"" << arg << "\"";
-				}
-				ofs << ")";
-				if (i < field.attributes.size() - 1)
-				{
-					ofs << ", ";
-				}
+				ofs << ", " << BuildAttributeList(field.attributes);
 			}
 			ofs << ")\n";
 		}
 	}
 	for (const auto& method : info.methods)
 	{
+		std::string castExpr = "static_cast<" + method.returnType + "(" + info.name + "::*)(";
+		for (size_t i = 0; i < method.parameters.size(); i++)
+		{
+			if (i > 0) castExpr += ", ";
+			castExpr += method.parameters[i].type; // 引数の型をカンマ区切りで連結
+		}
+		if (method.parameters.empty())
+		{
+			castExpr += "void"; // 引数なしは void として扱う
+		}
+		castExpr += ")";
+		if (method.isConst)
+		{
+			castExpr += " const";
+		}
+		castExpr += ">";
+
 		ofs << "    REGISTER_METHOD(" 
 			<< info.name << ", "
 			<< method.name << ", "
-			<< method.returnType;
+			<< method.returnType << ", "
+			<< castExpr << "(&" << info.name << "::" << method.name << ")";
 		
 		if (!method.parameters.empty())
 		{

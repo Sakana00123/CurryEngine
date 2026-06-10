@@ -29,10 +29,10 @@ void Slider::OnDrag(PointerEventData* eventData)
 	UpdateSliderValue(eventData->position);
 }
 
-void Slider::DrawProperty()
-{
 #ifdef USE_IMGUI
-	Selectable::DrawProperty();
+void Slider::DrawProperty(const PropertyDrawContext& context)
+{
+	Selectable::DrawProperty(context);
 
 	static const char* items[] = { "LeftToRight", "RightToLeft", "TopToBottom", "BottomToTop" };
 	if (ImGui::BeginCombo("Direction", items[static_cast<int>(direction)])) {
@@ -56,8 +56,8 @@ void Slider::DrawProperty()
 	ImGui::DragFloat("Value", &this->value);
 	ImGui::DragFloat("NormalizedValue", &this->normalizedValue);
 	ImGui::Checkbox("WholeNumbers", &wholeNumbers);
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 void Slider::SetValue(float value)
 {

@@ -78,10 +78,9 @@ void RectTransform::Update(float elapsedTime)
 	}
 }
 
-void RectTransform::DrawProperty()
-{
 #ifdef USE_IMGUI
-
+void RectTransform::DrawProperty(const PropertyDrawContext& context)
+{
 	if (isOpen) {
 		isOpen = !(ImGui::Button("Cancel") || DrawAnchorPreset());
 	}
@@ -142,8 +141,8 @@ void RectTransform::DrawProperty()
 	
 	ImGui::DragInt("SortingOrder", &localSortingOrder);
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 bool RectTransform::DrawAnchorPreset()
 {

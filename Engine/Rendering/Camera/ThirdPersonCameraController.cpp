@@ -135,9 +135,9 @@ void ThirdPersonCameraController::Update(float deltaTime)
 	}
 }
 
-void ThirdPersonCameraController::DrawProperty()
-{
 #ifdef USE_IMGUI
+void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& context)
+{
 #if 0
 	// followTarget
 	{
@@ -210,7 +210,7 @@ void ThirdPersonCameraController::DrawProperty()
 
 	// TODO: いろんなヘルパーマクロがごちゃごちゃしてて混乱するので、ヘルパー名前空間にまとめるなどして整理する。
 	// その他プロパティ
-	Component::DrawProperty();
+	Component::DrawProperty(context);
 	//ImGui::Checkbox("isEnableAxisInput", &isEnableAxisInput);
 	//ImGui::Checkbox("isEnableZoomInput", &isEnableZoomInput);
 	//ImGui::Checkbox("invertX", &invertX);
@@ -252,7 +252,6 @@ void ThirdPersonCameraController::DrawProperty()
 	//	maxAngleX = 45.f;
 	//}
 
-#endif
 
 	//C_COMPONENT_PROPERTY_HEADER();
 	//C_COMPONENT_PROPERTY_FIELD(cameraComponent, "Camera Component", "カメラコンポーネント");
@@ -278,6 +277,7 @@ void ThirdPersonCameraController::DrawProperty()
 	//C_COMPONENT_PROPERTY_FIELD(maxAngleX, "Max Angle X", "X軸最大角度");
 	//C_COMPONENT_PROPERTY_FOOTER();
 }
+#endif /// USE_IMGUI
 
 json ThirdPersonCameraController::Serialize() const
 {

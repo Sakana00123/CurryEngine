@@ -20,7 +20,9 @@ public:
 
 	void OnDrag(PointerEventData* eventData) override;
 
-	void DrawProperty() override;
+#ifdef USE_IMGUI
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
 
 	void SetValue(float value);
 

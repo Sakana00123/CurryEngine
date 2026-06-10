@@ -135,8 +135,11 @@ public:
 	/** @brief デバッグ描画。*/
 	virtual void Render(RenderContext* rtx) override = 0;
 
+#ifdef USE_IMGUI
 	/** @brief インスペクタ描画。*/
-	virtual void DrawProperty() override;
+	virtual void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	/** @brief シリアライズ。*/
 	virtual json Serialize() const override;

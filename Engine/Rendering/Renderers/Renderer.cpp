@@ -1,18 +1,18 @@
 #include "pch.h"
 #include "Renderer.h"
 
-void Renderer::DrawProperty()
-{
 #ifdef USE_IMGUI
+void Renderer::DrawProperty(const PropertyDrawContext& context)
+{
 
-	Component::DrawProperty();
+	Component::DrawProperty(context);
 
 	if (material)
 	{
 		material->DrawProperty();
 	}
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json Renderer::Serialize() const
 {

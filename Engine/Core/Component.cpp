@@ -5,7 +5,12 @@
 #include "Engine/Scenes/Scene.h"
 #include "Engine/Scenes/SceneManager.h"
 #include "Engine/Utils/JsonFileHandler.h"
+
+#ifdef USE_IMGUI
 #include "Engine/EditorSupport/EditorSelection.h"
+#include "Engine/EditorSupport/PropertyDrawHelper.h"  
+#endif // USE_IMGUI
+
 
 Transform* Component::GetTransform() const
 {
@@ -134,32 +139,9 @@ GameObject* Component::Instantiate(GameObject* prefab, const Vector3& position, 
 
 // --- デフォルトプロパティ描画（リフレクションで取得したフィールドを描画） ---
 
-void Component::DrawProperty()
-{
 #ifdef USE_IMGUI
-	//auto& selectAll = this->GetScene()->objectManager->GetEditorSelection()->GetAll();
-
-	//// 選択中のすべてのオブジェクトに対して処理を適用するヘルパー関数
-	//auto applyToSelectedObjects = [&](const std::function<void(Component*)>& func) {
-	//	bool applied = false;
-	//	if (this->GetScene() && this->GetScene()->objectManager && this->GetScene()->objectManager->GetEditorSelection()) {
-	//		if (!selectAll.empty()) {
-	//			for (auto& obj : selectAll) {
-	//				if (auto go = obj.get()) {
-	//					if (auto comp = go->GetComponentByTypeName(this->GetTypeName()).get()) {
-	//						func(comp);
-	//					}
-	//				}
-	//			}
-	//			applied = true;
-	//		}
-	//	}
-	//	if (!applied) {
-	//		func(this);
-	//	}
-	//	};
-
-
+void Component::DrawProperty(const PropertyDrawContext& context)
+{
 	// リフレクションで取得したフィールドを描画
 	std::vector<std::string> typeNames; // クラス階層の型名を格納するベクター
 	std::vector<const ClassMeta*> classMetas; // クラス階層のメタデータを格納するベクター
@@ -194,7 +176,7 @@ void Component::DrawProperty()
 				ImGui::PushID(prop.name.c_str());
 
 				// フィールドの値を取得
-				std::any propertyAny = prop.getter(this);
+				std::any propertyAny = prop.getter(context.Primary());
 
 				// ラベルの取得
 				const char* label = prop.name.c_str();
@@ -214,6 +196,8 @@ void Component::DrawProperty()
 
 				// int/float の描画に必要な変数の初期値
 				float speed = 1.0f;
+				const char* format = nullptr;
+				std::pair<std::any, std::any> range{ std::any(), std::any() }; // Range 属性の引数を格納するペア (min, max)
 				ImGuiSliderFlags sliderFlags = 0;
 				// int/float の描画に必要な属性の取得
 				{
@@ -229,6 +213,21 @@ void Component::DrawProperty()
 						sliderFlags |= ImGuiSliderFlags_NoInput; // ImGui には ReadOnly フラグがないため、入力を無効化するフラグを使用
 						sliderFlags |= ImGuiSliderFlags_AlwaysClamp; // 入力を無効化する場合でも、ドラッグでの編集は可能にするために常にクランプするフラグをセット
 					}
+					if (auto* formatAttr = prop.GetAttribute("Format")) // Format 属性があれば、引数から format を取得
+					{
+						if (!formatAttr->args.empty())
+						{
+							format = formatAttr->args[0].c_str();
+						}
+					}
+					if (auto* rangeAttr = prop.GetAttribute("Range")) // Range 属性があれば、引数から range を取得
+					{
+						if (rangeAttr->args.size() >= 2)
+						{
+							range.first = rangeAttr->args[0]; // min
+							range.second = rangeAttr->args[1]; // max
+						}
+					}
 				}
 
 
@@ -237,24 +236,20 @@ void Component::DrawProperty()
 				{
 					static int prevValue; /* 前回の値を保持する静的変数 */
 					int value = std::any_cast<int>(propertyAny);
+					// 複数選択されている場合は、値が混在しているかどうかを判定して表示を変える
+					bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<int>(context, prop);
+
 					IMGUI_PROPERTY_EX(label, tooltip);
 					if (readOnly) ImGui::BeginDisabled(); // ReadOnly 属性がある場合は描画を無効化
-					int min = 0, max = 0;
-					if (auto* rangeAttr = prop.GetAttribute("Range")) // Range 属性があれば、引数から min, max, (speed) を取得
+					int min = range.first.has_value() ? std::stoi(std::any_cast<std::string>(range.first)) : 0; // Range 属性の min を取得。なければ 0 をデフォルトにする
+					int max = range.second.has_value() ? std::stoi(std::any_cast<std::string>(range.second)) : 0; // Range 属性の max を取得。なければ 0 をデフォルトにする
+					if (format == nullptr) // Format 属性がない場合は、デフォルトのフォーマットを設定
 					{
-						if (rangeAttr->args.size() >= 2)
-						{
-							min = std::stoi(rangeAttr->args[0]);
-							max = std::stoi(rangeAttr->args[1]);
-						}
+						format = "%d";
 					}
-					const char* format = "%d";
-					if (auto* formatAttr = prop.GetAttribute("Format")) // Format 属性があれば、引数から format を取得
+					if (mixed) // 値が混在している場合は、表示を空欄にする
 					{
-						if (!formatAttr->args.empty())
-						{
-							format = formatAttr->args[0].c_str();
-						}
+						format = "---";
 					}
 
 					// GUI のドラッグ操作で値を編集
@@ -268,6 +263,8 @@ void Component::DrawProperty()
 						int newValue = value; /* 現在の値を取得 */
 						if (newValue != prevValue)
 						{
+							// 全ターゲットに適用
+							CurryEngine::PropertyDrawHelper::ApplyToAll<int>(context, prop, newValue);
 							IMGUI_PROPERTY_COMMAND_INT(label, newValue, prevValue);
 						}
 						prevValue = newValue; /* 前回の値を更新 */
@@ -280,22 +277,16 @@ void Component::DrawProperty()
 					float value = std::any_cast<float>(propertyAny);
 					IMGUI_PROPERTY_EX(label, tooltip);
 					if (readOnly) ImGui::BeginDisabled(); // ReadOnly 属性がある場合は描画を無効化
-					float min = 0.0f, max = 0.0f;
-					if (auto* rangeAttr = prop.GetAttribute("Range")) // Range 属性があれば、引数から min, max, (speed) を取得
+					float min = range.first.has_value() ? std::stof(std::any_cast<std::string>(range.first)) : 0.0f; // Range 属性の min を取得。なければ 0.0f をデフォルトにする
+					float max = range.second.has_value() ? std::stof(std::any_cast<std::string>(range.second)) : 0.0f; // Range 属性の max を取得。なければ 0.0f をデフォルトにする
+					if (format == nullptr) // Format 属性がない場合は、デフォルトのフォーマットを設定
 					{
-						if (rangeAttr->args.size() >= 2)
-						{
-							min = std::stof(rangeAttr->args[0]);
-							max = std::stof(rangeAttr->args[1]);
-						}
+						format = "%.3f";
 					}
-					const char* format = "%.3f";
-					if (auto* formatAttr = prop.GetAttribute("Format")) // Format 属性があれば、引数から format を取得
+					bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<float>(context, prop);
+					if (mixed) // 値が混在している場合は、表示を空欄にする
 					{
-						if (!formatAttr->args.empty())
-						{
-							format = formatAttr->args[0].c_str();
-						}
+						format = "---";
 					}
 
 					// GUI のドラッグ操作で値を編集
@@ -319,9 +310,15 @@ void Component::DrawProperty()
 				{
 					static bool prevValue; /* 前回の値を保持する静的変数 */
 					bool value = std::any_cast<bool>(propertyAny);
+					bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<bool>(context, prop);
 					IMGUI_PROPERTY_EX(label, tooltip);
 					if (readOnly) ImGui::BeginDisabled(); // ReadOnly 属性がある場合は描画を無効化
-					ImGui::Checkbox("##bool", &value);
+					int flags = mixed ? -1 : (value ? 1 : 0); // 値が混在している場合は、フラグを -1 にして表示をMixedにする。そうでない場合は、値に応じてフラグを 1 または 0 にする。
+					if (ImGui::CheckboxFlags("##bool", &flags, value))
+					{
+						value = (flags & 1) != 0; // フラグの最下位ビットが 1 なら true、そうでないなら false
+						CurryEngine::PropertyDrawHelper::ApplyToAll<bool>(context, prop, value);
+					}
 					if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 					{
 						prevValue = value;
@@ -337,14 +334,22 @@ void Component::DrawProperty()
 					}
 					if (readOnly) ImGui::EndDisabled(); // ReadOnly 属性がある場合は描画の無効化を終了
 				}
-				else if (prop.type == "std::string" || prop.type == "string")
+				else if (prop.type == "std::string" || prop.type == "string" || prop.type == "String")
 				{
 					std::string value = std::any_cast<std::string>(propertyAny);
 					std::string oldValue = value;
+					bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<std::string>(context, prop);
 					IMGUI_PROPERTY_EX(label, tooltip);
 					if (readOnly) ImGui::BeginDisabled(); // ReadOnly 属性がある場合は描画を無効化
 					char buffer[256];
-					strncpy_s(buffer, value.c_str(), sizeof(buffer));
+					if (mixed)
+					{
+						strncpy_s(buffer, "---", sizeof(buffer)); // 値が混在している場合は、表示を空欄にする
+					}
+					else
+					{
+						strncpy_s(buffer, value.c_str(), sizeof(buffer));
+					}
 					buffer[sizeof(buffer) - 1] = '\0'; // バッファの最後を null で終端
 					static std::string prevValue = value; /* 前回の値を保持する静的変数 */
 					bool valueChanged = false; // 値が変更されたかを追跡するフラグ
@@ -376,6 +381,10 @@ void Component::DrawProperty()
 				{
 					static Vector2 prevValue; /* 前回の値を保持する静的変数 */
 					Vector2 value = std::any_cast<Vector2>(propertyAny);
+					// 複数選択されている場合は、値が混在しているかどうかを判定して表示を変える
+					bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<Vector2>(context, prop);
+					const char* format = mixed ? "---" : "%.3f"; // 値が混在している場合は、表示を空欄にする
+
 					IMGUI_PROPERTY_EX(label, tooltip);
 					if (readOnly) ImGui::BeginDisabled(); // ReadOnly 属性がある場合は描画を無効化
 					bool valueChanged = false; // 値が変更されたかを追跡するフラグ
@@ -393,16 +402,25 @@ void Component::DrawProperty()
 						}
 						prevValue = newValue; /* 前回の値を更新 */
 					}
+					if (valueChanged) // 値が変更された場合は Vector2 を更新
+					{
+						CurryEngine::PropertyDrawHelper::ApplyToAll<Vector2>(context, prop, value);
+					}
 					if (readOnly) ImGui::EndDisabled(); // ReadOnly 属性がある場合は描画の無効化を終了
 				}
 				else if (prop.type == "Vector3" || (prop.type.find("XMFLOAT3") != std::string::npos))
 				{
 					static Vector3 prevValue; /* 前回の値を保持する静的変数 */
 					Vector3 value = std::any_cast<Vector3>(propertyAny);
+					// 複数選択されている場合は、値が混在しているかどうかを判定して表示を変える
+					bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<Vector3>(context, prop);
+					const char* format = "%.3f";
+					format = mixed ? "---" : format; // 値が混在している場合は、表示を空欄にする
+
 					IMGUI_PROPERTY_EX(label, tooltip);
 					if (readOnly) ImGui::BeginDisabled(); // ReadOnly 属性がある場合は描画を無効化
 					bool valueChanged = false; // 値が変更されたかを追跡するフラグ
-					valueChanged |= ImGui::DragFloat3("##vector3", &value.x);
+					valueChanged |= ImGui::DragFloat3("##vector3", &value.x, 1.0f, 0.0f, 0.0f, format);
 					if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 					{
 						prevValue = value;
@@ -416,19 +434,24 @@ void Component::DrawProperty()
 						}
 						prevValue = newValue; /* 前回の値を更新 */
 					}
+					if (valueChanged) // 値が変更された場合は Vector3 を更新
+					{
+						CurryEngine::PropertyDrawHelper::ApplyToAll<Vector3>(context, prop, value);
+					}
 					if (readOnly) ImGui::EndDisabled(); // ReadOnly 属性がある場合は描画の無効化を終了
 				}
 				else if (prop.type == "Quaternion" || (prop.type.find("XMFLOAT4") != std::string::npos))
 				{
+
 					if (name == "Transform" && prop.name == "rotation")
 					{
-						static Quaternion prevValue; /* 前回の値を保持する静的変数 */
+						static Vector3 prevValue; /* 前回の値を保持する静的変数 */
 						static Vector3 editorEuler; /* 編集中のオイラー角を保持する静的変数 */
 						static bool isEditing = false; /* 編集中かどうかを追跡するフラグ */
 						Quaternion value = std::any_cast<Quaternion>(propertyAny);
 						if (!isEditing) /* 編集開始前に現在の値をオイラー角に変換して保存 */
 						{
-							editorEuler = Transform::QuaternionToEuler(value);
+							editorEuler = value.ToEuler();
 						}
 
 						IMGUI_PROPERTY_EX(label, tooltip);
@@ -437,16 +460,19 @@ void Component::DrawProperty()
 						valueChanged |= ImGui::DragFloat3("##rotation", &editorEuler.x);
 						if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 						{
-							prevValue = value;
+							prevValue = value.ToEuler();
 						}
 						if (ImGui::IsItemDeactivatedAfterEdit()) /* 編集終了後にコマンドを発行 */
 						{
 							// 変更されたオイラー角と前回のオイラー角の差分を計算してクォータニオンに変換
-							Quaternion newValue = Transform::EulerToQuaternion(editorEuler);
+							Vector3 newValue = editorEuler;
 							{
-								IMGUI_PROPERTY_COMMAND(label, Quaternion, newValue, prevValue,
-									"(" + std::to_string(newValue.x) + ", " + std::to_string(newValue.y) + ", " + std::to_string(newValue.z) + ", " + std::to_string(newValue.w) + ")",
-									"(" + std::to_string(prevValue.x) + ", " + std::to_string(prevValue.y) + ", " + std::to_string(prevValue.z) + ", " + std::to_string(prevValue.w) + ")");
+								IMGUI_PROPERTY_COMMAND_CUSTOM("rotation", newValue, prevValue,
+									"(" + std::to_string(newValue.x) + ", " + std::to_string(newValue.y) + ", " + std::to_string(newValue.z) + ")",
+									"(" + std::to_string(prevValue.x) + ", " + std::to_string(prevValue.y) + ", " + std::to_string(prevValue.z) + ")",
+									[this](const Vector3& rot) { 
+										this->GetTransform()->SetRotation(rot);
+									});
 							}
 							prevValue = newValue; /* 前回の値を更新 */
 							GetTransform()->SetRotation(newValue); /* Transform の回転を更新 */
@@ -454,37 +480,42 @@ void Component::DrawProperty()
 						}
 						if (valueChanged) /* 値が変更された場合は Transform の回転を更新 */
 						{
-							Quaternion newValue = Transform::EulerToQuaternion(editorEuler);
-							GetTransform()->SetRotation(newValue);
+							GetTransform()->SetRotation(editorEuler);
 							isEditing = true; /* 編集中 */
-						}
-					}
-					else // Transform の rotation 以外の Quaternion フィールドはそのまま編集できるようにする
-					{
-						static Quaternion prevValue; /* 前回の値を保持する静的変数 */
-						Quaternion value = std::any_cast<Quaternion>(propertyAny);
-						IMGUI_PROPERTY_EX(label, tooltip);
-						if (readOnly) ImGui::BeginDisabled(); // ReadOnly 属性がある場合は描画を無効化
-						bool valueChanged = false; // 値が変更されたかを追跡するフラグ
-						valueChanged |= ImGui::DragFloat4("##quaternion", &value.x);
-						if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
-						{
-							prevValue = value;
-						}
-						if (ImGui::IsItemDeactivatedAfterEdit()) /* 編集終了後にコマンドを発行 */
-						{
-							Quaternion newValue = value; /* 現在の値を取得 */
-							if (newValue.x != prevValue.x || newValue.y != prevValue.y || newValue.z != prevValue.z || newValue.w != prevValue.w)
-							{
-								IMGUI_PROPERTY_COMMAND(label, Quaternion, newValue, prevValue,
-									"(" + std::to_string(newValue.x) + ", " + std::to_string(newValue.y) + ", " + std::to_string(newValue.z) + ", " + std::to_string(newValue.w) + ")",
-									"(" + std::to_string(prevValue.x) + ", " + std::to_string(prevValue.y) + ", " + std::to_string(prevValue.z) + ", " + std::to_string(prevValue.w) + ")");
-							}
-							prevValue = newValue; /* 前回の値を更新 */
 						}
 					}
 					if (readOnly) ImGui::EndDisabled(); // ReadOnly 属性がある場合は描画の無効化を終了
 				}
+				//else if (prop.type == "Vector4" || (prop.type.find("XMFLOAT4") != std::string::npos))
+				//{
+				//	static Vector4 prevValue; /* 前回の値を保持する静的変数 */
+				//	Vector4 value = std::any_cast<Vector4>(propertyAny);
+				//	// 複数選択されている場合は、値が混在しているかどうかを判定して表示を変える
+				//	bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<Vector4>(context, prop);
+				//	const char* format = mixed ? "---" : "%.3f"; // 値が混在している場合は、表示を空欄にする
+				//	IMGUI_PROPERTY_EX(label, tooltip);
+				//	if (readOnly) ImGui::BeginDisabled(); // ReadOnly 属性がある場合は描画を無効化
+				//	bool valueChanged = false; // 値が変更されたかを追跡するフラグ
+				//	valueChanged |= ImGui::DragFloat4("##vector4", &value.x, 1.0f, 0.0f, 0.0f, format);
+				//	if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
+				//	{
+				//		prevValue = value;
+				//	}
+				//	if (ImGui::IsItemDeactivatedAfterEdit()) /* 編集終了後にコマンドを発行 */
+				//	{
+				//		Vector4 newValue = value; /* 現在の値を取得 */
+				//		if (!Vector4::Equal(newValue, prevValue))
+				//		{
+				//			IMGUI_PROPERTY_COMMAND_VECTOR4(label, newValue, prevValue);
+				//		}
+				//		prevValue = newValue; /* 前回の値を更新 */
+				//	}
+				//	if (valueChanged) // 値が変更された場合は Vector4 を更新
+				//	{
+				//		CurryEngine::PropertyDrawHelper::ApplyToAll<Vector4>(context, prop, value);
+				//	}
+				//	if (readOnly) ImGui::EndDisabled(); // ReadOnly 属性がある場合は描画の無効化を終了
+				//}
 				else if (prop.type == "Color")
 				{
 					static Color prevValue; /* 前回の値を保持する静的変数 */
@@ -505,6 +536,10 @@ void Component::DrawProperty()
 							IMGUI_PROPERTY_COMMAND_COLOR(label, newValue, prevValue);
 						}
 						prevValue = newValue; /* 前回の値を更新 */
+					}
+					if (valueChanged) // 値が変更された場合は Color を更新
+					{
+						CurryEngine::PropertyDrawHelper::ApplyToAll<Color>(context, prop, value);
 					}
 					if (readOnly) ImGui::EndDisabled(); // ReadOnly 属性がある場合は描画の無効化を終了
 				}
@@ -820,5 +855,5 @@ void Component::DrawProperty()
 
 	}
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

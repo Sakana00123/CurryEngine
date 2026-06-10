@@ -10,7 +10,11 @@ class EasingAnchoredPosition : public EasingComponent
 public:
 	void Initialize() override;
 	void Update(float deltaTime) override;
-	void DrawProperty() override;
+
+#ifdef USE_IMGUI
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	/** @brief 開始位置の設定。*/
 	void SetFrom(const XMFLOAT2& v) { from = v; }

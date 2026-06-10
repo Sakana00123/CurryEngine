@@ -61,13 +61,11 @@ public:
 	 */
 	bool Raycast(const Vector2& position);
 
+#ifdef USE_IMGUI
 	/**
 	 * @brief インスペクタ用のプロパティ描画。
 	 * @details `USE_IMGUI` 定義時のみ、レイキャスト対象フラグをトグル表示します。
 	 */
-	void DrawProperty() override {
-#ifdef USE_IMGUI
-		ImGui::Checkbox("RaycastTarget", &isRaycastTarget);
+	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
-	}
 };

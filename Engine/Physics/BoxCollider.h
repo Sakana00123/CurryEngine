@@ -18,8 +18,11 @@ public:
 	/** @brief デバッグ描画。*/
 	void Render(RenderContext* rtx) override;
 
+#ifdef USE_IMGUI
 	/** @brief プロパティ描画。*/
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	/** @brief シリアライズ。*/
 	json Serialize() const override;

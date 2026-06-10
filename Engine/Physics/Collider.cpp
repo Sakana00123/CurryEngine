@@ -211,9 +211,9 @@ void Collider::SetNeedSync()
 	m_needSync = true;
 }
 
-void Collider::DrawProperty()
-{
 #ifdef USE_IMGUI
+void Collider::DrawProperty(const PropertyDrawContext& context)
+{
 
 	//ImGui::Text("ShapeHandle: %d", m_shapeHandle);
 	//ImGui::Text("MaterialHandle: %d", m_materialHandle);
@@ -272,8 +272,8 @@ void Collider::DrawProperty()
 				});
 		}
 	}
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json Collider::Serialize() const
 {

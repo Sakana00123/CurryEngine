@@ -68,8 +68,11 @@ public:
 	// フレーム更新
 	void Update(float elapsedTime) override;
 
+#ifdef USE_IMGUI
 	// デバッグGUI描画
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	// シリアライズ
 	json Serialize() const override;

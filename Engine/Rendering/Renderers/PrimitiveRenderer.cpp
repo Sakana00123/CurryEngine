@@ -381,9 +381,9 @@ void PrimitiveRenderer::Render(RenderContext* rtx)
 	immediateContext->DrawIndexed(buffer_desc.ByteWidth / sizeof(uint32_t), 0, 0);
 }
 
-void PrimitiveRenderer::DrawProperty()
-{
 #ifdef USE_IMGUI
+void PrimitiveRenderer::DrawProperty(const PropertyDrawContext& context)
+{
 
 	if (ImGui::BeginCombo("Shape", 
 		shape == Shape::Cube ? "Cube" : shape == Shape::Cylinder ? "Cylinder" : "Sphere"))
@@ -406,10 +406,10 @@ void PrimitiveRenderer::DrawProperty()
 #ifndef USE_MATERIAL
 	ImGui::ColorEdit4("Color", &color.r);
 #else
-	Renderer::DrawProperty();
+	Renderer::DrawProperty(context);
 #endif // !USE_MATERIAL
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 Math::BoundingBox PrimitiveRenderer::CalculateAABB() const
 {

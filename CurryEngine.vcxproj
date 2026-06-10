@@ -193,7 +193,9 @@ popd</Command>
     <ClCompile Include="Engine\EditorConfig\EditorConfigManager.cpp" />
     <ClCompile Include="Engine\EditorConfig\SceneViewConfig.cpp" />
     <ClCompile Include="Engine\EditorSupport\ImGuiHelpers.cpp" />
+    <ClCompile Include="Engine\EditorSupport\PropertyDrawContext.cpp" />
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
+    <ClCompile Include="Engine\Editor\InspectorWindow.cpp" />
     <ClCompile Include="Engine\Events\PointerEventData.cpp" />
     <ClCompile Include="Engine\Events\RaycastResult.cpp" />
     <ClCompile Include="Engine\Physics\FixedJoint.cpp" />
@@ -618,7 +620,10 @@ popd</Command>
     <ClInclude Include="Engine\EditorConfig\EditorConfigManager.h" />
     <ClInclude Include="Engine\EditorConfig\IEditorConfig.h" />
     <ClInclude Include="Engine\EditorConfig\SceneViewConfig.h" />
+    <ClInclude Include="Engine\EditorSupport\PropertyDrawContext.h" />
+    <ClInclude Include="Engine\EditorSupport\PropertyDrawHelper.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
+    <ClInclude Include="Engine\Editor\InspectorWindow.h" />
     <ClInclude Include="Engine\Physics\FixedJoint.h" />
     <ClInclude Include="Engine\Physics\HingeJoint.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\PFX_CrtPass.h" />
@@ -760,7 +765,6 @@ popd</Command>
     <ClInclude Include="Engine\Resources\Shader.h" />
     <ClInclude Include="Engine\Resources\Texture.h" />
     <ClInclude Include="Engine\Rendering\Renderers\Skymap.h" />
-    <ClInclude Include="Engine\Rendering\Renderers\SpriteRenderer.h" />
     <ClInclude Include="Engine\Resources\Resource.h" />
     <ClInclude Include="Engine\Resources\ResourceManager.h" />
     <ClInclude Include="Engine\Scenes\Scene.h" />

@@ -23,11 +23,11 @@ void LayoutGroup::Update(float deltaTime)
 	}
 }
 
-void LayoutGroup::DrawProperty()
-{
 #ifdef USE_IMGUI
+void LayoutGroup::DrawProperty(const PropertyDrawContext& context)
+{
 	// エディタでプロパティを描画するための処理をここに実装します。
-	Component::DrawProperty(); // 基底クラスのプロパティ描画を呼び出す
+	Component::DrawProperty(context); // 基底クラスのプロパティ描画を呼び出す
 
 	IMGUI_PROPERTY_BEGIN();
 
@@ -42,8 +42,8 @@ void LayoutGroup::DrawProperty()
 
 	IMGUI_PROPERTY_END();
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 std::vector<std::shared_ptr<RectTransform>> LayoutGroup::GetChildRects() const
 {

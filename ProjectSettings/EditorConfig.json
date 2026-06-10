@@ -15,18 +15,18 @@
             "enabled": true,
             "snapAllAxes": true,
             "snapValue": [
-                0.10000000149011612,
-                0.10000000149011612,
-                0.10000000149011612
+                1.0,
+                1.0,
+                1.0
             ]
         },
         "translationSnap": {
             "enabled": true,
             "snapAllAxes": false,
             "snapValue": [
+                0.10000000149011612,
                 1.0,
-                1.0,
-                1.0
+                0.10000000149011612
             ]
         }
     }

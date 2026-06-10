@@ -111,9 +111,9 @@ void ParticleComponent::Update(float elapsedTime)
 	isPlaying = EffectManager::IsPlaying(effectHandle);
 }
 
-void ParticleComponent::DrawProperty()
-{
 #ifdef USE_IMGUI
+void ParticleComponent::DrawProperty(const PropertyDrawContext& context)
+{
 	
 	// ファイルパス表示
 	ImGui::Text("File Path: %s", filePath.c_str());
@@ -158,9 +158,9 @@ void ParticleComponent::DrawProperty()
 		ImGui::Text("No Effect Loaded");
 	}
 
-#endif // USE_IMGUI
 
 }
+#endif // USE_IMGUI
 
 json ParticleComponent::Serialize() const
 {

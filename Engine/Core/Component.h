@@ -4,6 +4,7 @@
 #include <d3d11.h>
 #ifdef USE_IMGUI
 #include <imgui.h>
+#include "Engine/EditorSupport/PropertyDrawContext.h"
 #endif // USE_IMGUI
 
 #include "Engine/EditorSupport/AutoRegisterComponent.h"
@@ -134,8 +135,6 @@ protected:
 	virtual void Draw(RenderContext* rtx) {};
 	/** @brief 2D 描画の後処理。*/
 	virtual void End(RenderContext* rtx) {};
-	/** @brief デバッグ GUI の描画（インスペクタなど）。*/
-	virtual void DrawProperty();
 
 	/** @brief 有効化時のコールバック。*/
 	virtual void OnEnable() {};
@@ -156,6 +155,12 @@ protected:
 	void SetOwner(GameObject* gameObject) { this->gameObject = gameObject; }
 
 public:
+
+#ifdef USE_IMGUI
+	/** @brief デバッグ GUI の描画（インスペクタなど）。*/
+	virtual void DrawProperty(const struct PropertyDrawContext& ctx);
+#endif // USE_IMGUI
+
 	/** @brief 所有者 `GameObject` の一意識別子を設定（エンジン内部用）。*/
 	C_FUNCTION()
 	void SetOwnerId(ObjectId ownerId) { this->ownerId = ownerId; }

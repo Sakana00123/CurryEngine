@@ -49,10 +49,10 @@ void InputField::End(RenderContext* rtx)
 	}
 }
 
-void InputField::DrawProperty()
-{
 #ifdef USE_IMGUI
-	Selectable::DrawProperty();
+void InputField::DrawProperty(const PropertyDrawContext& context)
+{
+	Selectable::DrawProperty(context);
 	if (Text* textComponent = GetTextComponent()) {
 		ImGui::Text("Text:%ls", textComponent->text.c_str());
 	}
@@ -73,9 +73,8 @@ void InputField::DrawProperty()
 		inputFlags ^= static_cast<int>(InputFlag::CommitOnEnter);
 	}
 
-
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 void InputField::OnUpdateSelected(BaseEventData* eventData)
 {

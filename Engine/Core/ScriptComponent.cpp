@@ -1,13 +1,10 @@
 #include "pch.h"
 #include "ScriptComponent.h"
 
-#include "imgui_internal.h"
 #include "Engine/Scripting/ScriptSystem.h"
 #include "Engine/Core/GameObject.h"
 #include "Engine/Scenes/Scene.h"
 #include "Engine/Scenes/SceneManager.h"
-#include "Engine/Editor/History.h"
-#include "Engine/EditorSupport/SetValueCommand.h"
 
 REGISTER_COMPONENT_WITH_ATTRIBUTES(ScriptComponent, "Scripts", ComponentAttributes::HideInAddComponentMenu, {})
 
@@ -132,9 +129,14 @@ void ScriptComponent::Update(float deltaTime)
 	ScriptSystem::UpdateScript(m_gcHandle);
 }
 
-void ScriptComponent::DrawProperty()
-{
 #ifdef USE_IMGUI
+
+#include "imgui_internal.h"
+#include "Engine/Editor/History.h"
+#include "Engine/EditorSupport/SetValueCommand.h"
+
+void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
+{
 	// スクリプトの編集ボタン
 	// TODO: スクリプトアセットの管理方法が決まったら、ファイル名からスクリプトアセットを検索して開くようにする。現状はUserScriptsフォルダを再帰的に検索して最初に見つかったものを開く。
     if (ImGui::Button("Edit Script"))
@@ -843,8 +845,8 @@ void ScriptComponent::DrawProperty()
         ImGui::PopID();
     }
 	IMGUI_PROPERTY_END();
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json ScriptComponent::Serialize() const
 {

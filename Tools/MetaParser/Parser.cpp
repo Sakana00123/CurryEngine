@@ -244,6 +244,16 @@ void Parser::ExtractFields(const std::string& text, size_t classPos, ClassInfo& 
         field.type = m[1].str();
         field.name = m[2].str();
         field.attributes = attributes;
+
+		// Getter/Setter属性があれば customGetter/customSetter にメソッド名をセット
+        for (const auto& attr : attributes)
+        {
+            if (attr.name == "Getter" && !attr.args.empty())
+                field.customGetter = attr.args[0];
+            else if (attr.name == "Setter" && !attr.args.empty())
+                field.customSetter = attr.args[0];
+		}
+
         info.fields.push_back(field);
         std::cout << "  Field: " << field.type << " " << field.name << "\n";
 
@@ -264,11 +274,31 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
         size_t lineStart = text.find('\n', pos);
         if (lineStart == std::string::npos) break;
         lineStart++;
-        size_t lineEnd = text.find(';', lineStart);
-        if (lineEnd == std::string::npos) break;
+
+		// ; か { のどちらか早い方を行末とみなす（関数宣言だけでなく定義もあるため）
+		size_t semicolonPos = text.find(';', lineStart);
+		size_t bracePos = text.find('{', lineStart);
+
+        size_t lineEnd;
+        bool isInlineImpl = false;
+
+        if (bracePos != std::string::npos && bracePos < semicolonPos)
+        {
+            lineEnd = bracePos;
+            isInlineImpl = true;
+        }
+        else if (semicolonPos != std::string::npos)
+        {
+            lineEnd = semicolonPos;
+        }
+        else break;
 
         std::string line = text.substr(lineStart, lineEnd - lineStart);
         Trim(line);
+
+        // const メソッドかどうかを判定
+        std::regex constMethodRegex(R"(\)\s*const\s*$)");
+        bool isConst = std::regex_search(line, constMethodRegex);
 
         std::regex methodRegex(R"(([A-Za-z0-9_:<>]+)\s+([A-Za-z0-9_]+)\s*\((.*)\))");
         std::smatch m;
@@ -282,11 +312,14 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
         MethodInfo method;
         method.returnType = m[1].str();
         method.name = m[2].str();
+		method.isConst = isConst;
 
         std::string argsStr = m[3].str();
         // 例: "ForceMode mode = ForceMode::Force"  →  type="ForceMode", name="mode", default="ForceMode::Force"
         // 例: "float value = 0.0f"                 →  type="float",     name="value", default="0.0f"
-        std::regex argRegex(R"(([A-Za-z0-9_:<>]+)\s+([A-Za-z0-9_]+)\s*(?:=\s*([^,)]+))?)");
+		// 例: "const Vector3& position"            →  type="const Vector3&", name="position", default=""
+        //std::regex argRegex (R"(([A-Za-z0-9_:<>]+(?:\s*[*&])?)\s+([A-Za-z0-9_]+)\s*(?:=\s*([^,]+))?)");
+        std::regex argRegex (R"(((?:const\s+)?[A-Za-z0-9_:<>]+\s*[&*]*)\s+([A-Za-z0-9_]+)\s*(?:=\s*([^,)]+))?)");
         auto aIt = std::sregex_iterator(argsStr.begin(), argsStr.end(), argRegex);
         for (; aIt != std::sregex_iterator(); ++aIt)
         {
@@ -305,7 +338,15 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
         info.methods.push_back(method);
         std::cout << "  Method: " << method.returnType << " " << method.name << "\n";
 
-        pos = lineEnd;
+        if (isInlineImpl)
+        {
+			auto [implStart, implEnd] = FindClassBlock(text, bracePos - 1);
+			pos = (implEnd != std::string::npos) ? implEnd + 1 : lineEnd;
+        }
+        else
+        {
+            pos = lineEnd;
+        }
     }
 }
 

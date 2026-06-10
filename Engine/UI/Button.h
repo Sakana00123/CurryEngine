@@ -158,6 +158,7 @@ public:
         }
 	}
 
+#ifdef USE_IMGUI
     /**
      * @brief インスペクタ（ImGui）用のプロパティ描画。
      * @details
@@ -165,7 +166,9 @@ public:
      * - クリック時のイベント（`eventInfo`）をGUI上で編集できます。
      * - GameObject のドラッグ&ドロップ、および機能選択（`SetActive`）とフラグ設定に対応。
      */
-    void DrawProperty() override;
+    void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
     /**
      * @brief `EventInfo` に基づいて実行関数 `pFunc` を更新します。

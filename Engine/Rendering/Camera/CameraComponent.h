@@ -25,8 +25,11 @@ public:
 	/** @brief 初期化処理。必要な参照の取得などを行います。*/
 	void Initialize() override;
 
+#ifdef USE_IMGUI
 	/** @brief インスペクタ用のプロパティ描画。*/
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	/** @brief 有効化時のコールバック。*/
 	void OnEnable() override;
