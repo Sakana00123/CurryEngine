@@ -37,6 +37,15 @@ private:
 	C_PROPERTY()
 	float trailThreshold = 0.002f;
 
+	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("Transform"), CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
+	ObjectId targetTransformId; // トレイルを追従させる対象の Transform の ObjectId
+
+	C_PROPERTY(CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
+	std::string texturePath; // トレイルに使用するテクスチャのファイルパス
+
+	C_PROPERTY(CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
+	int maxSegments = 50; // トレイルの最大セグメント数
+
 	struct TrailSegment
 	{
 		Vector3 position; // セグメントの位置

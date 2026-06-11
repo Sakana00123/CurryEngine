@@ -1,10 +1,14 @@
 #include "pch.h"
 #include "PropertyDrawerRegistry.h"
 
+#include "Drawers/BoolDrawer.h"
 #include "Drawers/IntDrawer.h"
 #include "Drawers/FloatDrawer.h"
 #include "Drawers/Vector3Drawer.h"
 #include "Drawers/QuaternionDrawer.h"
+#include "Drawers/StringDrawer.h"
+#include "Drawers/ColorDrawer.h"
+#include "Drawers/ObjectIdDrawer.h"
 
 
 namespace CurryEngine
@@ -18,10 +22,16 @@ namespace CurryEngine
 	PropertyDrawerRegistry::PropertyDrawerRegistry()
 	{
 		// TODO: あとで自動登録機能を実装する予定なので、現状は手動でドロワーを登録するためのコードをコンストラクタに書いています。
+		Register("bool", std::make_unique<BoolDrawer>());
 		Register("int", std::make_unique<IntDrawer>());
 		Register("float", std::make_unique<FloatDrawer>());
 		Register("Vector3", std::make_unique<Vector3Drawer>());
 		Register("Quaternion", std::make_unique<QuaternionDrawer>());
+		
+		Register("std::string", std::make_unique<StringDrawer>());
+
+		Register("Color", std::make_unique<ColorDrawer>());
+		Register("ObjectId", std::make_unique<ObjectIdDrawer>());
 	}
 
 	void PropertyDrawerRegistry::Register(const std::string& typeName, std::unique_ptr<IPropertyDrawer> drawer)

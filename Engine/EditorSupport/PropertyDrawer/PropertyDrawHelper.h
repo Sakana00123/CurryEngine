@@ -80,6 +80,15 @@ namespace CurryEngine
 			const T& currentValue,
 			std::function<std::string(const T&)> toStr = nullptr)
 		{
+			if (ctx.IsEmpty())
+				return;
+			if (!prop.setter || !prop.getter)
+				return;
+			if (ImGui::IsItemEdited())
+			{
+				// 編集中はリアルタイムで値を適用する
+				PropertyDrawHelper::ApplyToAll<T>(ctx, prop, currentValue);
+			}
 			if (ImGui::IsItemActivated())
 				state.Prev(prop.name) = currentValue;
 

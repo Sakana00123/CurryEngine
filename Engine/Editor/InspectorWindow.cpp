@@ -18,8 +18,16 @@
 #include <Engine\Core\ScriptComponent.h>
 #include "AssetBrowser.h"
 
-inline static void DrawLayerComboBox(GameObject* inspectorNode)
+#include "Engine/EditorSupport/PropertyDrawer/PropertyDrawHelper.h"
+
+inline static void DrawLayerComboBox(const EditorSelection* selection)
 {
+    if (!selection || selection->IsEmpty())
+    {
+		LOG_ERROR("No object selected. Cannot draw layer combo box.");
+		return;
+    }
+
 	auto layers = LayerManager::Get().GetLayerNames();
 	std::vector<std::string> layerNames;
 	for (int i = 0; i < layers.size(); ++i) {
@@ -29,17 +37,29 @@ inline static void DrawLayerComboBox(GameObject* inspectorNode)
 		std::string layerName = "Layer" + std::to_string(i) + ": " + layers[i];
 		layerNames.push_back(layerName);
 	}
-	int currentLayer = inspectorNode->GetLayer();
+	int currentLayer = selection->GetPrimary()->GetLayer();
+	bool mixedLayer = false;
+    for (const auto& obj : selection->GetAll()) {
+        if (obj->GetLayer() != currentLayer) {
+            mixedLayer = true;
+            break;
+        }
+	}
+
 	//レイヤーのドロップダウン
 	ImGui::Text("Layer");
 	ImGui::SameLine();
-	if (ImGui::BeginCombo("##Layer", layers[currentLayer].c_str()))
+	const char* preview = mixedLayer ? "---" : layers[currentLayer].c_str();
+	if (ImGui::BeginCombo("##Layer", preview))
 	{
 		for (int i = 0; i < layerNames.size(); ++i) {
 			bool isSelected = (currentLayer == i);
 			if (ImGui::Selectable(layerNames[i].c_str(), isSelected)) {
 				currentLayer = i;
-				inspectorNode->SetLayer(currentLayer);
+				//inspectorNode->SetLayer(currentLayer);
+                for (const auto& obj : selection->GetAll()) {
+                    obj->SetLayer(currentLayer);
+				}
 			}
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
@@ -65,21 +85,70 @@ inline static void DrawInspectorLockCheckbox(ObjectManager* objectManager)
 	}
 }
 
-inline static void DrawActiveCheckbox(GameObject* inspectorNode)
+inline static void DrawActiveCheckbox(const EditorSelection* selection)
 {
-	bool isActive = inspectorNode->IsActiveSelf(); // ローカルの有効状態
-	if (ImGui::Checkbox("", &isActive)) {
-		inspectorNode->SetActive(isActive); // グローバルの有効状態を更新
+    if (!selection || selection->IsEmpty())
+	{
+        LOG_ERROR("No object selected. Cannot draw active checkbox.");
+        return;
+	}
+
+	//bool isActive = inspectorNode->IsActiveSelf(); // ローカルの有効状態
+	bool isActive = selection->GetPrimary()->IsActiveSelf(); // 主選択のローカルの有効状態を基準にする
+	bool mixedActive = false;
+    for (const auto& obj : selection->GetAll()) {
+        if (obj->IsActiveSelf() != isActive) {
+            mixedActive = true;
+            break;
+        }
+	}
+	bool edited = false;
+    if (mixedActive) {
+        //複数選択で有効状態が混在している場合は、チェックボックスを三状態にする
+		int state = isActive ? 1 : 0; // 主選択の状態を基準にする
+        if (ImGui::CheckboxFlags("##Active", &state, -1))
+        {
+			isActive = !isActive; // チェックボックスがクリックされたら、主選択の状態を反転させる
+			edited = true;
+        }
+    }
+    else {
+        //単一選択または複数選択で有効状態が一致している場合は、通常のチェックボックス
+        edited = ImGui::Checkbox("", &isActive);
+	}
+
+	if (edited) {
+		//inspectorNode->SetActive(isActive); // グローバルの有効状態を更新
+        for (const auto& obj : selection->GetAll()) {
+            obj->SetActive(isActive);
+		}
 	}
 	ImGui::SameLine();
 }
 
-inline static void DrawNameInput(GameObject* inspectorNode)
+inline static void DrawNameInput(const EditorSelection* selection)
 {
+    if (!selection || selection->IsEmpty())
+    {
+        LOG_ERROR("No object selected. Cannot draw name input.");
+        return;
+	}
+
 	static size_t bufferSize = 256;
 	static char buffer[256] = "";
 	if (!ImGui::IsItemEdited()) {
-		strncpy_s(buffer, inspectorNode->GetName().c_str(), bufferSize);
+		//strncpy_s(buffer, inspectorNode->GetName().c_str(), bufferSize);
+
+        std::string primaryName = selection->GetPrimary()->GetName();
+		bool mixedNames = false;
+        for (const auto& obj : selection->GetAll()) {
+            if (obj->GetName() != primaryName) {
+                mixedNames = true;
+                break;
+            }
+		}
+
+		strncpy_s(buffer, mixedNames ? "---" : primaryName.c_str(), bufferSize);
 		buffer[bufferSize - 1] = '\0';
 	}
 	ImGui::Text("Name");
@@ -87,7 +156,10 @@ inline static void DrawNameInput(GameObject* inspectorNode)
 	ImGui::PushItemWidth(210);
 	ImGui::InputText("##GameObjectName", buffer, sizeof(buffer), ImGuiInputTextFlags_AutoSelectAll);
 	if (ImGui::IsItemEdited()) {
-		inspectorNode->SetName(buffer);
+		//inspectorNode->SetName(buffer);
+        for (const auto& obj : selection->GetAll()) {
+            obj->SetName(buffer);
+		}
 	}
 	ImGui::PopItemWidth();
 }
@@ -279,12 +351,16 @@ inline static void DrawInspectorHeader(GameObject* inspectorNode, ObjectManager*
     //Inspectorロック
     DrawInspectorLockCheckbox(objectManager);
     ImGui::SameLine();
-    // layerを変更するドロップダウン
-    DrawLayerComboBox(inspectorNode);
-    //オブジェクトの有効状態を切り替えるチェックボックス
-    DrawActiveCheckbox(inspectorNode);
-    //名前を変更するテキストボックス
-    DrawNameInput(inspectorNode);
+    const EditorSelection* selection = objectManager->GetEditorSelection();
+    if (selection && !selection->IsEmpty())
+    {
+        // layerを変更するドロップダウン
+        DrawLayerComboBox(selection);
+        //オブジェクトの有効状態を切り替えるチェックボックス
+        DrawActiveCheckbox(selection);
+        //名前を変更するテキストボックス
+        DrawNameInput(selection);
+    }
     ImGui::PopID();
 }
 
@@ -383,14 +459,30 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
         ImGui::Separator();
     }
 
-    //AddComponent
+	auto objectManager = inspectorNode ? inspectorNode->GetScene()->GetObjectManager() : nullptr;
+	if (objectManager)
     {
-        DrawAddComponentButton(inspectorNode, nullptr);
-    }
+		auto editorSelection = objectManager->GetEditorSelection();
+        auto applyToSelectedObjects = [editorSelection](std::function<void(GameObject*)> action)
+            {
+                if (editorSelection)
+                {
+                    for (const auto& selectedObj : editorSelection->GetAll())
+                    {
+						action(selectedObj.get());
+                    }
+                }
+            };
 
-    // ドラッグドロップの受け入れ(インスペクタ全体)
-    // インスペクタ全体をドロップターゲットにするために、ウィンドウを覆う透明なドロップターゲットを作成
-	DrawDropTarget(cursorPos, inspectorNode, nullptr);
+        //AddComponent
+        {
+            DrawAddComponentButton(inspectorNode, applyToSelectedObjects);
+        }
+
+        // ドラッグドロップの受け入れ(インスペクタ全体)
+        // インスペクタ全体をドロップターゲットにするために、ウィンドウを覆う透明なドロップターゲットを作成
+        DrawDropTarget(cursorPos, inspectorNode, applyToSelectedObjects);
+    }
 
     ImGui::EndChild();
 
