@@ -24,10 +24,14 @@ namespace CurryEngine
 		}
 		
 		bool edited = ImGui::InputText("##string", buffer, sizeof(buffer));
+		if (edited)
+		{
+			PropertyDrawHelper::ApplyToAll<std::string>(context, prop, std::string(buffer));
 
-		PropertyDrawHelper::CommitEdit<std::string>(prop, context, m_state, std::string(buffer),
-			[](const std::string& v) {
-				return v;
-			});
+			PropertyDrawHelper::CommitEdit<std::string>(prop, context, m_state, std::string(buffer),
+				[](const std::string& v) {
+					return v;
+				});
+		}
 	}
 }

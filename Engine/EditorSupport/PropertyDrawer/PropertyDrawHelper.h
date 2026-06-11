@@ -84,11 +84,6 @@ namespace CurryEngine
 				return;
 			if (!prop.setter || !prop.getter)
 				return;
-			if (ImGui::IsItemEdited())
-			{
-				// 編集中はリアルタイムで値を適用する
-				PropertyDrawHelper::ApplyToAll<T>(ctx, prop, currentValue);
-			}
 			if (ImGui::IsItemActivated())
 				state.Prev(prop.name) = currentValue;
 
@@ -97,8 +92,6 @@ namespace CurryEngine
 				T prev = state.Prev(prop.name);
 				if (currentValue != prev)
 				{
-					PropertyDrawHelper::ApplyToAll<T>(ctx, prop, currentValue);
-
 					// Undo/Redo コマンド発行
 					std::string newStr = toStr ? toStr(currentValue) : "";
 					std::string oldStr = toStr ? toStr(prev) : "";

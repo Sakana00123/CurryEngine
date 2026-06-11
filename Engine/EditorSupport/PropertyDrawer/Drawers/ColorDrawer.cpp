@@ -15,7 +15,10 @@ namespace CurryEngine
 		bool mixed = PropertyDrawHelper::HasMixedValues<Color>(context, prop);
 
 		PropertyDrawHelper::BeginPropertyLabel(prop);
-		ImGui::ColorEdit4("##color", &value.r);
+		if (ImGui::ColorEdit4("##color", &value.r))
+		{
+			PropertyDrawHelper::ApplyToAll<Color>(context, prop, value);
+		}
 
 		PropertyDrawHelper::CommitEdit<Color>(prop, context, m_state, value,
 			[](const Color& c) {

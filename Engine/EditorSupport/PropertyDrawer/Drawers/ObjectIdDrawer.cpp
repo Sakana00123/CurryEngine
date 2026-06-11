@@ -106,6 +106,8 @@ namespace CurryEngine
 								const auto& droppedObj = ObjectManager::Find(newComponentId);
 								const auto& droppedObjName = droppedObj ? droppedObj->GetName() : "Unknown";
 
+								CurryEngine::PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, value);
+
 								CurryEngine::PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, newComponentId,
 									[refTypeDisplay](const ObjectId& v) -> std::string {
 										if (v.IsValid())
@@ -141,6 +143,8 @@ namespace CurryEngine
 							std::string refTypeDisplay = (refTypeName == "GameObject") ? "GameObject" : ("Component(" + refTypeName + ")");
 							const auto& droppedObj = ObjectManager::Find(droppedId);
 							const auto& droppedObjName = droppedObj ? droppedObj->GetName() : "Unknown";
+
+							CurryEngine::PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, value);
 
 							CurryEngine::PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, droppedId,
 								[refTypeDisplay](const ObjectId& v) -> std::string {
@@ -186,7 +190,9 @@ namespace CurryEngine
 					const auto& newValueLog = "None";
 					const auto& prevValueLog = oldValue.IsValid() ? (std::to_string(oldValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
 
-					CurryEngine::PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, ObjectId::Invalid(),
+					CurryEngine::PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, value);
+
+					CurryEngine::PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, value,
 						[](const ObjectId& v) -> std::string {
 							return "None";
 						});
@@ -231,6 +237,8 @@ namespace CurryEngine
 										//const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
 										//const auto& newValueLog = std::to_string(obj->id.Value()) + "(" + refTypeDisplay + ": " + obj->GetName() + ")";
 										//const auto& prevValueLog = oldValue.IsValid() ? (std::to_string(oldValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
+
+										PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, obj->id);
 
 										PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, obj->id,
 											[](const ObjectId& v) -> std::string {
@@ -286,6 +294,8 @@ namespace CurryEngine
 													//const auto& newValueLog = std::to_string(refComponent->id.Value()) + "(" + refTypeDisplay + ": " + obj->GetName() + ")";
 													//const auto& prevValueLog = oldValue.IsValid() ? (std::to_string(oldValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
 
+													PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, refComponent->id);
+
 													PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, refComponent->id,
 														[refTypeDisplay](const ObjectId& v) -> std::string {
 															if (v.IsValid())
@@ -329,6 +339,8 @@ namespace CurryEngine
 														//const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
 														//const auto& newValueLog = std::to_string(comp->id.Value()) + "(" + refTypeDisplay + ": " + obj->GetName() + ")";
 														//const auto& prevValueLog = oldValue.IsValid() ? (std::to_string(oldValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
+
+														PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, comp->id);
 
 														PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, comp->id,
 															[refTypeDisplay](const ObjectId& v) -> std::string {

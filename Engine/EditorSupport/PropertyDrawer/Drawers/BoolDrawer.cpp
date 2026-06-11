@@ -33,6 +33,8 @@ namespace CurryEngine
 
 		if (edited)
 		{
+			PropertyDrawHelper::ApplyToAll<bool>(context, prop, value);
+
 			PropertyDrawHelper::CommitEdit<bool>(prop, context, m_state, value,
 				[](const bool& v) {
 					return v ? "True" : "False";

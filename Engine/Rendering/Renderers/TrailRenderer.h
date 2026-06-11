@@ -40,6 +40,9 @@ private:
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("Transform"), CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
 	ObjectId targetTransformId; // トレイルを追従させる対象の Transform の ObjectId
 
+	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("GameObject"), CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
+	ObjectId targetObjectId; // トレイルを追従させる対象の GameObject の ObjectId
+
 	C_PROPERTY(CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
 	std::string texturePath; // トレイルに使用するテクスチャのファイルパス
 
