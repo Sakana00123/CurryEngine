@@ -15,6 +15,16 @@ Quaternion Quaternion::operator*(const Quaternion& rhs) const
 	return Quaternion::Multiply(*this, rhs);
 }
 
+bool Quaternion::operator==(const Quaternion& rhs) const
+{
+	return (x == rhs.x && y == rhs.y && z == rhs.z && w == rhs.w);
+}
+
+bool Quaternion::operator!=(const Quaternion& rhs) const
+{
+	return !(*this == rhs);
+}
+
 XMVECTOR Quaternion::ToXMVector() const
 {
 	return XMLoadFloat4(this);

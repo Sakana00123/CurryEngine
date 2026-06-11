@@ -28,6 +28,10 @@ struct Quaternion : public XMFLOAT4
 	// クォータニオンの乗算
 	Quaternion operator*(const Quaternion& rhs) const;
 
+	// クォータニオンのイコール比較
+	bool operator==(const Quaternion& rhs) const;
+	bool operator!=(const Quaternion& rhs) const;
+
 	// クォータニオンを XMVECTOR に変換
 	XMVECTOR ToXMVector() const;
 

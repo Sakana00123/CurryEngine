@@ -6,7 +6,7 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include <Engine\Resources\ResourceManager.h>
 #include <imgui_internal.h>
-#include "Engine/EditorSupport/PropertyDrawHelper.h"
+#include "Engine/EditorSupport/PropertyDrawer/PropertyDrawHelper.h"
 #endif // USE_IMGUI
 
 #include "Engine/Physics/Physics.h"

@@ -1,0 +1,41 @@
+#include "pch.h"
+#include "PropertyDrawerRegistry.h"
+
+#include "Drawers/IntDrawer.h"
+#include "Drawers/FloatDrawer.h"
+#include "Drawers/Vector3Drawer.h"
+#include "Drawers/QuaternionDrawer.h"
+
+
+namespace CurryEngine
+{
+	PropertyDrawerRegistry& PropertyDrawerRegistry::Get()
+	{
+		static PropertyDrawerRegistry instance;
+		return instance;
+	}
+
+	PropertyDrawerRegistry::PropertyDrawerRegistry()
+	{
+		// TODO: あとで自動登録機能を実装する予定なので、現状は手動でドロワーを登録するためのコードをコンストラクタに書いています。
+		Register("int", std::make_unique<IntDrawer>());
+		Register("float", std::make_unique<FloatDrawer>());
+		Register("Vector3", std::make_unique<Vector3Drawer>());
+		Register("Quaternion", std::make_unique<QuaternionDrawer>());
+	}
+
+	void PropertyDrawerRegistry::Register(const std::string& typeName, std::unique_ptr<IPropertyDrawer> drawer)
+	{
+		m_drawers[typeName] = std::move(drawer);
+	}
+
+	IPropertyDrawer* PropertyDrawerRegistry::Find(const std::string& typeName) const
+	{
+		auto it = m_drawers.find(typeName);
+		if (it != m_drawers.end())
+		{
+			return it->second.get();
+		}
+		return nullptr; // 見つからない場合は nullptr を返す
+	}
+}
