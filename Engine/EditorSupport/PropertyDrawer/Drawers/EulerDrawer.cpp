@@ -15,11 +15,37 @@ namespace CurryEngine
 		Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<Quaternion>(context, prop);
 
+		float vSpeed = 0.1f; // ドラッグの速度。必要に応じて属性から取得することもできます。
+		float vMin = 0.0f;   // 最小値。必要に応じて属性から取得することもできます。
+		float vMax = 0.0f;   // 最大値。必要に応じて属性から取得することもできます。
+		const char* format = "%.3f"; // 表示フォーマット。必要に応じて属性から取得することもできます。
+
+		// 属性から vSpeed、vMin、vMax、format を取得する。
+		{
+			const AttributeInfo* rangeAttr = prop.GetAttribute("Range");
+			if (rangeAttr && rangeAttr->args.size() >= 2)
+			{
+				vMin = std::stof(rangeAttr->args[0]);
+				vMax = std::stof(rangeAttr->args[1]);
+			}
+			const AttributeInfo* speedAttr = prop.GetAttribute("Speed");
+			if (speedAttr && !speedAttr->args.empty())
+			{
+				vSpeed = std::stof(speedAttr->args[0]);
+			}
+			const AttributeInfo* formatAttr = prop.GetAttribute("Format");
+			if (formatAttr && !formatAttr->args.empty())
+			{
+				format = formatAttr->args[0].c_str();
+			}
+		}
+
+
 		Vector3& euler = m_eulerState.Prev(prop.name);
 
 		PropertyDrawHelper::BeginPropertyLabel(prop);
 		// ここで、ImGui を使用してプロパティの編集 UI を描画します。
-		bool edited = ImGui::DragFloat3("##Euler", &euler.x, 1.0f, 0, 0, mixed ? "---" : "%.3f");
+		bool edited = ImGui::DragFloat3("##Euler", &euler.x, vSpeed, vMin, vMax, mixed ? "---" : format);
 		if (!ImGui::IsItemActive())
 		{
 			m_eulerState.Prev(prop.name) = value.ToEuler();

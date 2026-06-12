@@ -12,26 +12,36 @@ namespace CurryEngine
 	void QuaternionDrawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
 #ifdef USE_IMGUI
-		// QuaternionDrawer::Draw の先頭に一時的に追加
-		{
-			Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
-			Vector3 euler = value.ToEuler();
-			Quaternion restored = Quaternion::FromEuler(euler);
-			/*LOG_INFO(std::format("original: ({}, {}, {}, {})", value.x, value.y, value.z, value.w));
-			LOG_INFO(std::format("restored: ({}, {}, {}, {})", restored.x, restored.y, restored.z, restored.w));*/
-			if (value != restored)
-			{
-				LOG_WARNING(std::format("QuaternionDrawer: Quaternion value cannot be accurately represented as Euler angles. Original: ({}, {}, {}, {}), Restored: ({}, {}, {}, {})",
-					value.x, value.y, value.z, value.w,
-					restored.x, restored.y, restored.z, restored.w));
-			}
-		}
-
 		Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<Quaternion>(context, prop);
 
+		float vSpeed = 0.1f; // ドラッグの速度。必要に応じて属性から取得することもできます。
+		float vMin = 0.0f;   // 最小値。必要に応じて属性から取得することもできます。
+		float vMax = 0.0f;   // 最大値。必要に応じて属性から取得することもできます。
+		const char* format = "%.3f"; // 表示フォーマット。必要に応じて属性から取得することもできます。
+
+		// 属性から vSpeed、vMin、vMax、format を取得する。
+		{
+			const AttributeInfo* rangeAttr = prop.GetAttribute("Range");
+			if (rangeAttr && rangeAttr->args.size() >= 2)
+			{
+				vMin = std::stof(rangeAttr->args[0]);
+				vMax = std::stof(rangeAttr->args[1]);
+			}
+			const AttributeInfo* speedAttr = prop.GetAttribute("Speed");
+			if (speedAttr && !speedAttr->args.empty())
+			{
+				vSpeed = std::stof(speedAttr->args[0]);
+			}
+			const AttributeInfo* formatAttr = prop.GetAttribute("Format");
+			if (formatAttr && !formatAttr->args.empty())
+			{
+				format = formatAttr->args[0].c_str();
+			}
+		}
+
 		PropertyDrawHelper::BeginPropertyLabel(prop);
-		bool edited = ImGui::DragFloat4("##Quaternion", &value.x, 1.0f, 0, 0, mixed ? "---" : "%.3f");
+		bool edited = ImGui::DragFloat4("##Quaternion", &value.x, vSpeed, vMin, vMax, mixed ? "---" : format);
 		if (edited)
 		{
 			// 値が変更されたときの処理。複数選択されている場合は、すべての対象に対して新しい値を適用します。

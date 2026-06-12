@@ -15,8 +15,33 @@ namespace CurryEngine
 		Vector2 value = std::any_cast<Vector2>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<Vector2>(context, prop);
 
+		float vSpeed = 0.1f; // ドラッグの速度。必要に応じて属性から取得することもできます。
+		float vMin = 0.0f;   // 最小値。必要に応じて属性から取得することもできます。
+		float vMax = 0.0f;   // 最大値。必要に応じて属性から取得することもできます。
+		const char* format = "%.3f"; // 表示フォーマット。必要に応じて属性から取得することもできます。
+
+		// 属性から vSpeed、vMin、vMax、format を取得する。
+		{
+			const AttributeInfo* rangeAttr = prop.GetAttribute("Range");
+			if (rangeAttr && rangeAttr->args.size() >= 2)
+			{
+				vMin = std::stof(rangeAttr->args[0]);
+				vMax = std::stof(rangeAttr->args[1]);
+			}
+			const AttributeInfo* speedAttr = prop.GetAttribute("Speed");
+			if (speedAttr && !speedAttr->args.empty())
+			{
+				vSpeed = std::stof(speedAttr->args[0]);
+			}
+			const AttributeInfo* formatAttr = prop.GetAttribute("Format");
+			if (formatAttr && !formatAttr->args.empty())
+			{
+				format = formatAttr->args[0].c_str();
+			}
+		}
+
 		PropertyDrawHelper::BeginPropertyLabel(prop);
-		bool edited = ImGui::DragFloat2(("##" + prop.name).c_str(), &value.x, 0.1f, 0.0f, 0.0f, mixed ? "---" : "%.3f");
+		bool edited = ImGui::DragFloat2(("##" + prop.name).c_str(), &value.x, vSpeed, vMin, vMax, mixed ? "---" : format);
 		if (edited)
 		{
 			// 値が変更されたときの処理。複数選択されている場合は、すべての対象に対して新しい値を適用します。

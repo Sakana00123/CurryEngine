@@ -15,8 +15,33 @@ namespace CurryEngine
 		int value = std::any_cast<int>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<int>(context, prop);
 
+		float vSpeed = 1.0f; // ドラッグの速度。必要に応じて属性から取得することもできます。
+		int vMin = 0;   // 最小値。必要に応じて属性から取得することもできます。
+		int vMax = 0;   // 最大値。必要に応じて属性から取得することもできます。
+		const char* format = "%d"; // 表示フォーマット。必要に応じて属性から取得することもできます。
+
+		// 属性から vSpeed、vMin、vMax、format を取得する。
+		{
+			const AttributeInfo* rangeAttr = prop.GetAttribute("Range");
+			if (rangeAttr && rangeAttr->args.size() >= 2)
+			{
+				vMin = std::stoi(rangeAttr->args[0]);
+				vMax = std::stoi(rangeAttr->args[1]);
+			}
+			const AttributeInfo* speedAttr = prop.GetAttribute("Speed");
+			if (speedAttr && !speedAttr->args.empty())
+			{
+				vSpeed = std::stof(speedAttr->args[0]);
+			}
+			const AttributeInfo* formatAttr = prop.GetAttribute("Format");
+			if (formatAttr && !formatAttr->args.empty())
+			{
+				format = formatAttr->args[0].c_str();
+			}
+		}
+
 		PropertyDrawHelper::BeginPropertyLabel(prop);
-		bool edited = ImGui::DragInt("##int", &value, 1.0f, 0, 0, mixed ? "---" : "%d");
+		bool edited = ImGui::DragInt("##int", &value, vSpeed, vMin, vMax, mixed ? "---" : format);
 		if (edited)
 		{
 			// 値が変更されたときの処理。複数選択されている場合は、すべての対象に対して新しい値を適用します。
