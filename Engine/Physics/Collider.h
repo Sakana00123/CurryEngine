@@ -94,15 +94,27 @@ public:
 
 
 	/** @brief トリガーかどうか。*/
+	C_FUNCTION()
 	bool IsTrigger();
 
 	/** @brief トリガー設定。*/
+	C_FUNCTION()
 	void SetTrigger(bool trigger);
 
+	/* @brief 自動フィットするか。*/
+	C_FUNCTION()
+	bool GetAutoFit() const;
+
+	/* @brief 自動フィット設定。*/
+	C_FUNCTION()
+	void SetAutoFit(bool autoFit);
+
 	/** @brief 接触オフセットを取得します。*/
+	C_FUNCTION()
 	float GetContactOffset() const;
 
 	/** @brief 接触オフセットを設定します。*/
+	C_FUNCTION()
 	void SetContactOffset(float offset);
 
 	/**
@@ -187,15 +199,15 @@ private:
 	void OnTriggerExit(const TriggerInfo& info);
 public:
 	/** @brief 物理的に反応せず通知のみを行う場合に true。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("IsTrigger"), CurryEngine::PropertyAttributes::Setter("SetTrigger"))
 	bool isTrigger{ false };
 
 	/** @brief 自動フィットするか。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetAutoFit"), CurryEngine::PropertyAttributes::Setter("SetAutoFit"))
 	bool autoFit{ false };
 
 	/** @brief 衝突判定の際の接触オフセット。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetContactOffset"), CurryEngine::PropertyAttributes::Setter("SetContactOffset"))
 	float contactOffset{ 0.02f };
 
 	/** @brief AABB の最小点。*/

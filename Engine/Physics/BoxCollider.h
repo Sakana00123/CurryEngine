@@ -20,7 +20,7 @@ public:
 
 #ifdef USE_IMGUI
 	/** @brief プロパティ描画。*/
-	void DrawProperty(const PropertyDrawContext& context) override;
+	//void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
@@ -32,10 +32,25 @@ public:
 
 public:
 	/** @brief ローカルオフセット。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetCenter"), CurryEngine::PropertyAttributes::Setter("SetCenter"))
 	Vector3 center{ 0,0,0 };
 	/** @brief ボックスの辺長。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetSize"), CurryEngine::PropertyAttributes::Setter("SetSize"))
 	Vector3 size{ 1,1,1 };
+
+	/** @brief 中心位置を取得します。*/
+	C_FUNCTION()
+	Vector3 GetCenter() const;
+	/** @brief 中心位置を設定します。*/
+	C_FUNCTION()
+	void SetCenter(const Vector3& center);
+	/** @brief サイズを取得します。*/
+	C_FUNCTION()
+	Vector3 GetSize() const;
+	/** @brief サイズを設定します。*/
+	C_FUNCTION()
+	void SetSize(const Vector3& size);
+
+
 
 };

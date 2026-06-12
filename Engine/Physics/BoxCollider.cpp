@@ -79,26 +79,26 @@ void BoxCollider::Render(RenderContext* rtx)
 
 
 #ifdef USE_IMGUI
-void BoxCollider::DrawProperty(const PropertyDrawContext& context)
-{
-	IMGUI_PROPERTY_BEGIN();
-	Collider::DrawProperty(context);
-
-	bool isChanged = false;
-
-
-	//isChanged |= ImGui::DragFloat3("Center", &center.x);
-	//isChanged |= ImGui::DragFloat3("Size", &size.x);
-	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
-	IMGUI_PROPERTY_VECTOR3("Size", size, isChanged);
-
-	// サイズやオフセットが変更された場合は、物理エンジンに同期する必要があるため、フラグをセットします。
-	if (isChanged)
-	{
-		SetNeedSync();
-	}
-	IMGUI_PROPERTY_END();
-}
+//void BoxCollider::DrawProperty(const PropertyDrawContext& context)
+//{
+//	IMGUI_PROPERTY_BEGIN();
+//	Collider::DrawProperty(context);
+//
+//	bool isChanged = false;
+//
+//
+//	//isChanged |= ImGui::DragFloat3("Center", &center.x);
+//	//isChanged |= ImGui::DragFloat3("Size", &size.x);
+//	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
+//	IMGUI_PROPERTY_VECTOR3("Size", size, isChanged);
+//
+//	// サイズやオフセットが変更された場合は、物理エンジンに同期する必要があるため、フラグをセットします。
+//	if (isChanged)
+//	{
+//		SetNeedSync();
+//	}
+//	IMGUI_PROPERTY_END();
+//}
 #endif // USE_IMGUI
 
 json BoxCollider::Serialize() const
@@ -128,4 +128,34 @@ void BoxCollider::Deserialize(const json& j)
 	{
 		size = Vector3(j["size"][0].get<float>(), j["size"][1].get<float>(), j["size"][2].get<float>());
 	}
+}
+
+Vector3 BoxCollider::GetCenter() const
+{
+	return center;
+}
+
+void BoxCollider::SetCenter(const Vector3& newCenter)
+{
+	if (center == newCenter)
+	{
+		return; // 変更がない場合は何もしない
+	}
+	center = newCenter;
+	SetNeedSync(); // オフセットが変更されたことを通知して、物理エンジンに同期する必要があることを示します。
+}
+
+Vector3 BoxCollider::GetSize() const
+{
+	return size;
+}
+
+void BoxCollider::SetSize(const Vector3& newSize)
+{
+	if (size == newSize)
+	{
+		return; // 変更がない場合は何もしない
+	}
+	size = newSize;
+	SetNeedSync(); // サイズが変更されたことを通知して、物理エンジンに同期する必要があることを示します。
 }

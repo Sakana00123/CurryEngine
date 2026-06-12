@@ -15,7 +15,7 @@ public:
 	void Render(RenderContext* rtx) override;
 #ifdef USE_IMGUI
 	/** @brief プロパティ描画。*/
-	void DrawProperty(const PropertyDrawContext& context) override;
+	//void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 	/** @brief シリアライズ。*/
@@ -24,8 +24,14 @@ public:
 	void Deserialize(const json& j) override;
 
 public:
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("IsConvex"), CurryEngine::PropertyAttributes::Setter("SetConvex"))
 	bool convex = false; // 凸メッシュかどうかのフラグ
+
+	C_FUNCTION()
+	bool IsConvex() const;
+
+	C_FUNCTION()
+	void SetConvex(bool isConvex);
 
 	/** @brief メッシュアセットのパス。*/
 	//C_PROPERTY()

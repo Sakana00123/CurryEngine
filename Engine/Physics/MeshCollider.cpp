@@ -157,22 +157,22 @@ void MeshCollider::Render(RenderContext* rtx)
 }
 
 #ifdef USE_IMGUI
-void MeshCollider::DrawProperty(const PropertyDrawContext& context)
-{
-	IMGUI_PROPERTY_BEGIN();
-
-	Collider::DrawProperty(context);
-
-	bool edited = false;
-	IMGUI_PROPERTY_BOOL("Convex", convex, edited);
-	if (edited)
-	{
-		SetNeedSync(); // convex プロパティが変更されたことを通知して、物理エンジンに同期する必要があることを示します。
-	}
-
-	IMGUI_PROPERTY_END();
-
-}
+//void MeshCollider::DrawProperty(const PropertyDrawContext& context)
+//{
+//	IMGUI_PROPERTY_BEGIN();
+//
+//	Collider::DrawProperty(context);
+//
+//	bool edited = false;
+//	IMGUI_PROPERTY_BOOL("Convex", convex, edited);
+//	if (edited)
+//	{
+//		SetNeedSync(); // convex プロパティが変更されたことを通知して、物理エンジンに同期する必要があることを示します。
+//	}
+//
+//	IMGUI_PROPERTY_END();
+//
+//}
 #endif // USE_IMGUI
 
 json MeshCollider::Serialize() const
@@ -184,4 +184,18 @@ json MeshCollider::Serialize() const
 void MeshCollider::Deserialize(const json& j)
 {
 	Collider::Deserialize(j);
+}
+
+bool MeshCollider::IsConvex() const
+{
+	return convex;
+}
+
+void MeshCollider::SetConvex(bool isConvex)
+{
+	if (convex != isConvex)
+	{
+		convex = isConvex;
+		SetNeedSync(); // convex プロパティが変更されたことを通知して、物理エンジンに同期する必要があることを示します。
+	}
 }

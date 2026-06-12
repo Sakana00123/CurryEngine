@@ -74,23 +74,23 @@ void SphereCollider::Render(RenderContext* rtx)
 }
 
 #ifdef USE_IMGUI
-void SphereCollider::DrawProperty(const PropertyDrawContext& context)
-{
-	IMGUI_PROPERTY_BEGIN();
-	Collider::DrawProperty(context);
-	bool isChanged = false;
-	//isChanged |= ImGui::DragFloat3("Center", &center.x);
-	//isChanged |= ImGui::DragFloat("Radius", &radius, 0.1f, 0.0f, FLT_MAX);
-	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
-	IMGUI_PROPERTY_FLOAT("Radius", radius, isChanged, 0.1f, 0.0f, FLT_MAX);
-
-	if (isChanged)
-	{
-		// プロパティが変更された場合、物理エンジンとの状態同期が必要であることを示すフラグを立てます。
-		SetNeedSync();
-	}
-	IMGUI_PROPERTY_END();
-}
+//void SphereCollider::DrawProperty(const PropertyDrawContext& context)
+//{
+//	IMGUI_PROPERTY_BEGIN();
+//	Collider::DrawProperty(context);
+//	bool isChanged = false;
+//	//isChanged |= ImGui::DragFloat3("Center", &center.x);
+//	//isChanged |= ImGui::DragFloat("Radius", &radius, 0.1f, 0.0f, FLT_MAX);
+//	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
+//	IMGUI_PROPERTY_FLOAT("Radius", radius, isChanged, 0.1f, 0.0f, FLT_MAX);
+//
+//	if (isChanged)
+//	{
+//		// プロパティが変更された場合、物理エンジンとの状態同期が必要であることを示すフラグを立てます。
+//		SetNeedSync();
+//	}
+//	IMGUI_PROPERTY_END();
+//}
 #endif // USE_IMGUI
 
 json SphereCollider::Serialize() const
@@ -129,5 +129,33 @@ void SphereCollider::Deserialize(const json& j)
 	if (j.contains("size") && j["size"].is_array() && j["size"].size() == 3)
 	{
 		radius = j["size"][0].get<float>(); // サイズのx成分を半径として使用
+	}
+}
+
+Vector3 SphereCollider::GetCenter() const
+{
+	return center;
+}
+
+void SphereCollider::SetCenter(const Vector3& newCenter)
+{
+	if (center != newCenter)
+	{
+		center = newCenter;
+		SetNeedSync(); // 物理エンジンとの状態同期が必要であることを示すフラグを立てる
+	}
+}
+
+float SphereCollider::GetRadius() const
+{
+	return radius;
+}
+
+void SphereCollider::SetRadius(float newRadius)
+{
+	if (radius != newRadius)
+	{
+		radius = newRadius;
+		SetNeedSync(); // 物理エンジンとの状態同期が必要であることを示すフラグを立てる
 	}
 }

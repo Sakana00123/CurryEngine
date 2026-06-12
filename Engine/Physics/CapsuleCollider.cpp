@@ -83,27 +83,24 @@ void CapsuleCollider::Render(RenderContext* rtx)
 #endif // _DEBUG
 }
 
-#ifdef USE_IMGUI
-void CapsuleCollider::DrawProperty(const PropertyDrawContext& context)
-{
-	IMGUI_PROPERTY_BEGIN();
-	Collider::DrawProperty(context);
-	bool isChanged = false;
-
-	//isChanged |= ImGui::DragFloat3("Center", &center.x);
-	//isChanged |= ImGui::DragFloat("Radius", &radius, 0.1f, 0.0f, FLT_MAX);
-	//isChanged |= ImGui::DragFloat("Height", &height, 0.1f, 0.0f, FLT_MAX);
-	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
-	IMGUI_PROPERTY_FLOAT("Radius", radius, isChanged, 0.1f, 0.0f, FLT_MAX);
-	IMGUI_PROPERTY_FLOAT("Height", height, isChanged, 0.1f, 0.0f, FLT_MAX);
-
-	if (isChanged)
-	{
-		SetNeedSync(); // 物理エンジンとの状態同期が必要なことをマーク
-	}
-	IMGUI_PROPERTY_END();
-}
-#endif
+//#ifdef USE_IMGUI
+//void CapsuleCollider::DrawProperty(const PropertyDrawContext& context)
+//{
+//	IMGUI_PROPERTY_BEGIN();
+//	Collider::DrawProperty(context);
+//	bool isChanged = false;
+//
+//	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
+//	IMGUI_PROPERTY_FLOAT("Radius", radius, isChanged, 0.1f, 0.0f, FLT_MAX);
+//	IMGUI_PROPERTY_FLOAT("Height", height, isChanged, 0.1f, 0.0f, FLT_MAX);
+//
+//	if (isChanged)
+//	{
+//		SetNeedSync(); // 物理エンジンとの状態同期が必要なことをマーク
+//	}
+//	IMGUI_PROPERTY_END();
+//}
+//#endif
 
 json CapsuleCollider::Serialize() const
 {
@@ -131,4 +128,37 @@ void CapsuleCollider::Deserialize(const json& j)
 	{
 		height = j["height"].get<float>();
 	}
+}
+
+Vector3 CapsuleCollider::GetCenter() const
+{
+	return center;
+}
+
+void CapsuleCollider::SetCenter(const Vector3& newCenter)
+{
+	center = newCenter;
+	SetNeedSync(); // 物理エンジンとの状態同期が必要なことをマーク
+}
+
+float CapsuleCollider::GetRadius() const
+{
+	return radius;
+}
+
+void CapsuleCollider::SetRadius(float newRadius)
+{
+	radius = newRadius;
+	SetNeedSync(); // 物理エンジンとの状態同期が必要なことをマーク
+}
+
+float CapsuleCollider::GetHeight() const
+{
+	return height;
+}
+
+void CapsuleCollider::SetHeight(float newHeight)
+{
+	height = newHeight;
+	SetNeedSync(); // 物理エンジンとの状態同期が必要なことをマーク
 }

@@ -394,10 +394,14 @@ void Rigidbody::OnGround()
 #ifdef USE_IMGUI
 void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 {
+
+	Component::DrawProperty(context); // 基底クラスのプロパティ描画も呼び出す
+
 	IMGUI_PROPERTY_BEGIN();
 	//ImGui::Text("Actor Handle: %d", m_actorHandle);
 	// 物理エンジンのプロパティを編集するGUI要素をここに追加します。
 
+#if 0
 	// 質量を編集するための入力フィールド
 	bool isMassChanged = false;
 	IMGUI_PROPERTY_FLOAT("mass", mass, isMassChanged, 0.1f, 0.0001f, FLT_MAX, "%.4f");
@@ -446,6 +450,8 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 		// スリープ閾値が変更されたときの処理をここに追加します。
 		SetSleepThreshold(sleepThreshold);
 	}
+#endif // 0
+
 
 	// 移動や回転の制約を編集するためのGUI要素をここに追加します。
 	RigidbodyConstraints newConstraints = constraints;
