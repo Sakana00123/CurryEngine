@@ -57,6 +57,7 @@ namespace CurryEngine
 {
 	void ObjectIdDrawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
+#ifdef USE_IMGUI
 		ObjectId value = std::any_cast<ObjectId>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<ObjectId>(context, prop);
 		auto referenceAttr = prop.GetAttribute("ObjectReference");
@@ -69,16 +70,16 @@ namespace CurryEngine
 		}
 
 		bool referenceChanged = false; // 参照が変更されたかどうかを追跡するフラグ
-		
+
 
 		PropertyDrawHelper::BeginPropertyLabel(prop);
-		
+
 		if (auto referenceAttr = prop.GetAttribute("ObjectReference")) // ObjectReference 属性がある場合のみドロップを受け入れる
 		{
 			std::string displayText = GetDisplayText(value, refTypeName);
 			displayText += "##" + prop.name; // 同じ名前のプロパティが複数ある場合に識別できるように ID を追加
 			ImGui::Button(displayText.c_str()); // ドロップターゲットとして機能するボタンを描画
-			
+
 			if (ImGui::BeginDragDropTarget()) // ドロップ操作の受け入れを開始
 			{
 				// ドロップされたペイロードのタイプを定義（例: "ReferenceFieldName"）。ここでは referenceAttr の引数から参照先のコンポーネントの型名を取得して使用することを想定
@@ -249,6 +250,8 @@ namespace CurryEngine
 				[]() { return true; }  // commitCheck: 変更をコミットするかどうかを判断する関数（ここでは常にコミットする）
 			);
 		}
+
+#endif // USE_IMGUI
 
 	}
 }

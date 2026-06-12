@@ -14,6 +14,7 @@ namespace CurryEngine
 		if (!prop || !context || context->IsEmpty()) return;
 		if (prop->GetAttribute("HideInInspector")) return; // HideInInspector 属性がある場合は描画しない
 
+#ifdef USE_IMGUI
 		ImGui::PushID(prop->name.c_str()); // 同じ名前のプロパティが複数ある場合に識別できるように ID を追加
 
 		IPropertyDrawer* drawer = nullptr;
@@ -54,6 +55,8 @@ namespace CurryEngine
 		}
 
 		ImGui::PopID();
+#endif // USE_IMGUI
+
 	}
 
 #if 0

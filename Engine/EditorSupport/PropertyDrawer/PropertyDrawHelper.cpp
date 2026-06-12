@@ -8,6 +8,7 @@ namespace CurryEngine
 	{
 		void BeginPropertyLabel(const PropertyInfo& prop)
 		{
+#ifdef USE_IMGUI
 			const char* label = prop.name.c_str();
 			const char* tooltip = nullptr;
 			if (auto* tooltipAttr = prop.GetAttribute("Tooltip")) // Tooltip 属性があれば、引数からツールチップを取得
@@ -18,6 +19,7 @@ namespace CurryEngine
 				}
 			}
 			IMGUI_PROPERTY_EX(label, tooltip);
+#endif // USE_IMGUI
 		}
 		
 	}

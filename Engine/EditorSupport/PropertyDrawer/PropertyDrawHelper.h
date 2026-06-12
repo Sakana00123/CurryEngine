@@ -89,10 +89,12 @@ namespace CurryEngine
 				return;
 			if (!prop.setter || !prop.getter)
 				return;
+#ifdef USE_IMGUI
 			if (prevCheck ? prevCheck() : ImGui::IsItemActivated())
 				state.Prev(prop.name) = currentValue;
 
 			if (commitCheck ? commitCheck() : ImGui::IsItemDeactivatedAfterEdit())
+#endif // USE_IMGUI
 			{
 				T prev = state.Prev(prop.name);
 				bool same = equals ? equals(currentValue, prev) : (currentValue == prev);

@@ -665,12 +665,18 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 json Transform::Serialize() const
 {
 	json j = Component::Serialize();
+#ifdef USE_IMGUI
 	j["enableScaleLink"] = enableScaleLink;
+#endif // USE_IMGUI
+
 	return {};
 }
 
 void Transform::Deserialize(const json& j)
 {
 	Component::Deserialize(j);
+#ifdef USE_IMGUI
 	enableScaleLink = j.value("enableScaleLink", false);
+#endif // USE_IMGUI
+
 }
