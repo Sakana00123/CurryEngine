@@ -80,17 +80,19 @@ namespace CurryEngine
 			DrawerState<T>& state,
 			const T& currentValue,
 			std::function<std::string(const T&)> toStr = nullptr,
-			std::function<bool(const T&, const T&)> equals = nullptr
+			std::function<bool(const T&, const T&)> equals = nullptr,
+			std::function<bool()> prevCheck = nullptr,
+			std::function<bool()> commitCheck = nullptr
 			)
 		{
 			if (ctx.IsEmpty())
 				return;
 			if (!prop.setter || !prop.getter)
 				return;
-			if (ImGui::IsItemActivated())
+			if (prevCheck ? prevCheck() : ImGui::IsItemActivated())
 				state.Prev(prop.name) = currentValue;
 
-			if (ImGui::IsItemDeactivatedAfterEdit())
+			if (commitCheck ? commitCheck() : ImGui::IsItemDeactivatedAfterEdit())
 			{
 				T prev = state.Prev(prop.name);
 				bool same = equals ? equals(currentValue, prev) : (currentValue == prev);
@@ -100,7 +102,7 @@ namespace CurryEngine
 					std::string newStr = toStr ? toStr(currentValue) : "";
 					std::string oldStr = toStr ? toStr(prev) : "";
 					{
-						std::string description = "Set " + prop.name;
+						std::string description = "Set " + prop.name + (toStr ? ("[ new: " + newStr + "]") : "") + (toStr ? (" [ old: " + oldStr + "]") : "");
 						SetValueCommandDesc descriptionStruct{ prop, ctx };
 
 						CurryEngine::History::ExecuteCommand(

@@ -12,6 +12,47 @@
 #include "Engine/Scenes/SceneManager.h"
 
 
+inline static std::string GetObjectNameById(const ObjectId& id)
+{
+	if (!id.IsValid())
+		return "None";
+	const auto& obj = ObjectManager::Find(id);
+	return obj ? obj->GetName() : ("Unknown(" + std::to_string(id.Value()) + ")");
+}
+
+inline static std::string GetComponentNameById(const ObjectId& id)
+{
+	if (!id.IsValid())
+		return "None";
+	const auto& componentCacheMap = SceneManager::GetLoadingSceneOrCurrentScene()->GetObjectManager()->GetComponentCacheMap();
+	auto it = componentCacheMap.find(id);
+	if (it != componentCacheMap.end())
+	{
+		if (auto component = it->second.lock())
+		{
+			const auto& owner = component->GetOwner();
+			return owner ? owner->GetName() : ("Unknown Component(" + std::to_string(id.Value()) + ")");
+		}
+	}
+	return ("Unknown(" + std::to_string(id.Value()) + ")");
+}
+
+inline static std::string GetDisplayText(const ObjectId& id, const std::string& refTypeName)
+{
+	std::string displayText = "None";
+	if (refTypeName == "GameObject")
+	{
+		displayText = GetObjectNameById(id);
+	}
+	else
+	{
+		displayText = GetComponentNameById(id);
+	}
+	displayText += "(" + refTypeName + ")"; // 参照先の型名を表示に追加
+	return displayText;
+}
+
+
 namespace CurryEngine
 {
 	void ObjectIdDrawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
@@ -27,49 +68,17 @@ namespace CurryEngine
 			return;
 		}
 
+		bool referenceChanged = false; // 参照が変更されたかどうかを追跡するフラグ
+		
+
 		PropertyDrawHelper::BeginPropertyLabel(prop);
 		
 		if (auto referenceAttr = prop.GetAttribute("ObjectReference")) // ObjectReference 属性がある場合のみドロップを受け入れる
 		{
-			std::string displayText = "None";
-			if (refTypeName == "GameObject")
-			{
-				const auto& refObj = ObjectManager::Find(value);
-				if (refObj)
-				{
-					const auto& refObjName = refObj ? refObj->GetName() : "Unknown";
-					displayText = (value).IsValid() ? refObjName : "None"; // 参照先のオブジェクト名を表示に追加
-				}
-				else
-				{
-					displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // 参照先の情報が見つからない場合の表示
-				}
-			}
-			else
-			{
-				const auto& componentCacheMap = SceneManager::GetLoadingSceneOrCurrentScene()->GetObjectManager()->GetComponentCacheMap();
-				auto it = componentCacheMap.find(value);
-				if (it != componentCacheMap.end())
-				{
-					if (auto refComponent = it->second.lock())
-					{
-						const auto& refObj = refComponent->GetOwner();
-						const auto& refObjName = refObj ? refObj->GetName() : "Unknown";
-						displayText = (value).IsValid() ? refObjName : "None"; // 参照先のオブジェクト名を表示に追加
-					}
-					else
-					{
-						displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // 参照先の情報が見つからない場合の表示
-					}
-				}
-				else
-				{
-					displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // 参照先の情報が見つからない場合の表示
-				}
-			}
-			displayText += "(" + refTypeName + ")"; // 参照先の型名を表示に追加
+			std::string displayText = GetDisplayText(value, refTypeName);
 			displayText += "##" + prop.name; // 同じ名前のプロパティが複数ある場合に識別できるように ID を追加
 			ImGui::Button(displayText.c_str()); // ドロップターゲットとして機能するボタンを描画
+			
 			if (ImGui::BeginDragDropTarget()) // ドロップ操作の受け入れを開始
 			{
 				// ドロップされたペイロードのタイプを定義（例: "ReferenceFieldName"）。ここでは referenceAttr の引数から参照先のコンポーネントの型名を取得して使用することを想定
@@ -79,18 +88,22 @@ namespace CurryEngine
 					// 参照先の型が GameObject でない場合（Component型）は、GameObject のペイロードも受け入れるようにする。これにより、ユーザーは GameObject をドロップして、その GameObject に指定された型のコンポーネントがあれば自動的にそのコンポーネントを参照することができるようになる。
 					if (refTypeName != "GameObject") // 参照先の型が GameObject でない場合は、GameObjectのペイロードも受け入れる
 					{
+						// -----------------------------------------------------------
+						// Hierarchyから GameObject をドロップした場合、その GameObject に指定された型のコンポーネントがあれば自動的にそのコンポーネントを参照するようにする
+						// -----------------------------------------------------------
+						// TODO: スパゲッティコードになっているので、リファクタリングして整理すること。特に、ドロップされた GameObject から指定された型のコンポーネントを探す処理は、別の関数に切り出すなどして分かりやすくすること。
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) // "GameObject" タグのペイロードを受け入れる
 						{
 							if (payload->DataSize == sizeof(ObjectId)) // ペイロードのサイズが ObjectId と同じであることを確認
 							{
 								ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ペイロードから ObjectId を取得
-								ObjectId newComponentId = ObjectId::Invalid(); // ドロップされた GameObject から取得したコンポーネントの ObjectId を保持する変数
 								// ドロップされた GameObject に指定された型のコンポーネントがあればそのコンポーネントの ObjectId を取得
 								if (auto* droppedObj = ObjectManager::Find(droppedId))
 								{
 									if (auto refComponent = droppedObj->GetComponentByTypeName(refTypeName))
 									{
-										newComponentId = refComponent->GetId(); // ドロップされた GameObject の指定された型のコンポーネントの ObjectId を使用
+										value = refComponent->GetId(); // ドロップされた GameObject の指定された型のコンポーネントの ObjectId を使用
+										referenceChanged = true; // 参照が変更されたことを記録
 									}
 									else
 									{
@@ -101,75 +114,19 @@ namespace CurryEngine
 								{
 									Console::LogWarning("Dropped GameObject not found: " + std::to_string(droppedId.Value()));
 								}
-								value = newComponentId; // フィールドにドロップされたコンポーネントの ObjectId を設定
-								std::string refTypeDisplay = (refTypeName == "GameObject") ? "GameObject" : ("Component(" + refTypeName + ")");
-								const auto& droppedObj = ObjectManager::Find(newComponentId);
-								const auto& droppedObjName = droppedObj ? droppedObj->GetName() : "Unknown";
-
-								CurryEngine::PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, value);
-
-								CurryEngine::PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, newComponentId,
-									[refTypeDisplay](const ObjectId& v) -> std::string {
-										if (v.IsValid())
-										{
-											const auto& prevObj = ObjectManager::Find(v);
-											const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-											return std::to_string(v.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")";
-										}
-										else
-										{
-											return std::string("None");
-										}
-									});
-
-
-								//const auto& prevObj = ObjectManager::Find(prevValue);
-								//const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-								//std::string newValueLog = newComponentId.IsValid() ? (std::to_string(newComponentId.Value()) + "(" + refTypeDisplay + ": " + droppedObjName + ")") : "None";
-								//std::string prevValueLog = prevValue.IsValid() ? (std::to_string(prevValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
-								///*IMGUI_PROPERTY_COMMAND(label, ObjectId, newComponentId, prevValue,
-								//	newValueLog,
-								//	prevValueLog);*/
-								//prevValue = newComponentId; // 前回の値を更新
 							}
 						}
 					}
+					// -----------------------------------------------------------
+					// 主に、Inspectorから 参照先の型と同じ型のコンポーネントをドロップした場合、そのコンポーネントを参照するようにする
+					// -----------------------------------------------------------
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(payloadType)) // "ObjectReference" タグのペイロードを受け入れる
 					{
 						if (payload->DataSize == sizeof(ObjectId)) // ペイロードのサイズが ObjectId と同じであることを確認
 						{
 							ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ペイロードから ObjectId を取得
 							value = droppedId; // フィールドにドロップされた ObjectId を設定
-							std::string refTypeDisplay = (refTypeName == "GameObject") ? "GameObject" : ("Component(" + refTypeName + ")");
-							const auto& droppedObj = ObjectManager::Find(droppedId);
-							const auto& droppedObjName = droppedObj ? droppedObj->GetName() : "Unknown";
-
-							CurryEngine::PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, value);
-
-							CurryEngine::PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, droppedId,
-								[refTypeDisplay](const ObjectId& v) -> std::string {
-									if (v.IsValid())
-									{
-										const auto& prevObj = ObjectManager::Find(v);
-										const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-										return std::to_string(v.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")";
-									}
-									else
-									{
-										return std::string("None");
-									}
-								});
-
-
-							/*const auto& prevObj = ObjectManager::Find(prevValue);
-							const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-							std::string newValueLog = droppedId.IsValid() ? (std::to_string(droppedId.Value()) + "(" + refTypeDisplay + ": " + droppedObjName + ")") : "None";
-							std::string prevValueLog = prevValue.IsValid() ? (std::to_string(prevValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";*/
-
-							/*IMGUI_PROPERTY_COMMAND(label, ObjectId, droppedId, prevValue,
-								newValueLog,
-								prevValueLog);*/
-							//prevValue = droppedId; // 前回の値を更新
+							referenceChanged = true; // 参照が変更されたことを記録
 						}
 					}
 				}
@@ -183,24 +140,7 @@ namespace CurryEngine
 				{
 					ObjectId oldValue = value;
 					value = ObjectId::Invalid(); // 参照をクリア
-
-					const std::string refTypeDisplay = (refTypeName == "GameObject") ? "GameObject" : ("Component(" + refTypeName + ")");
-					const auto& prevObj = ObjectManager::Find(oldValue);
-					const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-					const auto& newValueLog = "None";
-					const auto& prevValueLog = oldValue.IsValid() ? (std::to_string(oldValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
-
-					CurryEngine::PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, value);
-
-					CurryEngine::PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, value,
-						[](const ObjectId& v) -> std::string {
-							return "None";
-						});
-
-					/*IMGUI_PROPERTY_COMMAND(label, ObjectId, ObjectId::Invalid(), oldValue,
-						newValueLog,
-						prevValueLog);*/
-					//prevValue = ObjectId::Invalid(); // 前回の値を更新
+					referenceChanged = (oldValue != value); // 参照が変更されたことを記録
 				}
 
 				// ... ボタンで参照先を選択できるようにする
@@ -229,35 +169,9 @@ namespace CurryEngine
 									ImGuiSelectableFlags flags = 0;
 									if (ImGui::Selectable(obj->name.c_str(), isSelected, flags))
 									{
-										//ObjectId oldValue = value;
-										//value = obj->id; // フィールドに選択されたオブジェクトの ID を設定
-
-										//std::string refTypeDisplay = "GameObject";
-										//const auto& prevObj = ObjectManager::Find(oldValue);
-										//const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-										//const auto& newValueLog = std::to_string(obj->id.Value()) + "(" + refTypeDisplay + ": " + obj->GetName() + ")";
-										//const auto& prevValueLog = oldValue.IsValid() ? (std::to_string(oldValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
-
-										PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, obj->id);
-
-										PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, obj->id,
-											[](const ObjectId& v) -> std::string {
-												if (v.IsValid())
-												{
-													const auto& prevObj = ObjectManager::Find(v);
-													const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-													return std::to_string(v.Value()) + "(" + "GameObject" + ": " + prevObjName + ")";
-												}
-												else
-												{
-													return std::string("None");
-												}
-											});
-
-										/*IMGUI_PROPERTY_COMMAND(label, ObjectId, obj->id, oldValue,
-											std::to_string(obj->id.Value()),
-											std::to_string(oldValue.Value()));*/
-										//prevValue = obj->id; // 前回の値を更新
+										//!
+										value = obj->id; // フィールドに選択されたオブジェクトの ID を設定
+										referenceChanged = true; // 参照が変更されたことを記録
 										ImGui::CloseCurrentPopup(); // 選択後にポップアップを閉じる
 									}
 								}
@@ -286,34 +200,8 @@ namespace CurryEngine
 											{
 												if (ImGui::IsItemActivated()) // Headerがアクティブになった場合（クリックされた場合）
 												{
-													//ObjectId oldValue = value;
-													//value = refComponent->id; // フィールドに選択されたオブジェクトの ID を設定
-													std::string refTypeDisplay = "Component(" + refTypeName + ")";
-													//const auto& prevObj = ObjectManager::Find(oldValue);
-													//const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-													//const auto& newValueLog = std::to_string(refComponent->id.Value()) + "(" + refTypeDisplay + ": " + obj->GetName() + ")";
-													//const auto& prevValueLog = oldValue.IsValid() ? (std::to_string(oldValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
-
-													PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, refComponent->id);
-
-													PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, refComponent->id,
-														[refTypeDisplay](const ObjectId& v) -> std::string {
-															if (v.IsValid())
-															{
-																const auto& prevObj = ObjectManager::Find(v);
-																const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-																return std::to_string(v.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")";
-															}
-															else
-															{
-																return std::string("None");
-															}
-														});
-
-													/*IMGUI_PROPERTY_COMMAND(label, ObjectId, refComponent->id, oldValue,
-														newValueLog,
-														prevValueLog);*/
-													//prevValue = refComponent->id; // 前回の値を更新
+													value = refComponent->id; // フィールドに選択されたオブジェクトの ID を設定
+													referenceChanged = true; // 参照が変更されたことを記録
 													ImGui::CloseCurrentPopup(); // 選択後にポップアップを閉じる
 												}
 											}
@@ -331,35 +219,8 @@ namespace CurryEngine
 													}
 													if (ImGui::TreeNodeEx(comp->GetTypeName().c_str(), flags))
 													{
-														//ObjectId oldValue = value;
-														//value = comp->id; // フィールドに選択されたオブジェクトの ID を設定
-
-														std::string refTypeDisplay = "Component(" + refTypeName + ")";
-														//const auto& prevObj = ObjectManager::Find(oldValue);
-														//const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-														//const auto& newValueLog = std::to_string(comp->id.Value()) + "(" + refTypeDisplay + ": " + obj->GetName() + ")";
-														//const auto& prevValueLog = oldValue.IsValid() ? (std::to_string(oldValue.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")") : "None";
-
-														PropertyDrawHelper::ApplyToAll<ObjectId>(context, prop, comp->id);
-
-														PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, comp->id,
-															[refTypeDisplay](const ObjectId& v) -> std::string {
-																if (v.IsValid())
-																{
-																	const auto& prevObj = ObjectManager::Find(v);
-																	const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
-																	return std::to_string(v.Value()) + "(" + refTypeDisplay + ": " + prevObjName + ")";
-																}
-																else
-																{
-																	return std::string("None");
-																}
-															});
-
-														/*IMGUI_PROPERTY_COMMAND(label, ObjectId, comp->id, oldValue,
-															newValueLog,
-															prevValueLog);*/
-														//prevValue = comp->id; // 前回の値を更新
+														value = comp->id; // フィールドに選択されたコンポーネントの ID を設定
+														referenceChanged = true; // 参照が変更されたことを記録
 														ImGui::CloseCurrentPopup(); // 選択後にポップアップを閉じる
 													}
 												}
@@ -375,10 +236,19 @@ namespace CurryEngine
 			}
 		}
 
+		if (referenceChanged) // 参照が変更された場合のみ、プロパティの値を更新する
+		{
+			// 変更された値をすべての選択中のオブジェクトに適用
+			PropertyDrawHelper::ApplyToAll(context, prop, value);
 
-		/*PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, value,
-			[](const ObjectId& v) {
-				return std::to_string(v.Value());
-			});*/
+			// 変更されたことを記録
+			PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, value,
+				[refTypeName](const ObjectId& id) { return GetDisplayText(id, refTypeName); }, // toStr: ObjectId を表示用の文字列に変換する関数
+				[](const ObjectId& a, const ObjectId& b) { return a == b; }, // equals: 2つの ObjectId が等しいかどうかを比較する関数
+				[]() { return false; }, // prevCheck: 前の値を保存するかどうかを判断する関数
+				[]() { return true; }  // commitCheck: 変更をコミットするかどうかを判断する関数（ここでは常にコミットする）
+			);
+		}
+
 	}
 }

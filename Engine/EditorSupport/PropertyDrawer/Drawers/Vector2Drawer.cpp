@@ -11,6 +11,7 @@ namespace CurryEngine
 {
 	void Vector2Drawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
+#ifdef USE_IMGUI
 		Vector2 value = std::any_cast<Vector2>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<Vector2>(context, prop);
 
@@ -25,7 +26,12 @@ namespace CurryEngine
 		// 値のコミット処理。ユーザーが編集を完了したときに、Undo/Redo コマンドを発行します。
 		PropertyDrawHelper::CommitEdit<Vector2>(prop, context, m_state, value,
 			[](const Vector2& v) {
-				return "Vector2(" + std::to_string(v.x) + ", " + std::to_string(v.y) + ")";
-			});
+				return "(" + std::to_string(v.x) + ", " + std::to_string(v.y) + ")";
+			},
+			[](const Vector2& a, const Vector2& b) {
+				return std::abs(a.x - b.x) < 1e-6f && std::abs(a.y - b.y) < 1e-6f; // 浮動小数点数の比較は、絶対値の差が小さいかどうかで判定
+			}
+		);
+#endif // USE_IMGUI
 	}
 }

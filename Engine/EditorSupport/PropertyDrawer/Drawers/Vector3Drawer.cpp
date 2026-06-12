@@ -11,6 +11,7 @@ namespace CurryEngine
 {
 	void Vector3Drawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
+#ifdef USE_IMGUI
 		// targets[0] を基準にしてプロパティ値を取得
 		Vector3 value = std::any_cast<Vector3>(prop.getter(context.Primary()));
 		// 複数選択されているオブジェクトのプロパティ値が混在しているかどうかを判定
@@ -30,6 +31,20 @@ namespace CurryEngine
 				return "(" + std::to_string(v.x) + ", "
 					+ std::to_string(v.y) + ", "
 					+ std::to_string(v.z) + ")";
-			});
+			},
+			[](const Vector3& a, const Vector3& b) {
+				return Vector3::Equal(a, b);
+			},
+			[&]() {
+				// 編集開始前の状態を保存する関数。ここでは、現在の Vector3 値を m_state に保存しています。
+				return ImGui::IsItemActivated();
+			},
+			[&]() {
+				// コミットしてもいいかどうかをチェックする関数。ここでは常に true を返していますが、必要に応じて条件を追加できます。
+				return ImGui::IsItemDeactivatedAfterEdit();
+			}
+		);
+
+#endif // USE_IMGUI
 	}
 }

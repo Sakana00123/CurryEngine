@@ -11,6 +11,7 @@ namespace CurryEngine
 {
 	void EulerDrawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
+#ifdef USE_IMGUI
 		Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<Quaternion>(context, prop);
 
@@ -29,6 +30,7 @@ namespace CurryEngine
 			Quaternion newQuat = Quaternion::FromEuler(euler);
 			PropertyDrawHelper::ApplyToAll<Quaternion>(context, prop, newQuat);
 		}
+
 		// 値のコミット処理。ユーザーが編集を完了したときに、Undo/Redo コマンドを発行します。
 		Quaternion currentValue = Quaternion::FromEuler(euler);
 		PropertyDrawHelper::CommitEdit<Quaternion>(prop, context, m_prevQuaternionState, currentValue,
@@ -42,5 +44,7 @@ namespace CurryEngine
 				return Quaternion::NearEqual(a, b);
 			}
 		);
+
+#endif // USE_IMGUI
 	}
 }

@@ -11,6 +11,7 @@ namespace CurryEngine
 {
 	void QuaternionDrawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
+#ifdef USE_IMGUI
 		// QuaternionDrawer::Draw の先頭に一時的に追加
 		{
 			Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
@@ -47,6 +48,18 @@ namespace CurryEngine
 			},
 			[](const Quaternion& a, const Quaternion& b) {
 				return Quaternion::NearEqual(a, b);
-			});
+			},
+			[&]() {
+				// 編集開始前の状態を保存する関数。ここでは、現在の Quaternion 値を m_state に保存しています。
+				return ImGui::IsItemActivated();
+			},
+			[&]() {
+				// コミットしてもいいかどうかをチェックする関数。ここでは常に true を返していますが、必要に応じて条件を追加できます。
+				return ImGui::IsItemDeactivatedAfterEdit();
+			}
+		);
+
+
+#endif // USE_IMGUI
 	}
 }
