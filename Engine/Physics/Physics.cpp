@@ -1743,7 +1743,7 @@ bool Physics::AddCapsuleShape(Transform* transform, const CapsuleColliderData& d
 		_ASSERT_EXPR(shapeHandle != INVALID_SHAPE_HANDLE, "Failed to AddShape!");
 		RegisterShape(shapeHandle, shape); // ShapeHandleとPxShape*のマッピングを保存
 		// CapsuleColliderのローカル位置を設定
-		Quaternion localRot = Transform::EulerToQuaternion({ 0.0f, 0.0f, 90.0f }); // カプセルのローカル回転を設定（Z軸回転で立てる）
+		Quaternion localRot = Quaternion::FromEuler({ 0.0f, 0.0f, 90.0f }); // カプセルのローカル回転を設定（Z軸回転で立てる）
 		SetLocalPose(shapeHandle, data.center, localRot);
 		// トリガーかどうかを設定
 		SetTrigger(shapeHandle, data.isTrigger);

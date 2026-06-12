@@ -79,6 +79,27 @@ XMMATRIX Quaternion::ToMatrix() const
 	return XMMatrixRotationQuaternion(XMLoadFloat4(this));
 }
 
+bool Quaternion::Equal(const Quaternion& q1, const Quaternion& q2)
+{
+	// q と -q は同じ回転なので、ドット積の絶対値で比較
+	float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+	return std::abs(dot) >= 1.0f;
+}
+
+bool Quaternion::NotEqual(const Quaternion& q1, const Quaternion& q2)
+{
+	// q と -q は同じ回転なので、ドット積の絶対値で比較
+	float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+	return std::abs(dot) < 1.0f;
+}
+
+bool Quaternion::NearEqual(const Quaternion& q1, const Quaternion& q2, float epsilon)
+{
+	// q と -q は同じ回転なので、ドット積の絶対値で比較
+	float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+	return std::abs(dot) >= 1.0f - epsilon;
+}
+
 Quaternion Quaternion::Normalized(const Quaternion& q)
 {
 	XMVECTOR v = XMLoadFloat4(&q);
@@ -90,7 +111,7 @@ Quaternion Quaternion::Normalized(const Quaternion& q)
 
 Quaternion Quaternion::FromEuler(const Vector3& euler)
 {
-	XMVECTOR v = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(-euler.x), XMConvertToRadians(-euler.y), XMConvertToRadians(-euler.z));
+	XMVECTOR v = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(euler.x), XMConvertToRadians(euler.y), XMConvertToRadians(euler.z));
 	Quaternion result;
 	XMStoreFloat4(&result, v);
 	return result;

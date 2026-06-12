@@ -11,61 +11,42 @@ namespace CurryEngine
 {
 	void QuaternionDrawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
-#if 0
-		// targets[0] を基準にしてプロパティ値を取得
-		Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
-		// 複数選択されているオブジェクトのプロパティ値が混在しているかどうかを判定
-		bool hasMixedValues = PropertyDrawHelper::HasMixedValues<Quaternion>(context, prop);
-
-		// ラベルの取得
-		const char* label = prop.name.c_str();
-		// ツールチップの取得
-		const char* tooltip = nullptr;
-		if (auto* tooltipAttr = prop.GetAttribute("Tooltip")) // Tooltip 属性があれば、引数からツールチップを取得
+		// QuaternionDrawer::Draw の先頭に一時的に追加
 		{
-			if (!tooltipAttr->args.empty())
+			Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
+			Vector3 euler = value.ToEuler();
+			Quaternion restored = Quaternion::FromEuler(euler);
+			/*LOG_INFO(std::format("original: ({}, {}, {}, {})", value.x, value.y, value.z, value.w));
+			LOG_INFO(std::format("restored: ({}, {}, {}, {})", restored.x, restored.y, restored.z, restored.w));*/
+			if (value != restored)
 			{
-				tooltip = tooltipAttr->args[0].c_str();
+				LOG_WARNING(std::format("QuaternionDrawer: Quaternion value cannot be accurately represented as Euler angles. Original: ({}, {}, {}, {}), Restored: ({}, {}, {}, {})",
+					value.x, value.y, value.z, value.w,
+					restored.x, restored.y, restored.z, restored.w));
 			}
 		}
 
-		IMGUI_PROPERTY_EX(label, tooltip);
-		bool edited = ImGui::DragFloat3("##Quaternion", &value.x, 1.0f, 0, 0, hasMixedValues ? "---" : "%.3f");
-		if (edited)
-		{
-			PropertyDrawHelper::ApplyToAll<Quaternion>(context, prop, value);
-		}
-
-		if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
-		{
-			m_state.Prev(prop.name) = value;
-		}
-
-		if (ImGui::IsItemDeactivatedAfterEdit()) /* 編集終了後にコマンドを発行 */
-		{
-			Quaternion newValue = value; /* 現在の値を取得 */
-			Quaternion prevValue = m_state.Prev(prop.name); /* 前回の値を取得 */
-			if (newValue != prevValue)
-			{
-				//IMGUI_PROPERTY_COMMAND_Quaternion(label, newValue, prevValue);
-			}
-			m_state.Prev(prop.name) = newValue; /* 前回の値を更新 */
-		}
-#else
 		Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<Quaternion>(context, prop);
 
 		PropertyDrawHelper::BeginPropertyLabel(prop);
-		ImGui::DragFloat3("##Quaternion", &value.x, 1.0f, 0, 0, mixed ? "---" : "%.3f");
+		bool edited = ImGui::DragFloat4("##Quaternion", &value.x, 1.0f, 0, 0, mixed ? "---" : "%.3f");
+		if (edited)
+		{
+			// 値が変更されたときの処理。複数選択されている場合は、すべての対象に対して新しい値を適用します。
+			PropertyDrawHelper::ApplyToAll<Quaternion>(context, prop, value);
+		}
 
+		// 値のコミット処理。ユーザーが編集を完了したときに、Undo/Redo コマンドを発行します
 		PropertyDrawHelper::CommitEdit<Quaternion>(prop, context, m_state, value,
 			[](const Quaternion& v) {
 				return "(" + std::to_string(v.x) + ", "
 					+ std::to_string(v.y) + ", "
 					+ std::to_string(v.z) + ", "
 					+ std::to_string(v.w) + ")";
+			},
+			[](const Quaternion& a, const Quaternion& b) {
+				return Quaternion::NearEqual(a, b);
 			});
-#endif // 0
-
 	}
 }

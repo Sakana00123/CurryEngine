@@ -20,9 +20,11 @@ namespace CurryEngine
 		bool edited = ImGui::DragFloat3("##Vector3", &value.x, 1.0f, 0, 0, hasMixedValues ? "---" : "%.3f");
 		if (edited)
 		{
+			// 値が変更されたときの処理。複数選択されている場合は、すべての対象に対して新しい値を適用します。
 			PropertyDrawHelper::ApplyToAll<Vector3>(context, prop, value);
 		}
 
+		// 値のコミット処理。ユーザーが編集を完了したときに、Undo/Redo コマンドを発行します。
 		PropertyDrawHelper::CommitEdit<Vector3>(prop, context, m_state, value,
 			[](const Vector3& v) {
 				return "(" + std::to_string(v.x) + ", "

@@ -101,6 +101,12 @@ namespace CurryEngine
 			constexpr Setter(const char* fn) : functionName(fn) {}
 		};
 
+		// カスタムドロワーを指定する属性。エディタでプロパティの描画に使用するカスタムドロワーを指定します。
+		struct CustomDrawer
+		{
+			const char* drawerType; // カスタムドロワーの種類を識別する文字列 (例: "Quaternion_Euler" など)。エディタでプロパティの描画に使用するカスタムドロワーを指定します。
+			constexpr CustomDrawer(const char* dt) : drawerType(dt) {}
+		};
 	}
 }
 

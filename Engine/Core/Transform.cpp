@@ -72,33 +72,33 @@ XMVECTOR Transform::QuaternionLookAt(const XMVECTOR& Original, const XMVECTOR& T
 	return Quaternion;
 }
 
-Vector3 Transform::QuaternionToEuler(const Quaternion& rotation)
-{
-	// クォータニオンを回転行列に変換
-	XMFLOAT4X4 rotationMatrix;
-	XMStoreFloat4x4(&rotationMatrix, XMMatrixRotationQuaternion(XMLoadFloat4(&rotation)));
-	//ジンバルロック判定
-	float sx = rotationMatrix.m[2][1];
-	bool unlocked = std::abs(sx) < 0.99999f;
-	// オイラー角を計算
-	Vector3 eulerAngles{};
-	eulerAngles.x = unlocked ? asinf(sx) : atan2f(rotationMatrix.m[2][1], rotationMatrix.m[2][2]);
-	eulerAngles.y = unlocked ? atan2f(-rotationMatrix.m[2][0], rotationMatrix.m[2][2]) : 0;
-	eulerAngles.z = unlocked ? atan2f(-rotationMatrix.m[0][1], rotationMatrix.m[1][1]) : atan2f(rotationMatrix.m[1][0], rotationMatrix.m[0][0]);
-	// ラジアンから度に変換
-	eulerAngles.x = -XMConvertToDegrees(eulerAngles.x);
-	eulerAngles.y = -XMConvertToDegrees(eulerAngles.y);
-	eulerAngles.z = -XMConvertToDegrees(eulerAngles.z);
+//Vector3 Transform::QuaternionToEuler(const Quaternion& rotation)
+//{
+//	// クォータニオンを回転行列に変換
+//	XMFLOAT4X4 rotationMatrix;
+//	XMStoreFloat4x4(&rotationMatrix, XMMatrixRotationQuaternion(XMLoadFloat4(&rotation)));
+//	//ジンバルロック判定
+//	float sx = rotationMatrix.m[2][1];
+//	bool unlocked = std::abs(sx) < 0.99999f;
+//	// オイラー角を計算
+//	Vector3 eulerAngles{};
+//	eulerAngles.x = unlocked ? asinf(sx) : atan2f(rotationMatrix.m[2][1], rotationMatrix.m[2][2]);
+//	eulerAngles.y = unlocked ? atan2f(-rotationMatrix.m[2][0], rotationMatrix.m[2][2]) : 0;
+//	eulerAngles.z = unlocked ? atan2f(-rotationMatrix.m[0][1], rotationMatrix.m[1][1]) : atan2f(rotationMatrix.m[1][0], rotationMatrix.m[0][0]);
+//	// ラジアンから度に変換
+//	eulerAngles.x = -XMConvertToDegrees(eulerAngles.x);
+//	eulerAngles.y = -XMConvertToDegrees(eulerAngles.y);
+//	eulerAngles.z = -XMConvertToDegrees(eulerAngles.z);
+//
+//	return eulerAngles;
+//}
 
-	return eulerAngles;
-}
-
-Quaternion Transform::EulerToQuaternion(const Vector3& eulerAngles)
-{
-	Quaternion q;
-	XMStoreFloat4(&q, XMQuaternionRotationRollPitchYaw(XMConvertToRadians(eulerAngles.x), XMConvertToRadians(eulerAngles.y), XMConvertToRadians(eulerAngles.z)));
-	return q;
-}
+//Quaternion Transform::EulerToQuaternion(const Vector3& eulerAngles)
+//{
+//	Quaternion q;
+//	XMStoreFloat4(&q, XMQuaternionRotationRollPitchYaw(XMConvertToRadians(eulerAngles.x), XMConvertToRadians(eulerAngles.y), XMConvertToRadians(eulerAngles.z)));
+//	return q;
+//}
 
 bool Transform::IsChangedThisFrame() const
 {
@@ -154,7 +154,7 @@ void Transform::SetRotation(const Quaternion& rotation)
 void Transform::SetRotation(const Vector3& eulerAngles)
 {
 	this->m_eulerAngles = eulerAngles; // オイラー角をローカル回転に変換して保存
-	this->rotation = EulerToQuaternion(eulerAngles); // ローカル回転をオイラー角に変換して保存
+	this->rotation = Quaternion::FromEuler(eulerAngles); // ローカル回転をオイラー角に変換して保存
 	m_eulerDirty = false; // オイラー角がローカル回転と同期している状態
 	MarkNeedsUpdate();
 }
@@ -164,7 +164,7 @@ void Transform::Rotate(const Quaternion& rotate)
 }
 void Transform::Rotate(const Vector3& eulerAngles)
 {
-	Rotate(EulerToQuaternion(eulerAngles));
+	Rotate(Quaternion::FromEuler(eulerAngles));
 }
 
 void Transform::SetScale(const Vector3& scale)
@@ -237,7 +237,7 @@ void Transform::UpdateTransform()
 	};
 	XMMATRIX C{ XMLoadFloat4x4(&coordinateSystemTransforms[static_cast<int>(coordinateSystem)]) };
 	XMMATRIX S{ XMMatrixScaling(scale.x, scale.y, scale.z) };
-	XMMATRIX R{ XMMatrixRotationQuaternion(QuaternionToXMVector(rotation)) };
+	XMMATRIX R{ rotation.ToMatrix() };
 	XMMATRIX T{ XMMatrixTranslation(position.x, position.y, position.z) };
 	XMMATRIX L{ C * S * R * T };
 	XMStoreFloat4x4(&local, L);//ローカル座標を保存
@@ -348,7 +348,7 @@ void Transform::SetWorldRotation(const Quaternion& worldRotation)
 void Transform::SetWorldRotation(const Vector3& worldEuler)
 {
 	if (GetOwner()->parent) {
-		SetWorldRotation(EulerToQuaternion(worldEuler));
+		SetWorldRotation(Quaternion::FromEuler(worldEuler));
 	}
 	else {
 		SetRotation(worldEuler);

@@ -51,6 +51,15 @@ struct Quaternion : public XMFLOAT4
 	// クォータニオンを回転行列に変換
 	XMMATRIX ToMatrix() const;
 
+	// クォータニオン同士のイコール比較
+	static bool Equal(const Quaternion& q1, const Quaternion& q2);
+
+	// クォータニオン同士のノットイコール比較
+	static bool NotEqual(const Quaternion& q1, const Quaternion& q2);
+
+	// クォータニオン同士の近似イコール比較
+	static bool NearEqual(const Quaternion& q1, const Quaternion& q2, float epsilon = 1e-4f);
+
 	// クォータニオンの正規化
 	static Quaternion Normalized(const Quaternion& q);
 

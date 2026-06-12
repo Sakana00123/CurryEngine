@@ -43,7 +43,7 @@ public:
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetPosition"), CurryEngine::PropertyAttributes::Setter("SetPosition"))
 	Vector3 position;
 	/** @brief ローカル回転（クォータニオン）。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetRotation"), CurryEngine::PropertyAttributes::Setter("SetRotation"), CurryEngine::PropertyAttributes::CustomDrawer("Quaternion_Euler"))
 	Quaternion rotation;
 	/** @brief ローカルスケール。*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetScale"), CurryEngine::PropertyAttributes::Setter("SetScale"))
@@ -108,10 +108,6 @@ public:
 	static Quaternion QuaternionMultiply(const Quaternion& q1, const Quaternion& q2);
 	/** @brief ベクトルの LookAt を表すクォータニオンを計算。*/
 	static XMVECTOR QuaternionLookAt(const XMVECTOR& Original, const XMVECTOR& Target);
-	/** @brief クォータニオンをオイラー角（度）に変換。*/
-	static Vector3 QuaternionToEuler(const Quaternion& rotation);
-	/** @brief オイラー角（度）をクォータニオンに変換。*/
-	static Quaternion EulerToQuaternion(const Vector3& eulerAngles);
 	
 	/** @brief 今回のフレームで値が変更されたかを返します。*/
 	bool IsChangedThisFrame() const;
@@ -135,22 +131,29 @@ public:
 	/** @brief ローカル位置に加算（移動）。*/
 	void Translate(const Vector3& translate);
 	/** @brief ローカル回転（クォータニオン）を設定。*/
+	C_FUNCTION()
 	void SetRotation(const Quaternion& rotation);
 	/** @brief ローカル回転（オイラー角）を設定。*/
+	C_FUNCTION()
 	void SetRotation(const Vector3& eulerAngles);
 	/** @brief ローカル回転に乗算（クォータニオン）。*/
+	C_FUNCTION()
 	void Rotate(const Quaternion& rotate);
 	/** @brief ローカル回転に加算（オイラー角）。*/
+	C_FUNCTION()
 	void Rotate(const Vector3& eulerAngles);
 
 	/** @brief ローカルスケールを設定。*/
 	C_FUNCTION()
 	void SetScale(const Vector3& scale);
 	/** @brief ローカルスケールを等倍で設定。*/
+	C_FUNCTION()
 	void SetScale(float scale);
 	/** @brief ローカルスケールを乗算。*/
+	C_FUNCTION()
 	void Scaling(const Vector3& scaling);
 	/** @brief ローカルスケールを等倍で乗算。*/
+	C_FUNCTION()
 	void Scaling(float scaling);
 
 	/** @brief 変更フラグを立て、再計算を要求します。*/

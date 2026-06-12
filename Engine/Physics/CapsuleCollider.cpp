@@ -47,7 +47,7 @@ void CapsuleCollider::SyncWithPhysics()
 {
 	// 物理エンジンにローカルポーズを更新
 	Vector3 position = Vector3(center); // オフセットをワールドスケールで調整してローカル座標に変換
-	Quaternion rotation = Transform::EulerToQuaternion({ 0.0f, 0.0f, 90.0f }); // カプセルの向きをY軸からZ軸に変更（PhysXのカプセルはデフォルトでY軸に沿っているため）
+	Quaternion rotation = Quaternion::FromEuler({ 0.0f, 0.0f, 90.0f }); // カプセルの向きをY軸からZ軸に変更（PhysXのカプセルはデフォルトでY軸に沿っているため）
 	Physics::SetLocalPose(m_shapeHandle, position, rotation);
 
 	// サイズの変更も反映

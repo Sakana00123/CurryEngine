@@ -4,20 +4,6 @@
 #include "Engine/Core/Reflection/Meta.h"
 #include "Engine/EditorSupport/PropertyDrawContext.h"
 
-//#include "Engine/EditorSupport/PropertyDrawHelper.h"
-//#include <Engine\EditorSupport\ImGuiHelpers.h>
-
-//#include "Engine/Core/Math/Vector2.h"
-//#include "Engine/Core/Math/Vector3.h"
-//#include "Engine/Core/Math/Quaternion.h"
-//#include "Engine/Core/Color.h"
-//
-//#include "Engine/Core/ObjectManager.h"
-//#include "Engine/Core/GameObject.h"
-//
-//#include "Engine/Scenes/Scene.h"
-//#include "Engine/Scenes/SceneManager.h"
-
 #include <Engine\EditorSupport\PropertyDrawer\PropertyDrawerRegistry.h>
 
 
@@ -30,7 +16,30 @@ namespace CurryEngine
 
 		ImGui::PushID(prop->name.c_str()); // 同じ名前のプロパティが複数ある場合に識別できるように ID を追加
 
-		if (auto* drawer = PropertyDrawerRegistry::Get().Find(prop->type))
+		IPropertyDrawer* drawer = nullptr;
+		// プロパティの型に対応するドロワーを PropertyDrawerRegistry から取得
+		if (auto* customAttr = prop->GetAttribute("CustomDrawer")) // CustomDrawer 属性があれば、引数からドロワーのクラス名を取得してインスタンス化
+		{
+			if (!customAttr->args.empty())
+			{
+				std::string drawerClassName = customAttr->args[0];
+				drawer = PropertyDrawerRegistry::Get().Find(drawerClassName);
+				if (!drawer)
+				{
+					LOG_WARNING("No property drawer found for class name: " + drawerClassName);
+				}
+			}
+			else // CustomDrawer 属性があるのにクラス名が指定されていない場合は警告を出す
+			{
+				LOG_WARNING("CustomDrawer attribute found but no class name specified for property: " + prop->name);
+			}
+		}
+		else // CustomDrawer 属性がない場合は、プロパティの型に対応するドロワーを取得
+		{
+			drawer = PropertyDrawerRegistry::Get().Find(prop->type);
+		}
+
+		if (drawer)
 		{
 			ImGui::BeginDisabled(prop->GetAttribute("ReadOnly") != nullptr); // ReadOnly 属性がある場合は操作を無効化
 

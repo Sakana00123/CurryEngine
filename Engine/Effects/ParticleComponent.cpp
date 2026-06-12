@@ -38,7 +38,7 @@ void ParticleComponent::Play()
 	{
 		// ゲームオブジェクトの位置と回転を取得
 		Vector3 position = GetOwner()->GetTransform()->GetWorldPosition();
-		Vector3 rotation = Transform::QuaternionToEuler(GetOwner()->GetTransform()->GetWorldRotation());
+		Vector3 rotation = GetOwner()->GetTransform()->GetWorldRotation().ToEuler();
 
 		// 線上にエフェクトを再生する場合
 		if (settings.lineData.useLine)

@@ -71,6 +71,7 @@ namespace CurryEngine
 		 * @param state ドロワーの状態管理オブジェクト。前回値を保存するために使用します。
 		 * @param currentValue 現在のプロパティ値。ImGui の編集ウィジェットから取得した値を渡してください。
 		 * @param toStr Undoログ用文字列化関数。変更前後の値を文字列化して Undo ログに記録したい場合は、この関数を渡してください。引数はプロパティ値で、戻り値は文字列です。
+		 * @param equals 値の等価比較関数。プロパティ値の型によっては、単純な等価比較が適切でない場合があります（例: 浮動小数点数やクォータニオン）。その場合は、この関数を渡して、値の等価性を適切に判断してください。引数は (現在値, 前回値) で、戻り値は bool です。
 		 */
 		template<typename T>
 		void CommitEdit(
@@ -78,7 +79,9 @@ namespace CurryEngine
 			const PropertyDrawContext& ctx,
 			DrawerState<T>& state,
 			const T& currentValue,
-			std::function<std::string(const T&)> toStr = nullptr)
+			std::function<std::string(const T&)> toStr = nullptr,
+			std::function<bool(const T&, const T&)> equals = nullptr
+			)
 		{
 			if (ctx.IsEmpty())
 				return;
@@ -90,7 +93,8 @@ namespace CurryEngine
 			if (ImGui::IsItemDeactivatedAfterEdit())
 			{
 				T prev = state.Prev(prop.name);
-				if (currentValue != prev)
+				bool same = equals ? equals(currentValue, prev) : (currentValue == prev);
+				if (!same)
 				{
 					// Undo/Redo コマンド発行
 					std::string newStr = toStr ? toStr(currentValue) : "";

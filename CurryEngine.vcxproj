@@ -196,11 +196,13 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\PropertyDrawContext.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\BoolDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\ColorDrawer.cpp" />
+    <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\EulerDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\FloatDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\IntDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\ObjectIdDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\QuaternionDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\StringDrawer.cpp" />
+    <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\Vector2Drawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\Vector3Drawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawerRegistry.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.cpp" />
@@ -635,11 +637,13 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\DrawerState.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\BoolDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\ColorDrawer.h" />
+    <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\EulerDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\FloatDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\IntDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\ObjectIdDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\QuaternionDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\StringDrawer.h" />
+    <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\Vector2Drawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\Vector3Drawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawerRegistry.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\IPropertyDrawer.h" />

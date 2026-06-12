@@ -4,8 +4,10 @@
 #include "Drawers/BoolDrawer.h"
 #include "Drawers/IntDrawer.h"
 #include "Drawers/FloatDrawer.h"
+#include "Drawers/Vector2Drawer.h"
 #include "Drawers/Vector3Drawer.h"
 #include "Drawers/QuaternionDrawer.h"
+#include "Drawers/EulerDrawer.h"
 #include "Drawers/StringDrawer.h"
 #include "Drawers/ColorDrawer.h"
 #include "Drawers/ObjectIdDrawer.h"
@@ -25,8 +27,10 @@ namespace CurryEngine
 		Register("bool", std::make_unique<BoolDrawer>());
 		Register("int", std::make_unique<IntDrawer>());
 		Register("float", std::make_unique<FloatDrawer>());
+		Register("Vector2", std::make_unique<Vector2Drawer>());
 		Register("Vector3", std::make_unique<Vector3Drawer>());
 		Register("Quaternion", std::make_unique<QuaternionDrawer>());
+		Register("Quaternion_Euler", std::make_unique<EulerDrawer>());
 		
 		Register("std::string", std::make_unique<StringDrawer>());
 
