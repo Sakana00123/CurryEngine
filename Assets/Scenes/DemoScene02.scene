@@ -85,77 +85,6 @@
                 {
                     "coordinateSystem": 0,
                     "enabledSelf": true,
-                    "id": "18189258674735854431",
-                    "m_eulerAngles": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "name": "Transform",
-                    "position": [
-                        0.0,
-                        0.032237835228443146,
-                        0.0
-                    ],
-                    "priority": 0,
-                    "rotation": [
-                        -0.0,
-                        0.0,
-                        -0.0,
-                        1.0
-                    ],
-                    "scale": [
-                        0.009999999776482582,
-                        0.009999999776482582,
-                        0.009999999776482582
-                    ],
-                    "type": "Transform"
-                },
-                {
-                    "animationEnable": true,
-                    "blendEnable": true,
-                    "enableShadow": true,
-                    "enabledSelf": true,
-                    "filePath": "./Assets/Models\\character.gltf",
-                    "id": "16255195627923664152",
-                    "material": {
-                        "blendState": 5,
-                        "depthStencilState": 4,
-                        "rasterizerState": 6,
-                        "shaders": {
-                            "0": "./Assets/Shaders/gltf_model_ps.cso"
-                        },
-                        "textures": {
-                            "0": {
-                                "materialTextures[0]": "",
-                                "materialTextures[1]": "",
-                                "materialTextures[2]": "",
-                                "materialTextures[3]": "",
-                                "materialTextures[4]": ""
-                            }
-                        }
-                    },
-                    "name": "GltfModelRenderer",
-                    "priority": 1000,
-                    "staticBatching": false,
-                    "type": "GltfModelRenderer"
-                }
-            ],
-            "id": "17337535235848481961",
-            "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
-            "name": "character",
-            "parent": "0",
-            "parentId": "0",
-            "priority": 0,
-            "version": 1
-        },
-        {
-            "activeSelf": true,
-            "components": [
-                {
-                    "coordinateSystem": 0,
-                    "enabledSelf": true,
                     "id": "17408614610901668900",
                     "m_eulerAngles": [
                         46.0,
@@ -301,6 +230,77 @@
             "parent": "0",
             "parentId": "0",
             "priority": 2000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "18189258674735854431",
+                    "m_eulerAngles": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.032237835228443146,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.009999999776482582,
+                        0.009999999776482582,
+                        0.009999999776482582
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": "./Assets/Models\\character.gltf",
+                    "id": "16255195627923664152",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": "",
+                                "materialTextures[1]": "",
+                                "materialTextures[2]": "",
+                                "materialTextures[3]": "",
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                }
+            ],
+            "id": "17337535235848481961",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "character",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 3000,
             "version": 1
         }
     ]

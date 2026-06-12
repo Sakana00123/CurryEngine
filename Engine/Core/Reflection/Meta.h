@@ -107,6 +107,14 @@ namespace CurryEngine
 			const char* drawerType; // カスタムドロワーの種類を識別する文字列 (例: "Quaternion_Euler" など)。エディタでプロパティの描画に使用するカスタムドロワーを指定します。
 			constexpr CustomDrawer(const char* dt) : drawerType(dt) {}
 		};
+
+		// ダイアログのフィルタを指定する属性。エディタでファイルダイアログを表示するときに使用します。
+		struct DialogFilter
+		{
+			const char* filterString; // ダイアログのフィルタ文字列 (例: "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0")
+			constexpr DialogFilter(const char* fs) : filterString(fs) {}
+		};
+
 	}
 }
 

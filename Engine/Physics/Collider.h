@@ -207,7 +207,7 @@ public:
 	bool autoFit{ false };
 
 	/** @brief 衝突判定の際の接触オフセット。*/
-	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetContactOffset"), CurryEngine::PropertyAttributes::Setter("SetContactOffset"))
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetContactOffset"), CurryEngine::PropertyAttributes::Setter("SetContactOffset"), CurryEngine::PropertyAttributes::Range(0.000001f, 1000000.0f), CurryEngine::PropertyAttributes::Format("%.6f"))
 	float contactOffset{ 0.02f };
 
 	/** @brief AABB の最小点。*/

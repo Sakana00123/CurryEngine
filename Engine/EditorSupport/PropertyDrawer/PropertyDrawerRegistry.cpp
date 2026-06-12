@@ -11,6 +11,8 @@
 #include "Drawers/StringDrawer.h"
 #include "Drawers/ColorDrawer.h"
 #include "Drawers/ObjectIdDrawer.h"
+#include "Drawers/AssetReferenceDrawer.h"
+
 
 
 namespace CurryEngine
@@ -36,6 +38,7 @@ namespace CurryEngine
 
 		Register("Color", std::make_unique<ColorDrawer>());
 		Register("ObjectId", std::make_unique<ObjectIdDrawer>());
+		Register("String_AssetReference", std::make_unique<AssetReferenceDrawer>());
 	}
 
 	void PropertyDrawerRegistry::Register(const std::string& typeName, std::unique_ptr<IPropertyDrawer> drawer)
