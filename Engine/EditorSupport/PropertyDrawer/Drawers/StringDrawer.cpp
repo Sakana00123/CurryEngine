@@ -18,12 +18,8 @@ namespace CurryEngine
 		PropertyDrawHelper::BeginPropertyLabel(prop);
 
 		char buffer[256];
-		if (!ImGui::IsItemEdited())
-		{
-			strncpy_s(buffer, mixed ? "---" : value.c_str(), sizeof(buffer));
-			buffer[sizeof(buffer) - 1] = '\0'; // バッファの最後を null で終端
-		}
-
+		strncpy_s(buffer, mixed ? "---" : value.c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0'; // バッファの最後を null で終端
 		bool edited = ImGui::InputText("##string", buffer, sizeof(buffer));
 		if (edited)
 		{
@@ -32,7 +28,22 @@ namespace CurryEngine
 		}
 
 		// 値のコミット処理。ユーザーが編集を完了したときに、Undo/Redo コマンドを発行します。
-		PropertyDrawHelper::CommitEdit<std::string>(prop, context, m_state, std::string(buffer));
+		PropertyDrawHelper::CommitEdit<std::string>(prop, context, m_state, std::string(buffer),
+			[](const std::string& v) {
+				return v;
+			},
+			[](const std::string& a, const std::string& b) {
+				return a == b;
+			},
+			[&]() {
+				// 編集開始前の状態を保存する関数。ここでは、現在の std::string 値を m_state に保存しています。
+				return ImGui::IsItemActivated();
+			},
+			[&]() {
+				// コミットしてもいいかどうかをチェックする関数。ここでは常に true を返していますが、必要に応じて条件を追加できます。
+				return ImGui::IsItemDeactivatedAfterEdit();
+			}
+		);
 
 
 #endif // USE_IMGUI
