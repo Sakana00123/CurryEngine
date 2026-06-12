@@ -31,7 +31,7 @@ namespace CurryEngine
 		{
 			edited = ImGui::Checkbox("##bool", &value);
 		}
-		if (!ImGui::IsItemActive())
+		if (ImGui::IsItemActivated())
 		{
 			m_state.Prev(prop.name) = value;
 		}
