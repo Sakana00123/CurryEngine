@@ -1,6 +1,13 @@
 #pragma once
 #include "Renderer.h"
 
+C_ENUM()
+enum class TrailRenderMode
+{
+	Billboard, // 常にカメラに面するビルボード
+	Stretched, // 移動方向に沿って伸びるストレッチ
+};
+
 class TrailRenderer : public Renderer
 {
 	C_REFLECT(TrailRenderer)
@@ -48,6 +55,9 @@ private:
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
 	int maxSegments = 50; // トレイルの最大セグメント数
+
+	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("Enum"), CurryEngine::PropertyAttributes::Enum("TrailRenderMode"))
+	int renderMode = 0; // トレイルの描画モード
 
 	struct TrailSegment
 	{

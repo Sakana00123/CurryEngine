@@ -115,6 +115,23 @@ namespace CurryEngine
 			constexpr DialogFilter(const char* fs) : filterString(fs) {}
 		};
 
+		// 列挙型として扱うプロパティに付ける属性。エディタで列挙型のドロップダウンを表示するために使用します。
+		struct Enum
+		{
+			const char* enumType; // 列挙型の型名 (例: "Color", "BlendMode" など)。エディタで列挙型のドロップダウンを表示するために使用します。
+			constexpr Enum(const char* et) : enumType(et) {}
+		};
+
+		//struct ObjectPicker
+		//{
+		//	const char* targetType; // ピッカーで選択するオブジェクトの型名 (例: "Component", "GameObject")
+		//	const char* filterString; // ピッカーのフィルタ文字列 (例: "All Objects (*.*)\0*.*\0")
+		//	constexpr ObjectPicker(const char* target, const char* filter) : targetType(target), filterString(filter) {}
+		//	ObjectPicker(const ObjectReference& objRef, const DialogFilter& dialogFilter)
+		//		: targetType(objRef.targetType), filterString(dialogFilter.filterString) {
+		//	}
+		//};
+
 	}
 }
 
@@ -209,18 +226,52 @@ struct ClassMeta
 	const MethodInfo* FindMethod(const std::string& methodName) const;
 };
 
+// 列挙型の値のメタ情報
+struct EnumValueInfo
+{
+	std::string name;
+	int         value = 0;
+	bool        hasExplicitValue = false; // 値が明示されているか
+};
+
+// 列挙型のメタ情報
+struct EnumInfo
+{
+	std::string name;
+	std::string underlyingType = "int"; // enum class : uint など
+	bool        isClass = false; // enum class かどうか
+	std::vector<EnumValueInfo> values;
+};
+
+// 構造体のメタ情報
+struct StructInfo
+{
+	std::string name;
+	std::vector<PropertyInfo> properties;
+};
+
 // ---- リフレクション登録システム ----
 class ReflectionRegistry
 {
 public:
 	// クラス登録
 	static void Register(const ClassMeta& meta);
+	// 列挙型登録
+	static void RegisterEnum(const EnumInfo& meta);
+	// 構造体登録
+	static void RegisterStruct(const StructInfo& meta);
 	// クラス検索
 	static const ClassMeta* FindClass(const std::string& name);
+	// 列挙型検索
+	static const EnumInfo* FindEnum(const std::string& name);
+	// 構造体検索
+	static const StructInfo* FindStruct(const std::string& name);
 	// 全スクリプトのメタ情報をクリア
 	static void UnregisterScriptClasses();
 private:
-	static std::unordered_map<std::string, ClassMeta>& GetRegistry();
+	static std::unordered_map<std::string, ClassMeta>& GetClassRegistry();
+	static std::unordered_map<std::string, EnumInfo>& GetEnumRegistry();
+	static std::unordered_map<std::string, StructInfo>& GetStructRegistry();
 };
 
 // -------------------------- ヘルパー関数 ---------------------
@@ -447,3 +498,73 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
             ReflectionRegistry::Register(meta); \
         } \
     } ClassName##_AutoRegisterInstance; };
+
+// 列挙型登録マクロ
+
+#define REGISTER_ENUM(EnumName) \
+	namespace { struct EnumName##_AutoRegister { \
+		EnumName##_AutoRegister() { \
+			EnumInfo meta; \
+			meta.name = #EnumName; \
+			static int _enumValueCounter = 0; /* 値が明示されていない場合の自動カウンター */
+
+#define UNDERLYING_TYPE(Type) \
+			meta.underlyingType = #Type;
+
+#define ENUM_VALUE(ValueName, ...) \
+			{ \
+				EnumValueInfo v; \
+				v.name = ValueName; \
+				if constexpr (sizeof(#__VA_ARGS__) > 1) /* 値が明示されている場合 */ \
+				{ \
+					v.value = __VA_ARGS__; \
+					v.hasExplicitValue = true; \
+					_enumValueCounter = v.value + 1; /* カウンターを明示された値の次に更新 */ \
+				} \
+				else /* 値が明示されていない場合は自動カウンターを使用 */ \
+				{ \
+					v.value = _enumValueCounter++; \
+					v.hasExplicitValue = false; \
+				} \
+				meta.values.push_back(v); \
+			}
+
+#define END_REGISTER_ENUM(EnumName) \
+			ReflectionRegistry::RegisterEnum(meta); \
+		} \
+	} EnumName##_AutoRegisterInstance; };
+
+
+// 構造体登録マクロ
+#define REGISTER_STRUCT(StructName) \
+	namespace { struct StructName##_AutoRegister { \
+		static size_t StructMetaOffset(auto StructName::* member) \
+		{ \
+			return reinterpret_cast<size_t>( \
+				&(reinterpret_cast<StructName*>(0)->*member) \
+			); \
+		} \
+		StructName##_AutoRegister() { \
+			StructInfo meta; \
+			meta.name = #StructName;
+
+#define STRUCT_FIELD(StructName, FieldName, FieldType) \
+			{ \
+				PropertyInfo p; \
+				p.type = #FieldType; \
+				p.name = #FieldName; \
+				p.offset = StructMetaOffset(&StructName::FieldName); \
+				p.attributes = {}; \
+				p.getter = [](void* inst) -> std::any { \
+					return static_cast<StructName*>(inst)->FieldName; \
+				}; \
+				p.setter = [](void* inst, std::any val) { \
+					static_cast<StructName*>(inst)->FieldName = std::any_cast<FieldType>(val); \
+				}; \
+				meta.properties.push_back(p); \
+			}
+
+#define END_REGISTER_STRUCT(StructName) \
+			ReflectionRegistry::RegisterStruct(meta); \
+		} \
+	} StructName##_AutoRegisterInstance; };

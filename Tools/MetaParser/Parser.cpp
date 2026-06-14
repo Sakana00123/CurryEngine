@@ -52,6 +52,39 @@ static void Trim(std::string& s)
     s.erase(s.find_last_not_of(" \t\n\r") + 1);
 }
 
+static std::string StripCommentsAndWhitespace(const std::string& s)
+{
+    std::string result;
+    size_t i = 0;
+    while (i < s.size())
+    {
+        if (i + 1 < s.size() && s[i] == '/' && s[i + 1] == '/')
+        {
+            while (i < s.size() && s[i] != '\n') i++;
+        }
+        else if (i + 1 < s.size() && s[i] == '/' && s[i + 1] == '*')
+        {
+            i += 2;
+            while (i + 1 < s.size() && !(s[i] == '*' && s[i + 1] == '/')) i++;
+            i += 2;
+        }
+        else
+        {
+            result += s[i++];
+        }
+    }
+    return result;
+}
+
+static bool IsDirectlyAfterMacro(const std::string& textAfterMacro, const std::smatch& m)
+{
+    // マクロ閉じ括弧 ~ キーワードの間だけ取り出す
+    std::string gap = textAfterMacro.substr(0, m.position(0));
+    std::string stripped = StripCommentsAndWhitespace(gap);
+    // 空白・改行以外が残っていたら「直後ではない」
+    return stripped.find_first_not_of(" \t\r\n") == std::string::npos;
+}
+
 static std::string ExtractMacroArgs(const std::string& text, size_t macroPos)
 {
     int depth = 0;
@@ -371,18 +404,20 @@ std::vector<EnumInfo> Parser::ExtractEnums(const std::string& text)
         afterMacro++;
 
         // 空白・改行をスキップして enum / enum class を探す
-        // 正規表現: enum (class)? Name (: underlyingType)? {
-        std::string sub = text.substr(afterMacro);
-        std::regex enumRegex(
-            R"(\benum\s+(class\s+)?(\w+)\s*(?::\s*(\w+))?\s*\{)"
-        );
-        std::smatch m;
-        if (!std::regex_search(sub, m, enumRegex))
-        {
+		std::string sub = text.substr(afterMacro);
+        std::regex enumRegex(R"(\benum\s+(class\s+)?(\w+)\s*(?::\s*(\w+))?\s*\{)");
+		std::smatch m;
+        if (!std::regex_search(sub, m, enumRegex)) {
             std::cout << "Warning: C_ENUM found but no enum follows at pos " << pos << "\n";
             pos = afterMacro;
-            continue;
+			continue;
         }
+        if (!IsDirectlyAfterMacro(sub, m))
+        {
+            std::cout << "Warning: C_ENUM found but not directly followed by enum at pos " << pos << "\n";
+            pos = afterMacro;
+            continue;
+		}
 
         EnumInfo info;
         info.isClass = m[1].matched;
@@ -462,6 +497,12 @@ std::vector<StructInfo> Parser::ExtractStructs(const std::string& text)
             pos = afterMacro;
             continue;
         }
+        if (!IsDirectlyAfterMacro(sub, m))
+        {
+            std::cout << "Warning: C_STRUCT found but not directly followed by struct at pos " << pos << "\n";
+            pos = afterMacro;
+            continue;
+		}
 
         StructInfo info;
         info.name = m[1].str();

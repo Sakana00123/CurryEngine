@@ -45,9 +45,13 @@ void Generater::Generate(const std::vector<FileInfo>& files, const std::vector<s
 		// 元ヘッダーファイルの相対パス
 		std::string relativePathFromHeader = std::filesystem::relative(info.path, outputDirectory + "/" + headerDir).string();
 		std::string relativePathFromSource = std::filesystem::relative(info.path, outputDirectory + "/" + sourceDir).string();
+		std::string relativePathFromEnum = std::filesystem::relative(info.path, outputDirectory + "/" + enumDir).string();
+		std::string relativePathFromStruct = std::filesystem::relative(info.path, outputDirectory + "/" + structDir).string();
 		// 変換してスラッシュ区切りに
 		std::replace(relativePathFromHeader.begin(), relativePathFromHeader.end(), '\\', '/');
 		std::replace(relativePathFromSource.begin(), relativePathFromSource.end(), '\\', '/');
+		std::replace(relativePathFromEnum.begin(), relativePathFromEnum.end(), '\\', '/');
+		std::replace(relativePathFromStruct.begin(), relativePathFromStruct.end(), '\\', '/');
 
 		// 生成ソースからソリューションルートへの相対パス (例: "../../")
 		//std::string relativeSolutionPath = std::filesystem::relative(std::filesystem::current_path(), std::filesystem::absolute(relativePathFromSource)).string();
@@ -90,6 +94,30 @@ void Generater::Generate(const std::vector<FileInfo>& files, const std::vector<s
 				GenerateSource(classInfo, sourcePath, relativePathFromSource, relativeSolutionPathStr);
 			}
 		}
+
+		// enum / enum class の生成
+		for (const auto& enumInfo : info.enums)
+		{
+			std::filesystem::path headerOutputDir = std::filesystem::path(outputDirectory) / enumDir;
+			if (!std::filesystem::exists(headerOutputDir))
+			{
+				std::filesystem::create_directories(headerOutputDir);
+			}
+			std::string headerPath = (headerOutputDir / std::filesystem::path(enumInfo.name + generatedExtension + ".h")).string();
+			GenerateEnum(enumInfo, headerPath, relativePathFromEnum);
+		}
+
+		// struct の生成
+		for (const auto& structInfo : info.structs)
+		{
+			std::filesystem::path headerOutputDir = std::filesystem::path(outputDirectory) / structDir;
+			if (!std::filesystem::exists(headerOutputDir))
+			{
+				std::filesystem::create_directories(headerOutputDir);
+			}
+			std::string headerPath = (headerOutputDir / std::filesystem::path(structInfo.name + generatedExtension + ".h")).string();
+			GenerateStruct(structInfo, headerPath, relativePathFromStruct);
+		}
 	}
 
 	// ReflectionGenerated.h を生成
@@ -99,11 +127,24 @@ void Generater::Generate(const std::vector<FileInfo>& files, const std::vector<s
 
 		for (const auto& info : files)
 		{
+			ofs << "// Original header: " << info.path << "\n";
+			ofs << "\n// Classes\n";
 			for (const auto& classInfo : info.classes)
 			{
 				if (!classInfo.reflect) continue;
 				ofs << "#include \"" << headerDir << "/" << classInfo.name << generatedExtension + ".h\"\n";
 			}
+			ofs << "\n// Enums\n";
+			for (const auto& enumInfo : info.enums)
+			{
+				ofs << "#include \"" << enumDir << "/" << enumInfo.name << generatedExtension + ".h\"\n";
+			}
+			ofs << "\n// Structs\n";
+			for (const auto& structInfo : info.structs)
+			{
+				ofs << "#include \"" << structDir << "/" << structInfo.name << generatedExtension + ".h\"\n";
+			}
+			ofs << "\n";
 		}
 	}
 }
@@ -398,5 +439,57 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 
 
 	
+	ofs.close();
+}
+
+void Generater::GenerateEnum(const EnumInfo& info, const std::string& outPath, const std::string& includePath)
+{
+	std::ofstream ofs(outPath);
+	if (!ofs.is_open())
+	{
+		throw std::runtime_error("Failed to open file for writing: " + outPath);
+	}
+
+	ofs << "#pragma once\n\n";
+	ofs << "#include \"" << includePath << "\"\n";
+
+	// 列挙型の登録コードを生成
+	ofs << "REGISTER_ENUM(" << info.name << ")\n";
+	ofs << "    UNDERLYING_TYPE(" << info.underlyingType << ")\n";
+	for (const auto& value : info.values)
+	{
+		ofs << "    ENUM_VALUE(\"" << value.name << "\"";
+		if (value.hasExplicitValue)
+		{
+			ofs << ", " << "static_cast<" << info.underlyingType << ">(" << value.value << ")";
+		}
+		else // 値が明示されていない場合は自動カウンターを使用
+		{
+			ofs << ", " << "static_cast<" << info.underlyingType << ">(" << info.name << "::" << value.name << ")";
+		}
+		ofs << ")\n";
+	}
+	ofs << "END_REGISTER_ENUM(" << info.name << ")\n";
+	ofs.close();
+}
+
+void Generater::GenerateStruct(const StructInfo& info, const std::string& outPath, const std::string& includePath)
+{
+	std::ofstream ofs(outPath);
+	if (!ofs.is_open())
+	{
+		throw std::runtime_error("Failed to open file for writing: " + outPath);
+	}
+
+	ofs << "#pragma once\n\n";
+	ofs << "#include \"" << includePath << "\"\n";
+
+	// 構造体の登録コードを生成
+	ofs << "REGISTER_STRUCT(" << info.name << ")\n";
+	for (const auto& field : info.fields)
+	{
+		ofs << "    STRUCT_FIELD(" << info.name << ", " << field.name << ", " << field.type << ")\n";
+	}
+	ofs << "END_REGISTER_STRUCT(" << info.name << ")\n";
 	ofs.close();
 }

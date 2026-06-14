@@ -197,6 +197,7 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\AssetReferenceDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\BoolDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\ColorDrawer.cpp" />
+    <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\EnumDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\EulerDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\FloatDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\IntDrawer.cpp" />
@@ -639,6 +640,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\AssetReferenceDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\BoolDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\ColorDrawer.h" />
+    <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\EnumDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\EulerDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\FloatDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\IntDrawer.h" />

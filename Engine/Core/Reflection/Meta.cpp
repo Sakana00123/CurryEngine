@@ -78,14 +78,46 @@ const MethodInfo* ClassMeta::FindMethod(const std::string& methodName) const
 
 void ReflectionRegistry::Register(const ClassMeta& meta)
 {
-	GetRegistry()[meta.name] = meta;
+	GetClassRegistry()[meta.name] = meta;
 	Console::Log("class: " + meta.name + ", fields: " + std::to_string(meta.properties.size()) + ", methods: " + std::to_string(meta.methods.size()));
+}
+
+void ReflectionRegistry::RegisterEnum(const EnumInfo& meta)
+{
+	GetEnumRegistry()[meta.name] = meta;
+	Console::Log("enum: " + meta.name + ", values: " + std::to_string(meta.values.size()));
+}
+
+void ReflectionRegistry::RegisterStruct(const StructInfo& meta)
+{
+	GetStructRegistry()[meta.name] = meta;
+	Console::Log("struct: " + meta.name + ", fields: " + std::to_string(meta.properties.size()));
 }
 
 const ClassMeta* ReflectionRegistry::FindClass(const std::string& name)
 {
-	auto it = GetRegistry().find(name);
-	if (it != GetRegistry().end())
+	auto it = GetClassRegistry().find(name);
+	if (it != GetClassRegistry().end())
+	{
+		return &it->second;
+	}
+	return nullptr;
+}
+
+const EnumInfo* ReflectionRegistry::FindEnum(const std::string& name)
+{
+	auto it = GetEnumRegistry().find(name);
+	if (it != GetEnumRegistry().end())
+	{
+		return &it->second;
+	}
+	return nullptr;
+}
+
+const StructInfo* ReflectionRegistry::FindStruct(const std::string& name)
+{
+	auto it = GetStructRegistry().find(name);
+	if (it != GetStructRegistry().end())
 	{
 		return &it->second;
 	}
@@ -94,7 +126,7 @@ const ClassMeta* ReflectionRegistry::FindClass(const std::string& name)
 
 void ReflectionRegistry::UnregisterScriptClasses()
 {
-	auto& registry = GetRegistry();
+	auto& registry = GetClassRegistry();
 	for (auto it = registry.begin(); it != registry.end(); )
 	{
 		if (it->second.isScript)
@@ -108,8 +140,20 @@ void ReflectionRegistry::UnregisterScriptClasses()
 	}
 }
 
-std::unordered_map<std::string, ClassMeta>& ReflectionRegistry::GetRegistry()
+std::unordered_map<std::string, ClassMeta>& ReflectionRegistry::GetClassRegistry()
 {
 	static std::unordered_map<std::string, ClassMeta> registry;
+	return registry;
+}
+
+std::unordered_map<std::string, EnumInfo>& ReflectionRegistry::GetEnumRegistry()
+{
+	static std::unordered_map<std::string, EnumInfo> registry;
+	return registry;
+}
+
+std::unordered_map<std::string, StructInfo>& ReflectionRegistry::GetStructRegistry()
+{
+	static std::unordered_map<std::string, StructInfo> registry;
 	return registry;
 }
