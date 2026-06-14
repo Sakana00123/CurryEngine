@@ -404,6 +404,7 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 			p.setter = [](void* inst, std::any val) { \
 				static_cast<ClassName*>(inst)->propName = std::any_cast<propType>(val); /* セッターは通常通りフィールドにアクセス */ \
 			}; \
+			p.hasCustomGetter = true; /* ゲッターメソッドが指定されていることを示すフラグ */ \
 			meta.properties.push_back(p); \
 		}
 
@@ -420,6 +421,7 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 			p.setter = [](void* inst, std::any val) { \
 				static_cast<ClassName*>(inst)->SetterFunc(std::any_cast<propType>(val)); \
 			}; \
+			p.hasCustomSetter = true; /* セッターメソッドが指定されていることを示すフラグ */ \
 			meta.properties.push_back(p); \
 		}
 
@@ -436,6 +438,8 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 			p.setter = [](void* inst, std::any val) { \
 				static_cast<ClassName*>(inst)->SetterFunc(std::any_cast<propType>(val)); \
 			}; \
+			p.hasCustomGetter = true; /* ゲッターメソッドが指定されていることを示すフラグ */ \
+			p.hasCustomSetter = true; /* セッターメソッドが指定されていることを示すフラグ */ \
 			meta.properties.push_back(p); \
 		}
 

@@ -21,6 +21,7 @@ void ParticleComponent::OnDestroy()
 
 void ParticleComponent::Load(const std::string& filePath)
 {
+	this->filePath = filePath;
 	effectHandle = EffectManager::LoadEffectData(filePath);
 }
 
@@ -114,29 +115,35 @@ void ParticleComponent::Update(float elapsedTime)
 #ifdef USE_IMGUI
 void ParticleComponent::DrawProperty(const PropertyDrawContext& context)
 {
-	
-	// ファイルパス表示
-	ImGui::Text("File Path: %s", filePath.c_str());
-	ImGui::SameLine();
+	Component::DrawProperty(context);
+	//// ファイルパス表示
+	//ImGui::Text("File Path: %s", filePath.c_str());
+	//ImGui::SameLine();
 
-	// ファイル選択ボタン
-	if (ImGui::Button("..."))
+	//// ファイル選択ボタン
+	//if (ImGui::Button("..."))
+	//{
+	//	// ダイアログを開いてエフェクトデータを選択
+	//	char filename[256]{};
+	//	char filter[] = "Particle Effect Files\0*.json\0All Files\0*.*\0";
+	//	
+	//	if (Dialog::OpenFileName(filename, sizeof(filename), filter) == DialogResult::OK)
+	//	{
+	//		filePath = filename;
+	//		Load(filePath);
+	//	}
+	//}
+
+	//// Play On Awake チェックボックス
+	//if (ImGui::Checkbox("Play On Awake", &playOnAwake))
+	//{
+
+	//}
+
+	if (context.isMultiSelect)
 	{
-		// ダイアログを開いてエフェクトデータを選択
-		char filename[256]{};
-		char filter[] = "Particle Effect Files\0*.json\0All Files\0*.*\0";
-		
-		if (Dialog::OpenFileName(filename, sizeof(filename), filter) == DialogResult::OK)
-		{
-			filePath = filename;
-			Load(filePath);
-		}
-	}
-
-	// Play On Awake チェックボックス
-	if (ImGui::Checkbox("Play On Awake", &playOnAwake))
-	{
-
+		ImGui::Text("Multiple Particle Components Selected");
+		return;
 	}
 
 	if (effectHandle != -1)

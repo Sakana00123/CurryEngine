@@ -53,10 +53,28 @@ namespace CurryEngine
 				}
 			}
 
+			PropertyDrawHelper::CommitEdit<std::string>(prop, context, m_state, value,
+				[](const std::string& v) {
+					return v;
+				},
+				[](const std::string& a, const std::string& b) {
+					return a == b;
+				},
+				[]() {
+					// 編集開始前の状態を保存する関数。ここでは、現在の std::string 値を m_state に保存しています。
+					return true;
+				},
+				[]() {
+					// コミットしてもいいかどうかをチェックする関数。ここでは常に true を返していますが、必要に応じて条件を追加できます。
+					return false;
+				}
+			);
+
 			if (Dialog::OpenFileName(filename, sizeof(filename), filter) == DialogResult::OK)
 			{
 				value = filename;
 				edited = true;
+				activated = false; // ダイアログで選択したときは、InputText の編集状態を無効にする
 				deactivatedAfterEdit = true; // ダイアログで選択した後は、即座にコミットするためにフラグを立てる
 			}
 		}

@@ -42,6 +42,7 @@ public:
 	void OnDestroy() override;
 
 	// エフェクトデータ読み込み
+	C_FUNCTION()
 	void Load(const std::string& filePath);
 
 	// エフェクト再生
@@ -81,10 +82,13 @@ public:
 	void Deserialize(const json& j) override;
 
 private:
+	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"), CurryEngine::PropertyAttributes::DialogFilter("Particle Effect Files|*.json|All Files|*.*|"), CurryEngine::PropertyAttributes::Setter("Load"))
 	std::string filePath; // エフェクトファイルパス
+	C_PROPERTY()
+	bool playOnAwake = false;			// 自動再生フラグ
+private:
 	EffectHandle effectHandle = -1; 	// エフェクトハンドル
 	std::vector<int> instanceIDs;		// 再生インスタンスIDリスト（複数再生に対応するためリストにする）
-	bool playOnAwake = false;			// 自動再生フラグ
 	bool isPlaying = false;				// 再生中フラグ
 	AddSettings settings; 				// 追加設定
 };
