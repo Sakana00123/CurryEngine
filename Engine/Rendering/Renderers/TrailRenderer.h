@@ -43,7 +43,7 @@ private:
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("GameObject"), CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
 	ObjectId targetObjectId; // トレイルを追従させる対象の GameObject の ObjectId
 
-	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"))
+	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"), CurryEngine::PropertyAttributes::DialogFilter("Texture Files (*.png;*.jpg;*.dds)|*.png;*.jpg;*.dds|All Files (*.*)|*.*|"))
 	std::string texturePath; // トレイルに使用するテクスチャのファイルパス
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))

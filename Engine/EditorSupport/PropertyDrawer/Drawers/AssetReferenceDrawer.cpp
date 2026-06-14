@@ -35,16 +35,24 @@ namespace CurryEngine
 		{
 			// ダイアログを開いてエフェクトデータを選択
 			char filename[256]{};
-			char filter[MAX_PATH] = "All Files (*.*)\0*.*\0"; // フィルタの例。必要に応じて変更してください。
+			char filter[MAX_PATH] = "All Files (*.*)|*.*|"; // フィルタの例。必要に応じて変更してください。
+
 			if (auto* dialogFilterAttr = prop.GetAttribute("DialogFilter"))
 			{
 				// TODO: うまく行ってないのでデバッグすること。args[0] にフィルタ文字列が入っている想定。
 				if (!dialogFilterAttr->args.empty())
 				{
-					strncpy_s(filter, dialogFilterAttr->args[0].data(), sizeof(filter));
-					filter[sizeof(filter) - 1] = '\0'; // バッファの最後を null で終端
+					std::string raw = dialogFilterAttr->args[0];
+					std::replace(raw.begin(), raw.end(), '|', '\0');
+					raw += '\0'; // 末尾の追加 \0
+
+					memcpy(filter, raw.data(), (std::min)(raw.size(), sizeof(filter) - 1));
+
+					//strncpy_s(filter, dialogFilterAttr->args[0].data(), sizeof(filter));
+					//filter[sizeof(filter) - 1] = '\0'; // バッファの最後を null で終端
 				}
 			}
+
 			if (Dialog::OpenFileName(filename, sizeof(filename), filter) == DialogResult::OK)
 			{
 				value = filename;
