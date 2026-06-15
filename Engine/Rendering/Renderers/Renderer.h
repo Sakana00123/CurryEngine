@@ -25,8 +25,11 @@ public:
 	 */
 	virtual Math::BoundingBox CalculateAABB() const { return boundingBox; }
 
+#ifdef USE_IMGUI
 	// デバッグ GUI の描画
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	// シリアライズ
 	json Serialize() const override;

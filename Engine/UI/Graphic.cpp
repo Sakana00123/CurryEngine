@@ -55,3 +55,10 @@ bool Graphic::Raycast(const Vector2& position)
 	}
 	return false;
 }
+
+#ifdef USE_IMGUI
+void Graphic::DrawProperty(const PropertyDrawContext& context)
+{
+	ImGui::Checkbox("Raycast Target", &isRaycastTarget);
+}
+#endif // USE_IMGUI

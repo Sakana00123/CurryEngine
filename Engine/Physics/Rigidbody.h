@@ -70,21 +70,21 @@ public:
 	//Vector3 force;
 	
 	
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetMass"), CurryEngine::PropertyAttributes::Setter("SetMass"), CurryEngine::PropertyAttributes::Speed(1.0f))
 	float mass = 1.0f; // 質量
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("IsKinematic"), CurryEngine::PropertyAttributes::Setter("SetKinematic"))
 	bool isKinematic = false; // キネマティックかどうか（物理エンジンの力を受けない）
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Setter("SetUseGravity"))
 	bool useGravity = true; // 重力の影響を受けるかどうか
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Setter("SetUseCCD"))
 	bool useCCD = false; // 連続的な衝突検出を使用するかどうか
 	
 	//bool useDefaultPhysicsMaterial = true; // デフォルトの物理マテリアルを使用するかどうか
 
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
 	RigidbodyConstraints constraints = RigidbodyConstraints::None; // 移動や回転の制約
 
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetSleepThreshold"), CurryEngine::PropertyAttributes::Setter("SetSleepThreshold"), CurryEngine::PropertyAttributes::Speed(0.001f), CurryEngine::PropertyAttributes::Format("%.6f"))
 	float sleepThreshold = 0.005f; // スリープ状態になる速度の閾値
 
 
@@ -152,30 +152,35 @@ public:
 	 * @brief 剛体の質量を設定します。
 	 * @param mass 設定する質量の値。
 	 */
+	C_FUNCTION()
 	void SetMass(float mass);
 
 	/**
 	 * @brief 剛体の現在の質量を取得します。
 	 * @return 現在の質量の値。
 	 */
+	C_FUNCTION()
 	float GetMass() const;
 
 	/**
 	 * @brief 剛体の慣性テンソルを設定します。
 	 * @param inertiaTensor 設定する慣性テンソルのベクトル。通常は各軸に対する慣性モーメントを表します。
 	 */
+	C_FUNCTION()
 	void SetInertiaTensor(const Vector3& inertiaTensor);
 
 	/**
 	 * @brief キネマティック設定を行います。キネマティックなオブジェクトは物理シミュレーションの影響を受けず、直接位置や回転を設定できます。
 	 * @param isKinematic キネマティックにするかどうかのフラグ。trueの場合はキネマティック、falseの場合は物理シミュレーションの影響を受けるようになります。
 	 */
+	C_FUNCTION()
 	void SetKinematic(bool isKinematic);
 
 	/**
 	 * @brief 剛体がキネマティックかどうかを取得します。
 	 * @return trueの場合はキネマティック、falseの場合は物理シミュレーションの影響を受けるようになります。
 	 */
+	C_FUNCTION()
 	bool IsKinematic() const;
 
 	/**
@@ -183,6 +188,7 @@ public:
 	 * @param pos 設定する位置のベクトル。
 	 * @param rot 設定する回転のクォータニオン。
 	 */
+	C_FUNCTION()
 	void SetKinematicTarget(const Vector3& pos, const Quaternion& rot);
 
 	/**
@@ -222,108 +228,126 @@ public:
 	 * @brief 剛体の重力の影響を設定します。
 	 * @param useGravity 重力の影響を受けるかどうかのフラグ。trueの場合は重力の影響を受け、falseの場合は重力の影響を受けません。
 	 */
+	C_FUNCTION()
 	void SetUseGravity(bool useGravity);
 
 	/**
 	 * @brief 剛体の連続的な衝突検出の使用を設定します。
 	 * @param useCCD 連続的な衝突検出を使用するかどうかのフラグ。trueの場合は連続的な衝突検出を使用し、falseの場合は使用しません。
 	 */
+	C_FUNCTION()
 	void SetUseCCD(bool useCCD);
 
 	/**
 	 * @brief 剛体の移動や回転の制約を設定します。
 	 * @param constraints 設定するRigidbodyConstraintsの値。複数の制約を組み合わせることができます。
 	 */
+	C_FUNCTION()
 	void SetConstraints(RigidbodyConstraints constraints);
 
 	/**
 	 * @brief 剛体の現在の移動や回転の制約を取得します。
 	 * @return 現在設定されているRigidbodyConstraintsの値。
 	 */
+	C_FUNCTION()
 	RigidbodyConstraints GetConstraints() const;
 
 	/**
 	 * @brief 剛体の線形減衰を設定します。
 	 * @param damping 設定する線形減衰の値。通常は0以上の値を指定します。
 	 */
+	C_FUNCTION()
 	void SetLinearDamping(float damping);
 
 	/**
 	 * @brief 剛体の現在の線形減衰を取得します。
 	 * @return 現在設定されている線形減衰の値。
 	 */
+	C_FUNCTION()
 	float GetLinearDamping() const;
 
 	/**
 	 * @brief 剛体の線形抵抗を設定します。
 	 * @param linearDrag 設定する線形抵抗の値。通常は0以上の値を指定します。
 	 */
+	C_FUNCTION()
 	void SetLinearDrag(float linearDrag);
 
 	/**
 	 * @brief 剛体の現在の線形抵抗を取得します。
 	 * @return 現在設定されている線形抵抗の値。
 	 */
+	C_FUNCTION()
 	float GetLinearDrag() const;
 
 	/**
 	 * @brief 剛体の最大線形速度を設定します。
 	 * @param maxLinearVelocity 設定する最大線形速度の値。通常は0以上の値を指定します。
 	 */
+	C_FUNCTION()
 	void SetMaxLinearVelocity(float maxLinearVelocity);
 
 	/**
 	 * @brief 剛体の現在の最大線形速度を取得します。
 	 * @return 現在設定されている最大線形速度の値。
 	 */
+	C_FUNCTION()
 	float GetMaxLinearVelocity() const;
 
 	/**
 	 * @brief 剛体の角減衰を設定します。
 	 * @param damping 設定する角減衰の値。通常は0以上の値を指定します。
 	 */
+	C_FUNCTION()
 	void SetAngularDamping(float damping);
 	
 	/**
 	 * @brief 剛体の現在の角減衰を取得します。
 	 * @return 現在設定されている角減衰の値。
 	 */
+	C_FUNCTION()
 	float GetAngularDamping() const;
 
 	/**
 	 * @brief 剛体の角抵抗を設定します。
 	 * @param angularDrag 設定する角抵抗の値。通常は0以上の値を指定します。
 	 */
+	C_FUNCTION()
 	void SetAngularDrag(float angularDrag);
 
 	/**
 	 * @brief 剛体の現在の角抵抗を取得します。
 	 * @return 現在設定されている角抵抗の値。
 	 */
+	C_FUNCTION()
 	float GetAngularDrag() const;
 
 	/**
 	 * @brief 剛体の最大角速度を設定します。
 	 * @param maxAngularVelocity 設定する最大角速度の値。通常は0以上の値を指定します。
 	 */
+	C_FUNCTION()
 	void SetMaxAngularVelocity(float maxAngularVelocity);
 
 	/**
 	 * @brief 剛体の現在の最大角速度を取得します。
 	 * @return 現在設定されている最大角速度の値。
 	 */
+	C_FUNCTION()
 	float GetMaxAngularVelocity() const;
 
 	/**
 	 * @brief 剛体のスリープ閾値を設定します。
 	 * @param sleepThreshold 設定するスリープ閾値の値。
 	 */
+	C_FUNCTION()
 	void SetSleepThreshold(float sleepThreshold);
 
 	/**
 	 * @brief 剛体の現在のスリープ閾値を取得します。
 	 * @return 現在設定されているスリープ閾値の値。
 	 */
+	C_FUNCTION()
 	float GetSleepThreshold() const;
 
 public:
@@ -355,7 +379,10 @@ public:
 		
 	}
 
-	void DrawProperty() override;
+#ifdef USE_IMGUI
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	bool isGround = false;
 

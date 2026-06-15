@@ -28,9 +28,9 @@ void EasingAnchoredPosition::Update(float deltaTime)
 	}
 }
 
-void EasingAnchoredPosition::DrawProperty()
-{
 #ifdef USE_IMGUI
+void EasingAnchoredPosition::DrawProperty(const PropertyDrawContext& context)
+{
 	ImGui::Checkbox("useUnscaledTime", &useUnscaledTime);
 
 	const char* typeNames[] = { "InQuad", "OutQuad", "InOutQuad", "InCubic", "OutCubic", "InOutCubic", "InQuart", "OutQuart", "InOutQuart", "InQuint", "OutQuint", "InOutQuint", "InSine", "OutSine",
@@ -97,5 +97,5 @@ void EasingAnchoredPosition::DrawProperty()
 
 	ImGui::Curve("Curve", ImVec2(200, 200), IM_ARRAYSIZE(points), points, &selectedPoint);
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

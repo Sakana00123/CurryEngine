@@ -11,7 +11,11 @@ public:
 	void Start() override;
 	void Update(float deltaTime) override;
 
-	void DrawProperty() override; // エディタでプロパティを描画するためのオーバーライド関数
+#ifdef USE_IMGUI
+	// エディタでプロパティを描画するためのオーバーライド関数
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 protected:
 

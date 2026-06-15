@@ -14,8 +14,10 @@ public:
 	void Render(RenderContext* rtx) override;
 	// AABB計算
 	Math::BoundingBox CalculateAABB() const override;
+#ifdef USE_IMGUI
 	// デバッグ GUI の描画
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
 	// シリアライズ
 	json Serialize() const override;
 	// デシリアライズ

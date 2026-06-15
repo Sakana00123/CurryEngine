@@ -51,11 +51,11 @@ void EditorCamera::Update(float elapsedTime)
 				if (std::fabsf(rx) > 0.01f || std::fabsf(ry) > 0.01f ||
 					abs(dx) > 0 || abs(dy) > 0)
 				{
-					Vector3 euler = Transform::QuaternionToEuler(rotation);
+					Vector3 euler = (rotation).ToEuler();
 					euler.x -= ((ry - dy) * elapsedTime * rotateSpeed);
 					euler.y += ((rx + dx) * elapsedTime * rotateSpeed);
 					euler.x = std::clamp(euler.x, minAngleX, maxAngleX);
-					rotation = Transform::EulerToQuaternion(euler);
+					rotation = Quaternion::FromEuler(euler);
 				}
 			}
 			else

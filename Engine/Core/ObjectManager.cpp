@@ -7,6 +7,8 @@
 #include <imgui.h>
 #include <ImGuizmo.h>
 #include "Engine/Editor/AssetBrowser.h"
+#include "Engine/Editor/EditorGUI.h"
+
 #endif // USE_IMGUI
 
 #include <functional>
@@ -15,7 +17,6 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include "Engine/UI/RectTransform.h"
 
-#include "Engine/Editor/EditorGUI.h"
 #include "Engine/Utils/JsonFileHandler.h"
 #include <profiler.h>
 
@@ -28,6 +29,8 @@
 #include "Engine/EditorSupport/EditorSelection.h"
 #include "Engine/EditorSupport/SetValueCommand.h"
 #include "Engine/EditorSupport/CompoundCommand.h"
+
+#include "Engine/Editor/InspectorWindow.h"
 
 #include "Engine/EditorSupport/OrderManager.h"
 #include <imgui_internal.h>
@@ -1340,90 +1343,7 @@ void ObjectManager::DrawHierarchy()
 void ObjectManager::DrawProperty()
 {
 #ifdef USE_IMGUI
-
-	if (ImGui::Begin("Inspector"))
-	{
-		if (inspectorNode)
-		{
-			ImGui::PushID(0);
-			//Inspectorロック
-			ImGui::Checkbox("Lock", &lockInspector);
-
-			ImGui::SameLine();
-
-			// layerを変更するドロップダウン
-			auto layers = LayerManager::Get().GetLayerNames();
-			std::vector<std::string> layerNames;
-			for (int i = 0; i < layers.size(); ++i) {
-				//空のレイヤーは表示しない
-				if (layers[i].empty()) break;
-
-				//レイヤー番号とレイヤー名を表示
-				std::string layerName = "Layer" + std::to_string(i) + ": " + layers[i];
-				layerNames.push_back(layerName);
-			}
-			int currentLayer = inspectorNode->GetLayer();
-			//レイヤーのドロップダウン
-			ImGui::Text("Layer");
-			ImGui::SameLine();
-			if (ImGui::BeginCombo("##Layer", layers[currentLayer].c_str()))
-			{
-				for (int i = 0; i < layerNames.size(); ++i) {
-					bool isSelected = (currentLayer == i);
-					if (ImGui::Selectable(layerNames[i].c_str(), isSelected)) {
-						currentLayer = i;
-						inspectorNode->SetLayer(currentLayer);
-					}
-					if (isSelected) {
-						ImGui::SetItemDefaultFocus();
-					}
-				}
-
-				//レイヤーの管理画面に遷移する選択肢
-				ImGui::Separator();
-				if (ImGui::Selectable("Add Layer...")) 
-				{
-					//レイヤー管理画面に遷移
-					LayerManager::Get().OpenLayerSettingsGUI();
-				}
-
-
-				ImGui::EndCombo();
-			}
-
-			//オブジェクトの有効状態を切り替えるチェックボックス
-			bool isActive = inspectorNode->IsActiveSelf(); // ローカルの有効状態
-			if (ImGui::Checkbox("", &isActive)) {
-				inspectorNode->SetActive(isActive); // グローバルの有効状態を更新
-			}
-			ImGui::SameLine();
-
-#if 1
-			//名前を変更するテキストボックス
-			static size_t bufferSize = 256;
-			static char buffer[256] = "";
-			if (!ImGui::IsItemEdited()) {
-				strncpy_s(buffer, inspectorNode->GetName().c_str(), bufferSize);
-				buffer[bufferSize - 1] = '\0';
-			}
-
-			ImGui::Text("Name");
-			ImGui::SameLine();
-			ImGui::PushItemWidth(210);
-			ImGui::InputText("##GameObjectName", buffer, sizeof(buffer), ImGuiInputTextFlags_AutoSelectAll);
-			if (ImGui::IsItemEdited()) {
-				inspectorNode->SetName(buffer);
-			}
-			ImGui::PopItemWidth();
-#else
-			ImGui::Text(inspectorNode->GetName().c_str());
-#endif		
-			ImGui::Separator();
-			inspectorNode->DrawProperty();
-			ImGui::PopID();
-		}
-	}
-	ImGui::End();
+	CurryEngine::InspectorWindow::Get().Draw(this);
 #endif // USE_IMGUI
 }
 

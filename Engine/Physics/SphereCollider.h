@@ -18,8 +18,11 @@ public:
 	/** @brief デバッグ描画。*/
 	void Render(RenderContext* rtx) override;
 
+#ifdef USE_IMGUI
 	/** @brief プロパティ描画。*/
-	void DrawProperty() override;
+	//void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	/** @brief シリアライズ。*/
 	json Serialize() const override;
@@ -29,9 +32,28 @@ public:
 
 public:
 	/** @brief ローカルオフセット。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetCenter"), CurryEngine::PropertyAttributes::Setter("SetCenter"))
 	Vector3 center{ 0,0,0 };
 	/** @brief 球の半径。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetRadius"), CurryEngine::PropertyAttributes::Setter("SetRadius"))
 	float radius{ 1.0f };
+
+	/** @brief 球の中心位置を取得します。*/
+	C_FUNCTION()
+	Vector3 GetCenter() const;
+
+	/** @brief 球の中心位置を設定します。*/
+	C_FUNCTION()
+	void SetCenter(const Vector3& newCenter);
+
+	/** @brief 球の半径を取得します。*/
+	C_FUNCTION()
+	float GetRadius() const;
+
+	/** @brief 球の半径を設定します。*/
+	C_FUNCTION()
+	void SetRadius(float newRadius);
+
+
+
 };

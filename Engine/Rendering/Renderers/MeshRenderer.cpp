@@ -74,10 +74,10 @@ Math::BoundingBox MeshRenderer::CalculateAABB() const
 	return worldBounds;
 }
 
-void MeshRenderer::DrawProperty()
-{
 #ifdef USE_IMGUI
-	Renderer::DrawProperty();
+void MeshRenderer::DrawProperty(const PropertyDrawContext& context)
+{
+	Renderer::DrawProperty(context);
 
 	// プリミティブタイプの選択
 	const char* primitiveTypes[] = { "Cube", "Sphere", "Plane", "Capsule", "Cylinder" };
@@ -97,8 +97,8 @@ void MeshRenderer::DrawProperty()
 		ImGui::Text("Mesh: None");
 	}
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json MeshRenderer::Serialize() const
 {

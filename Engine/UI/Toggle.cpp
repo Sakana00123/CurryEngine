@@ -25,10 +25,10 @@ void Toggle::Begin(RenderContext* rtx)
 	}
 }
 
-void Toggle::DrawProperty()
-{
 #ifdef USE_IMGUI
-	Selectable::DrawProperty();
+void Toggle::DrawProperty(const PropertyDrawContext& context)
+{
+	Selectable::DrawProperty(context);
 
 	IMGUI_PROPERTY_BEGIN();
 	bool changed = false;
@@ -45,8 +45,8 @@ void Toggle::DrawProperty()
 		IMGUI_PROPERTY_COMMAND_CUSTOM("IsOn", newVal, oldVal, newValStr, oldValStr, setter);
 	}
 	IMGUI_PROPERTY_END();
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json Toggle::Serialize() const
 {

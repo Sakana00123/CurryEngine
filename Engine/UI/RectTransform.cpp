@@ -78,10 +78,9 @@ void RectTransform::Update(float elapsedTime)
 	}
 }
 
-void RectTransform::DrawProperty()
-{
 #ifdef USE_IMGUI
-
+void RectTransform::DrawProperty(const PropertyDrawContext& context)
+{
 	if (isOpen) {
 		isOpen = !(ImGui::Button("Cancel") || DrawAnchorPreset());
 	}
@@ -89,7 +88,7 @@ void RectTransform::DrawProperty()
 		isOpen = ImGui::Button("AnchorPreset");
 	}
 
-	if (anchorMin.x != anchorMax.x || anchorMin.y != anchorMax.y) {
+	/*if (anchorMin.x != anchorMax.x || anchorMin.y != anchorMax.y) {
 		float left = GetLeft();
 		if (ImGui::DragFloat("Left", &left)) {
 			SetLeft(left);
@@ -110,7 +109,11 @@ void RectTransform::DrawProperty()
 	else {
 		ImGui::DragFloat2("Pos", &anchoredPosition.x);
 		ImGui::DragFloat2("Size", &size.x);
-	}
+	}*/
+
+	// デフォルトのプロパティ描画を呼び出す（必要に応じて順序を調整）
+	Component::DrawProperty(context);
+
 
 	ImGui::BeginDisabled();
 	ImGui::DragFloat2("WorldPos", &worldPos.x);
@@ -127,23 +130,23 @@ void RectTransform::DrawProperty()
 		}
 		ImGui::TreePop();
 	}
-	Vector2 newPivot = pivot;
-	if (ImGui::DragFloat2("Pivot", &newPivot.x, 0.1f)) {
-		SetPivot(newPivot);
-	}
-	ImGui::DragFloat("Angle", &angle);
+	//Vector2 newPivot = pivot;
+	//if (ImGui::DragFloat2("Pivot", &newPivot.x, 0.1f)) {
+	//	SetPivot(newPivot);
+	//}
+	//ImGui::DragFloat("Angle", &angle);
 
-	ImGui::BeginDisabled();
-	float worldAngle = GetWorldAngle();
-	ImGui::DragFloat("WorldAngle", &worldAngle);
-	ImGui::EndDisabled();
+	//ImGui::BeginDisabled();
+	//float worldAngle = GetWorldAngle();
+	//ImGui::DragFloat("WorldAngle", &worldAngle);
+	//ImGui::EndDisabled();
 
-	// Sorting Order は Canvas の Sorting Order + localSortingOrder で決まるため、localSortingOrder のみを編集可能にする
-	
-	ImGui::DragInt("SortingOrder", &localSortingOrder);
+	//// Sorting Order は Canvas の Sorting Order + localSortingOrder で決まるため、localSortingOrder のみを編集可能にする
+	//
+	//ImGui::DragInt("SortingOrder", &localSortingOrder);
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 bool RectTransform::DrawAnchorPreset()
 {

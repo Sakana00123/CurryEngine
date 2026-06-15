@@ -6,6 +6,7 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include <Engine\Resources\ResourceManager.h>
 #include <imgui_internal.h>
+#include "Engine/EditorSupport/PropertyDrawer/PropertyDrawHelper.h"
 #endif // USE_IMGUI
 
 #include "Engine/Physics/Physics.h"
@@ -71,33 +72,33 @@ XMVECTOR Transform::QuaternionLookAt(const XMVECTOR& Original, const XMVECTOR& T
 	return Quaternion;
 }
 
-Vector3 Transform::QuaternionToEuler(const Quaternion& rotation)
-{
-	// クォータニオンを回転行列に変換
-	XMFLOAT4X4 rotationMatrix;
-	XMStoreFloat4x4(&rotationMatrix, XMMatrixRotationQuaternion(XMLoadFloat4(&rotation)));
-	//ジンバルロック判定
-	float sx = rotationMatrix.m[2][1];
-	bool unlocked = std::abs(sx) < 0.99999f;
-	// オイラー角を計算
-	Vector3 eulerAngles{};
-	eulerAngles.x = unlocked ? asinf(sx) : atan2f(rotationMatrix.m[2][1], rotationMatrix.m[2][2]);
-	eulerAngles.y = unlocked ? atan2f(-rotationMatrix.m[2][0], rotationMatrix.m[2][2]) : 0;
-	eulerAngles.z = unlocked ? atan2f(-rotationMatrix.m[0][1], rotationMatrix.m[1][1]) : atan2f(rotationMatrix.m[1][0], rotationMatrix.m[0][0]);
-	// ラジアンから度に変換
-	eulerAngles.x = -XMConvertToDegrees(eulerAngles.x);
-	eulerAngles.y = -XMConvertToDegrees(eulerAngles.y);
-	eulerAngles.z = -XMConvertToDegrees(eulerAngles.z);
+//Vector3 Transform::QuaternionToEuler(const Quaternion& rotation)
+//{
+//	// クォータニオンを回転行列に変換
+//	XMFLOAT4X4 rotationMatrix;
+//	XMStoreFloat4x4(&rotationMatrix, XMMatrixRotationQuaternion(XMLoadFloat4(&rotation)));
+//	//ジンバルロック判定
+//	float sx = rotationMatrix.m[2][1];
+//	bool unlocked = std::abs(sx) < 0.99999f;
+//	// オイラー角を計算
+//	Vector3 eulerAngles{};
+//	eulerAngles.x = unlocked ? asinf(sx) : atan2f(rotationMatrix.m[2][1], rotationMatrix.m[2][2]);
+//	eulerAngles.y = unlocked ? atan2f(-rotationMatrix.m[2][0], rotationMatrix.m[2][2]) : 0;
+//	eulerAngles.z = unlocked ? atan2f(-rotationMatrix.m[0][1], rotationMatrix.m[1][1]) : atan2f(rotationMatrix.m[1][0], rotationMatrix.m[0][0]);
+//	// ラジアンから度に変換
+//	eulerAngles.x = -XMConvertToDegrees(eulerAngles.x);
+//	eulerAngles.y = -XMConvertToDegrees(eulerAngles.y);
+//	eulerAngles.z = -XMConvertToDegrees(eulerAngles.z);
+//
+//	return eulerAngles;
+//}
 
-	return eulerAngles;
-}
-
-Quaternion Transform::EulerToQuaternion(const Vector3& eulerAngles)
-{
-	Quaternion q;
-	XMStoreFloat4(&q, XMQuaternionRotationRollPitchYaw(XMConvertToRadians(eulerAngles.x), XMConvertToRadians(eulerAngles.y), XMConvertToRadians(eulerAngles.z)));
-	return q;
-}
+//Quaternion Transform::EulerToQuaternion(const Vector3& eulerAngles)
+//{
+//	Quaternion q;
+//	XMStoreFloat4(&q, XMQuaternionRotationRollPitchYaw(XMConvertToRadians(eulerAngles.x), XMConvertToRadians(eulerAngles.y), XMConvertToRadians(eulerAngles.z)));
+//	return q;
+//}
 
 bool Transform::IsChangedThisFrame() const
 {
@@ -117,7 +118,7 @@ Quaternion Transform::GetRotation()
 Vector3 Transform::GetEulerAngles()
 {
 	if (m_eulerDirty) {
-		m_eulerAngles = QuaternionToEuler(rotation); // ローカル回転からオイラー角を計算して保存
+		m_eulerAngles = rotation.ToEuler(); // ローカル回転からオイラー角を計算して保存
 		m_eulerDirty = false; // オイラー角がローカル回転と同期している状態
 	}
 	return m_eulerAngles;
@@ -153,7 +154,7 @@ void Transform::SetRotation(const Quaternion& rotation)
 void Transform::SetRotation(const Vector3& eulerAngles)
 {
 	this->m_eulerAngles = eulerAngles; // オイラー角をローカル回転に変換して保存
-	this->rotation = EulerToQuaternion(eulerAngles); // ローカル回転をオイラー角に変換して保存
+	this->rotation = Quaternion::FromEuler(eulerAngles); // ローカル回転をオイラー角に変換して保存
 	m_eulerDirty = false; // オイラー角がローカル回転と同期している状態
 	MarkNeedsUpdate();
 }
@@ -163,7 +164,7 @@ void Transform::Rotate(const Quaternion& rotate)
 }
 void Transform::Rotate(const Vector3& eulerAngles)
 {
-	Rotate(EulerToQuaternion(eulerAngles));
+	Rotate(Quaternion::FromEuler(eulerAngles));
 }
 
 void Transform::SetScale(const Vector3& scale)
@@ -236,7 +237,7 @@ void Transform::UpdateTransform()
 	};
 	XMMATRIX C{ XMLoadFloat4x4(&coordinateSystemTransforms[static_cast<int>(coordinateSystem)]) };
 	XMMATRIX S{ XMMatrixScaling(scale.x, scale.y, scale.z) };
-	XMMATRIX R{ XMMatrixRotationQuaternion(QuaternionToXMVector(rotation)) };
+	XMMATRIX R{ rotation.ToMatrix() };
 	XMMATRIX T{ XMMatrixTranslation(position.x, position.y, position.z) };
 	XMMATRIX L{ C * S * R * T };
 	XMStoreFloat4x4(&local, L);//ローカル座標を保存
@@ -347,7 +348,7 @@ void Transform::SetWorldRotation(const Quaternion& worldRotation)
 void Transform::SetWorldRotation(const Vector3& worldEuler)
 {
 	if (GetOwner()->parent) {
-		SetWorldRotation(EulerToQuaternion(worldEuler));
+		SetWorldRotation(Quaternion::FromEuler(worldEuler));
 	}
 	else {
 		SetRotation(worldEuler);
@@ -437,221 +438,245 @@ namespace ImGui
 	}
 }
 #endif // USE_IMGUI
-
-void Transform::DrawProperty()
-{
 #ifdef USE_IMGUI
+
+void Transform::DrawProperty(const PropertyDrawContext& context)
+{
+	Component::DrawProperty(context); // 基底クラスの描画を呼び出す
+	return;
 	IMGUI_PROPERTY_BEGIN();
 
-	// 位置の編集
+	Transform* transform = dynamic_cast<Transform*>(context.Primary());
+	if (transform)
 	{
-		static Vector3 prevPosition;
-		IMGUI_PROPERTY("Position");
-		if (ImGui::DragFloat3("##Position", &position.x)) {
-			MarkNeedsUpdate();
-		}
-
-		if (ImGui::IsItemActivated()) // 編集開始時に現在の値を保存
+		// 位置の編集
 		{
-			prevPosition = position;
-		}
-		if (ImGui::IsItemDeactivatedAfterEdit()) // 編集終了時にコマンドを発行
-		{
-			Vector3 newPosition = position;
-			if (newPosition.x != prevPosition.x || newPosition.y != prevPosition.y || newPosition.z != prevPosition.z) {
-				std::string newPositionStr = "(" + std::to_string(newPosition.x) + ", " + std::to_string(newPosition.y) + ", " + std::to_string(newPosition.z) + ")";
-				std::string prevPositionStr = "(" + std::to_string(prevPosition.x) + ", " + std::to_string(prevPosition.y) + ", " + std::to_string(prevPosition.z) + ")";
-				IMGUI_PROPERTY_COMMAND_CUSTOM("position", newPosition, prevPosition, newPositionStr, prevPositionStr, [this](const Vector3& value) {
-					SetPosition(value);
-					});
-			}
-			prevPosition = newPosition;
-		}
-	}
+			Vector3& position = transform->position;
 
-	static Vector3 editorEuler;
-	static Vector3 prevEuler;
-	static bool isEditing = false;
+			const PropertyInfo* posInfo = transform->GetClassMeta()->FindProperty("position");
+			bool mixedValue = posInfo ? CurryEngine::PropertyDrawHelper::HasMixedValues<Vector3>(context, *posInfo) : false;
+			const char* format = mixedValue ? "---" : "%.3f";
 
-	if (!isEditing)
-	{
-		// 編集中でなければ現在の回転を取得
-		editorEuler = GetEulerAngles();
-		// 前回の値を更新
-		prevEuler = editorEuler;
-	}
-
-#if 0
-	IMGUI_PROPERTY("Rotation");
-	if (ImGui::DragFloat3("##Rotation", &editorEuler.x))
-	{
-		// 回転が変更された場合、差分を計算してクォータニオンに反映
-		Vector3 delta = editorEuler - prevEuler;
-		Quaternion deltaQuat = EulerToQuaternion(delta);
-		rotation = QuaternionMultiply(deltaQuat, rotation);
-		prevEuler = editorEuler;
-		MarkNeedsUpdate();
-		isEditing = true;
-	}
-
-	if (isEditing && ImGui::IsItemDeactivatedAfterEdit())
-	{
-		isEditing = false;
-	}
-#else
-	{
-		static Vector3 prevValue; /* 前回の値を保持する静的変数 */
-		static Vector3 editorEuler; /* 編集中のオイラー角を保持する静的変数 */
-		static bool isEditing = false; /* 編集中かどうかを追跡するフラグ */
-		Quaternion* value = &rotation;
-		if (!isEditing) /* 編集開始前に現在の値をオイラー角に変換して保存 */
-		{
-			editorEuler = GetEulerAngles();
-		}
-
-		IMGUI_PROPERTY("Rotation");
-		bool valueChanged = false; // 値が変更されたかを追跡するフラグ
-		valueChanged |= ImGui::DragFloat3("##rotation", &editorEuler.x);
-		if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
-		{
-			prevValue = GetEulerAngles();
-		}
-		if (ImGui::IsItemDeactivatedAfterEdit()) /* 編集終了後にコマンドを発行 */
-		{
-			// 変更されたオイラー角と前回のオイラー角の差分を計算してクォータニオンに変換
-			Vector3 newValue = editorEuler;
-			{
-				IMGUI_PROPERTY_COMMAND_CUSTOM("rotation", newValue, prevValue,
-					"(" + std::to_string(newValue.x) + ", " + std::to_string(newValue.y) + ", " + std::to_string(newValue.z) + ")",
-					"(" + std::to_string(prevValue.x) + ", " + std::to_string(prevValue.y) + ", " + std::to_string(prevValue.z) + ")",
-					[this](const Vector3& rot) {SetRotation(rot); });
-			}
-			prevValue = newValue; /* 前回の値を更新 */
-			GetTransform()->SetRotation(newValue); /* Transform の回転を更新 */
-			isEditing = false; /* 編集終了 */
-		}
-		if (valueChanged) /* 値が変更された場合は Transform の回転を更新 */
-		{
-			GetTransform()->SetRotation(editorEuler);
-			isEditing = true; /* 編集中 */
-		}
-	}
-#endif // 0
-
-	// スケールの編集
-	{
-		static Vector3 prevScale;
-		IMGUI_PROPERTY("Scale");
-		if (scale.LengthSq() != 0)
-		{
-			lastValidScale = scale;
-		}
-		Vector3 prevThisFrameScale = scale;
-		ImGuiSliderFlags flags[3] = { 
-			(!enableScaleLink || (lastValidScale.x != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly,
-			(!enableScaleLink || (lastValidScale.y != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly,
-			(!enableScaleLink || (lastValidScale.z != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly
-		};
-		if (ImGui::DragCustomFloat3("##Scale", &scale.x, 0.01f, 0.0f, 0.0f, "%.3f", flags)) {
-			if (scale.LengthSq() == 0 && prevThisFrameScale.LengthSq() != 0)
-			{
-				lastValidScale = prevThisFrameScale; // スケールが0になった場合は、最後に有効だったスケールを保存しておく
-			}
-			if (enableScaleLink) {
-				// スケールリンクが有効な場合、どの軸が変更されたかを判定して、変更された軸のスケールの変化率を計算し、他の軸にも同じ変化率を適用する
-				if (prevThisFrameScale.x == prevThisFrameScale.y && prevThisFrameScale.y == prevThisFrameScale.z) {
-					// すべての軸が同じ値の場合、どの軸が変更されたかを判定できないため、最後に保存された有効なスケールの値を基準に変更する
-					if (scale.x != prevThisFrameScale.x) {
-						scale.y = scale.z = scale.x;
-					}
-					else if (scale.y != prevThisFrameScale.y) {
-						scale.x = scale.z = scale.y;
-					}
-					else if (scale.z != prevThisFrameScale.z) {
-						scale.x = scale.y = scale.z;
+			static Vector3 prevPosition;
+			IMGUI_PROPERTY("Position");
+			if (ImGui::DragFloat3("##Position", &position.x, 1.0f, 0.0f, 0.0f, format)) {
+				//MarkNeedsUpdate();
+				CurryEngine::PropertyDrawHelper::ApplyToAll<Vector3>(context, *posInfo, position);
+				for (size_t i = 1; i < context.targets.size(); i++) {
+					if (auto* t = dynamic_cast<Transform*>(context.targets[i])) {
+						t->MarkNeedsUpdate();
 					}
 				}
-				else if (lastValidScale.LengthSq() != 0)
-				{
-					int changedAxis = -1;
-					if (scale.x != lastValidScale.x) changedAxis = 0;
-					else if (scale.y != lastValidScale.y) changedAxis = 1;
-					else if (scale.z != lastValidScale.z) changedAxis = 2;
+			}
 
-					if (changedAxis != -1) {
-						float scaleFactor = 1.0f;
-						switch (changedAxis) {
-						case 0: scaleFactor = scale.x / lastValidScale.x; break;
-						case 1: scaleFactor = scale.y / lastValidScale.y; break;
-						case 2: scaleFactor = scale.z / lastValidScale.z; break;
+			if (ImGui::IsItemActivated()) // 編集開始時に現在の値を保存
+			{
+				prevPosition = position;
+			}
+			if (ImGui::IsItemDeactivatedAfterEdit()) // 編集終了時にコマンドを発行
+			{
+				Vector3 newPosition = position;
+				if (newPosition.x != prevPosition.x || newPosition.y != prevPosition.y || newPosition.z != prevPosition.z) {
+					std::string newPositionStr = "(" + std::to_string(newPosition.x) + ", " + std::to_string(newPosition.y) + ", " + std::to_string(newPosition.z) + ")";
+					std::string prevPositionStr = "(" + std::to_string(prevPosition.x) + ", " + std::to_string(prevPosition.y) + ", " + std::to_string(prevPosition.z) + ")";
+					IMGUI_PROPERTY_COMMAND_CUSTOM("position", newPosition, prevPosition, newPositionStr, prevPositionStr, [this](const Vector3& value) {
+						SetPosition(value);
+						});
+				}
+				prevPosition = newPosition;
+			}
+		}
+
+		static Vector3 editorEuler;
+		static Vector3 prevEuler;
+		static bool isEditing = false;
+
+		if (!isEditing)
+		{
+			// 編集中でなければ現在の回転を取得
+			editorEuler = GetEulerAngles();
+			// 前回の値を更新
+			prevEuler = editorEuler;
+		}
+
+#if 0
+		IMGUI_PROPERTY("Rotation");
+		if (ImGui::DragFloat3("##Rotation", &editorEuler.x))
+		{
+			// 回転が変更された場合、差分を計算してクォータニオンに反映
+			Vector3 delta = editorEuler - prevEuler;
+			Quaternion deltaQuat = EulerToQuaternion(delta);
+			rotation = QuaternionMultiply(deltaQuat, rotation);
+			prevEuler = editorEuler;
+			MarkNeedsUpdate();
+			isEditing = true;
+		}
+
+		if (isEditing && ImGui::IsItemDeactivatedAfterEdit())
+		{
+			isEditing = false;
+		}
+#else
+		{
+			static Vector3 prevValue; /* 前回の値を保持する静的変数 */
+			static Vector3 editorEuler; /* 編集中のオイラー角を保持する静的変数 */
+			static bool isEditing = false; /* 編集中かどうかを追跡するフラグ */
+			Quaternion* value = &rotation;
+			if (!isEditing) /* 編集開始前に現在の値をオイラー角に変換して保存 */
+			{
+				editorEuler = GetEulerAngles();
+			}
+
+			IMGUI_PROPERTY("Rotation");
+			bool valueChanged = false; // 値が変更されたかを追跡するフラグ
+			valueChanged |= ImGui::DragFloat3("##rotation", &editorEuler.x);
+			if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
+			{
+				prevValue = GetEulerAngles();
+			}
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* 編集終了後にコマンドを発行 */
+			{
+				// 変更されたオイラー角と前回のオイラー角の差分を計算してクォータニオンに変換
+				Vector3 newValue = editorEuler;
+				{
+					IMGUI_PROPERTY_COMMAND_CUSTOM("rotation", newValue, prevValue,
+						"(" + std::to_string(newValue.x) + ", " + std::to_string(newValue.y) + ", " + std::to_string(newValue.z) + ")",
+						"(" + std::to_string(prevValue.x) + ", " + std::to_string(prevValue.y) + ", " + std::to_string(prevValue.z) + ")",
+						[this](const Vector3& rot) {SetRotation(rot); });
+				}
+				prevValue = newValue; /* 前回の値を更新 */
+				GetTransform()->SetRotation(newValue); /* Transform の回転を更新 */
+				isEditing = false; /* 編集終了 */
+			}
+			if (valueChanged) /* 値が変更された場合は Transform の回転を更新 */
+			{
+				GetTransform()->SetRotation(editorEuler);
+				isEditing = true; /* 編集中 */
+			}
+		}
+#endif // 0
+
+		// スケールの編集
+		{
+			static Vector3 prevScale;
+			IMGUI_PROPERTY("Scale");
+			if (scale.LengthSq() != 0)
+			{
+				lastValidScale = scale;
+			}
+			Vector3 prevThisFrameScale = scale;
+			ImGuiSliderFlags flags[3] = {
+				(!enableScaleLink || (lastValidScale.x != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly,
+				(!enableScaleLink || (lastValidScale.y != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly,
+				(!enableScaleLink || (lastValidScale.z != 0)) ? ImGuiSliderFlags_None : ImGuiSliderFlags_ReadOnly
+			};
+			if (ImGui::DragCustomFloat3("##Scale", &scale.x, 0.01f, 0.0f, 0.0f, "%.3f", flags)) {
+				if (scale.LengthSq() == 0 && prevThisFrameScale.LengthSq() != 0)
+				{
+					lastValidScale = prevThisFrameScale; // スケールが0になった場合は、最後に有効だったスケールを保存しておく
+				}
+				if (enableScaleLink) {
+					// スケールリンクが有効な場合、どの軸が変更されたかを判定して、変更された軸のスケールの変化率を計算し、他の軸にも同じ変化率を適用する
+					if (prevThisFrameScale.x == prevThisFrameScale.y && prevThisFrameScale.y == prevThisFrameScale.z) {
+						// すべての軸が同じ値の場合、どの軸が変更されたかを判定できないため、最後に保存された有効なスケールの値を基準に変更する
+						if (scale.x != prevThisFrameScale.x) {
+							scale.y = scale.z = scale.x;
 						}
-						for (int i = 0; i < 3; i++) {
-							if (i != changedAxis) {
-								switch (i) {
-								case 0: scale.x = lastValidScale.x * scaleFactor; break;
-								case 1: scale.y = lastValidScale.y * scaleFactor; break;
-								case 2: scale.z = lastValidScale.z * scaleFactor; break;
+						else if (scale.y != prevThisFrameScale.y) {
+							scale.x = scale.z = scale.y;
+						}
+						else if (scale.z != prevThisFrameScale.z) {
+							scale.x = scale.y = scale.z;
+						}
+					}
+					else if (lastValidScale.LengthSq() != 0)
+					{
+						int changedAxis = -1;
+						if (scale.x != lastValidScale.x) changedAxis = 0;
+						else if (scale.y != lastValidScale.y) changedAxis = 1;
+						else if (scale.z != lastValidScale.z) changedAxis = 2;
+
+						if (changedAxis != -1) {
+							float scaleFactor = 1.0f;
+							switch (changedAxis) {
+							case 0: scaleFactor = scale.x / lastValidScale.x; break;
+							case 1: scaleFactor = scale.y / lastValidScale.y; break;
+							case 2: scaleFactor = scale.z / lastValidScale.z; break;
+							}
+							for (int i = 0; i < 3; i++) {
+								if (i != changedAxis) {
+									switch (i) {
+									case 0: scale.x = lastValidScale.x * scaleFactor; break;
+									case 1: scale.y = lastValidScale.y * scaleFactor; break;
+									case 2: scale.z = lastValidScale.z * scaleFactor; break;
+									}
 								}
 							}
 						}
 					}
 				}
+				MarkNeedsUpdate();
 			}
-			MarkNeedsUpdate();
-		}
 
-		if (ImGui::IsItemActivated()) // 編集開始時に現在の値を保存
-		{
-			prevScale = scale;
-		}
-		if (ImGui::IsItemDeactivatedAfterEdit()) // 編集終了時にコマンドを発行
-		{
-			Vector3 newScale = scale;
-			if (newScale.x != prevScale.x || newScale.y != prevScale.y || newScale.z != prevScale.z) {
-				std::string newScaleStr = "(" + std::to_string(newScale.x) + ", " + std::to_string(newScale.y) + ", " + std::to_string(newScale.z) + ")";
-				std::string prevScaleStr = "(" + std::to_string(prevScale.x) + ", " + std::to_string(prevScale.y) + ", " + std::to_string(prevScale.z) + ")";
-				IMGUI_PROPERTY_COMMAND_CUSTOM("scale", newScale, prevScale, newScaleStr, prevScaleStr, [this](const Vector3& value) {
-					SetScale(value);
-					});
-			}
-			prevScale = newScale;
-		}
-
-		// スケールリンクフラグの編集
-		{
-			ImGui::SameLine();
-			auto iconTex = ResourceManager::GetOrLoad<AssetTexture>("./Data/Icon/editorIcons.png");
-			float buttonSize = 22.0f;
-			float paddingX = 4.0f;
-
-			ImVec2 linkIconUV0 = ImVec2(0.75f, 0.0f);
-			ImVec2 linkIconUV1 = ImVec2(1.0f, 0.25f);
-
-			ImVec2 unLinkIconUV0 = ImVec2(0.0f, 0.25f);
-			ImVec2 unLinkIconUV1 = ImVec2(0.25f, 0.5f);
-
-			if (ImGui::ImageButton("##ScaleLink", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize),
-				enableScaleLink ? linkIconUV0 : unLinkIconUV0,
-				enableScaleLink ? linkIconUV1 : unLinkIconUV1))
+			if (ImGui::IsItemActivated()) // 編集開始時に現在の値を保存
 			{
-				enableScaleLink = !enableScaleLink;
+				prevScale = scale;
+			}
+			if (ImGui::IsItemDeactivatedAfterEdit()) // 編集終了時にコマンドを発行
+			{
+				Vector3 newScale = scale;
+				if (newScale.x != prevScale.x || newScale.y != prevScale.y || newScale.z != prevScale.z) {
+					std::string newScaleStr = "(" + std::to_string(newScale.x) + ", " + std::to_string(newScale.y) + ", " + std::to_string(newScale.z) + ")";
+					std::string prevScaleStr = "(" + std::to_string(prevScale.x) + ", " + std::to_string(prevScale.y) + ", " + std::to_string(prevScale.z) + ")";
+					IMGUI_PROPERTY_COMMAND_CUSTOM("scale", newScale, prevScale, newScaleStr, prevScaleStr, [this](const Vector3& value) {
+						SetScale(value);
+						});
+				}
+				prevScale = newScale;
+			}
+
+			// スケールリンクフラグの編集
+			{
+				ImGui::SameLine();
+				auto iconTex = ResourceManager::GetOrLoad<AssetTexture>("./Data/Icon/editorIcons.png");
+				float buttonSize = 22.0f;
+				float paddingX = 4.0f;
+
+				ImVec2 linkIconUV0 = ImVec2(0.75f, 0.0f);
+				ImVec2 linkIconUV1 = ImVec2(1.0f, 0.25f);
+
+				ImVec2 unLinkIconUV0 = ImVec2(0.0f, 0.25f);
+				ImVec2 unLinkIconUV1 = ImVec2(0.25f, 0.5f);
+
+				if (ImGui::ImageButton("##ScaleLink", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize),
+					enableScaleLink ? linkIconUV0 : unLinkIconUV0,
+					enableScaleLink ? linkIconUV1 : unLinkIconUV1))
+				{
+					enableScaleLink = !enableScaleLink;
+				}
 			}
 		}
 	}
 
 	IMGUI_PROPERTY_END();
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json Transform::Serialize() const
 {
 	json j = Component::Serialize();
+#ifdef USE_IMGUI
 	j["enableScaleLink"] = enableScaleLink;
+#endif // USE_IMGUI
+
 	return {};
 }
 
 void Transform::Deserialize(const json& j)
 {
 	Component::Deserialize(j);
+#ifdef USE_IMGUI
 	enableScaleLink = j.value("enableScaleLink", false);
+#endif // USE_IMGUI
+
 }

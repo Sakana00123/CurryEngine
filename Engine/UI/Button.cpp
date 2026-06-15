@@ -118,9 +118,10 @@ void Button::OnClick()
     }
 }
 
-void Button::DrawProperty() {
 #ifdef USE_IMGUI
-    Selectable::DrawProperty();
+void Button::DrawProperty(const PropertyDrawContext& context)
+{
+    Selectable::DrawProperty(context);
     ImGui::Checkbox("pressing", &isPressed);
 #if 1
 
@@ -335,8 +336,8 @@ void Button::DrawProperty() {
 #endif // 0
 
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json Button::Serialize() const
 {

@@ -454,9 +454,9 @@ const AudioAnalyzer::Result& AudioSource::GetAudioAnalyzerBasicResult() const
 	return emptyResult;
 }
 
-void AudioSource::DrawProperty()
-{
 #ifdef USE_IMGUI
+void AudioSource::DrawProperty(const PropertyDrawContext& context)
+{
 	// ファイル選択ダイアログ
 	if (ImGui::Button("Source")) {
 		static const char* filter = "Audio Files(*.wav*)\0*.wav*;\0All Files(*.*)\0*.*;\0\0)";
@@ -596,8 +596,8 @@ void AudioSource::DrawProperty()
 	}
 
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json AudioSource::Serialize() const
 {

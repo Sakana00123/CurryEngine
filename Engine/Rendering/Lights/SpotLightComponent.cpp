@@ -30,13 +30,13 @@ SpotLight SpotLightComponent::GetSpotLightData() const
 	return data;
 }
 
-void SpotLightComponent::DrawProperty()
-{
 #ifdef USE_IMGUI
+void SpotLightComponent::DrawProperty(const PropertyDrawContext& context)
+{
 	ImGui::ColorEdit3("Color", &color.r);
 	ImGui::SliderFloat("Intensity", &intensity, 0.0f, 10.0f);
 	ImGui::SliderFloat("Range", &range, 0.1f, 100.0f);
 	ImGui::SliderFloat("Inner Cone Angle", &innerConeAngle, 0.0f, 90.0f);
 	ImGui::SliderFloat("Outer Cone Angle", &outerConeAngle, 0.0f, 90.0f);
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

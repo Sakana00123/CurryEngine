@@ -164,6 +164,16 @@ void Collider::SetTrigger(bool trigger)
 	}
 }
 
+bool Collider::GetAutoFit() const
+{
+	return autoFit;
+}
+
+void Collider::SetAutoFit(bool autoFit)
+{
+	this->autoFit = autoFit;
+}
+
 float Collider::GetContactOffset() const
 {
 	return contactOffset;
@@ -211,25 +221,32 @@ void Collider::SetNeedSync()
 	m_needSync = true;
 }
 
-void Collider::DrawProperty()
-{
 #ifdef USE_IMGUI
+void Collider::DrawProperty(const PropertyDrawContext& context)
+{
+	Component::DrawProperty(context);
 
 	//ImGui::Text("ShapeHandle: %d", m_shapeHandle);
 	//ImGui::Text("MaterialHandle: %d", m_materialHandle);
 
-	bool propertyChanged = false;
-	IMGUI_PROPERTY_BOOL("IsTrigger", isTrigger, propertyChanged);
+	//bool propertyChanged = false;
+	//IMGUI_PROPERTY_BOOL("IsTrigger", isTrigger, propertyChanged);
 
-	//if (ImGui::Checkbox("IsTrigger", &isTrigger))
-	if (propertyChanged)
-	{
-		SetTrigger(isTrigger);
-	}
+	////if (ImGui::Checkbox("IsTrigger", &isTrigger))
+	//if (propertyChanged)
+	//{
+	//	SetTrigger(isTrigger);
+	//}
 
-	//ImGui::Checkbox("autoFit", &autoFit);
-	propertyChanged = false;
-	IMGUI_PROPERTY_BOOL("Auto Fit To Mesh", autoFit, propertyChanged);
+	////ImGui::Checkbox("autoFit", &autoFit);
+	//propertyChanged = false;
+	//IMGUI_PROPERTY_BOOL("Auto Fit To Mesh", autoFit, propertyChanged);
+	//// 接触オフセットの編集
+	//IMGUI_PROPERTY_FLOAT("Contact Offset", contactOffset, propertyChanged);
+	//if (propertyChanged)
+	//{
+	//	SetContactOffset(contactOffset);
+	//}
 	
 	// 物理エンジンに該当のマテリアルが存在するか確認し、存在しない場合はデフォルトマテリアルにフォールバックする
 	if (!Physics::GetMaterial(m_materialHandle))
@@ -238,13 +255,7 @@ void Collider::DrawProperty()
 		m_materialHandle = DEFAULT_MATERIAL_HANDLE;
 	}
 
-	// 接触オフセットの編集
-	IMGUI_PROPERTY_FLOAT("Contact Offset", contactOffset, propertyChanged);
-	if (propertyChanged)
-	{
-		SetContactOffset(contactOffset);
-	}
-
+	IMGUI_PROPERTY_BEGIN();
 	// マテリアルの編集
 	{
 		// マテリアルハンドルの編集
@@ -272,8 +283,9 @@ void Collider::DrawProperty()
 				});
 		}
 	}
-#endif // USE_IMGUI
+	IMGUI_PROPERTY_END();
 }
+#endif // USE_IMGUI
 
 json Collider::Serialize() const
 {

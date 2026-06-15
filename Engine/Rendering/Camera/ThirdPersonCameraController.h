@@ -26,8 +26,11 @@ public:
 	/** @brief 更新処理。*/
 	void Update(float deltaTime) override;
 
+#ifdef USE_IMGUI
 	/** @brief インスペクタ用のプロパティ描画。*/
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	// シリアライズ
 	json Serialize() const override;

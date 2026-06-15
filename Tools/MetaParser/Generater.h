@@ -18,7 +18,11 @@ private:
 	std::string outputDirectory;
 	std::string headerDir = "Reflection"; // ヘッダーファイルの出力サブディレクトリ
 	std::string sourceDir = "Interop"; // ソースファイルの出力サブディレクトリ
+	std::string enumDir = "Reflection/Enums"; // 列挙型のヘッダーファイルの出力サブディレクトリ
+	std::string structDir = "Reflection/Structs"; // 構造体のヘッダーファイルの出力サブディレクトリ
 	
 	void GenerateHeader(const ClassInfo& info, const std::string& outPath, const std::string& includePath);
 	void GenerateSource(const ClassInfo& info, const std::string& outPath, const std::string& includePath, const std::string& relativeSolutionPath = "");
+	void GenerateEnum(const EnumInfo& info, const std::string& outPath, const std::string& includePath);
+	void GenerateStruct(const StructInfo& info, const std::string& outPath, const std::string& includePath);
 };

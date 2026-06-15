@@ -4,17 +4,26 @@
 class EasingPosition : public EasingComponent
 {
 public:
-	void DrawProperty() override;
+#ifdef USE_IMGUI
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 };
 
 class EasingRotation : public EasingComponent
 {
 public:
-	void DrawProperty() override;
+#ifdef USE_IMGUI
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 };
 
 class EasingScale : public EasingComponent
 {
 public:
-	void DrawProperty() override;
+#ifdef USE_IMGUI
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 };

@@ -60,11 +60,13 @@ public:
 	 */
 	void Draw(RenderContext* rtx) override;
 
+#ifdef USE_IMGUI
 	/**
 	 * @brief インスペクタ（エディタ）用のプロパティ描画。
 	 * @details 画像の差し替え、色、UV、マスク画像やシェーダ編集などを行います。
 	 */
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
 
 	// シリアライズ
 	json Serialize() const override;

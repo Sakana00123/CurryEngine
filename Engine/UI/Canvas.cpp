@@ -78,10 +78,10 @@ std::vector<Graphic*> Canvas::GetGraphics() const {
 #endif
 }
 
-void Canvas::DrawProperty()
-{
 #ifdef USE_IMGUI
-	Component::DrawProperty(); // 自動生成されたプロパティ描画を呼び出す
+void Canvas::DrawProperty(const PropertyDrawContext& context)
+{
+	Component::DrawProperty(context); // 自動生成されたプロパティ描画を呼び出す
 	ImGui::Text("GraphicsCount:%d", static_cast<int>(GetGraphics().size()));
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

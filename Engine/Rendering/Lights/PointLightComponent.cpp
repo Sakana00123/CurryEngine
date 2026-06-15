@@ -28,13 +28,13 @@ PointLight PointLightComponent::GetPointLightData() const
 	return lightData;
 }
 
-void PointLightComponent::DrawProperty()
-{
 #ifdef USE_IMGUI
+void PointLightComponent::DrawProperty(const PropertyDrawContext& context)
+{
 
 	ImGui::ColorEdit3("Color", &color.r);
 	ImGui::DragFloat("Intensity", &intensity, 0.1f, 0.0f, 10.0f);
 	ImGui::DragFloat("Range", &range, 0.1f, 0.0f, 100.0f);
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

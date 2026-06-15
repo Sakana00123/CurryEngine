@@ -21,6 +21,7 @@ void ParticleComponent::OnDestroy()
 
 void ParticleComponent::Load(const std::string& filePath)
 {
+	this->filePath = filePath;
 	effectHandle = EffectManager::LoadEffectData(filePath);
 }
 
@@ -38,7 +39,7 @@ void ParticleComponent::Play()
 	{
 		// ゲームオブジェクトの位置と回転を取得
 		Vector3 position = GetOwner()->GetTransform()->GetWorldPosition();
-		Vector3 rotation = Transform::QuaternionToEuler(GetOwner()->GetTransform()->GetWorldRotation());
+		Vector3 rotation = GetOwner()->GetTransform()->GetWorldRotation().ToEuler();
 
 		// 線上にエフェクトを再生する場合
 		if (settings.lineData.useLine)
@@ -111,32 +112,38 @@ void ParticleComponent::Update(float elapsedTime)
 	isPlaying = EffectManager::IsPlaying(effectHandle);
 }
 
-void ParticleComponent::DrawProperty()
-{
 #ifdef USE_IMGUI
-	
-	// ファイルパス表示
-	ImGui::Text("File Path: %s", filePath.c_str());
-	ImGui::SameLine();
+void ParticleComponent::DrawProperty(const PropertyDrawContext& context)
+{
+	Component::DrawProperty(context);
+	//// ファイルパス表示
+	//ImGui::Text("File Path: %s", filePath.c_str());
+	//ImGui::SameLine();
 
-	// ファイル選択ボタン
-	if (ImGui::Button("..."))
+	//// ファイル選択ボタン
+	//if (ImGui::Button("..."))
+	//{
+	//	// ダイアログを開いてエフェクトデータを選択
+	//	char filename[256]{};
+	//	char filter[] = "Particle Effect Files\0*.json\0All Files\0*.*\0";
+	//	
+	//	if (Dialog::OpenFileName(filename, sizeof(filename), filter) == DialogResult::OK)
+	//	{
+	//		filePath = filename;
+	//		Load(filePath);
+	//	}
+	//}
+
+	//// Play On Awake チェックボックス
+	//if (ImGui::Checkbox("Play On Awake", &playOnAwake))
+	//{
+
+	//}
+
+	if (context.isMultiSelect)
 	{
-		// ダイアログを開いてエフェクトデータを選択
-		char filename[256]{};
-		char filter[] = "Particle Effect Files\0*.json\0All Files\0*.*\0";
-		
-		if (Dialog::OpenFileName(filename, sizeof(filename), filter) == DialogResult::OK)
-		{
-			filePath = filename;
-			Load(filePath);
-		}
-	}
-
-	// Play On Awake チェックボックス
-	if (ImGui::Checkbox("Play On Awake", &playOnAwake))
-	{
-
+		ImGui::Text("Multiple Particle Components Selected");
+		return;
 	}
 
 	if (effectHandle != -1)
@@ -158,9 +165,9 @@ void ParticleComponent::DrawProperty()
 		ImGui::Text("No Effect Loaded");
 	}
 
-#endif // USE_IMGUI
 
 }
+#endif // USE_IMGUI
 
 json ParticleComponent::Serialize() const
 {

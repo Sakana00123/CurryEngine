@@ -23,7 +23,9 @@ public:
 
 	void Update(float deltaTime) override;
 
-	void DrawProperty() override;
+#ifdef USE_IMGUI
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
 
 	void OnBeat();
 private:

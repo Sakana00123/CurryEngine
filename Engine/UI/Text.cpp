@@ -648,9 +648,9 @@ size_t Text::GetCursorIndexFromPoint(float screenX, float screenY)
 //  Inspector / シリアライズ
 // =============================================================================
 
-void Text::DrawProperty()
-{
 #ifdef USE_IMGUI
+void Text::DrawProperty(const PropertyDrawContext& context)
+{
     std::string str = WstringToString(text);
     const size_t bufSize = (characterLimit > 0)
         ? static_cast<size_t>(characterLimit + 1)
@@ -809,10 +809,8 @@ void Text::DrawProperty()
         ResetCharModifiers();
 	}
 
-    
-
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json Text::Serialize() const
 {

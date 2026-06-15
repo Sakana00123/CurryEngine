@@ -77,9 +77,12 @@ public:
 		erases.emplace_back(graphic);
 	}
 
+#ifdef USE_IMGUI
 	/**
 	 * @brief インスペクタ（デバッグ UI）にプロパティを描画します。
 	 * @details `USE_IMGUI` 定義時のみ、管理している `Graphic` 数を表示します。
 	 */
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 };

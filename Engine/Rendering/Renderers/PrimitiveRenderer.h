@@ -80,10 +80,13 @@ public:
 	 */
 	void Render(RenderContext* rtx) override;
 
+#ifdef USE_IMGUI
 	/**
 	 * @brief デバッグ GUI の描画（インスペクタなど）。
 	 */
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 
 	/**
 	 * @brief AABBを計算して返す

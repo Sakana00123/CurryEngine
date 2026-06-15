@@ -63,10 +63,13 @@ public:
 	 */
 	void End(RenderContext* rtx) override;
 
+#ifdef USE_IMGUI
 	/**
 	 * @brief インスペクタ用のプロパティ描画。
 	 */
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 protected:
 	/**
 	 * @brief 選択中の継続更新（キー入力処理など）。

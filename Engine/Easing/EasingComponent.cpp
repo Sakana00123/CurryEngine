@@ -26,9 +26,9 @@ void EasingComponent::Update(float deltaTime)
 	}
 }
 
-void EasingComponent::DrawProperty()
-{
 #ifdef USE_IMGUI
+void EasingComponent::DrawProperty(const PropertyDrawContext& context)
+{
 
 	ImGui::Checkbox("useUnscaledTime", &useUnscaledTime);
 
@@ -195,5 +195,5 @@ void EasingComponent::DrawProperty()
 
 		StartHandler(handler, accessor);
 	}
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

@@ -114,6 +114,9 @@ public:
 	Image* GetImage() const;
 
 protected:
+#ifdef USE_IMGUI
 	/** @brief インスペクタ用プロパティ描画。*/
-	virtual void DrawProperty() override;
+	virtual void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 };

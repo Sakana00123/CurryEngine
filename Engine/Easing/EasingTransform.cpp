@@ -2,9 +2,9 @@
 #include "EasingTransform.h"
 REGISTER_COMPONENT(EasingScale, "Easing")
 
-void EasingPosition::DrawProperty()
-{
 #ifdef USE_IMGUI
+void EasingPosition::DrawProperty(const PropertyDrawContext& context)
+{
 
 	ImGui::Checkbox("useUnscaledTime", &useUnscaledTime);
 
@@ -94,17 +94,19 @@ void EasingPosition::DrawProperty()
 
 		StartHandler(handler, accessor);
 	}
+}
 #endif // USE_IMGUI
-}
 
-void EasingRotation::DrawProperty()
-{
-
-}
-
-void EasingScale::DrawProperty()
-{
 #ifdef USE_IMGUI
+void EasingRotation::DrawProperty(const PropertyDrawContext& context)
+{
+
+}
+#endif // USE_IMGUI
+
+#ifdef USE_IMGUI
+void EasingScale::DrawProperty(const PropertyDrawContext& context)
+{
 
 	ImGui::Checkbox("useUnscaledTime", &useUnscaledTime);
 
@@ -185,10 +187,10 @@ void EasingScale::DrawProperty()
 			return GetOwner()->transform->scale.x;
 			};
 		accessor.setter = [&](float value) {
-			GetOwner()->transform->SetScale(value);
+			GetOwner()->transform->SetScale({ value, value, value });
 			};
 
 		StartHandler(handler, accessor);
 	}
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

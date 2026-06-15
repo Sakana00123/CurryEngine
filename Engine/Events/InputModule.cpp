@@ -168,9 +168,9 @@ void InputModule::Process(float deltaTime)
 }
 
 
-void InputModule::DrawProperty()
-{
 #ifdef USE_IMGUI
+void InputModule::DrawProperty(const PropertyDrawContext& context)
+{
 
     ImGui::DragFloat("DragThreshold", &dragThreshold, 1.0f, 0.f, 1000.f);
 
@@ -189,5 +189,5 @@ void InputModule::DrawProperty()
     ImGui::Separator();
     ImGui::Text("HitObject:%s", pointerEventData->pointerCurrentRaycast.IsValid() ? pointerEventData->pointerCurrentRaycast.GetHitGraphic()->GetOwner()->GetName().c_str() : "None");
     ImGui::Text("CurrentSelectedGameObject:%s", eventSystem->GetSelectedGameObject() ? eventSystem->GetSelectedGameObject()->GetName().c_str() : "None");
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI

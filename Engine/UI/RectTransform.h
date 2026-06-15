@@ -14,7 +14,7 @@ class RectTransform : public Transform
 	C_REFLECT(RectTransform)
 public:
 	/** @brief アンカー基準の座標（スクリーン座標系）。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetAnchoredPosition"), CurryEngine::PropertyAttributes::Setter("SetAnchoredPosition"), CurryEngine::PropertyAttributes::Speed(1.0f))
 	Vector2 anchoredPosition{ 0,0 };
 	//DirectX::Vector2 sizeDelta{};
 
@@ -45,19 +45,19 @@ public:
 	float worldAngle = 0.0f;
 public:
 	/** @brief ローカル回転角（ラジアン）。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetAngle"), CurryEngine::PropertyAttributes::Setter("SetAngle"), CurryEngine::PropertyAttributes::Speed(1.0f))
 	float angle = 0.0f;
 	/** @brief ローカルサイズ（ピクセル）。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetWorldSize"), CurryEngine::PropertyAttributes::Setter("SetSize"), CurryEngine::PropertyAttributes::Speed(1.0f))
 	Vector2 size{};
 	/** @brief ピボット（0-1、左上(0,0)、右下(1,1)）。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetPivot"), CurryEngine::PropertyAttributes::Setter("SetPivot"), CurryEngine::PropertyAttributes::Speed(0.1f))
 	Vector2 pivot = { 0.5f, 0.5f };
 	/** @brief 最小アンカー（0-1、親左上(0,0)、右下(1,1)）。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
 	Vector2 anchorMin = { 0.5f, 0.5f };// 0～1（親の左上が (0,0)、右下が (1,1)）
 	/** @brief 最大アンカー（`anchorMin==anchorMax` なら固定）。*/
-	C_PROPERTY()
+	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
 	Vector2 anchorMax = { 0.5f, 0.5f };// anchorMin == anchorMax なら固定位置
 	/** @brief ソーティングオーダー。数値が大きいほど前面に描画されることを想定。*/
 	C_PROPERTY()
@@ -83,10 +83,12 @@ public:
 	 */
 	void Update(float elapsedTime) override;
 
+#ifdef USE_IMGUI
 	/**
 	 * @brief インスペクタ用プロパティ描画。
 	 */
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
 
 	/**
 	 * @brief アンカープリセット UI を描画します。
@@ -148,23 +150,29 @@ public:
 	/**
 	 * @brief アンカーポジション（スクリーン座標）を取得します。
 	 */
+	C_FUNCTION()
 	Vector2 GetAnchoredPosition() const;
 
 	/**
 	 * @brief ワールド座標系でのサイズを取得します。
 	 */
+	C_FUNCTION()
 	Vector2 GetWorldSize();
 
 	/**
 	 * @brief ワールド回転角（ラジアン）を取得します。
 	 */
+	C_FUNCTION()
 	float GetWorldAngle() const;
 
 	/** @brief 最大アンカーを設定。*/
+	C_FUNCTION()
 	void SetAnchorMax(const Vector2& max) { anchorMax = max; }
 	/** @brief 最小アンカーを設定。*/
+	C_FUNCTION()
 	void SetAnchorMin(const Vector2& min) { anchorMin = min; }
 	/** @brief アンカーポジションを設定（スクリーン座標）。*/
+	C_FUNCTION()
 	void SetAnchoredPosition(const Vector2& pos) { anchoredPosition = pos; }
 
 	/**
@@ -181,38 +189,51 @@ public:
 	void SetAnchoredPositionByTransform(Transform* transform);
 
 	/** @brief ローカル回転角を設定（度）。*/
+	C_FUNCTION()
 	void SetAngle(float angle) { this->angle = angle; }
 
 	/** @brief ローカル回転角を取得（度）。*/
+	C_FUNCTION()
 	float GetAngle() const { return angle; }
 
 	/** @brief サイズを設定（ピクセル）。*/
+	C_FUNCTION()
 	void SetSize(const Vector2& size) { this->size = size; }
 
 	/** @brief ピボットを設定（0-1）。*/
+	C_FUNCTION()
 	void SetPivot(const Vector2& pivot) { this->pivot = pivot; }
 	/** @brief ピボットを取得。*/
+	C_FUNCTION()
 	Vector2 GetPivot() const { return pivot; }
 
 	//void SetSizeDelta(const Vector2& delta) { sizeDelta = delta; }
 	//Vector2 GetSizeDelta() const { return sizeDelta; }
 
 	/** @brief 左オフセットを設定（ピクセル）。*/
+	C_FUNCTION()
 	void SetLeft(float left) { offsetMin.x = left; }
 	/** @brief 右オフセットを設定（ピクセル）。*/
+	C_FUNCTION()
 	void SetRight(float right) { offsetMax.x = right; }
 	/** @brief 上オフセットを設定（ピクセル）。*/
+	C_FUNCTION()
 	void SetTop(float top) { offsetMin.y = top; }
 	/** @brief 下オフセットを設定（ピクセル）。*/
+	C_FUNCTION()
 	void SetBottom(float bottom) { offsetMax.y = bottom; }
 
 	/** @brief 左オフセット（ピクセル）。*/
+	C_FUNCTION()
 	float GetLeft() const { return offsetMin.x; }
 	/** @brief 右オフセット（ピクセル）。*/
+	C_FUNCTION()
 	float GetRight() const { return offsetMax.x; }
 	/** @brief 上オフセット（ピクセル）。*/
+	C_FUNCTION()
 	float GetTop() const { return offsetMin.y; }
 	/** @brief 下オフセット（ピクセル）。*/
+	C_FUNCTION()
 	float GetBottom() const { return offsetMax.y; }
 
 private:

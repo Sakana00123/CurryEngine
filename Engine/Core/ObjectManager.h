@@ -78,6 +78,8 @@ public:
 	void SetInspectorNode(GameObject* node) { if (!lockInspector) inspectorNode = node; }
 	/** @brief インスペクタ表示をロックします。*/
 	static void LockInspector(bool lock) { lockInspector = lock; }
+	/** @brief インスペクタ表示がロックされているかを返します。*/
+	static bool IsInspectorLocked() { return lockInspector; }
 	/** @brief ドラッグ中のオブジェクトが削除されるオブジェクトでないことを設定します。*/
 	static void SetDraggingObjectIsNotDestroyObject(bool set) { draggingObjectIsNotDestroyObject = set; }
 	/** @brief ドラッグ中のオブジェクトが削除されるオブジェクトでないかを返します。*/

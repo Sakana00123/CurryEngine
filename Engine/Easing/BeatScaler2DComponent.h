@@ -35,8 +35,12 @@ public:
 	 * @param deltaTime 前フレームからの経過時間（秒）。
 	 */
 	virtual void Update(float deltaTime) override;
+
+#ifdef USE_IMGUI
 	/** @brief プロパティ描画。*/
-	virtual void DrawProperty() override;
+	virtual void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
+
 private:
 	/** @brief ビート時の処理。*/
 	void OnBeat();

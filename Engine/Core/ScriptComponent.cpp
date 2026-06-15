@@ -1,13 +1,10 @@
 #include "pch.h"
 #include "ScriptComponent.h"
 
-#include "imgui_internal.h"
 #include "Engine/Scripting/ScriptSystem.h"
 #include "Engine/Core/GameObject.h"
 #include "Engine/Scenes/Scene.h"
 #include "Engine/Scenes/SceneManager.h"
-#include "Engine/Editor/History.h"
-#include "Engine/EditorSupport/SetValueCommand.h"
 
 REGISTER_COMPONENT_WITH_ATTRIBUTES(ScriptComponent, "Scripts", ComponentAttributes::HideInAddComponentMenu, {})
 
@@ -132,9 +129,14 @@ void ScriptComponent::Update(float deltaTime)
 	ScriptSystem::UpdateScript(m_gcHandle);
 }
 
-void ScriptComponent::DrawProperty()
-{
 #ifdef USE_IMGUI
+
+#include "imgui_internal.h"
+#include "Engine/Editor/History.h"
+#include "Engine/EditorSupport/SetValueCommand.h"
+
+void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
+{
 	// スクリプトの編集ボタン
 	// TODO: スクリプトアセットの管理方法が決まったら、ファイル名からスクリプトアセットを検索して開くようにする。現状はUserScriptsフォルダを再帰的に検索して最初に見つかったものを開く。
     if (ImGui::Button("Edit Script"))
@@ -461,7 +463,7 @@ void ScriptComponent::DrawProperty()
 			quat[2] = isNull ? 0.0f : field["value"].value("z", 0.0f);
 			quat[3] = isNull ? 1.0f : field["value"].value("w", 1.0f);
 			// クォータニオンをオイラー角に変換して表示
-			Vector3 euler = Transform::QuaternionToEuler({ quat[0], quat[1], quat[2], quat[3] });
+            Vector3 euler = Quaternion({ quat[0], quat[1], quat[2], quat[3] }).ToEuler();
 			float vec[3] = { euler.x, euler.y, euler.z };
 			bool itemActivated = false;
 			bool deactivatedAfterEdit = false;
@@ -502,7 +504,7 @@ void ScriptComponent::DrawProperty()
 				float newQuat[4];
 				// 編集後のオイラー角をクォータニオンに変換して保存
                 Vector3 newEuler = { vec[0], vec[1], vec[2] };
-				Quaternion newQ = Transform::EulerToQuaternion(newEuler);
+				Quaternion newQ = Quaternion::FromEuler(newEuler);
 				newQuat[0] = newQ.x;
 				newQuat[1] = newQ.y;
 				newQuat[2] = newQ.z;
@@ -538,7 +540,7 @@ void ScriptComponent::DrawProperty()
             {
 				// 編集後のオイラー角をクォータニオンに変換して保存
 				Vector3 newEuler = { vec[0], vec[1], vec[2] };
-                Quaternion newQuat = Transform::EulerToQuaternion(newEuler);
+                Quaternion newQuat = Quaternion::FromEuler(newEuler);
                 std::string valueJson =
                     "{\"x\":" + std::to_string(newQuat.x) +
                     ",\"y\":" + std::to_string(newQuat.y) +
@@ -843,8 +845,8 @@ void ScriptComponent::DrawProperty()
         ImGui::PopID();
     }
 	IMGUI_PROPERTY_END();
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json ScriptComponent::Serialize() const
 {

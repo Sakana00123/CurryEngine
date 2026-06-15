@@ -304,8 +304,7 @@ private:
 	/** @brief すべてのコンポーネントの破棄コールバックを呼び出す。*/
 	void OnDestroy();
 
-    /** @brief すべてのコンポーネントのプロパティ描画。*/
-    void DrawProperty();
+public:
 
 	/** @brief コンポーネントをGameObjectにアタッチします。親子関係を構築します。*/
     void AttachComponent(const std::string& name, std::shared_ptr<Component>& component, bool generateId = true);
@@ -317,6 +316,9 @@ private:
 	void AwakeComponents();
 
 public:
+
+    /** @brief すべてのコンポーネントのプロパティ描画。*/
+    void DrawProperty();
 
 	/** @brief 自身とすべてのコンポーネントのシリアライズを行う。*/
 	json Serialize() const override;

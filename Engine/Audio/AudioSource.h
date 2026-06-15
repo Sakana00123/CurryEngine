@@ -169,10 +169,12 @@ public:
 	 */
 	[[nodiscard]] const AudioAnalyzer::Result& GetAudioAnalyzerBasicResult() const;
 
+#ifdef USE_IMGUI
 	/**
 	 * @brief インスペクタ用のプロパティ表示。
 	 */
-	void DrawProperty() override;
+	void DrawProperty(const PropertyDrawContext& context) override;
+#endif // USE_IMGUI
 
 	/**
 	 * @brief コンポーネントのシリアライズ。

@@ -227,9 +227,9 @@ void Image::Draw(RenderContext* rtx)
 	immediateContext->Draw(4, 0);
 }
 
-void Image::DrawProperty()
-{
 #ifdef USE_IMGUI
+void Image::DrawProperty(const PropertyDrawContext& context)
+{
 	
 	ImGui::ColorEdit4("Color", &color.r);
 
@@ -240,7 +240,7 @@ void Image::DrawProperty()
 	ImGui::Checkbox("EnableMask", &enableMask);
 
 	// Base
-	Graphic::DrawProperty();
+	Graphic::DrawProperty(context);
 
 	// Material
 	material.DrawProperty();
@@ -259,8 +259,8 @@ void Image::DrawProperty()
 		maskMaterial.DrawProperty();
 	}
 
-#endif // USE_IMGUI
 }
+#endif // USE_IMGUI
 
 json Image::Serialize() const
 {
