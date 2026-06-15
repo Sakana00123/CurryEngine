@@ -375,8 +375,23 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
     const Scene* scene = inspectorNode ? inspectorNode->GetScene() : nullptr;
     const ObjectManager* objectManager = scene ? scene->GetObjectManager() : nullptr;
     const EditorSelection* editorSelection = objectManager ? objectManager->GetEditorSelection() : nullptr;
+    if (!inspectorNode || !objectManager) {
+        ImGui::EndChild();
+        return;
+	}
     bool hasSameTypeAll = true; // すべての選択中のオブジェクトが同じコンポーネントを持っているか
 	std::vector<std::weak_ptr<Component>> componentsToDraw; // 描画するコンポーネントのリスト
+    auto applyToSelectedObjects = [editorSelection](std::function<void(GameObject*)> action)
+        {
+            if (editorSelection)
+            {
+                for (const auto& selectedObj : editorSelection->GetAll())
+                {
+                    action(selectedObj.get());
+                }
+            }
+        };
+
 
     if (editorSelection)
     {
@@ -442,12 +457,12 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
             // 右クリックメニュー
             if (ImGui::BeginPopupContextItem("component_context_menu", ImGuiPopupFlags_MouseButtonRight)) {
                 if (ImGui::MenuItem("Remove")) {
-                    /*applyToSelectedObjects([component](GameObject* obj)
+                    applyToSelectedObjects([primaryComp](GameObject* obj)
                         {
-                            if (auto comp = obj->GetComponentByTypeName(component->GetTypeName())) {
+                            if (auto comp = obj->GetComponentByTypeName(primaryComp->GetTypeName())) {
                                 obj->Destroy(comp.get());
                             }
-                        });*/
+                        });
                 }
                 ImGui::EndPopup();
             }
@@ -499,28 +514,14 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
 		ImGui::Spacing();
 	}
 
-	if (objectManager && inspectorNode && editorSelection && !editorSelection->IsEmpty())
+    //AddComponent
     {
-        auto applyToSelectedObjects = [editorSelection](std::function<void(GameObject*)> action)
-            {
-                if (editorSelection)
-                {
-                    for (const auto& selectedObj : editorSelection->GetAll())
-                    {
-						action(selectedObj.get());
-                    }
-                }
-            };
-
-        //AddComponent
-        {
-            DrawAddComponentButton(inspectorNode, applyToSelectedObjects);
-        }
-
-        // ドラッグドロップの受け入れ(インスペクタ全体)
-        // インスペクタ全体をドロップターゲットにするために、ウィンドウを覆う透明なドロップターゲットを作成
-        DrawDropTarget(cursorPos, inspectorNode, applyToSelectedObjects);
+        DrawAddComponentButton(inspectorNode, applyToSelectedObjects);
     }
+
+    // ドラッグドロップの受け入れ(インスペクタ全体)
+    // インスペクタ全体をドロップターゲットにするために、ウィンドウを覆う透明なドロップターゲットを作成
+    DrawDropTarget(cursorPos, inspectorNode, applyToSelectedObjects);
 
     ImGui::EndChild();
 
