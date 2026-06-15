@@ -371,98 +371,136 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
 
     ImGui::BeginChild("##Components", ImVec2(0, 0), true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysUseWindowPadding);
     ImVec2 cursorPos = ImGui::GetCursorPos(); // 現在のカーソル位置を保存
-    // コンポーネントごとに表示
-    for (auto& primaryComp : inspectorNode->GetAllComponents()) {
-        if (primaryComp->hideInspector) continue;
 
-        ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.75f, 0.75f, 0.75f, 0.75f));
-        ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.75f, 0.75f, 0.75f, 0.75f));
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.5f, 0.5f, 0.5f, 0.5f));
+    const Scene* scene = inspectorNode ? inspectorNode->GetScene() : nullptr;
+    const ObjectManager* objectManager = scene ? scene->GetObjectManager() : nullptr;
+    const EditorSelection* editorSelection = objectManager ? objectManager->GetEditorSelection() : nullptr;
+    bool hasSameTypeAll = true; // すべての選択中のオブジェクトが同じコンポーネントを持っているか
+	std::vector<std::weak_ptr<Component>> componentsToDraw; // 描画するコンポーネントのリスト
 
-        // IDをプッシュしてTreeNodeExとポップアップを区別
-        ImGui::PushID(primaryComp.get());
+    if (editorSelection)
+    {
+        std::vector<std::shared_ptr<GameObject>> selection = editorSelection->GetAll();
 
-        // 有効/無効チェックボックス
-        bool enable = primaryComp->IsEnabledSelf();
-        if (ImGui::Checkbox("##enabled", &enable)) {
-            primaryComp->SetEnabled(enable);
-        }
-        ImGui::SameLine(); // チェックボックスの右にTreeNodeを並べる
-
-        // コンポーネント名のラベル
-        std::string treeLabel = primaryComp->GetName();
-        // スクリプトコンポーネントの場合、スクリプト名も表示
-        if (treeLabel == "ScriptComponent")
+        // 同じコンポーネントを持つ選択中のオブジェクトを探す
+		for (auto& primaryComp : inspectorNode->GetAllComponents())
         {
-            if (auto scriptComp = std::dynamic_pointer_cast<ScriptComponent>(primaryComp))
+			bool hasSameType = true; // 主選択のコンポーネントと同じ型を持つか
+            for (const auto& selectedObj : selection)
             {
-                treeLabel = scriptComp->GetTypeName() + " (" + treeLabel + ")";
-            }
-        }
-        // コンポーネント名表示
-        bool open = ImGui::TreeNodeEx(treeLabel.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
-
-        // ドラッグドロップの開始
-        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
-            ImGui::SetDragDropPayload((primaryComp->GetTypeName()).c_str(), &primaryComp->id, sizeof(ObjectId*));
-            ImGui::Text("%s", primaryComp->GetTypeName().c_str());
-            ImGui::EndDragDropSource();
-        }
-
-        // 右クリックメニュー
-        if (ImGui::BeginPopupContextItem("component_context_menu", ImGuiPopupFlags_MouseButtonRight)) {
-            if (ImGui::MenuItem("Remove")) {
-                /*applyToSelectedObjects([component](GameObject* obj)
-                    {
-                        if (auto comp = obj->GetComponentByTypeName(component->GetTypeName())) {
-                            obj->Destroy(comp.get());
-                        }
-                    });*/
-            }
-            ImGui::EndPopup();
-        }
-
-        if (open) {
-            ImGui::Separator();
-            if (!primaryComp->hideInspectorProperty)
-            {
-				const Scene* scene = inspectorNode ? inspectorNode->GetScene() : nullptr;
-				const ObjectManager* objectManager = scene ? scene->GetObjectManager() : nullptr;
-				const EditorSelection* editorSelection = objectManager ? objectManager->GetEditorSelection() : nullptr;
-
-                if (editorSelection)
-                {
-					std::vector<std::shared_ptr<GameObject>> selection = editorSelection->GetAll();
-					std::vector<Component*> sameTypeComps{ primaryComp.get() }; // 主選択のコンポーネントを最初に追加
-                    
-					// 同じコンポーネントを持つ選択中のオブジェクトを探す
-                    for (const auto& selectedObj : selection)
-                    {
-                        if (selectedObj.get() == inspectorNode) continue; // 主選択はスキップ
-                        if (auto comp = selectedObj->GetComponentByTypeName(primaryComp->GetTypeName())) {
-                            sameTypeComps.push_back(comp.get());
-                        }
-					}
-
-                    PropertyDrawContext context = sameTypeComps.size() > 1
-                        ? PropertyDrawContext::MakeMulti(sameTypeComps)
-						: PropertyDrawContext::MakeSingle(primaryComp.get());
-
-                    primaryComp->DrawProperty(context);
+                if (selectedObj.get() == inspectorNode) continue; // 主選択はスキップ
+                if (!selectedObj->GetComponentByTypeName(primaryComp->GetTypeName())) {
+					hasSameType = false; // 主選択のコンポーネントと同じ型を持っていないオブジェクトがある
+                    hasSameTypeAll = false; // 1つでも同じコンポーネントを持っていないオブジェクトがあればフラグを下げる
+                    break;
                 }
             }
-            ImGui::TreePop();
+            if (hasSameType) {
+                componentsToDraw.push_back(primaryComp); // 主選択のコンポーネントと同じ型を持つコンポーネントを描画リストに追加
+            }
         }
-
-        ImGui::PopID();
-        ImGui::PopStyleColor(3);
-        ImGui::Separator();
     }
+    // コンポーネントごとに表示
+    for (auto& primaryCompWeak : componentsToDraw) {
+        if (auto primaryComp = primaryCompWeak.lock()) {
+            if (primaryComp->hideInspector) continue;
 
-	auto objectManager = inspectorNode ? inspectorNode->GetScene()->GetObjectManager() : nullptr;
-	if (objectManager)
+            ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.75f, 0.75f, 0.75f, 0.75f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.75f, 0.75f, 0.75f, 0.75f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.5f, 0.5f, 0.5f, 0.5f));
+
+            // IDをプッシュしてTreeNodeExとポップアップを区別
+            ImGui::PushID(primaryComp.get());
+
+            // 有効/無効チェックボックス
+            bool enable = primaryComp->IsEnabledSelf();
+            if (ImGui::Checkbox("##enabled", &enable)) {
+                primaryComp->SetEnabled(enable);
+            }
+            ImGui::SameLine(); // チェックボックスの右にTreeNodeを並べる
+
+            // コンポーネント名のラベル
+            std::string treeLabel = primaryComp->GetName();
+            // スクリプトコンポーネントの場合、スクリプト名も表示
+            if (treeLabel == "ScriptComponent")
+            {
+                if (auto scriptComp = std::dynamic_pointer_cast<ScriptComponent>(primaryComp))
+                {
+                    treeLabel = scriptComp->GetTypeName() + " (" + treeLabel + ")";
+                }
+            }
+            // コンポーネント名表示
+            bool open = ImGui::TreeNodeEx(treeLabel.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+
+            // ドラッグドロップの開始
+            if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+                ImGui::SetDragDropPayload((primaryComp->GetTypeName()).c_str(), &primaryComp->id, sizeof(ObjectId*));
+                ImGui::Text("%s", primaryComp->GetTypeName().c_str());
+                ImGui::EndDragDropSource();
+            }
+
+            // 右クリックメニュー
+            if (ImGui::BeginPopupContextItem("component_context_menu", ImGuiPopupFlags_MouseButtonRight)) {
+                if (ImGui::MenuItem("Remove")) {
+                    /*applyToSelectedObjects([component](GameObject* obj)
+                        {
+                            if (auto comp = obj->GetComponentByTypeName(component->GetTypeName())) {
+                                obj->Destroy(comp.get());
+                            }
+                        });*/
+                }
+                ImGui::EndPopup();
+            }
+
+            if (open) {
+                ImGui::Separator();
+                if (!primaryComp->hideInspectorProperty)
+                {
+                    if (editorSelection)
+                    {
+                        std::vector<std::shared_ptr<GameObject>> selection = editorSelection->GetAll();
+                        std::vector<Component*> sameTypeComps{ primaryComp.get() }; // 主選択のコンポーネントを最初に追加
+
+                        // 同じコンポーネントを持つ選択中のオブジェクトを探す
+                        bool hasSameType = true; // すべての選択中のオブジェクトが同じコンポーネントを持っているか
+                        for (const auto& selectedObj : selection)
+                        {
+                            if (selectedObj.get() == inspectorNode) continue; // 主選択はスキップ
+                            if (auto comp = selectedObj->GetComponentByTypeName(primaryComp->GetTypeName())) {
+                                sameTypeComps.push_back(comp.get());
+                            }
+                            else {
+                                hasSameType = false; // 1つでも同じコンポーネントを持っていないオブジェクトがあればフラグを下げる
+                                break;
+                            }
+                        }
+                        if (hasSameType)
+                        {
+                            PropertyDrawContext context = sameTypeComps.size() > 1
+                                ? PropertyDrawContext::MakeMulti(sameTypeComps)
+                                : PropertyDrawContext::MakeSingle(primaryComp.get());
+
+                            primaryComp->DrawProperty(context);
+                        }
+                    }
+                }
+                ImGui::TreePop();
+            }
+
+            ImGui::PopID();
+            ImGui::PopStyleColor(3);
+            ImGui::Separator();
+        }
+    }
+    if (!hasSameTypeAll)
     {
-		auto editorSelection = objectManager->GetEditorSelection();
+		ImGui::Spacing();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Some properties are not shown because they are not shared by all selected objects.");
+		ImGui::Spacing();
+	}
+
+	if (objectManager && inspectorNode && editorSelection && !editorSelection->IsEmpty())
+    {
         auto applyToSelectedObjects = [editorSelection](std::function<void(GameObject*)> action)
             {
                 if (editorSelection)
