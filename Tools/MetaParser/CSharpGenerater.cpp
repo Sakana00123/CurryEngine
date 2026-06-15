@@ -63,11 +63,24 @@ void CSharpGenerater::LoadTypeMap(const std::string& path)
 
 std::string CSharpGenerater::ResolveCsType(const std::string& cppType) const
 {
-    auto it = typeMap.find(cppType);
+	std::string baseType = cppType;
+	// まずは const 修飾子を取り除く
+    if (baseType.compare(0, 6, "const ") == 0)
+		baseType = baseType.substr(6);
+	// 先頭と末尾からスペース、'*', '&' を取り除く
+	size_t start = 0, end = baseType.size();
+    while (start < end && (baseType[start] == ' ' || baseType[start] == '*' || baseType[start] == '&'))
+		++start;
+	while (end > start && (baseType[end - 1] == ' ' || baseType[end - 1] == '*' || baseType[end - 1] == '&'))
+		--end;
+	if (start >= end) return cppType; // 例外的なケース（全てがスペース/ポインタ/参照）には元の文字列を返す
+	baseType = baseType.substr(start, end - start);
+
+    auto it = typeMap.find(baseType);
     if (it != typeMap.end()) return it->second.csType;
 
-    std::cout << "Warning: Unknown type '" << cppType << "'. Using as-is.\n";
-    return cppType;
+    std::cout << "Warning: Unknown type '" << baseType << "'. Using as-is.\n";
+    return baseType;
 }
 
 std::string CSharpGenerater::ResolveMarshalAttr(const std::string& cppType) const
@@ -155,7 +168,10 @@ void CSharpGenerater::GenerateNativeMethods(const ClassInfo& info)
 
     // メソッドの LibraryImport を生成
     for (const auto& method : info.methods)
+    {
+		if (method.isPropertyAccessor) continue; // プロパティアクセサリはフィールドの getter/setter として定義されているはずなのでスキップ
         ofs << BuildLibraryImportLine(info.name, method, 1);
+    }
 
     ofs << "}\n";
     std::cout << "Generated: " << outPath << "\n";
@@ -195,7 +211,10 @@ void CSharpGenerater::GenerateWrapper(const ClassInfo& info)
 
     // メソッド
     for (const auto& method : info.methods)
+    {
+		if (method.isPropertyAccessor) continue; // プロパティアクセサリはフィールドの getter/setter として定義されているはずなのでスキップ
         ofs << BuildMethodImpl(info.name, method, 1);
+    }
 
     ofs << "}\n";
     std::cout << "Generated: " << outPath << "\n";

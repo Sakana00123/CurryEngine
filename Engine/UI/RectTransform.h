@@ -166,10 +166,8 @@ public:
 	float GetWorldAngle() const;
 
 	/** @brief 最大アンカーを設定。*/
-	C_FUNCTION()
 	void SetAnchorMax(const Vector2& max) { anchorMax = max; }
 	/** @brief 最小アンカーを設定。*/
-	C_FUNCTION()
 	void SetAnchorMin(const Vector2& min) { anchorMin = min; }
 	/** @brief アンカーポジションを設定（スクリーン座標）。*/
 	C_FUNCTION()

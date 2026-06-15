@@ -31,6 +31,7 @@ struct MethodInfo
 	std::vector<ParameterInfo> parameters;
 	std::vector<AttributeInfo> attributes;
 	bool isConst = false; // const メソッドかどうか
+	bool isPropertyAccessor = false; // プロパティのアクセサリかどうか（getter/setter）
 };
 
 struct ClassInfo

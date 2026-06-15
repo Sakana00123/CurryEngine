@@ -346,7 +346,18 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
         method.returnType = m[1].str();
         method.name = m[2].str();
 		method.isConst = isConst;
+		
+		// フィールドの Getter/Setter として定義されているメソッドかどうかを判定
+        for (const auto& field : info.fields)
+        {
+            if (field.customGetter == method.name || field.customSetter == method.name)
+            {
+                method.isPropertyAccessor = true;
+                break;
+			}
+        }
 
+		// 引数リストをパース
         std::string argsStr = m[3].str();
         // 例: "ForceMode mode = ForceMode::Force"  →  type="ForceMode", name="mode", default="ForceMode::Force"
         // 例: "float value = 0.0f"                 →  type="float",     name="value", default="0.0f"

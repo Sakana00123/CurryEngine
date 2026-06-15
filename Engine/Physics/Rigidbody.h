@@ -81,7 +81,7 @@ public:
 	
 	//bool useDefaultPhysicsMaterial = true; // デフォルトの物理マテリアルを使用するかどうか
 
-	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
+	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector, CurryEngine::PropertyAttributes::Getter("GetConstraints"), CurryEngine::PropertyAttributes::Setter("SetConstraints"))
 	RigidbodyConstraints constraints = RigidbodyConstraints::None; // 移動や回転の制約
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetSleepThreshold"), CurryEngine::PropertyAttributes::Setter("SetSleepThreshold"), CurryEngine::PropertyAttributes::Speed(0.001f), CurryEngine::PropertyAttributes::Format("%.6f"))

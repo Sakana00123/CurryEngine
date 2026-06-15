@@ -157,7 +157,7 @@ internal static partial class NativeMethods
     //[LibraryImport(Dll)] internal static partial float Rigidbody_GetDrag(ulong ownerId);
     //[LibraryImport(Dll)] internal static partial void Rigidbody_SetAngularDrag(ulong ownerId, float angularDrag);
     //[LibraryImport(Dll)] internal static partial float Rigidbody_GetAngularDrag(ulong ownerId);
-    [LibraryImport(Dll)] internal static partial void Rigidbody_SetKinematicTarget(ulong ownerId, Vector3 position, Quaternion rotation);
+    //[LibraryImport(Dll)] internal static partial void Rigidbody_SetKinematicTarget(ulong ownerId, Vector3 position, Quaternion rotation);
 
 
     //[LibraryImport(Dll)]
