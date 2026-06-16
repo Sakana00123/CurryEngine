@@ -121,7 +121,7 @@ public:
 
 
 	/** @brief エディタの選択状態を管理するオブジェクトを取得します。*/
-	const EditorSelection* GetEditorSelection() const { return selection; }
+	EditorSelection* GetEditorSelection() { return selection; }
 
 private:
 	
@@ -135,7 +135,7 @@ private:
 	void Reset();
 	/** @brief オブジェクトを選択します。*/
 	void SelectInspectorNode(GameObject* node);
-
+	friend class SceneManager;
 	friend class EditorGUI;
 	GameObject* selectNode = nullptr;
 	GameObject* inspectorNode = nullptr;

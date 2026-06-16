@@ -372,9 +372,9 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
     ImGui::BeginChild("##Components", ImVec2(0, 0), true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysUseWindowPadding);
     ImVec2 cursorPos = ImGui::GetCursorPos(); // 現在のカーソル位置を保存
 
-    const Scene* scene = inspectorNode ? inspectorNode->GetScene() : nullptr;
-    const ObjectManager* objectManager = scene ? scene->GetObjectManager() : nullptr;
-    const EditorSelection* editorSelection = objectManager ? objectManager->GetEditorSelection() : nullptr;
+    auto scene = inspectorNode ? inspectorNode->GetScene() : nullptr;
+    auto objectManager = scene ? scene->GetObjectManager() : nullptr;
+    auto editorSelection = objectManager ? objectManager->GetEditorSelection() : nullptr;
     if (!inspectorNode || !objectManager) {
         ImGui::EndChild();
         return;

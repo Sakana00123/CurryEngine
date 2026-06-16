@@ -220,6 +220,13 @@ public:
 	 */
 	GameObject* FindGameObjectById(const ObjectId& id) const;
 
+	/**
+	 * @brief 指定IDのゲームオブジェクトをシーン内から検索し、共有ポインタで返します。
+	 * @param id 取得するゲームオブジェクトのID。
+	 * @return 見つかった `std::shared_ptr<GameObject>`。存在しない場合は `nullptr`。
+	 */
+	std::shared_ptr<GameObject> FindGameObjectPtrById(const ObjectId& id) const;
+
 	/** @brief シーン内のメインカメラを取得します。*/
 	CameraComponent* GetMainCamera() {
 		return cameraSystem.GetMainCamera();

@@ -15,11 +15,16 @@
 #include "Engine/Effects/EffectManager.h"
 #include <profiler.h>
 
+#include "Engine/EditorSupport/EditorSelection.h"
+
 #include "Engine/Audio/BeatManager.h"
 #include "Engine/Editor/AnimationEditor.h"
 #include "Engine/Physics/Physics.h"
+#include "Engine/Physics/Collider.h"
 #include "Engine/Rendering/Camera/CameraSystem.h"
+#include "Engine/Rendering/Camera/EditorCamera.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
+#include <ImGuizmo.h>
 
 void SceneManager::Initialize()
 {
@@ -358,6 +363,60 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 		if (GetCurrentScene() != nullptr)
 		{
 			GetCurrentScene()->objectManager->DrawGuizmo(sceneRtx);
+		}
+
+		// シーンビューのレイキャストによるオブジェクト選択
+		if (isSceneWindowFocused && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+		{
+			// ギズモに触れている場合は完全スキップ
+			bool isOverGuizmo = ImGuizmo::IsOver() || ImGuizmo::IsUsing();
+
+			// ImGui のUI要素（ボタン、スライダー等）に触れていない
+			bool isOverImGuiItem = ImGui::IsAnyItemActive();
+
+			if (!isOverGuizmo && !isOverImGuiItem)
+			{
+				Vector2 rayStartScreen = InputSystem::GetMousePosition();
+				Vector3 rayStart, rayDir;
+				EditorCamera::ScreenPointToRay(rayStartScreen, rayStart, rayDir);
+
+				float rayLength = 1000.0f;
+				RaycastHit hitInfo;
+				if (Physics::Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything))
+				{
+					if (hitInfo.collider && hitInfo.collider->GetOwner())
+					{
+						Scene* currentScene = GetCurrentScene();
+						if (currentScene)
+						{
+							if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
+							{
+								if (auto pObj = currentScene->FindGameObjectPtrById(hitInfo.collider->GetOwner()->GetId()))
+								{
+									sel->Select(pObj, ImGui::GetIO().KeyCtrl);
+									currentScene->GetObjectManager()->SelectInspectorNode(pObj.get());
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					// ヒットなし → Ctrlなしなら選択クリア
+					if (!ImGui::GetIO().KeyCtrl)
+					{
+						Scene* currentScene = GetCurrentScene();
+						if (currentScene)
+						{
+							if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
+							{
+								sel->Clear();
+								currentScene->GetObjectManager()->SelectInspectorNode(nullptr);
+							}
+						}
+					}
+				}
+			}
 		}
 
 		ImGui::End();

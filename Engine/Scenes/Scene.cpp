@@ -164,6 +164,15 @@ GameObject* Scene::FindGameObjectById(const ObjectId& id) const {
 	return nullptr; // Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·
 }
 
+std::shared_ptr<GameObject> Scene::FindGameObjectPtrById(const ObjectId& id) const {
+	for (const std::weak_ptr<GameObject>& obj : objectManager->GetAll()) {
+		if (!obj.expired() && obj.lock()->GetId() == id) {
+			return obj.lock();
+		}
+	}
+	return nullptr; // Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·
+}
+
 void Scene::Serialize(json& j) const
 {
 	j["name"] = name;
