@@ -91,6 +91,20 @@ void CameraComponent::ScreenPointToRay(const Vector2& screenPos, Vector3& outOri
 	XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&outOrigin), Start);
 }
 
+Math::BoundingBox CameraComponent::GetBoundingBox() const
+{
+	if (!GetOwner())
+	{
+		return Math::BoundingBox();
+	}
+	Vector3 center = GetOwner()->GetTransform()->GetWorldPosition();
+	Vector3 extents{ 0.5f, 0.5f, 0.5f }; // カメラのバウンディングボックスの半分のサイズ
+	Vector3 min{}, max{};
+	min = center - extents;
+	max = center + extents;
+	return Math::BoundingBox(min, max);
+}
+
 XMMATRIX CameraComponent::GetViewMatrix() const
 {
 	XMMATRIX World = XMLoadFloat4x4(&GetOwner()->transform->GetWorld());

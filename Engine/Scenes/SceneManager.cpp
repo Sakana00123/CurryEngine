@@ -25,6 +25,7 @@
 #include "Engine/Rendering/Camera/EditorCamera.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
 #include <ImGuizmo.h>
+#include "Engine/EditorSupport/EditorRaycast.h"
 
 void SceneManager::Initialize()
 {
@@ -382,40 +383,80 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 
 				float rayLength = 1000.0f;
 				RaycastHit hitInfo;
-				if (Physics::Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything))
+
+				bool physxHit = Physics::Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything);
+				CurryEngine::EditorSupport::EditorRaycastResult aabbHitInfo;
+				bool aabbHit = (RaycastAABBFallback(rayStart, rayDir, rayLength, currentScene.get(), aabbHitInfo));
+				std::shared_ptr<GameObject> selectedObj = nullptr;
+
+				float physxHitDistance = physxHit ? hitInfo.distance : std::numeric_limits<float>::max();
+				float aabbHitDistance = aabbHit ? aabbHitInfo.distance : std::numeric_limits<float>::max();
+
+				if (physxHit && physxHitDistance <= aabbHitDistance)
 				{
-					if (hitInfo.collider && hitInfo.collider->GetOwner())
+					// PhysXヒット
+					selectedObj = currentScene->FindGameObjectPtrById(
+						hitInfo.collider->GetOwner()->GetId());
+				}
+				else if (aabbHit)
+				{
+					// AABBヒット
+					selectedObj = aabbHitInfo.hitObject.lock();
+				}
+				
+				// ヒットしたオブジェクトを選択。Ctrlキーが押されている場合は選択に追加、そうでない場合は単独選択。何もヒットしなかった場合は、Ctrlキーが押されていなければ選択解除。
+				if (selectedObj)
+				{
+					if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
 					{
-						Scene* currentScene = GetCurrentScene();
-						if (currentScene)
-						{
-							if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
-							{
-								if (auto pObj = currentScene->FindGameObjectPtrById(hitInfo.collider->GetOwner()->GetId()))
-								{
-									sel->Select(pObj, ImGui::GetIO().KeyCtrl);
-									currentScene->GetObjectManager()->SelectInspectorNode(pObj.get());
-								}
-							}
-						}
+						sel->Select(selectedObj, ImGui::GetIO().KeyCtrl);
+						currentScene->GetObjectManager()->SelectInspectorNode(selectedObj.get());
 					}
 				}
-				else
+				else if (!ImGui::GetIO().KeyCtrl)
 				{
-					// ヒットなし → Ctrlなしなら選択クリア
-					if (!ImGui::GetIO().KeyCtrl)
+					// 何もヒットしなかった → 選択解除
+					if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
 					{
-						Scene* currentScene = GetCurrentScene();
-						if (currentScene)
-						{
-							if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
-							{
-								sel->Clear();
-								currentScene->GetObjectManager()->SelectInspectorNode(nullptr);
-							}
-						}
+						sel->Clear();
+						currentScene->GetObjectManager()->SelectInspectorNode(nullptr);
 					}
 				}
+
+				//if (Physics::Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything))
+				//{
+				//	if (hitInfo.collider && hitInfo.collider->GetOwner())
+				//	{
+				//		Scene* currentScene = GetCurrentScene();
+				//		if (currentScene)
+				//		{
+				//			if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
+				//			{
+				//				if (auto pObj = currentScene->FindGameObjectPtrById(hitInfo.collider->GetOwner()->GetId()))
+				//				{
+				//					sel->Select(pObj, ImGui::GetIO().KeyCtrl);
+				//					currentScene->GetObjectManager()->SelectInspectorNode(pObj.get());
+				//				}
+				//			}
+				//		}
+				//	}
+				//}
+				//else
+				//{
+				//	// ヒットなし → Ctrlなしなら選択クリア
+				//	if (!ImGui::GetIO().KeyCtrl)
+				//	{
+				//		Scene* currentScene = GetCurrentScene();
+				//		if (currentScene)
+				//		{
+				//			if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
+				//			{
+				//				sel->Clear();
+				//				currentScene->GetObjectManager()->SelectInspectorNode(nullptr);
+				//			}
+				//		}
+				//	}
+				//}
 			}
 		}
 

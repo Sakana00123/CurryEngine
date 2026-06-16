@@ -45,6 +45,12 @@ public:
 	 */
 	void ScreenPointToRay(const Vector2& screenPos, Vector3& outOrigin, Vector3& outDirection) const;
 
+	/**
+	 * @brief カメラのバウンディングボックスを取得します。
+	 * @details エディタでの選択などに使用されます。通常はカメラ位置を中心とした小さなボックスになります。
+	 * @return カメラのバウンディングボックス。
+	 */
+	Math::BoundingBox GetBoundingBox() const;
 
 	/**
 	 * @brief ビュー行列を取得します。

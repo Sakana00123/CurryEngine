@@ -11,6 +11,7 @@
 #include "Engine/Rendering/Pipeline/RenderContext.h"
 #include "Engine/Core/Math/Vector3.h"
 #include "Engine/Core/Math/Quaternion.h"
+#include "Engine/Core/Math/BoundingBox.h"
 #include "Engine/Core/Object.h"
 #include "Engine/EditorSupport/ImGuiHelpers.h"
 
@@ -149,12 +150,14 @@ protected:
 	friend class GameObjectFactory;
 	/** @brief 所属 `GameObject` の `Transform` が変更されたときのコールバック。*/
 	virtual void OnTransformChanged() {};
-
+	
 	// TODO: 所有者 `GameObject` を直接参照するのではなく、IDベースに変更する。これにより、所有者が破棄された場合の安全性が向上します。
 	/** @brief 所有者 `GameObject` を設定（エンジン内部用）。*/
 	void SetOwner(GameObject* gameObject) { this->gameObject = gameObject; }
 
 public:
+	/** @brief このコンポーネントのバウンディングボックスを取得します。描画や衝突判定などで使用されます。*/
+	virtual Math::BoundingBox GetBoundingBox() const { return Math::BoundingBox({}, {}); }
 
 #ifdef USE_IMGUI
 	/** @brief デバッグ GUI の描画（インスペクタなど）。*/

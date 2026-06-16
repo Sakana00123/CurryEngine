@@ -192,6 +192,7 @@ popd</Command>
     <ClCompile Include="Engine\Core\Math\Quaternion.cpp" />
     <ClCompile Include="Engine\EditorConfig\EditorConfigManager.cpp" />
     <ClCompile Include="Engine\EditorConfig\SceneViewConfig.cpp" />
+    <ClCompile Include="Engine\EditorSupport\EditorRaycast.cpp" />
     <ClCompile Include="Engine\EditorSupport\ImGuiHelpers.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawContext.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\AssetReferenceDrawer.cpp" />
@@ -635,6 +636,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorConfig\EditorConfigManager.h" />
     <ClInclude Include="Engine\EditorConfig\IEditorConfig.h" />
     <ClInclude Include="Engine\EditorConfig\SceneViewConfig.h" />
+    <ClInclude Include="Engine\EditorSupport\EditorRaycast.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawContext.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\DrawerState.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\AssetReferenceDrawer.h" />

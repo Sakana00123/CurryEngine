@@ -12,8 +12,8 @@ namespace Math
 	 */
 	struct BoundingBox
 	{
-		XMFLOAT3 min;    //!< 各軸の最小点
-		XMFLOAT3 max;    //!< 各軸の最大点
+		Vector3 min;    //!< 各軸の最小点
+		Vector3 max;    //!< 各軸の最大点
 		/**
 		 * @brief 既定コンストラクタ。
 		 * @details `min` を非常に大きな値、`max` を非常に小さな値で初期化します。
@@ -27,9 +27,29 @@ namespace Math
 		 * @param min 各軸の最小点。
 		 * @param max 各軸の最大点。
 		 */
-		BoundingBox(const XMFLOAT3& min, const XMFLOAT3& max)
+		BoundingBox(const Vector3& min, const Vector3& max)
 			: min(min), max(max)
 		{}
+
+		/**
+		 * @brief ボックスが有効な状態か判定します。
+		 * @details 各軸の最小点が最大点以下であれば有効とみなします。
+		 * @return 有効な状態であれば true。
+		 */
+		bool IsValid() const
+		{
+			if (std::isnan(min.x) || std::isnan(min.y) || std::isnan(min.z) ||
+				std::isnan(max.x) || std::isnan(max.y) || std::isnan(max.z))
+			{
+				return false;
+			}
+			if (min == max && min == Vector3(0, 0, 0))
+			{
+				return false;
+			}
+			return (min.x <= max.x) && (min.y <= max.y) && (min.z <= max.z);
+		}
+
 		/**
 		 * @brief 指定した点を含むように拡張します。
 		 * @param point 含めたい点。
@@ -63,7 +83,7 @@ namespace Math
 		Vector3 Center() const
 		{
 			Vector3 center;
-			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&center), (XMLoadFloat3(&min) + XMLoadFloat3(&max)) * 0.5f);
+			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&center), (XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&min)) + XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&max))) * 0.5f);
 			return center;
 		}
 			
@@ -74,7 +94,7 @@ namespace Math
 		Vector3 Size() const
 		{
 			Vector3 size;
-			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&size), XMLoadFloat3(&max) - XMLoadFloat3(&min));
+			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&size), XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&max)) - XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&min)));
 			return size;
 		}
 		/**
