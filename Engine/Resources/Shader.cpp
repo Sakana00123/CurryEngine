@@ -16,7 +16,12 @@ using namespace std;
 void LoadShaderFile(const char* filePath, std::vector<BYTE>& data)
 {
 	std::ifstream file(filePath, std::ios::binary | std::ios::ate);
-	_ASSERT_EXPR_A(file.is_open(), "CSO File not found");
+	if (!file.is_open())
+	{
+		std::string errorMsg = "Failed to open shader file: " + std::string(filePath) + "\n";
+		errorMsg += "Current directory: " + std::filesystem::current_path().string();
+		_ASSERT_EXPR_A(false, errorMsg.c_str());
+	}
 
 	size_t size = file.tellg();
 	file.seekg(0, std::ios::beg);

@@ -210,8 +210,10 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawerRegistry.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.cpp" />
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
+    <ClCompile Include="Engine\Editor\GameViewWindow.cpp" />
     <ClCompile Include="Engine\Editor\InspectorWindow.cpp" />
     <ClCompile Include="Engine\Editor\PropertyEditor.cpp" />
+    <ClCompile Include="Engine\Editor\SceneViewWindow.cpp" />
     <ClCompile Include="Engine\Events\PointerEventData.cpp" />
     <ClCompile Include="Engine\Events\RaycastResult.cpp" />
     <ClCompile Include="Engine\Physics\FixedJoint.cpp" />
@@ -655,8 +657,10 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\IPropertyDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
+    <ClInclude Include="Engine\Editor\GameViewWindow.h" />
     <ClInclude Include="Engine\Editor\InspectorWindow.h" />
     <ClInclude Include="Engine\Editor\PropertyEditor.h" />
+    <ClInclude Include="Engine\Editor\SceneViewWindow.h" />
     <ClInclude Include="Engine\Physics\FixedJoint.h" />
     <ClInclude Include="Engine\Physics\HingeJoint.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\PFX_CrtPass.h" />

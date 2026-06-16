@@ -25,7 +25,7 @@ bool ProjectSettings::Load(const std::string& exeDir)
 
 	// ソリューションのディレクトリを取得
 	// TODO: ソリューションのディレクトリを自動的に検出するか、プロジェクト設定で指定できるようにする
-	std::filesystem::path solutionDir = std::filesystem::path(exeDir).parent_path().parent_path();
+	std::filesystem::path solutionDir = data.value("solutionDir", std::filesystem::path(exeDir).parent_path().parent_path());
 
 	// ソリューションのディレクトリを基準にした絶対パス
 	std::filesystem::path defaultScriptProjectPath = solutionDir / "UserScripts/Assembly-CSharp.csproj";

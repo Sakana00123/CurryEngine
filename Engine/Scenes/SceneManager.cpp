@@ -3,9 +3,12 @@
 #include "Scene.h"
 #ifdef USE_IMGUI
 #include <imgui.h>
+
+#include "Engine/Editor/SceneViewWindow.h"
+#include "Engine/Editor/GameViewWindow.h"
+
 #endif // USE_IMGUI
 #include "Engine/Events/EventSystem.h"
-#include "Engine/Rendering/Pipeline/Graphics.h"
 #include "Engine/Editor/EditorGUI.h"
 #include "Engine/Editor/AssetBrowser.h"
 #include "Engine/Editor/HlslEditor.h"
@@ -15,17 +18,10 @@
 #include "Engine/Effects/EffectManager.h"
 #include <profiler.h>
 
-#include "Engine/EditorSupport/EditorSelection.h"
-
 #include "Engine/Audio/BeatManager.h"
-#include "Engine/Editor/AnimationEditor.h"
 #include "Engine/Physics/Physics.h"
-#include "Engine/Physics/Collider.h"
 #include "Engine/Rendering/Camera/CameraSystem.h"
-#include "Engine/Rendering/Camera/EditorCamera.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
-#include <ImGuizmo.h>
-#include "Engine/EditorSupport/EditorRaycast.h"
 
 void SceneManager::Initialize()
 {
@@ -290,247 +286,12 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 
 	// -------------------- Scene View Window --------------------
 	{
-		ImGui::Begin("Scene");
-		
-		// シーンビューを表示する前に、上部にツールバーを配置
-		float sceneViewToolbarHeight = EditorGUI::DrawSceneViewToolbar();
-
-		// 16:9のアスペクト比を維持しつつ、利用可能なスペースに最大限表示するための計算
-		const float targetAspect = 16.0f / 9.0f;
-		ImVec2 avail = ImGui::GetContentRegionAvail();
-		ImVec2 displaySize;
-		ImVec2 offset(0, 0);
-
-		// アスペクト比に応じてサイズを調整
-		float availAspect = avail.x / avail.y;
-		if (availAspect > targetAspect) {
-			displaySize.y = avail.y;
-			displaySize.x = avail.y * targetAspect;
-			offset.x = (avail.x - displaySize.x) * 0.5f;
-		}
-		else {
-			displaySize.x = avail.x;
-			displaySize.y = avail.x / targetAspect;
-			offset.y = (avail.y - displaySize.y) * 0.5f;
-		}
-
-		// センタリング
-		ImGui::SetCursorPos(ImVec2(
-			ImGui::GetCursorPosX() + offset.x,
-			ImGui::GetCursorPosY() + offset.y
-		));
-
-		// フレームバッファのSRVをImGui::Imageで表示
-		ID3D11ShaderResourceView* srv = nullptr;
-		if (sceneRtx->acceptRendering) {
-			if (RenderTexture* renderTarget = static_cast<RenderTexture*>(sceneRtx->GetSharedResource("PostProcessPass_RenderTexture")))
-			{
-				srv = renderTarget->GetColorBuffer();
-			}
-		}
-		if (srv == nullptr){
-			// ダミーテクスチャを表示
-			static std::shared_ptr<AssetTexture> whiteTexture;
-			if (!whiteTexture) {
-				whiteTexture = std::make_shared<AssetTexture>();
-				whiteTexture->MakeDummy(Graphics::GetDevice(), 0xFFFFFFFF, 16);
-			}
-			srv = whiteTexture->GetSRV(); // デフォルト白テクスチャ
-		}
-
-		ImGui::Image(srv, displaySize);
-
-		// ImGui::Imageの表示矩形を取得し、設定
-		if (ImGui::IsWindowHovered())
-		{
-			ImVec2 imageMin = ImGui::GetItemRectMin(); // 左上スクリーン座標
-			ImVec2 imageMax = ImGui::GetItemRectMax(); // 右下スクリーン座標
-			//範囲設定
-			Graphics::SetScreenRect(imageMin.x, imageMin.y, imageMax.x, imageMax.y);
-
-			// Imageの範囲内にカーソルがあるかでフォーカス判定
-			if (ImGui::IsMouseHoveringRect(imageMin, imageMax)) {
-				isSceneWindowFocused = ImGui::IsItemActivated() || ImGui::IsItemHovered(); // ウィンドウがアクティブか、もしくはホバーされている場合にフォーカスをtrueにする
-			}
-			else {
-				isSceneWindowFocused = false;
-			}
-		}
-		else {
-			isSceneWindowFocused = false;
-		}
-
-		//ギズモ
-		if (GetCurrentScene() != nullptr)
-		{
-			GetCurrentScene()->objectManager->DrawGuizmo(sceneRtx);
-		}
-
-		// シーンビューのレイキャストによるオブジェクト選択
-		if (isSceneWindowFocused && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-		{
-			// ギズモに触れている場合は完全スキップ
-			bool isOverGuizmo = ImGuizmo::IsOver() || ImGuizmo::IsUsing();
-
-			// ImGui のUI要素（ボタン、スライダー等）に触れていない
-			bool isOverImGuiItem = ImGui::IsAnyItemActive();
-
-			if (!isOverGuizmo && !isOverImGuiItem)
-			{
-				Vector2 rayStartScreen = InputSystem::GetMousePosition();
-				Vector3 rayStart, rayDir;
-				EditorCamera::ScreenPointToRay(rayStartScreen, rayStart, rayDir);
-
-				float rayLength = 1000.0f;
-				RaycastHit hitInfo;
-
-				bool physxHit = Physics::Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything);
-				CurryEngine::EditorSupport::EditorRaycastResult aabbHitInfo;
-				bool aabbHit = (RaycastAABBFallback(rayStart, rayDir, rayLength, currentScene.get(), aabbHitInfo));
-				std::shared_ptr<GameObject> selectedObj = nullptr;
-
-				float physxHitDistance = physxHit ? hitInfo.distance : std::numeric_limits<float>::max();
-				float aabbHitDistance = aabbHit ? aabbHitInfo.distance : std::numeric_limits<float>::max();
-
-				if (physxHit && physxHitDistance <= aabbHitDistance)
-				{
-					// PhysXヒット
-					selectedObj = currentScene->FindGameObjectPtrById(
-						hitInfo.collider->GetOwner()->GetId());
-				}
-				else if (aabbHit)
-				{
-					// AABBヒット
-					selectedObj = aabbHitInfo.hitObject.lock();
-				}
-				
-				// ヒットしたオブジェクトを選択。Ctrlキーが押されている場合は選択に追加、そうでない場合は単独選択。何もヒットしなかった場合は、Ctrlキーが押されていなければ選択解除。
-				if (selectedObj)
-				{
-					if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
-					{
-						sel->Select(selectedObj, ImGui::GetIO().KeyCtrl);
-						currentScene->GetObjectManager()->SelectInspectorNode(selectedObj.get());
-					}
-				}
-				else if (!ImGui::GetIO().KeyCtrl)
-				{
-					// 何もヒットしなかった → 選択解除
-					if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
-					{
-						sel->Clear();
-						currentScene->GetObjectManager()->SelectInspectorNode(nullptr);
-					}
-				}
-
-				//if (Physics::Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything))
-				//{
-				//	if (hitInfo.collider && hitInfo.collider->GetOwner())
-				//	{
-				//		Scene* currentScene = GetCurrentScene();
-				//		if (currentScene)
-				//		{
-				//			if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
-				//			{
-				//				if (auto pObj = currentScene->FindGameObjectPtrById(hitInfo.collider->GetOwner()->GetId()))
-				//				{
-				//					sel->Select(pObj, ImGui::GetIO().KeyCtrl);
-				//					currentScene->GetObjectManager()->SelectInspectorNode(pObj.get());
-				//				}
-				//			}
-				//		}
-				//	}
-				//}
-				//else
-				//{
-				//	// ヒットなし → Ctrlなしなら選択クリア
-				//	if (!ImGui::GetIO().KeyCtrl)
-				//	{
-				//		Scene* currentScene = GetCurrentScene();
-				//		if (currentScene)
-				//		{
-				//			if (EditorSelection* sel = currentScene->GetObjectManager()->GetEditorSelection())
-				//			{
-				//				sel->Clear();
-				//				currentScene->GetObjectManager()->SelectInspectorNode(nullptr);
-				//			}
-				//		}
-				//	}
-				//}
-			}
-		}
-
-		ImGui::End();
+		CurryEngine::SceneViewWindow::Get().Draw(sceneRtx, currentScene.get());
 	}
 
 	// -------------------- Game View Window --------------------
 	{
-		ImGui::Begin("Game");
-		const float targetAspect = 16.0f / 9.0f;
-		ImVec2 avail = ImGui::GetContentRegionAvail();
-		ImVec2 displaySize;
-		ImVec2 offset(0, 0);
-
-		// アスペクト比に応じてサイズを調整
-		float availAspect = avail.x / avail.y;
-		if (availAspect > targetAspect) {
-			displaySize.y = avail.y;
-			displaySize.x = avail.y * targetAspect;
-			offset.x = (avail.x - displaySize.x) * 0.5f;
-		}
-		else {
-			displaySize.x = avail.x;
-			displaySize.y = avail.x / targetAspect;
-			offset.y = (avail.y - displaySize.y) * 0.5f;
-		}
-
-		// センタリング
-		ImGui::SetCursorPos(ImVec2(
-			ImGui::GetCursorPosX() + offset.x,
-			ImGui::GetCursorPosY() + offset.y
-		));
-
-		ID3D11ShaderResourceView* srv = nullptr;
-		if (gameRtx->acceptRendering) {
-			if (RenderTexture* renderTarget = static_cast<RenderTexture*>(gameRtx->GetSharedResource("PostProcessPass_RenderTexture")))
-			{
-				srv = renderTarget->GetColorBuffer();
-			}
-		}
-		if (srv == nullptr) {
-			// ダミーテクスチャを表示
-			static std::shared_ptr<AssetTexture> whiteTexture;
-			if (!whiteTexture) {
-				whiteTexture = std::make_shared<AssetTexture>();
-				whiteTexture->MakeDummy(Graphics::GetDevice(), 0xFFFFFFFF, 16);
-			}
-			srv = whiteTexture->GetSRV(); // デフォルト白テクスチャ
-		}
-
-		ImGui::Image(srv, displaySize);
-
-		// ImGui::Imageの表示矩形を取得し、設定
-		if (ImGui::IsWindowHovered())
-		{
-			ImVec2 imageMin = ImGui::GetItemRectMin(); // 左上スクリーン座標
-			ImVec2 imageMax = ImGui::GetItemRectMax(); // 右下スクリーン座標
-			//範囲設定
-			Graphics::SetScreenRect(imageMin.x, imageMin.y, imageMax.x, imageMax.y);
-
-
-			// Imageの範囲内にカーソルがあるかでフォーカス判定
-			if (ImGui::IsMouseHoveringRect(imageMin, imageMax)) {
-				isGameWindowFocused = ImGui::IsItemActivated() || ImGui::IsItemHovered(); // ウィンドウがアクティブか、もしくはホバーされている場合にフォーカスをtrueにする
-			}
-			else {
-				isGameWindowFocused = false;
-			}
-		}
-		else {
-			isGameWindowFocused = false;
-		}
-
-		ImGui::End();
+		CurryEngine::GameViewWindow::Get().Draw(gameRtx, currentScene.get());
 	}
 
 	// ------------------- 汎用ウィンドウ --------------------

@@ -237,17 +237,6 @@ public:
 	/* シーンマネージャの状態をデシリアライズします。*/
 	static void Deserialize(const json& j);
 
-
-public:
-
-	/* エディタ関連機能 */
-	static bool IsSceneWindowFocused() { return isSceneWindowFocused; }
-
-	static bool IsGameWindowFocused() { return isGameWindowFocused; }
-private:
-	static inline bool isSceneWindowFocused = false;
-	static inline bool isGameWindowFocused = false;
-
 private:
 	/** @brief ランタイム用シーンファイルをクリーンアップします。*/
 	static void CleanRuntimeFiles();

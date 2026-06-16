@@ -119,10 +119,11 @@ public:
 	/** @brief 存在するコンポーネントのIDリストを取得します。*/
 	std::unordered_set<ObjectId>& GetExistingComponentIds() { return existingComponentIds; }
 
-
 	/** @brief エディタの選択状態を管理するオブジェクトを取得します。*/
 	EditorSelection* GetEditorSelection() { return selection; }
 
+	/** @brief オブジェクトを選択します。*/
+	void SelectInspectorNode(GameObject* node);
 private:
 	
 	/** @brief 指定したオブジェクトとその子オブジェクトを破棄します。*/
@@ -133,9 +134,7 @@ private:
 	void Register(std::shared_ptr<GameObject> object);
 	/** @brief オブジェクトの選択とインスペクタ表示をリセットします。*/
 	void Reset();
-	/** @brief オブジェクトを選択します。*/
-	void SelectInspectorNode(GameObject* node);
-	friend class SceneManager;
+	
 	friend class EditorGUI;
 	GameObject* selectNode = nullptr;
 	GameObject* inspectorNode = nullptr;

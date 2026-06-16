@@ -4,8 +4,7 @@
 #include "Engine/Editor/Console.h"
 #include "Engine/Input/InputSystem.h"
 #include "Engine/Core/Time.h"
-#include "Engine/Scenes/Scene.h"
-#include "Engine/Scenes/SceneManager.h"
+#include "Engine/Editor/SceneViewWindow.h"
 #include "Engine/Rendering/Pipeline/Graphics.h"
 
 void EditorCamera::Initialize()
@@ -18,7 +17,7 @@ void EditorCamera::Update(float elapsedTime)
 {
 
 #ifdef USE_IMGUI
-	if (SceneManager::IsSceneWindowFocused()) {
+	if (CurryEngine::SceneViewWindow::Get().IsFocused()) {
 		if (float wheelDelta = InputSystem::GetWheelDelta()) {
 			distance -= wheelDelta * 0.1f; // ƒzƒC[ƒ‹‚Ì‰ñ“]—Ê‚É‰‚¶‚Ä‹——£‚ğ’²®
 			distance = std::clamp(distance, minDistance, maxDistance);
@@ -35,7 +34,7 @@ void EditorCamera::Update(float elapsedTime)
 	{
 		if (!isMoving)
 		{
-			isMoving = SceneManager::IsSceneWindowFocused();
+			isMoving = CurryEngine::SceneViewWindow::Get().IsFocused();
 		}
 		else
 		{
