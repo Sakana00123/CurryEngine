@@ -27,10 +27,12 @@ void MeshCollider::Register()
 
 	if (modelRenderer)
 	{
+		ModelAsset* modelAsset = modelRenderer->GetModelAsset();
+
 		MeshColliderData data;
-		if (modelRenderer->batchMeshes.size() > 0)
+		if (modelAsset->batchMeshes.size() > 0)
 		{
-			for (const auto& batchMesh : modelRenderer->batchMeshes)
+			for (const auto& batchMesh : modelAsset->batchMeshes)
 			{
 				size_t vertexOffset = data.vertices.size(); // 現在の頂点数をオフセットとして保存
 				data.vertices.reserve(vertexOffset + batchMesh.cachedVertices.size());
@@ -54,11 +56,11 @@ void MeshCollider::Register()
 		else
 		{
 			// Meshを直接使うのではなく、Nodeが持つtransform行列を考慮して展開する
-			for (const auto& node : modelRenderer->nodes)
+			for (const auto& node : modelAsset->nodes)
 			{
-				if (node.mesh >= 0 && node.mesh < modelRenderer->meshes.size())
+				if (node.mesh >= 0 && node.mesh < modelAsset->meshes.size())
 				{
-					const auto& mesh = modelRenderer->meshes[node.mesh];
+					const auto& mesh = modelAsset->meshes[node.mesh];
 					DirectX::XMMATRIX globalTransform = DirectX::XMLoadFloat4x4(&node.globalTransform);
 
 					for (const auto& primitive : mesh.primitives)

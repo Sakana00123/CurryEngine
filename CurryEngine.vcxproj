@@ -224,6 +224,7 @@ popd</Command>
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\RenderPass.cpp" />
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\TransitionPass.cpp" />
     <ClCompile Include="Engine\Rendering\Renderers\TrailRenderer.cpp" />
+    <ClCompile Include="Engine\Resources\ModelAsset.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\GameObjectExports.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\TransformExports.cpp" />
     <ClCompile Include="Engine\UI\CanvasScaler.cpp" />
@@ -233,6 +234,7 @@ popd</Command>
     <ClCompile Include="Engine\UI\LayoutGroup.cpp" />
     <ClCompile Include="Engine\UI\ScrollView.cpp" />
     <ClCompile Include="Engine\UI\VerticalLayoutGroup.cpp" />
+    <ClCompile Include="Engine\Utils\GltfImporter.cpp" />
     <ClCompile Include="External\imgui-docking\ImGradientHDR.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -668,12 +670,15 @@ popd</Command>
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\PostProcessPass.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\TransitionPass.h" />
     <ClInclude Include="Engine\Rendering\Renderers\TrailRenderer.h" />
+    <ClInclude Include="Engine\Resources\ModelAsset.h" />
     <ClInclude Include="Engine\Scripting\ScriptFieldSerializer.h" />
     <ClInclude Include="Engine\UI\CanvasScaler.h" />
     <ClInclude Include="Engine\UI\GridLayoutGroup.h" />
     <ClInclude Include="Engine\UI\HorizontalLayoutGroup.h" />
     <ClInclude Include="Engine\UI\LayoutGroup.h" />
     <ClInclude Include="Engine\UI\VerticalLayoutGroup.h" />
+    <ClInclude Include="Engine\Utils\GltfImporter.h" />
+    <ClInclude Include="Engine\Utils\IModelImporter.h" />
     <ClInclude Include="External\imgui-docking\ImGradientHDR.h" />
     <ClInclude Include="Engine\Core\EnginePaths.h" />
     <ClInclude Include="Engine\Core\Layer.h" />

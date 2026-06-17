@@ -71,7 +71,7 @@ void RhythmAnimationController::Update(float deltaTime)
 				currentTime = animationDuration; // ループしない場合、終了時間に固定
 			}
 			// アニメーションを進行
-			modelRenderer->Animate(currentAnimationIndex, currentTime, modelRenderer->nodes);
+			modelRenderer->Animate(currentAnimationIndex, currentTime, modelRenderer->GetModelAsset()->nodes);
 		}
 	}
 }

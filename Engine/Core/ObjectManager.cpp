@@ -352,7 +352,8 @@ void ObjectManager::Render(RenderContext* rtx)
 
 		// TODO: あとでリファクタリングすること。GltfModelRendererのマテリアルのアルファモードをチェックして、透過オブジェクトは後で描画するようにする。
 		if (auto* gltfModelRenderer = object->GetComponent<GltfModelRenderer>()) {
-			if (!gltfModelRenderer->materials.empty() && gltfModelRenderer->materials[0].data.alphaMode != 0) {
+			auto& materials = gltfModelRenderer->GetModelAsset()->materials;
+			if (!materials.empty() && materials[0].data.alphaMode != 0) {
 				// 透過オブジェクトは通常の描画パスで描画されるため、ここではスキップ
 				renderQueue.push_back(object); // 後で描画するためにキューに追加
 				continue;
