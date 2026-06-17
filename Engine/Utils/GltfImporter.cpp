@@ -86,10 +86,13 @@ namespace CurryEngine
                 FetchMaterials(device, *gltfModel, asset);
                 FetchTextures(device, *gltfModel, asset);
 
+#ifdef SUPPORT_BATCHING
                 if (staticBatching) {
                     FetchBatchMeshes(device, *gltfModel, asset);
                 }
-                else {
+                else
+#endif // SUPPORT_BATCHING
+                {
                     FetchMeshes(device, *gltfModel, asset);
 					FetchSkins(*gltfModel, asset);
                     FetchAnimations(*gltfModel, asset);
@@ -115,7 +118,7 @@ namespace CurryEngine
 
 		std::vector<std::string> GltfImporter::GetSupportedExtensions() const
 		{
-			return { ".gltf", ".glb", ".cereal", ".batchcereal" };
+			return { ".gltf", ".glb", ".cereal"/*, ".batchcereal"*/ };
 		}
 
         void GltfImporter::FetchScenes(const tinygltf::Model& gltfModel, ModelAsset& asset)
@@ -453,13 +456,14 @@ namespace CurryEngine
             }
         }
 
+#ifdef SUPPORT_BATCHING
         void GltfImporter::FetchBatchMeshes(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset)
         {
-			// GLTF バッチメッシュの情報を ModelAsset のバッチメッシュ構造に変換して格納する処理をここに実装します。
-			auto& batchMeshes = asset.batchMeshes;
-			auto& nodes = asset.nodes;
+            // GLTF バッチメッシュの情報を ModelAsset のバッチメッシュ構造に変換して格納する処理をここに実装します。
+            auto& batchMeshes = asset.batchMeshes;
+            auto& nodes = asset.nodes;
             const auto& scenes = asset.scenes;
-			auto defaultScene = asset.defaultScene;
+            auto defaultScene = asset.defaultScene;
 
             batchMeshes.resize(gltfModel.materials.size());
 
@@ -593,7 +597,8 @@ namespace CurryEngine
             for (std::vector<int>::value_type nodeIndex : scenes.at(defaultScene).nodes) {
                 traverse(nodeIndex);
             }
-		}
+        }
+#endif // SUPPORT_BATCHING
 
         void GltfImporter::FetchMaterials(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset)
         {

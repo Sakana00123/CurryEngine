@@ -6,6 +6,9 @@
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #include "../tinygltf-release/tiny_gltf.h"
 
+// TODO: バッチメッシュの分岐のせいでコードが複雑になっているので、あとでリファクタリングすること。
+#define SUPPORT_BATCHING
+
 namespace CurryEngine
 {
 	namespace Utils
@@ -35,7 +38,9 @@ namespace CurryEngine
 			void FetchScenes(const tinygltf::Model& gltfModel, ModelAsset& asset);
 			void FetchNodes(const tinygltf::Model& gltfModel, ModelAsset& asset);
 			void FetchMeshes(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset);
+#ifdef SUPPORT_BATCHING
 			void FetchBatchMeshes(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset);
+#endif // SUPPORT_BATCHING
 			void FetchMaterials(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset);
 			void FetchTextures(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset);
 			void FetchSkins(const tinygltf::Model& gltfModel, ModelAsset& asset);
