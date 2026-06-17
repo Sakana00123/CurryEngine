@@ -260,6 +260,11 @@ inline static void DrawAddComponentButton(GameObject* inspectorNode, std::functi
                                 obj->AttachComponent(name, component);
                                 component->SetEnabled(true); // 追加したコンポーネントは有効にする
                                 obj->InitializeComponent(component);
+                                if (obj->GetScene() && obj->GetScene()->IsStarted())
+                                {
+                                    obj->AwakeComponents(); // シーンがすでに開始されている場合はAwakeも呼び出す
+                                    obj->RefreshActiveInHierarchy(); // アクティブ状態を更新して、コンポーネントのOnEnable/OnDisableを正しく呼び出す
+                                }
                             });
 
                         ImGui::CloseCurrentPopup();
@@ -290,6 +295,11 @@ inline static void DrawAddComponentButton(GameObject* inspectorNode, std::functi
                                 obj->AttachComponent("ScriptComponent", component);
                                 component->SetEnabled(true); // 追加したコンポーネントは有効にする
                                 obj->InitializeComponent(component);
+                                if (obj->GetScene() && obj->GetScene()->IsStarted())
+                                {
+                                    obj->AwakeComponents(); // シーンがすでに開始されている場合はAwakeも呼び出す
+                                    obj->RefreshActiveInHierarchy(); // アクティブ状態を更新して、コンポーネントのOnEnable/OnDisableを正しく呼び出す
+                                }
                             }
                         });
                     ImGui::CloseCurrentPopup();
