@@ -1,19 +1,19 @@
 #pragma once
 #include <vector>
 
-class Component;
+class Object;
 
 /**
- * @brief プロパティ描画のコンテキストを表す構造体。プロパティ描画関数に渡され、描画対象のコンポーネントや複数選択の状態を提供します。
- * @details 複数選択に対応しており、targets に描画対象のコンポーネントが格納されます。isMultiSelect フラグは targets のサイズに基づいて自動的に設定されます。
+ * @brief プロパティ描画のコンテキストを表す構造体。プロパティ描画関数に渡され、描画対象のオブジェクトや複数選択の状態を提供します。
+ * @details 複数選択に対応しており、targets に描画対象のオブジェクトが格納されます。isMultiSelect フラグは targets のサイズに基づいて自動的に設定されます。
  */
 struct PropertyDrawContext
 {
 	/**
-	 * @brief プロパティを描画する対象のコンポーネントのリスト。複数選択に対応するため、ベクターで保持しています。
+	 * @brief プロパティを描画する対象のオブジェクトのリスト。複数選択に対応するため、ベクターで保持しています。
 	 * @details targets[0] が表示の基準値となります。
 	 */
-	std::vector<Component*> targets;
+	std::vector<Object*> targets;
 
 	/**
 	 * @brief 複数選択されているかどうか。targets のサイズが 2 以上の場合は true になります。
@@ -25,14 +25,14 @@ struct PropertyDrawContext
 	// --- 静的ファクトリーメソッド ---
 
 	/** @brief 単一選択の PropertyDrawContext を作成するファクトリーメソッド。*/
-	static PropertyDrawContext MakeSingle(Component* target);
+	static PropertyDrawContext MakeSingle(Object* target);
 	/** @brief 複数選択の PropertyDrawContext を作成するファクトリーメソッド。*/
-	static PropertyDrawContext MakeMulti(const std::vector<Component*>& targets);
+	static PropertyDrawContext MakeMulti(const std::vector<Object*>& targets);
 
 	// --- ユーティリティメソッド ---
 
 	/** @brief targets[0] を返す。targets が空の場合は nullptr を返します。*/
-	Component* Primary() const;
+	Object* Primary() const;
 
 	/** @brief targets が空かどうかを返す。*/
 	bool IsEmpty() const;

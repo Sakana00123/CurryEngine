@@ -4,7 +4,7 @@
 #include "Engine/Core/Reflection/Meta.h"
 #include "Engine/Editor/History.h"
 #include "Engine/EditorSupport/SetValueCommand.h"
-#include "Engine/Core/Component.h"
+#include "Engine/Core/Object.h"
 #include <any>
 
 namespace CurryEngine
@@ -44,7 +44,7 @@ namespace CurryEngine
 		template<typename T>
 		void ApplyToAll(const PropertyDrawContext& context, const PropertyInfo& prop, const T& value)
 		{
-			for (Component* target : context.targets)
+			for (Object* target : context.targets)
 			{
 				prop.setter(target, value);
 			}

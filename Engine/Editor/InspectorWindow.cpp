@@ -484,7 +484,7 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
                     if (editorSelection)
                     {
                         std::vector<std::shared_ptr<GameObject>> selection = editorSelection->GetAll();
-                        std::vector<Component*> sameTypeComps{ primaryComp.get() }; // 主選択のコンポーネントを最初に追加
+                        std::vector<Object*> sameTypeComps{ primaryComp.get() }; // 主選択のコンポーネントを最初に追加
 
                         // 同じコンポーネントを持つ選択中のオブジェクトを探す
                         bool hasSameType = true; // すべての選択中のオブジェクトが同じコンポーネントを持っているか

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "PropertyDrawContext.h"
 
-PropertyDrawContext PropertyDrawContext::MakeSingle(Component* target)
+PropertyDrawContext PropertyDrawContext::MakeSingle(Object* target)
 {
 	PropertyDrawContext context;
 	context.targets = { target };
@@ -9,7 +9,7 @@ PropertyDrawContext PropertyDrawContext::MakeSingle(Component* target)
 	return context;
 }
 
-PropertyDrawContext PropertyDrawContext::MakeMulti(const std::vector<Component*>& targets)
+PropertyDrawContext PropertyDrawContext::MakeMulti(const std::vector<Object*>& targets)
 {
 	PropertyDrawContext context;
 	context.targets = targets;
@@ -17,7 +17,7 @@ PropertyDrawContext PropertyDrawContext::MakeMulti(const std::vector<Component*>
 	return context;
 }
 
-Component* PropertyDrawContext::Primary() const
+Object* PropertyDrawContext::Primary() const
 {
 	return targets.empty() ? nullptr : targets[0];
 }
