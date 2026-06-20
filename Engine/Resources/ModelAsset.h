@@ -425,7 +425,6 @@ public:
     std::vector<Animation> animations;
 
 	void CumulateTransforms(std::vector<Node>& nodes);
-private:
 	void CreateAndUploadResources(ID3D11Device* device);
 
 
