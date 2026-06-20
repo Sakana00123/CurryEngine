@@ -23,7 +23,8 @@
 #include "Engine/Resources/ImportSettings/TextureImportSettings.h"
 #include "Engine/Resources/AssetTypeUtils.h"
 #include "Engine/Resources/Importers/ImporterRegistry.h"
-#include "Engine/Editor/ImportSettingsWindow.h"
+#include "Engine/Editor/ImportSettings/ImportSettingsWindow.h"
+#include "Engine/Editor/ImportSettings/ImportSettingsDrawerRegistry.h"
 
 void AssetBrowser::Initialize()
 {
@@ -34,6 +35,7 @@ void AssetBrowser::Initialize()
 	Refresh();
 
 	CurryEngine::Resources::ImporterRegistry::Initialize();
+	CurryEngine::Resources::ImportSettingsDrawerRegistry::Initialize();
 	CurryEngine::Resources::AssetDatabase::Initialize("./TestAssets");
 }
 

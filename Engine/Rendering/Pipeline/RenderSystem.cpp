@@ -25,7 +25,7 @@
 
 #include <Engine\Physics\Physics.h>
 #include <Engine\Editor\EffectEditor.h>
-#include <Engine\Editor\ImportSettingsWindow.h>
+#include <Engine\Editor\ImportSettings\ImportSettingsWindow.h>
 
 void RenderSystem::Initialize(Time* time)
 {

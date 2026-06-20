@@ -46,6 +46,10 @@ namespace CurryEngine::Resources
 		static void RequestPreviewUpdate(const AssetId& id);
 		static void UpdatePreview(const AssetId& id);
 
+		static void ShowCloseConfirmDialog();
+		static void CloseConfirmDialog();
+		static void CloseWindow();
+
 
 		static inline bool _isOpen = false; ///< インポート設定ウィンドウが開いているかどうか
 		static inline AssetId _targetId; ///< 現在編集しているアセットのID
@@ -53,5 +57,6 @@ namespace CurryEngine::Resources
 		static inline nlohmann::json _editingSettings; ///< 現在編集しているインポート設定のJSONデータ。ユーザーがUIで変更した内容を一時的に保持します。
 		static inline bool _isDirty = false; ///< インポート設定がユーザーによって変更されたかどうかを示すフラグ。ユーザーがUIで設定を変更した場合はtrueになります。
 		static inline std::shared_ptr<Resource> _previewResource; ///< プレビュー用のリソース。
+		static inline bool _showCloseConfirm = false; ///< ウィンドウを閉じるときに変更が保存されていない場合に確認ダイアログを表示するかどうかのフラグ
 	};
 }

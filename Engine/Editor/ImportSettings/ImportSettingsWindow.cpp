@@ -4,9 +4,10 @@
 #include "Engine/Resources/AssetDatabase.h"
 #include "Engine/Resources/AssetMeta.h"
 #include <Engine\Resources\AssetMetaSerializer.h>
-#include <Engine\Resources\ImportSettings\TextureImportSettings.h>
-#include <Engine\Resources\Texture.h>
 #include "Engine/Resources/Resource.h"
+#include "ImportSettingsDrawerRegistry.h"
+
+#define U8(x) reinterpret_cast<const char*>(u8##x)
 
 namespace CurryEngine::Resources
 {
@@ -36,7 +37,7 @@ namespace CurryEngine::Resources
 		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f)); // ポップアップの位置を画面中央に設定
 
 		// ポップアップが開いているときだけ描画する
-		if (ImGui::BeginPopupModal("Import Settings", &_isOpen, ImGuiWindowFlags_AlwaysAutoResize))
+		if (ImGui::BeginPopupModal("Import Settings", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			// 上段: ファイル名とアセット種別
 			ImGui::TextUnformatted(std::filesystem::path(meta->path).filename().string().c_str());
@@ -79,10 +80,74 @@ namespace CurryEngine::Resources
 				_isDirty = false;
 			}
 
+			ImGui::SameLine();
+
+			// Resetボタン（デフォルト設定に戻す）
+			if (ImGui::Button("Reset To Default"))
+			{
+				if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
+				{
+					_editingSettings = drawer->GetDefaultSettings();
+					_isDirty = true; // デフォルト設定はまだ保存されていないので、変更フラグを立てる
+					RequestPreviewUpdate(_targetId); // デフォルト設定に基づいてプレビューを更新
+				}
+			}
+
+			// 閉じるボタン
+			if (ImGui::Button("Close"))
+			{
+				if (_isDirty)
+				{
+					ShowCloseConfirmDialog(); // 変更がある場合は確認ダイアログを表示
+				}
+				else
+				{
+					ImGui::CloseCurrentPopup(); // 変更なしなら即閉じ
+					CloseWindow();				// ウィンドウを閉じる
+				}
+			}
+
+			// 確認ダイアログ（ネストされたPopupModal）
+			if (_showCloseConfirm && !ImGui::IsPopupOpen("Unsaved Changes"))
+			{
+				ImGui::OpenPopup("Unsaved Changes");
+			}
+
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("Unsaved Changes", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::TextUnformatted(U8("設定が変更されています。"));
+				ImGui::TextUnformatted(U8("変更を保存せずに閉じますか？"));
+				ImGui::Separator();
+
+				if (ImGui::Button(U8("変更を保存して閉じる")))
+				{
+					OnApply(_targetId); // 変更を保存
+					ImGui::CloseCurrentPopup(); // 確認ダイアログを閉じる
+					ImGui::CloseCurrentPopup(); // インポート設定ウィンドウを閉じる
+					CloseWindow(); // ウィンドウを閉じる
+				}
+				ImGui::SameLine();
+				if (ImGui::Button(U8("変更を破棄する")))
+				{
+					ImGui::CloseCurrentPopup(); // 確認ダイアログを閉じる
+					ImGui::CloseCurrentPopup(); // インポート設定ウィンドウを閉じる
+					CloseWindow(); // ウィンドウを閉じる
+				}
+				ImGui::SameLine();
+				if (ImGui::Button(U8("キャンセル")))
+				{
+					ImGui::CloseCurrentPopup(); // 確認ダイアログを閉じる
+					CloseConfirmDialog(); // 確認ダイアログを閉じる
+				}
+
+				ImGui::EndPopup();
+			}
+
 			ImGui::EndPopup();
 		}
 #endif // USE_IMGUI
-
 	}
 
 	bool ImportSettingsWindow::IsOpen()
@@ -115,26 +180,24 @@ namespace CurryEngine::Resources
 #ifdef USE_IMGUI
 		const AssetMeta* meta = AssetDatabase::Find(id);
 		if (!meta) return;
-		switch (meta->type)
+		
+		if (_previewResource)
 		{
-		case AssetType::Texture:
-		{
-			ImGui::TextUnformatted("Texture Preview");
-
-			if (auto thumbnail = std::dynamic_pointer_cast<AssetTexture>(_previewResource))
+			// プレビュー用のリソースがある場合は描画する
+			if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 			{
-				ImGui::Image(thumbnail->GetSRV(), ImVec2(128, 128));
+				drawer->DrawPreview(_previewResource);
 			}
+			else
+			{
+				ImGui::TextDisabled("No preview drawer for this asset type.");
+			}
+		}
+		else
+		{
+			ImGui::TextDisabled("Preview not available.");
+		}
 
-			break;
-		}
-		case AssetType::Model:
-			ImGui::TextUnformatted("Model Preview");
-			break;
-		default:
-			ImGui::TextUnformatted("No Preview Available");
-			break;
-		}
 #endif // USE_IMGUI
 
 	}
@@ -145,42 +208,17 @@ namespace CurryEngine::Resources
 		const AssetMeta* meta = AssetDatabase::Find(id);
 		if (!meta) return;
 
-		switch (meta->type)
+		if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 		{
-		case AssetType::Texture:
-		{
-			auto settings = _editingSettings.is_null()
-				? TextureImportSettings{}
-			: _editingSettings.get<TextureImportSettings>();
-
-			bool changed = false;
-			changed |= ImGui::Checkbox("Generate Mipmaps", &settings.generateMipmaps);
-
-			// compressionはドロップダウンで選ばせる
-			const char* compressionOptions[] = { "None", "BC1", "BC3", "BC7" };
-			int currentIndex = 0;
-			for (int i = 0; i < IM_ARRAYSIZE(compressionOptions); ++i)
-				if (settings.compression == compressionOptions[i]) { currentIndex = i; break; }
-
-			if (ImGui::Combo("Compression", &currentIndex, compressionOptions, IM_ARRAYSIZE(compressionOptions)))
+			// 設定フィールドを描画し、ユーザーが変更した場合は_editingSettingsを更新
+			if (drawer->DrawSettingsFields(_editingSettings, _isDirty))
 			{
-				settings.compression = compressionOptions[currentIndex];
-				changed = true;
+				RequestPreviewUpdate(id); // 設定変更に応じてプレビューを更新
 			}
-
-			if (changed)
-			{
-				_editingSettings = settings; // 編集バッファに書き戻す
-				_isDirty = true;
-				// プレビュー更新（次フレームのDrawPreviewに反映される）
-				RequestPreviewUpdate(id);
-			}
-			break;
 		}
-		// 将来: case AssetType::GltfModel: ...
-		default:
-			ImGui::TextDisabled("No import settings for this asset type.");
-			break;
+		else
+		{
+			ImGui::TextDisabled("No settings drawer for this asset type.");
 		}
 #endif // USE_IMGUI
 	}
@@ -219,6 +257,24 @@ namespace CurryEngine::Resources
 		{
 			_previewResource = importer->Import(previewMeta);
 		}
+	}
+
+	void ImportSettingsWindow::ShowCloseConfirmDialog()
+	{
+		_showCloseConfirm = true;
+	}
+
+	void ImportSettingsWindow::CloseConfirmDialog()
+	{
+		_showCloseConfirm = false;
+	}
+
+	void ImportSettingsWindow::CloseWindow()
+	{
+		_isOpen = false;
+		_targetId = AssetId(); // ターゲットIDをリセット
+		_isDirty = false; // 変更フラグをリセット
+		_showCloseConfirm = false; // 確認ダイアログフラグをリセット
 	}
 
 }
