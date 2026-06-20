@@ -220,6 +220,13 @@ public:
 	bool LoadFromFile(const std::string& filePath) override;
 	/** @brief ワイド文字パス版の読み込み。*/
 	bool Load(ID3D11Device* device, const std::wstring& filePath);
+
+	/** @brief SRV と記述子を設定します。*/
+	void SetSRV(ID3D11ShaderResourceView* srv, const D3D11_TEXTURE2D_DESC& desc) {
+		m_Srv = srv;
+		m_Desc = desc;
+	}
+
 	/**
 	 * @brief ダミーテクスチャを生成します。
 	 * @param device D3D11 デバイス。

@@ -211,6 +211,7 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.cpp" />
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
     <ClCompile Include="Engine\Editor\GameViewWindow.cpp" />
+    <ClCompile Include="Engine\Editor\ImportSettingsWindow.cpp" />
     <ClCompile Include="Engine\Editor\InspectorWindow.cpp" />
     <ClCompile Include="Engine\Editor\PropertyEditor.cpp" />
     <ClCompile Include="Engine\Editor\SceneViewWindow.cpp" />
@@ -224,6 +225,12 @@ popd</Command>
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\RenderPass.cpp" />
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\TransitionPass.cpp" />
     <ClCompile Include="Engine\Rendering\Renderers\TrailRenderer.cpp" />
+    <ClCompile Include="Engine\Resources\AssetDatabase.cpp" />
+    <ClCompile Include="Engine\Resources\AssetReferenceIndex.cpp" />
+    <ClCompile Include="Engine\Resources\AssetTypeUtils.cpp" />
+    <ClCompile Include="Engine\Resources\AssetWatcher.cpp" />
+    <ClCompile Include="Engine\Resources\Importers\ImporterRegistry.cpp" />
+    <ClCompile Include="Engine\Resources\Importers\TextureImporter.cpp" />
     <ClCompile Include="Engine\Resources\ModelAsset.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\GameObjectExports.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\TransformExports.cpp" />
@@ -234,6 +241,8 @@ popd</Command>
     <ClCompile Include="Engine\UI\LayoutGroup.cpp" />
     <ClCompile Include="Engine\UI\ScrollView.cpp" />
     <ClCompile Include="Engine\UI\VerticalLayoutGroup.cpp" />
+    <ClCompile Include="Engine\Utils\AssetIdGenerator.cpp" />
+    <ClCompile Include="Engine\Resources\AssetMetaSerializer.cpp" />
     <ClCompile Include="Engine\Utils\GltfImporter.cpp" />
     <ClCompile Include="External\imgui-docking\ImGradientHDR.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -660,6 +669,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
     <ClInclude Include="Engine\Editor\GameViewWindow.h" />
+    <ClInclude Include="Engine\Editor\ImportSettingsWindow.h" />
     <ClInclude Include="Engine\Editor\InspectorWindow.h" />
     <ClInclude Include="Engine\Editor\PropertyEditor.h" />
     <ClInclude Include="Engine\Editor\SceneViewWindow.h" />
@@ -670,6 +680,18 @@ popd</Command>
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\PostProcessPass.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\TransitionPass.h" />
     <ClInclude Include="Engine\Rendering\Renderers\TrailRenderer.h" />
+    <ClInclude Include="Engine\Resources\AssetDatabase.h" />
+    <ClInclude Include="Engine\Resources\AssetId.h" />
+    <ClInclude Include="Engine\Resources\AssetMeta.h" />
+    <ClInclude Include="Engine\Resources\AssetReferenceIndex.h" />
+    <ClInclude Include="Engine\Resources\AssetType.h" />
+    <ClInclude Include="Engine\Resources\AssetTypeUtils.h" />
+    <ClInclude Include="Engine\Resources\AssetWatcher.h" />
+    <ClInclude Include="Engine\Resources\Importers\IImporter.h" />
+    <ClInclude Include="Engine\Resources\Importers\ImporterRegistry.h" />
+    <ClInclude Include="Engine\Resources\Importers\TextureImporter.h" />
+    <ClInclude Include="Engine\Resources\ImportSettings\IImportSettings.h" />
+    <ClInclude Include="Engine\Resources\ImportSettings\TextureImportSettings.h" />
     <ClInclude Include="Engine\Resources\ModelAsset.h" />
     <ClInclude Include="Engine\Scripting\ScriptFieldSerializer.h" />
     <ClInclude Include="Engine\UI\CanvasScaler.h" />
@@ -677,6 +699,8 @@ popd</Command>
     <ClInclude Include="Engine\UI\HorizontalLayoutGroup.h" />
     <ClInclude Include="Engine\UI\LayoutGroup.h" />
     <ClInclude Include="Engine\UI\VerticalLayoutGroup.h" />
+    <ClInclude Include="Engine\Utils\AssetIdGenerator.h" />
+    <ClInclude Include="Engine\Resources\AssetMetaSerializer.h" />
     <ClInclude Include="Engine\Utils\GltfImporter.h" />
     <ClInclude Include="Engine\Utils\IModelImporter.h" />
     <ClInclude Include="External\imgui-docking\ImGradientHDR.h" />

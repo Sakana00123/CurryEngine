@@ -52,6 +52,11 @@ Framework::Framework(HWND hwnd)
     ProfileInitialize(&isPaused, Framework::SetPause, ImGuiControl::Profiler::DefaultMaxThreads);
     ProfileThreadName(0, "Main Thread");
 
+	// ログ初期化
+	Console::Initialize();
+
+	// 各種システム初期化
+
     Graphics::Initialize(hwnd, FULLSCREEN);
     InputSystem::Initialize();
     //EffectManager::Initialize();

@@ -1,0 +1,57 @@
+#pragma once
+#include <Engine\Resources\AssetId.h>
+class Resource;
+
+namespace CurryEngine::Resources
+{
+	/**
+	 * @brief インポート設定ウィンドウクラス。アセットのインポート設定を編集するためのウィンドウを管理します。
+	 * @details このクラスは、アセットのインポート設定をユーザーが編集できるようにするためのGUIウィンドウを提供します。例えば、テクスチャのミップマップ生成や圧縮形式などの設定を変更することができます。
+	 */
+	class ImportSettingsWindow
+	{
+	public:
+
+		/**
+		 * @brief インポート設定ウィンドウを開きます。
+		 * @param id 編集するアセットの一意な識別子。ウィンドウはこのIDに対応するアセットのインポート設定を表示します。
+		 */
+		static void Open(const AssetId& id);
+
+		/**
+		 * @brief 新しいアセットのインポート設定ウィンドウを開きます。
+		 * @param id 編集する新しいアセットの一意な識別子。ウィンドウはこのIDに対応するアセットのインポート設定を表示します。
+		 * @details この関数は、まだインポートされていない新しいアセットのインポート設定を編集するために使用されます。例えば、外部から新しいファイルがドラッグ＆ドロップされたときなどに呼び出されることがあります。
+		 */
+		static void OpenForNewAsset(const AssetId& id);
+
+		/**
+		 * @brief インポート設定ウィンドウのGUIを描画します。通常はエディタのメインループ内で呼び出されます。
+		 * @details この関数は、ウィンドウが開いている場合にインポート設定の編集UIを描画します。ユーザーが設定を変更した場合は、対応するアセットのメタデータも更新されます。
+		 */
+		static void DrawGUI();
+
+		/**
+		 * @brief インポート設定ウィンドウが現在開いているかどうかを判定します。
+		 * @return ウィンドウが開いている場合はtrue、閉じている場合はfalseを返します。
+		 */
+		static bool IsOpen();
+
+	private:
+		static void OpenInternal(const AssetId& id, bool isNewAsset);
+		static void DrawPreview(const AssetId& id);
+		static void DrawSettingsFields(const AssetId& id);
+		static void OnApply(const AssetId& id);
+
+		static void RequestPreviewUpdate(const AssetId& id);
+		static void UpdatePreview(const AssetId& id);
+
+
+		static inline bool _isOpen = false; ///< インポート設定ウィンドウが開いているかどうか
+		static inline AssetId _targetId; ///< 現在編集しているアセットのID
+
+		static inline nlohmann::json _editingSettings; ///< 現在編集しているインポート設定のJSONデータ。ユーザーがUIで変更した内容を一時的に保持します。
+		static inline bool _isDirty = false; ///< インポート設定がユーザーによって変更されたかどうかを示すフラグ。ユーザーがUIで設定を変更した場合はtrueになります。
+		static inline std::shared_ptr<Resource> _previewResource; ///< プレビュー用のリソース。
+	};
+}

@@ -1175,7 +1175,7 @@ void ObjectManager::DrawHierarchy()
 					case AssetType::Texture:
 						GameObjectFactory::CreateImage(currentScene, path.stem().string(), nullptr, path.wstring().c_str());
 						break;
-					case AssetType::GltfModel:
+					case AssetType::Model:
 						GameObjectFactory::CreateModel(currentScene, path.stem().string(), path.string());
 						break;
 					case AssetType::Sound:

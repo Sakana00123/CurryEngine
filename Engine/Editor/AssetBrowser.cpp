@@ -19,6 +19,11 @@
 #include <Engine\Core\EnginePaths.h>
 #include <Engine\Resources\ResourceManager.h>
 #include "Dialog.h"
+#include "Engine/Resources/AssetDatabase.h"
+#include "Engine/Resources/ImportSettings/TextureImportSettings.h"
+#include "Engine/Resources/AssetTypeUtils.h"
+#include "Engine/Resources/Importers/ImporterRegistry.h"
+#include "Engine/Editor/ImportSettingsWindow.h"
 
 void AssetBrowser::Initialize()
 {
@@ -27,6 +32,9 @@ void AssetBrowser::Initialize()
 	LoadTextureFromFile(Graphics::GetDevice(), std::filesystem::path(EnginePaths::IconsDir).append("directoryIcon.png").wstring().c_str(), directoryIcon.ReleaseAndGetAddressOf(), NULL);
 	LoadTextureFromFile(Graphics::GetDevice(), std::filesystem::path(EnginePaths::IconsDir).append("fileIcon.png").wstring().c_str(), fileIcon.ReleaseAndGetAddressOf(), NULL);
 	Refresh();
+
+	CurryEngine::Resources::ImporterRegistry::Initialize();
+	CurryEngine::Resources::AssetDatabase::Initialize("./TestAssets");
 }
 
 void AssetBrowser::InitializeDropTarget(HWND hwnd)
@@ -62,6 +70,13 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 						fs::copy(src, dst, fs::copy_options::recursive);
 					else
 						fs::copy_file(src, dst);
+
+					if (auto meta = CurryEngine::Resources::AssetDatabase::Import(dst.string()))
+					{
+						// インポート成功したらインポート設定ウィンドウを開く
+						CurryEngine::Resources::ImportSettingsWindow::OpenForNewAsset(meta->id);
+					}
+
 					Console::Log("Imported: " + dst.string());
 					anySucceeded = true;
 				}
@@ -90,6 +105,8 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 
 void AssetBrowser::FinalizeDropTarget(HWND hwnd)
 {
+	CurryEngine::Resources::AssetDatabase::Finalize();
+
 	RevokeDragDrop(hwnd);
 	if (dropTarget) {
 		dropTarget->Release();
@@ -168,40 +185,9 @@ void AssetBrowser::OnDropFiles(HWND hwnd, HDROP hDrop)
 
 AssetType AssetBrowser::DetectAssetTypeFromFile(const fs::path& path)
 {
-	AssetType type = AssetType::Unknown;
-
 	std::string extension = path.extension().string();
 	std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-	if (extension == ".png" || extension == ".dds" || extension == ".tif" || extension == ".jpeg")
-	{
-		type = AssetType::Texture;
-	}
-	else if (extension == ".gltf")
-	{
-		type = AssetType::GltfModel;
-	}
-	else if (extension == ".wav")
-	{
-		type = AssetType::Sound;
-	}
-	else if (extension == ".scene")
-	{
-		type = AssetType::Scene;
-	}
-	else if (extension == ".prefab")
-	{
-		type = AssetType::Prefab;
-	}
-	else if (extension == ".cs")
-	{
-		type = AssetType::Script;
-	}
-	else if (extension == ".hlsl" || extension == ".hlsli")
-	{
-		type = AssetType::Shader;
-	}
-
-	return type;
+	return CurryEngine::Resources::AssetTypeUtils::DetectFromExtension(extension);
 }
 
 void AssetBrowser::DrawGUI()
@@ -685,6 +671,9 @@ void AssetBrowser::OnAssetDeleted(const fs::path& assetPath)
 		VcxprojHelper::EnqueueShaderUnregistration(assetPath);
 	}
 
+	// アセットデータベースからも削除
+	CurryEngine::Resources::AssetDatabase::RemoveByPath(assetPath.string());
+
 }
 
 #ifdef USE_IMGUI
@@ -832,7 +821,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 				switch (type)
 				{
 				case AssetType::Texture:   badge = "TEX";    badgeColor = { 0.2f, 0.6f, 0.9f, 1.0f }; break;
-				case AssetType::GltfModel: badge = "3D";     badgeColor = { 0.4f, 0.8f, 0.4f, 1.0f }; break;
+				case AssetType::Model: badge = "3D";     badgeColor = { 0.4f, 0.8f, 0.4f, 1.0f }; break;
 				case AssetType::Sound:     badge = "WAV";    badgeColor = { 0.9f, 0.7f, 0.2f, 1.0f }; break;
 				case AssetType::Scene:     badge = "SCN";    badgeColor = { 0.8f, 0.3f, 0.8f, 1.0f }; break;
 				case AssetType::Prefab:    badge = "PFB";    badgeColor = { 0.9f, 0.5f, 0.1f, 1.0f }; break;
@@ -976,6 +965,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 						fs::rename(path, newPath, ec);
 						if (!ec)
 						{
+							CurryEngine::Resources::AssetDatabase::Rename(path.string(), newPath.string()); // アセットデータベースのパスも更新
 							lastClickedAsset = newPath; // クリックされたアセットのパスを新しいものに更新
 							Refresh();
 						}
@@ -1576,7 +1566,10 @@ void AssetBrowser::DrawDeleteConfirmModal()
 			{
 				std::error_code ec;
 				if (fs::is_directory(asset))
+				{
 					fs::remove_all(asset);
+					CurryEngine::Resources::AssetDatabase::RemoveByPathPrefix(asset.string());
+				}
 				else
 				{
 					fs::remove(asset);
@@ -1619,10 +1612,23 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 		// -- 選択されたアセットがある場合に表示されるメニュー項目 ----------------------
 		if (isSelected)
 		{
+			auto meta = CurryEngine::Resources::AssetDatabase::FindByPath(assetPath.string()); // アセットのパスからアセットデータを取得する処理
+			if (meta && CurryEngine::Resources::ImporterRegistry::Find(meta->type))
+			{
+				if (ImGui::MenuItem("Open Import Settings"))
+				{
+					CurryEngine::Resources::ImportSettingsWindow::Open(meta->id); // インポート設定ウィンドウを開く処理
+				}
+			}
+
 			if (ImGui::MenuItem("Open"))
 			{
 				OpenAsset(assetPath); // アセットを開く処理
 			}
+			//if (ImGui::MenuItem("Show in Explorer"))
+			//{
+			//	ShowInExplorer(assetPath); // エクスプローラーで表示する処理
+			//}
 			if (ImGui::MenuItem("Rename"))
 			{
 				StartRename(assetPath); // リネーム処理
@@ -1706,6 +1712,7 @@ bool AssetBrowser::MoveAssetToFolder(const std::string& srcPath, const std::stri
 	bool success = false;
 	try {
 		std::filesystem::rename(src, dst);
+		Refresh(); // ブラウザを更新して変更を反映
 		success = true;
 	}
 	catch (std::filesystem::filesystem_error& e) {
@@ -1714,7 +1721,10 @@ bool AssetBrowser::MoveAssetToFolder(const std::string& srcPath, const std::stri
 		success = false;
 	}
 
-	// アセットDB更新や、再スキャン処理を入れるとよい
+	// 移動に成功した場合は、アセットデータベースも更新
+	if (success) {
+		CurryEngine::Resources::AssetDatabase::Rename(src.string(), dst.string());
+	}
 
 	return success;
 }
@@ -1730,6 +1740,8 @@ bool AssetBrowser::MoveFolderToFolder(const std::string& source, const std::stri
 		fs::path destPath = fs::path(destinationParent) / sourcePath.filename();
 
 		fs::rename(sourcePath, destPath);
+		Refresh(); // ブラウザを更新して変更を反映
+		CurryEngine::Resources::AssetDatabase::RemapPathPrefix(sourcePath.string(), destPath.string());
 		return true;
 	}
 	catch (const std::exception& e) {
