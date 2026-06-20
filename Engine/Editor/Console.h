@@ -40,8 +40,8 @@ private:
 	/** @brief ログフィルタの入力バッファ。*/
 	static char s_filterBuffer[256];
 public:
-	/** @brief 既定コンストラクタ。*/
-	Console();
+	/** @brief 初期化処理。必要なリソースの確保などを行います。*/
+	static void Initialize();
 
 	/** @brief 情報ログを追加します。*/
 	static void Log(const std::string& message, const std::string& file = "", int line = -1);

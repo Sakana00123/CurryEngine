@@ -25,6 +25,7 @@
 
 #include <Engine\Physics\Physics.h>
 #include <Engine\Editor\EffectEditor.h>
+#include <Engine\Editor\ImportSettings\ImportSettingsWindow.h>
 
 void RenderSystem::Initialize(Time* time)
 {
@@ -138,6 +139,12 @@ void RenderSystem::Render()
 
     // RenderSystemのGUI描画
     DrawEditorGUI();
+
+	// インポート設定ウィンドウのGUI描画
+	CurryEngine::Resources::ImportSettingsWindow::DrawGUI();
+
+	// ImGuiデバッグログウィンドウの表示
+    ImGui::ShowDebugLogWindow();
 
     // ImGuiTheme描画
     ImGuiTheme::DrawGUI();

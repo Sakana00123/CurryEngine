@@ -17,7 +17,7 @@ public:
     // リソースのパス取得
     const std::string& GetPath() const { return _path; }
 
-    // 参照カウント（ResourceManagerで管理するなら optional）
+    // 参照カウント
     void AddRef() { ++_refCount; }
     void ReleaseRef() { --_refCount; }
     int RefCount() const { return _refCount; }

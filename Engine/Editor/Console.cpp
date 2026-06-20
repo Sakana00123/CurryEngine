@@ -19,7 +19,8 @@ char Console::s_filterBuffer[256] = {};
 
 static std::mutex s_logMutex;
 
-Console::Console() {
+void Console::Initialize()
+{
 	ClearLog();
 	Show();
 }

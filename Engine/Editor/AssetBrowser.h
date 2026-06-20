@@ -5,22 +5,11 @@
 #include "Engine/Core/Misc.h"
 #include <unordered_map>
 #include <unordered_set>
+#include "Engine/Resources/AssetType.h"
 #include "AssetBrowserDropTarget.h"
 #pragma comment(lib, "Ole32.lib") // IDropTargetの実装に必要
 
 namespace fs = std::filesystem;
-
-enum class AssetType
-{
-	Unknown,
-	Texture,
-	GltfModel,
-	Sound,
-	Scene,
-	Prefab,
-	Script,
-	Shader,
-};
 
 // fs::pathをキーにしたunordered_mapやunordered_setで必要なハッシュ関数
 struct FsPathHash
@@ -53,8 +42,8 @@ public:
 	struct GuiSettings
 	{
 		bool acceptDropToFolderTree = false;
-		bool acceptDropToAssetGrid = false;
-		bool acceptDropToCurrentPath = false;
+		bool acceptDropToAssetGrid = true;
+		bool acceptDropToCurrentPath = true;
 	};
 public:
 	// アセットブラウザの初期化（アイコンの読み込みなど）
