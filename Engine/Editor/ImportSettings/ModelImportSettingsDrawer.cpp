@@ -55,10 +55,13 @@ namespace CurryEngine::Resources
 			? ModelImportSettings{}
 			: editingSettings.get<ModelImportSettings>();
 		bool changed = false;
-		changed |= ImGui::InputFloat("Scale Factor", &settings.scaleFactor);
+		/*changed |= */ImGui::InputFloat("Scale Factor", &settings.scaleFactor);
+		changed |= ImGui::IsItemDeactivatedAfterEdit(); // スケール係数の入力が完了したときに変更を検知する
 		changed |= ImGui::Checkbox("Static Batching", &settings.staticBatching);
 		if (changed)
 		{
+			settings.scaleFactor = (std::max)(settings.scaleFactor, 0.0001f); // スケール係数が0以下にならないように制限
+
 			editingSettings = settings;
 			isDirty = true;
 		}

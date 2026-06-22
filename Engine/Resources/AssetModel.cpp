@@ -14,6 +14,31 @@
 #include <cassert>
 #include "ImportSettings\ModelImportSettings.h"
 
+#include <assimp/ProgressHandler.hpp>
+#include <Engine\Editor\ImportSettings\ImportSettingsWindow.h>
+
+namespace Assimp
+{
+    class ImporterProgressHandler : public Assimp::ProgressHandler
+    {
+    public:
+		ImporterProgressHandler() = default;
+        virtual ~ImporterProgressHandler() = default;
+        bool Update(float percentage) override
+        {
+			// 進捗をエディタのインポート設定ウィンドウに通知する
+			CurryEngine::Resources::ImportSettingsWindow::UpdatePreviewProgress(percentage);
+            
+			// ユーザーがインポートのキャンセルを要求したかどうかをチェックする
+            if (CurryEngine::Resources::ImportSettingsWindow::IsPreviewLoadCancelled())
+            {
+				return false; // falseを返すことでインポートを中止します。
+            }
+            return true; // trueを返すことでインポートを継続します。
+        }
+    };
+}
+
 namespace fs = std::filesystem;
 
 // ============================================================
@@ -204,6 +229,8 @@ bool AssetModel::LoadFromMeta(const CurryEngine::Resources::AssetMeta& meta)
     
 	CurryEngine::Resources::ModelImportSettings settings = meta.GetImportSettings<CurryEngine::Resources::ModelImportSettings>();
 	importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, settings.scaleFactor); // モデル全体のスケーリングを設定
+    Assimp::ProgressHandler* progressHandler = new Assimp::ImporterProgressHandler();
+	importer.SetProgressHandler(progressHandler);
 
     const aiScene* scene = importer.ReadFile(_path, importFlags);
     if (!scene || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !scene->mRootNode)

@@ -7,6 +7,126 @@
 #include "Engine/Resources/Resource.h"
 #include "ImportSettingsDrawerRegistry.h"
 
+#include <imgui.h>
+#include <imgui_internal.h>
+
+namespace
+{
+	float& GetAnim(ImGuiID id)
+	{
+		static std::unordered_map<ImGuiID, float> s_map;
+		return s_map[id];
+	}
+}
+
+namespace ImGui
+{
+	void LoadingBar(const char* label, float fraction, const ImVec2& size_arg) {
+		ImGuiWindow* window = ImGui::GetCurrentWindow();
+		if (window->SkipItems) return;
+
+		ImGuiContext& g = *GImGui;
+		const ImGuiStyle& style = g.Style;
+		const ImGuiID id = window->GetID(label);
+		ImDrawList* draw = window->DrawList;
+		const ImVec2 pos = window->DC.CursorPos;
+
+		// サイズの決定（デフォルトは横幅一杯、高さ12px）
+		float default_width = ImGui::GetContentRegionAvail().x;
+		float default_height = 12.0f;
+		ImVec2 size = ImGui::CalcItemSize(size_arg, default_width, default_height);
+
+		// テキスト（ラベル）がある場合は、テキストの高さ分だけ配置領域（bb）を広げる
+		bool has_text = (label && label[0] != '\0' && !ImGui::FindRenderedTextEnd(label));
+		float text_height = has_text ? (ImGui::CalcTextSize(label).y + 4.0f) : 0.0f;
+
+		const ImRect bb(pos, ImVec2(pos.x + size.x, pos.y + text_height + size.y));
+
+		// ImGuiに領域を登録してカーソルを進める
+		ImGui::ItemSize(bb, style.FramePadding.y);
+		if (!ImGui::ItemAdd(bb, id)) return;
+
+		// 1. ラベルテキストがある場合は描画
+		if (has_text) {
+			draw->AddText(pos, ImGui::GetColorU32(ImGuiCol_Text), label);
+		}
+
+		// ローディングバー本体の描画基準座標
+		ImVec2 bar_min(bb.Min.x, bb.Min.y + text_height);
+		ImVec2 bar_max(bb.Max.x, bb.Max.y);
+
+		// 2. 滑らかな進捗アニメーション (Lerp)
+		float& anim_fraction = GetAnim(id);
+		anim_fraction = ImLerp(anim_fraction, ImClamp(fraction, 0.0f, 1.0f), g.IO.DeltaTime * 14.0f);
+
+		// 3. 背景（トラック）の描画
+		ImU32 col_bg = ImGui::GetColorU32(ImGuiCol_FrameBg);
+		float rounding = size.y * 0.5f; // 完全な丸角（カプセル型）にする
+		draw->AddRectFilled(bar_min, bar_max, col_bg, rounding);
+
+		// 4. 進捗バー（アクティブ部分）と動く斜線パターンの描画
+		if (anim_fraction > 0.001f) {
+			float progress_w = size.x * anim_fraction;
+			ImVec2 progress_max(bar_min.x + progress_w, bar_max.y);
+			ImU32 col_accent = ImGui::GetColorU32(ImGuiCol_SliderGrab); // テーマのメイン色
+
+			// 進捗バーのベース（土台）を丸角で描画
+			draw->AddRectFilled(bar_min, progress_max, col_accent, rounding);
+
+			// ★ 修正点: 存在しない PathClip の代わりに標準の四角形クリッピングを適用
+			// これで左右の限界を安全に制限し、ループ内の計算をシンプルにします
+			draw->PushClipRect(bar_min, progress_max, true);
+
+			// アニメーション用の時間オフセット
+			float time = (float)g.Time;
+			float speed = 40.0f;
+			float stripe_spacing = 16.0f; // 斜線の間隔
+			float stripe_width = 8.0f;    // 斜線の太さ
+
+			float offset = ImFmod(time * speed, stripe_spacing);
+			ImU32 col_stripe = IM_COL32(255, 255, 255, 35); // 白の不透明度を少し調整（約14%）
+
+			// 斜線を描画
+			float start_x = bar_min.x - size.y;
+			float end_x = progress_max.x + size.y;
+
+			for (float x = start_x + offset; x < end_x; x += stripe_spacing) {
+				ImVec2 p_tl(x, bar_min.y);
+				ImVec2 p_tr(x + stripe_width, bar_min.y);
+				ImVec2 p_br(x + stripe_width - size.y, bar_max.y);
+				ImVec2 p_bl(x - size.y, bar_max.y);
+
+				draw->AddQuadFilled(p_tl, p_tr, p_br, p_bl, col_stripe);
+			}
+
+			// 四角形クリッピングを解除
+			draw->PopClipRect();
+
+			// ★ 修正点（カプセル型マスク処理）: 
+			// 四角形クリッピングだけだと「両端の丸角部分」から斜線がハミ出て不自然になるため、
+			// バーの一番外側の丸角を補正します。
+			// 進捗バーが完全に満タン（1.0）でない場合、右端の丸みを綺麗にマスクするために
+			// トラックの背景色と同じ色で外側を再レンダリングするか、
+			// アンチエイリアスが崩れないように内側にだけ斜線を収める処理を自動で行います。
+			if (anim_fraction < 0.99f && progress_w > rounding) {
+				// 進捗中の右端部分の丸みを綺麗に補正するため、
+				// アクセントカラーの「右側半分だけの丸角」を上から再描画して斜線のはみ出しを綺麗に上書き隠蔽します。
+				draw->PushClipRect(ImVec2(progress_max.x - rounding, bar_min.y), progress_max, true);
+				draw->AddRectFilled(bar_min, progress_max, col_accent, rounding);
+				draw->PopClipRect();
+			}
+
+			// 左端の丸みからはみ出た斜線を隠すマスク
+			if (progress_w > rounding) {
+				draw->PushClipRect(bar_min, ImVec2(bar_min.x + rounding, bar_max.y), true);
+				draw->AddRectFilled(bar_min, progress_max, col_accent, rounding);
+				draw->PopClipRect();
+			}
+		}
+	}
+}
+
+
 #define U8(x) reinterpret_cast<const char*>(u8##x)
 
 namespace CurryEngine::Resources
@@ -23,7 +143,7 @@ namespace CurryEngine::Resources
 	void ImportSettingsWindow::Render3DPreview(RenderContext* context)
 	{
 		const AssetMeta* meta = AssetDatabase::Find(_targetId);
-		if (meta && _isOpen)
+		if (meta && _isOpen && _previewResource)
 		{
 			if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 			{
@@ -157,6 +277,35 @@ namespace CurryEngine::Resources
 				ImGui::EndPopup();
 			}
 
+			// 読み込み中のローディング表示
+			if (_isPreviewUpdating && !ImGui::IsPopupOpen("##Loading Preview"))
+			{
+				ImGui::OpenPopup("##Loading Preview");
+			}
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("##Loading Preview", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				std::string statusText = _isPreviewLoadCancelled ? U8("プレビューの読み込みをキャンセルしています...") : std::string(U8("プレビューを読み込んでいます...")) + std::to_string(static_cast<int>(_previewProgress * 100)) + "%";
+				ImGui::TextUnformatted(statusText.c_str());
+
+				ImGui::LoadingBar("Loading Preview", _previewProgress, ImVec2(300, 20));
+
+				ImGui::BeginDisabled(_isPreviewLoadCancelled);
+				if (ImGui::Button(U8("キャンセル")))
+				{
+					// プレビューの更新をキャンセルするためのフラグを立てる
+					_isPreviewLoadCancelled = true;
+				}
+				ImGui::EndDisabled();
+
+				ImGui::EndPopup();
+			}
+			if (!_isPreviewUpdating && ImGui::IsPopupOpen("##Loading Preview"))
+			{
+				_isPreviewLoadCancelled = false; // キャンセルフラグをリセット
+				ImGui::CloseCurrentPopup();
+			}
+
 			ImGui::EndPopup();
 		}
 #endif // USE_IMGUI
@@ -253,7 +402,14 @@ namespace CurryEngine::Resources
 	void ImportSettingsWindow::RequestPreviewUpdate(const AssetId& id)
 	{
 		// 現在は即時更新。将来的には非同期でのプレビュー生成を検討。
-		UpdatePreview(id);
+		_previewThread = std::thread([&]() {
+			std::lock_guard<std::mutex> lock(_previewMutex);
+			UpdatePreview(id);
+			_isPreviewUpdating = false;
+			});
+		_previewThread.detach();
+		_isPreviewUpdating = true;
+		//UpdatePreview(id);
 	}
 
 	void ImportSettingsWindow::UpdatePreview(const AssetId& id)
