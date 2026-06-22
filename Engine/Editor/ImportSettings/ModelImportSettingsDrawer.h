@@ -1,7 +1,6 @@
 #pragma once
 #include "IImportSettingsDrawer.h"
 
-
 namespace CurryEngine::Resources
 {
 	/**
@@ -12,12 +11,16 @@ namespace CurryEngine::Resources
 	{
 	public:
 		virtual ~ModelImportSettingsDrawer() = default;
+
+
+		void Draw3DPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context) override;
 		/**
 		 * @brief プレビュー用のリソースを描画する関数。
 		 * @param previewResource プレビューとして表示するリソースへの共有ポインタ。
+		 * @param context 描画に使用するレンダリングコンテキスト。必要に応じて、描画処理でこのコンテキストを使用してリソースの描画を行います。
 		 * @details この関数は、モデルアセットのプレビューをGUI上に描画します。プレビューが利用できない場合は、適切なメッセージを表示します。
 		 */
-		void DrawPreview(const std::shared_ptr<Resource>& previewResource) override;
+		void DrawPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context) override;
 		/**
 		 * @brief インポート設定フィールドを描画し、ユーザーが編集できるようにする関数。
 		 * @param editingSettings 現在編集中のインポート設定を保持するJSONオブジェクトへの参照。

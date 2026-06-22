@@ -227,8 +227,10 @@ popd</Command>
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\PostProcessPass.cpp" />
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\RenderPass.cpp" />
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\TransitionPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Renderers\ModelRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\Renderers\TrailRenderer.cpp" />
     <ClCompile Include="Engine\Resources\AssetDatabase.cpp" />
+    <ClCompile Include="Engine\Resources\AssetModel.cpp" />
     <ClCompile Include="Engine\Resources\AssetReferenceIndex.cpp" />
     <ClCompile Include="Engine\Resources\AssetTypeUtils.cpp" />
     <ClCompile Include="Engine\Resources\AssetWatcher.cpp" />
@@ -687,10 +689,12 @@ popd</Command>
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\PFX_OutLinePass.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\PostProcessPass.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\TransitionPass.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\ModelRenderer.h" />
     <ClInclude Include="Engine\Rendering\Renderers\TrailRenderer.h" />
     <ClInclude Include="Engine\Resources\AssetDatabase.h" />
     <ClInclude Include="Engine\Resources\AssetId.h" />
     <ClInclude Include="Engine\Resources\AssetMeta.h" />
+    <ClInclude Include="Engine\Resources\AssetModel.h" />
     <ClInclude Include="Engine\Resources\AssetReferenceIndex.h" />
     <ClInclude Include="Engine\Resources\AssetType.h" />
     <ClInclude Include="Engine\Resources\AssetTypeUtils.h" />
@@ -997,6 +1001,26 @@ popd</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
+    <FxCompile Include="Shader\model_csm_gs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\model_csm_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\model_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\model_skinned_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\model_static_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shader\OutLinePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -1074,6 +1098,7 @@ popd</Command>
     <None Include="Shader\gltf_model.hlsli" />
     <None Include="Shader\image_based_lighting.hlsli" />
     <None Include="Shader\Lights.hlsli" />
+    <None Include="Shader\model.hlsli" />
     <None Include="Shader\OutLine.hlsli" />
     <None Include="Shader\Sampler.hlsli" />
     <None Include="Shader\ShaderFunctions.hlsli" />

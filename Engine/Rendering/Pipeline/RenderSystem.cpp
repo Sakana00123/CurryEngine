@@ -39,6 +39,11 @@ void RenderSystem::Initialize(Time* time)
 	gameRenderPipeline->SetupRenderPasses();
 	gameRenderPipeline->Initialize();
 
+	// プレビュー用の描画パイプラインを作成して初期化
+	previewRenderPipeline = std::make_unique<PreviewRenderPipeline>();
+	previewRenderPipeline->SetupRenderPasses();
+	previewRenderPipeline->Initialize();
+
 	this->time = time;
 }
 
@@ -51,6 +56,7 @@ void RenderSystem::Render()
     bool acceptRendering = true;
     RenderContext sceneContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
     RenderContext gameContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
+	RenderContext previewContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
     // カメラ情報取得
     {
 		auto scene = SceneManager::GetCurrentScene();
@@ -81,9 +87,13 @@ void RenderSystem::Render()
                     DirectX::XMStoreFloat4x4(&sceneContext.inverseProjection, XMMatrixInverse(nullptr, Projection));
                     DirectX::XMStoreFloat4x4(&sceneContext.inverseViewProjection, XMMatrixInverse(nullptr, ViewProjection));
                 }
+				previewContext = sceneContext; // プレビューパイプラインでも同じカメラ情報を使用
 
                 // エディタビュー用の描画処理
                 sceneRenderPipeline->Execute(&sceneContext, scene);
+
+				// プレビュー用の描画処理
+				previewRenderPipeline->Execute(&previewContext, scene);
             }
 #endif // DEBUG
             {
@@ -141,7 +151,7 @@ void RenderSystem::Render()
     DrawEditorGUI();
 
 	// インポート設定ウィンドウのGUI描画
-	CurryEngine::Resources::ImportSettingsWindow::DrawGUI();
+	CurryEngine::Resources::ImportSettingsWindow::DrawGUI(&previewContext);
 
 	// ImGuiデバッグログウィンドウの表示
     ImGui::ShowDebugLogWindow();

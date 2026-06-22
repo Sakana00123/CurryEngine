@@ -20,7 +20,19 @@ namespace CurryEngine::Resources
 		OpenInternal(id, true);
 	}
 
-	void ImportSettingsWindow::DrawGUI()
+	void ImportSettingsWindow::Render3DPreview(RenderContext* context)
+	{
+		const AssetMeta* meta = AssetDatabase::Find(_targetId);
+		if (meta && _isOpen)
+		{
+			if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
+			{
+				drawer->Draw3DPreview(_previewResource, context);
+			}
+		}
+	}
+
+	void ImportSettingsWindow::DrawGUI(RenderContext* context)
 	{
 #ifdef USE_IMGUI
 
@@ -53,7 +65,7 @@ namespace CurryEngine::Resources
 				ImGui::TableNextRow();
 
 				ImGui::TableSetColumnIndex(0);
-				DrawPreview(_targetId);
+				DrawPreview(_targetId, context);
 
 				ImGui::TableSetColumnIndex(1);
 				DrawSettingsFields(_targetId); // ここで_editingSettingsを直接編集
@@ -175,7 +187,7 @@ namespace CurryEngine::Resources
 		RequestPreviewUpdate(id);
 	}
 
-	void ImportSettingsWindow::DrawPreview(const AssetId& id)
+	void ImportSettingsWindow::DrawPreview(const AssetId& id, RenderContext* context)
 	{
 #ifdef USE_IMGUI
 		const AssetMeta* meta = AssetDatabase::Find(id);
@@ -186,7 +198,7 @@ namespace CurryEngine::Resources
 			// プレビュー用のリソースがある場合は描画する
 			if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 			{
-				drawer->DrawPreview(_previewResource);
+				drawer->DrawPreview(_previewResource, context);
 			}
 			else
 			{

@@ -21,4 +21,5 @@ private:
 	Time* time{};
 	std::unique_ptr<RenderPipeline> sceneRenderPipeline;
 	std::unique_ptr<RenderPipeline> gameRenderPipeline;
+	std::unique_ptr<RenderPipeline> previewRenderPipeline;
 };

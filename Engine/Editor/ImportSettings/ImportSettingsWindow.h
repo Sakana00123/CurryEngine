@@ -1,6 +1,7 @@
 #pragma once
 #include <Engine\Resources\AssetId.h>
 class Resource;
+struct RenderContext;
 
 namespace CurryEngine::Resources
 {
@@ -26,10 +27,16 @@ namespace CurryEngine::Resources
 		static void OpenForNewAsset(const AssetId& id);
 
 		/**
+		 * @brief 3Dプレビューを描画します。通常はエディタのメインループ内で呼び出されます。
+		 * @details この関数は、ウィンドウが開いている場合に3Dプレビューを描画します。ユーザーがインポート設定を変更した場合は、対応するプレビューも更新されます。
+		 */
+		static void Render3DPreview(RenderContext* context);
+
+		/**
 		 * @brief インポート設定ウィンドウのGUIを描画します。通常はエディタのメインループ内で呼び出されます。
 		 * @details この関数は、ウィンドウが開いている場合にインポート設定の編集UIを描画します。ユーザーが設定を変更した場合は、対応するアセットのメタデータも更新されます。
 		 */
-		static void DrawGUI();
+		static void DrawGUI(RenderContext* context);
 
 		/**
 		 * @brief インポート設定ウィンドウが現在開いているかどうかを判定します。
@@ -39,7 +46,7 @@ namespace CurryEngine::Resources
 
 	private:
 		static void OpenInternal(const AssetId& id, bool isNewAsset);
-		static void DrawPreview(const AssetId& id);
+		static void DrawPreview(const AssetId& id, RenderContext* context);
 		static void DrawSettingsFields(const AssetId& id);
 		static void OnApply(const AssetId& id);
 

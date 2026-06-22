@@ -1,6 +1,5 @@
 #pragma once
 #include "IImporter.h"
-class ModelAsset;
 
 namespace CurryEngine
 {
@@ -25,10 +24,6 @@ namespace CurryEngine
 			 * @return サポートするファイル拡張子のリスト（例: {".fbx", ".obj"}）。
 			 */
 			std::vector<std::string> GetSupportedExtensions() const override;
-
-		private:
-			// Assimpを使用してモデルをインポートする関数。内部で呼び出される。
-			bool ImportWithAssimp(const AssetMeta& meta, std::shared_ptr<ModelAsset>& outResource);
 
 		};
 	}

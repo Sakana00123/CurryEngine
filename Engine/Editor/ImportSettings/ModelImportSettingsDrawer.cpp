@@ -1,21 +1,52 @@
 #include "pch.h"
 #include "ModelImportSettingsDrawer.h"
 #include <Engine\Resources\ImportSettings\ModelImportSettings.h>
-#include <Engine\Resources\ModelAsset.h>
+#include <Engine\Resources\AssetModel.h>
+#include <Engine\Rendering\Renderers\ModelRenderer.h>
+#include <Engine\Rendering\Pipeline\Graphics.h>
 
 
 namespace CurryEngine::Resources
 {
-	void ModelImportSettingsDrawer::DrawPreview(const std::shared_ptr<Resource>& previewResource)
+	static ModelRenderer g_modelRenderer;
+	static bool g_isDirty = true;
+
+	void ModelImportSettingsDrawer::Draw3DPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context)
 	{
-		auto model = std::dynamic_pointer_cast<ModelAsset>(previewResource);
+		auto model = std::dynamic_pointer_cast<AssetModel>(previewResource);
+		if (g_isDirty)
+		{
+			g_modelRenderer.SetModelAsset(model);
+			g_isDirty = false;
+		}
+		// モデル描画
+		if (model)
+		{
+			g_modelRenderer.Draw(context);
+		}
+	}
+
+
+	void ModelImportSettingsDrawer::DrawPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context)
+	{
+		auto model = std::dynamic_pointer_cast<AssetModel>(previewResource);
 		if (!model) { ImGui::TextDisabled("No preview available."); return; }
-		// モデルのプレビュー描画は、ここでは簡略化してテキスト表示のみとする
+
 		ImGui::Text("Model Preview: %s", model->GetPath().c_str());
+		
+		// プレビュー描画
+		if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
+		{
+			// 16:9 のアスペクト比でプレビューを描画するためのサイズを計算
+			float width = 160.0f; // プレビューの幅を固定
+			ImVec2 size = { width, width * 9.0f / 16.0f };
+			ImGui::Image(previewImage->GetSRV(), size);
+		}
+
 		ImGui::Separator();
-		ImGui::Text("Scenes: %zu", model->scenes.size());
 		ImGui::Text("Nodes: %zu", model->nodes.size());
 		ImGui::Text("Meshes: %zu", model->meshes.size());
+		ImGui::Text("Materials: %zu", model->materials.size());
 	}
 	bool ModelImportSettingsDrawer::DrawSettingsFields(nlohmann::json& editingSettings, bool& isDirty)
 	{
@@ -29,6 +60,10 @@ namespace CurryEngine::Resources
 		{
 			editingSettings = settings;
 			isDirty = true;
+		}
+		if (isDirty)
+		{
+			g_isDirty = true;
 		}
 		return changed;
 	}

@@ -73,3 +73,11 @@ public:
 	/** @brief 描画パイプラインの描画パス登録処理。ゲームビューに必要な描画パスを登録します。*/
 	void SetupRenderPasses() override;
 };
+
+// プレビュー表示の描画パイプラインクラス
+class PreviewRenderPipeline : public RenderPipeline
+{
+	public:
+	/** @brief 描画パイプラインの描画パス登録処理。プレビュー表示に必要な描画パスを登録します。*/
+	void SetupRenderPasses() override;
+};
