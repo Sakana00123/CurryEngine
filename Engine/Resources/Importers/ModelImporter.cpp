@@ -39,7 +39,7 @@ namespace CurryEngine
 				return nullptr;
 			}
 #else
-			if (!modelResource->LoadFromFile(meta.path))
+			if (!modelResource->LoadFromMeta(meta))
 			{
 				LOG_ERROR("Failed to import model: " + meta.path);
 				return nullptr;

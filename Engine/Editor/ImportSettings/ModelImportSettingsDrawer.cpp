@@ -16,6 +16,7 @@ namespace CurryEngine::Resources
 		auto model = std::dynamic_pointer_cast<AssetModel>(previewResource);
 		if (g_isDirty)
 		{
+			g_modelRenderer = ModelRenderer(); // モデルが切り替わったときに古いモデルのリソースを解放するため、毎回新しいインスタンスを作る
 			g_modelRenderer.SetModelAsset(model);
 			g_isDirty = false;
 		}

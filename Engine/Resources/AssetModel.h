@@ -7,6 +7,7 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 #include <DirectXMath.h>
+#include "AssetMeta.h"
 
 // 前方宣言
 class Material;
@@ -42,6 +43,8 @@ public:
 
     /** @brief ホットリロード。*/
     bool Reload() override;
+
+	bool LoadFromMeta(const CurryEngine::Resources::AssetMeta& meta);
 
     // -----------------------------------------------------------------------
     // 頂点レイアウト

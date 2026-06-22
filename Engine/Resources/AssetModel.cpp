@@ -12,6 +12,7 @@
 
 #include <filesystem>
 #include <cassert>
+#include "ImportSettings\ModelImportSettings.h"
 
 namespace fs = std::filesystem;
 
@@ -176,6 +177,43 @@ bool AssetModel::Reload()
     batchedMeshes.clear();
 
     return LoadFromFile(_path);
+}
+
+bool AssetModel::LoadFromMeta(const CurryEngine::Resources::AssetMeta& meta)
+{
+	_path = meta.path;
+
+    Assimp::Importer importer;
+
+    // --- インポートフラグ ---
+    // triangulate      : ポリゴンを三角形化
+    // genNormals       : 法線がなければ生成
+    // calcTangentSpace : タンジェント・バイタンジェントを計算
+    // joinIdentical    : 同一頂点を結合してインデックスを最適化
+    // flipUVs          : UV の V 軸を反転（DirectX は上が 0）
+    // flipWindingOrder : 巻き順を反転（assimp はデフォルト CCW、DirectX は CW）
+    constexpr unsigned int importFlags =
+        aiProcess_Triangulate |
+        aiProcess_GenSmoothNormals |
+        aiProcess_CalcTangentSpace |
+        aiProcess_JoinIdenticalVertices |
+        aiProcess_FlipUVs |
+        aiProcess_FlipWindingOrder |
+        aiProcess_LimitBoneWeights | // ボーン影響数を 4 に制限
+		aiProcess_GlobalScale; // グローバルスケールを適用
+    
+	CurryEngine::Resources::ModelImportSettings settings = meta.GetImportSettings<CurryEngine::Resources::ModelImportSettings>();
+	importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, settings.scaleFactor); // モデル全体のスケーリングを設定
+
+    const aiScene* scene = importer.ReadFile(_path, importFlags);
+    if (!scene || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !scene->mRootNode)
+    {
+        Console::LogError("AssetModel::LoadFromFile failed: " + std::string(importer.GetErrorString()));
+        return false;
+    }
+
+    const std::string baseDir = fs::path(_path).parent_path().string();
+    return ImportFromScene(scene, baseDir);
 }
 
 // ============================================================
