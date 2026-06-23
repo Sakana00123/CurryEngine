@@ -51,7 +51,7 @@ namespace CurryEngine
 		}
 		std::vector<std::string> ModelImporter::GetSupportedExtensions() const
 		{
-			return { /*".fbx", ".obj", */".gltf", ".glb" };
+			return { ".fbx", ".obj", ".gltf", ".glb" };
 		}
 
 	}

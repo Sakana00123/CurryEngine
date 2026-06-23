@@ -401,7 +401,6 @@ namespace CurryEngine::Resources
 
 	void ImportSettingsWindow::RequestPreviewUpdate(const AssetId& id)
 	{
-		// 現在は即時更新。将来的には非同期でのプレビュー生成を検討。
 		_previewThread = std::thread([&]() {
 			std::lock_guard<std::mutex> lock(_previewMutex);
 			UpdatePreview(id);
@@ -423,6 +422,7 @@ namespace CurryEngine::Resources
 
 		if (IImporter* importer = ImporterRegistry::Find(previewMeta.type))
 		{
+			_previewResource = nullptr; // 既存のプレビューリソースを解放
 			_previewResource = importer->Import(previewMeta);
 		}
 	}
@@ -439,6 +439,16 @@ namespace CurryEngine::Resources
 
 	void ImportSettingsWindow::CloseWindow()
 	{
+		const AssetMeta* meta = AssetDatabase::Find(_targetId);
+		if (meta)
+		{
+			// ウィンドウを閉じるときに、描画クラスの状態をリセットする。
+			if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
+			{
+				drawer->Reset(); // 描画クラスの状態をリセットして、プレビューリソースのクリーンアップなどを行う
+			}
+		}
+		_previewResource = nullptr; // プレビューリソースを解放
 		_isOpen = false;
 		_targetId = AssetId(); // ターゲットIDをリセット
 		_isDirty = false; // 変更フラグをリセット

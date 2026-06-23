@@ -11,6 +11,11 @@ namespace CurryEngine::Resources
 	static ModelRenderer g_modelRenderer;
 	static bool g_isDirty = true;
 
+	void ModelImportSettingsDrawer::Reset()
+	{
+		g_isDirty = true;
+	}
+
 	void ModelImportSettingsDrawer::Draw3DPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context)
 	{
 		auto model = std::dynamic_pointer_cast<AssetModel>(previewResource);

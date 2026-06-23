@@ -16,6 +16,9 @@ namespace CurryEngine::Resources
 	public:
 		virtual ~IImportSettingsDrawer() = default;
 
+
+		virtual void Reset() {} // インポート設定描画クラスの状態をリセットするための仮想関数。必要に応じてオーバーライドして使用します。
+
 		/**
 		 * @brief 3Dプレビュー描画の仮想関数。必要に応じてオーバーライドして使用します。
 		 * @param previewResource 描画するプレビュー用のリソース。ユーザーがUIで設定を変更した場合は、このリソースも更新されます。

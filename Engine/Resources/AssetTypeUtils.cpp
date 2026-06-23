@@ -19,7 +19,7 @@ namespace CurryEngine
 				{ ".tga", AssetType::Texture },
 				{ ".dds", AssetType::Texture },
 				{ ".fbx", AssetType::Model },
-				//{ ".obj", AssetType::Model },
+				{ ".obj", AssetType::Model },
 				{ ".gltf", AssetType::Model },
 				{ ".glb", AssetType::Model },
 				{ ".wav", AssetType::Sound },

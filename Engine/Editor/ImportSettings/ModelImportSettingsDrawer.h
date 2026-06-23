@@ -12,6 +12,7 @@ namespace CurryEngine::Resources
 	public:
 		virtual ~ModelImportSettingsDrawer() = default;
 
+		void Reset() override;
 
 		void Draw3DPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context) override;
 		/**
