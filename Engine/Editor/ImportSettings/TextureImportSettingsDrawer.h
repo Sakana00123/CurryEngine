@@ -15,8 +15,9 @@ namespace CurryEngine::Resources
 		/**
 		 * @brief プレビュー描画関数。テクスチャのプレビューを描画します。
 		 * @param previewResource 描画するプレビュー用のリソース。ユーザーがUIで設定を変更した場合は、このリソースも更新されます。
+		 * @param context 描画に使用するレンダリングコンテキスト。必要に応じて、描画処理でこのコンテキストを使用してリソースの描画を行います。
 		 */
-		virtual void DrawPreview(const std::shared_ptr<Resource>& previewResource) override;
+		virtual void DrawPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context) override;
 		/**
 		 * @brief インポート設定のフィールドを描画する関数。テクスチャのインポート設定をUIに表示します。
 		 * @param settings 描画するインポート設定のJSONデータ。ユーザーがUIで変更した内容はこのJSONに反映されます。

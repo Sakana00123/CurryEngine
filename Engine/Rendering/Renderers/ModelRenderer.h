@@ -1,96 +1,124 @@
 #pragma once
-#include "Engine/Core/Component.h"
-#include "Engine/Core/GameObject.h"
 
-#if 0
-//#define NOMINMAX
 #include <d3d11.h>
 #include <wrl.h>
 #include <DirectXMath.h>
-//#define TINYGLTF_NO_EXTERNAL_IMAGE
-//#define TINYGLTF_NO_STB_IMAGE
-//#define TINYGLTF_NO_STB_IMAGE_WRITE
-#include <tiny_gltf.h>
-#else
-#include "Archive/gltf_model.h"
-#endif
-#include "Engine/Core/Color.h"
+#include <memory>
+#include <Engine/Resources/AssetModel.h>
+#include <Engine/Rendering/Material.h>
 
-#include "Engine/Resources/Shader.h"
-#include "Engine/Rendering/Pipeline/Graphics.h"
+struct RenderContext;
 
-class ModelRenderer : public Component
+/**
+ * @file ModelRenderer.h
+ * @brief AssetModel を受け取り、ノードツリーを走査して描画するレンダラー。
+ *
+ * 旧 ModelRenderer から以下を変更：
+ * - ModelAsset → AssetModel
+ * - 独自バッファプール参照 → MeshData が直接持つ vertexBuffer / indexBuffer を使用
+ * - materialResourceView / textureResourceViews の独自管理 → Material::Apply() に委譲
+ * - staticBatching は AssetModel::batchedMeshes が存在するかで判定
+ *
+ * 将来的には MeshRenderer（静的）と Animator（スケルタル）に分離予定。
+ * 現状はプレビュー用として両方をこのクラスで処理する。
+ */
+class ModelRenderer
 {
 public:
-	ModelRenderer(ID3D11Device* device, const std::string& filePath);
-	virtual ~ModelRenderer() override = default;
+    ModelRenderer() = default;
+    ~ModelRenderer() = default;
 
-	void Update(float elapsedTime) override;
+    /**
+     * @brief アセットをセットし、シェーダ・定数バッファを初期化する。
+     * AssetModel::UploadToGPU() が済んでいない場合はここで呼び出す。
+     */
+    void SetModelAsset(std::shared_ptr<AssetModel> asset);
 
-	void Render(RenderContext* rtx) override;
+    void Update(float elapsedTime);
+    void Draw(RenderContext* rtx);
 
-	void DrawProperty() override;
+    // --- アニメーション制御（将来 Animator コンポーネントに移管予定） ---
+    float time = 0.0f;  //!< アニメーション経過時間（秒）
+    float timeRate = 1.0f;  //!< 再生速度倍率
+    float animationBlendTime = 1.2f;//!< ブレンド時間（秒）
+    int   animationIndex = 0;     //!< 再生するアニメーションのインデックス
+    bool  loop = true;  //!< ループ再生
 
-public:
-	//置き換えるピクセルシェーダー設定（※全体にかかる）
-	void SetReplacePixelShader(const char* filePath) {
-		CreatePixelShaderFromCSO(Graphics::GetDevice(), filePath, replacePixelShader.GetAddressOf());
-	}
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
-	//置き換える頂点シェーダー設定
-	void SetReplaceVertexShader(const char* filePath) {
-		// TODO: This is a force-brute programming, may cause bugs.
-		const std::map<std::string, GltfModel::BufferView>& vertexBufferViews{
-			model->meshes.at(0).primitives.at(0).vertexBufferViews
-		};
-		D3D11_INPUT_ELEMENT_DESC input_element_desc[]
-		{
-			{ "POSITION", 0, vertexBufferViews.at("POSITION").format, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{ "NORMAL", 0, vertexBufferViews.at("NORMAL").format, 1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{ "TANGENT", 0, vertexBufferViews.at("TANGENT").format, 2, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{ "TEXCOORD", 0, vertexBufferViews.at("TEXCOORD_0").format, 3, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{ "JOINTS", 0, vertexBufferViews.at("JOINTS_0").format, 4, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{ "WEIGHTS", 0, vertexBufferViews.at("WEIGHTS_0").format, 5, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		};
-		CreateVertexShaderFromCSO(Graphics::GetDevice(), filePath, replaceVertexShader.ReleaseAndGetAddressOf(),
-			inputLayout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
-	}
+    std::shared_ptr<AssetModel> m_asset;   //!< モデルアセット
+    std::shared_ptr<Material>   m_material;//!< 描画に使うマテリアル（外部から上書き可）
 
-	void SetLoop(bool loop) { model->loop = loop; }
+private:
+    // --- D3D11 オブジェクト ---
 
-	void SetAnimation(int index) { _ASSERT_EXPR(GetMaxAnimations() > index, L"インデックス値が範囲外です。"); model->SetAnimation(index); }
-	void SetAnimation(const std::string& name) {
-		model->SetAnimation(GetAnimationIndex(name));
-	}
-	int GetAnimationIndex(const std::string& name) const {
-		for (int i = 0; i < GetMaxAnimations(); i++) {
-			if (model->animations[i].name == name) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	//現在再生中のアニメーションの名前取得
-	std::string GetCurrentAnimationName() const {
-		if (model->animations.size() > model->animationIndex) {
-			return model->animations[model->animationIndex].name;
-		}
-		return "";
-	}
+    // 通常描画用
+    Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vsStatic;   //!< 静的メッシュ用 VS
+    Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vsSkinned;  //!< スキニング用 VS
+    Microsoft::WRL::ComPtr<ID3D11InputLayout>  m_ilStatic;   //!< StaticVertex 用 IL
+    Microsoft::WRL::ComPtr<ID3D11InputLayout>  m_ilSkinned;  //!< SkinnedVertex 用 IL
 
-	int GetMaxAnimations() const { return static_cast<int>(model->animations.size()); }
+    // カスケードシャドウマップ用
+    Microsoft::WRL::ComPtr<ID3D11VertexShader>   m_vsCsm;
+    Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_gsCsm;
 
-	GltfModel::Node* FindNode(const std::string& name) const { return model->FindNode(name); }
+    // --- 定数バッファ ---
 
-	bool IsAnimationCompleted() const { return model->IsAnimationCompleted(); }
+    /**
+     * @brief プリミティブごとの定数バッファ（VS/PS スロット 0）。
+     * ワールド行列・マテリアルインデックス・スキンインデックスを渡す。
+     */
+    struct PrimitiveConstants
+    {
+        DirectX::XMFLOAT4X4 world;
+        int  materialIndex = -1;
+        int  hasTangent = 0;
+        int  skinIndex = -1;
+        int  _pad = -1;
+    };
+    Microsoft::WRL::ComPtr<ID3D11Buffer> m_primitiveCB;
 
-	bool animationEneble;
-	Color color{ 1,1,1,1 };
+    /**
+     * @brief スキニング用ジョイント行列の定数バッファ（VS スロット 6）。
+     */
+    static constexpr size_t MAX_JOINTS = 512;
+    struct PrimitiveJointConstants
+    {
+        DirectX::XMFLOAT4X4 matrices[MAX_JOINTS];
+    };
+    Microsoft::WRL::ComPtr<ID3D11Buffer> m_jointCB;
 
-	std::unique_ptr<GltfModel> model;
-public:
-	//std::string filePath;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> replacePixelShader;
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> replaceVertexShader;
+    // --- 初期化 ---
+    void CreateShaders(ID3D11Device* device);
+    void CreateConstantBuffers(ID3D11Device* device);
+    void EnsureDefaultMaterial(ID3D11Device* device);
 
+    // --- 描画サブルーティン ---
+
+    /** @brief ノードツリーを再帰走査してスキニングメッシュ／静的メッシュを描画する。*/
+    void DrawNodes(RenderContext* rtx, const DirectX::XMFLOAT4X4& worldMatrix);
+
+    /** @brief 単一ノードを描画する（DrawNodes の内部再帰関数）。*/
+    void DrawNode(
+        RenderContext* rtx,
+        int nodeIndex,
+        const DirectX::XMFLOAT4X4& worldMatrix);
+
+    /** @brief staticBatching が有効なとき batchedMeshes を描画する。*/
+    void DrawBatched(RenderContext* rtx, const DirectX::XMFLOAT4X4& worldMatrix);
+
+    /**
+     * @brief メッシュ 1 件分の頂点バッファ・インデックスバッファをセットして描画する。
+     * @param mesh       描画するメッシュ。
+     * @param primData   更新済みの PrimitiveConstants。
+     */
+    void DrawMesh(
+        RenderContext* rtx,
+        const AssetModel::MeshData& mesh,
+        const PrimitiveConstants& primData);
+
+    /**
+     * @brief スキンのジョイント行列を計算して m_jointCB を更新する。
+     * @param skinIndex  AssetModel::skins へのインデックス。
+     * @param nodeIndex  このスキンを参照しているノードのインデックス（逆行列の基準）。
+     */
+    void UpdateJointCB(RenderContext* rtx, int skinIndex, int nodeIndex);
 };

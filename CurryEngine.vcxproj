@@ -58,7 +58,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -67,8 +67,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;nethost.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\assimp\lib\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;nethost.lib;assimp.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -95,7 +95,7 @@ popd</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -106,8 +106,8 @@ popd</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;nethost.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\assimp\lib\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;nethost.lib;assimp.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -213,6 +213,7 @@ popd</Command>
     <ClCompile Include="Engine\Editor\GameViewWindow.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\ImportSettingsDrawerRegistry.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\ImportSettingsWindow.cpp" />
+    <ClCompile Include="Engine\Editor\ImportSettings\ModelImportSettingsDrawer.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\TextureImportSettingsDrawer.cpp" />
     <ClCompile Include="Engine\Editor\InspectorWindow.cpp" />
     <ClCompile Include="Engine\Editor\PropertyEditor.cpp" />
@@ -226,12 +227,15 @@ popd</Command>
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\PostProcessPass.cpp" />
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\RenderPass.cpp" />
     <ClCompile Include="Engine\Rendering\Pipeline\Pass\TransitionPass.cpp" />
+    <ClCompile Include="Engine\Rendering\Renderers\ModelRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\Renderers\TrailRenderer.cpp" />
     <ClCompile Include="Engine\Resources\AssetDatabase.cpp" />
+    <ClCompile Include="Engine\Resources\AssetModel.cpp" />
     <ClCompile Include="Engine\Resources\AssetReferenceIndex.cpp" />
     <ClCompile Include="Engine\Resources\AssetTypeUtils.cpp" />
     <ClCompile Include="Engine\Resources\AssetWatcher.cpp" />
     <ClCompile Include="Engine\Resources\Importers\ImporterRegistry.cpp" />
+    <ClCompile Include="Engine\Resources\Importers\ModelImporter.cpp" />
     <ClCompile Include="Engine\Resources\Importers\TextureImporter.cpp" />
     <ClCompile Include="Engine\Resources\ModelAsset.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\GameObjectExports.cpp" />
@@ -674,6 +678,7 @@ popd</Command>
     <ClInclude Include="Engine\Editor\ImportSettings\IImportSettingsDrawer.h" />
     <ClInclude Include="Engine\Editor\ImportSettings\ImportSettingsDrawerRegistry.h" />
     <ClInclude Include="Engine\Editor\ImportSettings\ImportSettingsWindow.h" />
+    <ClInclude Include="Engine\Editor\ImportSettings\ModelImportSettingsDrawer.h" />
     <ClInclude Include="Engine\Editor\ImportSettings\TextureImportSettingsDrawer.h" />
     <ClInclude Include="Engine\Editor\InspectorWindow.h" />
     <ClInclude Include="Engine\Editor\PropertyEditor.h" />
@@ -684,18 +689,22 @@ popd</Command>
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\PFX_OutLinePass.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\PostProcessPass.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\Pass\TransitionPass.h" />
+    <ClInclude Include="Engine\Rendering\Renderers\ModelRenderer.h" />
     <ClInclude Include="Engine\Rendering\Renderers\TrailRenderer.h" />
     <ClInclude Include="Engine\Resources\AssetDatabase.h" />
     <ClInclude Include="Engine\Resources\AssetId.h" />
     <ClInclude Include="Engine\Resources\AssetMeta.h" />
+    <ClInclude Include="Engine\Resources\AssetModel.h" />
     <ClInclude Include="Engine\Resources\AssetReferenceIndex.h" />
     <ClInclude Include="Engine\Resources\AssetType.h" />
     <ClInclude Include="Engine\Resources\AssetTypeUtils.h" />
     <ClInclude Include="Engine\Resources\AssetWatcher.h" />
     <ClInclude Include="Engine\Resources\Importers\IImporter.h" />
     <ClInclude Include="Engine\Resources\Importers\ImporterRegistry.h" />
+    <ClInclude Include="Engine\Resources\Importers\ModelImporter.h" />
     <ClInclude Include="Engine\Resources\Importers\TextureImporter.h" />
     <ClInclude Include="Engine\Resources\ImportSettings\IImportSettings.h" />
+    <ClInclude Include="Engine\Resources\ImportSettings\ModelImportSettings.h" />
     <ClInclude Include="Engine\Resources\ImportSettings\TextureImportSettings.h" />
     <ClInclude Include="Engine\Resources\ModelAsset.h" />
     <ClInclude Include="Engine\Scripting\ScriptFieldSerializer.h" />
@@ -992,6 +1001,26 @@ popd</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
+    <FxCompile Include="Shader\model_csm_gs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\model_csm_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\model_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\model_skinned_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\model_static_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shader\OutLinePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -1069,6 +1098,7 @@ popd</Command>
     <None Include="Shader\gltf_model.hlsli" />
     <None Include="Shader\image_based_lighting.hlsli" />
     <None Include="Shader\Lights.hlsli" />
+    <None Include="Shader\model.hlsli" />
     <None Include="Shader\OutLine.hlsli" />
     <None Include="Shader\Sampler.hlsli" />
     <None Include="Shader\ShaderFunctions.hlsli" />

@@ -223,6 +223,8 @@ public:
 	// ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
 	void LoadModel(ID3D11Device* device, const std::string& filePath, bool staticBatching);
 
+    void SetModelAsset(std::shared_ptr<ModelAsset> asset);
+
     void Initialize() override;
     void Update(float deltaTime) override;
     void Render(RenderContext* rtx) override;

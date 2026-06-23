@@ -127,6 +127,16 @@ void GltfModelRenderer::LoadModel(ID3D11Device* device, const std::string& fileP
     boundingBox = CalculateAABB();
 }
 
+void GltfModelRenderer::SetModelAsset(std::shared_ptr<ModelAsset> asset)
+{
+    m_asset = asset;
+	auto device = Graphics::GetDevice();
+    // リソースの作成とアップロード
+    CreateAndUploadResources(device);
+    // AABBの計算
+    boundingBox = CalculateAABB();
+}
+
 void GltfModelRenderer::Initialize()
 {
     

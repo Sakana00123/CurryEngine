@@ -2,6 +2,7 @@
 #include "ImporterRegistry.h"
 
 #include "TextureImporter.h"
+#include "ModelImporter.h"
 
 
 namespace CurryEngine
@@ -12,6 +13,7 @@ namespace CurryEngine
 		{
 			// 必要に応じて、ここでデフォルトのインポーターを登録することができます。
 			Register(AssetType::Texture, std::make_unique<TextureImporter>());
+			Register(AssetType::Model, std::make_unique<ModelImporter>());
 		}
 
 		IImporter* ImporterRegistry::Find(AssetType type)

@@ -5,7 +5,7 @@
 
 namespace CurryEngine::Resources
 {
-    void TextureImportSettingsDrawer::DrawPreview(const std::shared_ptr<Resource>& previewResource)
+    void TextureImportSettingsDrawer::DrawPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context)
     {
         auto thumbnail = std::dynamic_pointer_cast<AssetTexture>(previewResource);
         if (!thumbnail) { ImGui::TextDisabled("No preview available."); return; }

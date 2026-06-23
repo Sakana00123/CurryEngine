@@ -1,0 +1,9 @@
+{
+    "id": "ca86b8c146ec78d144940539c32e0b60",
+    "importSettings": {
+        "scaleFactor": 0.009999999776482582,
+        "staticBatching": false
+    },
+    "path": "./TestAssets/Test2/character.gltf",
+    "type": "Model"
+}

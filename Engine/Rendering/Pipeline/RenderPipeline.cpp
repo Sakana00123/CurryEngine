@@ -134,3 +134,11 @@ void GameRenderPipeline::SetupRenderPasses()
 
 	AddRenderPass(std::make_unique<FinalPass>());
 }
+
+void PreviewRenderPipeline::SetupRenderPasses()
+{
+	AddRenderPass(std::make_unique<ConstantBufferPass>());
+	AddRenderPass(std::make_unique<PreRenderPass>());
+	AddRenderPass(std::make_unique<SkyBoxPass>());
+	AddRenderPass(std::make_unique<PreviewPass>());
+}

@@ -60,11 +60,11 @@ public:
 	std::weak_ptr<T> GetTexture(const std::string& name)
 	{
 		// Shaderから変数情報を探す
-		for (ShaderBinding& binding : m_ShaderBindings)
+		//for (ShaderBinding& binding : m_ShaderBindings)
 		{
 			// 対象のテクスチャ変数を探す
-			auto it = binding.textures.find(name);
-			if (it != binding.textures.end())
+			auto it = textures.find(name);
+			if (it != textures.end())
 			{
 				// 見つかったら返す
 				return std::dynamic_pointer_cast<T>(it->second)/*.lock()*/;
@@ -197,13 +197,16 @@ private:
     struct ShaderBinding
     {
 		std::shared_ptr<Shader> shader = nullptr; //!< シェーダー
-		std::unordered_map<std::string, CBufferData> cbuffers; //!< 名前をキーとする定数バッファ群
-		std::unordered_map<std::string, std::shared_ptr<Texture>> textures; //!< 名前をキーとするテクスチャ群
-		std::unordered_map<std::string, SamplerState> samplers; //!< 名前をキーとするサンプラー群
     };
 
 	/** @brief シェーダステージ別のシェーダと定数バッファ群。*/
 	ShaderBinding m_ShaderBindings[static_cast<size_t>(ShaderType::EnumCount)];
+	
+	std::unordered_map<std::string, CBufferData> cbuffers; //!< 名前をキーとする定数バッファ群
+	std::unordered_map<std::string, std::shared_ptr<Texture>> textures; //!< 名前をキーとするテクスチャ群
+	std::unordered_map<std::string, std::vector<uint8_t>> values; //!< 名前をキーとする任意の値群（CPU 側コピー）
+	//bool m_isValuesDirty = false; //!< 任意の値が変更されたかどうか
+	std::unordered_map<std::string, SamplerState> samplers; //!< 名前をキーとするサンプラー群
 
 	/** @brief 深度ステンシルステート。*/
     DepthStencilState depthStencilState = DepthStencilState::EnumCount;
