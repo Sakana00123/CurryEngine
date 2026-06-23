@@ -31,7 +31,7 @@ namespace CurryEngine
 		{
 			s_assetRootDir = assetRootDir;
 
-			//s_assetWatcher.Start(assetRootDir);
+			s_assetWatcher.Start(assetRootDir);
 
 			// 既存の.metaファイルを読み込んでデータベースを構築
 			LoadExistingMetaFiles();
@@ -43,7 +43,7 @@ namespace CurryEngine
 
 		void AssetDatabase::Finalize()
 		{
-			//s_assetWatcher.Stop();
+			s_assetWatcher.Stop();
 
 			s_metaByPath.clear();
 			s_pathById.clear();
@@ -59,7 +59,7 @@ namespace CurryEngine
 		{
 			for (const auto& entry : std::filesystem::recursive_directory_iterator(s_assetRootDir))
 			{
-				if (entry.is_regular_file() && entry.path().extension() == ".meta")
+				if (entry.path().extension() == ".meta")
 				{
 					// 対応する実ファイルのパス（.metaを除いたパス）
 					std::string assetPath = NormalizePath(
@@ -94,7 +94,6 @@ namespace CurryEngine
 			// ルートディレクトリ以下を走査して.metaのない実ファイルを検出
 			for (const auto& entry : std::filesystem::recursive_directory_iterator(s_assetRootDir))
 			{
-				if (!entry.is_regular_file()) continue;
 				std::string path = NormalizePath(entry.path().string());
 
 				// .metaファイル自体はスキップ
@@ -141,9 +140,10 @@ namespace CurryEngine
 				AssetId newId(Utils::IdGenerator::GenerateAssetId());
 				AssetType inferredType = AssetTypeUtils::DetectFromExtension(
 					std::filesystem::path(normalizedPath).extension().string()); // 拡張子から推測
+				bool isFolder = std::filesystem::is_directory(normalizedPath);
 				nlohmann::json defaultSettings = nlohmann::json(); // デフォルトのインポート設定（必要に応じて変更）
 
-				meta = AssetMeta(newId, normalizedPath, inferredType, defaultSettings);
+				meta = AssetMeta(newId, normalizedPath, inferredType, isFolder, defaultSettings);
 				AssetMetaSerializer::Save(meta);
 			}
 

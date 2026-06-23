@@ -19,6 +19,7 @@ namespace CurryEngine
 			AssetId id; ///< アセットの一意な識別子
 			std::string path; ///< アセットのファイルパス
 			AssetType type; ///< アセットの種類
+			bool isFolder = false; ///< アセットがフォルダかどうかを示すフラグ
 			nlohmann::json importSettings;
 
 			/**
@@ -31,8 +32,8 @@ namespace CurryEngine
 			 * @param assetPath アセットのファイルパス
 			 * @param assetType アセットの種類
 			 */
-			AssetMeta(const AssetId& assetId, const std::string& assetPath, AssetType assetType, const nlohmann::json& settings = nlohmann::json())
-				: id(assetId), path(assetPath), type(assetType), importSettings(settings) {
+			AssetMeta(const AssetId& assetId, const std::string& assetPath, AssetType assetType, bool isFolder = false, const nlohmann::json& settings = nlohmann::json())
+				: id(assetId), path(assetPath), type(assetType), isFolder(isFolder), importSettings(settings) {
 			}
 			
 			template<typename T>

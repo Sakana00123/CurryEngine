@@ -22,6 +22,8 @@ namespace CurryEngine
 				{ ".obj", AssetType::Model },
 				{ ".gltf", AssetType::Model },
 				{ ".glb", AssetType::Model },
+				{ ".pmx", AssetType::Model },
+				{ ".blend", AssetType::Model },
 				{ ".wav", AssetType::Sound },
 				//{ ".mp3", AssetType::Sound },
 				//{ ".ogg", AssetType::Sound },

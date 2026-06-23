@@ -48,6 +48,7 @@ namespace CurryEngine
 				{"id", meta.id.ToString()},
 				{"path", meta.path},
 				{"type", CurryEngine::Resources::AssetMetaSerializer::AssetTypeToString(meta.type)},
+				{"isFolder", meta.isFolder},
 				{"importSettings", meta.importSettings}
 			};
 		}
@@ -56,6 +57,14 @@ namespace CurryEngine
 			meta.id = AssetId(j.at("id").get<std::string>());
 			j.at("path").get_to(meta.path);
 			meta.type = CurryEngine::Resources::AssetMetaSerializer::AssetTypeFromString(j.at("type").get<std::string>());
+			if (j.contains("isFolder"))
+			{
+				j.at("isFolder").get_to(meta.isFolder);
+			}
+			else
+			{
+				meta.isFolder = std::filesystem::is_directory(meta.path); // デフォルト値としてファイルシステムの情報を使用
+			}
 			if (j.contains("importSettings"))
 			{
 				meta.importSettings = j.at("importSettings");

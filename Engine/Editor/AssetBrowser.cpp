@@ -73,11 +73,11 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 					else
 						fs::copy_file(src, dst);
 
-					if (auto meta = CurryEngine::Resources::AssetDatabase::Import(dst.string()))
-					{
-						// インポート成功したらインポート設定ウィンドウを開く
-						CurryEngine::Resources::ImportSettingsWindow::OpenForNewAsset(meta->id);
-					}
+					//if (auto meta = CurryEngine::Resources::AssetDatabase::Import(dst.string()))
+					//{
+					//	// インポート成功したらインポート設定ウィンドウを開く
+					//	CurryEngine::Resources::ImportSettingsWindow::OpenForNewAsset(meta->id);
+					//}
 
 					Console::Log("Imported: " + dst.string());
 					anySucceeded = true;
@@ -674,7 +674,7 @@ void AssetBrowser::OnAssetDeleted(const fs::path& assetPath)
 	}
 
 	// アセットデータベースからも削除
-	CurryEngine::Resources::AssetDatabase::RemoveByPath(assetPath.string());
+	//CurryEngine::Resources::AssetDatabase::RemoveByPath(assetPath.string());
 
 }
 
@@ -978,7 +978,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 						fs::rename(path, newPath, ec);
 						if (!ec)
 						{
-							CurryEngine::Resources::AssetDatabase::Rename(path.string(), newPath.string()); // アセットデータベースのパスも更新
+							//CurryEngine::Resources::AssetDatabase::Rename(path.string(), newPath.string()); // アセットデータベースのパスも更新
 							lastClickedAsset = newPath; // クリックされたアセットのパスを新しいものに更新
 							Refresh();
 						}
@@ -1587,25 +1587,34 @@ void AssetBrowser::DrawDeleteConfirmModal()
 		if (ImGui::Button(reinterpret_cast<const char*>(u8"削除する"), buttonSize)
 			|| ImGui::IsKeyPressed(ImGuiKey_Enter)) // Enterでも確定
 		{
-			for (const auto& asset : selectedAssets)
+			// 選択されたアセットを削除する処理
+			std::unordered_set<fs::path> assets(selectedAssets.begin(), selectedAssets.end()); // 削除対象をコピーしておく（削除中に selectedAssets が変化する可能性があるため）
+			for (const auto& asset : assets)
 			{
 				std::error_code ec;
+
 				if (fs::is_directory(asset))
 				{
-					fs::remove_all(asset);
-					CurryEngine::Resources::AssetDatabase::RemoveByPathPrefix(asset.string());
+					//CurryEngine::Resources::AssetDatabase::RemoveByPathPrefix(asset.string());
+					fs::remove_all(asset, ec);
 				}
 				else
 				{
-					fs::remove(asset);
-					OnAssetDeleted(asset);
+					// ファイルの場合も同様に ec を渡す
+					fs::remove(asset, ec);
+					if (!ec) {
+						OnAssetDeleted(asset);
+					}
 				}
-				if (ec)
-					Console::LogError("Failed to delete " + asset.string() + ": " + ec.message());
-				else
+
+				// 最終的な結果をログに出力
+				if (ec) {
+					Console::LogError("Failed to delete " + asset.string() + ": " + ec.message() + " (Code: " + std::to_string(ec.value()) + ")");
+				}
+				else {
 					Console::Log("Deleted: " + asset.string());
+				}
 			}
-			selectedAssets.clear();
 			lastClickedAsset.clear();
 			Refresh();
 			ImGui::CloseCurrentPopup();
@@ -1747,9 +1756,9 @@ bool AssetBrowser::MoveAssetToFolder(const std::string& srcPath, const std::stri
 	}
 
 	// 移動に成功した場合は、アセットデータベースも更新
-	if (success) {
+	/*if (success) {
 		CurryEngine::Resources::AssetDatabase::Rename(src.string(), dst.string());
-	}
+	}*/
 
 	return success;
 }
@@ -1766,7 +1775,7 @@ bool AssetBrowser::MoveFolderToFolder(const std::string& source, const std::stri
 
 		fs::rename(sourcePath, destPath);
 		Refresh(); // ブラウザを更新して変更を反映
-		CurryEngine::Resources::AssetDatabase::RemapPathPrefix(sourcePath.string(), destPath.string());
+		//CurryEngine::Resources::AssetDatabase::RemapPathPrefix(sourcePath.string(), destPath.string());
 		return true;
 	}
 	catch (const std::exception& e) {

@@ -4,7 +4,7 @@
 #include "AssetMeta.h"
 #include "ResourceManager.h"
 #include "Importers/ImporterRegistry.h"
-//#include "AssetWatcher.h"
+#include "AssetWatcher.h"
 
 namespace CurryEngine
 {
@@ -152,7 +152,7 @@ namespace CurryEngine
 			static std::string s_assetRootDir; ///< アセットのルートディレクトリのパス
 			static bool s_initialized; ///< アセットデータベースが初期化されているかどうか
 
-			//static inline AssetWatcher s_assetWatcher; ///< アセットの変更を監視するAssetWatcherのインスタンス
+			static inline AssetWatcher s_assetWatcher; ///< アセットの変更を監視するAssetWatcherのインスタンス
 		};
 	}
 }

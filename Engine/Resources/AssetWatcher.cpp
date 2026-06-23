@@ -25,11 +25,9 @@ namespace CurryEngine
 
 	void AssetWatcher::WatchLoop()
 	{
-		// 監視対象のディレクトリのパスを取得
 		std::filesystem::path dirPath(m_watchDir);
 		std::wstring watchDirW = dirPath.wstring();
 
-		// 監視対象のディレクトリを開く
 		HANDLE hDir = CreateFileW(
 			watchDirW.c_str(),
 			FILE_LIST_DIRECTORY,
@@ -39,7 +37,6 @@ namespace CurryEngine
 			FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
 			nullptr);
 
-		// 監視対象のディレクトリが開けなかった場合のエラーハンドリング
 		if (hDir == INVALID_HANDLE_VALUE)
 		{
 			DWORD err = GetLastError();
@@ -50,61 +47,100 @@ namespace CurryEngine
 			return;
 		}
 
-		alignas(DWORD) char buffer[4096]; // FILE_NOTIFY_INFORMATION 構造体が複数入る可能性があるため、十分なサイズを確保
-		DWORD bytesReturned = 0;
+		alignas(DWORD) char buffer[4096];
 		OVERLAPPED overlapped = {};
 		overlapped.hEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 
-		while (m_running) {
-			// 非同期でディレクトリの変更を監視
-			ReadDirectoryChangesW(
-				hDir,
-				buffer,
-				sizeof(buffer),
-				TRUE,
-				FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_CREATION,
-				&bytesReturned,
-				&overlapped,
-				NULL);
+		if (overlapped.hEvent == NULL) {
+			LOG_ERROR("[AssetWatcher] Failed to create event.");
+			CloseHandle(hDir);
+			return;
+		}
 
-			// 変更があったかを待機（タイムアウトは 500ms）
-			if (overlapped.hEvent == NULL) {
-				LOG_ERROR("[AssetWatcher] Event handle is NULL.");
-				break;
+		// 最初のリクエストを発行
+		bool isPending = false;
+
+		while (m_running) {
+
+			// まだ非同期リクエストが発行されていなければ発行する
+			if (!isPending) {
+				ResetEvent(overlapped.hEvent);
+				DWORD bytesReturned = 0; // 非同期ではこの変数は使われませんが引数として必要
+
+				BOOL result = ReadDirectoryChangesW(
+					hDir,
+					buffer,
+					sizeof(buffer),
+					TRUE,
+					FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_CREATION,
+					&bytesReturned,
+					&overlapped,
+					NULL);
+
+				if (!result && GetLastError() != ERROR_IO_PENDING) {
+					LOG_ERROR("[AssetWatcher] ReadDirectoryChangesW failed.");
+					break;
+				}
+				isPending = true;
 			}
+
+			// 500ms 待機
 			DWORD waitResult = WaitForSingleObject(overlapped.hEvent, 500);
 
 			if (waitResult == WAIT_OBJECT_0) {
-				// イベントをリセット
-				if (overlapped.hEvent == NULL) {
-					LOG_ERROR("[AssetWatcher] Event handle is NULL.");
+				// 非同期処理が完了したため、実際に書き込まれたバイト数を取得する
+				DWORD bytesTransferred = 0;
+				if (GetOverlappedResult(hDir, &overlapped, &bytesTransferred, FALSE)) {
+
+					// 実際にデータが書き込まれていればパースする
+					if (bytesTransferred > 0) {
+						auto* info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(buffer);
+						while (true)
+						{
+							if (info == nullptr) break;
+							if (info->FileNameLength == 0) break;
+
+							std::wstring relativePath(info->FileName, info->FileNameLength / sizeof(wchar_t));
+							std::filesystem::path fullPath = std::filesystem::path(m_watchDir) / relativePath;
+
+							OnFileAction(info->Action, fullPath.string());
+
+							if (info->NextEntryOffset == 0) break;
+							info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(
+								reinterpret_cast<char*>(info) + info->NextEntryOffset);
+						}
+					}
 				}
-				else if (!ResetEvent(overlapped.hEvent)) {
+				else {
 					DWORD err = GetLastError();
-					char buf[256];
-					sprintf_s(buf, "[AssetWatcher] Failed to reset event. error=%lu", err);
-					OutputDebugStringA(buf);
-					LOG_ERROR(buf);
+					// エラーハンドリング（バッファオーバーフローなど）
+					if (err == ERROR_NOTIFY_ENUM_DIR) {
+						LOG_WARNING("[AssetWatcher] Buffer overflow. Some changes might be lost.");
+					}
 				}
 
-				auto* info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(buffer);
-				while (true)
-				{
-					std::wstring relativePath(info->FileName,
-						info->FileNameLength / sizeof(wchar_t));
-					std::filesystem::path fullPath = std::filesystem::path(m_watchDir) / relativePath;
-
-					// ファイルの変更イベントを処理
-					OnFileAction(info->Action, fullPath.string());
-
-					// 次のエントリがなければループを抜ける
-					if (info->NextEntryOffset == 0) break;
-					// 次のエントリへ
-					info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(
-						reinterpret_cast<char*>(info) + info->NextEntryOffset);
-				}
+				// 処理が完了したので、次のループで新しいリクエストを発行できるようにフラグを下げる
+				isPending = false;
+			}
+			else if (waitResult == WAIT_TIMEOUT) {
+				// タイムアウトした場合は、リクエストが完了していないので
+				// ReadDirectoryChangesW を再発行せず、そのまま次の待機に進む (isPending = true のまま)
+				continue;
+			}
+			else {
+				// 何らかのエラー
+				DWORD err = GetLastError();
+				char buf[256];
+				sprintf_s(buf, "[AssetWatcher] WaitForSingleObject failed. error=%lu", err);
+				OutputDebugStringA(buf);
+				LOG_ERROR(buf);
+				break;
 			}
 		}
+
+		// スレッドが終了する際、未完了の非同期入出力をキャンセルする
+		CancelIo(hDir);
+
 		if (overlapped.hEvent != NULL) {
 			CloseHandle(overlapped.hEvent);
 		}
@@ -117,12 +153,19 @@ namespace CurryEngine
 		std::string replacedPath = path;
 		std::replace(replacedPath.begin(), replacedPath.end(), '\\', '/'); // パスの区切り文字を統一
 
+		if (std::filesystem::path(replacedPath).extension() == ".meta") {
+			// .metaファイルの変更は無視する
+			return;
+		}
+
 		switch (action)
 		{
 		case FILE_ACTION_ADDED:
+		{
 			LOG_INFO("[AssetWatcher] File added: " + replacedPath);
 			CurryEngine::Resources::AssetDatabase::Import(replacedPath); // 新しいアセットをインポート
 			break;
+		}
 		case FILE_ACTION_REMOVED:
 			LOG_INFO("[AssetWatcher] File removed: " + replacedPath);
 			CurryEngine::Resources::AssetDatabase::RemoveByPath(replacedPath); // アセットを削除
@@ -132,9 +175,11 @@ namespace CurryEngine
 			AssetBrowser::Refresh(); // アセットブラウザをリフレッシュして変更を反映
 			break;
 		case FILE_ACTION_RENAMED_OLD_NAME:
+		{
 			LOG_INFO("[AssetWatcher] File renamed (old name): " + replacedPath);
 			m_pendingRenameOldPath = replacedPath; // リネームの旧パスを保留
 			break;
+		}
 		case FILE_ACTION_RENAMED_NEW_NAME:
 			if (m_pendingRenameOldPath.has_value()) {
 				LOG_INFO("[AssetWatcher] File renamed from " + m_pendingRenameOldPath.value() + " to " + replacedPath);

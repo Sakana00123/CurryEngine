@@ -1,10 +1,10 @@
 {
-    "id": "1c7eb902c53f2c893ed7e332b15dc674",
+    "id": "3b4e5d28375d9296d7444db3a6e9a0ea",
     "importSettings": {
         "scaleFactor": 0.009999999776482582,
         "staticBatching": false
     },
     "isFolder": false,
-    "path": "./TestAssets/Test2/character.gltf",
+    "path": "./TestAssets/Spider/spider.obj",
     "type": "Model"
 }

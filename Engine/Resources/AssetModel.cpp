@@ -139,13 +139,23 @@ namespace
     {
         if (mat->GetTextureCount(type) == 0) return false;
 
-        aiString texPath;
-        if (mat->GetTexture(type, 0, &texPath) != AI_SUCCESS) return false;
+        aiString texPathStr;
+        if (mat->GetTexture(type, 0, &texPathStr) != AI_SUCCESS) return false;
 
         // 埋め込みテクスチャは "*0" のような形式になる（現状はスキップ）
-        if (texPath.data[0] == '*') return false;
+        if (texPathStr.data[0] == '*') return false;
 
-        fs::path resolved = fs::path(baseDir) / texPath.C_Str();
+		// 相対パスを絶対パスに変換して正規化する
+		fs::path texPath(texPathStr.C_Str());
+		texPath = texPath.lexically_normal(); // 正規化して冗長なパス要素を削除
+		fs::path resolved = fs::absolute(baseDir) / texPath;
+		// ファイルが存在するかチェック
+        if (!fs::exists(resolved))
+        {
+            Console::LogWarning("Texture file not found: " + resolved.string());
+            outPath.clear();
+            return false;
+		}
         outPath = resolved.string();
         return true;
     }
@@ -355,10 +365,11 @@ void AssetModel::ImportMaterials(const aiScene* scene)
         }
 
         // --- テクスチャのバインド ---
+		std::string baseDir = fs::path(_path).parent_path().string();
         auto bindTex = [&](aiTextureType type, const std::string& slotName)
             {
                 std::string absPath;
-                if (!ResolveTexturePath(aiMat, type, "", absPath)) return;
+                if (!ResolveTexturePath(aiMat, type, baseDir, absPath)) return;
                 // ImportTextures で絶対パスを解決済みなので baseDir は不要
                 // ただし ResolveTexturePath は baseDir を使う設計なので、
                 // ここでは pathToIndex から直引きする

@@ -12,10 +12,10 @@
 
 namespace
 {
+	static std::unordered_map<ImGuiID, float> g_map;
 	float& GetAnim(ImGuiID id)
 	{
-		static std::unordered_map<ImGuiID, float> s_map;
-		return s_map[id];
+		return g_map[id];
 	}
 }
 
@@ -55,9 +55,14 @@ namespace ImGui
 		ImVec2 bar_min(bb.Min.x, bb.Min.y + text_height);
 		ImVec2 bar_max(bb.Max.x, bb.Max.y);
 
+#if 1
 		// 2. 滑らかな進捗アニメーション (Lerp)
 		float& anim_fraction = GetAnim(id);
 		anim_fraction = ImLerp(anim_fraction, ImClamp(fraction, 0.0f, 1.0f), g.IO.DeltaTime * 14.0f);
+#else
+		float anim_fraction = ImClamp(fraction, 0.0f, 1.0f);
+#endif // 0
+
 
 		// 3. 背景（トラック）の描画
 		ImU32 col_bg = ImGui::GetColorU32(ImGuiCol_FrameBg);
@@ -280,6 +285,8 @@ namespace CurryEngine::Resources
 			// 読み込み中のローディング表示
 			if (_isPreviewUpdating && !ImGui::IsPopupOpen("##Loading Preview"))
 			{
+				_previewProgress = 0.0f; // プログレスバーをリセット
+				g_map.clear(); // アニメーションの状態をリセット
 				ImGui::OpenPopup("##Loading Preview");
 			}
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
