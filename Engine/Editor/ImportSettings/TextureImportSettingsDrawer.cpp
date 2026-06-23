@@ -25,6 +25,18 @@ namespace CurryEngine::Resources
         : editingSettings.get<TextureImportSettings>();
 
         bool changed = false;
+
+		// インポーターの種類を選択するコンボボックス
+		const char* textureTypeOptions[] = { "Default", "NormalMap", "GUI", "Sprite", "SpriteAtlas", "Cubemap" };
+		int currentTextureTypeIndex = static_cast<int>(settings.textureType);
+
+		// インポーターの種類を選択するコンボボックスを描画
+        if (ImGui::Combo("Texture Type", &currentTextureTypeIndex, textureTypeOptions, IM_ARRAYSIZE(textureTypeOptions)))
+        {
+            settings.textureType = static_cast<TextureImporterType>(currentTextureTypeIndex);
+			changed = true;
+        }
+
         changed |= ImGui::Checkbox("Generate Mipmaps", &settings.generateMipmaps);
 
         const char* compressionOptions[] = { "None", "BC1", "BC3", "BC7" };

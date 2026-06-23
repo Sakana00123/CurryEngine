@@ -1,8 +1,9 @@
 {
-    "id": "35c2ebbfc738384dc12af27e6ee47751",
+    "id": "d33a962a1e8756a1889340f9313d34b9",
     "importSettings": {
-        "compression": "BC3",
-        "generateMipmaps": true
+        "compression": "BC7",
+        "generateMipmaps": true,
+        "textureType": "Sprite"
     },
     "path": "./TestAssets/test.png",
     "type": "Texture"
