@@ -734,6 +734,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 	constexpr float padding = 10.0f;
 	float totalWidth = ImGui::GetContentRegionAvail().x;
 	int columns = max(1, int(totalWidth / (thumbnailSize + padding)));
+	float textHeight = ImGui::GetTextLineHeightWithSpacing();
 
 	// ── コンテキストメニュー（ホバー対象を記録しておく） ──
 	// ホバー中のアイテムパスを先にここで受け取る構造にする
@@ -777,6 +778,16 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 		for (const auto& entry : results)
 		{
 			ImGui::TableNextColumn();
+
+			// 描画する前に、アイテムがビューポート内にあるかどうかを確認して、ビューポート外のアイテムは描画しないようにする
+			ImVec2 cursorPos = ImGui::GetCursorScreenPos();
+			if (!ImGui::IsRectVisible(cursorPos, ImVec2(cursorPos.x + thumbnailSize, cursorPos.y + thumbnailSize + (padding * 2.0f))))
+			{
+				// ビューポート外のアイテムは描画せずに、ダミーのスペースだけ確保して次のアイテムへ
+				ImGui::Dummy(ImVec2(thumbnailSize, thumbnailSize + (padding * 2.0f) + textHeight)); // アイコンとテキストのスペースを確保
+				continue;
+			}
+
 			ImGui::BeginGroup();
 
 			const auto& path = entry.path();
@@ -986,9 +997,21 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 			else
 			{
 				// 通常表示（長いファイル名はサムネイル幅でクリップ）
-				ImGui::PushTextWrapPos(ImGui::GetCursorPosX() + thumbnailSize);
+				float textWidth = ImGui::CalcTextSize(filenameString.c_str()).x;
+				if (textWidth > thumbnailSize)
+				{
+					// クリップする場合は末尾を "..." に置き換える
+					float ectWidth = ImGui::CalcTextSize("...").x; // これで "..." の幅を計算しておく
+					int clipCount = 0;
+					while (textWidth > thumbnailSize && clipCount < filenameString.size())
+					{
+						clipCount++;
+						std::string clipped = filenameString.substr(0, filenameString.size() - clipCount) + "...";
+						textWidth = ImGui::CalcTextSize(clipped.c_str()).x;
+					}
+					filenameString = filenameString.substr(0, filenameString.size() - clipCount) + "...";
+				}
 				ImGui::TextUnformatted(filenameString.c_str());
-				ImGui::PopTextWrapPos();
 			}
 
 			ImGui::PopID();
