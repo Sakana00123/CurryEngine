@@ -32,6 +32,7 @@ namespace CurryEngine
 				{ ".cs", AssetType::Script },
 				{ ".hlsl", AssetType::Shader },
 				{ ".hlsli", AssetType::Shader },
+				{ ".mat", AssetType::Material },
 			};
 			auto it = extensionToTypeMap.find(ext);
 			if (it != extensionToTypeMap.end())

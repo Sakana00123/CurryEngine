@@ -216,6 +216,7 @@ popd</Command>
     <ClCompile Include="Engine\Editor\ImportSettings\ModelImportSettingsDrawer.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\TextureImportSettingsDrawer.cpp" />
     <ClCompile Include="Engine\Editor\InspectorWindow.cpp" />
+    <ClCompile Include="Engine\Editor\MaterialEditor.cpp" />
     <ClCompile Include="Engine\Editor\PropertyEditor.cpp" />
     <ClCompile Include="Engine\Editor\SceneViewWindow.cpp" />
     <ClCompile Include="Engine\Events\PointerEventData.cpp" />
@@ -230,6 +231,7 @@ popd</Command>
     <ClCompile Include="Engine\Rendering\Renderers\ModelRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\Renderers\TrailRenderer.cpp" />
     <ClCompile Include="Engine\Resources\AssetDatabase.cpp" />
+    <ClCompile Include="Engine\Resources\AssetMaterial.cpp" />
     <ClCompile Include="Engine\Resources\AssetModel.cpp" />
     <ClCompile Include="Engine\Resources\AssetReferenceIndex.cpp" />
     <ClCompile Include="Engine\Resources\AssetTypeUtils.cpp" />
@@ -681,6 +683,7 @@ popd</Command>
     <ClInclude Include="Engine\Editor\ImportSettings\ModelImportSettingsDrawer.h" />
     <ClInclude Include="Engine\Editor\ImportSettings\TextureImportSettingsDrawer.h" />
     <ClInclude Include="Engine\Editor\InspectorWindow.h" />
+    <ClInclude Include="Engine\Editor\MaterialEditor.h" />
     <ClInclude Include="Engine\Editor\PropertyEditor.h" />
     <ClInclude Include="Engine\Editor\SceneViewWindow.h" />
     <ClInclude Include="Engine\Physics\FixedJoint.h" />
@@ -693,6 +696,7 @@ popd</Command>
     <ClInclude Include="Engine\Rendering\Renderers\TrailRenderer.h" />
     <ClInclude Include="Engine\Resources\AssetDatabase.h" />
     <ClInclude Include="Engine\Resources\AssetId.h" />
+    <ClInclude Include="Engine\Resources\AssetMaterial.h" />
     <ClInclude Include="Engine\Resources\AssetMeta.h" />
     <ClInclude Include="Engine\Resources\AssetModel.h" />
     <ClInclude Include="Engine\Resources\AssetReferenceIndex.h" />

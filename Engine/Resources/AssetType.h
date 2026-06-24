@@ -12,4 +12,5 @@ enum class AssetType
 	Prefab,
 	Script,
 	Shader,
+	Material,
 };

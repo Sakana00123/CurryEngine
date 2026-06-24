@@ -340,6 +340,13 @@ void AssetBrowser::DrawGUI()
 		// 削除確認モーダル
 		DrawDeleteConfirmModal();
 	};
+
+	// TODO : MaterialEditorのDrawGUIをAssetBrowserのDrawGUIの中で呼ぶのは適切ではない。
+	if (materialEditor)
+	{
+		materialEditor->DrawGUI(nullptr);
+	}
+
 #endif // USE_IMGUI
 
 }
@@ -619,6 +626,18 @@ void AssetBrowser::OpenAsset(const fs::path& assetPath)
 		//OpenFileInVisualStudio(slnPath, filePath); // ソリューションファイルパスがハードコードされているため、Visual Studioが正しく開けない可能性がある
 		OpenFileWithDefaultApplication(absolutePath.wstring()); // とりあえず関連付けされたアプリで開く（Visual Studioが関連付けされていればそちらで開く）
 	}
+	else if (type == AssetType::Material)
+	{
+		// マテリアルファイルならマテリアルエディタで開く
+		if (auto meta = CurryEngine::Resources::AssetDatabase::FindByPath(assetPath.string()))
+		{
+			materialEditor = std::make_unique<CurryEngine::Editor::MaterialEditor>(meta->id);
+		}
+		else
+		{
+			LOG_ERROR("Failed to open material editor: Material asset not found in database for path: " + assetPath.string());
+		}
+	}
 	else
 	{
 		// それ以外のファイルなら既定のアプリで開く
@@ -839,6 +858,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 				case AssetType::Scene:     badge = "SCN";    badgeColor = { 0.8f, 0.3f, 0.8f, 1.0f }; break;
 				case AssetType::Prefab:    badge = "PFB";    badgeColor = { 0.9f, 0.5f, 0.1f, 1.0f }; break;
 				case AssetType::Script:    badge = "C#";     badgeColor = { 0.2f, 0.8f, 0.6f, 1.0f }; break;
+				case AssetType::Material:  badge = "MAT";    badgeColor = { 0.6f, 0.4f, 0.9f, 1.0f }; break;
 				default: break;
 				}
 				if (badge)
@@ -1692,6 +1712,15 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 		if (ImGui::MenuItem("Create HLSL Shader"))
 		{
 			ShowHlslShaderCreationModal(folderPath);
+		}
+		if (ImGui::MenuItem("Create Material"))
+		{
+			// 新しいマテリアルを作成する処理
+			fs::path newMaterialPath = MakeUniqueFilePath(folderPath, "New Material", ".mat");
+			std::ofstream ofs(newMaterialPath);
+			ofs << "{}"; // 空のマテリアルデータをJSON形式で書き込む
+			ofs.close();
+			Refresh();
 		}
 		ImGui::EndPopup();
 	}

@@ -11,6 +11,8 @@
 
 namespace fs = std::filesystem;
 
+#include "Engine/Editor/MaterialEditor.h"
+
 // fs::pathをキーにしたunordered_mapやunordered_setで必要なハッシュ関数
 struct FsPathHash
 {
@@ -196,4 +198,7 @@ private:
 	static inline std::unordered_set<fs::path, FsPathHash> selectedAssets; // 複数選択されたアセットのパスを保持するためのunordered_set
 	static inline fs::path lastClickedAsset; // 最後に選択されたアセットのパス（Shift+クリックで範囲選択する際の基準点）
 	static inline std::vector<fs::path> lastResultOrder; // 最後に検索結果として表示されたアセットの順序を保持するためのベクター（Shift+クリックで範囲選択する際の順序基準）
+
+	// TODO: エディタのテストのために一時的に置いているため、IEditorWindowなどのインターフェースを作って、EditorManagerに登録するようにする
+	static inline std::unique_ptr<CurryEngine::Editor::MaterialEditor> materialEditor;
 };

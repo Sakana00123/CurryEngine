@@ -1,0 +1,13 @@
+{
+    "blendState": 5,
+    "depthStencilState": 4,
+    "rasterizerState": 6,
+    "shaders": {
+        "0": "./Shader/skybox_ps.hlsl"
+    },
+    "textures": {
+        "0": {
+            "skybox": ""
+        }
+    }
+}
