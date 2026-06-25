@@ -9,7 +9,7 @@
 bool ModelAsset::LoadFromFile(const std::string& path)
 {
 	// ファイルからモデルデータを読み込む処理をここに実装します。
-
+	_path = path;
 	CurryEngine::Utils::GltfImporter importer;
     if (!importer.Import(path, *this)) {
         return false;
