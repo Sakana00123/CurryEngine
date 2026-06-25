@@ -63,6 +63,10 @@ namespace CurryEngine::Resources
 		/*changed |= */ImGui::InputFloat("Scale Factor", &settings.scaleFactor);
 		changed |= ImGui::IsItemDeactivatedAfterEdit(); // スケール係数の入力が完了したときに変更を検知する
 		changed |= ImGui::Checkbox("Static Batching", &settings.staticBatching);
+		changed |= ImGui::Checkbox("Make Left-Handed", &settings.makeLeftHanded);
+		changed |= ImGui::Checkbox("Flip UVs", &settings.flipUVs);
+		changed |= ImGui::Checkbox("Flip Winding Order", &settings.flipWindingOrder);
+		changed |= ImGui::Checkbox("Optimize Mesh", &settings.optimizeMesh);
 		if (changed)
 		{
 			settings.scaleFactor = (std::max)(settings.scaleFactor, 0.0001f); // スケール係数が0以下にならないように制限
@@ -75,10 +79,11 @@ namespace CurryEngine::Resources
 			g_isDirty = true;
 		}
 
-		ImGui::Separator();
-
-		if (g_modelRenderer.m_asset)
+		static bool showMaterialSettings = false;
+		ImGui::Checkbox("Show Material Settings", &showMaterialSettings);
+		if (g_modelRenderer.m_asset && showMaterialSettings)
 		{
+			ImGui::Separator();
 			// マテリアルの設定を表示
 			for (size_t i = 0; i < g_modelRenderer.m_asset->materials.size(); ++i)
 			{

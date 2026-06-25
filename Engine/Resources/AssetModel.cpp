@@ -225,20 +225,34 @@ bool AssetModel::LoadFromMeta(const CurryEngine::Resources::AssetMeta& meta)
     // genNormals       : 法線がなければ生成
     // calcTangentSpace : タンジェント・バイタンジェントを計算
     // joinIdentical    : 同一頂点を結合してインデックスを最適化
-    // flipUVs          : UV の V 軸を反転（DirectX は上が 0）
-    // flipWindingOrder : 巻き順を反転（assimp はデフォルト CCW、DirectX は CW）
-    constexpr unsigned int importFlags =
+    unsigned int importFlags =
         aiProcess_Triangulate |
         aiProcess_GenSmoothNormals |
         aiProcess_CalcTangentSpace |
         aiProcess_JoinIdenticalVertices |
-        aiProcess_FlipUVs |
-        aiProcess_FlipWindingOrder |
         aiProcess_LimitBoneWeights | // ボーン影響数を 4 に制限
 		aiProcess_GlobalScale; // グローバルスケールを適用
-    
+
 	CurryEngine::Resources::ModelImportSettings settings = meta.GetImportSettings<CurryEngine::Resources::ModelImportSettings>();
 	importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, settings.scaleFactor); // モデル全体のスケーリングを設定
+
+    if (settings.makeLeftHanded)
+    {
+        importFlags |= aiProcess_MakeLeftHanded;
+	}
+    if (settings.flipUVs)
+    {
+		importFlags |= aiProcess_FlipUVs;
+    }
+    if (settings.flipWindingOrder)
+	{
+        importFlags |= aiProcess_FlipWindingOrder;
+	}
+    if (settings.optimizeMesh)
+    {
+        importFlags |= aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph;
+	}
+
     Assimp::ProgressHandler* progressHandler = new Assimp::ImporterProgressHandler();
 	importer.SetProgressHandler(progressHandler);
 
