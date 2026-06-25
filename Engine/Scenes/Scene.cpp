@@ -9,10 +9,32 @@
 #include "Engine/Core/Time.h"
 #include "Engine/Utils/UniqueIdGenerator.h"
 
+#include "Engine/Editor/SceneViewWindow.h"
+#include "Engine/Editor/ImportSettings/ImportSettingsWindow.h"
+
+
+EditorCamera* Scene::GetSceneViewEditorCamera() const
+{
+	return editorCameras[0].get();
+}
+
+EditorCamera* Scene::GetPreviewEditorCamera() const
+{
+	return editorCameras[1].get();
+}
+
+
 Scene::Scene() : canTransition(false)
 {
 	cameraSystem.Initialize(this);
 	objectManager = std::make_unique<ObjectManager>(this);
+
+	for (int i = 0; i < _countof(editorCameras); ++i) {
+		editorCameras[i] = std::make_unique<EditorCamera>();
+		editorCameras[i]->Initialize();
+	}
+	editorCameras[0]->SetUpdateFlagFunction([]() { return CurryEngine::SceneViewWindow::Get().IsFocused(); }); // シーンビューウィンドウがフォーカスされている場合に更新するように設定
+	editorCameras[1]->SetUpdateFlagFunction([]() { return CurryEngine::Resources::ImportSettingsWindow::IsOpen(); }); // インポート設定ウィンドウが開いている場合に更新するように設定
 }
 
 void Scene::Initialize()
@@ -101,6 +123,13 @@ void Scene::Update(float deltaTime)
 
 	// シーン内の全オブジェクトの更新の後処理
 	LateUpdate(deltaTime);
+
+	// エディターカメラの更新
+	for (int i = 0; i < _countof(editorCameras); ++i) {
+		if (editorCameras[i]) {
+			editorCameras[i]->Update(deltaTime);
+		}
+	}
 }
 
 void Scene::LateUpdate(float deltaTime)
@@ -179,7 +208,7 @@ void Scene::Serialize(json& j) const
 	//j["canTransition"] = canTransition;
 	
 	// エディターカメラのシリアライズ
-	j["editorCamera"] = EditorCamera::Serialize();
+	j["editorCamera"] = GetSceneViewEditorCamera()->Serialize();
 
 	// シーン内の全オブジェクトをシリアライズ
 	j["objects"] = objectManager->Serialize();
@@ -205,7 +234,7 @@ void Scene::Deserialize(const json& j) {
 	// エディターカメラのデシリアライズ
 	if (j.contains("editorCamera"))
 	{
-		EditorCamera::Deserialize(j["editorCamera"]);
+		GetSceneViewEditorCamera()->Deserialize(j["editorCamera"]);
 	}
 
 	// シーン内の全オブジェクトをデシリアライズ

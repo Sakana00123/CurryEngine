@@ -42,11 +42,11 @@ Texture2D<float4> occlusionTexture         : register(t5);
 // テクスチャが存在するかどうかのフラグ（Material 側で SetValue する）
 cbuffer MATERIAL_TEXTURE_FLAGS : register(b2)
 {
-    bool hasBaseColorTex;
-    bool hasMetallicRoughnessTex;
-    bool hasNormalTex;
-    bool hasEmissiveTex;
-    bool hasOcclusionTex;
+    bool has_baseColorTexture;
+    bool has_metallicRoughnessTexture;
+    bool has_normalTexture;
+    bool has_emissiveTexture;
+    bool has_occlusionTexture;
     bool3 _flagPad;
 };
 
@@ -62,7 +62,7 @@ float4 main(VS_OUT pin, bool isFrontFace : SV_IsFrontFace) : SV_TARGET
     // ベースカラー
     // -----------------------------------------------------------------
     float4 baseColor = baseColorFactor;
-    if (hasBaseColorTex)
+    if (has_baseColorTexture)
     {
         float4 sampled = baseColorTexture.Sample(samplerStates[ANISOTROPIC], pin.texcoord);
         sampled.rgb    = pow(abs(sampled.rgb), GAMMA); // リニア空間へ変換
@@ -82,7 +82,7 @@ float4 main(VS_OUT pin, bool isFrontFace : SV_IsFrontFace) : SV_TARGET
     // エミッシブ
     // -----------------------------------------------------------------
     float3 emissive = emissiveFactor;
-    if (hasEmissiveTex)
+    if (has_emissiveTexture)
     {
         float4 sampled = emissiveTexture.Sample(samplerStates[ANISOTROPIC], pin.texcoord);
         sampled.rgb    = pow(abs(sampled.rgb), GAMMA);
@@ -94,7 +94,7 @@ float4 main(VS_OUT pin, bool isFrontFace : SV_IsFrontFace) : SV_TARGET
     // -----------------------------------------------------------------
     float metallic  = metallicFactor;
     float roughness = roughnessFactor;
-    if (hasMetallicRoughnessTex)
+    if (has_metallicRoughnessTexture)
     {
         // glTF 仕様: G チャンネル = ラフネス、B チャンネル = メタリック
         float4 sampled = metallicRoughnessTexture.Sample(samplerStates[LINEAR], pin.texcoord);
@@ -106,7 +106,7 @@ float4 main(VS_OUT pin, bool isFrontFace : SV_IsFrontFace) : SV_TARGET
     // オクルージョン
     // -----------------------------------------------------------------
     float occlusion = 1.0;
-    if (hasOcclusionTex)
+    if (has_occlusionTexture)
     {
         float4 sampled = occlusionTexture.Sample(samplerStates[LINEAR], pin.texcoord);
         occlusion      = sampled.r;
@@ -140,7 +140,7 @@ float4 main(VS_OUT pin, bool isFrontFace : SV_IsFrontFace) : SV_TARGET
         N = -N;
     }
 
-    if (hasNormalTex)
+    if (has_normalTexture)
     {
         float3 nSampled = normalTexture.Sample(samplerStates[LINEAR], pin.texcoord).xyz;
         nSampled        = nSampled * 2.0 - 1.0;

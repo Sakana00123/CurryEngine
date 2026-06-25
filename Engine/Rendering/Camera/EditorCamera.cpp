@@ -4,7 +4,6 @@
 #include "Engine/Editor/Console.h"
 #include "Engine/Input/InputSystem.h"
 #include "Engine/Core/Time.h"
-#include "Engine/Editor/SceneViewWindow.h"
 #include "Engine/Rendering/Pipeline/Graphics.h"
 
 void EditorCamera::Initialize()
@@ -17,7 +16,7 @@ void EditorCamera::Update(float elapsedTime)
 {
 
 #ifdef USE_IMGUI
-	if (CurryEngine::SceneViewWindow::Get().IsFocused()) {
+	if (updateFlagFunction ? updateFlagFunction() : false) {
 		if (float wheelDelta = InputSystem::GetWheelDelta()) {
 			distance -= wheelDelta * 0.1f; // ホイールの回転量に応じて距離を調整
 			distance = std::clamp(distance, minDistance, maxDistance);
@@ -29,12 +28,11 @@ void EditorCamera::Update(float elapsedTime)
 	elapsedTime = Time::UnscaledDeltaTime();
 
 	//カメラ操作
-	static bool isMoving = false;
-	if (GetAsyncKeyState(VK_RBUTTON) || GetAsyncKeyState(VK_MBUTTON))
+	if (GetAsyncKeyState(moveKey) || GetAsyncKeyState(rotateKey) || GetAsyncKeyState(panKey))
 	{
 		if (!isMoving)
 		{
-			isMoving = CurryEngine::SceneViewWindow::Get().IsFocused();
+			isMoving = updateFlagFunction ? updateFlagFunction() : false;
 		}
 		else
 		{
@@ -45,7 +43,7 @@ void EditorCamera::Update(float elapsedTime)
 			InputSystem::GetMouseDelta(dx, dy);
 
 			// 右ボタン押下中に回転
-			if (GetAsyncKeyState(VK_RBUTTON))
+			if (GetAsyncKeyState(rotateKey))
 			{
 				if (std::fabsf(rx) > 0.01f || std::fabsf(ry) > 0.01f ||
 					abs(dx) > 0 || abs(dy) > 0)
@@ -73,7 +71,7 @@ void EditorCamera::Update(float elapsedTime)
 			float axisZ = 0.0f;
 
 			XMVECTOR Move{};
-			if (GetAsyncKeyState(VK_RBUTTON))
+			if (GetAsyncKeyState(moveKey))
 			{
 				// キーボード入力
 				axisX = InputSystem::GetAxis(Side::Left, Axis::X);
@@ -111,7 +109,7 @@ void EditorCamera::Update(float elapsedTime)
 					move = Vector3(m);
 				}
 			}
-			else if (GetAsyncKeyState(VK_MBUTTON))
+			else if (GetAsyncKeyState(panKey))
 			{
 				// マウスホイールボタン押下中はマウス移動で平行移動
 				axisX = static_cast<float>(-dx) * 0.1f;
@@ -212,7 +210,7 @@ void EditorCamera::DrawProperty()
 #endif // USE_IMGUI
 }
 
-json EditorCamera::Serialize()
+json EditorCamera::Serialize() const
 {
 	json j;
 	j["position"] = { position.x, position.y, position.z };

@@ -376,6 +376,7 @@ void AssetModel::ImportMaterials(const aiScene* scene)
                 auto it = m_texturePathToIndex.find(absPath);
                 if (it == m_texturePathToIndex.end()) return;
                 mat->SetTexture(slotName, textures.at(it->second));
+				mat->SetValue("has_" + slotName, true); // シェーダー側でテクスチャ有無を判定するためのフラグ)
             };
 
         // スロット名はシェーダー側の変数名に合わせる

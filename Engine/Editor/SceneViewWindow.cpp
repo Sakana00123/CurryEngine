@@ -6,6 +6,7 @@
 #include "EditorGUI.h"
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include <ImGuizmo.h>
+#include <imgui_internal.h>
 #include <Engine\Input\InputSystem.h>
 #include <Engine\Rendering\Camera\EditorCamera.h>
 #include <Engine\Physics\Physics.h>
@@ -79,7 +80,12 @@ namespace CurryEngine
 
 			// Imageの範囲内にカーソルがあるかでフォーカス判定
 			if (ImGui::IsMouseHoveringRect(imageMin, imageMax)) {
-				isSceneWindowFocused = ImGui::IsItemActivated() || ImGui::IsItemHovered(); // ウィンドウがアクティブか、もしくはホバーされている場合にフォーカスをtrueにする
+				if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseClicked(ImGuiMouseButton_Right)) {
+					ImGui::SetWindowFocus(); // シーンビューウィンドウにフォーカスを設定
+				}
+				auto navWindow = ImGui::GetCurrentContext()->NavWindow;
+				std::string windowName = navWindow ? navWindow->Name : "None";
+				isSceneWindowFocused = (ImGui::IsItemActivated() || ImGui::IsItemHovered()) && windowName == "Scene";
 			}
 			else {
 				isSceneWindowFocused = false;
@@ -89,71 +95,71 @@ namespace CurryEngine
 			isSceneWindowFocused = false;
 		}
 
-		//ギズモ
 		if (scene != nullptr)
 		{
+			//ギズモ
 			scene->GetObjectManager()->DrawGuizmo(rtx);
-		}
 
-		// シーンビューのレイキャストによるオブジェクト選択
-		if (isSceneWindowFocused && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-		{
-			// ギズモに触れている場合は完全スキップ
-			bool isOverGuizmo = ImGuizmo::IsOver() || ImGuizmo::IsUsing();
 
-			// ImGui のUI要素（ボタン、スライダー等）に触れていない
-			bool isOverImGuiItem = ImGui::IsAnyItemActive();
-
-			if (!isOverGuizmo && !isOverImGuiItem)
+			// シーンビューのレイキャストによるオブジェクト選択
+			if (isSceneWindowFocused && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 			{
-				Vector2 rayStartScreen = InputSystem::GetMousePosition();
-				Vector3 rayStart, rayDir;
-				EditorCamera::ScreenPointToRay(rayStartScreen, rayStart, rayDir);
+				// ギズモに触れている場合は完全スキップ
+				bool isOverGuizmo = ImGuizmo::IsOver() || ImGuizmo::IsUsing();
 
-				float rayLength = 1000.0f;
-				RaycastHit hitInfo;
+				// ImGui のUI要素（ボタン、スライダー等）に触れていない
+				bool isOverImGuiItem = ImGui::IsAnyItemActive();
 
-				bool physxHit = Physics::Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything);
-				CurryEngine::EditorSupport::EditorRaycastResult aabbHitInfo;
-				bool aabbHit = (RaycastAABBFallback(rayStart, rayDir, rayLength, scene, aabbHitInfo));
-				std::shared_ptr<GameObject> selectedObj = nullptr;
-
-				float physxHitDistance = physxHit ? hitInfo.distance : std::numeric_limits<float>::max();
-				float aabbHitDistance = aabbHit ? aabbHitInfo.distance : std::numeric_limits<float>::max();
-
-				if (physxHit && physxHitDistance <= aabbHitDistance)
+				if (!isOverGuizmo && !isOverImGuiItem)
 				{
-					// PhysXヒット
-					selectedObj = scene->FindGameObjectPtrById(
-						hitInfo.collider->GetOwner()->GetId());
-				}
-				else if (aabbHit)
-				{
-					// AABBヒット
-					selectedObj = aabbHitInfo.hitObject.lock();
-				}
+					Vector2 rayStartScreen = InputSystem::GetMousePosition();
+					Vector3 rayStart, rayDir;
+					scene->GetSceneViewEditorCamera()->ScreenPointToRay(rayStartScreen, rayStart, rayDir);
 
-				// ヒットしたオブジェクトを選択。Ctrlキーが押されている場合は選択に追加、そうでない場合は単独選択。何もヒットしなかった場合は、Ctrlキーが押されていなければ選択解除。
-				if (selectedObj)
-				{
-					if (EditorSelection* sel = scene->GetObjectManager()->GetEditorSelection())
+					float rayLength = 1000.0f;
+					RaycastHit hitInfo;
+
+					bool physxHit = Physics::Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything);
+					CurryEngine::EditorSupport::EditorRaycastResult aabbHitInfo;
+					bool aabbHit = (RaycastAABBFallback(rayStart, rayDir, rayLength, scene, aabbHitInfo));
+					std::shared_ptr<GameObject> selectedObj = nullptr;
+
+					float physxHitDistance = physxHit ? hitInfo.distance : std::numeric_limits<float>::max();
+					float aabbHitDistance = aabbHit ? aabbHitInfo.distance : std::numeric_limits<float>::max();
+
+					if (physxHit && physxHitDistance <= aabbHitDistance)
 					{
-						sel->Select(selectedObj, ImGui::GetIO().KeyCtrl);
-						scene->GetObjectManager()->SelectInspectorNode(selectedObj.get());
+						// PhysXヒット
+						selectedObj = scene->FindGameObjectPtrById(
+							hitInfo.collider->GetOwner()->GetId());
 					}
-				}
-				else if (!ImGui::GetIO().KeyCtrl)
-				{
-					// 何もヒットしなかった → 選択解除
-					if (EditorSelection* sel = scene->GetObjectManager()->GetEditorSelection())
+					else if (aabbHit)
 					{
-						sel->Clear();
-						scene->GetObjectManager()->SelectInspectorNode(nullptr);
+						// AABBヒット
+						selectedObj = aabbHitInfo.hitObject.lock();
+					}
+
+					// ヒットしたオブジェクトを選択。Ctrlキーが押されている場合は選択に追加、そうでない場合は単独選択。何もヒットしなかった場合は、Ctrlキーが押されていなければ選択解除。
+					if (selectedObj)
+					{
+						if (EditorSelection* sel = scene->GetObjectManager()->GetEditorSelection())
+						{
+							sel->Select(selectedObj, ImGui::GetIO().KeyCtrl);
+							scene->GetObjectManager()->SelectInspectorNode(selectedObj.get());
+						}
+					}
+					else if (!ImGui::GetIO().KeyCtrl)
+					{
+						// 何もヒットしなかった → 選択解除
+						if (EditorSelection* sel = scene->GetObjectManager()->GetEditorSelection())
+						{
+							sel->Clear();
+							scene->GetObjectManager()->SelectInspectorNode(nullptr);
+						}
 					}
 				}
 			}
 		}
-
 		ImGui::End();
 	}
 }

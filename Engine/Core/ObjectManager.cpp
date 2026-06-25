@@ -986,10 +986,10 @@ void ObjectManager::DrawHierarchy()
 				// ダブルクリックでそのオブジェクトのフォーカスに移動
 				if (selectNode && (isActiveAndHovered) && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
-					if (selectNode->transform)
+					if (selectNode->transform && scene)
 					{
 						Vector3 pos = (selectNode->transform->GetWorldPosition());
-						EditorCamera::SetPosition(pos);
+						scene->GetSceneViewEditorCamera()->SetPosition(pos);
 					}
 				}
 

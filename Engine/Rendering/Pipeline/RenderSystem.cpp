@@ -67,9 +67,10 @@ void RenderSystem::Render()
             {
                 ProfileScopedSection_2(0, "SceneView::Rendering", ImGuiControl::Profiler::Yellow);
                 // エディタビュー用の描画処理
-                cameraPos = EditorCamera::GetPosition();
-                View = EditorCamera::GetViewMatrix();
-                Projection = EditorCamera::GetProjectionMatrix();
+				EditorCamera* editorCamera = scene->GetSceneViewEditorCamera();
+                cameraPos = editorCamera->GetPosition();
+                View = editorCamera->GetViewMatrix();
+                Projection = editorCamera->GetProjectionMatrix();
 
                 // RenderContextの設定
                 {
@@ -87,14 +88,37 @@ void RenderSystem::Render()
                     DirectX::XMStoreFloat4x4(&sceneContext.inverseProjection, XMMatrixInverse(nullptr, Projection));
                     DirectX::XMStoreFloat4x4(&sceneContext.inverseViewProjection, XMMatrixInverse(nullptr, ViewProjection));
                 }
-				previewContext = sceneContext; // プレビューパイプラインでも同じカメラ情報を使用
-
                 // エディタビュー用の描画処理
                 sceneRenderPipeline->Execute(&sceneContext, scene);
-
-				// プレビュー用の描画処理
-				previewRenderPipeline->Execute(&previewContext, scene);
             }
+
+            // プレビュー用の描画処理
+            {
+				EditorCamera* editorCamera = scene->GetPreviewEditorCamera();
+                cameraPos = editorCamera->GetPosition();
+                View = editorCamera->GetViewMatrix();
+                Projection = editorCamera->GetProjectionMatrix();
+
+                // RenderContextの設定
+                {
+                    previewContext.renderState = Graphics::GetRenderState();
+                    previewContext.deltaTime = Time::DeltaTime();
+                    previewContext.unscaledDeltaTime = Time::UnscaledDeltaTime();
+                    previewContext.totalTime = time->TimeStamp();
+
+                    previewContext.cameraPosition = cameraPos;
+                    DirectX::XMStoreFloat4x4(&previewContext.view, View);
+                    DirectX::XMStoreFloat4x4(&previewContext.projection, Projection);
+                    auto ViewProjection = View * Projection;
+                    DirectX::XMStoreFloat4x4(&previewContext.viewProjection, ViewProjection);
+                    DirectX::XMStoreFloat4x4(&previewContext.inverseView, XMMatrixInverse(nullptr, View));
+                    DirectX::XMStoreFloat4x4(&previewContext.inverseProjection, XMMatrixInverse(nullptr, Projection));
+                    DirectX::XMStoreFloat4x4(&previewContext.inverseViewProjection, XMMatrixInverse(nullptr, ViewProjection));
+                }
+
+                previewRenderPipeline->Execute(&previewContext, scene);
+            }
+
 #endif // DEBUG
             {
                 // ゲームビュー用の描画処理

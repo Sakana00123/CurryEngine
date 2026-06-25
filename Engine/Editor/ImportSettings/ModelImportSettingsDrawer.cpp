@@ -44,7 +44,7 @@ namespace CurryEngine::Resources
 		if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
 		{
 			// 16:9 のアスペクト比でプレビューを描画するためのサイズを計算
-			float width = 160.0f; // プレビューの幅を固定
+			float width = 720.0f; // プレビューの幅を固定
 			ImVec2 size = { width, width * 9.0f / 16.0f };
 			ImGui::Image(previewImage->GetSRV(), size);
 		}
@@ -74,6 +74,23 @@ namespace CurryEngine::Resources
 		{
 			g_isDirty = true;
 		}
+
+		ImGui::Separator();
+
+		if (g_modelRenderer.m_asset)
+		{
+			// マテリアルの設定を表示
+			for (size_t i = 0; i < g_modelRenderer.m_asset->materials.size(); ++i)
+			{
+				auto& material = g_modelRenderer.m_asset->materials[i];
+				if (ImGui::CollapsingHeader(("Material " + std::to_string(i)).c_str()))
+				{
+					material->DrawProperty();
+				}
+			}
+		}
+
+
 		return changed;
 	}
 	nlohmann::json ModelImportSettingsDrawer::GetDefaultSettings() const

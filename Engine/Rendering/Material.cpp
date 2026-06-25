@@ -770,10 +770,10 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 
 void Material::UpdateTextureAndSamplerBindings(ID3D11Device* device, ShaderBinding& binding, const ShaderReflectionData& reflection)
 {
-	// 既存のテクスチャ設定をクリア
-	textures.clear();
-	// 必要なテクスチャ数だけ確保
-	textures.reserve(reflection.textureInfos.size());
+	//// 既存のテクスチャ設定をクリア
+	//textures.clear();
+	//// 必要なテクスチャ数だけ確保
+	//textures.reserve(reflection.textureInfos.size());
 	// Shaderのテクスチャバインド情報を取得し、テクスチャスロットを確保
 	for (const ShaderReflectionData::TextureInfo& texInfo : reflection.textureInfos)
 	{

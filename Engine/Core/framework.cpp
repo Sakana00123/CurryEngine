@@ -100,9 +100,6 @@ bool Framework::Initialize()
     //エフェクトエディタ初期化
     EffectEditor::Initialize();
 
-    // エディタカメラ初期化
-    EditorCamera::Initialize();
-
 	// 最初のシーンをロード(EditorConfigManagerの初期化後に呼び出す必要がある)
 	SceneManager::LoadFirstScene();
 
@@ -347,13 +344,6 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
         EffectManager::Update(deltaTime);
     }
 
-	// エディタカメラ更新
-#ifdef _DEBUG
-    {
-        ProfileScopedSection_2(0, "EditorCamera::Update", ImGuiControl::Profiler::Green);
-        EditorCamera::Update(deltaTime);
-    }
-#endif // _DEBUG
 }
 
 void Framework::Render(float deltaTime/*Elapsed seconds from last frame*/)

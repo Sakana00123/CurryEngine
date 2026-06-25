@@ -9,6 +9,8 @@
 
 #include <imgui.h>
 #include <imgui_internal.h>
+#include <Engine\Scenes\Scene.h>
+#include <Engine\Scenes\SceneManager.h>
 
 namespace
 {
@@ -215,6 +217,7 @@ namespace CurryEngine::Resources
 			{
 				_editingSettings = meta->importSettings;
 				_isDirty = false;
+				RequestPreviewUpdate(_targetId); // Revert後の設定に基づいてプレビューを更新
 			}
 
 			ImGui::SameLine();
@@ -341,6 +344,13 @@ namespace CurryEngine::Resources
 		_isOpen = true;
 		// プレビューの更新をリクエスト
 		RequestPreviewUpdate(id);
+
+		// プレビューカメラの初期化
+		if (Scene* currentScene = SceneManager::GetCurrentScene())
+		{
+			currentScene->GetPreviewEditorCamera()->Initialize();
+			currentScene->GetPreviewEditorCamera()->SetPosition(Vector3(0, 0, 0)); // 適切な初期位置に設定
+		}
 	}
 
 	void ImportSettingsWindow::DrawPreview(const AssetId& id, RenderContext* context)

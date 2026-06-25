@@ -9,6 +9,7 @@
 class DirectionalLightComponent;
 class PointLightComponent;
 class SpotLightComponent;
+#include "Engine/Rendering/Camera/EditorCamera.h"
 
 /**
  * @file
@@ -23,6 +24,14 @@ public:
 
 	/** @brief カメラシステム。*/
 	CameraSystem cameraSystem;
+
+	/** @brief エディタ用カメラ。*/
+	std::unique_ptr<EditorCamera> editorCameras[2]; // 0: シーンビュー, 1: プレビュー用
+	/** @brief シーンビュー用のエディタカメラを取得します。*/
+	EditorCamera* GetSceneViewEditorCamera() const;
+	/** @brief プレビュー用のエディタカメラを取得します。*/
+	EditorCamera* GetPreviewEditorCamera() const;
+
 
 	/** @brief Undo/Redoスタック。シーン内での変更を管理します。*/
 	CurryEngine::UndoRedoStack undoRedoStack;

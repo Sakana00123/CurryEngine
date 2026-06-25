@@ -419,4 +419,5 @@ void ModelRenderer::EnsureDefaultMaterial(ID3D11Device* device)
     {
         setupMaterial(mat);
 	}
+
 }

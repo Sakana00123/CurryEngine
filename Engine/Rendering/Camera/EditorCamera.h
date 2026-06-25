@@ -10,66 +10,74 @@
 class EditorCamera
 {
 private:
-	static inline Vector3 position;
-	static inline Quaternion rotation = { 0,0,0,1 };
+	Vector3 position;
+	Quaternion rotation = { 0,0,0,1 };
 
 	/** @brief ターゲットからの距離。*/
-	static inline float distance = 10.0f;
+	float distance = 10.0f;
 	/** @brief 最小距離。*/
-	static inline float minDistance = 0.1f;
+	float minDistance = 0.1f;
 	/** @brief 最大距離。*/
-	static inline float maxDistance = 1000.f;
+	float maxDistance = 1000.f;
 	/** @brief 平行移動の速度（ユニット/秒）。*/
-	static inline float speed = 3.0f;
+	float speed = 3.0f;
 	/** @brief 回転速度（度/秒）。*/
-	static inline float rotateSpeed = 30.0f;
+	float rotateSpeed = 30.0f;
 	/** @brief X 軸の最大角（度）。*/
-	static inline float maxAngleX = 70.0f;
+	float maxAngleX = 70.0f;
 	/** @brief X 軸の最小角（度）。*/
-	static inline float minAngleX = -70.0f;
+	float minAngleX = -70.0f;
 
 	/** @brief 視野角（度）。*/
-	static inline float fieldOfView = 60.0f;
+	float fieldOfView = 60.0f;
 	/** @brief アスペクト比（幅/高さ）。*/
-	static inline float aspect = 1280.0f / 720.0f;
+	float aspect = 1280.0f / 720.0f;
 	/** @brief 近クリップ面。*/
-	static inline float nearZ = 0.1f;
+	float nearZ = 0.1f;
 	/** @brief 遠クリップ面。*/
-	static inline float farZ = 1000.0f;
+	float farZ = 1000.0f;
+
+	int moveKey = VK_RBUTTON; // 移動のトリガーキー （右ボタン）
+	int rotateKey = VK_RBUTTON; // 回転のトリガーキー（右ボタン）
+	int panKey = VK_MBUTTON; // 平行移動のトリガーキー（中ボタン）
+	bool isMoving = false; // カメラが移動中かどうかのフラグ
+	std::function<bool()> updateFlagFunction; // 更新フラグを取得する関数。対象のウィンドウがフォーカスされている場合に true を返すように設定する。
 public:
 	/** @brief 初期化処理。入力と内部状態をセットアップします。*/
-	static void Initialize();
+	void Initialize();
 
 	/**
 	 * @brief 毎フレーム更新。
 	 * @param elapsedTime 経過時間（秒）。
 	 * @details 入力による移動/回転と角度クランプを適用します。
 	 */
-	static void Update(float elapsedTime);
+	void Update(float elapsedTime);
 
 	/**
 	 * @brief カメラの注視点位置を設定します。
 	 * @param pos 注視点位置。
 	 */
-	static void SetPosition(const Vector3& pos) { position = pos; }
+	void SetPosition(const Vector3& pos) { position = pos; }
 
 	/**
 	 * @brief カメラ位置を取得します。
 	 * @return カメラ位置。
 	 */
-	static Vector3 GetPosition() { return position; }
+	Vector3 GetPosition() const { return position; }
+
+	void SetUpdateFlagFunction(std::function<bool()> func) { updateFlagFunction = func; }
 
 	/**
 	 * @brief ビュー行列を取得します。
 	 * @return ビュー行列。
 	 */
-	static XMMATRIX GetViewMatrix();
+	XMMATRIX GetViewMatrix();
 
 	/**
 	 * @brief 射影行列を取得します。
 	 * @return 射影行列。
 	 */
-	static XMMATRIX GetProjectionMatrix();
+	XMMATRIX GetProjectionMatrix();
 
 	/**
 	 * @brief スクリーン座標をワールド空間のレイに変換します。
@@ -77,24 +85,24 @@ public:
 	 * @param outOrigin レイの原点（カメラ位置）。
 	 * @param outDirection レイの方向（正規化されたベクトル）。
 	 */
-	static void ScreenPointToRay(const Vector2& screenPos, Vector3& outOrigin, Vector3& outDirection);
+	void ScreenPointToRay(const Vector2& screenPos, Vector3& outOrigin, Vector3& outDirection);
 
 
 	/** @brief インスペクタ用プロパティ描画。*/
-	static void DrawProperty();
+	void DrawProperty();
 
 	/**
 	 * @brief 距離のクランプ範囲を設定します。
 	 * @param min 最小距離。
 	 * @param max 最大距離。
 	 */
-	static void SetClampDistance(float min, float max) { minDistance = min, maxDistance = max; }
+	void SetClampDistance(float min, float max) { minDistance = min, maxDistance = max; }
 
 
 	/** @brief シリアライズ。*/
-	static json Serialize();
+	json Serialize() const;
 
 	/** @brief デシリアライズ。*/
-	static void Deserialize(const json& j);
+	void Deserialize(const json& j);
 
 };
