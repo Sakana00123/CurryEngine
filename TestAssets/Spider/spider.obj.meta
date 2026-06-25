@@ -1,7 +1,11 @@
 {
     "id": "3b4e5d28375d9296d7444db3a6e9a0ea",
     "importSettings": {
-        "scaleFactor": 0.009999999776482582,
+        "flipUVs": true,
+        "flipWindingOrder": true,
+        "makeLeftHanded": true,
+        "optimizeMesh": false,
+        "scaleFactor": 1.0,
         "staticBatching": false
     },
     "isFolder": false,

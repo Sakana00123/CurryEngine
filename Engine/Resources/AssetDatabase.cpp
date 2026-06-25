@@ -255,6 +255,8 @@ namespace CurryEngine
 					std::string newPath = normalizedNewPrefix + it->first.substr(normalizedOldPrefix.size());
 					meta.path = newPath;
 					entriesToRename.emplace_back(newPath, meta); // 新しいキーと更新されたメタデータを保存
+					// 古いメタファイルを削除
+					std::filesystem::remove(AssetMetaSerializer::MetaPathFor(it->first));
 					it = s_metaByPath.erase(it); // 後で新しいキーで再挿入するため、ここで削除
 				}
 				else ++it;

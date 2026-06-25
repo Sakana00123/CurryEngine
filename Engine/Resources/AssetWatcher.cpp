@@ -183,7 +183,14 @@ namespace CurryEngine
 		case FILE_ACTION_RENAMED_NEW_NAME:
 			if (m_pendingRenameOldPath.has_value()) {
 				LOG_INFO("[AssetWatcher] File renamed from " + m_pendingRenameOldPath.value() + " to " + replacedPath);
-				CurryEngine::Resources::AssetDatabase::Rename(m_pendingRenameOldPath.value(), replacedPath); // アセットをリネーム
+				if (std::filesystem::is_regular_file(replacedPath))
+				{
+					CurryEngine::Resources::AssetDatabase::Rename(m_pendingRenameOldPath.value(), replacedPath); // アセットをリネーム
+				}
+				else if (std::filesystem::is_directory(replacedPath))
+				{
+					CurryEngine::Resources::AssetDatabase::RemapPathPrefix(m_pendingRenameOldPath.value(), replacedPath); // フォルダをリネーム
+				}
 				m_pendingRenameOldPath.reset(); // 保留をクリア
 			}
 			else {
