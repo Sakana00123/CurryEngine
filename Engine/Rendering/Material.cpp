@@ -77,30 +77,6 @@ void Material::SetValue(const std::string& name, void* value, size_t size)
 	{
 		cbData.dirty = true;
 	}
-
-	//// Shaderから変数情報を探す
-	//for (ShaderBinding& binding : m_ShaderBindings)
-	//{
-	//	for (auto& [cbName, cbData] : binding.cbuffers)
-	//	{
-	//		if (!binding.shader) continue;
-	//		//定数バッファレイアウトを取得
-	//		const ShaderReflectionData::ConstantBufferLayout* layout = binding.shader->GetConstantBufferLayout(cbName);
-	//		//存在しない場合はスキップ
-	//		if (!layout) continue;
-
-	//		//対象変数を探す
-	//		auto it = std::find_if(layout->variables.begin(), layout->variables.end(),
-	//			[&](const ShaderReflectionData::ShaderVariable& var) {return var.name == name; });
-	//		if (it == layout->variables.end()) continue;
-	//		//CPU側バッファに書き込み
-	//		memcpy(cbData.localData.data() + it->offset, value, size);
-	//		cbData.dirty = true;
-	//		return;
-	//	}
-	//}
-	////見つからなかった場合の警告
-	//Console::LogWarning("Warning: Material::SetValue failed. Variable " + name + " not found.");
 }
 
 void Material::GetValue(const std::string& name, void* value, size_t size) const
@@ -109,29 +85,6 @@ void Material::GetValue(const std::string& name, void* value, size_t size) const
 	{
 		memcpy(value, values.at(name).data(), size);
 	}
-
-	//// Shaderから変数情報を探す
-	//for (const ShaderBinding& binding : m_ShaderBindings)
-	//{
-	//	for (auto& [cbName, cbData] : binding.cbuffers)
-	//	{
-	//		if (!binding.shader) continue;
-	//		//定数バッファレイアウトを取得
-	//		const ShaderReflectionData::ConstantBufferLayout* layout = binding.shader->GetConstantBufferLayout(cbName);
-	//		//存在しない場合はスキップ
-	//		if (!layout) continue;
-
-	//		//対象変数を探す
-	//		auto it = std::find_if(layout->variables.begin(), layout->variables.end(),
-	//			[&](const ShaderReflectionData::ShaderVariable& var) {return var.name == name; });
-	//		if (it == layout->variables.end()) continue;
-	//		//CPU側バッファから読み込み
-	//		memcpy(value, cbData.localData.data() + it->offset, size);
-	//		return;
-	//	}
-	//}
-	////見つからなかった場合の警告
-	//Console::LogWarning("Warning: Material::SetFloat failed. Variable " + name + " not found.");
 }
 
 void Material::Apply(RenderContext* rtx)
@@ -189,53 +142,6 @@ void Material::Apply(RenderContext* rtx)
 				// GPU 側の定数バッファに更新
 				immediateContext->UpdateSubresource(cbData.buffer.Get(), 0, nullptr, cbData.localData.data(), 0, 0);
 				cbData.dirty = false;
-#if 0
-				const ShaderReflectionData::ConstantBufferLayout* layout = binding.shader->GetConstantBufferLayout(cbName);
-				if (layout)
-				{
-					for (const auto& var : layout->variables)
-					{
-						// 変更された変数をログに出力
-						Console::Log("Updated CBuffer: " + cbName + ", Variable: " + var.name);
-						switch (var.typeDesc.Class)
-						{
-						case D3D_SVC_SCALAR:
-							switch (var.typeDesc.Type)
-							{
-							case D3D_SVT_FLOAT:
-							{
-								float value;
-								memcpy(&value, cbData.localData.data() + var.offset, sizeof(float));
-								Console::Log(var.name + ": " + std::to_string(value));
-							}
-							break;
-							default:
-								break;
-							};
-							break;
-						case D3D_SVC_VECTOR:
-							switch (var.typeDesc.Type)
-							{
-							case D3D_SVT_FLOAT:
-							{
-								float values[4] = {};
-								memcpy(values, cbData.localData.data() + var.offset, sizeof(float) * var.typeDesc.Elements);
-								Console::Log(var.name + ": (" + std::to_string(values[0]) + ", " + std::to_string(values[1]) + ", " + std::to_string(values[2]) + ", " + std::to_string(values[3]) + ")");
-							}
-							};
-							break;
-						default:
-							break;
-						};
-					}
-
-					// バインド情報もログに出力
-					static std::string shaderTypeNames[] = { "Pixel", "Vertex", "Geometry", "Compute", "Domain", "Hull" };
-					Console::Log("Binding CBuffer: " + cbName + " to slot " + std::to_string(layout->slot) + " in " + shaderTypeNames[static_cast<size_t>(binding.shader->GetType())]);
-					Console::Log("cbData.buffer ptr: " + std::to_string((uintptr_t)cbData.buffer.Get()));
-				}
-#endif // 0
-
 			}
 
 			// バインドスロット
@@ -712,11 +618,11 @@ void Material::DrawSamplerSlots(size_t shaderType)
 
 void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& binding, const ShaderReflectionData& reflection)
 {
-	// 既存の定数バッファを破棄
-	cbuffers.clear();
+	//// 既存の定数バッファを破棄
+	//cbuffers.clear();
 
 	// 必要な定数バッファの数だけ確保
-	cbuffers.reserve(reflection.constantBufferLayouts.size());
+	//cbuffers.reserve(reflection.constantBufferLayouts.size());
 
 	// Shaderの定数バッファレイアウトを取得し、バッファを作成
 	for (const ShaderReflectionData::ConstantBufferLayout& layout : reflection.constantBufferLayouts)
@@ -730,39 +636,44 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 				" is not 16-byte aligned. Aligned size: " + std::to_string(alignedSize));
 		}
 
-		// 定数バッファを作成
-		auto& cbData = cbuffers[layout.name];
-		D3D11_BUFFER_DESC bufferDesc{};
-		bufferDesc.ByteWidth = static_cast<UINT>(alignedSize);
-		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		bufferDesc.CPUAccessFlags = 0;
-		bufferDesc.MiscFlags = 0;
-		bufferDesc.StructureByteStride = 0;
-		HRESULT hr = device->CreateBuffer(&bufferDesc, nullptr, cbData.buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+		auto it = cbuffers.find(layout.name);
+		bool needsReBuild = (it == cbuffers.end()) || (it->second.localData.size() != alignedSize);
 
-		// CPU 側のローカルコピー用バッファを確保
-		cbData.localData.resize(alignedSize);
-
-		// ZeroMemory で初期化
-		ZeroMemory(cbData.localData.data(), alignedSize);
-
-		// 初期値がシェーダに定義されている場合はローカルバッファにコピーしておく
-		for (const ShaderReflectionData::ShaderVariable& var : layout.variables)
+		if (needsReBuild)
 		{
-			if (var.defaultValue == nullptr) continue; // 初期値が定義されていない場合はスキップ
-			if (var.offset + var.size > layout.size) // 初期値がバッファサイズを超えている場合は警告を出してスキップ
+			auto& cbData = cbuffers[layout.name];
+
+			// 定数バッファを作成
+			D3D11_BUFFER_DESC bufferDesc{};
+			bufferDesc.ByteWidth = static_cast<UINT>(alignedSize);
+			bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			bufferDesc.CPUAccessFlags = 0;
+			bufferDesc.MiscFlags = 0;
+			bufferDesc.StructureByteStride = 0;
+			HRESULT hr = device->CreateBuffer(&bufferDesc, nullptr, cbData.buffer.ReleaseAndGetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+
+			// ローカルバッファを初期化
+			cbData.localData.assign(alignedSize, NULL);
+
+			// 初期値がシェーダに定義されている場合はローカルバッファにコピーしておく
+			for (const ShaderReflectionData::ShaderVariable& var : layout.variables)
 			{
-				Console::LogWarning("Warning: Default value of variable " + var.name + " in CBuffer " + layout.name +
-					" exceeds buffer size. Variable offset: " + std::to_string(var.offset) +
-					", Variable size: " + std::to_string(var.size) +
-					", Buffer size: " + std::to_string(layout.size));
-				continue;
+				if (var.defaultValue == nullptr) continue; // 初期値が定義されていない場合はスキップ
+				if (var.offset + var.size > layout.size) // 初期値がバッファサイズを超えている場合は警告を出してスキップ
+				{
+					Console::LogWarning("Warning: Default value of variable " + var.name + " in CBuffer " + layout.name +
+						" exceeds buffer size. Variable offset: " + std::to_string(var.offset) +
+						", Variable size: " + std::to_string(var.size) +
+						", Buffer size: " + std::to_string(layout.size));
+					continue;
+				}
+				//memcpy(cbData.localData.data() + var.offset, var.defaultValue, var.size);
+				//m_isValuesDirty = true; // 初期値をコピーしたので GPU 側に更新が必要
+				SetValue(var.name, var.defaultValue, var.size); // SetValue を使って初期値を設定
 			}
-			//memcpy(cbData.localData.data() + var.offset, var.defaultValue, var.size);
-			//m_isValuesDirty = true; // 初期値をコピーしたので GPU 側に更新が必要
-			SetValue(var.name, var.defaultValue, var.size); // SetValue を使って初期値を設定
+			cbData.dirty = true; // GPU 側の定数バッファに更新が必要
 		}
 
 	}
@@ -835,6 +746,7 @@ json Material::Serialize() const
 	for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 	{
 		//auto& cbuffers = m_ShaderBindings[i].cbuffers;
+		if (m_ShaderBindings[i].shader == nullptr) continue; // シェーダが設定されていない場合はスキップ
 		
 		for (const auto& [cbName, cbData] : cbuffers)
 		{
