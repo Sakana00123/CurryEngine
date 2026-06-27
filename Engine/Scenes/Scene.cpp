@@ -48,8 +48,6 @@ void Scene::Initialize()
 	{
 		// プレイモードからエディットモードに戻る場合、保存しておいたデータを使用
 		j = SceneManager::previousData.sceneJson;
-		// 状態をエディットモードに設定
-		SceneManager::state = SceneManager::State::Editing;
 	}
 	else if (SceneManager::state == SceneManager::State::EditToPlay)
 	{
@@ -57,8 +55,6 @@ void Scene::Initialize()
 		const std::string filePath = "./Assets/Scenes/" + stem + SceneManager::runtimeSuffix + ".scene";
 		// 通常のシーンデータ読み込み
 		JsonFileHandler::LoadJsonFromFile(j, filePath);
-		// エディットモードからプレイモードに移行する場合、状態をプレイ中に設定
-		SceneManager::state = SceneManager::State::Playing;
 	}
 	else
 #else
@@ -79,6 +75,23 @@ void Scene::Initialize()
 
 	// デシリアライズ
 	this->Deserialize(j);
+
+	// シーンの状態遷移処理
+	switch (SceneManager::state)
+	{
+	case SceneManager::State::PlayToEdit:
+	{
+		// プレイモードからエディットモードに戻る場合、状態をエディット中に設定
+		SceneManager::state = SceneManager::State::Editing;
+		break;
+	}
+	case SceneManager::State::EditToPlay:
+	{
+		// エディットモードからプレイモードに移行する場合、状態をプレイ中に設定
+		SceneManager::state = SceneManager::State::Playing;
+		break;
+	}
+	}
 }
 
 void Scene::BeginFrame()
