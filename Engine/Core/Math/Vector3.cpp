@@ -11,6 +11,17 @@ const Vector3 Vector3::Forward{ 0,0,1 };
 const Vector3 Vector3::Back{ 0,0,-1 };
 const Vector3 Vector3::Zero{ 0,0,0 };
 
+float& Vector3::operator[](size_t index)
+{
+	assert(index < 3);
+	return reinterpret_cast<float*>(this)[index];
+}
+
+float Vector3::operator[](size_t index) const
+{
+	assert(index < 3);
+	return reinterpret_cast<const float*>(this)[index];
+}
 
 float Vector3::Length() const
 {

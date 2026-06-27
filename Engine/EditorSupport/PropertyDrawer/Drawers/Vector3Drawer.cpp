@@ -6,16 +6,22 @@
 #include "Engine/EditorSupport/PropertyDrawContext.h"
 #include "Engine/EditorSupport/PropertyDrawer/PropertyDrawHelper.h"
 #include "Engine/EditorSupport/ImGuiHelpers.h"
+#include <imgui_internal.h>
 
 namespace CurryEngine
 {
 	void Vector3Drawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
 #ifdef USE_IMGUI
+		static constexpr int componentCount = 3;
+		static const char* labels[componentCount] = { "X", "Y", "Z" };
+
 		// targets[0] を基準にしてプロパティ値を取得
 		Vector3 value = std::any_cast<Vector3>(prop.getter(context.Primary()));
 		// 複数選択されているオブジェクトのプロパティ値が混在しているかどうかを判定
-		bool hasMixedValues = PropertyDrawHelper::HasMixedValues<Vector3>(context, prop);
+		int mixedFlags = PropertyDrawHelper::MixedValueComponentFlag<Vector3>(context, prop, componentCount, [](const Vector3& a, const Vector3& b, int componentIndex) {
+			return std::abs(a[componentIndex] - b[componentIndex]) < 1e-6f; // 浮動小数点数の比較は、絶対値の差が小さいかどうかで判定
+			});
 
 		float vSpeed = 0.1f; // ドラッグの速度。必要に応じて属性から取得することもできます。
 		float vMin = 0.0f;   // 最小値。必要に応じて属性から取得することもできます。
@@ -43,7 +49,27 @@ namespace CurryEngine
 		}
 
 		PropertyDrawHelper::BeginPropertyLabel(prop);
-		bool edited = ImGui::DragFloat3("##Vector3", &value.x, vSpeed, vMin, vMax, hasMixedValues ? "---" : format);
+		bool edited = false;
+		bool itemActivated = false;
+		bool deactivatedAfterEdit = false;
+		{
+			ImGui::PushMultiItemsWidths(componentCount, ImGui::CalcItemWidth());
+			for (int i = 0; i < componentCount; ++i)
+			{
+				ImGui::Text(labels[i]);
+				ImGui::SameLine();
+				ImGui::PushID(i);
+				edited |= ImGui::DragFloat("##value", &value[i], vSpeed, vMin, vMax, mixedFlags & (1 << i) ? "---" : format);
+				itemActivated |= ImGui::IsItemActivated();
+				deactivatedAfterEdit |= ImGui::IsItemDeactivatedAfterEdit();
+				ImGui::PopID();
+				ImGui::PopItemWidth();
+				if (i < componentCount - 1)
+				{
+					ImGui::SameLine();
+				}
+			}
+		}
 		if (edited)
 		{
 			// 値が変更されたときの処理。複数選択されている場合は、すべての対象に対して新しい値を適用します。
@@ -60,13 +86,13 @@ namespace CurryEngine
 			[](const Vector3& a, const Vector3& b) {
 				return Vector3::Equal(a, b);
 			},
-			[&]() {
-				// 編集開始前の状態を保存する関数。ここでは、現在の Vector3 値を m_state に保存しています。
-				return ImGui::IsItemActivated();
+			[itemActivated]() {
+				// 前フレームの値を保存するタイミングをチェックする関数。
+				return itemActivated;
 			},
-			[&]() {
-				// コミットしてもいいかどうかをチェックする関数。ここでは常に true を返していますが、必要に応じて条件を追加できます。
-				return ImGui::IsItemDeactivatedAfterEdit();
+			[deactivatedAfterEdit]() {
+				// コミットしてもいいかどうかをチェックする関数。
+				return deactivatedAfterEdit;
 			}
 		);
 

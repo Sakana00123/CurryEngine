@@ -35,6 +35,8 @@ struct Vector3
 
 	operator XMFLOAT3() const { return XMFLOAT3(x, y, z); }
 
+	float& operator[](size_t index);
+	float operator[](size_t index) const;
 	Vector3& operator+=(const Vector3& a) { x += a.x, y += a.y, z += a.z; return *this; }
 	Vector3& operator-=(const Vector3& a) { x -= a.x, y -= a.y, z -= a.z; return *this; }
 	Vector3& operator*=(const Vector3& a) { x *= a.x, y *= a.y, z *= a.z; return *this; }

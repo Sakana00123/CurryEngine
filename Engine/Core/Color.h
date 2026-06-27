@@ -25,6 +25,8 @@ struct Color
 
 	operator XMFLOAT4() const { return XMFLOAT4(r, g, b, a); }
 
+	float& operator[](size_t index);
+	float operator[](size_t index) const;
 	//Color operator=(const XMFLOAT4& color) { return { color.x,color.y,color.z,color.w }; }
 	Color& operator+=(const Color& c) { r += c.r, g += c.g, b += c.b, a += c.a; return *this; }
 	Color& operator-=(const Color& c) { r -= c.r, g -= c.g, b -= c.b, a -= c.a; return *this; }

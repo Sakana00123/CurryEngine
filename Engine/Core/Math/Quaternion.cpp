@@ -10,6 +10,32 @@ void Quaternion::Normalize()
 	XMStoreFloat4(this, v);
 }
 
+Quaternion Quaternion::Conjugate() const
+{
+	return Quaternion(-x, -y, -z, w);
+}
+
+Quaternion Quaternion::Inverse() const
+{
+	XMVECTOR v = XMLoadFloat4(this);
+	v = XMQuaternionInverse(v);
+	Quaternion result;
+	XMStoreFloat4(&result, v);
+	return result;
+}
+
+float& Quaternion::operator[](size_t index)
+{
+	assert(index < 4);
+	return reinterpret_cast<float*>(this)[index];
+}
+
+float Quaternion::operator[](size_t index) const
+{
+	assert(index < 4);
+	return reinterpret_cast<const float*>(this)[index];
+}
+
 Quaternion Quaternion::operator*(const Quaternion& rhs) const
 {
 	return Quaternion::Multiply(*this, rhs);

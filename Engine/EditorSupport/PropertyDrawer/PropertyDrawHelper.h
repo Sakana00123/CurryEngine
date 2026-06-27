@@ -33,6 +33,35 @@ namespace CurryEngine
 			}
 			return false; // すべて同じ値の場合は混在なし
 		}
+
+		/**
+		 * @brief 複数選択されているオブジェクトのプロパティ値の特定のコンポーネントが混在しているかどうかを判定するユーティリティ関数。
+		 * @tparam T 判定するプロパティの型。プロパティの getter が返す型と一致させてください。
+		 * @param context プロパティ描画のコンテキスト。複数選択されているオブジェクトのリストが含まれます。
+		 * @param prop 判定するプロパティのメタ情報。getter を使用してプロパティ値を取得します。
+		 * @param componentCount 判定するコンポーネントの数。例えば Vector3 の場合は 3、Quaternion の場合は 4 など。
+		 * @param componentComparator コンポーネントの等価比較関数。引数は (値1, 値2, コンポーネントインデックス) で、戻り値は bool です。true の場合は同じコンポーネントとみなし、false の場合は異なるコンポーネントとみなします。
+		 * @return 複数選択されているオブジェクトのプロパティ値の特定のコンポーネントが混在している場合は、混在しているコンポーネントのビットフラグを返します。混在していない場合は 0 を返します。
+		 */
+		template<typename T>
+		int MixedValueComponentFlag(const PropertyDrawContext& context, const PropertyInfo& prop, int componentCount, std::function<bool(const T&, const T&, int)> componentComparator)
+		{
+			if (context.IsEmpty()) return 0; // 対象がない場合は混在なしとみなす
+			T firstValue = std::any_cast<T>(prop.getter(context.Primary()));
+			int mixedFlag = 0;
+			for (size_t i = 1; i < context.targets.size(); i++)
+			{
+				T currentValue = std::any_cast<T>(prop.getter(context.targets[i]));
+				for (int j = 0; j < componentCount; j++)
+				{
+					if (!componentComparator(firstValue, currentValue, j))
+					{
+						mixedFlag |= 1 << j; // 混在しているコンポーネントのビットを立てる
+					}
+				}
+			}
+			return mixedFlag;
+		}
 		
 		/**
 		 * @brief 複数選択されているオブジェクトのプロパティ値を一括で設定するユーティリティ関数。
@@ -72,6 +101,8 @@ namespace CurryEngine
 		 * @param currentValue 現在のプロパティ値。ImGui の編集ウィジェットから取得した値を渡してください。
 		 * @param toStr Undoログ用文字列化関数。変更前後の値を文字列化して Undo ログに記録したい場合は、この関数を渡してください。引数はプロパティ値で、戻り値は文字列です。
 		 * @param equals 値の等価比較関数。プロパティ値の型によっては、単純な等価比較が適切でない場合があります（例: 浮動小数点数やクォータニオン）。その場合は、この関数を渡して、値の等価性を適切に判断してください。引数は (現在値, 前回値) で、戻り値は bool です。
+		 * @param prevCheck 前回値の保存条件関数。前回値を保存するタイミングをカスタマイズしたい場合は、この関数を渡してください。戻り値が true の場合に前回値を保存します。デフォルトでは ImGui::IsItemActivated() を使用します。
+		 * @param commitCheck コマンド発行条件関数。コマンドを発行するタイミングをカスタマイズしたい場合は、この関数を渡してください。戻り値が true の場合にコマンドを発行します。デフォルトでは ImGui::IsItemDeactivatedAfterEdit() を使用します。
 		 */
 		template<typename T>
 		void CommitEdit(

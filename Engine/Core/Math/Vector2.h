@@ -23,6 +23,8 @@ struct Vector2
 
 	operator XMFLOAT2() const { return XMFLOAT2(x, y); }
 
+	float& operator[](size_t index);
+	float operator[](size_t index) const;
 	Vector2& operator+=(const Vector2& a) { x += a.x, y += a.y; return *this; }
 	Vector2& operator-=(const Vector2& a) { x -= a.x, y -= a.y; return *this; }
 	Vector2& operator*=(const Vector2& a) { x *= a.x, y *= a.y; return *this; }

@@ -10,6 +10,18 @@ const Color Color::Purple = Color(1.0f, 0.0f, 1.0f);
 const Color Color::White = Color(1.0f, 1.0f, 1.0f);
 const Color Color::Black = Color(0.0f, 0.0f, 0.0f);
 
+float& Color::operator[](size_t index)
+{
+	assert(index < 4);
+	return reinterpret_cast<float*>(this)[index];
+}
+
+float Color::operator[](size_t index) const
+{
+	assert(index < 4);
+	return reinterpret_cast<const float*>(this)[index];
+}
+
 void Color::ConvertToPastelColors(Color& color) {
 
 	color.r = (color.r + 1) * 0.5f;

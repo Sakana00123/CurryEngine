@@ -1,6 +1,18 @@
 #include "pch.h"
 #include "Vector2.h"
 
+float& Vector2::operator[](size_t index)
+{
+	assert(index < 2);
+	return reinterpret_cast<float*>(this)[index];
+}
+
+float Vector2::operator[](size_t index) const
+{
+	assert(index < 2);
+	return reinterpret_cast<const float*>(this)[index];
+}
+
 float Vector2::Length() const
 {
 	return sqrtf(x * x + y * y);

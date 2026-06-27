@@ -19,7 +19,7 @@ namespace CurryEngine
 
 		IPropertyDrawer* drawer = nullptr;
 		// プロパティの型に対応するドロワーを PropertyDrawerRegistry から取得
-		if (auto* customAttr = prop->GetAttribute("CustomDrawer")) // CustomDrawer 属性があれば、引数からドロワーのクラス名を取得してインスタンス化
+		if (auto* customAttr = prop->GetAttribute("CustomDrawer")) // CustomDrawer 属性があれば、引数からドロワーのクラス名からドロワーを取得
 		{
 			if (!customAttr->args.empty())
 			{

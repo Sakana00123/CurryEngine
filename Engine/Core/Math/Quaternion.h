@@ -25,6 +25,17 @@ struct Quaternion : public XMFLOAT4
 	// クォータニオンの正規化
 	void Normalize();
 
+	// クォータニオンの共役を返す
+	Quaternion Conjugate() const;
+
+	// クォータニオンの逆数を返す
+	Quaternion Inverse() const;
+
+	// クォータニオンの成分にアクセス
+	float& operator[](size_t index);
+
+	float operator[](size_t index) const;
+
 	// クォータニオンの乗算
 	Quaternion operator*(const Quaternion& rhs) const;
 

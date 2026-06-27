@@ -5,6 +5,7 @@
 #include "Engine/EditorSupport/PropertyDrawContext.h"
 #include "Engine/EditorSupport/PropertyDrawer/PropertyDrawHelper.h"
 #include "Engine/EditorSupport/ImGuiHelpers.h"
+#include <imgui_internal.h>
 
 
 namespace CurryEngine
@@ -12,8 +13,14 @@ namespace CurryEngine
 	void EulerDrawer::Draw(const PropertyInfo& prop, const PropertyDrawContext& context)
 	{
 #ifdef USE_IMGUI
+		static constexpr int componentCount = 3;
+		static const char* labels[componentCount] = { "X", "Y", "Z" };
+
         Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
-        bool mixed = PropertyDrawHelper::HasMixedValues<Quaternion>(context, prop);
+        //bool mixed = PropertyDrawHelper::HasMixedValues<Quaternion>(context, prop);
+        int mixedFlags = PropertyDrawHelper::MixedValueComponentFlag<Quaternion>(context, prop, componentCount, [](const Quaternion& a, const Quaternion& b, int componentIndex) {
+            return std::abs(a[componentIndex] - b[componentIndex]) < 1e-6f; // 浮動小数点数の比較は、絶対値の差が小さいかどうかで判定
+			});
 
         float vSpeed = 0.1f;
         float vMin = 0.0f;
@@ -60,7 +67,26 @@ namespace CurryEngine
         }
 
         PropertyDrawHelper::BeginPropertyLabel(prop);
-        bool edited = ImGui::DragFloat3("##Euler", &euler.x, vSpeed, vMin, vMax, mixed ? "---" : format);
+        //bool edited = ImGui::DragFloat3("##Euler", &euler.x, vSpeed, vMin, vMax, mixed ? "---" : format);
+		bool edited = false;
+		bool itemActivated = false;
+        bool deactivatedAfterEdit = false;
+        {
+            ImGui::PushMultiItemsWidths(componentCount, ImGui::CalcItemWidth());
+            for (int i = 0; i < componentCount; ++i)
+            {
+                ImGui::Text(labels[i]);
+                ImGui::SameLine();
+                ImGui::PushID(i);
+                edited |= ImGui::DragFloat("##value", &euler[i], vSpeed, vMin, vMax, mixedFlags & (1 << i) ? "---" : format);
+                itemActivated |= ImGui::IsItemActivated();
+                deactivatedAfterEdit |= ImGui::IsItemDeactivatedAfterEdit();
+                ImGui::PopID();
+                ImGui::PopItemWidth();
+                if (i < componentCount - 1)
+                    ImGui::SameLine();
+            }
+		}
 
         // 編集開始
         if (ImGui::IsItemActivated())
