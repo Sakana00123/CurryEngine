@@ -934,42 +934,51 @@ void ObjectManager::DrawHierarchy()
 					ImGui::EndDragDropSource();
 				}
 				//フォーカスされたノードを選択する
-				static bool delayClick = false;
+				bool shift = ImGui::IsKeyDown(ImGuiKey_LeftShift) || ImGui::IsKeyDown(ImGuiKey_RightShift);
+				bool ctrl = ImGui::IsKeyDown(ImGuiKey_LeftCtrl) || ImGui::IsKeyDown(ImGuiKey_RightCtrl);
+				//static bool delayClick = false;
 				if ((ImGui::IsItemClicked(ImGuiMouseButton_Left) || ImGui::IsItemClicked(ImGuiMouseButton_Right)) && !ImGui::IsItemToggledOpen())
 				{
 					if (selection)
 					{
-						if (selection->IsSelected(object))
+						/*if (selection->IsSelected(object))
 						{
 							delayClick = true;
 						}
-						else
+						else*/
 						{
-							bool ctrl = ImGui::IsKeyDown(ImGuiKey_LeftCtrl) || ImGui::IsKeyDown(ImGuiKey_RightCtrl);
-							bool shift = ImGui::IsKeyDown(ImGuiKey_LeftShift) || ImGui::IsKeyDown(ImGuiKey_RightShift);
 							const std::shared_ptr<GameObject>& spObject = Find_Ptr(object->GetId());
-							if (shift) // Shiftキーが押されている場合は、クリックしたオブジェクトから現在の選択範囲までを選択する
-								selection->SelectRange(spObject, OrganizeTreeNodes(objects), /*additive=*/ctrl);
-							else // Shiftキーが押されていない場合は、クリックしたオブジェクトを選択する。Ctrlキーが押されている場合は、選択に追加する。押されていない場合は、選択を置き換える
-								selection->Select(spObject, /*additive=*/ctrl);
+							//if (shift) // Shiftキーが押されている場合は、クリックしたオブジェクトから現在の選択範囲までを選択する
+							//	selection->SelectRange(spObject, OrganizeTreeNodes(objects), /*additive=*/ctrl);
+							//else // Shiftキーが押されていない場合は、クリックしたオブジェクトを選択する。Ctrlキーが押されている場合は、選択に追加する。押されていない場合は、選択を置き換える
+							//	selection->Select(spObject, /*additive=*/ctrl);
+							if (shift) selection->SelectRange(spObject, OrganizeTreeNodes(objects), ctrl);
+							else selection->SelectTemp(spObject, ctrl);
 						}
 					}
 				}
 				// クリックしてからマウスを動かしても選択されないように、クリック後のフレームで選択する
 				bool isReleased = ImGui::IsMouseReleased(ImGuiMouseButton_Left) || ImGui::IsMouseReleased(ImGuiMouseButton_Right);
-				if (delayClick && ImGui::IsItemHovered() && isReleased)
-				{
-					if (selection)
-					{
-						bool ctrl = ImGui::IsKeyDown(ImGuiKey_LeftCtrl) || ImGui::IsKeyDown(ImGuiKey_RightCtrl);
-						bool shift = ImGui::IsKeyDown(ImGuiKey_LeftShift) || ImGui::IsKeyDown(ImGuiKey_RightShift);
-						const std::shared_ptr<GameObject>& spObject = Find_Ptr(object->GetId());
-						if (shift) selection->SelectRange(spObject, OrganizeTreeNodes(objects));
-						else if (ctrl) selection->Select(spObject, true);
-						else selection->Select(spObject, false);
-					}
-					delayClick = false;
-				}
+				//if (delayClick && ImGui::IsItemHovered() && isReleased)
+				//{
+				//	if (selection)
+				//	{
+				//		const std::shared_ptr<GameObject>& spObject = Find_Ptr(object->GetId());
+				//		if (shift) selection->SelectRange(spObject, OrganizeTreeNodes(objects));
+				//		else
+				//		{
+				//			if (ctrl) {
+				//				selection->Select(spObject, /*additive=*/true);
+				//			}
+				//			else
+				//			{
+				//				selection->Select(spObject, /*additive=*/false);
+				//				SelectInspectorNode(spObject.get());
+				//			}
+				//		}
+				//	}
+				//	delayClick = false;
+				//}
 
 				ImGui::PopStyleColor(4);
 
@@ -977,9 +986,12 @@ void ObjectManager::DrawHierarchy()
 				bool flag = ImGui::IsItemActive() || ImGui::IsItemHovered(); //ノードがアクティブまたはホバーされているか
 				bool isActiveAndHovered = ImGui::IsItemActive() && ImGui::IsItemHovered(); //ノードがアクティブかつホバーされているか
 				auto selectNode = GetSelectNode();
-				if (selectNode && flag && isReleased) {
+				if (/*selectNode && */flag && isReleased) {
 					if (!ImGui::GetDragDropPayload()) {
-						SelectInspectorNode(selectNode);
+						// 選択されているノードをInspectorに表示する
+						selection->CommitTempSelection(ctrl);
+						//SelectInspectorNode(selectNode);
+						SelectInspectorNode(selection->GetPrimary().get());
 					}
 				}
 

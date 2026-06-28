@@ -36,6 +36,25 @@ public:
 	void Deselect(const std::shared_ptr<GameObject>& object);
 
 	/**
+	 * @brief 一時的にオブジェクトを選択します。
+	 * @param object 一時的に選択するオブジェクト
+	 */
+	void SelectTemp(const std::shared_ptr<GameObject>& object, bool additive = false);
+
+	/**
+	 * @brief 一時的にオブジェクトの範囲選択を行います。選択されているオブジェクトと指定されたオブジェクトの間にあるオブジェクトを一時的に選択します。
+	 * @param object 範囲選択の終点となるオブジェクト
+	 * @param flatList オブジェクトのフラットなリスト（階層構造を無視したリスト）。範囲選択はこのリストの順序に基づいて行われます。
+	 */
+	void SelectTempRange(const std::shared_ptr<GameObject>& object, const std::vector<std::shared_ptr<GameObject>>& flatList);
+
+	/**
+	 * @brief 一時的に選択されたオブジェクトを確定します。これにより、一時的な選択が正式な選択に変わります。
+	 * @param additive `true` の場合、既存の選択に追加します。`false` の場合、既存の選択をクリアしてから選択します。
+	 */
+	void CommitTempSelection(bool additive = false);
+
+	/**
 	 * @brief 全ての選択をクリアします。
 	 */
 	void Clear();
@@ -74,4 +93,7 @@ public:
 
 private:
 	std::vector<std::shared_ptr<GameObject>> m_selected;
+	std::vector<std::weak_ptr<GameObject>> m_tempSelected; // 一時的に選択されているオブジェクトのリスト（ドラッグ・リリースの間などで使用）
+	std::vector<std::weak_ptr<GameObject>> m_tempDeselected; // 一時的に選択解除されているオブジェクトのリスト（ドラッグ・リリースの間などで使用）
+	bool m_isPreTempCommitInitClear = false; // 一時的な選択を確定する前に、既存の選択をクリアするかどうかのフラグ
 };

@@ -59,9 +59,78 @@ void EditorSelection::Deselect(const std::shared_ptr<GameObject>& object)
 	m_selected.erase(std::remove(m_selected.begin(), m_selected.end(), object), m_selected.end());
 }
 
+void EditorSelection::SelectTemp(const std::shared_ptr<GameObject>& object, bool additive)
+{
+	if (!additive) {
+		m_isPreTempCommitInitClear = true; // 次の CommitTempSelection で既存の選択をクリアするフラグを立てる
+	}
+
+	auto it = std::find(m_selected.begin(), m_selected.end(), object);
+	if (it != m_selected.end()) {
+		if (additive) {
+			// すでに選択されているオブジェクトが再度選択された場合、additive が true (Ctrlクリック) なら選択を解除するリストに追加する
+			m_tempDeselected.push_back(object);
+			return;
+		}
+	}
+	// オブジェクトが選択されていない場合、一時的な選択リストに追加する
+	m_tempSelected.push_back(object);
+}
+
+void EditorSelection::SelectTempRange(const std::shared_ptr<GameObject>& object, const std::vector<std::shared_ptr<GameObject>>& flatList)
+{
+	// もし選択が空なら、単純に一時選択する
+	if (m_selected.empty()) {
+		SelectTemp(object);
+		return;
+	}
+	
+	auto pivot = m_selected.back(); // 選択の基点となるオブジェクト
+	auto itPivot = std::find(flatList.begin(), flatList.end(), pivot);
+	auto itTarget = std::find(flatList.begin(), flatList.end(), object);
+	
+	if (itPivot == flatList.end() || itTarget == flatList.end()) {
+		// どちらかがリストに存在しない場合は、単純に一時選択する
+		SelectTemp(object);
+		return;
+	}
+	if (itPivot > itTarget) {
+		std::swap(itPivot, itTarget); // 常に itPivot < itTarget になるようにする
+	}
+	for (auto& it = itPivot; it <= itTarget; ++it) {
+		m_tempSelected.push_back(*it);
+	}
+}
+
+void EditorSelection::CommitTempSelection(bool additive)
+{
+	// 既存の選択をクリアする必要がある場合はクリアする
+	if (m_isPreTempCommitInitClear) {
+		m_selected.clear();
+		m_isPreTempCommitInitClear = false;
+	}
+
+	// 一時的に選択されたオブジェクトを正式な選択に追加する
+	for (auto& weakObj : m_tempSelected) {
+		if (auto obj = weakObj.lock()) {
+			Select(obj, additive);
+		}
+	}
+	// 一時的に選択解除されたオブジェクトを正式な選択から削除する
+	for (auto& weakObj : m_tempDeselected) {
+		if (auto obj = weakObj.lock()) {
+			Deselect(obj);
+		}
+	}
+	m_tempSelected.clear();
+	m_tempDeselected.clear();
+}
+
 void EditorSelection::Clear()
 {
 	m_selected.clear();
+	m_tempSelected.clear();
+	m_tempDeselected.clear();
 }
 
 bool EditorSelection::IsSelected(const std::shared_ptr<GameObject>& object) const

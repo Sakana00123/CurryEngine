@@ -16,12 +16,6 @@ class EditorSelection;
 class SceneManager;
 #endif // USE_IMGUI
 
-
-struct EditorSelectionReference
-{
-	std::vector<std::weak_ptr<GameObject>> selectedObjects;
-};
-
 /** @brief オブジェクトマネージャ。シーン内のゲームオブジェクトを管理します。*/
 class ObjectManager
 {
@@ -75,7 +69,7 @@ public:
 	/** @brief インスペクタ表示中のオブジェクトを取得します。*/
 	GameObject* GetInspectorNode() const { return inspectorNode; }
 	/** @brief インスペクタ表示中のオブジェクトを設定します。*/
-	void SetInspectorNode(GameObject* node) { if (!lockInspector) inspectorNode = node; }
+	void SelectInspectorNode(GameObject* node);
 	/** @brief インスペクタ表示をロックします。*/
 	static void LockInspector(bool lock) { lockInspector = lock; }
 	/** @brief インスペクタ表示がロックされているかを返します。*/
@@ -121,9 +115,6 @@ public:
 
 	/** @brief エディタの選択状態を管理するオブジェクトを取得します。*/
 	EditorSelection* GetEditorSelection() { return selection; }
-
-	/** @brief オブジェクトを選択します。*/
-	void SelectInspectorNode(GameObject* node);
 private:
 	
 	/** @brief 指定したオブジェクトとその子オブジェクトを破棄します。*/
@@ -140,7 +131,6 @@ private:
 	GameObject* inspectorNode = nullptr;
 	static inline bool lockInspector = false;
 	EditorSelection* selection; // エディタの選択状態を管理するオブジェクト
-	EditorSelectionReference editorSelectionReference; // エディタ選択状態の参照オブジェクト
 private:
 	static inline bool draggingObjectIsNotDestroyObject = false;
 	//void Swap() {
