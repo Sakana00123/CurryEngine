@@ -256,7 +256,15 @@ namespace CurryEngine
 					meta.path = newPath;
 					entriesToRename.emplace_back(newPath, meta); // 新しいキーと更新されたメタデータを保存
 					// 古いメタファイルを削除
-					std::filesystem::remove(AssetMetaSerializer::MetaPathFor(it->first));
+					std::filesystem::path oldMetaFilePath = AssetMetaSerializer::MetaPathFor(it->first);
+					if (std::filesystem::exists(oldMetaFilePath))
+					{
+						std::filesystem::remove(oldMetaFilePath);
+					}
+					else
+					{
+						LOG_WARNING("[AssetDatabase] Meta file not found for removal: " + oldMetaFilePath.string());
+					}
 					it = s_metaByPath.erase(it); // 後で新しいキーで再挿入するため、ここで削除
 				}
 				else ++it;
@@ -285,7 +293,15 @@ namespace CurryEngine
 			if (it != s_metaByPath.end())
 			{
 				// メタデータファイルを削除
-				std::filesystem::remove(AssetMetaSerializer::MetaPathFor(normalizedPath));
+				std::filesystem::path metaFilePath = AssetMetaSerializer::MetaPathFor(normalizedPath);
+				if (std::filesystem::exists(metaFilePath))
+				{
+					std::filesystem::remove(metaFilePath);
+				}
+				else
+				{
+					LOG_WARNING("[AssetDatabase] Meta file not found for removal: " + metaFilePath.string());
+				}
 
 				// マップから削除
 				s_pathById.erase(it->second.id.ToString());
@@ -301,7 +317,15 @@ namespace CurryEngine
 				if (it->first.starts_with(normalizedPrefix))
 				{
 					// メタデータファイルを削除
-					std::filesystem::remove(AssetMetaSerializer::MetaPathFor(it->first));
+					std::filesystem::path metaFilePath = AssetMetaSerializer::MetaPathFor(it->first);
+					if (std::filesystem::exists(metaFilePath))
+					{
+						std::filesystem::remove(metaFilePath);
+					}
+					else
+					{
+						LOG_WARNING("[AssetDatabase] Meta file not found for removal: " + metaFilePath.string());
+					}
 					// マップから削除
 					s_pathById.erase(it->second.id.ToString());
 					it = s_metaByPath.erase(it); // eraseはイテレータを返すので、次の要素に進む
