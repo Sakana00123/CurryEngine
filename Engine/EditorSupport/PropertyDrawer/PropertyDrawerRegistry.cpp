@@ -35,6 +35,7 @@ namespace CurryEngine
 		Register("Quaternion_Euler", std::make_unique<EulerDrawer>());
 		
 		Register("std::string", std::make_unique<StringDrawer>());
+		Register("string", std::make_unique<StringDrawer>());
 
 		Register("Color", std::make_unique<ColorDrawer>());
 		Register("ObjectId", std::make_unique<ObjectIdDrawer>());

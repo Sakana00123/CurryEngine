@@ -87,5 +87,5 @@ private:
 	json m_pendingFields;
 
 	//bool m_isStartCalled = false; // Start が呼び出されたかどうかのフラグ
-
+	std::unordered_map<std::string, json> m_fieldValues; // フィールド名と値のマップ
 };
