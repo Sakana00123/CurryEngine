@@ -55,6 +55,16 @@ public:
 	void CommitTempSelection(bool additive = false);
 
 	/**
+	 * @brief 現在の選択をロックします。これにより、選択状態が変更されなくなります。
+	 */
+	void LockCurrentSelection();
+
+	/**
+	 * @brief 現在の選択のロックを解除します。これにより、選択状態が変更可能になります。
+	 */
+	void UnlockCurrentSelection();
+
+	/**
 	 * @brief 全ての選択をクリアします。
 	 */
 	void Clear();
@@ -95,5 +105,7 @@ private:
 	std::vector<std::shared_ptr<GameObject>> m_selected;
 	std::vector<std::weak_ptr<GameObject>> m_tempSelected; // 一時的に選択されているオブジェクトのリスト（ドラッグ・リリースの間などで使用）
 	std::vector<std::weak_ptr<GameObject>> m_tempDeselected; // 一時的に選択解除されているオブジェクトのリスト（ドラッグ・リリースの間などで使用）
+	std::vector<std::weak_ptr<GameObject>> m_lockedSelected; // 選択がロックされているオブジェクトのリスト（選択状態を維持するために使用）
 	bool m_isPreTempCommitInitClear = false; // 一時的な選択を確定する前に、既存の選択をクリアするかどうかのフラグ
+	bool m_isLocked = false; // 選択がロックされているかどうかのフラグ
 };

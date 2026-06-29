@@ -126,6 +126,21 @@ void EditorSelection::CommitTempSelection(bool additive)
 	m_tempDeselected.clear();
 }
 
+void EditorSelection::LockCurrentSelection()
+{
+	m_lockedSelected.clear();
+	for (auto& obj : m_selected) {
+		m_lockedSelected.push_back(obj);
+	}
+	m_isLocked = true;
+}
+
+void EditorSelection::UnlockCurrentSelection()
+{
+	m_lockedSelected.clear();
+	m_isLocked = false;
+}
+
 void EditorSelection::Clear()
 {
 	m_selected.clear();

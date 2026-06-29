@@ -357,7 +357,7 @@ inline static void DrawDropTarget(ImVec2 cursorPos, GameObject* inspectorNode, s
 
 inline static void DrawInspectorHeader(GameObject* inspectorNode, ObjectManager* objectManager)
 {
-    ImGui::PushID(inspectorNode->GetId().Value());
+    ImGui::PushID(static_cast<int>(inspectorNode->GetId().Value()));
     //InspectorƒƒbƒN
     DrawInspectorLockCheckbox(objectManager);
     ImGui::SameLine();

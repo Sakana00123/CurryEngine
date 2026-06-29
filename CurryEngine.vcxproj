@@ -211,6 +211,7 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.cpp" />
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
     <ClCompile Include="Engine\Editor\GameViewWindow.cpp" />
+    <ClCompile Include="Engine\Editor\HierarchyWindow.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\ImportSettingsDrawerRegistry.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\ImportSettingsWindow.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\ModelImportSettingsDrawer.cpp" />
@@ -677,6 +678,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
     <ClInclude Include="Engine\Editor\GameViewWindow.h" />
+    <ClInclude Include="Engine\Editor\HierarchyWindow.h" />
     <ClInclude Include="Engine\Editor\ImportSettings\IImportSettingsDrawer.h" />
     <ClInclude Include="Engine\Editor\ImportSettings\ImportSettingsDrawerRegistry.h" />
     <ClInclude Include="Engine\Editor\ImportSettings\ImportSettingsWindow.h" />

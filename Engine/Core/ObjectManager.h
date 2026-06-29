@@ -58,14 +58,10 @@ public:
 	
 	/** @brief 指定した名前のオブジェクトを破棄予約します。*/
 	void Destroy(const std::string& name);
-	/** @brief 破棄予約されたオブジェクトを実際に削除します。*/
-	//void ProcessDestroy();
-	/** @brief すべてのオブジェクトを破棄します。*/
-	//void DestroyAll();
 	/** @brief すべてのオブジェクトを取得します。*/
 	const std::vector<std::shared_ptr<GameObject>>& GetAll() const { return objects; }
-	/** @brief 選択中のオブジェクトを取得します。*/
-	GameObject* GetSelectNode() const;
+	/** @brief すべてのオブジェクトを取得します。(変更可能)*/
+	std::vector<std::shared_ptr<GameObject>>& GetAllMutable() { return objects; }
 	/** @brief インスペクタ表示中のオブジェクトを取得します。*/
 	GameObject* GetInspectorNode() const { return inspectorNode; }
 	/** @brief インスペクタ表示中のオブジェクトを設定します。*/
@@ -74,10 +70,6 @@ public:
 	static void LockInspector(bool lock) { lockInspector = lock; }
 	/** @brief インスペクタ表示がロックされているかを返します。*/
 	static bool IsInspectorLocked() { return lockInspector; }
-	/** @brief ドラッグ中のオブジェクトが削除されるオブジェクトでないことを設定します。*/
-	static void SetDraggingObjectIsNotDestroyObject(bool set) { draggingObjectIsNotDestroyObject = set; }
-	/** @brief ドラッグ中のオブジェクトが削除されるオブジェクトでないかを返します。*/
-	static bool IsDraggingObjectIsNotDestroyObject() { return draggingObjectIsNotDestroyObject; }
 public:
 	/** @brief シリアライズします。*/
 	json Serialize() const;
@@ -115,6 +107,12 @@ public:
 
 	/** @brief エディタの選択状態を管理するオブジェクトを取得します。*/
 	EditorSelection* GetEditorSelection() { return selection; }
+
+	/** @brief エディタのロックされた選択状態を管理するオブジェクトを取得します。*/
+	EditorSelection* GetLockedEditorSelection() { return lockedSelection; }
+	
+	/** @brief オブジェクトの選択とインスペクタ表示をリセットします。*/
+	void Reset();
 private:
 	
 	/** @brief 指定したオブジェクトとその子オブジェクトを破棄します。*/
@@ -123,28 +121,13 @@ private:
 	friend class GameObject;
 	/** @brief オブジェクトを登録します。*/
 	void Register(std::shared_ptr<GameObject> object);
-	/** @brief オブジェクトの選択とインスペクタ表示をリセットします。*/
-	void Reset();
 	
 	friend class EditorGUI;
 	GameObject* selectNode = nullptr;
 	GameObject* inspectorNode = nullptr;
 	static inline bool lockInspector = false;
 	EditorSelection* selection; // エディタの選択状態を管理するオブジェクト
-private:
-	static inline bool draggingObjectIsNotDestroyObject = false;
-	//void Swap() {
-	//	objects.clear();
-	//	objects = nextObjects;
-	//	nextObjects.clear();
-	//}
-	struct PendingDrop {
-		GameObject* target;       // ドロップ先
-		bool reorder;             // true=並び替え / false=親子関係
-		bool appendToEnd = false; // 末尾に追加するかどうか
-	};
-	// ドロップ処理の保留状態を管理するオプション。ドラッグ終了後にドロップ処理を実行するために使用されます。
-	std::optional<PendingDrop> m_pendingDrop;
+	EditorSelection* lockedSelection; // エディタのロックされた選択状態を管理するオブジェクト
 private:
 	friend class Scene;
 	friend class Framework;

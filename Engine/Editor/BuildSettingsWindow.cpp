@@ -140,7 +140,7 @@ void BuildSettingsWindow::DrawSettings()
 		}
 		bool typeChanged = false;
 		const char* types[] = { "file", "folder", "glob" };
-		int currentTypeIndex = std::find(std::begin(types), std::end(types), item.type) - std::begin(types);
+		int currentTypeIndex = static_cast<int>(std::find(std::begin(types), std::end(types), item.type) - std::begin(types));
 		if (ImGui::Combo("Type", &currentTypeIndex, types, IM_ARRAYSIZE(types)))
 		{
 			item.type = types[currentTypeIndex];
@@ -194,8 +194,8 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 		std::string setFirstSceneCandidate = SceneManager::firstSceneName; // 最初のシーンに設定する候補（右クリックメニューで選択されたシーン名）
 		int setFirstSceneIndexThisFrame = -1; // 今フレームで最初のシーンに設定するシーンのインデックス（右クリックメニューで選択されたシーンのインデックス）
 		int index = 0;
-		int selectedCount = std::count_if(SceneManager::sceneEntries.begin(), SceneManager::sceneEntries.end(),
-			[](const SceneManager::SceneEntry& entry) { return entry.selected; }); // 選択されているシーンの数
+		int selectedCount = static_cast<int>(std::count_if(SceneManager::sceneEntries.begin(), SceneManager::sceneEntries.end(),
+			[](const SceneManager::SceneEntry& entry) { return entry.selected; })); // 選択されているシーンの数
 
 		for (auto& entry : SceneManager::sceneEntries)
 		{
@@ -229,7 +229,7 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 						if (lastSelectedIt != SceneManager::sceneEntries.end())
 						{
 							// 範囲選択する
-							int lastSelectedIndex = std::distance(SceneManager::sceneEntries.begin(), lastSelectedIt);
+							int lastSelectedIndex = static_cast<int>(std::distance(SceneManager::sceneEntries.begin(), lastSelectedIt));
 							int currentIndex = index;
 							int start = (std::min)(lastSelectedIndex, currentIndex);
 							int end = (std::max)(lastSelectedIndex, currentIndex);
