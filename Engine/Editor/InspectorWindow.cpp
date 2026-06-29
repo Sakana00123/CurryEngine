@@ -114,7 +114,7 @@ inline static void DrawActiveCheckbox(const EditorSelection* selection)
     }
     else {
         //単一選択または複数選択で有効状態が一致している場合は、通常のチェックボックス
-        edited = ImGui::Checkbox("", &isActive);
+        edited = ImGui::Checkbox("##Active", &isActive);
 	}
 
 	if (edited) {
@@ -355,13 +355,11 @@ inline static void DrawDropTarget(ImVec2 cursorPos, GameObject* inspectorNode, s
     }
 }
 
-inline static void DrawInspectorHeader(GameObject* inspectorNode, ObjectManager* objectManager)
+inline static void DrawInspectorHeader(EditorSelection* selection, ObjectManager* objectManager)
 {
-    ImGui::PushID(static_cast<int>(inspectorNode->GetId().Value()));
     //Inspectorロック
     DrawInspectorLockCheckbox(objectManager);
     ImGui::SameLine();
-    const EditorSelection* selection = objectManager->GetEditorSelection();
     if (selection && !selection->IsEmpty())
     {
         // layerを変更するドロップダウン
@@ -371,31 +369,30 @@ inline static void DrawInspectorHeader(GameObject* inspectorNode, ObjectManager*
         //名前を変更するテキストボックス
         DrawNameInput(selection);
     }
-    ImGui::PopID();
 }
 
-inline static void DrawInspectorProperties(GameObject* inspectorNode)
+inline static void DrawInspectorProperties(EditorSelection* selection)
 {
-    ProfileScopedSection_3(0, (inspectorNode->name + " DrawProperty").c_str(), ImGuiControl::Profiler::Color::Green);
-
+    if (selection->IsEmpty()) return;
+	auto primaryObject = selection->GetPrimary();
+    ProfileScopedSection_3(0, (primaryObject->name + " DrawProperty").c_str(), ImGuiControl::Profiler::Color::Green);
 
     ImGui::BeginChild("##Components", ImVec2(0, 0), true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysUseWindowPadding);
     ImVec2 cursorPos = ImGui::GetCursorPos(); // 現在のカーソル位置を保存
 
-    auto scene = inspectorNode ? inspectorNode->GetScene() : nullptr;
+    auto scene = primaryObject ? primaryObject->GetScene() : nullptr;
     auto objectManager = scene ? scene->GetObjectManager() : nullptr;
-    auto editorSelection = objectManager ? objectManager->GetEditorSelection() : nullptr;
-    if (!inspectorNode || !objectManager) {
+    if (!primaryObject || !objectManager) {
         ImGui::EndChild();
         return;
 	}
     bool hasSameTypeAll = true; // すべての選択中のオブジェクトが同じコンポーネントを持っているか
 	std::vector<std::weak_ptr<Component>> componentsToDraw; // 描画するコンポーネントのリスト
-    auto applyToSelectedObjects = [editorSelection](std::function<void(GameObject*)> action)
+    auto applyToSelectedObjects = [selection](std::function<void(GameObject*)> action)
         {
-            if (editorSelection)
+            if (selection)
             {
-                for (const auto& selectedObj : editorSelection->GetAll())
+                for (const auto& selectedObj : selection->GetAll())
                 {
                     action(selectedObj.get());
                 }
@@ -403,17 +400,17 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
         };
 
 
-    if (editorSelection)
+    if (selection)
     {
-        std::vector<std::shared_ptr<GameObject>> selection = editorSelection->GetAll();
+        std::vector<std::shared_ptr<GameObject>> selections = selection->GetAll();
 
         // 同じコンポーネントを持つ選択中のオブジェクトを探す
-		for (auto& primaryComp : inspectorNode->GetAllComponents())
+		for (auto& primaryComp : primaryObject->GetAllComponents())
         {
 			bool hasSameType = true; // 主選択のコンポーネントと同じ型を持つか
-            for (const auto& selectedObj : selection)
+            for (const auto& selectedObj : selections)
             {
-                if (selectedObj.get() == inspectorNode) continue; // 主選択はスキップ
+                if (selectedObj == primaryObject) continue; // 主選択はスキップ
                 if (!selectedObj->GetComponentByTypeName(primaryComp->GetTypeName())) {
 					hasSameType = false; // 主選択のコンポーネントと同じ型を持っていないオブジェクトがある
                     hasSameTypeAll = false; // 1つでも同じコンポーネントを持っていないオブジェクトがあればフラグを下げる
@@ -481,16 +478,16 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
                 ImGui::Separator();
                 if (!primaryComp->hideInspectorProperty)
                 {
-                    if (editorSelection)
+                    if (selection)
                     {
-                        std::vector<std::shared_ptr<GameObject>> selection = editorSelection->GetAll();
+                        std::vector<std::shared_ptr<GameObject>> selections = selection->GetAll();
                         std::vector<Object*> sameTypeComps{ primaryComp.get() }; // 主選択のコンポーネントを最初に追加
 
                         // 同じコンポーネントを持つ選択中のオブジェクトを探す
                         bool hasSameType = true; // すべての選択中のオブジェクトが同じコンポーネントを持っているか
-                        for (const auto& selectedObj : selection)
+                        for (const auto& selectedObj : selections)
                         {
-                            if (selectedObj.get() == inspectorNode) continue; // 主選択はスキップ
+                            if (selectedObj == primaryObject) continue; // 主選択はスキップ
                             if (auto comp = selectedObj->GetComponentByTypeName(primaryComp->GetTypeName())) {
                                 sameTypeComps.push_back(comp.get());
                             }
@@ -526,12 +523,12 @@ inline static void DrawInspectorProperties(GameObject* inspectorNode)
 
     //AddComponent
     {
-        DrawAddComponentButton(inspectorNode, applyToSelectedObjects);
+        DrawAddComponentButton(primaryObject.get(), applyToSelectedObjects);
     }
 
     // ドラッグドロップの受け入れ(インスペクタ全体)
     // インスペクタ全体をドロップターゲットにするために、ウィンドウを覆う透明なドロップターゲットを作成
-    DrawDropTarget(cursorPos, inspectorNode, applyToSelectedObjects);
+    DrawDropTarget(cursorPos, primaryObject.get(), applyToSelectedObjects);
 
     ImGui::EndChild();
 
@@ -547,11 +544,11 @@ namespace CurryEngine
 	{
 		if (ImGui::Begin("Inspector"))
 		{
-			if (GameObject* inspectorNode = objectManager->GetInspectorNode())
+			if (EditorSelection* selection = objectManager->GetEditorSelection())
 			{
-                DrawInspectorHeader(inspectorNode, objectManager);
+                DrawInspectorHeader(selection, objectManager);
                 ImGui::Separator();
-				DrawInspectorProperties(inspectorNode);
+				DrawInspectorProperties(selection);
 			}
 		}
 		ImGui::End();
