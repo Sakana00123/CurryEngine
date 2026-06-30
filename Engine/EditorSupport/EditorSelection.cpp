@@ -189,8 +189,8 @@ const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetAll() const
 	}
 	else {
 		// ロックされていない場合は、現在の選択状態を返す
-		for (const auto& weakObj : m_selected) {
-			if (auto& obj = weakObj/*.lock()*/) {
+		for (const auto& obj : m_selected) {
+			if (obj) {
 				result.push_back(obj);
 			}
 		}
@@ -199,28 +199,54 @@ const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetAll() const
 	return result;
 }
 
+const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetSelectedAll() const
+{
+	return m_selected;
+}
+
+const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetLockedAll() const
+{
+	std::vector<std::shared_ptr<GameObject>> result;
+	for (const auto& weakObj : m_lockedSelected) {
+		if (auto obj = weakObj.lock()) {
+			result.push_back(obj);
+		}
+	}
+	return result;
+}
+
 std::shared_ptr<GameObject> EditorSelection::GetPrimary() const
 {
 	if (m_isLocked) {
 		// ロックされている場合は、ロックされた選択状態の最後のオブジェクトを返す
-		if (m_lockedSelected.empty()) {
-			return nullptr;
-		}
-		if (auto obj = m_lockedSelected.back().lock()) {
-			return obj;
-		}
-		return nullptr;
+		return GetPrimaryLocked();
 	}
 	else {
 		// ロックされていない場合は、現在の選択状態の最後のオブジェクトを返す
-		if (m_selected.empty()) {
-			return nullptr;
-		}
-		if (auto& obj = m_selected.back()/*.lock()*/) {
-			return obj;
-		}
+		return GetPrimarySelected();
+	}
+}
+
+std::shared_ptr<GameObject> EditorSelection::GetPrimarySelected() const
+{
+	if (m_selected.empty()) {
 		return nullptr;
 	}
+	if (auto& obj = m_selected.back()) {
+		return obj;
+	}
+	return nullptr;
+}
+
+std::shared_ptr<GameObject> EditorSelection::GetPrimaryLocked() const
+{
+	if (m_lockedSelected.empty()) {
+		return nullptr;
+	}
+	if (auto obj = m_lockedSelected.back().lock()) {
+		return obj;
+	}
+	return nullptr;
 }
 
 void EditorSelection::SyncLockedSelection()

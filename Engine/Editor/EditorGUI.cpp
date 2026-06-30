@@ -429,7 +429,7 @@ void EditorGUI::DrawGameObjectMenu()
 	}
 	auto selection = scene->GetObjectManager()->GetEditorSelection();
 	bool hasCanvas = false;
-	GameObject* selectedObj = selection->GetPrimary().get();
+	GameObject* selectedObj = selection->GetPrimarySelected().get();
 	Canvas* selectedCanvas = nullptr;
 	for (const auto& obj : selection->GetAll()) {
 		if (selectedCanvas = obj->GetComponent<Canvas>()) {

@@ -96,10 +96,34 @@ public:
 	const std::vector<std::shared_ptr<GameObject>>& GetAll() const;
 
 	/**
+	 * @brief 選択されているオブジェクトのリストを取得します。
+	 * @return 選択されているオブジェクトのリスト
+	 */
+	const std::vector<std::shared_ptr<GameObject>>& GetSelectedAll() const;
+
+	/**
+	 * @brief ロックされている選択状態のオブジェクトのリストを取得します。
+	 * @return ロックされている選択状態のオブジェクトのリスト
+	 */
+	const std::vector<std::shared_ptr<GameObject>>& GetLockedAll() const;
+
+	/**
 	 * @brief 選択されているオブジェクトのうち、最後に選択されたものを取得します。(いわゆる「主選択」)
 	 * @return 最後に選択されているオブジェクト。選択が空の場合は `nullptr`
 	 */
 	std::shared_ptr<GameObject> GetPrimary() const;
+
+	/**
+	 * @brief ロックされている選択状態のうち、最後に選択されたものを取得します。(いわゆる「主選択」)
+	 * @return 最後にロックされている選択状態のオブジェクト。ロックされている選択が空の場合は `nullptr`
+	 */
+	std::shared_ptr<GameObject> GetPrimarySelected() const;
+
+	/**
+	 * @brief ロックされている選択状態のうち、最後に選択されたものを取得します。(いわゆる「主選択」)
+	 * @return 最後にロックされている選択状態のオブジェクト。ロックされている選択が空の場合は `nullptr`
+	 */
+	std::shared_ptr<GameObject> GetPrimaryLocked() const;
 
 private:
 

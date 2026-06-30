@@ -64,7 +64,7 @@ namespace CurryEngine
 		auto scene = SceneManager::GetCurrentScene();
 		auto selection = objectManager->GetEditorSelection();
 		auto& objects = objectManager->GetAllMutable();
-		auto selectNode = selection->GetPrimary().get();
+		auto selectNode = selection->GetPrimarySelected().get();
 		if (ImGui::Begin("Hierarchy", nullptr, ImGuiWindowFlags_None))
 		{
 			auto* window = ImGui::GetCurrentWindow();
@@ -135,13 +135,13 @@ namespace CurryEngine
 						nodeFlags |= ImGuiTreeNodeFlags_Selected;
 					}
 
-					//PersistentObjectManagerに登録されているオブジェクトかどうか
-					bool acceptDrop = false;
+					// ドロップ可能かどうかのフラグ
+					bool acceptDrop = true;
 
 					//ドロップ先（親子関係を解除したいとき、もしくは優先度の並び替えのとき）にドロップ可能かどうか
 					if (selection)
 					{
-						for (auto& selectObj : selection->GetAll()) {
+						for (auto& selectObj : selection->GetSelectedAll()) {
 							// ドロップソースのオブジェクトがUIオブジェクトの場合、ドロップ先がUIオブジェクトでないと親子関係を構築できないようにする
 							if (selectObj && selectObj->GetComponent<RectTransform>()) {
 								if (!object->GetComponent<RectTransform>()) {
@@ -200,7 +200,7 @@ namespace CurryEngine
 					//GameObject*データとしてドラッグ
 					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
 						ImGui::SetDragDropPayload("GameObject", &object->id, sizeof(ObjectId*));
-						ImGui::Text(std::format("Dragging {} object(s)", selection->GetAll().size()).c_str());
+						ImGui::Text(std::format("Dragging {} object(s)", selection->GetSelectedAll().size()).c_str());
 						/*for (auto& notDestroyObject : PersistentObjectManager::GetObjects()) {
 							if (notDestroyObject->GetId() == selectNode->GetId()) {
 								draggingObjectIsNotDestroyObject = true;
@@ -268,7 +268,7 @@ namespace CurryEngine
 							// 選択されているノードをInspectorに表示する
 							selection->CommitTempSelection(ctrl);
 							//SelectInspectorNode(selectNode);
-							objectManager->SelectInspectorNode(selection->GetPrimary().get());
+							objectManager->SelectInspectorNode(selectNode);
 						}
 					}
 
@@ -321,7 +321,7 @@ namespace CurryEngine
 			bool acceptDrop = true;
 			if (selection)
 			{
-				for (auto& selectObj : selection->GetAll()) {
+				for (auto& selectObj : selection->GetSelectedAll()) {
 					// ドロップソースのオブジェクトがUIオブジェクトの場合、ドロップ先がUIオブジェクトでないと受け入れない
 					if (selectObj && selectObj->GetComponent<RectTransform>()) {
 						acceptDrop = false;
@@ -337,7 +337,7 @@ namespace CurryEngine
 						ObjectId* pRef = static_cast<ObjectId*>(payload->Data);
 						if (pRef)
 						{
-							for (auto& pObj : selection->GetAll())
+							for (auto& pObj : selection->GetSelectedAll())
 							{
 								GameObject* obj = pObj.get();
 								obj->SetParent(nullptr);
@@ -363,7 +363,7 @@ namespace CurryEngine
 				}
 				bool sentinelAccept = true;
 				if (selection) {
-					for (auto& selectObj : selection->GetAll()) {
+					for (auto& selectObj : selection->GetSelectedAll()) {
 						if (selectObj && selectObj->GetComponent<RectTransform>()) {
 							sentinelAccept = false; break;
 						}
@@ -377,7 +377,7 @@ namespace CurryEngine
 			if (m_pendingDrop.has_value() && selection)
 			{
 				auto& drop = m_pendingDrop.value();
-				for (auto& pObj : selection->GetAll())
+				for (auto& pObj : selection->GetSelectedAll())
 				{
 					GameObject* obj = pObj.get();
 					if (!obj) continue;
@@ -504,7 +504,7 @@ namespace CurryEngine
 						// 削除ボタン
 						if (ImGui::MenuItem("Delete", "Del", false))
 						{
-							auto& selectAll = selection->GetAll();
+							auto selectAll = selection->GetSelectedAll();
 							for (int i = static_cast<int>(selectAll.size()) - 1; i >= 0; --i)
 							{
 								if (selectAll[i])
@@ -517,7 +517,7 @@ namespace CurryEngine
 						// 複製ボタン
 						if (ImGui::MenuItem("Duplicate", "Ctrl+D", false))
 						{
-							auto selectAll = selection->GetAll();
+							auto selectAll = selection->GetSelectedAll();
 							selection->Clear();
 							for (auto& pObj : selectAll)
 							{
@@ -532,7 +532,7 @@ namespace CurryEngine
 						//// 優先度変更ボタン
 						//if (ImGui::MenuItem("Increase Priority", "Alt+Up", false))
 						//{
-						//	for (auto& pObj : selection->GetAll())
+						//	for (auto& pObj : selection->GetSelectedAll())
 						//	{
 						//		int oldPriority = pObj->priority;
 
@@ -541,7 +541,7 @@ namespace CurryEngine
 						//}
 						//if (ImGui::MenuItem("Decrease Priority", "Alt+Down", false))
 						//{
-						//	for (auto& pObj : selection->GetAll())
+						//	for (auto& pObj : selection->GetSelectedAll())
 						//	{
 						//		pObj->priority--;
 						//	}
@@ -575,7 +575,7 @@ namespace CurryEngine
 					if (ImGui::Shortcut(ImGuiKey_Delete, ImGuiInputFlags_RouteFocused))
 					{
 						// コピーを作成してループ中のリスト変更による問題を回避する
-						auto selectAll = selection->GetAll();
+						auto selectAll = selection->GetSelectedAll();
 						for (auto& pObj : selectAll)
 						{
 							if (pObj)
@@ -588,7 +588,7 @@ namespace CurryEngine
 					// 優先度変更のショートカットキー
 					/*if (ImGui::Shortcut(ImGuiMod_Alt | ImGuiKey_UpArrow, ImGuiInputFlags_RouteFocused))
 					{
-						for (auto& pObj : selection->GetAll())
+						for (auto& pObj : selection->GetSelectedAll())
 						{
 							if (pObj)
 							{
@@ -598,7 +598,7 @@ namespace CurryEngine
 					}
 					if (ImGui::Shortcut(ImGuiMod_Alt | ImGuiKey_DownArrow, ImGuiInputFlags_RouteFocused))
 					{
-						for (auto& pObj : selection->GetAll())
+						for (auto& pObj : selection->GetSelectedAll())
 						{
 							if (pObj)
 							{
@@ -609,7 +609,7 @@ namespace CurryEngine
 					// 複製のショートカットキー
 					if (ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_D, ImGuiInputFlags_RouteFocused))
 					{
-						auto& selectAll = selection->GetAll();
+						auto selectAll = selection->GetSelectedAll();
 						selection->Clear();
 						for (auto& pObj : selectAll)
 						{
