@@ -67,9 +67,9 @@ public:
 	/** @brief インスペクタ表示中のオブジェクトを設定します。*/
 	void SelectInspectorNode(GameObject* node);
 	/** @brief インスペクタ表示をロックします。*/
-	static void LockInspector(bool lock) { lockInspector = lock; }
+	void LockInspector(bool lock);
 	/** @brief インスペクタ表示がロックされているかを返します。*/
-	static bool IsInspectorLocked() { return lockInspector; }
+	bool IsInspectorLocked() const { return lockInspector; }
 public:
 	/** @brief シリアライズします。*/
 	json Serialize() const;
@@ -108,9 +108,6 @@ public:
 	/** @brief エディタの選択状態を管理するオブジェクトを取得します。*/
 	EditorSelection* GetEditorSelection() { return selection; }
 
-	/** @brief エディタのロックされた選択状態を管理するオブジェクトを取得します。*/
-	EditorSelection* GetLockedEditorSelection() { return lockedSelection; }
-	
 	/** @brief オブジェクトの選択とインスペクタ表示をリセットします。*/
 	void Reset();
 private:
@@ -125,9 +122,8 @@ private:
 	friend class EditorGUI;
 	GameObject* selectNode = nullptr;
 	GameObject* inspectorNode = nullptr;
-	static inline bool lockInspector = false;
+	bool lockInspector = false;
 	EditorSelection* selection; // エディタの選択状態を管理するオブジェクト
-	EditorSelection* lockedSelection; // エディタのロックされた選択状態を管理するオブジェクト
 private:
 	friend class Scene;
 	friend class Framework;

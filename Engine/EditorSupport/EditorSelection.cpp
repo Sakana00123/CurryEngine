@@ -128,17 +128,14 @@ void EditorSelection::CommitTempSelection(bool additive)
 
 void EditorSelection::LockCurrentSelection()
 {
-	m_lockedSelected.clear();
-	for (auto& obj : m_selected) {
-		m_lockedSelected.push_back(obj);
-	}
 	m_isLocked = true;
+	SyncLockedSelection();
 }
 
 void EditorSelection::UnlockCurrentSelection()
 {
-	m_lockedSelected.clear();
 	m_isLocked = false;
+	SyncLockedSelection();
 }
 
 void EditorSelection::Clear()
@@ -163,23 +160,76 @@ bool EditorSelection::IsSelected(const GameObject* object) const
 
 bool EditorSelection::IsEmpty() const
 {
+	if (m_isLocked) {
+		// ロックされている場合は、ロックされた選択状態が空かどうかを返す
+		return m_lockedSelected.empty();
+	}
 	return m_selected.empty();
 }
 
 int EditorSelection::Count() const
 {
+	if (m_isLocked) {
+		// ロックされている場合は、ロックされた選択状態の数を返す
+		return static_cast<int>(m_lockedSelected.size());
+	}
 	return static_cast<int>(m_selected.size());
 }
 
 const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetAll() const
 {
-	return m_selected;
+	std::vector<std::shared_ptr<GameObject>> result;
+	if (m_isLocked) {
+		// ロックされている場合は、ロックされた選択状態を返す
+		for (const auto& weakObj : m_lockedSelected) {
+			if (auto obj = weakObj.lock()) {
+				result.push_back(obj);
+			}
+		}
+	}
+	else {
+		// ロックされていない場合は、現在の選択状態を返す
+		for (const auto& weakObj : m_selected) {
+			if (auto& obj = weakObj/*.lock()*/) {
+				result.push_back(obj);
+			}
+		}
+	}
+
+	return result;
 }
 
 std::shared_ptr<GameObject> EditorSelection::GetPrimary() const
 {
-	if (m_selected.empty()) {
+	if (m_isLocked) {
+		// ロックされている場合は、ロックされた選択状態の最後のオブジェクトを返す
+		if (m_lockedSelected.empty()) {
+			return nullptr;
+		}
+		if (auto obj = m_lockedSelected.back().lock()) {
+			return obj;
+		}
 		return nullptr;
 	}
-	return m_selected.back();
+	else {
+		// ロックされていない場合は、現在の選択状態の最後のオブジェクトを返す
+		if (m_selected.empty()) {
+			return nullptr;
+		}
+		if (auto& obj = m_selected.back()/*.lock()*/) {
+			return obj;
+		}
+		return nullptr;
+	}
+}
+
+void EditorSelection::SyncLockedSelection()
+{
+	m_lockedSelected.clear();
+
+	if (m_isLocked) {
+		for (const auto& obj : m_selected) {
+			m_lockedSelected.push_back(obj);
+		}
+	}
 }

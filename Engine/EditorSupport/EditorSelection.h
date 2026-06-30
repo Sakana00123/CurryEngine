@@ -102,6 +102,14 @@ public:
 	std::shared_ptr<GameObject> GetPrimary() const;
 
 private:
+
+	/**
+	 * @brief ロックされた選択状態を同期します。これにより、ロックされた選択状態が現在の選択状態と一致するようになります。
+	 */
+	void SyncLockedSelection();
+
+private:
+	// TODO: あとで選択状態の管理の型を見直すこと。
 	std::vector<std::shared_ptr<GameObject>> m_selected;
 	std::vector<std::weak_ptr<GameObject>> m_tempSelected; // 一時的に選択されているオブジェクトのリスト（ドラッグ・リリースの間などで使用）
 	std::vector<std::weak_ptr<GameObject>> m_tempDeselected; // 一時的に選択解除されているオブジェクトのリスト（ドラッグ・リリースの間などで使用）

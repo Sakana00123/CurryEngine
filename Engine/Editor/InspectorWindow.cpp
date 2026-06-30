@@ -357,11 +357,11 @@ inline static void DrawDropTarget(ImVec2 cursorPos, GameObject* inspectorNode, s
 
 inline static void DrawInspectorHeader(EditorSelection* selection, ObjectManager* objectManager)
 {
-    //Inspectorロック
-    DrawInspectorLockCheckbox(objectManager);
-    ImGui::SameLine();
     if (selection && !selection->IsEmpty())
     {
+        //Inspectorロック
+        DrawInspectorLockCheckbox(objectManager);
+        ImGui::SameLine();
         // layerを変更するドロップダウン
         DrawLayerComboBox(selection);
         //オブジェクトの有効状態を切り替えるチェックボックス

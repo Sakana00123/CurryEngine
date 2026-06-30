@@ -48,7 +48,6 @@ ObjectManager::ObjectManager(Scene* scene) : scene(scene), selectNode(nullptr), 
 {
 	// ‘I‘ğŠÇ—‚Ì‰Šú‰»
 	selection = new EditorSelection();
-	lockedSelection = new EditorSelection();
 }
 
 ObjectManager::~ObjectManager()
@@ -57,10 +56,6 @@ ObjectManager::~ObjectManager()
 	if (selection) {
 		delete selection;
 		selection = nullptr;
-	}
-	if (lockedSelection) {
-		delete lockedSelection;
-		lockedSelection = nullptr;
 	}
 
 
@@ -501,7 +496,7 @@ inline XMFLOAT4X4 ComputePivotMatrix(const std::vector<std::shared_ptr<GameObjec
 void ObjectManager::DrawGuizmo(RenderContext* rtx)
 {
 #ifdef USE_IMGUI
-	const auto& objs = selection->GetAll();
+	const auto& objs = GetEditorSelection()->GetAll();
 	if (!objs.empty())
 	{
 		bool allHaveTransform = true;
@@ -998,12 +993,9 @@ void ObjectManager::Reset()
 {
 	selectNode = nullptr;
 	inspectorNode = nullptr;
-	if (!lockInspector)
+	if (selection)
 	{
-		if (selection)
-		{
-			selection->Clear();
-		}
+		selection->Clear();
 	}
 }
 
@@ -1011,6 +1003,17 @@ void ObjectManager::SelectInspectorNode(GameObject* node)
 {
 	if (!lockInspector) {
 		inspectorNode = node;
+	}
+}
+
+void ObjectManager::LockInspector(bool lock)
+{
+	lockInspector = lock;
+	if (lock) {
+		selection->LockCurrentSelection();
+	}
+	else {
+		selection->UnlockCurrentSelection();
 	}
 }
 
