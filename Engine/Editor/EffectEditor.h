@@ -19,9 +19,11 @@ public:
 	static void Show();
 	//エディタが開いているか
 	static bool IsOpen();
+	//プレビューウィンドウがフォーカスされているか
+	static bool IsPreviewFocused();
 
 	//エディタGUI描画
-	static void DrawGUI();
+	static void DrawGUI(RenderContext* context);
 
 private:
 #ifdef USE_IMGUI
@@ -63,6 +65,6 @@ private:
 private:
 	//エディタが開いているか
 	static inline bool isOpen = false;
-
+	static inline bool isPreviewFocused = false; // プレビューウィンドウがフォーカスされているか
 	static inline EffectHandle currentEffectHandle = -1; // 現在編集中のエフェクトハンドル
 };

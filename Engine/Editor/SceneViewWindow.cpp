@@ -114,7 +114,7 @@ namespace CurryEngine
 				{
 					Vector2 rayStartScreen = InputSystem::GetMousePosition();
 					Vector3 rayStart, rayDir;
-					scene->GetSceneViewEditorCamera()->ScreenPointToRay(rayStartScreen, rayStart, rayDir);
+					scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->ScreenPointToRay(rayStartScreen, rayStart, rayDir);
 
 					float rayLength = 1000.0f;
 					RaycastHit hitInfo;

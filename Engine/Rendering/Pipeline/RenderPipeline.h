@@ -77,7 +77,15 @@ public:
 // プレビュー表示の描画パイプラインクラス
 class PreviewRenderPipeline : public RenderPipeline
 {
-	public:
+public:
 	/** @brief 描画パイプラインの描画パス登録処理。プレビュー表示に必要な描画パスを登録します。*/
+	void SetupRenderPasses() override;
+};
+
+// エフェクトプレビュー表示の描画パイプラインクラス
+class EffectPreviewRenderPipeline : public RenderPipeline
+{
+public:
+	/** @brief 描画パイプラインの描画パス登録処理。エフェクトプレビュー表示に必要な描画パスを登録します。*/
 	void SetupRenderPasses() override;
 };

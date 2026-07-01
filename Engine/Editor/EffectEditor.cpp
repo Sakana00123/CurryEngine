@@ -10,6 +10,8 @@
 #include "Engine/Utils/JsonFileHandler.h"
 #include "Dialog.h"
 #include "Engine/EditorSupport/ImGuiHelpers.h"
+#include <Engine\Rendering\Camera\EditorCamera.h>
+#include <Engine\Scenes\SceneManager.h>
 
 static const char* EasingTypes[] = {
 	"Linear",
@@ -46,6 +48,12 @@ static const char* EasingTypes[] = {
 void EffectEditor::Show()
 {
 	isOpen = true;
+
+	if (EditorCamera* editorCamera = SceneManager::GetCurrentScene()->GetEditorCamera(EDITOR_CAMERA_EFFECT_PREVIEW))
+	{
+		editorCamera->Initialize();
+		editorCamera->SetPosition(Vector3::Zero);
+	}
 }
 
 bool EffectEditor::IsOpen()
@@ -53,15 +61,25 @@ bool EffectEditor::IsOpen()
 	return isOpen;
 }
 
+bool EffectEditor::IsPreviewFocused()
+{
+	return isPreviewFocused;
+}
+
 void EffectEditor::Initialize()
 {
 	// 初期化処理が必要ならここに追加
 }
 
-void EffectEditor::DrawGUI()
+void EffectEditor::DrawGUI(RenderContext* context)
 {
 #ifdef USE_IMGUI
-	if (isOpen)
+	if (!isOpen)
+	{
+		isPreviewFocused = false;
+		return;
+	}
+	else
 	{
 		ImGui::Begin("Effect Editor", &isOpen);
 
@@ -82,6 +100,30 @@ void EffectEditor::DrawGUI()
 			if (ImGui::Button("Clear")) { EffectManager::ClearAll(); }
 
 		}
+
+		//ImGui::BeginTable("EffectEditorTable", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable);
+		//ImGui::TableSetupColumn("EffectPreviewWindow", ImGuiTableColumnFlags_WidthStretch);
+		//ImGui::TableSetupColumn("Effect Data List", ImGuiTableColumnFlags_WidthFixed, 200.0f);
+
+		//// 左側のカラム
+		//ImGui::TableNextRow();
+		//ImGui::TableSetColumnIndex(0);
+		
+		// エフェクトプレビューウィンドウ
+		if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
+		{
+			static constexpr float aspectRatio = 9.0f / 16.0f; // 16:9のアスペクト比
+			static constexpr float windowWidth = 400.0f; // ウィンドウの幅を固定
+			static constexpr float windowHeight = windowWidth * aspectRatio; // 高さをアスペクト比に基づいて計算
+			ImVec2 windowSize(windowWidth, windowHeight);
+			ImGui::Image(previewImage->GetSRV(), windowSize);
+
+			// プレビューウィンドウがフォーカスされているかどうかをチェック
+			isPreviewFocused = ImGui::IsItemHovered();
+		}
+
+		// 右側のカラム
+		//ImGui::TableSetColumnIndex(1);
 
 		// エフェクトデータリスト
 		if (ImGui::CollapsingHeader("Effect Data List", ImGuiTreeNodeFlags_Leaf))
@@ -177,6 +219,7 @@ void EffectEditor::DrawGUI()
 			if (currentEffectHandle < 0 || currentEffectHandle >= EffectManager::effectData.size())
 			{
 				ImGui::Text("No Emitter Data Selected.");
+				//ImGui::EndTable();
 				ImGui::End();
 				return;
 			}
@@ -491,7 +534,9 @@ void EffectEditor::DrawGUI()
 			}
 
 		}
-		
+
+		//ImGui::EndTable();
+
 		ImGui::End();
 	}
 #endif // USE_IMGUI

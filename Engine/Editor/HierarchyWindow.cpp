@@ -278,7 +278,7 @@ namespace CurryEngine
 						if (selectNode->transform && scene)
 						{
 							Vector3 pos = (selectNode->transform->GetWorldPosition());
-							scene->GetSceneViewEditorCamera()->SetPosition(pos);
+							scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->SetPosition(pos);
 						}
 					}
 

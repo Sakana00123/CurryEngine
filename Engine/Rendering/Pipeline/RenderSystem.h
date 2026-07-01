@@ -19,7 +19,11 @@ public:
 
 private:
 	Time* time{};
+
+	// TODO: これ以上増えるようなら、配列やマップで管理するように変更する
+
 	std::unique_ptr<RenderPipeline> sceneRenderPipeline;
 	std::unique_ptr<RenderPipeline> gameRenderPipeline;
 	std::unique_ptr<RenderPipeline> previewRenderPipeline;
+	std::unique_ptr<RenderPipeline> effectPreviewRenderPipeline;
 };

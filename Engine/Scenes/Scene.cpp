@@ -11,18 +11,7 @@
 
 #include "Engine/Editor/SceneViewWindow.h"
 #include "Engine/Editor/ImportSettings/ImportSettingsWindow.h"
-
-
-EditorCamera* Scene::GetSceneViewEditorCamera() const
-{
-	return editorCameras[0].get();
-}
-
-EditorCamera* Scene::GetPreviewEditorCamera() const
-{
-	return editorCameras[1].get();
-}
-
+#include <Engine\Editor\EffectEditor.h>
 
 Scene::Scene() : canTransition(false)
 {
@@ -33,8 +22,9 @@ Scene::Scene() : canTransition(false)
 		editorCameras[i] = std::make_unique<EditorCamera>();
 		editorCameras[i]->Initialize();
 	}
-	editorCameras[0]->SetUpdateFlagFunction([]() { return CurryEngine::SceneViewWindow::Get().IsFocused(); }); // シーンビューウィンドウがフォーカスされている場合に更新するように設定
-	editorCameras[1]->SetUpdateFlagFunction([]() { return CurryEngine::Resources::ImportSettingsWindow::IsOpen(); }); // インポート設定ウィンドウが開いている場合に更新するように設定
+	editorCameras[EDITOR_CAMERA_SCENE_VIEW]->SetUpdateFlagFunction([]() { return CurryEngine::SceneViewWindow::Get().IsFocused(); }); // シーンビューウィンドウがフォーカスされている場合に更新するように設定
+	editorCameras[EDITOR_CAMERA_PREVIEW]->SetUpdateFlagFunction([]() { return CurryEngine::Resources::ImportSettingsWindow::IsOpen(); }); // インポート設定ウィンドウが開いている場合に更新するように設定
+	editorCameras[EDITOR_CAMERA_EFFECT_PREVIEW]->SetUpdateFlagFunction([]() { return EffectEditor::IsPreviewFocused(); }); // インポート設定ウィンドウが開いている場合に更新するように設定
 }
 
 void Scene::Initialize()
@@ -221,7 +211,7 @@ void Scene::Serialize(json& j) const
 	//j["canTransition"] = canTransition;
 	
 	// エディターカメラのシリアライズ
-	j["editorCamera"] = GetSceneViewEditorCamera()->Serialize();
+	j["editorCamera"] = GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->Serialize();
 
 	// シーン内の全オブジェクトをシリアライズ
 	j["objects"] = objectManager->Serialize();
@@ -247,7 +237,7 @@ void Scene::Deserialize(const json& j) {
 	// エディターカメラのデシリアライズ
 	if (j.contains("editorCamera"))
 	{
-		GetSceneViewEditorCamera()->Deserialize(j["editorCamera"]);
+		GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->Deserialize(j["editorCamera"]);
 	}
 
 	// シーン内の全オブジェクトをデシリアライズ

@@ -44,6 +44,11 @@ void RenderSystem::Initialize(Time* time)
 	previewRenderPipeline->SetupRenderPasses();
 	previewRenderPipeline->Initialize();
 
+	// エフェクトプレビュー用の描画パイプラインを作成して初期化
+	effectPreviewRenderPipeline = std::make_unique<EffectPreviewRenderPipeline>();
+	effectPreviewRenderPipeline->SetupRenderPasses();
+	effectPreviewRenderPipeline->Initialize();
+
 	this->time = time;
 }
 
@@ -57,6 +62,7 @@ void RenderSystem::Render()
     RenderContext sceneContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
     RenderContext gameContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
 	RenderContext previewContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
+	RenderContext effectPreviewContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
     // カメラ情報取得
     {
 		auto scene = SceneManager::GetCurrentScene();
@@ -67,7 +73,7 @@ void RenderSystem::Render()
             {
                 ProfileScopedSection_2(0, "SceneView::Rendering", ImGuiControl::Profiler::Yellow);
                 // エディタビュー用の描画処理
-				EditorCamera* editorCamera = scene->GetSceneViewEditorCamera();
+				EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW);
                 cameraPos = editorCamera->GetPosition();
                 View = editorCamera->GetViewMatrix();
                 Projection = editorCamera->GetProjectionMatrix();
@@ -94,7 +100,7 @@ void RenderSystem::Render()
 
             // プレビュー用の描画処理
             {
-				EditorCamera* editorCamera = scene->GetPreviewEditorCamera();
+				EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_PREVIEW);
                 cameraPos = editorCamera->GetPosition();
                 View = editorCamera->GetViewMatrix();
                 Projection = editorCamera->GetProjectionMatrix();
@@ -118,6 +124,32 @@ void RenderSystem::Render()
 
                 previewRenderPipeline->Execute(&previewContext, scene);
             }
+
+            // エフェクトプレビュー用の描画処理
+            {
+                EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_EFFECT_PREVIEW);
+                cameraPos = editorCamera->GetPosition();
+                View = editorCamera->GetViewMatrix();
+                Projection = editorCamera->GetProjectionMatrix();
+
+                // RenderContextの設定
+                {
+                    effectPreviewContext.renderState = Graphics::GetRenderState();
+                    effectPreviewContext.deltaTime = Time::DeltaTime();
+                    effectPreviewContext.unscaledDeltaTime = Time::UnscaledDeltaTime();
+                    effectPreviewContext.totalTime = time->TimeStamp();
+
+                    effectPreviewContext.cameraPosition = cameraPos;
+                    DirectX::XMStoreFloat4x4(&effectPreviewContext.view, View);
+                    DirectX::XMStoreFloat4x4(&effectPreviewContext.projection, Projection);
+                    auto ViewProjection = View * Projection;
+                    DirectX::XMStoreFloat4x4(&effectPreviewContext.viewProjection, ViewProjection);
+                    DirectX::XMStoreFloat4x4(&effectPreviewContext.inverseView, XMMatrixInverse(nullptr, View));
+                    DirectX::XMStoreFloat4x4(&effectPreviewContext.inverseProjection, XMMatrixInverse(nullptr, Projection));
+                    DirectX::XMStoreFloat4x4(&effectPreviewContext.inverseViewProjection, XMMatrixInverse(nullptr, ViewProjection));
+                }
+                effectPreviewRenderPipeline->Execute(&effectPreviewContext, scene);
+			}
 
 #endif // DEBUG
             {
@@ -184,7 +216,7 @@ void RenderSystem::Render()
     ImGuiTheme::DrawGUI();
 
     //エフェクトエディタGUI描画
-    EffectEditor::DrawGUI();
+    EffectEditor::DrawGUI(&effectPreviewContext);
 
     //物理エンジンデバッグ描画
     Physics::DrawGUI();

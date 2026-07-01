@@ -11,6 +11,11 @@ class PointLightComponent;
 class SpotLightComponent;
 #include "Engine/Rendering/Camera/EditorCamera.h"
 
+#define EDITOR_CAMERA_SCENE_VIEW 0
+#define EDITOR_CAMERA_PREVIEW 1
+#define EDITOR_CAMERA_EFFECT_PREVIEW 2
+#define EDITOR_CAMERA_COUNT 3
+
 /**
  * @file
  * @brief シーンクラス。
@@ -26,11 +31,9 @@ public:
 	CameraSystem cameraSystem;
 
 	/** @brief エディタ用カメラ。*/
-	std::unique_ptr<EditorCamera> editorCameras[2]; // 0: シーンビュー, 1: プレビュー用
-	/** @brief シーンビュー用のエディタカメラを取得します。*/
-	EditorCamera* GetSceneViewEditorCamera() const;
-	/** @brief プレビュー用のエディタカメラを取得します。*/
-	EditorCamera* GetPreviewEditorCamera() const;
+	std::unique_ptr<EditorCamera> editorCameras[EDITOR_CAMERA_COUNT]; // 0: シーンビュー, 1: プレビュー用, 2: エフェクトプレビュー用
+	/** @brief インデックス指定でエディタカメラを取得します。*/
+	EditorCamera* GetEditorCamera(int index) const { return editorCameras[index].get(); }
 
 
 	/** @brief Undo/Redoスタック。シーン内での変更を管理します。*/

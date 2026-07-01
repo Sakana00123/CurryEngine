@@ -29,7 +29,7 @@ void SceneParametersEditor::DrawGUI()
 		if (Scene* scene = SceneManager::GetCurrentScene())
 		{
 			ImGui::SeparatorText("EditorCamera");
-			scene->GetSceneViewEditorCamera()->DrawProperty();
+			scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->DrawProperty();
 			ImGui::SeparatorText(scene->name.c_str());
 			// シーンパラメータ表示
 			scene->DrawGUI();

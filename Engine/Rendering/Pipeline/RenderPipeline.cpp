@@ -142,3 +142,11 @@ void PreviewRenderPipeline::SetupRenderPasses()
 	AddRenderPass(std::make_unique<SkyBoxPass>());
 	AddRenderPass(std::make_unique<PreviewPass>());
 }
+
+void EffectPreviewRenderPipeline::SetupRenderPasses()
+{
+	AddRenderPass(std::make_unique<ConstantBufferPass>());
+	AddRenderPass(std::make_unique<PreRenderPass>());
+	//AddRenderPass(std::make_unique<SkyBoxPass>());
+	AddRenderPass(std::make_unique<ParticlePass>());
+}

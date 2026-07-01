@@ -348,8 +348,11 @@ namespace CurryEngine::Resources
 		// プレビューカメラの初期化
 		if (Scene* currentScene = SceneManager::GetCurrentScene())
 		{
-			currentScene->GetPreviewEditorCamera()->Initialize();
-			currentScene->GetPreviewEditorCamera()->SetPosition(Vector3(0, 0, 0)); // 適切な初期位置に設定
+			if (EditorCamera* editorCamera = currentScene->GetEditorCamera(EDITOR_CAMERA_PREVIEW))
+			{
+				editorCamera->Initialize();
+				editorCamera->SetPosition(Vector3(0, 0, 0)); // 適切な初期位置に設定
+			}
 		}
 	}
 
