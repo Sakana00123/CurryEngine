@@ -27,7 +27,7 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 	if (std::filesystem::exists(filePath))
 	{
 		// すでに同じデータが存在する場合はそれを返す
-		for (size_t i = 0; i < effectData.size(); ++i)
+		for (int i = 0; i < effectData.size(); ++i)
 		{
 			if (effectData[i].filePath == filePath)
 			{
@@ -636,7 +636,7 @@ void EffectManager::EmitOnce(const EmitterPlayState& state)
 		delayTime += emitterData.emitData.emitInterval.GetRandom() * i; // エミット間隔設定
 
 		emitData.parameter.z = delayTime; // 遅延時間設定
-		emitData.parameter.w = state.emitterIndex; // エミッタインデックスをw成分に設定
+		emitData.parameter.w = static_cast<float>(state.emitterIndex); // エミッタインデックスをw成分に設定
 		if (!emitterData.visualData.useGradient)
 		{
 			emitData.parameter.w = -1.0f; // グラデーションを使用しない場合はw成分に-1を設定

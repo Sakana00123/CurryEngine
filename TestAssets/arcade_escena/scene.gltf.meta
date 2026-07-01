@@ -1,6 +1,13 @@
 {
     "id": "5ce2a25c8534f807102590ed5bbeb860",
-    "importSettings": null,
+    "importSettings": {
+        "flipUVs": true,
+        "flipWindingOrder": true,
+        "makeLeftHanded": true,
+        "optimizeMesh": true,
+        "scaleFactor": 1.0,
+        "staticBatching": false
+    },
     "isFolder": false,
     "path": "./TestAssets/arcade_escena/scene.gltf",
     "type": "Model"

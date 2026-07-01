@@ -96,7 +96,7 @@ void InputField::OnUpdateSelected(BaseEventData* eventData)
 				std::wstring tempStr = textComponent->GetText();
 				size_t prevLength = tempStr.length();
 				if (cursorPos > tempStr.length()) {
-					cursorPos = tempStr.length();
+					cursorPos = static_cast<int>(tempStr.length());
 				}
 				tempStr.insert(cursorPos, inputStr);
 				size_t insertedLength = tempStr.length() - prevLength;
@@ -156,10 +156,10 @@ void InputField::OnPointerDown(PointerEventData* eventData)
 		return;
 
 	isFocus = true;
-	cursorPos = textComponent->GetCursorIndexFromPoint(
+	cursorPos = static_cast<int>(textComponent->GetCursorIndexFromPoint(
 		eventData->position.x,
 		eventData->position.y
-	);
+	));
 	CursorUpdate();
 }
 

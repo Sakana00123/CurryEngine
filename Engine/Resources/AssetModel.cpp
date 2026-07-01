@@ -10,7 +10,9 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <filesystem>
+#include <DirectXTex.h>
+#include "Engine/Resources/Texture.h"
+
 #include <cassert>
 #include "ImportSettings\ModelImportSettings.h"
 
@@ -38,8 +40,6 @@ namespace Assimp
         }
     };
 }
-
-namespace fs = std::filesystem;
 
 // ============================================================
 // 内部ヘルパー（無名名前空間）
@@ -120,6 +120,104 @@ namespace
     }
 
     // ----------------------------------------------------------
+	// 埋め込みテクスチャユーティリティ
+    // ----------------------------------------------------------
+
+    /**
+     * @brief 埋め込みテクスチャかどうかを判定する。
+     * @param path テクスチャパス。
+	 * @return 埋め込みテクスチャなら true。
+     */
+    bool IsEmbeddedTexture(const std::string& path)
+    {
+        // 埋め込みテクスチャは "*0" のような形式になる
+        return !path.empty() && path[0] == '*';
+	}
+
+    /**
+     * @brief assimp の埋め込みテクスチャを DirectXTex::ScratchImage に読み込む。
+     * @param scene    assimp のシーン。
+     * @param texPath  埋め込みテクスチャのパス（"*0" のような形式）。
+     * @param outImage 読み込んだ画像を格納する ScratchImage。
+	 * @return 読み込みに成功すれば true。
+     */
+    bool GetAndLoadEmbeddedTexture(const aiScene* scene, const std::string& texPath, DirectX::ScratchImage& outImage)
+    {
+        if (!IsEmbeddedTexture(texPath))
+        {
+            LOG_ERROR("Not an embedded texture: " + texPath);
+            return false;
+        }
+        // 埋め込みテクスチャのインデックスを取得
+        int texIndex = std::stoi(texPath.substr(1)); // "*0" のような形式なので、先頭の '*' を除去して整数に変換
+        if (texIndex < 0 || texIndex >= scene->mNumTextures)
+        {
+            LOG_ERROR("Invalid embedded texture index: " + std::to_string(texIndex));
+            return false;
+        }
+        const aiTexture* embeddedTex = scene->mTextures[texIndex];
+        if (!embeddedTex)
+        {
+            LOG_ERROR("Embedded texture is null at index: " + std::to_string(texIndex));
+            return false;
+        }
+        // 埋め込みテクスチャのデータを取得
+        const unsigned char* data = reinterpret_cast<const unsigned char*>(embeddedTex->pcData);
+        size_t dataSize = embeddedTex->mWidth; // mWidth は埋め込みテクスチャのサイズを表す
+		// DirectXTex を使って埋め込みテクスチャを読み込む
+        HRESULT hr = DirectX::LoadFromWICMemory(data, dataSize, DirectX::WIC_FLAGS_NONE, nullptr, outImage);
+        if (FAILED(hr))
+        {
+			LOG_ERROR("Failed to load embedded texture from memory. HRESULT: " + std::to_string(hr));
+            return false;
+        }
+		return true;
+    }
+
+    /**
+     * @brief assimp の埋め込みテクスチャをファイルに書き出す。
+     * @param scene      assimp のシーン。
+     * @param texIndex   埋め込みテクスチャのインデックス（aiScene::mTextures のインデックス）。
+     * @param outputPath 書き出すファイルパス（拡張子付き）。
+     * @return 書き出しに成功すれば true。
+	 */
+    bool ExportEmbeddedTexture(const aiScene* scene, int texIndex, const fs::path& outputPath)
+    {
+        if (texIndex < 0 || texIndex >= scene->mNumTextures)
+        {
+            Console::LogError("Invalid embedded texture index: " + std::to_string(texIndex));
+            return false;
+        }
+        const aiTexture* embeddedTex = scene->mTextures[texIndex];
+        if (!embeddedTex)
+        {
+            Console::LogError("Embedded texture is null at index: " + std::to_string(texIndex));
+            return false;
+        }
+        // 埋め込みテクスチャのデータを取得
+        const unsigned char* data = reinterpret_cast<const unsigned char*>(embeddedTex->pcData);
+        size_t dataSize = embeddedTex->mWidth; // mWidth は埋め込みテクスチャのサイズを表す
+        
+		// DirectXTex を使って埋め込みテクスチャを書き出す
+		DirectX::ScratchImage image;
+		// 埋め込みテクスチャが圧縮されている場合は、DirectXTex の LoadFromMemory で読み込む
+		HRESULT hr = DirectX::LoadFromWICMemory(data, dataSize, DirectX::WIC_FLAGS_NONE, nullptr, image);
+        if (FAILED(hr))
+        {
+            LOG_ERROR("Failed to load embedded texture from memory. HRESULT: " + std::to_string(hr));
+			return false;
+        }
+		// PNG 形式で書き出す
+		hr = DirectX::SaveToWICFile(*image.GetImage(0, 0, 0), DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(DirectX::WIC_CODEC_PNG), outputPath.wstring().c_str());
+        if (FAILED(hr))
+        {
+            LOG_ERROR("Failed to save embedded texture to file: " + outputPath.string() + ". HRESULT: " + std::to_string(hr));
+            return false;
+		}
+        return true;
+	}
+
+    // ----------------------------------------------------------
     // テクスチャパス解決
     // ----------------------------------------------------------
 
@@ -135,15 +233,19 @@ namespace
         const aiMaterial* mat,
         aiTextureType     type,
         const std::string& baseDir,
-        std::string& outPath)
+        fs::path& outPath)
     {
         if (mat->GetTextureCount(type) == 0) return false;
 
         aiString texPathStr;
         if (mat->GetTexture(type, 0, &texPathStr) != AI_SUCCESS) return false;
 
-        // 埋め込みテクスチャは "*0" のような形式になる（現状はスキップ）
-        if (texPathStr.data[0] == '*') return false;
+        // 埋め込みテクスチャは "*0" のような形式になる
+        if (texPathStr.data[0] == '*')
+        {
+			outPath = texPathStr.C_Str(); // 埋め込みテクスチャはそのまま返す
+			return true;
+        }
 
 		// 相対パスを絶対パスに変換して正規化する
 		fs::path texPath(texPathStr.C_Str());
@@ -156,7 +258,7 @@ namespace
             outPath.clear();
             return false;
 		}
-        outPath = resolved.string();
+        outPath = resolved;
         return true;
     }
 
@@ -295,18 +397,21 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir
     // ここでは全マテリアルを走査して使われているパスを収集し、
     // 重複なくロードする。
     // texturePaths[絶対パス] = textures インデックス
-    std::unordered_map<std::string, int> pathToIndex;
+    std::unordered_map<fs::path, int> pathToIndex;
 
-    auto getOrLoad = [&](const std::string& absPath) -> int
+    // 埋め込みテクスチャの書き出しパスを保持する
+	std::vector<std::string> embeddedTexturePaths;
+
+    auto getOrLoad = [&](const fs::path& absPath) -> int
         {
             auto it = pathToIndex.find(absPath);
             if (it != pathToIndex.end()) return it->second;
 
             // TODO: ResourceManager 経由でキャッシュを使うように変更予定
             auto tex = std::make_shared<AssetTexture>();
-            if (!tex->LoadFromFile(absPath))
+            if (!tex->LoadFromFile(absPath.string()))
             {
-                Console::LogWarning("AssetModel: texture not found: " + absPath);
+                LOG_WARNING("AssetModel: texture not found: " + absPath.string());
                 return -1;
             }
             const int index = static_cast<int>(textures.size());
@@ -330,13 +435,58 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir
         };
         for (aiTextureType type : types)
         {
-            std::string absPath;
+            fs::path absPath;
             if (ResolveTexturePath(mat, type, baseDir, absPath))
             {
-                getOrLoad(absPath);
+                if (IsEmbeddedTexture(absPath.string()))
+                {
+					embeddedTexturePaths.push_back(absPath.string()); // 埋め込みテクスチャは後で書き出す
+                }
+                else
+                {
+                    getOrLoad(absPath);
+                }
             }
         }
     }
+	// 埋め込みテクスチャのロード
+    for (const std::string& embeddedPath : embeddedTexturePaths)
+    {
+#if 0
+        DirectX::ScratchImage embeddedScratchImage;
+        if (GetAndLoadEmbeddedTexture(scene, embeddedPath, embeddedScratchImage))
+        {
+            // 埋め込みテクスチャから AssetTexture を作成
+            auto tex = std::make_shared<AssetTexture>();
+
+            // SRV を作成して AssetTexture に設定
+            Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
+            HRESULT hr = LoadTextureFromMemory(Graphics::GetDevice(), embeddedScratchImage.GetPixels(), embeddedScratchImage.GetPixelsSize(), srv.GetAddressOf());
+            _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+
+            Microsoft::WRL::ComPtr<ID3D11Texture2D> resource;
+            D3D11_TEXTURE2D_DESC desc{};
+            srv->GetResource(reinterpret_cast<ID3D11Resource**>(resource.GetAddressOf()));
+            resource->GetDesc(&desc);
+
+            // AssetTexture に設定
+            tex->SetSRV(srv.Get(), desc);
+        }
+#else
+		int texIndex = std::stoi(embeddedPath.substr(1));
+		std::string texName = scene->mTextures[texIndex]->mFilename.C_Str();
+        fs::path outputPath = baseDir / fs::path(texName);
+		outputPath.replace_extension(".png"); // PNG 形式で書き出す
+        if (ExportEmbeddedTexture(scene, texIndex, outputPath))
+        {
+			// 競合状態を避けるため、少し待つ(良くないので将来的には改善する)
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+            // 書き出した埋め込みテクスチャをロード
+			getOrLoad(outputPath.string());
+        }
+#endif // 0
+	}
 
     // pathToIndex を後の ImportMaterials で使えるようにメンバに保存
     m_texturePathToIndex = std::move(pathToIndex);
@@ -382,14 +532,24 @@ void AssetModel::ImportMaterials(const aiScene* scene)
 		std::string baseDir = fs::path(_path).parent_path().string();
         auto bindTex = [&](aiTextureType type, const std::string& slotName)
             {
-                std::string absPath;
+				mat->SetValue("has_" + slotName, false); // デフォルトは false
+                fs::path absPath;
                 if (!ResolveTexturePath(aiMat, type, baseDir, absPath)) return;
-                // ImportTextures で絶対パスを解決済みなので baseDir は不要
-                // ただし ResolveTexturePath は baseDir を使う設計なので、
-                // ここでは pathToIndex から直引きする
-                auto it = m_texturePathToIndex.find(absPath);
-                if (it == m_texturePathToIndex.end()) return;
-                mat->SetTexture(slotName, textures.at(it->second));
+                // 埋め込みテクスチャの場合はインデックスから探して代入
+                int texIndex = -1;
+                if (IsEmbeddedTexture(absPath.string()))
+                {
+                    texIndex = std::stoi(absPath.string().substr(1));
+                }
+                else
+                {
+                    auto it = m_texturePathToIndex.find(absPath);
+                    if (it == m_texturePathToIndex.end()) return;
+                    texIndex = it->second;
+                }
+				_ASSERT_EXPR(texIndex >= 0 && texIndex < static_cast<int>(textures.size()), L"Invalid texture index");
+
+                mat->SetTexture(slotName, textures.at(texIndex));
 				mat->SetValue("has_" + slotName, true); // シェーダー側でテクスチャ有無を判定するためのフラグ)
             };
 
@@ -555,9 +715,8 @@ void AssetModel::ImportMeshes(const aiScene* scene)
 void AssetModel::ImportNodes(const aiScene* scene)
 {
     // aiNode を再帰的に走査して AssetModel::Node のフラット配列に変換する。
-    // aiNode::mMeshes は aiScene::mMeshes へのインデックスを複数持てるが、
-    // ここでは 1 ノード = 最初のメッシュ 1 件のみマップする。
-    // （複数メッシュを持つノードは実運用上ほぼ存在しないため）
+    // aiNode::mMeshes は aiScene::mMeshes へのインデックスを複数持てるため、
+    // Node::meshIndices（vector<int>）に全件マップする。
 
     // ノード名 → インデックス（スキン解決で使う）
     m_nodeNameToIndex.clear();
@@ -576,14 +735,13 @@ void AssetModel::ImportNodes(const aiScene* scene)
             node.scale = ToFloat3(scl);
             node.rotation = ToFloat4Quat(rot);
 
-            // メッシュ参照（複数あっても先頭のみ）
+            // メッシュ参照（1ノードに複数メッシュがぶら下がるケースに対応）
             if (aiN->mNumMeshes > 0)
             {
-                node.meshIndex = static_cast<int>(aiN->mMeshes[0]);
-                if (aiN->mNumMeshes > 1)
+                node.meshIndices.reserve(aiN->mNumMeshes);
+                for (unsigned int mi = 0; mi < aiN->mNumMeshes; ++mi)
                 {
-                    Console::LogWarning("AssetModel: node '" + node.name +
-                        "' has multiple meshes; only the first is mapped.");
+                    node.meshIndices.push_back(static_cast<int>(aiN->mMeshes[mi]));
                 }
             }
 
@@ -646,12 +804,20 @@ void AssetModel::ImportSkins(const aiScene* /*scene*/)
         skins.push_back(std::move(skin));
 
         // メッシュを参照するノードに skinIndex を設定する
+        // （1ノードが複数メッシュを持つ場合があるため、meshIndices の
+        //   何番目のスロットかを skinIndices の同じスロットに対応させる）
         for (Node& node : nodes)
         {
-            if (node.meshIndex == mi)
+            for (size_t slot = 0; slot < node.meshIndices.size(); ++slot)
             {
-                node.skinIndex = skinIndex;
-                break;
+                if (node.meshIndices[slot] != mi) continue;
+
+                if (node.skinIndices.size() != node.meshIndices.size())
+                {
+                    node.skinIndices.assign(node.meshIndices.size(), -1);
+                }
+                node.skinIndices[slot] = skinIndex;
+                // break しない：同じメッシュを複数ノードが参照するケースにも対応
             }
         }
     }

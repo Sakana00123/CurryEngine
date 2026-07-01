@@ -1,6 +1,13 @@
 {
     "id": "4d41b02129575c09d9167341fd1912e8",
-    "importSettings": null,
+    "importSettings": {
+        "flipUVs": true,
+        "flipWindingOrder": true,
+        "makeLeftHanded": true,
+        "optimizeMesh": true,
+        "scaleFactor": 1.0,
+        "staticBatching": false
+    },
     "isFolder": false,
     "path": "./TestAssets/Test2/AnimatedMorphCube-glTF/AnimatedMorphCube.gltf",
     "type": "Model"

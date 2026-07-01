@@ -81,12 +81,12 @@ float4 main(VS_OUT pin, bool isFrontFace : SV_IsFrontFace) : SV_TARGET
     // -----------------------------------------------------------------
     // エミッシブ
     // -----------------------------------------------------------------
-    float3 emissive = emissiveFactor;
+    float3 emissive = 0;
     if (has_emissiveTexture)
     {
         float4 sampled = emissiveTexture.Sample(samplerStates[ANISOTROPIC], pin.texcoord);
         sampled.rgb    = pow(abs(sampled.rgb), GAMMA);
-        emissive      *= sampled.rgb;
+        emissive       = sampled.rgb * emissiveFactor;
     }
 
     // -----------------------------------------------------------------

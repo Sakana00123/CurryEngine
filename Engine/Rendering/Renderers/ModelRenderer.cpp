@@ -138,9 +138,16 @@ void ModelRenderer::DrawNode(RenderContext* rtx, int nodeIndex, const XMFLOAT4X4
 {
     const AssetModel::Node& node = m_asset->nodes[nodeIndex];
 
-    if (node.meshIndex >= 0)
+    // 1ノードが複数メッシュを参照するケースに対応するため、meshIndices を全部回す
+    for (size_t slot = 0; slot < node.meshIndices.size(); ++slot)
     {
-        const AssetModel::MeshData& mesh = m_asset->meshes[node.meshIndex];
+        const int meshIndex = node.meshIndices[slot];
+        if (meshIndex < 0) continue;
+
+        // skinIndices は meshIndices と同じ並びで対応する（無ければ -1 扱い）
+        const int skinIndex = (slot < node.skinIndices.size()) ? node.skinIndices[slot] : -1;
+
+        const AssetModel::MeshData& mesh = m_asset->meshes[meshIndex];
 
         // --- InputLayout / VS の切り替え ---
         ID3D11DeviceContext* ctx = rtx->immediateContext;
@@ -156,16 +163,16 @@ void ModelRenderer::DrawNode(RenderContext* rtx, int nodeIndex, const XMFLOAT4X4
         }
 
         // --- ジョイント行列を更新（スキニングメッシュのみ） ---
-        if (mesh.isSkinned && node.skinIndex >= 0)
+        if (mesh.isSkinned && skinIndex >= 0)
         {
-            UpdateJointCB(rtx, node.skinIndex, nodeIndex);
+            UpdateJointCB(rtx, skinIndex, nodeIndex);
         }
 
         // --- プリミティブ定数バッファを更新 ---
         PrimitiveConstants primData{};
         primData.materialIndex = mesh.materialIndex;
         primData.hasTangent = mesh.hasTangent ? 1 : 0;
-        primData.skinIndex = node.skinIndex;
+        primData.skinIndex = skinIndex;
         XMStoreFloat4x4(
             &primData.world,
             XMLoadFloat4x4(&node.globalTransform) * XMLoadFloat4x4(&worldMatrix));

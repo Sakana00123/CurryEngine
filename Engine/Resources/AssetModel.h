@@ -5,6 +5,7 @@
 #include <memory>
 #include <unordered_map>
 #include <d3d11.h>
+#include <filesystem>
 #include <wrl/client.h>
 #include <DirectXMath.h>
 #include "AssetMeta.h"
@@ -13,6 +14,7 @@
 class Material;
 class Texture;
 struct aiScene;
+namespace fs = std::filesystem;
 
 /**
  * @file AssetModel.h
@@ -145,8 +147,10 @@ public:
         };
 
         // --- 参照 ---
-        int meshIndex = -1; //!< AssetModel::meshes へのインデックス（なければ -1）
-        int skinIndex = -1; //!< AssetModel::skins  へのインデックス（なければ -1）
+        // 1ノードが複数メッシュを持つケース（aiNode::mNumMeshes > 1）に対応するため vector で保持する。
+        // meshIndices[i] に対応するスキンは skinIndices[i]（スキン無しは -1）。
+        std::vector<int> meshIndices; //!< AssetModel::meshes へのインデックス配列
+        std::vector<int> skinIndices; //!< AssetModel::skins  へのインデックス配列（meshIndices と対応、要素数は同じ）
     };
 
     // -----------------------------------------------------------------------
@@ -215,7 +219,7 @@ public:
 
     /**
      * @brief 全メッシュ一覧。
-     * Node::meshIndex から参照される。1 メッシュ = 1 ドローコール。
+     * Node::meshIndices から参照される。1 メッシュ = 1 ドローコール。
      * （旧 Primitive 単位でフラット化して持つ設計）
      */
     std::vector<MeshData>  meshes;
@@ -235,7 +239,7 @@ public:
      */
     std::vector<std::shared_ptr<Texture>> textures;
 
-    /** @brief 全スキン一覧。Node::skinIndex から参照される。*/
+    /** @brief 全スキン一覧。Node::skinIndices から参照される。*/
     std::vector<Skin>      skins;
 
     /** @brief 全アニメーション一覧。*/
@@ -314,8 +318,8 @@ private:
     // --- ノード名・テクスチャパス解決用キャッシュ（ロード中のみ有効） ---
 
     /** @brief ノード名 → nodes インデックス（ImportNodes / ImportSkins / ImportAnimations で使用）。*/
-    std::unordered_map<std::string, int> m_nodeNameToIndex;
+    std::unordered_map<std::filesystem::path, int> m_nodeNameToIndex;
 
     /** @brief テクスチャ絶対パス → textures インデックス（ImportTextures / ImportMaterials で使用）。*/
-    std::unordered_map<std::string, int> m_texturePathToIndex;
+    std::unordered_map<std::filesystem::path, int> m_texturePathToIndex;
 };
