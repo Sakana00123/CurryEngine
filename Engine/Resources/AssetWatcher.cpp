@@ -7,7 +7,7 @@
 
 namespace CurryEngine
 {
-	void AssetWatcher::Start(const std::string& watchDir)
+	void AssetWatcher::Start(const std::filesystem::path& watchDir)
 	{
 		m_watchDir = watchDir;
 		m_running = true;
@@ -103,7 +103,7 @@ namespace CurryEngine
 							std::wstring relativePath(info->FileName, info->FileNameLength / sizeof(wchar_t));
 							std::filesystem::path fullPath = std::filesystem::path(m_watchDir) / relativePath;
 
-							OnFileAction(info->Action, fullPath.string());
+							OnFileAction(info->Action, fullPath);
 
 							if (info->NextEntryOffset == 0) break;
 							info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(
@@ -147,11 +147,10 @@ namespace CurryEngine
 		CloseHandle(hDir);
 	}
 
-	void AssetWatcher::OnFileAction(DWORD action, const std::string& path)
+	void AssetWatcher::OnFileAction(DWORD action, const std::filesystem::path& path)
 	{
 		// ここでファイルの変更イベントを処理する
-		std::string replacedPath = path;
-		std::replace(replacedPath.begin(), replacedPath.end(), '\\', '/'); // パスの区切り文字を統一
+		std::filesystem::path replacedPath = path;
 
 		if (std::filesystem::path(replacedPath).extension() == ".meta") {
 			// .metaファイルの変更は無視する
@@ -162,27 +161,27 @@ namespace CurryEngine
 		{
 		case FILE_ACTION_ADDED:
 		{
-			LOG_INFO("[AssetWatcher] File added: " + replacedPath);
+			LOG_INFO(u8"[AssetWatcher] File added: " + replacedPath.u8string());
 			CurryEngine::Resources::AssetDatabase::Import(replacedPath); // 新しいアセットをインポート
 			break;
 		}
 		case FILE_ACTION_REMOVED:
-			LOG_INFO("[AssetWatcher] File removed: " + replacedPath);
+			LOG_INFO(u8"[AssetWatcher] File removed: " + replacedPath.u8string());
 			CurryEngine::Resources::AssetDatabase::RemoveByPath(replacedPath); // アセットを削除
 			break;
 		case FILE_ACTION_MODIFIED:
-			LOG_INFO("[AssetWatcher] File modified: " + replacedPath);
+			LOG_INFO(u8"[AssetWatcher] File modified: " + replacedPath.u8string());
 			AssetBrowser::Refresh(); // アセットブラウザをリフレッシュして変更を反映
 			break;
 		case FILE_ACTION_RENAMED_OLD_NAME:
 		{
-			LOG_INFO("[AssetWatcher] File renamed (old name): " + replacedPath);
+			LOG_INFO(u8"[AssetWatcher] File renamed (old name): " + replacedPath.u8string());
 			m_pendingRenameOldPath = replacedPath; // リネームの旧パスを保留
 			break;
 		}
 		case FILE_ACTION_RENAMED_NEW_NAME:
 			if (m_pendingRenameOldPath.has_value()) {
-				LOG_INFO("[AssetWatcher] File renamed from " + m_pendingRenameOldPath.value() + " to " + replacedPath);
+				LOG_INFO(u8"[AssetWatcher] File renamed from " + m_pendingRenameOldPath.value().u8string() + u8" to " + replacedPath.u8string());
 				if (std::filesystem::is_regular_file(replacedPath))
 				{
 					CurryEngine::Resources::AssetDatabase::Rename(m_pendingRenameOldPath.value(), replacedPath); // アセットをリネーム
@@ -194,7 +193,7 @@ namespace CurryEngine
 				m_pendingRenameOldPath.reset(); // 保留をクリア
 			}
 			else {
-				LOG_WARNING("[AssetWatcher] Received new name without old name: " + replacedPath);
+				LOG_WARNING(u8"[AssetWatcher] Received new name without old name: " + replacedPath.u8string());
 			}
 			break;
 		default:

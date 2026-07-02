@@ -811,8 +811,11 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 
 			const auto& path = entry.path();
 			auto relativePath = std::filesystem::relative(path, s_AssetPath);
-			std::string filenameString = relativePath.filename().string();
+			std::u8string filePathU8String = path.u8string();
+			std::u8string filenameString = relativePath.filename().u8string();
 			std::wstring filePathWString = path.wstring();
+			const char* pathStr = reinterpret_cast<const char*>(filePathU8String.c_str());
+			const char* filenameStr = reinterpret_cast<const char*>(filenameString.c_str());
 
 			ImGui::PushID(i++);
 			bool isDirectory = entry.is_directory();
@@ -954,9 +957,9 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 			{
 				const char* payloadType = isDirectory ? "FOLDER_PATH" : "ASSET_PATH";
 				ImGui::SetDragDropPayload(payloadType, 
-					path.string().c_str(), path.string().size() + 1);
+					pathStr, path.string().size() + 1);
 				// ドラッグ中プレビューラベル
-				ImGui::TextUnformatted(filenameString.c_str());
+				ImGui::TextUnformatted(filenameStr);
 				ImGui::EndDragDropSource();
 			}
 			
@@ -1017,7 +1020,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 			else
 			{
 				// 通常表示（長いファイル名はサムネイル幅でクリップ）
-				float textWidth = ImGui::CalcTextSize(filenameString.c_str()).x;
+				float textWidth = ImGui::CalcTextSize(filenameStr).x;
 				if (textWidth > thumbnailSize)
 				{
 					// クリップする場合は末尾を "..." に置き換える
@@ -1026,12 +1029,12 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 					while (textWidth > thumbnailSize && clipCount < filenameString.size())
 					{
 						clipCount++;
-						std::string clipped = filenameString.substr(0, filenameString.size() - clipCount) + "...";
-						textWidth = ImGui::CalcTextSize(clipped.c_str()).x;
+						std::u8string clipped = filenameString.substr(0, filenameString.size() - clipCount) + u8"...";
+						textWidth = ImGui::CalcTextSize(reinterpret_cast<const char*>(clipped.c_str())).x;
 					}
-					filenameString = filenameString.substr(0, filenameString.size() - clipCount) + "...";
+					filenameString = filenameString.substr(0, filenameString.size() - clipCount) + u8"...";
 				}
-				ImGui::TextUnformatted(filenameString.c_str());
+				ImGui::TextUnformatted(reinterpret_cast<const char*>(filenameString.c_str()));
 			}
 
 			ImGui::PopID();

@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include <filesystem>
 #include <atomic>
 #include <thread>
 #include <optional>
@@ -13,7 +13,7 @@ namespace CurryEngine
 		 * @brief 指定されたディレクトリを監視し、アセットの変更を検出する関数。
 		 * @param watchDir 監視するディレクトリのパス。
 		 */
-		void Start(const std::string& watchDir);
+		void Start(const std::filesystem::path& watchDir);
 
 		/**
 		 * @brief 監視を停止する関数。
@@ -31,12 +31,12 @@ namespace CurryEngine
 		 * @param action ファイルの変更アクション（作成、削除、変更など）。
 		 * @param path 変更されたファイルのパス。
 		 */
-		void OnFileAction(DWORD action, const std::string& path);
+		void OnFileAction(DWORD action, const std::filesystem::path& path);
 
 		/**
 		 * @brief 監視対象のディレクトリのパス。
 		 */
-		std::string m_watchDir;
+		std::filesystem::path m_watchDir;
 		/**
 		 * @brief 監視スレッド。
 		 */
@@ -49,6 +49,6 @@ namespace CurryEngine
 		/**
 		 * @brief リネームが保留されている場合の旧パス。
 		 */
-		std::optional<std::string> m_pendingRenameOldPath;
+		std::optional<std::filesystem::path> m_pendingRenameOldPath;
 	};
 }

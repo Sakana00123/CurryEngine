@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <filesystem>
 #include <unordered_map>
 #include "AssetMeta.h"
 #include "ResourceManager.h"
@@ -17,7 +18,7 @@ namespace CurryEngine
 			 * @brief アセットデータベースを初期化します。
 			 * @param assetRootDir アセットのルートディレクトリのパス
 			 */
-			static void Initialize(const std::string& assetRootDir);
+			static void Initialize(const std::filesystem::path& assetRootDir);
 
 			/**
 			 * @brief アセットデータベースを終了します。
@@ -28,7 +29,7 @@ namespace CurryEngine
 			 * @brief アセットのルートディレクトリを取得します。
 			 * @return アセットのルートディレクトリのパス
 			 */
-			static const std::string& GetAssetRootDir();
+			static const std::filesystem::path& GetAssetRootDir();
 
 			/**
 			 * @brief 既存の.metaファイルを読み込み、アセットデータベースを構築します。
@@ -58,16 +59,19 @@ namespace CurryEngine
 					if (IImporter* importer = ImporterRegistry::Find(meta->type))
 					{
 						auto resource = importer->Import(*meta);
-						ResourceManager::Register(meta->path, resource);
+						ResourceManager::Register(meta->path.string(), resource);
 						return std::dynamic_pointer_cast<T>(resource);
 					}
 
-					LOG_WARNING("[AssetDatabase] No importer found for asset type: " + std::to_string(static_cast<int>(meta->type)) + ". Asset path: " + meta->path);
+					std::string typeStr = std::to_string(static_cast<int>(meta->type));
+					std::u8string typeU8Str(typeStr.begin(), typeStr.end());
+					LOG_WARNING(u8"[AssetDatabase] このアセットタイプに対応するインポーターが見つかりませんでした: " + typeU8Str + u8", Asset path: " + meta->path.u8string());
 					return nullptr;
 				}
 				else
 				{
-					LOG_ERROR("[AssetDatabase] Failed to load asset. AssetId not found: " + id.ToString());
+					std::u8string idU8Str(id.ToString().begin(), id.ToString().end());
+					LOG_ERROR(u8"[AssetDatabase] アセットの読み込みに失敗しました。AssetId が見つかりません。: " + idU8Str);
 					return nullptr;
 				}
 			}
@@ -76,13 +80,13 @@ namespace CurryEngine
 			 * @brief 指定されたアセットパスのアセットをインポートします。
 			 * @param assetPath インポートするアセットのファイルパス
 			 */
-			static AssetMeta* Import(const std::string& assetPath);
+			static AssetMeta* Import(const std::filesystem::path& assetPath);
 
 			/**
 			 * @brief 指定されたアセットパスのアセットを取得します。存在しない場合はインポートします。
 			 * @param assetPath 取得またはインポートするアセットのファイルパス
 			 */
-			static AssetMeta* GetOrImport(const std::string& assetPath);
+			static AssetMeta* GetOrImport(const std::filesystem::path& assetPath);
 
 			/**
 			 * @brief 指定されたアセットIDのアセットを取得します。存在しない場合はnullptrを返します。
@@ -104,7 +108,7 @@ namespace CurryEngine
 			 * @param assetPath 取得するアセットのファイルパス
 			 * @return アセットのメタデータへのポインタ、存在しない場合はnullptr
 			 */
-			static const AssetMeta* FindByPath(const std::string& assetPath);
+			static const AssetMeta* FindByPath(const std::filesystem::path& assetPath);
 
 			/**
 			 * @brief アセットデータベースを再構築します。すべてのアセットを再スキャンしてメタデータを更新します。
@@ -117,7 +121,7 @@ namespace CurryEngine
 			 * @param oldPath 旧アセットのファイルパス
 			 * @param newPath 新アセットのファイルパス
 			 */
-			static void Rename(const std::string& oldPath, const std::string& newPath);
+			static void Rename(const std::filesystem::path& oldPath, const std::filesystem::path& newPath);
 
 			/**
 			 * @brief 指定されたアセットパスのプレフィックスを新しいプレフィックスにリマップします。
@@ -125,7 +129,7 @@ namespace CurryEngine
 			 * @param newPrefix 新プレフィックス
 			 * @details 例えば、oldPrefixが"Assets/Textures/"でnewPrefixが"Assets/Images/"の場合、"Assets/Textures/wood.png"は"Assets/Images/wood.png"にリマップされます。
 			 */
-			static void RemapPathPrefix(const std::string& oldPrefix, const std::string& newPrefix);
+			static void RemapPathPrefix(const std::filesystem::path& oldPrefix, const std::filesystem::path& newPrefix);
 
 			/**
 			 * @brief 指定されたアセットIDのアセットを削除します。
@@ -137,19 +141,19 @@ namespace CurryEngine
 			 * @brief 指定されたアセットパスのアセットを削除します。
 			 * @param assetPath 削除するアセットのファイルパス
 			 */
-			static void RemoveByPath(const std::string& assetPath);
+			static void RemoveByPath(const std::filesystem::path& assetPath);
 
 			/**
 			 * @brief 指定されたアセットパスのプレフィックスに一致するすべてのアセットを削除します。
 			 * @param pathPrefix 削除するアセットのパスのプレフィックス
 			 * @details 例えば、pathPrefixが"Assets/Textures/"の場合、"Assets/Textures/wood.png"や"Assets/Textures/stone.png"など、すべての一致するアセットが削除されます。
 			 */
-			static void RemoveByPathPrefix(const std::string& pathPrefix);
+			static void RemoveByPathPrefix(const std::filesystem::path& pathPrefix);
 
 		private:
-			static std::unordered_map<std::string, AssetMeta> s_metaByPath; ///< アセットパスをキーとしたアセットメタデータのマップ
-			static std::unordered_map<std::string, std::string> s_pathById; ///< アセットIDをキーとしたアセットパスのマップ
-			static std::string s_assetRootDir; ///< アセットのルートディレクトリのパス
+			static std::unordered_map<std::filesystem::path, AssetMeta> s_metaByPath; ///< アセットパスをキーとしたアセットメタデータのマップ
+			static std::unordered_map<std::string, std::filesystem::path> s_pathById; ///< アセットIDをキーとしたアセットパスのマップ
+			static std::filesystem::path s_assetRootDir; ///< アセットのルートディレクトリのパス
 			static bool s_initialized; ///< アセットデータベースが初期化されているかどうか
 
 			static inline AssetWatcher s_assetWatcher; ///< アセットの変更を監視するAssetWatcherのインスタンス

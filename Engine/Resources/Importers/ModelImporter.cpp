@@ -41,7 +41,7 @@ namespace CurryEngine
 #else
 			if (!modelResource->LoadFromMeta(meta))
 			{
-				LOG_ERROR("Failed to import model: " + meta.path);
+				LOG_ERROR(u8"Failed to import model: " + meta.path.u8string());
 				return nullptr;
 			}
 #endif // 0

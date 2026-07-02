@@ -13,7 +13,7 @@ namespace CurryEngine::Editor
 	{
 		// アセットデータベースからマテリアルをロード
 		//m_material = CurryEngine::Resources::AssetDatabase::LoadAsset<CurryEngine::Resources::AssetMaterial>(materialId);
-		m_material = ResourceManager::GetOrLoad<CurryEngine::Resources::AssetMaterial>(CurryEngine::Resources::AssetDatabase::FindMutable(materialId)->path);
+		m_material = ResourceManager::GetOrLoad<CurryEngine::Resources::AssetMaterial>(CurryEngine::Resources::AssetDatabase::FindMutable(materialId)->path.string());
 		m_isOpen = true;
 	}
 

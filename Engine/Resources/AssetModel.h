@@ -91,7 +91,7 @@ public:
      */
     struct MeshData
     {
-        std::string name;
+        std::u8string name;
 
         // --- CPU 側キャッシュ ---
         std::vector<StaticVertex>  staticVertices;  //!< isSkinned == false のとき有効
@@ -112,7 +112,7 @@ public:
         bool hasTangent = false; //!< タンジェント属性が存在するか
 
         // --- スキン構築用（ImportSkins() が参照後に不要になる一時データ） ---
-        std::vector<std::string>               boneNames;          //!< ボーン名（ノード名と対応）
+        std::vector<std::u8string>               boneNames;          //!< ボーン名（ノード名と対応）
         std::vector<DirectX::XMFLOAT4X4>      boneOffsetMatrices; //!< インバースバインドポーズ行列
 
         /** @brief GPU バッファが作成済みかどうか。*/
@@ -130,7 +130,7 @@ public:
      */
     struct Node
     {
-        std::string name;
+        std::u8string name;
 
         // --- 階層 ---
         int              parent = -1; //!< 親ノードのインデックス（ルートは -1）
@@ -163,7 +163,7 @@ public:
      */
     struct Skin
     {
-        std::string              name;
+        std::u8string              name;
         std::vector<int>         joints;               //!< ジョイントノードのインデックス
         std::vector<DirectX::XMFLOAT4X4> inverseBindMatrices; //!< ジョイントごとの逆バインド行列
     };
@@ -177,7 +177,7 @@ public:
      */
     struct Animation
     {
-        std::string name;
+        std::u8string name;
         float       duration = 0.0f; //!< クリップの長さ（秒）
 
         /** @brief アニメーションが影響を与えるノードとチャンネルの対応。*/
@@ -299,7 +299,7 @@ private:
      * @param scene assimp がパースしたシーン。
      * @param baseDir テクスチャの相対パス解決用ディレクトリ。
      */
-    bool ImportFromScene(const aiScene* scene, const std::string& baseDir);
+    bool ImportFromScene(const aiScene* scene, const std::u8string& baseDir);
 
     /** @brief 単一ノードの globalTransform を再帰的に累積する。*/
     void CumulateTransforms(int nodeIndex, const DirectX::XMFLOAT4X4& parentTransform);
@@ -308,7 +308,7 @@ private:
     void UploadMesh(ID3D11Device* device, MeshData& mesh);
 
     // --- ImportFromScene のサブルーティン ---
-    void ImportTextures(const aiScene* scene, const std::string& baseDir);
+    void ImportTextures(const aiScene* scene, const std::u8string& baseDir);
     void ImportMaterials(const aiScene* scene);
     void ImportMeshes(const aiScene* scene);
     void ImportNodes(const aiScene* scene);

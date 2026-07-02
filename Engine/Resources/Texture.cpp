@@ -3,8 +3,77 @@
 #include <memory>
 #include <filesystem>
 using namespace std;
+#include <DirectXTex.h>
 
 #include "Engine/Rendering/Pipeline/Graphics.h"
+
+HRESULT LoadTextureFromFile(ID3D11Device* device, const std::filesystem::path& path,
+	ID3D11ShaderResourceView** shader_resource_view, D3D11_TEXTURE2D_DESC* texture2d_desc)
+{
+	HRESULT hr{ S_OK };
+	ComPtr<ID3D11Resource> resource;
+
+	auto it = resources.find(path.c_str());
+	if (it != resources.end())
+	{
+		*shader_resource_view = it->second.Get();
+		(*shader_resource_view)->AddRef();
+		(*shader_resource_view)->GetResource(resource.GetAddressOf());
+	}
+	else
+	{
+		std::filesystem::path ddsFilename(path);
+		ddsFilename.replace_extension("dds");
+		if (std::filesystem::exists(ddsFilename.c_str()))
+		{
+			hr = CreateDDSTextureFromFile(device, ddsFilename.c_str(), resource.GetAddressOf(), shader_resource_view);
+			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+		}
+		else
+		{
+			const wchar_t* filename = path.c_str();
+			std::filesystem::path extension = path.extension();
+			if (extension == ".tga" || extension == ".TGA") {
+				// TGA ファイルは WIC ではサポートされていないため、DirectXTex を使用して読み込む
+				DirectX::ScratchImage image;
+				hr = DirectX::LoadFromTGAFile(filename, nullptr, image);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+				// DirectXTex を使用して ID3D11Resource を作成する
+				hr = DirectX::CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), resource.GetAddressOf());
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+				// ID3D11ShaderResourceView を作成する
+				hr = device->CreateShaderResourceView(resource.Get(), nullptr, shader_resource_view);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+			}
+			else if (extension == ".hdr" || extension == ".HDR") {
+				// HDR ファイルは WIC ではサポートされていないため、DirectXTex を使用して読み込む
+				DirectX::ScratchImage image;
+				hr = DirectX::LoadFromHDRFile(filename, nullptr, image);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+				// DirectXTex を使用して ID3D11Resource を作成する
+				hr = DirectX::CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), resource.GetAddressOf());
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+				// ID3D11ShaderResourceView を作成する
+				hr = device->CreateShaderResourceView(resource.Get(), nullptr, shader_resource_view);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+			}
+			else {
+				hr = CreateWICTextureFromFile(device, filename, resource.GetAddressOf(), shader_resource_view);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+			}
+		}
+		resources.insert(make_pair(path.c_str(), *shader_resource_view));
+	}
+
+	if (texture2d_desc) {
+		ComPtr<ID3D11Texture2D> texture2d;
+		hr = resource.Get()->QueryInterface<ID3D11Texture2D>(texture2d.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+		texture2d->GetDesc(texture2d_desc);
+	}
+
+	return hr;
+}
 
 HRESULT LoadTextureFromFile(ID3D11Device* device, const wchar_t* filename,
 	ID3D11ShaderResourceView** shader_resource_view, D3D11_TEXTURE2D_DESC* texture2d_desc)
@@ -31,8 +100,36 @@ HRESULT LoadTextureFromFile(ID3D11Device* device, const wchar_t* filename,
 		}
 		else
 		{
-			hr = CreateWICTextureFromFile(device, filename, resource.GetAddressOf(), shader_resource_view);
-			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+			std::filesystem::path wicFilename(filename);
+			std::filesystem::path extension = wicFilename.extension();
+			if (extension == ".tga" || extension == ".TGA") {
+				// TGA ファイルは WIC ではサポートされていないため、DirectXTex を使用して読み込む
+				DirectX::ScratchImage image;
+				hr = DirectX::LoadFromTGAFile(filename, nullptr, image);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+				// DirectXTex を使用して ID3D11Resource を作成する
+				hr = DirectX::CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), resource.GetAddressOf());
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+				// ID3D11ShaderResourceView を作成する
+				hr = device->CreateShaderResourceView(resource.Get(), nullptr, shader_resource_view);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+			}
+			else if (extension == ".hdr" || extension == ".HDR") {
+				// HDR ファイルは WIC ではサポートされていないため、DirectXTex を使用して読み込む
+				DirectX::ScratchImage image;
+				hr = DirectX::LoadFromHDRFile(filename, nullptr, image);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+				// DirectXTex を使用して ID3D11Resource を作成する
+				hr = DirectX::CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), resource.GetAddressOf());
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+				// ID3D11ShaderResourceView を作成する
+				hr = device->CreateShaderResourceView(resource.Get(), nullptr, shader_resource_view);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+			}
+			else {
+				hr = CreateWICTextureFromFile(device, filename, resource.GetAddressOf(), shader_resource_view);
+				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
+			}
 		}
 		resources.insert(make_pair(filename, *shader_resource_view));
 	}
@@ -117,6 +214,12 @@ bool AssetTexture::LoadFromFile(const std::string& filePath)
 bool AssetTexture::Load(ID3D11Device* device, const std::wstring& filePath)
 {
 	HRESULT hr = LoadTextureFromFile(device, filePath.c_str(), m_Srv.ReleaseAndGetAddressOf(), &m_Desc);
+	return SUCCEEDED(hr);
+}
+
+bool AssetTexture::Load(ID3D11Device* device, const std::filesystem::path& filePath)
+{
+	HRESULT hr = LoadTextureFromFile(device, filePath, m_Srv.ReleaseAndGetAddressOf(), &m_Desc);
 	return SUCCEEDED(hr);
 }
 

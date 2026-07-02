@@ -27,14 +27,17 @@ namespace CurryEngine
 			ComPtr<ID3D11Resource> textureResource;
 			if (!LoadTextureFromFile(meta, textureView, textureResource))
 			{
-				LOG_ERROR("Failed to import texture: " + meta.path);
+				LOG_ERROR(u8"テクスチャのインポートに失敗しました: " + meta.path.u8string());
 				return nullptr;
 			}
 			ComPtr<ID3D11Texture2D> texture2D;
 			HRESULT hr = textureResource.Get()->QueryInterface<ID3D11Texture2D>(texture2D.GetAddressOf());
 			if (FAILED(hr))
 			{
-				LOG_ERROR("Failed to query ID3D11Texture2D from resource: " + meta.path + ", HRESULT: " + std::to_string(hr));
+				std::string hrStr = "HRESULT: " + std::to_string(hr);
+				std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+				std::u8string errorMsg = u8"リソースから ID3D11Texture2D を取得できませんでした: " + meta.path.u8string() + u8", " + hrU8Str;
+				LOG_ERROR(errorMsg);
 				return nullptr;
 			}
 			D3D11_TEXTURE2D_DESC desc;
@@ -105,7 +108,10 @@ namespace CurryEngine
 			}
 			if (FAILED(hr))
 			{
-				LOG_ERROR("Failed to load texture: " + meta.path + ", HRESULT: " + std::to_string(hr));
+				std::string hrStr = "HRESULT: " + std::to_string(hr);
+				std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+				std::u8string errorMsg = u8"テクスチャ読み込み失敗: " + meta.path.u8string() + u8", " + hrU8Str;
+				LOG_ERROR(errorMsg);
 				return false;
 			}
 			return true;

@@ -8,10 +8,10 @@ namespace CurryEngine
 {
 	namespace Resources
 	{
-		std::string AssetMetaSerializer::MetaPathFor(const std::string& assetPath)
+		std::filesystem::path AssetMetaSerializer::MetaPathFor(const std::filesystem::path& assetPath)
 		{
-			std::string metaPath = assetPath + ".meta";
-			std::replace(metaPath.begin(), metaPath.end(), '\\', '/'); // ƒpƒX‹æØ‚è‚ğ“ˆê
+			std::filesystem::path metaPath = assetPath;
+			metaPath += ".meta";
 			return metaPath;
 		}
 
@@ -46,7 +46,7 @@ namespace CurryEngine
 		{
 			j = nlohmann::json{
 				{"id", meta.id.ToString()},
-				{"path", meta.path},
+				{"path", meta.path.u8string()},
 				{"type", CurryEngine::Resources::AssetMetaSerializer::AssetTypeToString(meta.type)},
 				{"isFolder", meta.isFolder},
 				{"importSettings", meta.importSettings}
@@ -55,7 +55,7 @@ namespace CurryEngine
 		void from_json(const nlohmann::json& j, AssetMeta& meta)
 		{
 			meta.id = AssetId(j.at("id").get<std::string>());
-			j.at("path").get_to(meta.path);
+			meta.path = j.at("path").get<std::u8string>();
 			meta.type = CurryEngine::Resources::AssetMetaSerializer::AssetTypeFromString(j.at("type").get<std::string>());
 			if (j.contains("isFolder"))
 			{
@@ -78,7 +78,7 @@ namespace CurryEngine
 
 		bool AssetMetaSerializer::Save(const AssetMeta& meta)
 		{
-			std::string metaPath = MetaPathFor(meta.path);
+			std::filesystem::path metaPath = MetaPathFor(meta.path);
 			std::ofstream ofs(metaPath);
 			if (!ofs)
 			{
@@ -89,9 +89,9 @@ namespace CurryEngine
 			return true;
 		}
 
-		AssetMeta AssetMetaSerializer::Load(const std::string& assetPath)
+		AssetMeta AssetMetaSerializer::Load(const std::filesystem::path& assetPath)
 		{
-			std::string metaPath = MetaPathFor(assetPath);
+			std::filesystem::path metaPath = MetaPathFor(assetPath);
 			std::ifstream ifs(metaPath);
 			if (!ifs)
 			{

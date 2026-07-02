@@ -18,7 +18,7 @@ namespace CurryEngine::Resources
 		 * @param assetPath 読み込むアセットのパス。
 		 * @return 読み込んだアセットメタデータ。読み込みに失敗した場合は空のAssetMetaを返します。
 		 */
-		static AssetMeta Load(const std::string& assetPath);
+		static AssetMeta Load(const std::filesystem::path& assetPath);
 
 
 		/**
@@ -26,7 +26,7 @@ namespace CurryEngine::Resources
 		 * @param assetPath アセットのパス。
 		 * @return 対応するメタデータファイルのパス。
 		 */
-		static std::string MetaPathFor(const std::string& assetPath);
+		static std::filesystem::path MetaPathFor(const std::filesystem::path& assetPath);
 
 		/**
 		 * @brief 文字列からAssetTypeを取得する関数。

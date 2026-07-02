@@ -19,6 +19,14 @@
 #include <assimp/ProgressHandler.hpp>
 #include <Engine\Editor\ImportSettings\ImportSettingsWindow.h>
 
+namespace
+{
+    std::u8string StringToU8String(const std::string& str)
+    {
+        return std::u8string(str.begin(), str.end());
+	}
+}
+
 namespace Assimp
 {
     class ImporterProgressHandler : public Assimp::ProgressHandler
@@ -128,10 +136,10 @@ namespace
      * @param path テクスチャパス。
 	 * @return 埋め込みテクスチャなら true。
      */
-    bool IsEmbeddedTexture(const std::string& path)
+    bool IsEmbeddedTexture(const fs::path& path)
     {
         // 埋め込みテクスチャは "*0" のような形式になる
-        return !path.empty() && path[0] == '*';
+		return !path.empty() && path.native()[0] == '*';
 	}
 
     /**
@@ -141,15 +149,15 @@ namespace
      * @param outImage 読み込んだ画像を格納する ScratchImage。
 	 * @return 読み込みに成功すれば true。
      */
-    bool GetAndLoadEmbeddedTexture(const aiScene* scene, const std::string& texPath, DirectX::ScratchImage& outImage)
+    bool GetAndLoadEmbeddedTexture(const aiScene* scene, const fs::path& texPath, DirectX::ScratchImage& outImage)
     {
         if (!IsEmbeddedTexture(texPath))
         {
-            LOG_ERROR("Not an embedded texture: " + texPath);
+            LOG_ERROR(u8"Not an embedded texture: " + texPath.u8string());
             return false;
         }
         // 埋め込みテクスチャのインデックスを取得
-        int texIndex = std::stoi(texPath.substr(1)); // "*0" のような形式なので、先頭の '*' を除去して整数に変換
+        int texIndex = std::stoi(texPath.wstring().substr(1)); // "*0" のような形式なので、先頭の '*' を除去して整数に変換
         if (texIndex < 0 || texIndex >= scene->mNumTextures)
         {
             LOG_ERROR("Invalid embedded texture index: " + std::to_string(texIndex));
@@ -232,23 +240,24 @@ namespace
     bool ResolveTexturePath(
         const aiMaterial* mat,
         aiTextureType     type,
-        const std::string& baseDir,
+        const fs::path& baseDir,
         fs::path& outPath)
     {
         if (mat->GetTextureCount(type) == 0) return false;
 
         aiString texPathStr;
         if (mat->GetTexture(type, 0, &texPathStr) != AI_SUCCESS) return false;
+		std::u8string u8TexPath(texPathStr.C_Str(), texPathStr.C_Str() + texPathStr.length);
 
         // 埋め込みテクスチャは "*0" のような形式になる
         if (texPathStr.data[0] == '*')
         {
-			outPath = texPathStr.C_Str(); // 埋め込みテクスチャはそのまま返す
+			outPath = u8TexPath; // 埋め込みテクスチャはそのまま返す
 			return true;
         }
 
 		// 相対パスを絶対パスに変換して正規化する
-		fs::path texPath(texPathStr.C_Str());
+		fs::path texPath(u8TexPath);
 		texPath = texPath.lexically_normal(); // 正規化して冗長なパス要素を削除
 		fs::path resolved = fs::absolute(baseDir) / texPath;
 		// ファイルが存在するかチェック
@@ -297,7 +306,7 @@ bool AssetModel::LoadFromFile(const std::string& path)
         return false;
     }
 
-    const std::string baseDir = fs::path(path).parent_path().string();
+    const std::u8string baseDir = fs::path(path).parent_path().u8string();
     return ImportFromScene(scene, baseDir);
 }
 
@@ -318,54 +327,26 @@ bool AssetModel::Reload()
 
 bool AssetModel::LoadFromMeta(const CurryEngine::Resources::AssetMeta& meta)
 {
-	_path = meta.path;
+	_path = meta.path.string();
 
     Assimp::Importer importer;
-
-    // --- インポートフラグ ---
-    // triangulate      : ポリゴンを三角形化
-    // genNormals       : 法線がなければ生成
-    // calcTangentSpace : タンジェント・バイタンジェントを計算
-    // joinIdentical    : 同一頂点を結合してインデックスを最適化
-    unsigned int importFlags =
-        aiProcess_Triangulate |
-        aiProcess_GenSmoothNormals |
-        aiProcess_CalcTangentSpace |
-        aiProcess_JoinIdenticalVertices |
-        aiProcess_LimitBoneWeights | // ボーン影響数を 4 に制限
-		aiProcess_GlobalScale; // グローバルスケールを適用
-
 	CurryEngine::Resources::ModelImportSettings settings = meta.GetImportSettings<CurryEngine::Resources::ModelImportSettings>();
 	importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, settings.scaleFactor); // モデル全体のスケーリングを設定
-
-    if (settings.makeLeftHanded)
-    {
-        importFlags |= aiProcess_MakeLeftHanded;
-	}
-    if (settings.flipUVs)
-    {
-		importFlags |= aiProcess_FlipUVs;
-    }
-    if (settings.flipWindingOrder)
-	{
-        importFlags |= aiProcess_FlipWindingOrder;
-	}
-    if (settings.optimizeMesh)
-    {
-        importFlags |= aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph;
-	}
 
     Assimp::ProgressHandler* progressHandler = new Assimp::ImporterProgressHandler();
 	importer.SetProgressHandler(progressHandler);
 
-    const aiScene* scene = importer.ReadFile(_path, importFlags);
+	std::u8string u8Path = meta.path.u8string(); // UTF-8 文字列に変換
+    const aiScene* scene = importer.ReadFile(reinterpret_cast<const char*>(u8Path.c_str()), settings.importFlags);
     if (!scene || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !scene->mRootNode)
     {
-        Console::LogError("AssetModel::LoadFromFile failed: " + std::string(importer.GetErrorString()));
+		std::string errorMsg = importer.GetErrorString();
+		std::u8string u8ErrorMsg(errorMsg.begin(), errorMsg.end());
+        LOG_ERROR(u8"AssetModel::LoadFromFile failed: " + u8ErrorMsg);
         return false;
     }
 
-    const std::string baseDir = fs::path(_path).parent_path().string();
+    const std::u8string baseDir = fs::path(_path).parent_path().u8string();
     return ImportFromScene(scene, baseDir);
 }
 
@@ -373,7 +354,7 @@ bool AssetModel::LoadFromMeta(const CurryEngine::Resources::AssetMeta& meta)
 // ImportFromScene — assimp → AssetModel 変換のメインルーティン
 // ============================================================
 
-bool AssetModel::ImportFromScene(const aiScene* scene, const std::string& baseDir)
+bool AssetModel::ImportFromScene(const aiScene* scene, const std::u8string& baseDir)
 {
     // 処理順：テクスチャ → マテリアル → メッシュ → ノードツリー → スキン → アニメーション
     ImportTextures(scene, baseDir);
@@ -391,7 +372,7 @@ bool AssetModel::ImportFromScene(const aiScene* scene, const std::string& baseDi
 // テクスチャ
 // ============================================================
 
-void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir)
+void AssetModel::ImportTextures(const aiScene* scene, const std::u8string& baseDir)
 {
     // assimp はテクスチャをマテリアルごとに保持しているため、
     // ここでは全マテリアルを走査して使われているパスを収集し、
@@ -400,7 +381,7 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir
     std::unordered_map<fs::path, int> pathToIndex;
 
     // 埋め込みテクスチャの書き出しパスを保持する
-	std::vector<std::string> embeddedTexturePaths;
+	std::vector<fs::path> embeddedTexturePaths;
 
     auto getOrLoad = [&](const fs::path& absPath) -> int
         {
@@ -409,7 +390,7 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir
 
             // TODO: ResourceManager 経由でキャッシュを使うように変更予定
             auto tex = std::make_shared<AssetTexture>();
-            if (!tex->LoadFromFile(absPath.string()))
+            if (!tex->Load(Graphics::GetDevice(), absPath))
             {
                 LOG_WARNING("AssetModel: texture not found: " + absPath.string());
                 return -1;
@@ -438,9 +419,9 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir
             fs::path absPath;
             if (ResolveTexturePath(mat, type, baseDir, absPath))
             {
-                if (IsEmbeddedTexture(absPath.string()))
+                if (IsEmbeddedTexture(absPath))
                 {
-					embeddedTexturePaths.push_back(absPath.string()); // 埋め込みテクスチャは後で書き出す
+					embeddedTexturePaths.push_back(absPath); // 埋め込みテクスチャは後で書き出す
                 }
                 else
                 {
@@ -450,7 +431,7 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir
         }
     }
 	// 埋め込みテクスチャのロード
-    for (const std::string& embeddedPath : embeddedTexturePaths)
+    for (const fs::path& embeddedPath : embeddedTexturePaths)
     {
 #if 0
         DirectX::ScratchImage embeddedScratchImage;
@@ -473,7 +454,7 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir
             tex->SetSRV(srv.Get(), desc);
         }
 #else
-		int texIndex = std::stoi(embeddedPath.substr(1));
+		int texIndex = std::stoi(embeddedPath.wstring().substr(1));
 		std::string texName = scene->mTextures[texIndex]->mFilename.C_Str();
         fs::path outputPath = baseDir / fs::path(texName);
 		outputPath.replace_extension(".png"); // PNG 形式で書き出す
@@ -483,7 +464,7 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::string& baseDir
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
             // 書き出した埋め込みテクスチャをロード
-			getOrLoad(outputPath.string());
+			getOrLoad(outputPath);
         }
 #endif // 0
 	}
@@ -529,7 +510,7 @@ void AssetModel::ImportMaterials(const aiScene* scene)
         }
 
         // --- テクスチャのバインド ---
-		std::string baseDir = fs::path(_path).parent_path().string();
+		fs::path baseDir = fs::path(_path).parent_path();
         auto bindTex = [&](aiTextureType type, const std::string& slotName)
             {
 				mat->SetValue("has_" + slotName, false); // デフォルトは false
@@ -537,9 +518,9 @@ void AssetModel::ImportMaterials(const aiScene* scene)
                 if (!ResolveTexturePath(aiMat, type, baseDir, absPath)) return;
                 // 埋め込みテクスチャの場合はインデックスから探して代入
                 int texIndex = -1;
-                if (IsEmbeddedTexture(absPath.string()))
+                if (IsEmbeddedTexture(absPath))
                 {
-                    texIndex = std::stoi(absPath.string().substr(1));
+                    texIndex = std::stoi(absPath.wstring().substr(1));
                 }
                 else
                 {
@@ -604,7 +585,7 @@ void AssetModel::ImportMeshes(const aiScene* scene)
     {
         const aiMesh* aiM = scene->mMeshes[mi];
         MeshData mesh;
-        mesh.name = aiM->mName.C_Str();
+        mesh.name = StringToU8String(aiM->mName.C_Str());
         mesh.materialIndex = static_cast<int>(aiM->mMaterialIndex);
         mesh.isSkinned = aiM->HasBones();
         mesh.hasTangent = aiM->HasTangentsAndBitangents();
@@ -676,7 +657,7 @@ void AssetModel::ImportMeshes(const aiScene* scene)
             mesh.boneOffsetMatrices.reserve(aiM->mNumBones);
             for (unsigned int bi = 0; bi < aiM->mNumBones; ++bi)
             {
-                mesh.boneNames.push_back(aiM->mBones[bi]->mName.C_Str());
+                mesh.boneNames.push_back(StringToU8String(aiM->mBones[bi]->mName.C_Str()));
                 mesh.boneOffsetMatrices.push_back(ToFloat4x4(aiM->mBones[bi]->mOffsetMatrix));
             }
         }
@@ -724,7 +705,7 @@ void AssetModel::ImportNodes(const aiScene* scene)
     std::function<int(const aiNode*, int)> traverse = [&](const aiNode* aiN, int parentIndex) -> int
         {
             Node node;
-            node.name = aiN->mName.C_Str();
+            node.name = StringToU8String(aiN->mName.C_Str());
             node.parent = parentIndex;
 
             // TRS 分解（aiMatrix4x4::Decompose を使う）
@@ -779,18 +760,18 @@ void AssetModel::ImportSkins(const aiScene* /*scene*/)
         if (!mesh.isSkinned || mesh.boneNames.empty()) continue;
 
         Skin skin;
-        skin.name = mesh.name + "_Skin";
+        skin.name = mesh.name + u8"_Skin";
         skin.joints.reserve(mesh.boneNames.size());
         skin.inverseBindMatrices.reserve(mesh.boneNames.size());
 
         for (size_t bi = 0; bi < mesh.boneNames.size(); ++bi)
         {
-            const std::string& boneName = mesh.boneNames[bi];
+            const std::u8string& boneName = mesh.boneNames[bi];
             auto it = m_nodeNameToIndex.find(boneName);
             if (it == m_nodeNameToIndex.end())
             {
                 // ボーンに対応するノードが見つからない場合はダミーインデックスを積む
-                Console::LogWarning("AssetModel: bone '" + boneName + "' has no matching node.");
+                LOG_WARNING(u8"AssetModel: bone '" + boneName + u8"' has no matching node.");
                 skin.joints.push_back(-1);
             }
             else
@@ -835,7 +816,7 @@ void AssetModel::ImportAnimations(const aiScene* scene)
     {
         const aiAnimation* aiAnim = scene->mAnimations[ai];
         Animation anim;
-        anim.name = aiAnim->mName.C_Str();
+        anim.name = StringToU8String(aiAnim->mName.C_Str());
 
         // duration はティック単位 → 秒に変換
         const double ticksPerSecond = aiAnim->mTicksPerSecond > 0
@@ -848,12 +829,12 @@ void AssetModel::ImportAnimations(const aiScene* scene)
         for (unsigned int ci = 0; ci < aiAnim->mNumChannels; ++ci)
         {
             const aiNodeAnim* aiChan = aiAnim->mChannels[ci];
-            const std::string nodeName = aiChan->mNodeName.C_Str();
+            const std::u8string nodeName = StringToU8String(aiChan->mNodeName.C_Str());
 
             auto nodeIt = m_nodeNameToIndex.find(nodeName);
             if (nodeIt == m_nodeNameToIndex.end())
             {
-                Console::LogWarning("AssetModel: animation channel targets unknown node: " + nodeName);
+                LOG_WARNING(u8"AssetModel: animation channel targets unknown node: " + nodeName);
                 continue;
             }
             const int nodeIndex = nodeIt->second;

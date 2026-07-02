@@ -1,5 +1,6 @@
 #pragma once
 #include "IImportSettings.h"
+#include <assimp\postprocess.h>
 
 namespace CurryEngine::Resources
 {
@@ -11,29 +12,34 @@ namespace CurryEngine::Resources
 	{
 		float scaleFactor = 1.0f; ///< モデルのスケーリング係数
 		bool staticBatching = false; ///< モデルの静的バッチングを有効にするかどうか
-		bool makeLeftHanded = false; ///< 左手座標系に変換するかどうか
-		bool flipUVs = true; ///< UV座標を反転するかどうか
-		bool flipWindingOrder = true; ///< 頂点の順序を反転するかどうか（法線の向きに影響）
-		bool optimizeMesh = true; ///< メッシュの最適化を行うかどうか
+
+		// assimp のインポートフラグをまとめたビットフィールド
+		unsigned int importFlags =
+			aiProcess_Triangulate |
+			aiProcess_GenSmoothNormals |
+			aiProcess_CalcTangentSpace |
+			aiProcess_JoinIdenticalVertices |
+			aiProcess_LimitBoneWeights | // ボーン影響数を 4 に制限
+			aiProcess_GlobalScale | // グローバルスケールを適用
+			aiProcess_ConvertToLeftHanded; // 左手座標系に変換（DirectX用）
+
+		// assimp のプリセットを選択するための変数（0: Custom, 1: Fast, 2: Quality, 3: MaxQuality）
+		char preset = 1;
 
 		// nlohmann::jsonのNLOHMANN_DEFINE_TYPE系マクロでto_json/from_jsonを自動生成
 		friend void to_json(nlohmann::json& j, const ModelImportSettings& settings) {
 			j = nlohmann::json{
 				{"scaleFactor", settings.scaleFactor},
 				{"staticBatching", settings.staticBatching},
-				{"makeLeftHanded", settings.makeLeftHanded},
-				{"flipUVs", settings.flipUVs},
-				{"flipWindingOrder", settings.flipWindingOrder},
-				{"optimizeMesh", settings.optimizeMesh}
+				{"importFlags", settings.importFlags},
+				{"preset", settings.preset }
 			};
 		}
 		friend void from_json(const nlohmann::json& j, ModelImportSettings& settings) {
 			if (j.contains("scaleFactor")) j.at("scaleFactor").get_to(settings.scaleFactor);
 			if (j.contains("staticBatching")) j.at("staticBatching").get_to(settings.staticBatching);
-			if (j.contains("makeLeftHanded")) j.at("makeLeftHanded").get_to(settings.makeLeftHanded);
-			if (j.contains("flipUVs")) j.at("flipUVs").get_to(settings.flipUVs);
-			if (j.contains("flipWindingOrder")) j.at("flipWindingOrder").get_to(settings.flipWindingOrder);
-			if (j.contains("optimizeMesh")) j.at("optimizeMesh").get_to(settings.optimizeMesh);
+			if (j.contains("importFlags")) j.at("importFlags").get_to(settings.importFlags);
+			if (j.contains("preset")) j.at("preset").get_to(settings.preset);
 		}
 	};
 }

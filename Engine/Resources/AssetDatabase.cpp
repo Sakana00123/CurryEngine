@@ -10,28 +10,27 @@ namespace CurryEngine
 {
 	namespace Resources
 	{
-		std::unordered_map<std::string, AssetMeta> AssetDatabase::s_metaByPath; ///< アセットパスをキーとしたアセットメタデータのマップ
-		std::unordered_map<std::string, std::string> AssetDatabase::s_pathById; ///< アセットIDをキーとしたアセットパスのマップ
-		std::string AssetDatabase::s_assetRootDir; ///< アセットのルートディレクトリのパス
+		std::unordered_map<std::filesystem::path, AssetMeta> AssetDatabase::s_metaByPath; ///< アセットパスをキーとしたアセットメタデータのマップ
+		std::unordered_map<std::string, std::filesystem::path> AssetDatabase::s_pathById; ///< アセットIDをキーとしたアセットパスのマップ
+		std::filesystem::path AssetDatabase::s_assetRootDir; ///< アセットのルートディレクトリのパス
 		bool AssetDatabase::s_initialized = false; ///< アセットデータベースが初期化されているかどうか
-
 
 		namespace
 		{
-			std::string NormalizePath(const std::string& path)
+			std::filesystem::path NormalizePath(const std::filesystem::path& path)
 			{
-				std::string normalized = path;
-				std::replace(normalized.begin(), normalized.end(), '\\', '/'); // Windowsのパス区切りを統一
+				std::filesystem::path normalized = path.lexically_normal();
+				normalized.make_preferred(); // OSに依存したパス区切り文字に変換
 				return normalized;
 			}
 		}
 
 
-		void AssetDatabase::Initialize(const std::string& assetRootDir)
+		void AssetDatabase::Initialize(const std::filesystem::path& assetRootDir)
 		{
-			s_assetRootDir = assetRootDir;
+			s_assetRootDir = NormalizePath(assetRootDir);
 
-			s_assetWatcher.Start(assetRootDir);
+			s_assetWatcher.Start(s_assetRootDir);
 
 			// 既存の.metaファイルを読み込んでデータベースを構築
 			LoadExistingMetaFiles();
@@ -50,7 +49,7 @@ namespace CurryEngine
 			s_initialized = false;
 		}
 
-		const std::string& AssetDatabase::GetAssetRootDir()
+		const std::filesystem::path& AssetDatabase::GetAssetRootDir()
 		{
 			return s_assetRootDir;
 		}
@@ -62,8 +61,8 @@ namespace CurryEngine
 				if (entry.path().extension() == ".meta")
 				{
 					// 対応する実ファイルのパス（.metaを除いたパス）
-					std::string assetPath = NormalizePath(
-						entry.path().string().substr(0, entry.path().string().size() - 5)); // ".meta"の5文字を除く
+					std::filesystem::path assetPath = entry.path();
+					assetPath = assetPath.native().substr(0, assetPath.native().size() - 5); // ".meta"を除去
 
 					AssetMeta meta = AssetMetaSerializer::Load(assetPath);
 					if (!meta.id.IsValid()) continue; // 読み込み失敗はスキップ
@@ -76,9 +75,9 @@ namespace CurryEngine
 
 		void AssetDatabase::ValidateOnStartup()
 		{
-			std::vector<std::string> orphanedMetas;   // .metaはあるが実ファイルがない
-			std::vector<std::string> missingMetas;    // 実ファイルはあるが.metaがない
-			std::unordered_map<std::string, std::vector<std::string>> duplicateIds; // ID重複
+			std::vector<std::filesystem::path> orphanedMetas;   // .metaはあるが実ファイルがない
+			std::vector<std::filesystem::path> missingMetas;    // 実ファイルはあるが.metaがない
+			std::unordered_map<std::string, std::vector<std::filesystem::path>> duplicateIds; // ID重複
 
 			// s_metaByPathを走査
 			for (auto& [path, meta] : s_metaByPath)
@@ -94,10 +93,10 @@ namespace CurryEngine
 			// ルートディレクトリ以下を走査して.metaのない実ファイルを検出
 			for (const auto& entry : std::filesystem::recursive_directory_iterator(s_assetRootDir))
 			{
-				std::string path = NormalizePath(entry.path().string());
+				std::filesystem::path path = entry.path();
 
 				// .metaファイル自体はスキップ
-				if (entry.path().extension() == ".meta") continue;
+				if (path.extension() == ".meta") continue;
 
 				if (s_metaByPath.find(path) == s_metaByPath.end())
 					missingMetas.push_back(path);
@@ -105,12 +104,12 @@ namespace CurryEngine
 
 			// 結果をログ出力
 			for (const auto& path : orphanedMetas)
-				LOG_WARNING("Orphaned .meta (no asset file): " + path);
+				LOG_WARNING(u8"Orphaned .meta (no asset file): " + path.u8string());
 
 			for (const auto& path : missingMetas)
 			{
 				// 自動修復: .metaがないなら新規Import
-				LOG_WARNING("Missing .meta, auto-importing: " + path);
+				LOG_WARNING(u8"Missing .meta, auto-importing: " + path.u8string());
 				Import(path);
 			}
 
@@ -121,15 +120,15 @@ namespace CurryEngine
 					// ID重複は重大な問題なのでエラーとしてログ出力
 					LOG_ERROR("Duplicate AssetId detected: " + id);
 					for (const auto& p : paths)
-						LOG_ERROR("  -> " + p);
+						LOG_ERROR(u8"  -> " + p.u8string());
 				}
 			}
 		}
 
-		AssetMeta* AssetDatabase::Import(const std::string& assetPath)
+		AssetMeta* AssetDatabase::Import(const std::filesystem::path& assetPath)
 		{
 			// Check if the asset is already imported
-			std::string normalizedPath = NormalizePath(assetPath);
+			std::filesystem::path normalizedPath = NormalizePath(assetPath);
 
 			AssetMeta meta = AssetMetaSerializer::Load(normalizedPath);
 			if (meta.id.IsValid()) {
@@ -139,7 +138,7 @@ namespace CurryEngine
 				// .metaが無い = 新規アセット。IDを新規発行
 				AssetId newId(Utils::IdGenerator::GenerateAssetId());
 				AssetType inferredType = AssetTypeUtils::DetectFromExtension(
-					std::filesystem::path(normalizedPath).extension().string()); // 拡張子から推測
+					normalizedPath.extension().string()); // 拡張子から推測
 				bool isFolder = std::filesystem::is_directory(normalizedPath);
 				nlohmann::json defaultSettings = nlohmann::json(); // デフォルトのインポート設定（必要に応じて変更）
 
@@ -152,9 +151,9 @@ namespace CurryEngine
 			return &s_metaByPath[normalizedPath];
 		}
 
-		AssetMeta* AssetDatabase::GetOrImport(const std::string& assetPath)
+		AssetMeta* AssetDatabase::GetOrImport(const std::filesystem::path& assetPath)
 		{
-			std::string normalizedPath = NormalizePath(assetPath);
+			std::filesystem::path normalizedPath = NormalizePath(assetPath);
 
 			auto it = s_metaByPath.find(normalizedPath);
 			if (it != s_metaByPath.end())
@@ -191,9 +190,9 @@ namespace CurryEngine
 			return nullptr;
 		}
 
-		const AssetMeta* AssetDatabase::FindByPath(const std::string& assetPath)
+		const AssetMeta* AssetDatabase::FindByPath(const std::filesystem::path& assetPath)
 		{
-			std::string normalizedPath = NormalizePath(assetPath);
+			std::filesystem::path normalizedPath = NormalizePath(assetPath);
 
 			auto it = s_metaByPath.find(normalizedPath);
 			if (it != s_metaByPath.end())
@@ -214,16 +213,16 @@ namespace CurryEngine
 			ValidateOnStartup();
 		}
 
-		void AssetDatabase::Rename(const std::string& oldPath, const std::string& newPath)
+		void AssetDatabase::Rename(const std::filesystem::path& oldPath, const std::filesystem::path& newPath)
 		{
-			std::string normalizedOldPath = NormalizePath(oldPath);
-			std::string normalizedNewPath = NormalizePath(newPath);
+			std::filesystem::path normalizedOldPath = NormalizePath(oldPath);
+			std::filesystem::path normalizedNewPath = NormalizePath(newPath);
 
 			auto it = s_metaByPath.find(normalizedOldPath);
 			if (it == s_metaByPath.end())
 			{
 				// 古いパスが見つからない場合は何もしない
-				LOG_WARNING("[AssetDatabase] Rename failed: old path not found: " + normalizedOldPath);
+				LOG_WARNING((u8"[AssetDatabase] Rename failed: old path not found: " + normalizedOldPath.u8string()));
 				return;
 			}
 
@@ -241,18 +240,18 @@ namespace CurryEngine
 			AssetMetaSerializer::Save(meta);
 		}
 
-		void AssetDatabase::RemapPathPrefix(const std::string& oldPrefix, const std::string& newPrefix)
+		void AssetDatabase::RemapPathPrefix(const std::filesystem::path& oldPrefix, const std::filesystem::path& newPrefix)
 		{
-			std::string normalizedOldPrefix = NormalizePath(oldPrefix);
-			std::string normalizedNewPrefix = NormalizePath(newPrefix);
+			std::filesystem::path normalizedOldPrefix = NormalizePath(oldPrefix);
+			std::filesystem::path normalizedNewPrefix = NormalizePath(newPrefix);
 
-			std::vector<std::pair<std::string, AssetMeta>> entriesToRename;
+			std::vector<std::pair<std::filesystem::path, AssetMeta>> entriesToRename;
 			for (auto it = s_metaByPath.begin(); it != s_metaByPath.end(); )
 			{
-				if (it->first.starts_with(normalizedOldPrefix))
+				if (it->first.string().starts_with(normalizedOldPrefix.string()))
 				{
 					AssetMeta meta = it->second;
-					std::string newPath = normalizedNewPrefix + it->first.substr(normalizedOldPrefix.size());
+					std::filesystem::path newPath = normalizedNewPrefix / std::filesystem::relative(it->first, normalizedOldPrefix);
 					meta.path = newPath;
 					entriesToRename.emplace_back(newPath, meta); // 新しいキーと更新されたメタデータを保存
 					// 古いメタファイルを削除
@@ -286,9 +285,9 @@ namespace CurryEngine
 			}
 		}
 
-		void AssetDatabase::RemoveByPath(const std::string& assetPath)
+		void AssetDatabase::RemoveByPath(const std::filesystem::path& assetPath)
 		{
-			std::string normalizedPath = NormalizePath(assetPath);
+			std::filesystem::path normalizedPath = NormalizePath(assetPath);
 			auto it = s_metaByPath.find(normalizedPath);
 			if (it != s_metaByPath.end())
 			{
@@ -309,12 +308,12 @@ namespace CurryEngine
 			}
 		}
 
-		void AssetDatabase::RemoveByPathPrefix(const std::string& pathPrefix)
+		void AssetDatabase::RemoveByPathPrefix(const std::filesystem::path& pathPrefix)
 		{
-			std::string normalizedPrefix = NormalizePath(pathPrefix);
+			std::filesystem::path normalizedPrefix = NormalizePath(pathPrefix);
 			for (auto it = s_metaByPath.begin(); it != s_metaByPath.end(); )
 			{
-				if (it->first.starts_with(normalizedPrefix))
+				if (it->first.string().starts_with(normalizedPrefix.string()))
 				{
 					// メタデータファイルを削除
 					std::filesystem::path metaFilePath = AssetMetaSerializer::MetaPathFor(it->first);
@@ -324,7 +323,7 @@ namespace CurryEngine
 					}
 					else
 					{
-						LOG_WARNING("[AssetDatabase] Meta file not found for removal: " + metaFilePath.string());
+						LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + metaFilePath.u8string());
 					}
 					// マップから削除
 					s_pathById.erase(it->second.id.ToString());

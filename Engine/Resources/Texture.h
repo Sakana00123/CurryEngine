@@ -10,8 +10,8 @@ using namespace Microsoft::WRL;
 #include "Resource.h"
 #include <string>
 #include <map>
+#include <filesystem>
 using namespace std;
-
 
 #include "Engine/Core/Misc.h"
 
@@ -220,6 +220,8 @@ public:
 	bool LoadFromFile(const std::string& filePath) override;
 	/** @brief ワイド文字パス版の読み込み。*/
 	bool Load(ID3D11Device* device, const std::wstring& filePath);
+
+	bool Load(ID3D11Device* device, const std::filesystem::path& filePath);
 
 	/** @brief SRV と記述子を設定します。*/
 	void SetSRV(ID3D11ShaderResourceView* srv, const D3D11_TEXTURE2D_DESC& desc) {

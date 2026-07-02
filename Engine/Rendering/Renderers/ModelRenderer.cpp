@@ -38,6 +38,7 @@ void ModelRenderer::Update(float elapsedTime)
 {
     if (!m_asset) return;
     if (m_asset->animations.empty()) return;
+	if (animationIndex < 0 || animationIndex >= static_cast<int>(m_asset->animations.size())) return;
 
     // アニメーション時間を進める
     const AssetModel::Animation& anim = m_asset->animations[animationIndex];
