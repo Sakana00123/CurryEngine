@@ -2,6 +2,7 @@
 #include "AssetBrowser.h"
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include <shellapi.h> // DragAcceptFiles, DragQueryFile, DragFinish
 #pragma comment(lib, "Shell32.lib")
@@ -79,12 +80,14 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 					//	CurryEngine::Resources::ImportSettingsWindow::OpenForNewAsset(meta->id);
 					//}
 
-					Console::Log("Imported: " + dst.string());
+					Console::Log(u8"Imported: " + dst.u8string());
 					anySucceeded = true;
 				}
 				catch (const fs::filesystem_error& e)
 				{
-					Console::LogError("Import failed: " + std::string(e.what()));
+					std::string errorMsg = e.what();
+					std::u8string errorMsgU8(errorMsg.begin(), errorMsg.end());
+					LOG_ERROR(u8"Import failed: " + errorMsgU8);
 				}
 			}
 			if (anySucceeded) Refresh();
@@ -227,7 +230,7 @@ void AssetBrowser::DrawGUI()
 			//右側：アセットグリッド
 			ImGui::TableSetColumnIndex(1);
 			ImGui::BeginChild("AssetPanel");
-			DrawUnityPath(currentDirectory.string());
+			DrawUnityPath(currentDirectory);
 			DrawAssetGrid(currentDirectory, searchBuffer);
 			ImGui::EndChild();
 
@@ -370,7 +373,7 @@ void AssetBrowser::Refresh()
 			if (ext == ".cereal" || ext == ".batchCereal")
 			{
 				fs::remove(entry.path());
-				Console::Log("Deleted old cache file: " + entry.path().string());
+				LOG_INFO(u8"Deleted old cache file: " + entry.path().u8string());
 			}
 		}
 	}
@@ -408,12 +411,12 @@ void AssetBrowser::CreateCSharpScript(const fs::path& directory, const std::stri
 
 	if (fs::exists(newScriptPath))
 	{ // 同名のファイルが既に存在する場合はエラーを表示して処理を終了
-		Console::LogError("A file with the same name already exists: " + newScriptPath.string());
+		LOG_ERROR(u8"同じ名前のファイルがすでに存在します: " + newScriptPath.u8string());
 		return;
 	}
 	if (!newScriptPath.has_stem() || newScriptPath.extension() != ".cs")
 	{ // ファイル名が無効な場合はエラーを表示して処理を終了
-		Console::LogError("Invalid script name. The file extension must be .cs");
+		LOG_ERROR(u8"スクリプト名が不正です。ファイルの拡張子は .cs である必要があります。");
 		return;
 	}
 
@@ -570,7 +573,7 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 	}
 	else
 	{
-		Console::LogError((std::string("Failed to create shader file: ") + std::string(reinterpret_cast<const char*>(newShaderPath.u8string().c_str()))));
+		LOG_ERROR(u8"シェーダーファイルの作成に失敗しました: " + newShaderPath.u8string());
 	}
 }
 
@@ -584,12 +587,12 @@ void AssetBrowser::CreateNewScene(const fs::path& templateScenePath, const fs::p
 {
 	if (fs::exists(newScenePath))
 	{ // 同名のファイルが既に存在する場合はエラーを表示して処理を終了
-		Console::LogError("A file with the same name already exists: " + newScenePath.string());
+		LOG_ERROR(u8"同じ名前のファイルがすでに存在します: " + newScenePath.u8string());
 		return;
 	}
 	if (!newScenePath.has_stem() || newScenePath.extension() != ".scene")
 	{ // ファイル名が無効な場合はエラーを表示して処理を終了
-		Console::LogError("Invalid scene name. The file extension must be .scene");
+		LOG_ERROR(u8"シーン名が不正です。ファイル拡張子は .scene である必要があります。");
 		return;
 	}
 	json j;
@@ -646,7 +649,7 @@ void AssetBrowser::OpenAsset(const fs::path& assetPath)
 	}
 }
 
-void AssetBrowser::SearchAssets(const fs::path& root, const std::string& keyword, std::vector<fs::directory_entry>& results)
+void AssetBrowser::SearchAssets(const fs::path& root, const std::u8string& keyword, std::vector<fs::directory_entry>& results)
 {
 	//キャッシュされてるか確認
 	if (cacheSearchResults.find(root) != cacheSearchResults.end())
@@ -670,9 +673,9 @@ void AssetBrowser::SearchAssets(const fs::path& root, const std::string& keyword
 	{
 		for (const auto& entry : filesystem::recursive_directory_iterator(root))
 		{
-			std::string lowerName = entry.path().string();
+			std::u8string lowerName = entry.path().u8string();
 			std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
-			if (lowerName.find(keyword) != std::string::npos) {
+			if (lowerName.find(keyword) != std::u8string::npos) {
 				results.push_back(entry);
 			}
 		}
@@ -706,14 +709,14 @@ void AssetBrowser::DrawFolderTree(const std::filesystem::path& root, std::filesy
 		if (entry.is_directory())
 		{
 			const auto& name = entry.path().filename().string();
-			ImGuiTreeNodeFlags flags = (selectedFolder == entry.path()) ? ImGuiTreeNodeFlags_Selected : 0;
+			ImGuiTreeNodeFlags flags = (selectedFolder.compare(entry) == 0) ? ImGuiTreeNodeFlags_Selected : 0;
 
 			bool open = ImGui::TreeNodeEx(name.c_str(), flags);
 
 			//フォルダをドロップターゲットに
 			if (settings.acceptDropToFolderTree)
 			{
-				if (HandleDropTargetForFolder(entry.path().string()))
+				if (HandleDropTargetForFolder(entry.path()))
 				{
 					selectedFolder = entry.path();
 				}
@@ -738,7 +741,7 @@ void AssetBrowser::DrawFolderTree(const std::filesystem::path& root, std::filesy
 #ifdef USE_IMGUI
 void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const char* filter)
 {
-	std::string query = filter ? filter : "";
+	std::u8string query = filter ? std::u8string(reinterpret_cast<const char8_t*>(filter)) : u8"";
 	std::transform(query.begin(), query.end(), query.begin(), ::tolower);
 
 
@@ -949,7 +952,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 			// -- ドロップターゲット(フォルダのみ) -------------------------------
 			if (settings.acceptDropToAssetGrid && isDirectory)
 			{
-				HandleDropTargetForFolder(path.string());
+				HandleDropTargetForFolder(path);
 			}
 
 			// -- ドラッグソース ----------------------------------
@@ -1107,28 +1110,30 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 #endif // USE_IMGUI
 
 #ifdef USE_IMGUI
-void AssetBrowser::DrawUnityPath(const std::string& path) {
-	std::string result = path;
+void AssetBrowser::DrawUnityPath(const fs::path& path) {
+	fs::path result = path.lexically_normal().make_preferred(); // 正規化してOSに合わせたパス区切り文字に変換
 
 	// Windows用の \ を / に統一
-	std::replace(result.begin(), result.end(), '\\', '/');
+	//std::replace(result.begin(), result.end(), '\\', '/');
 
 	// スラッシュで分割し、" > " で連結
-	std::stringstream ss(result);
+	std::u8string resultStr = result.u8string();
+	std::stringstream ss(std::string(resultStr.begin(), resultStr.end()));
 	std::string segment;
-	std::vector<std::string> segments;
+	std::vector<std::u8string> segments;
 
-	while (std::getline(ss, segment, '/')) {
+	while (std::getline(ss, segment, '\\')) {
 		if (!segment.empty() && segment != ".") {
-			segments.push_back(segment);
+			std::u8string segmentU8(segment.begin(), segment.end());
+			segments.push_back(segmentU8);
 		}
 	}
 
-	std::string dir = "./";
+	std::u8string dir = u8".\\";
 	for (size_t i = 0; i < segments.size(); i++)
 	{
-		dir += segments[i] + "/";
-		if (ImGui::Button(segments[i].c_str()))
+		dir += segments[i] + u8"\\";
+		if (ImGui::Button(reinterpret_cast<const char*>(segments[i].c_str())))
 		{
 			currentDirectory = dir;
 		}
@@ -1744,32 +1749,32 @@ fs::path AssetBrowser::MakeUniqueFilePath(const fs::path& dir, const std::string
 	return newPath;
 }
 
-std::string AssetBrowser::ToUnityStylePath(const std::string& path) {
-	std::string result = path;
+fs::path AssetBrowser::ToUnityStylePath(const fs::path& path) {
+	fs::path result = path;
 
 	// Windows用の \ を / に統一
-	std::replace(result.begin(), result.end(), '\\', '/');
+	//std::replace(result.begin(), result.end(), '\\', '/');
 
 	// スラッシュで分割し、" > " で連結
-	std::stringstream ss(result);
-	std::string segment;
-	std::vector<std::string> segments;
+	std::wstringstream ws(result.wstring());
+	std::wstring segment;
+	std::vector<std::wstring> segments;
 
-	while (std::getline(ss, segment, '/')) {
-		if (!segment.empty() && segment != ".") {
+	while (std::getline(ws, segment, L'\\')) {
+		if (!segment.empty() && segment != L".") {
 			segments.push_back(segment);
 		}
 	}
 
 	result.clear();
-	for (size_t i = 0; i < segments.size() - 1; i++)
+	for (size_t i = 0; i < segments.size() - 1; ++i)
 	{
-		result += segments[i] + ">" + segments[i + 1];
+		result += segments[i] + L">" + segments[i + 1];
 	}
 	return result;
 }
 
-bool AssetBrowser::MoveAssetToFolder(const std::string& srcPath, const std::string& dstFolderPath)
+bool AssetBrowser::MoveAssetToFolder(const fs::path& srcPath, const fs::path& dstFolderPath)
 {
 	std::filesystem::path src(srcPath);
 	std::filesystem::path dst = dstFolderPath;
@@ -1795,7 +1800,7 @@ bool AssetBrowser::MoveAssetToFolder(const std::string& srcPath, const std::stri
 	return success;
 }
 
-bool AssetBrowser::MoveFolderToFolder(const std::string& source, const std::string& destinationParent)
+bool AssetBrowser::MoveFolderToFolder(const fs::path& source, const fs::path& destinationParent)
 {
 	try {
 		if (!fs::exists(source) || !fs::is_directory(source)) return false;
@@ -1813,12 +1818,13 @@ bool AssetBrowser::MoveFolderToFolder(const std::string& source, const std::stri
 	catch (const std::exception& e) {
 		// ログ出力など
 		std::cerr << "MoveFolder error: " << e.what() << std::endl;
+		LOG_ERROR(std::format("MoveFolder error: {}", e.what()));
 		return false;
 	}
 }
 
 #ifdef USE_IMGUI
-bool AssetBrowser::HandleDropTargetForFolder(const std::string& targetFolderPath)
+bool AssetBrowser::HandleDropTargetForFolder(const fs::path& targetFolderPath)
 {
 	bool result = ImGui::BeginDragDropTarget();
 

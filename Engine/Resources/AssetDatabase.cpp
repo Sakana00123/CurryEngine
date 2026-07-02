@@ -262,7 +262,7 @@ namespace CurryEngine
 					}
 					else
 					{
-						LOG_WARNING("[AssetDatabase] Meta file not found for removal: " + oldMetaFilePath.string());
+						LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + oldMetaFilePath.u8string());
 					}
 					it = s_metaByPath.erase(it); // 後で新しいキーで再挿入するため、ここで削除
 				}
@@ -299,7 +299,7 @@ namespace CurryEngine
 				}
 				else
 				{
-					LOG_WARNING("[AssetDatabase] Meta file not found for removal: " + metaFilePath.string());
+					LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + metaFilePath.u8string());
 				}
 
 				// マップから削除

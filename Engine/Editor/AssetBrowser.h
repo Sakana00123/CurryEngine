@@ -105,7 +105,7 @@ public:
 	static void OpenAsset(const fs::path& assetPath);
 
 	// Assetsフォルダ内を検索してkeywordにマッチするファイルをresultsに追加する（キャッシュを利用）
-	static inline void SearchAssets(const fs::path& root, const std::string& keyword, std::vector<fs::directory_entry>& results);
+	static inline void SearchAssets(const fs::path& root, const std::u8string& keyword, std::vector<fs::directory_entry>& results);
 
 private:
 
@@ -114,11 +114,11 @@ private:
 
 #ifdef USE_IMGUI
 
-	static void DrawFolderTree(const std::filesystem::path& root, std::filesystem::path& selectedFolder);
+	static void DrawFolderTree(const fs::path& root, fs::path& selectedFolder);
 
-	static void DrawAssetGrid(const std::filesystem::path& folderPath, const char* filter = "");
+	static void DrawAssetGrid(const fs::path& folderPath, const char* filter = "");
 
-	static void DrawUnityPath(const std::string& path);
+	static void DrawUnityPath(const fs::path& path);
 
 	// スクリプト作成モーダルの描画
 	static void DrawScriptCreationModal();
@@ -137,13 +137,13 @@ private:
 	static void ShowContextMenu(const fs::path& assetPath);
 
 	//ドロップ先のターゲットの処理（戻り値：アセットドラッグ中に直前に描画されたGUIをホバー中か）
-	static bool HandleDropTargetForFolder(const std::string& targetFolderPath);
+	static bool HandleDropTargetForFolder(const fs::path& targetFolderPath);
 #endif // USE_IMGUI
 
 	static fs::path MakeUniqueFilePath(const fs::path& dir, const std::string& stem, const std::string& extension = ".cs");
-	static std::string ToUnityStylePath(const std::string& path);
-	static bool MoveAssetToFolder(const std::string& srcPath, const std::string& dstFolderPath);
-	static bool MoveFolderToFolder(const std::string& source, const std::string& destinationParent);
+	static fs::path ToUnityStylePath(const fs::path& path);
+	static bool MoveAssetToFolder(const fs::path& srcPath, const fs::path& dstFolderPath);
+	static bool MoveFolderToFolder(const fs::path& source, const fs::path& destinationParent);
 private:
 	static inline bool isOpen = true;
 	static inline GuiSettings settings;
@@ -187,13 +187,13 @@ private:
 	static inline AssetBrowserDropTarget* dropTarget = nullptr; // ドロップターゲットのインスタンス（Windowsのドラッグ＆ドロップAPIを使用する場合）
 	static inline bool oleInitializedHere = false; // AssetBrowserがOLEを初期化したかどうかのフラグ（FinalizeDropTargetでのみ解放するため）
 private:
-	static inline std::filesystem::path currentDirectory;
-	static inline std::filesystem::path assetPath;
-	static inline std::filesystem::path s_AssetPath = "./Assets/";
+	static inline fs::path currentDirectory;
+	static inline fs::path assetPath;
+	static inline fs::path s_AssetPath = "./Assets/";
 	static inline Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> directoryIcon;
 	static inline Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> fileIcon;
 	static inline std::unordered_map<std::wstring, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> images;
-	static inline std::unordered_map<fs::path, std::unordered_map<std::string, std::vector<fs::directory_entry>>> cacheSearchResults;
+	static inline std::unordered_map<fs::path, std::unordered_map<std::u8string, std::vector<fs::directory_entry>>> cacheSearchResults;
 
 	static inline std::unordered_set<fs::path, FsPathHash> selectedAssets; // 複数選択されたアセットのパスを保持するためのunordered_set
 	static inline fs::path lastClickedAsset; // 最後に選択されたアセットのパス（Shift+クリックで範囲選択する際の基準点）
