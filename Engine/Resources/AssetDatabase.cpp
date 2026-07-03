@@ -49,6 +49,11 @@ namespace CurryEngine
 			s_initialized = false;
 		}
 
+		void AssetDatabase::Update()
+		{
+			s_assetWatcher.ProcessPendingEvents();
+		}
+
 		const std::filesystem::path& AssetDatabase::GetAssetRootDir()
 		{
 			return s_assetRootDir;

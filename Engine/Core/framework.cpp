@@ -41,6 +41,8 @@
 
 #include "Engine/EditorConfig/EditorConfigManager.h"
 
+#include "Engine/Resources/AssetDatabase.h"
+
 
 CONST LONG SHADOWMAP_WIDTH{ 2048 };
 CONST LONG SHADOWMAP_HEIGHT{ 2048 };
@@ -335,6 +337,10 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
     {
         Graphics::StylizeWindow(!Graphics::GetFullScreenMode());
     }
+
+	// アセットデータベース更新
+    CurryEngine::Resources::AssetDatabase::Update();
+
 #endif // _DEBUG
 
 

@@ -26,6 +26,11 @@ namespace CurryEngine
 			static void Finalize();
 
 			/**
+			 * @brief アセットデータベースを更新します。
+			 */
+			static void Update();
+
+			/**
 			 * @brief アセットのルートディレクトリを取得します。
 			 * @return アセットのルートディレクトリのパス
 			 */

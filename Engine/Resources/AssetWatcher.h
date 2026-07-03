@@ -2,10 +2,24 @@
 #include <filesystem>
 #include <atomic>
 #include <thread>
+#include <mutex>
 #include <optional>
 
 namespace CurryEngine
 {
+	/**
+	 * @brief ファイルの変更アクションを表す構造体。
+	 * @details この構造体は、ファイルの変更イベントを表すために使用されます。変更アクションの種類と、変更されたファイルのパスを保持します。
+	 */
+	struct FileAction
+	{
+		DWORD action; // ファイルの変更アクション（作成、削除、変更など）
+		std::filesystem::path path; // 変更されたファイルのパス
+	};
+
+	/**
+	 * @brief アセットの監視を行うクラス。
+	 */
 	class AssetWatcher
 	{
 	public:
@@ -19,6 +33,11 @@ namespace CurryEngine
 		 * @brief 監視を停止する関数。
 		 */
 		void Stop();
+
+		/**
+		 * @brief 監視中に発生したファイルの変更イベントを処理する関数。
+		 */
+		void ProcessPendingEvents();
 
 	private:
 		/**
@@ -50,5 +69,9 @@ namespace CurryEngine
 		 * @brief リネームが保留されている場合の旧パス。
 		 */
 		std::optional<std::filesystem::path> m_pendingRenameOldPath;
+
+
+		std::mutex m_queueMutex; ///< ファイルアクションキューの保護用ミューテックス
+		std::vector<FileAction> m_pendingEvents; ///< 保留中のファイルアクションイベントのキュー
 	};
 }
