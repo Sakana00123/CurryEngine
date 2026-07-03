@@ -18,164 +18,164 @@ class SpotLightComponent;
 
 /**
  * @file
- * @brief ƒV[ƒ“ƒNƒ‰ƒXB
- * @details ƒ‰ƒCƒtƒTƒCƒNƒ‹iInitialize/Update/Render/DrawGUI/Finalizej‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief ã‚·ãƒ¼ãƒ³ã‚¯ãƒ©ã‚¹ã€‚
+ * @details ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«ï¼ˆInitialize/Update/Render/DrawGUI/Finalizeï¼‰ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class Scene
 {
 public:
-	/** @brief ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒB*/
+	/** @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ã€‚*/
 	std::unique_ptr<ObjectManager> objectManager;
 
-	/** @brief ƒJƒƒ‰ƒVƒXƒeƒ€B*/
+	/** @brief ã‚«ãƒ¡ãƒ©ã‚·ã‚¹ãƒ†ãƒ ã€‚*/
 	CameraSystem cameraSystem;
 
-	/** @brief ƒGƒfƒBƒ^—pƒJƒƒ‰B*/
-	std::unique_ptr<EditorCamera> editorCameras[EDITOR_CAMERA_COUNT]; // 0: ƒV[ƒ“ƒrƒ…[, 1: ƒvƒŒƒrƒ…[—p, 2: ƒGƒtƒFƒNƒgƒvƒŒƒrƒ…[—p
-	/** @brief ƒCƒ“ƒfƒbƒNƒXw’è‚ÅƒGƒfƒBƒ^ƒJƒƒ‰‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚¨ãƒ‡ã‚£ã‚¿ç”¨ã‚«ãƒ¡ãƒ©ã€‚*/
+	std::unique_ptr<EditorCamera> editorCameras[EDITOR_CAMERA_COUNT]; // 0: ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼, 1: ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨, 2: ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨
+	/** @brief ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æŒ‡å®šã§ã‚¨ãƒ‡ã‚£ã‚¿ã‚«ãƒ¡ãƒ©ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	EditorCamera* GetEditorCamera(int index) const { return editorCameras[index].get(); }
 
 
-	/** @brief Undo/RedoƒXƒ^ƒbƒNBƒV[ƒ““à‚Å‚Ì•ÏX‚ğŠÇ—‚µ‚Ü‚·B*/
+	/** @brief Undo/Redoã‚¹ã‚¿ãƒƒã‚¯ã€‚ã‚·ãƒ¼ãƒ³å†…ã§ã®å¤‰æ›´ã‚’ç®¡ç†ã—ã¾ã™ã€‚*/
 	CurryEngine::UndoRedoStack undoRedoStack;
 
-	/* ƒV[ƒ““à‚ÌƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒLƒƒƒbƒVƒ…‚ÍA•p”É‚ÉƒAƒNƒZƒX‚³‚ê‚é‚à‚Ì‚ğ‘ÎÛ‚És‚¢‚Ü‚·B‚±‚ê‚É‚æ‚èAƒV[ƒ“‘S‘Ì‚ğŒŸõ‚·‚é•K—v‚ª‚ ‚éˆ—‚ğŒ¸‚ç‚µAƒpƒtƒH[ƒ}ƒ“ƒX‚ğŒüã‚³‚¹‚Ü‚·B*/
+	/* ã‚·ãƒ¼ãƒ³å†…ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã¯ã€é »ç¹ã«ã‚¢ã‚¯ã‚»ã‚¹ã•ã‚Œã‚‹ã‚‚ã®ã‚’å¯¾è±¡ã«è¡Œã„ã¾ã™ã€‚ã“ã‚Œã«ã‚ˆã‚Šã€ã‚·ãƒ¼ãƒ³å…¨ä½“ã‚’æ¤œç´¢ã™ã‚‹å¿…è¦ãŒã‚ã‚‹å‡¦ç†ã‚’æ¸›ã‚‰ã—ã€ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã‚’å‘ä¸Šã•ã›ã¾ã™ã€‚*/
 
-	/** @brief ƒV[ƒ““à‚ÌƒfƒBƒŒƒNƒVƒ‡ƒiƒ‹ƒ‰ƒCƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒLƒƒƒbƒVƒ…B*/
+	/** @brief ã‚·ãƒ¼ãƒ³å†…ã®ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒ«ãƒ©ã‚¤ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã€‚*/
 	DirectionalLightComponent* directionalLight = nullptr;
 
-	/** @brief ƒV[ƒ““à‚Ìƒ|ƒCƒ“ƒgƒ‰ƒCƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒLƒƒƒbƒVƒ…B*/
+	/** @brief ã‚·ãƒ¼ãƒ³å†…ã®ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã€‚*/
 	std::vector<PointLightComponent*> pointLights;
 
-	/** @brief ƒV[ƒ““à‚ÌƒXƒ|ƒbƒgƒ‰ƒCƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒLƒƒƒbƒVƒ…B*/
+	/** @brief ã‚·ãƒ¼ãƒ³å†…ã®ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã€‚*/
 	std::vector<SpotLightComponent*> spotLights;
 
-	/* ƒ‰ƒCƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒLƒƒƒbƒVƒ…ŠÇ——pŠÖ”B‚±‚ê‚ç‚Íƒ‰ƒCƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì `OnEnable` ‚Æ `OnDisable` ‚©‚çŒÄ‚Ño‚³‚êAƒV[ƒ“‚ÌƒLƒƒƒbƒVƒ…‚ğXV‚µ‚Ü‚·B*/
+	/* ãƒ©ã‚¤ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ç®¡ç†ç”¨é–¢æ•°ã€‚ã“ã‚Œã‚‰ã¯ãƒ©ã‚¤ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® `OnEnable` ã¨ `OnDisable` ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã€ã‚·ãƒ¼ãƒ³ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’æ›´æ–°ã—ã¾ã™ã€‚*/
 
-	/** @brief ƒfƒBƒŒƒNƒVƒ‡ƒiƒ‹ƒ‰ƒCƒg‚ğƒV[ƒ“‚ÌƒLƒƒƒbƒVƒ…‚É“o˜^‚µ‚Ü‚·B*/
+	/** @brief ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒ«ãƒ©ã‚¤ãƒˆã‚’ã‚·ãƒ¼ãƒ³ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ç™»éŒ²ã—ã¾ã™ã€‚*/
 	void RegisterDirectionalLight(DirectionalLightComponent* light) {
 		directionalLight = light;
 	}
-	/** @brief ƒfƒBƒŒƒNƒVƒ‡ƒiƒ‹ƒ‰ƒCƒg‚ğƒV[ƒ“‚ÌƒLƒƒƒbƒVƒ…‚©‚çíœ‚µ‚Ü‚·B*/
+	/** @brief ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒ«ãƒ©ã‚¤ãƒˆã‚’ã‚·ãƒ¼ãƒ³ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‹ã‚‰å‰Šé™¤ã—ã¾ã™ã€‚*/
 	void UnregisterDirectionalLight(DirectionalLightComponent* light) {
 		if (directionalLight == light) {
 			directionalLight = nullptr;
 		}
 	}
 
-	/** @brief ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚ğƒV[ƒ“‚ÌƒLƒƒƒbƒVƒ…‚É“o˜^‚µ‚Ü‚·B*/
+	/** @brief ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã‚’ã‚·ãƒ¼ãƒ³ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ç™»éŒ²ã—ã¾ã™ã€‚*/
 	void RegisterPointLight(PointLightComponent* light) {
 		pointLights.push_back(light);
 	}
-	/** @brief ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚ğƒV[ƒ“‚ÌƒLƒƒƒbƒVƒ…‚©‚çíœ‚µ‚Ü‚·B*/
+	/** @brief ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã‚’ã‚·ãƒ¼ãƒ³ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‹ã‚‰å‰Šé™¤ã—ã¾ã™ã€‚*/
 	void UnregisterPointLight(PointLightComponent* light) {
 		pointLights.erase(std::remove(pointLights.begin(), pointLights.end(), light), pointLights.end());
 	}
 
-	/** @brief ƒXƒ|ƒbƒgƒ‰ƒCƒg‚ğƒV[ƒ“‚ÌƒLƒƒƒbƒVƒ…‚É“o˜^‚µ‚Ü‚·B*/
+	/** @brief ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã‚’ã‚·ãƒ¼ãƒ³ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ç™»éŒ²ã—ã¾ã™ã€‚*/
 	void RegisterSpotLight(SpotLightComponent* light) {
 		spotLights.push_back(light);
 	}
-	/** @brief ƒXƒ|ƒbƒgƒ‰ƒCƒg‚ğƒV[ƒ“‚ÌƒLƒƒƒbƒVƒ…‚©‚çíœ‚µ‚Ü‚·B*/
+	/** @brief ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã‚’ã‚·ãƒ¼ãƒ³ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‹ã‚‰å‰Šé™¤ã—ã¾ã™ã€‚*/
 	void UnregisterSpotLight(SpotLightComponent* light) {
 		spotLights.erase(std::remove(spotLights.begin(), spotLights.end(), light), spotLights.end());
 	}
 
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	Scene();
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	virtual ~Scene() = default;
 
-	/** @brief ‰Šú‰»ˆ—iƒŠƒ\[ƒX‚Ìƒ[ƒh‚È‚ÇjB*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ï¼ˆãƒªã‚½ãƒ¼ã‚¹ã®ãƒ­ãƒ¼ãƒ‰ãªã©ï¼‰ã€‚*/
 	void Initialize();
 
-	/** @brief ƒtƒŒ[ƒ€ŠJnˆ—ió‘ÔƒŠƒZƒbƒgjB*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹å‡¦ç†ï¼ˆçŠ¶æ…‹ãƒªã‚»ãƒƒãƒˆï¼‰ã€‚*/
 	void BeginFrame();
 
-	/** @brief ƒtƒŒ[ƒ€I—¹ˆ—B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ çµ‚äº†å‡¦ç†ã€‚*/
 	void EndFrame();
 
-	/** @brief ŠJnˆ—iƒV[ƒ“ŠJn‚Éˆê“x‚¾‚¯ŒÄ‚Ño‚³‚ê‚éjB*/
+	/** @brief é–‹å§‹å‡¦ç†ï¼ˆã‚·ãƒ¼ãƒ³é–‹å§‹æ™‚ã«ä¸€åº¦ã ã‘å‘¼ã³å‡ºã•ã‚Œã‚‹ï¼‰ã€‚*/
 	void Start();
 
 	/**
-	 * @brief XVˆ—B
-	 * @param deltaTime Œo‰ßŠÔi•bjB
+	 * @brief æ›´æ–°å‡¦ç†ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void Update(float deltaTime);
 
 	/**
-	 * @brief XVˆ—‚ÌŒãˆ—B`Update()` ‚ÌŒã‚ÉŒÄ‚Ño‚³‚ê‚Ü‚·B
-	 * @param deltaTime Œo‰ßŠÔi•bjB
+	 * @brief æ›´æ–°å‡¦ç†ã®å¾Œå‡¦ç†ã€‚`Update()` ã®å¾Œã«å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void LateUpdate(float deltaTime);
 
 	/**
-	 * @brief ŒÅ’èXVˆ—B
-	 * @param fixedDeltaTime ŒÅ’èXV‚ÌŒo‰ßŠÔi•bjB
+	 * @brief å›ºå®šæ›´æ–°å‡¦ç†ã€‚
+	 * @param fixedDeltaTime å›ºå®šæ›´æ–°ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void FixedUpdate(float fixedDeltaTime);
 
 	/**
-	 * @brief 3D •`‰æ‚Ì‘Oˆ—B
-	 * @param rtx ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒgB
+	 * @brief 3D æç”»ã®å‰å‡¦ç†ã€‚
+	 * @param rtx ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	void BeginRendering(RenderContext* rtx) {};
 
 	/**
-	 * @brief 3D •`‰æˆ—B
-	 * @param rtx ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒgB
+	 * @brief 3D æç”»å‡¦ç†ã€‚
+	 * @param rtx ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	void Render(RenderContext* rtx);
 
 	/**
-	 * @brief 3D •`‰æ‚ÌŒãˆ—B
-	 * @param rtx ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒgB
+	 * @brief 3D æç”»ã®å¾Œå‡¦ç†ã€‚
+	 * @param rtx ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	void EndRendering(RenderContext* rtx) {};
 
 	/**
-	 * @brief 2D •`‰æˆ—B
-	 * @param rtx ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒgB
+	 * @brief 2D æç”»å‡¦ç†ã€‚
+	 * @param rtx ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	void Draw(RenderContext* rtx);
 
-	/** @brief ’Ç‰Á‚ÌImGUI•`‰æˆ—B*/
+	/** @brief è¿½åŠ ã®ImGUIæç”»å‡¦ç†ã€‚*/
 	void DrawGUI() {};
 
-	/** @brief I—¹‰»ˆ—iƒŠƒ\[ƒX‰ğ•ú‚È‚ÇjB*/
+	/** @brief çµ‚äº†åŒ–å‡¦ç†ï¼ˆãƒªã‚½ãƒ¼ã‚¹è§£æ”¾ãªã©ï¼‰ã€‚*/
 	void Finalize();
 public:
-	/** @brief ƒV[ƒ“–¼B*/
+	/** @brief ã‚·ãƒ¼ãƒ³åã€‚*/
 	std::string name;
-	/** @brief ‘JˆÚ‚ª‰Â”\‚©‚Ç‚¤‚©B*/
+	/** @brief é·ç§»ãŒå¯èƒ½ã‹ã©ã†ã‹ã€‚*/
 	bool canTransition;
 
-	/** @brief ƒV[ƒ“‚ªŠJn‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief ã‚·ãƒ¼ãƒ³ãŒé–‹å§‹ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã—ã¾ã™ã€‚*/
 	bool IsStarted() const { return isStarted; }
 
 public:
-	/** @brief –¼Ì‚©‚çƒV[ƒ““àƒIƒuƒWƒFƒNƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief åç§°ã‹ã‚‰ã‚·ãƒ¼ãƒ³å†…ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	GameObject* GetSceneObject(const std::string& name);
-	/** @brief –¼Ì‚ÅƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚µ‚Ü‚·B*/
+	/** @brief åç§°ã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç ´æ£„ã—ã¾ã™ã€‚*/
 	void Destroy(const std::string& name);
-	/** @brief ƒV[ƒ““à‚Ì‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚·ãƒ¼ãƒ³å†…ã®ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	std::vector<std::shared_ptr<GameObject>> GetAllSceneObjects() const;
-	/** @brief ƒV[ƒ““àƒIƒuƒWƒFƒNƒg”‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚·ãƒ¼ãƒ³å†…ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ•°ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	size_t GetSceneObjectsSize() const;
 
 
-	/** @brief ObjectManager‚Ö‚ÌƒAƒNƒZƒXB*/
+	/** @brief ObjectManagerã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã€‚*/
 	ObjectManager* GetObjectManager() const { return objectManager.get(); }
 
-	/** @brief  CameraSystem‚Ö‚ÌƒAƒNƒZƒXB*/
+	/** @brief  CameraSystemã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã€‚*/
 	CameraSystem* GetCameraSystem() { return &cameraSystem; }
 
 	/**
-	 * @brief w’èŒ^‚Ì‘SƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒV[ƒ““à‚©‚çŒŸõ‚µ‚Ü‚·B
-	 * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-	 * @return Œ©‚Â‚©‚Á‚½ `T*` ‚Ì”z—ñB
+	 * @brief æŒ‡å®šå‹ã®å…¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã‚·ãƒ¼ãƒ³å†…ã‹ã‚‰æ¤œç´¢ã—ã¾ã™ã€‚
+	 * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+	 * @return è¦‹ã¤ã‹ã£ãŸ `T*` ã®é…åˆ—ã€‚
 	 */
 	template<typename T>
 	std::vector<T*> FindComponents() const {
@@ -192,9 +192,9 @@ public:
 	}
 
 	/**
-	 * @brief w’èŒ^‚ÌÅ‰‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒV[ƒ““à‚©‚çŒŸõ‚µ‚Ü‚·B
-	 * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-	 * @return Œ©‚Â‚©‚Á‚½ `T*`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+	 * @brief æŒ‡å®šå‹ã®æœ€åˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã‚·ãƒ¼ãƒ³å†…ã‹ã‚‰æ¤œç´¢ã—ã¾ã™ã€‚
+	 * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+	 * @return è¦‹ã¤ã‹ã£ãŸ `T*`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
 	 */
 	template<typename T>
 	T* FindComponentById(const ObjectId& id) const {
@@ -205,13 +205,13 @@ public:
 				return dynamic_cast<T*>(compPtr.get());
 			}
 		}
-		return nullptr; // Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·
+		return nullptr; // è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™
 	}
 
 	/**
-	 * @brief w’èŒ^‚ÌÅ‰‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒV[ƒ““à‚©‚çŒŸõ‚µA‹¤—Lƒ|ƒCƒ“ƒ^‚Å•Ô‚µ‚Ü‚·B
-	 * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-	 * @return Œ©‚Â‚©‚Á‚½ `std::shared_ptr<T>`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+	 * @brief æŒ‡å®šå‹ã®æœ€åˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã‚·ãƒ¼ãƒ³å†…ã‹ã‚‰æ¤œç´¢ã—ã€å…±æœ‰ãƒã‚¤ãƒ³ã‚¿ã§è¿”ã—ã¾ã™ã€‚
+	 * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+	 * @return è¦‹ã¤ã‹ã£ãŸ `std::shared_ptr<T>`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
 	 */
 	template<typename T>
 	std::shared_ptr<T> FindComponentPtrById(const ObjectId& id) const {
@@ -222,24 +222,24 @@ public:
 				return std::dynamic_pointer_cast<T>(compPtr);
 			}
 		}
-		return nullptr; // Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·
+		return nullptr; // è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™
 	}
 
 	/**
-	 * @brief w’èID‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğƒV[ƒ““à‚©‚çŒŸõ‚µ‚Ü‚·B
-	 * @param id æ“¾‚·‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌIDB
-	 * @return Œ©‚Â‚©‚Á‚½ `GameObject*`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+	 * @brief æŒ‡å®šIDã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚·ãƒ¼ãƒ³å†…ã‹ã‚‰æ¤œç´¢ã—ã¾ã™ã€‚
+	 * @param id å–å¾—ã™ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®IDã€‚
+	 * @return è¦‹ã¤ã‹ã£ãŸ `GameObject*`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
 	 */
 	GameObject* FindGameObjectById(const ObjectId& id) const;
 
 	/**
-	 * @brief w’èID‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğƒV[ƒ““à‚©‚çŒŸõ‚µA‹¤—Lƒ|ƒCƒ“ƒ^‚Å•Ô‚µ‚Ü‚·B
-	 * @param id æ“¾‚·‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌIDB
-	 * @return Œ©‚Â‚©‚Á‚½ `std::shared_ptr<GameObject>`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+	 * @brief æŒ‡å®šIDã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚·ãƒ¼ãƒ³å†…ã‹ã‚‰æ¤œç´¢ã—ã€å…±æœ‰ãƒã‚¤ãƒ³ã‚¿ã§è¿”ã—ã¾ã™ã€‚
+	 * @param id å–å¾—ã™ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®IDã€‚
+	 * @return è¦‹ã¤ã‹ã£ãŸ `std::shared_ptr<GameObject>`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
 	 */
 	std::shared_ptr<GameObject> FindGameObjectPtrById(const ObjectId& id) const;
 
-	/** @brief ƒV[ƒ““à‚ÌƒƒCƒ“ƒJƒƒ‰‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚·ãƒ¼ãƒ³å†…ã®ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	CameraComponent* GetMainCamera() {
 		return cameraSystem.GetMainCamera();
 	}
@@ -251,21 +251,21 @@ protected:
 	friend class Framework;
 	friend class EditorGUI;
 	
-	/** @brief ƒVƒŠƒAƒ‰ƒCƒYˆ—‚ÌŒÄ‚Ño‚µB*/
+	/** @brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå‡¦ç†ã®å‘¼ã³å‡ºã—ã€‚*/
 	void Serialize(json& j) const;
 
-	/** @brief ƒfƒVƒŠƒAƒ‰ƒCƒYˆ—‚ÌŒÄ‚Ño‚µB*/
+	/** @brief ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå‡¦ç†ã®å‘¼ã³å‡ºã—ã€‚*/
 	void Deserialize(const json& j);
 
 private:
-	/** @brief ‘O‰ñ‚ÌƒVƒŠƒAƒ‰ƒCƒYƒf[ƒ^i·•ª•Û‘¶—pjB*/
+	/** @brief å‰å›ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºãƒ‡ãƒ¼ã‚¿ï¼ˆå·®åˆ†ä¿å­˜ç”¨ï¼‰ã€‚*/
 	json previousData;
 
-	/** @brief ŒÅ’èXV‚Ìƒ^ƒCƒ}[B*/
+	/** @brief å›ºå®šæ›´æ–°ã®ã‚¿ã‚¤ãƒãƒ¼ã€‚*/
 	float m_fixedUpdateTimer = 0.0f;
 
-	float m_fixedUpdateInterval = (1.0f / 60.0f); // ŒÅ’èXV‚ÌŠÔŠui•bj
+	float m_fixedUpdateInterval = (1.0f / 60.0f); // å›ºå®šæ›´æ–°ã®é–“éš”ï¼ˆç§’ï¼‰
 
-	/** @brief ƒV[ƒ“‚ªŠJn‚³‚ê‚½‚©‚Ç‚¤‚©B*/
+	/** @brief ã‚·ãƒ¼ãƒ³ãŒé–‹å§‹ã•ã‚ŒãŸã‹ã©ã†ã‹ã€‚*/
 	bool isStarted = false;
 };

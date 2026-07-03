@@ -4,8 +4,8 @@
 using namespace DirectX;
 
 /**
- * @brief 2 �����x�N�g���̌y�ʍ\���́B
- * @details `XMFLOAT2` �Ƃ̑��ݕϊ����{���Z�q��񋟂��܂��B
+ * @brief 2 次元ベクトルの軽量構造体。
+ * @details `XMFLOAT2` との相互変換や基本演算子を提供します。
  */
 struct Vector2
 {
@@ -40,28 +40,28 @@ struct Vector2
 	Vector2 operator/(float a) const { return Vector2(this->x / a, this->y / a); }
 	bool operator==(const Vector2& a) const { return (this->x == a.x && this->y == a.y); }
 
-	/* �x�N�g���̒������v�Z���ĕԂ��܂��B*/
+	/* ベクトルの長さを計算して返します。*/
 	float Length() const;
 
-	/* �x�N�g���𐳋K�����ĕԂ��܂��B������ 0 �̏ꍇ�̓[���x�N�g����Ԃ��܂��B*/
+	/* ベクトルを正規化して返します。長さが 0 の場合はゼロベクトルを返します。*/
 	Vector2 Normalized() const;
 
-	/* �x�N�g���̓��ς��v�Z���ĕԂ��܂��B*/
+	/* ベクトルの内積を計算して返します。*/
 	float Dot(const Vector2& other) const;
 
-	/* �x�N�g���̊O�ς��v�Z���ĕԂ��܂��B2D �x�N�g���̊O�ς̓X�J���[�l�ɂȂ�܂��B*/
+	/* ベクトルの外積を計算して返します。2D ベクトルの外積はスカラー値になります。*/
 	float Cross(const Vector2& other) const;
 
-	/* �x�N�g���̋������v�Z���ĕԂ��܂��B*/
+	/* ベクトルの距離を計算して返します。*/
 	float Distance(const Vector2& other) const;
 
-	/* �x�N�g������`��Ԃ��ĕԂ��܂��Bt �� 0 ���� 1 �͈̔͂ŁA0 �̏ꍇ�͂��̃x�N�g���A1 �̏ꍇ�� target �x�N�g���ɂȂ�܂��B*/
+	/* ベクトルを線形補間して返します。t は 0 から 1 の範囲で、0 の場合はこのベクトル、1 の場合は target ベクトルになります。*/
 	static Vector2 Lerp(const Vector2& v0, const Vector2& v1, float t);
 
-	/* 2 �̃x�N�g�������S�ɓ����������r���܂��B*/
+	/* 2 つのベクトルが完全に等しいかを比較します。*/
 	static bool Equal(const Vector2& v0, const Vector2& v1);
 
-	/* 2 �̃x�N�g�����قړ����������r���܂��Bepsilon �͋��e�����덷�͈̔͂��w�肵�܂��B*/
+	/* 2 つのベクトルがほぼ等しいかを比較します。epsilon は許容される誤差の範囲を指定します。*/
 	static bool NearEqual(const Vector2& v0, const Vector2& v1, float epsilon = 1e-5f);
 
 };

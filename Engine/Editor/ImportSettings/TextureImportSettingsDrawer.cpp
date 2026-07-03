@@ -26,11 +26,11 @@ namespace CurryEngine::Resources
 
         bool changed = false;
 
-		// �C���|�[�^�[�̎�ނ�I������R���{�{�b�N�X
+		// インポーターの種類を選択するコンボボックス
 		const char* textureTypeOptions[] = { "Default", "NormalMap", "GUI", "Sprite", "SpriteAtlas", "Cubemap" };
 		int currentTextureTypeIndex = static_cast<int>(settings.textureType);
 
-		// �C���|�[�^�[�̎�ނ�I������R���{�{�b�N�X��`��
+		// インポーターの種類を選択するコンボボックスを描画
         if (ImGui::Combo("Texture Type", &currentTextureTypeIndex, textureTypeOptions, IM_ARRAYSIZE(textureTypeOptions)))
         {
             settings.textureType = static_cast<TextureImporterType>(currentTextureTypeIndex);
@@ -60,7 +60,7 @@ namespace CurryEngine::Resources
 
     nlohmann::json TextureImportSettingsDrawer::GetDefaultSettings() const
     {
-		// �f�t�H���g�R���X�g���N�^�̒l�����̂܂܃f�t�H���g�ݒ�ɂȂ�悤�ɂ��Ă��邽�߁A���ɒl���w�肹���ɕԂ�
+		// デフォルトコンストラクタの値がそのままデフォルト設定になるようにしているため、特に値を指定せずに返す
 		return TextureImportSettings{};
 	}
 

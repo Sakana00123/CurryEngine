@@ -5,7 +5,7 @@
 RenderContext::RenderContext(ID3D11DeviceContext* context, FullScreenQuad* fullScreenQuad, std::unordered_map<std::string, void*> sharedResources)
 	: immediateContext(context), m_context(context), fullScreenQuad(fullScreenQuad), sharedResources(std::move(sharedResources))
 {
-	// ‰Šúó‘Ô‚Å‚ÍƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðÝ’è
+	// åˆæœŸçŠ¶æ…‹ã§ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®š
 	SetDefaultRenderTarget();
 }
 
@@ -22,21 +22,21 @@ void* RenderContext::GetSharedResource(const std::string& key) const
 	{
 		return it->second;
 	}
-	return nullptr; // ƒL[‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ð•Ô‚·
+	return nullptr; // ã‚­ãƒ¼ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™
 }
 
 void RenderContext::SetRenderTarget(const RenderTexture& target)
 {
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ð‚·‚×‚Ä‰ðœ
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ã™ã¹ã¦è§£é™¤
 	UnbindSRVs();
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðÝ’è
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®š
 	ID3D11RenderTargetView* rtv = target.GetRenderTargetView();
 	ID3D11DepthStencilView* dsv = target.GetDepthStencilView();
 	m_context->OMSetRenderTargets(1, &rtv, dsv);
 	m_currentRenderTarget = &target;
 
-	// ƒrƒ…[ƒ|[ƒg‚àXV
+	// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã‚‚æ›´æ–°
 	D3D11_VIEWPORT viewport = target.GetViewport();
 	m_context->RSSetViewports(1, &viewport);
 
@@ -44,28 +44,28 @@ void RenderContext::SetRenderTarget(const RenderTexture& target)
 
 void RenderContext::SetDefaultRenderTarget()
 {
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ð‚·‚×‚Ä‰ðœ
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ã™ã¹ã¦è§£é™¤
 	UnbindSRVs();
-	// ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðÝ’è
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®š
 	ID3D11RenderTargetView* defaultRTV = Graphics::GetDefaultRenderTargetView();
 	ID3D11DepthStencilView* defaultDSV = Graphics::GetDefaultDepthStencilView();
 	D3D11_VIEWPORT defaultViewport = Graphics::GetDefaultViewport();
 	m_context->OMSetRenderTargets(1, &defaultRTV, defaultDSV);
-	m_currentRenderTarget = nullptr; // ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Í“Á’è‚Ì RenderTarget ƒIƒuƒWƒFƒNƒg‚É‘Î‰ž‚µ‚È‚¢‚½‚ß nullptr ‚ðÝ’è
+	m_currentRenderTarget = nullptr; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¯ç‰¹å®šã® RenderTarget ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾å¿œã—ãªã„ãŸã‚ nullptr ã‚’è¨­å®š
 	m_context->RSSetViewports(1, &defaultViewport);
 }
 
 void RenderContext::ClearCurrentRenderTarget(const Color& color) const
 {
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ð‚·‚×‚Ä‰ðœ
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ã™ã¹ã¦è§£é™¤
 	if (m_currentRenderTarget)
 	{
-		// Œ»Ý‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðƒNƒŠƒA
+		// ç¾åœ¨ã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢
 		m_currentRenderTarget->Clear(m_context, color);
 	}
 	else
 	{
-		// ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðƒNƒŠƒA
+		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢
 		ID3D11RenderTargetView* defaultRTV = Graphics::GetDefaultRenderTargetView();
 		ID3D11DepthStencilView* defaultDSV = Graphics::GetDefaultDepthStencilView();
 		m_context->ClearRenderTargetView(defaultRTV, &color.r);
@@ -75,19 +75,19 @@ void RenderContext::ClearCurrentRenderTarget(const Color& color) const
 
 void RenderContext::DrawFullScreenQuad(ID3D11ShaderResourceView** shaderResourceViews, uint32_t startSlot, uint32_t numViews, ID3D11PixelShader* replacedPixelShader)
 {
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ðÝ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’è¨­å®š
 	fullScreenQuad->Draw(m_context, shaderResourceViews, startSlot, numViews, replacedPixelShader);
 }
 
 void RenderContext::DrawFullScreenQuad(Material* material)
 {
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ðÝ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’è¨­å®š
 	fullScreenQuad->Render(this, material);
 }
 
 void RenderContext::UnbindSRVs() const
 {
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ð‚·‚×‚Ä‰ðœ
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ã™ã¹ã¦è§£é™¤
 	ID3D11ShaderResourceView* nullSRV[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE] = { nullptr };
 	m_context->PSSetShaderResources(0, D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE, nullSRV);
 	m_context->VSSetShaderResources(0, D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE, nullSRV);

@@ -9,7 +9,7 @@
 
 Skymap::Skymap(ID3D11Device* device)
 {
-	// ƒfƒtƒHƒ‹ƒg‚ÌƒXƒJƒCƒ}ƒbƒvƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚İ
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚¹ã‚«ã‚¤ãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã¿
 	texture = ResourceManager::GetOrLoad<AssetTexture>("./Assets/environments/skybox.dds");
 	const auto& texture2dDesc = texture->GetDesc();
 	if (texture2dDesc.MiscFlags & D3D11_RESOURCE_MISC_TEXTURECUBE)
@@ -51,20 +51,20 @@ void Skymap::DrawProperty()
 	{
 		std::string texturePath = texture ? texture->GetPath() : "None";
 		ImGui::Text("Texture: %s", texturePath.c_str());
-		// ‰æ‘œ‚ÌƒvƒŒƒrƒ…[
+		// ç”»åƒã®ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼
 		if (texture && texture->GetSRV())
 		{
-			// ImageButton ‚ÅƒvƒŒƒrƒ…[•\¦
+			// ImageButton ã§ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤º
 			if (ImGui::ImageButton("##SkymapTexturePreview", ImTextureRef((ImTextureID)texture->GetSRV()),
 				ImVec2(128, 128), ImVec2(0, 0), ImVec2(1, 1)))
 			{
-				// ƒNƒŠƒbƒN‚³‚ê‚½‚çV‚µ‚¢ƒeƒNƒXƒ`ƒƒ‚ğ‘I‘ğ
+				// ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚‰æ–°ã—ã„ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’é¸æŠ
 				std::string newFilePath = OpenFileDialog("Image Files\0*.png;*.jpg;*.jpeg;*.bmp;*.tga;*.dds\0All Files\0*.*\0");
 				if (!newFilePath.empty())
 				{
-					// ƒeƒNƒXƒ`ƒƒ‚ğÄ“Ç‚İ‚İ
+					// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å†èª­ã¿è¾¼ã¿
 					texture = ResourceManager::Load<AssetTexture>(newFilePath);
-					// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ğXV
+					// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’æ›´æ–°
 					const auto& texture2dDesc = texture->GetDesc();
 					if (texture2dDesc.MiscFlags & D3D11_RESOURCE_MISC_TEXTURECUBE)
 					{
@@ -102,6 +102,6 @@ json Skymap::Serialize() const
 void Skymap::Deserialize(const json& j)
 {
 	std::string filePath = j.value("filePath", "./Assets/environments/skybox.dds");
-	// ƒeƒNƒXƒ`ƒƒ‚ğÄ“Ç‚İ‚İ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å†èª­ã¿è¾¼ã¿
 	texture = ResourceManager::GetOrLoad<AssetTexture>(filePath);
 }

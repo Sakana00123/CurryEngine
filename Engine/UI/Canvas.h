@@ -3,75 +3,75 @@
 
 /**
  * @file
- * @brief UI �̃��[�g�ƂȂ�L�����o�X��\���R���|�[�l���g�B
- * @details ��ʉ𑜓x�ɒǏ]���� `RectTransform` �̃T�C�Y�ƃA���J�[�������������A
- *          �o�^���ꂽ `Graphic` �R���|�[�l���g�̃��X�g�Ǘ��i�o�^/�x���폜�j���s���܂��B
- *          `ImGui` ���L���ȏꍇ�̓C���X�y�N�^�p�̊ȈՏ����\�����܂��B
+ * @brief UI のルートとなるキャンバスを表すコンポーネント。
+ * @details 画面解像度に追従して `RectTransform` のサイズとアンカーを自動調整し、
+ *          登録された `Graphic` コンポーネントのリスト管理（登録/遅延削除）を行います。
+ *          `ImGui` が有効な場合はインスペクタ用の簡易情報も表示します。
  */
 
 class Graphic;
 
 /**
- * @brief UI �v�f�i`Graphic`�j���܂Ƃ߂�L�����o�X�B
- * @details `UIComponent` ���p�����A�Q�[����ʑS�̂Ƀt�B�b�g����悤�ɖ��t���[�����g��
- *          `RectTransform` ���X�V���܂��B`Graphic` �̓o�^�����̓t���[���Ԃŋ���������邽��
- *          �x���폜�L���[�i`erases`�j��p���čs���܂��B
+ * @brief UI 要素（`Graphic`）をまとめるキャンバス。
+ * @details `UIComponent` を継承し、ゲーム画面全体にフィットするように毎フレーム自身の
+ *          `RectTransform` を更新します。`Graphic` の登録解除はフレーム間で競合を避けるため
+ *          遅延削除キュー（`erases`）を用いて行われます。
  */
 class Canvas : public UIComponent
 {
 	C_REFLECT(Canvas)
 	/**
-	 * @brief �Ǘ��Ώۂ� `Graphic` �ꗗ�B
-	 * @note �v�f�̎����Ǘ��idelete ���j�͍s���܂���B���L���͕ێ����܂���B
+	 * @brief 管理対象の `Graphic` 一覧。
+	 * @note 要素の寿命管理（delete 等）は行いません。所有権は保持しません。
 	 */
 	std::vector<Graphic*> graphics;
 
 	/**
-	 * @brief ���t���[���̍X�V���ɍ폜���� `Graphic` �̈ꎞ���X�g�i�x���폜�p�j�B
+	 * @brief 次フレームの更新時に削除する `Graphic` の一時リスト（遅延削除用）。
 	 */
 	std::vector<Graphic*> erases;
 public:
-	/** @brief ����R���X�g���N�^�B*/
+	/** @brief 既定コンストラクタ。*/
 	Canvas() = default;
-	/** @brief �f�X�g���N�^�B*/
+	/** @brief デストラクタ。*/
 	~Canvas() override = default;
 
 	/**
-	 * @brief �����������B
-	 * @details ���݂̉�ʃT�C�Y���擾���āA�L�����o�X�� `RectTransform::size` ��ݒ肵�܂��B
+	 * @brief 初期化処理。
+	 * @details 現在の画面サイズを取得して、キャンバスの `RectTransform::size` を設定します。
 	 */
 	void Initialize() override;
 
 	/**
-	 * @brief ���t���[���X�V�B
-	 * @param elapsedTime �o�ߎ��ԁi�b�j�B
-	 * @details �ȉ��̏������s���܂��B
-	 * - �x���폜���X�g `erases` �ɓ����Ă��� `Graphic` �� `graphics` ���珜���B
-	 * - ��ʃT�C�Y�ɍ��킹�� `RectTransform` �̃T�C�Y/�A���J�[/�ʒu���Œ�i�����񂹁j�B
+	 * @brief 毎フレーム更新。
+	 * @param elapsedTime 経過時間（秒）。
+	 * @details 以下の処理を行います。
+	 * - 遅延削除リスト `erases` に入っている `Graphic` を `graphics` から除去。
+	 * - 画面サイズに合わせて `RectTransform` のサイズ/アンカー/位置を固定（中央寄せ）。
 	 */
 	void Update(float elapsedTime) override;
 
 	/**
-	 * @brief �Ǘ����Ă��� `Graphic` �̈ꗗ���擾���܂��B
-	 * @return `Graphic*` �̔z��i�R�s�[�j�B
-	 * @note �Ԃ�l�̓R�s�[�ł��B�T�C�Y���傫���ꍇ�̓R�X�g�ɒ��ӂ��Ă��������B
+	 * @brief 管理している `Graphic` の一覧を取得します。
+	 * @return `Graphic*` の配列（コピー）。
+	 * @note 返り値はコピーです。サイズが大きい場合はコストに注意してください。
 	 */
 	std::vector<Graphic*> GetGraphics() const;
 
 	/**
-	 * @brief `Graphic` ���L�����o�X�ɓo�^���܂��B
-	 * @param graphic �o�^���� `Graphic` �ւ̃|�C���^�i�񏊗L�j�B
-	 * @note �d���o�^�̌��o�͍s���܂���B�K�v�ɉ����ČĂяo�����Ő��䂵�Ă��������B
+	 * @brief `Graphic` をキャンバスに登録します。
+	 * @param graphic 登録する `Graphic` へのポインタ（非所有）。
+	 * @note 重複登録の検出は行いません。必要に応じて呼び出し側で制御してください。
 	 */
 	void RegisterGraphic(Graphic* graphic) {
 		graphics.emplace_back(graphic);
 	}
 
 	/**
-	 * @brief `Graphic` �̓o�^���������܂��i�x���폜�j�B
-	 * @param graphic �����Ώۂ� `Graphic` �ւ̃|�C���^�B
-	 * @details �����폜�͍s�킸�A���� `Update` ���ɏ������܂��B�������̃R���e�i�ύX�ɂ��
-	 *          �s������N���b�V��������邽�߂̐݌v�ł��B
+	 * @brief `Graphic` の登録を解除します（遅延削除）。
+	 * @param graphic 解除対象の `Graphic` へのポインタ。
+	 * @details 即時削除は行わず、次回 `Update` 時に除去します。反復中のコンテナ変更による
+	 *          不整合やクラッシュを避けるための設計です。
 	 */
 	void UnregisterGraphic(Graphic* graphic) {
 		erases.emplace_back(graphic);
@@ -79,8 +79,8 @@ public:
 
 #ifdef USE_IMGUI
 	/**
-	 * @brief �C���X�y�N�^�i�f�o�b�O UI�j�Ƀv���p�e�B��`�悵�܂��B
-	 * @details `USE_IMGUI` ��`���̂݁A�Ǘ����Ă��� `Graphic` ����\�����܂��B
+	 * @brief インスペクタ（デバッグ UI）にプロパティを描画します。
+	 * @details `USE_IMGUI` 定義時のみ、管理している `Graphic` 数を表示します。
 	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI

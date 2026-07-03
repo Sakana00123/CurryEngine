@@ -5,7 +5,7 @@
 
 void ParticlePass::Initialize()
 {
-    // ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€‚Ì‰Šú‰»
+    // ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®åˆæœŸåŒ–
     EffectManager::Initialize();
 }
 
@@ -16,11 +16,11 @@ void ParticlePass::Execute(RenderContext* rtx, Scene* scene)
 	
     ProfileScopedSection_2(0, "Particles", ImGuiControl::Profiler::Green);
 
-    //[“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgİ’è
+    //æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
     renderState->BindDepthStencilState(immediateContext, DepthStencilState::TestOnly, 1);
-    //ƒ‰ƒXƒ^ƒ‰ƒCƒUİ’è
+    //ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶è¨­å®š
     renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
 
-    // ƒp[ƒeƒBƒNƒ‹•`‰æ
+    // ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
     EffectManager::Render(rtx);
 }

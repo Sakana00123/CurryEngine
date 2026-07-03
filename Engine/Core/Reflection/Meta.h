@@ -8,57 +8,57 @@
 #include "Engine/EditorSupport/AutoRegisterComponent.h"
 #include "Engine/Editor/Console.h"
 
-// C_REFLECT ƒ}ƒNƒ‚ğƒNƒ‰ƒX‚É•t‚¯‚é‚ÆA‚»‚ÌƒNƒ‰ƒX‚Ìƒƒ^î•ñ‚ª©“®“I‚É“o˜^‚³‚ê‚é‚æ‚¤‚É‚È‚è‚Ü‚·B
+// C_REFLECT ãƒã‚¯ãƒ­ã‚’ã‚¯ãƒ©ã‚¹ã«ä»˜ã‘ã‚‹ã¨ã€ãã®ã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚¿æƒ…å ±ãŒè‡ªå‹•çš„ã«ç™»éŒ²ã•ã‚Œã‚‹ã‚ˆã†ã«ãªã‚Šã¾ã™ã€‚
 #define C_REFLECT(ClassName) \
 	friend struct ClassName##_AutoRegister;
 
-// C_CLASS ƒ}ƒNƒ‚ğƒNƒ‰ƒXéŒ¾‚Ì‘O‚É•t‚¯‚é‚ÆA‚»‚ÌƒNƒ‰ƒX‚ªƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒVƒXƒeƒ€‚É“o˜^‚³‚ê‚Ü‚·Bˆø”‚ÅŠî’êƒNƒ‰ƒX‚àw’è‰Â”\B
+// C_CLASS ãƒã‚¯ãƒ­ã‚’ã‚¯ãƒ©ã‚¹å®£è¨€ã®å‰ã«ä»˜ã‘ã‚‹ã¨ã€ãã®ã‚¯ãƒ©ã‚¹ãŒãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ ã«ç™»éŒ²ã•ã‚Œã¾ã™ã€‚å¼•æ•°ã§åŸºåº•ã‚¯ãƒ©ã‚¹ã‚‚æŒ‡å®šå¯èƒ½ã€‚
 #define C_CLASS(...) \
 
-// C_STRUCT ƒ}ƒNƒ‚ğ struct éŒ¾‚Ì‘O‚É•t‚¯‚é‚ÆA‚»‚Ì\‘¢‘Ì‚ªƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒVƒXƒeƒ€‚É“o˜^‚³‚ê‚Ü‚·Bˆø”‚Å‘®«‚àw’è‰Â”\B
+// C_STRUCT ãƒã‚¯ãƒ­ã‚’ struct å®£è¨€ã®å‰ã«ä»˜ã‘ã‚‹ã¨ã€ãã®æ§‹é€ ä½“ãŒãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ ã«ç™»éŒ²ã•ã‚Œã¾ã™ã€‚å¼•æ•°ã§å±æ€§ã‚‚æŒ‡å®šå¯èƒ½ã€‚
 #define C_STRUCT(...) \
 
 
 /**
- * @brief C_PROPERTY ƒ}ƒNƒ‚ğƒvƒƒpƒeƒBéŒ¾‚Ì‘O‚É•t‚¯‚é‚ÆA‚»‚ÌƒvƒƒpƒeƒB‚ªƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒVƒXƒeƒ€‚É“o˜^‚³‚ê‚Ü‚·B
- * @details C_PROPERTY() ‚Ìˆø”‚É‘®«‚ğw’è‚Å‚«‚Ü‚·B—á: `C_PROPERTY(Range(0, 100), HideInInspector)`
- * 		‘®«‚Í `AttributeInfo` ‚Æ‚µ‚Äƒƒ^î•ñ‚É•Û‘¶‚³‚êAƒGƒfƒBƒ^‚È‚Ç‚Å—˜—p‚Å‚«‚Ü‚·B
- * 		‘®«‚Ìˆø”‚Í•¶š—ñ‚Æ‚µ‚Ä•Û‘¶‚³‚ê‚é‚½‚ßA•K—v‚É‰‚¶‚Äƒp[ƒX‚µ‚Ä—˜—p‚µ‚Ä‚­‚¾‚³‚¢B
- * 		‘®«‚Ì—á: `Range(0, 100)`, `HideInInspector`, `Tooltip("à–¾")` ‚È‚ÇB
+ * @brief C_PROPERTY ãƒã‚¯ãƒ­ã‚’ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å®£è¨€ã®å‰ã«ä»˜ã‘ã‚‹ã¨ã€ãã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ ã«ç™»éŒ²ã•ã‚Œã¾ã™ã€‚
+ * @details C_PROPERTY() ã®å¼•æ•°ã«å±æ€§ã‚’æŒ‡å®šã§ãã¾ã™ã€‚ä¾‹: `C_PROPERTY(Range(0, 100), HideInInspector)`
+ * 		å±æ€§ã¯ `AttributeInfo` ã¨ã—ã¦ãƒ¡ã‚¿æƒ…å ±ã«ä¿å­˜ã•ã‚Œã€ã‚¨ãƒ‡ã‚£ã‚¿ãªã©ã§åˆ©ç”¨ã§ãã¾ã™ã€‚
+ * 		å±æ€§ã®å¼•æ•°ã¯æ–‡å­—åˆ—ã¨ã—ã¦ä¿å­˜ã•ã‚Œã‚‹ãŸã‚ã€å¿…è¦ã«å¿œã˜ã¦ãƒ‘ãƒ¼ã‚¹ã—ã¦åˆ©ç”¨ã—ã¦ãã ã•ã„ã€‚
+ * 		å±æ€§ã®ä¾‹: `Range(0, 100)`, `HideInInspector`, `Tooltip("èª¬æ˜")` ãªã©ã€‚
  */
 #define C_PROPERTY(...) \
 public:
 
- // C_FUNCTION ƒ}ƒNƒ‚ğƒƒ\ƒbƒhéŒ¾‚Ì‘O‚É•t‚¯‚é‚ÆA‚»‚Ìƒƒ\ƒbƒh‚ªƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒVƒXƒeƒ€‚É“o˜^‚³‚ê‚Ü‚·Bˆø”‚Å‘®«‚àw’è‰Â”\B
+ // C_FUNCTION ãƒã‚¯ãƒ­ã‚’ãƒ¡ã‚½ãƒƒãƒ‰å®£è¨€ã®å‰ã«ä»˜ã‘ã‚‹ã¨ã€ãã®ãƒ¡ã‚½ãƒƒãƒ‰ãŒãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ ã«ç™»éŒ²ã•ã‚Œã¾ã™ã€‚å¼•æ•°ã§å±æ€§ã‚‚æŒ‡å®šå¯èƒ½ã€‚
 #define C_FUNCTION(...) \
 
-// C_ENUM ƒ}ƒNƒ‚ğ enum / enum class éŒ¾‚Ì‘O‚É•t‚¯‚é‚ÆA‚»‚Ì—ñ‹“Œ^‚ªƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒVƒXƒeƒ€‚É“o˜^‚³‚ê‚Ü‚·Bˆø”‚Å‘®«‚àw’è‰Â”\B
+// C_ENUM ãƒã‚¯ãƒ­ã‚’ enum / enum class å®£è¨€ã®å‰ã«ä»˜ã‘ã‚‹ã¨ã€ãã®åˆ—æŒ™å‹ãŒãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ ã«ç™»éŒ²ã•ã‚Œã¾ã™ã€‚å¼•æ•°ã§å±æ€§ã‚‚æŒ‡å®šå¯èƒ½ã€‚
 #define C_ENUM(...) \
 
 
 
-// ----------------- C_PROPERTYƒ}ƒNƒ“à‚É‘‚¯‚é‘®« -----------------
+// ----------------- C_PROPERTYãƒã‚¯ãƒ­å†…ã«æ›¸ã‘ã‚‹å±æ€§ -----------------
 namespace CurryEngine
 {
 	namespace PropertyAttributes
 	{
-		// ƒvƒƒpƒeƒB‚ğƒCƒ“ƒXƒyƒNƒ^‚É•\¦‚µ‚È‚¢
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã«è¡¨ç¤ºã—ãªã„
 		struct HideInInspector {};
 
-		// ƒvƒƒpƒeƒB‚ğƒVƒŠƒAƒ‰ƒCƒY‘ÎÛ‚©‚çœŠO‚·‚é
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå¯¾è±¡ã‹ã‚‰é™¤å¤–ã™ã‚‹
 		struct NonSerialized {};
 
-		// ƒvƒƒpƒeƒB‚ğƒCƒ“ƒXƒyƒNƒ^‚Å•ÒW‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã§ç·¨é›†ã§ããªã„ã‚ˆã†ã«ã™ã‚‹
 		struct ReadOnly {};
 
-		// ƒvƒƒpƒeƒB‚Éƒc[ƒ‹ƒ`ƒbƒv‚ğ•\¦‚·‚é
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã«ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’è¡¨ç¤ºã™ã‚‹
 		struct Tooltip
 		{
 			const char* text;
 			constexpr Tooltip(const char* t) : text(t) {}
 		};
 
-		// ƒvƒƒpƒeƒB‚Ì’l‚ğw’è‚µ‚½”ÍˆÍ“à‚É§ŒÀ‚·‚é
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æŒ‡å®šã—ãŸç¯„å›²å†…ã«åˆ¶é™ã™ã‚‹
 		struct Range
 		{
 			float _min;
@@ -66,66 +66,66 @@ namespace CurryEngine
 			constexpr Range(float min, float max) : _min(min), _max(max) {}
 		};
 		
-		// ƒvƒƒpƒeƒB‚Ì•ÒW‘¬“x‚ğw’è‚·‚éi—á: ImGui ‚Ì DragInt/DragFloat ‚Åg—pj
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ç·¨é›†é€Ÿåº¦ã‚’æŒ‡å®šã™ã‚‹ï¼ˆä¾‹: ImGui ã® DragInt/DragFloat ã§ä½¿ç”¨ï¼‰
 		struct Speed
 		{
 			float value;
 			constexpr Speed(float v) : value(v) {}
 		};
 
-		// ƒvƒƒpƒeƒB‚ªQÆ‚·‚éƒIƒuƒWƒFƒNƒg‚ÌŒ^‚ğw’è‚·‚éi—á: Component/GameObject ‚È‚ÇjBƒGƒfƒBƒ^‚ÅƒIƒuƒWƒFƒNƒgQÆ‚Ìƒhƒƒbƒv‘€ì‚ğƒTƒ|[ƒg‚·‚é‚½‚ß‚Ég—p‚µ‚Ü‚·B
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå‚ç…§ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‹ã‚’æŒ‡å®šã™ã‚‹ï¼ˆä¾‹: Component/GameObject ãªã©ï¼‰ã€‚ã‚¨ãƒ‡ã‚£ã‚¿ã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‚ç…§ã®ãƒ‰ãƒ­ãƒƒãƒ—æ“ä½œã‚’ã‚µãƒãƒ¼ãƒˆã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã—ã¾ã™ã€‚
 		struct ObjectReference
 		{
-			const char* targetType; // QÆæ‚ÌŒ^–¼ (—á: "Component", "GameObject")
+			const char* targetType; // å‚ç…§å…ˆã®å‹å (ä¾‹: "Component", "GameObject")
 			constexpr ObjectReference(const char* target) : targetType(target) {}
 		};
 
-		// ƒvƒƒpƒeƒB‚Ì•\¦ƒtƒH[ƒ}ƒbƒg‚ğw’è‚·‚éi—á: "%.3f" ‚È‚ÇjBƒGƒfƒBƒ^‚Å‚Ì”’l•\¦‚Ég—p‚µ‚Ü‚·B
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®è¡¨ç¤ºãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’æŒ‡å®šã™ã‚‹ï¼ˆä¾‹: "%.3f" ãªã©ï¼‰ã€‚ã‚¨ãƒ‡ã‚£ã‚¿ã§ã®æ•°å€¤è¡¨ç¤ºã«ä½¿ç”¨ã—ã¾ã™ã€‚
 		struct Format
 		{
-			const char* formatString; // •\¦ƒtƒH[ƒ}ƒbƒg (—á: "%.3f" ‚È‚Ç)
+			const char* formatString; // è¡¨ç¤ºãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ (ä¾‹: "%.3f" ãªã©)
 			constexpr Format(const char* fmt) : formatString(fmt) {}
 		};
 
-		// ƒQƒbƒ^[ƒƒ\ƒbƒh‚ğw’è‚·‚é‘®«BC# ‚ÌƒvƒƒpƒeƒB‚Ì‚æ‚¤‚ÉAƒtƒB[ƒ‹ƒh‚Å‚Í‚È‚­ƒQƒbƒ^[ƒƒ\ƒbƒh‚Å’l‚ğæ“¾‚·‚éê‡‚Ég—p‚µ‚Ü‚·B
+		// ã‚²ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ã‚’æŒ‡å®šã™ã‚‹å±æ€§ã€‚C# ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚ˆã†ã«ã€ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã§ã¯ãªãã‚²ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ã§å€¤ã‚’å–å¾—ã™ã‚‹å ´åˆã«ä½¿ç”¨ã—ã¾ã™ã€‚
 		struct Getter
 		{
-			const char* functionName; // ƒQƒbƒ^[ƒƒ\ƒbƒh‚Ì–¼‘O (—á: "GetHealth")
+			const char* functionName; // ã‚²ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ã®åå‰ (ä¾‹: "GetHealth")
 			constexpr Getter(const char* fn) : functionName(fn) {}
 		};
 
-		// ƒZƒbƒ^[ƒƒ\ƒbƒh‚ğw’è‚·‚é‘®«BC# ‚ÌƒvƒƒpƒeƒB‚Ì‚æ‚¤‚ÉAƒtƒB[ƒ‹ƒh‚Å‚Í‚È‚­ƒZƒbƒ^[ƒƒ\ƒbƒh‚Å’l‚ğİ’è‚·‚éê‡‚Ég—p‚µ‚Ü‚·B
+		// ã‚»ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ã‚’æŒ‡å®šã™ã‚‹å±æ€§ã€‚C# ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚ˆã†ã«ã€ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã§ã¯ãªãã‚»ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ã§å€¤ã‚’è¨­å®šã™ã‚‹å ´åˆã«ä½¿ç”¨ã—ã¾ã™ã€‚
 		struct Setter
 		{
-			const char* functionName; // ƒZƒbƒ^[ƒƒ\ƒbƒh‚Ì–¼‘O (—á: "SetHealth")
+			const char* functionName; // ã‚»ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ã®åå‰ (ä¾‹: "SetHealth")
 			constexpr Setter(const char* fn) : functionName(fn) {}
 		};
 
-		// ƒJƒXƒ^ƒ€ƒhƒƒ[‚ğw’è‚·‚é‘®«BƒGƒfƒBƒ^‚ÅƒvƒƒpƒeƒB‚Ì•`‰æ‚Ég—p‚·‚éƒJƒXƒ^ƒ€ƒhƒƒ[‚ğw’è‚µ‚Ü‚·B
+		// ã‚«ã‚¹ã‚¿ãƒ ãƒ‰ãƒ­ãƒ¯ãƒ¼ã‚’æŒ‡å®šã™ã‚‹å±æ€§ã€‚ã‚¨ãƒ‡ã‚£ã‚¿ã§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®æç”»ã«ä½¿ç”¨ã™ã‚‹ã‚«ã‚¹ã‚¿ãƒ ãƒ‰ãƒ­ãƒ¯ãƒ¼ã‚’æŒ‡å®šã—ã¾ã™ã€‚
 		struct CustomDrawer
 		{
-			const char* drawerType; // ƒJƒXƒ^ƒ€ƒhƒƒ[‚Ìí—Ş‚ğ¯•Ê‚·‚é•¶š—ñ (—á: "Quaternion_Euler" ‚È‚Ç)BƒGƒfƒBƒ^‚ÅƒvƒƒpƒeƒB‚Ì•`‰æ‚Ég—p‚·‚éƒJƒXƒ^ƒ€ƒhƒƒ[‚ğw’è‚µ‚Ü‚·B
+			const char* drawerType; // ã‚«ã‚¹ã‚¿ãƒ ãƒ‰ãƒ­ãƒ¯ãƒ¼ã®ç¨®é¡ã‚’è­˜åˆ¥ã™ã‚‹æ–‡å­—åˆ— (ä¾‹: "Quaternion_Euler" ãªã©)ã€‚ã‚¨ãƒ‡ã‚£ã‚¿ã§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®æç”»ã«ä½¿ç”¨ã™ã‚‹ã‚«ã‚¹ã‚¿ãƒ ãƒ‰ãƒ­ãƒ¯ãƒ¼ã‚’æŒ‡å®šã—ã¾ã™ã€‚
 			constexpr CustomDrawer(const char* dt) : drawerType(dt) {}
 		};
 
-		// ƒ_ƒCƒAƒƒO‚ÌƒtƒBƒ‹ƒ^‚ğw’è‚·‚é‘®«BƒGƒfƒBƒ^‚Åƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO‚ğ•\¦‚·‚é‚Æ‚«‚Ég—p‚µ‚Ü‚·B
+		// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒ•ã‚£ãƒ«ã‚¿ã‚’æŒ‡å®šã™ã‚‹å±æ€§ã€‚ã‚¨ãƒ‡ã‚£ã‚¿ã§ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã™ã‚‹ã¨ãã«ä½¿ç”¨ã—ã¾ã™ã€‚
 		struct DialogFilter
 		{
-			const char* filterString; // ƒ_ƒCƒAƒƒO‚ÌƒtƒBƒ‹ƒ^•¶š—ñ (—á: "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0")
+			const char* filterString; // ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒ•ã‚£ãƒ«ã‚¿æ–‡å­—åˆ— (ä¾‹: "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0")
 			constexpr DialogFilter(const char* fs) : filterString(fs) {}
 		};
 
-		// —ñ‹“Œ^‚Æ‚µ‚Äˆµ‚¤ƒvƒƒpƒeƒB‚É•t‚¯‚é‘®«BƒGƒfƒBƒ^‚Å—ñ‹“Œ^‚Ìƒhƒƒbƒvƒ_ƒEƒ“‚ğ•\¦‚·‚é‚½‚ß‚Ég—p‚µ‚Ü‚·B
+		// åˆ—æŒ™å‹ã¨ã—ã¦æ‰±ã†ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã«ä»˜ã‘ã‚‹å±æ€§ã€‚ã‚¨ãƒ‡ã‚£ã‚¿ã§åˆ—æŒ™å‹ã®ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã—ã¾ã™ã€‚
 		struct Enum
 		{
-			const char* enumType; // —ñ‹“Œ^‚ÌŒ^–¼ (—á: "Color", "BlendMode" ‚È‚Ç)BƒGƒfƒBƒ^‚Å—ñ‹“Œ^‚Ìƒhƒƒbƒvƒ_ƒEƒ“‚ğ•\¦‚·‚é‚½‚ß‚Ég—p‚µ‚Ü‚·B
+			const char* enumType; // åˆ—æŒ™å‹ã®å‹å (ä¾‹: "Color", "BlendMode" ãªã©)ã€‚ã‚¨ãƒ‡ã‚£ã‚¿ã§åˆ—æŒ™å‹ã®ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã—ã¾ã™ã€‚
 			constexpr Enum(const char* et) : enumType(et) {}
 		};
 
 		//struct ObjectPicker
 		//{
-		//	const char* targetType; // ƒsƒbƒJ[‚Å‘I‘ğ‚·‚éƒIƒuƒWƒFƒNƒg‚ÌŒ^–¼ (—á: "Component", "GameObject")
-		//	const char* filterString; // ƒsƒbƒJ[‚ÌƒtƒBƒ‹ƒ^•¶š—ñ (—á: "All Objects (*.*)\0*.*\0")
+		//	const char* targetType; // ãƒ”ãƒƒã‚«ãƒ¼ã§é¸æŠã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‹å (ä¾‹: "Component", "GameObject")
+		//	const char* filterString; // ãƒ”ãƒƒã‚«ãƒ¼ã®ãƒ•ã‚£ãƒ«ã‚¿æ–‡å­—åˆ— (ä¾‹: "All Objects (*.*)\0*.*\0")
 		//	constexpr ObjectPicker(const char* target, const char* filter) : targetType(target), filterString(filter) {}
 		//	ObjectPicker(const ObjectReference& objRef, const DialogFilter& dialogFilter)
 		//		: targetType(objRef.targetType), filterString(dialogFilter.filterString) {
@@ -135,32 +135,32 @@ namespace CurryEngine
 	}
 }
 
- // ---- ƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒVƒXƒeƒ€‚Ìƒƒ^î•ñ\‘¢‘Ì‚Æ“o˜^ƒVƒXƒeƒ€ ----
+ // ---- ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ ã®ãƒ¡ã‚¿æƒ…å ±æ§‹é€ ä½“ã¨ç™»éŒ²ã‚·ã‚¹ãƒ†ãƒ  ----
 
-// ---- ƒƒ^î•ñ\‘¢‘Ì ----
+// ---- ãƒ¡ã‚¿æƒ…å ±æ§‹é€ ä½“ ----
 
-// ‘®«î•ñ
+// å±æ€§æƒ…å ±
 struct AttributeInfo
 {
-	std::string name;					// ‘®«–¼ (—á: "HideInInspector", "Range", "Tooltip")
-	std::vector<std::string> args{};	// ‘®«ˆø” (—á: Range(0, 100) ‚È‚ç args = {"0", "100"}, Tooltip("à–¾") ‚È‚ç args = {"à–¾"})
+	std::string name;					// å±æ€§å (ä¾‹: "HideInInspector", "Range", "Tooltip")
+	std::vector<std::string> args{};	// å±æ€§å¼•æ•° (ä¾‹: Range(0, 100) ãªã‚‰ args = {"0", "100"}, Tooltip("èª¬æ˜") ãªã‚‰ args = {"èª¬æ˜"})
 };
 
-// ƒvƒƒpƒeƒB‚Ìƒƒ^î•ñ
+// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ãƒ¡ã‚¿æƒ…å ±
 struct PropertyInfo
 {
 	std::string type;
 	std::string name;
-	size_t offset = 0; // ƒNƒ‰ƒX“à‚ÌƒIƒtƒZƒbƒg (C++‚Ìƒƒ“ƒo•Ï”‚ÌƒAƒhƒŒƒX‚ğŒvZ‚·‚é‚½‚ß‚Ég—pBC#‚Å‚Í•s—v‚Ì‚½‚ß0‚Ì‚Ü‚Ü)
+	size_t offset = 0; // ã‚¯ãƒ©ã‚¹å†…ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ (C++ã®ãƒ¡ãƒ³ãƒå¤‰æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¨ˆç®—ã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã€‚C#ã§ã¯ä¸è¦ã®ãŸã‚0ã®ã¾ã¾)
 	std::vector<AttributeInfo> attributes{};
-	bool hasCustomGetter = false; // ƒQƒbƒ^[ƒƒ\ƒbƒh‚ªw’è‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	bool hasCustomSetter = false; // ƒZƒbƒ^[ƒƒ\ƒbƒh‚ªw’è‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	bool hasCustomGetter = false; // ã‚²ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+	bool hasCustomSetter = false; // ã‚»ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 
-	// --- ƒAƒNƒZƒT (C++‚Íoffset‚ğg‚Á‚Ä’¼ÚƒAƒNƒZƒXAC#‚Í P / Invoke ƒ‰ƒ€ƒ_®‚ÅƒAƒNƒZƒX) ---
-	std::function<std::any(void* instance)> getter; // ƒvƒƒpƒeƒB‚Ì’l‚ğæ“¾‚·‚éŠÖ”ƒIƒuƒWƒFƒNƒgBˆø”‚ÍƒCƒ“ƒXƒ^ƒ“ƒXƒ|ƒCƒ“ƒ^‚ÅA–ß‚è’l‚Í anyB
-	std::function<void(void* instance, std::any value)> setter; // ƒvƒƒpƒeƒB‚Ì’l‚ğİ’è‚·‚éŠÖ”ƒIƒuƒWƒFƒNƒgBˆø”‚Í (ƒCƒ“ƒXƒ^ƒ“ƒXƒ|ƒCƒ“ƒ^, İ’è‚·‚é’l‚Ìany) ‚ÅA–ß‚è’l‚Í voidB
+	// --- ã‚¢ã‚¯ã‚»ã‚µ (C++ã¯offsetã‚’ä½¿ã£ã¦ç›´æ¥ã‚¢ã‚¯ã‚»ã‚¹ã€C#ã¯ P / Invoke ãƒ©ãƒ ãƒ€å¼ã§ã‚¢ã‚¯ã‚»ã‚¹) ---
+	std::function<std::any(void* instance)> getter; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’å–å¾—ã™ã‚‹é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚å¼•æ•°ã¯ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒã‚¤ãƒ³ã‚¿ã§ã€æˆ»ã‚Šå€¤ã¯ anyã€‚
+	std::function<void(void* instance, std::any value)> setter; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’è¨­å®šã™ã‚‹é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚å¼•æ•°ã¯ (ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒã‚¤ãƒ³ã‚¿, è¨­å®šã™ã‚‹å€¤ã®any) ã§ã€æˆ»ã‚Šå€¤ã¯ voidã€‚
 
-	// w’è‚µ‚½‘®«î•ñ‚ğæ“¾‚·‚éŠÖ”(–³‚©‚Á‚½‚çnullptr‚ğ•Ô‚·)
+	// æŒ‡å®šã—ãŸå±æ€§æƒ…å ±ã‚’å–å¾—ã™ã‚‹é–¢æ•°(ç„¡ã‹ã£ãŸã‚‰nullptrã‚’è¿”ã™)
 	const AttributeInfo* GetAttribute(const std::string& attrName) const {
 		for (auto& attr : attributes) {
 			if (attr.name == attrName) {
@@ -171,24 +171,24 @@ struct PropertyInfo
 	}
 };
 
-// ƒƒ\ƒbƒh‚Ìƒƒ^î•ñ
+// ãƒ¡ã‚½ãƒƒãƒ‰ã®ãƒ¡ã‚¿æƒ…å ±
 struct MethodInfo
 {
 	std::string returnType;
 	std::string name;
-	std::vector<std::pair<std::string, std::string>> parameters; // (Œ^, –¼‘O)‚ÌƒyƒA
+	std::vector<std::pair<std::string, std::string>> parameters; // (å‹, åå‰)ã®ãƒšã‚¢
 	std::vector<AttributeInfo> attributes{};
 
-	// ƒƒ\ƒbƒhŒÄ‚Ño‚µ—p‚ÌŠÖ”ƒIƒuƒWƒFƒNƒgBˆø”‚Í (ƒCƒ“ƒXƒ^ƒ“ƒXƒ|ƒCƒ“ƒ^, ˆø”‚ÌanyƒxƒNƒ^[) ‚ÅA–ß‚è’l‚Í anyB
+	// ãƒ¡ã‚½ãƒƒãƒ‰å‘¼ã³å‡ºã—ç”¨ã®é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚å¼•æ•°ã¯ (ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒã‚¤ãƒ³ã‚¿, å¼•æ•°ã®anyãƒ™ã‚¯ã‚¿ãƒ¼) ã§ã€æˆ»ã‚Šå€¤ã¯ anyã€‚
 	std::function<std::any(void* instance, std::vector<std::any> args)> invoker;
 
-	// –ß‚è’l‚ ‚è
+	// æˆ»ã‚Šå€¤ã‚ã‚Š
 	std::any Invoke(void* instance, std::vector<std::any> args = {}) const;
 
-	// –ß‚è’l‚È‚µivoidj
+	// æˆ»ã‚Šå€¤ãªã—ï¼ˆvoidï¼‰
 	void InvokeVoid(void* instance, std::vector<std::any> args = {}) const;
 
-	// –ß‚è’l‚ğŒ^w’è‚µ‚ÄƒLƒƒƒXƒg
+	// æˆ»ã‚Šå€¤ã‚’å‹æŒ‡å®šã—ã¦ã‚­ãƒ£ã‚¹ãƒˆ
 	template <typename TRet>
 	TRet InvokeAs(void* instance, std::vector<std::any> args = {}) const {
 		std::any result = Invoke(instance, args);
@@ -210,63 +210,63 @@ struct MethodInfo
 	}
 };
 
-// ƒNƒ‰ƒX‚Ìƒƒ^î•ñ
+// ã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚¿æƒ…å ±
 struct ClassMeta
 {
 	std::string name;
 	std::vector<std::string> bases;
 	std::vector<PropertyInfo> properties;
 	std::vector<MethodInfo> methods;
-	bool isScript = false; // ƒXƒNƒŠƒvƒgƒNƒ‰ƒX‚©‚Ç‚¤‚© (ƒGƒfƒBƒ^‚ÅƒXƒNƒŠƒvƒgƒNƒ‰ƒX‚ğ“Á•Êˆµ‚¢‚·‚é‚½‚ß‚Ég—p)
+	bool isScript = false; // ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¯ãƒ©ã‚¹ã‹ã©ã†ã‹ (ã‚¨ãƒ‡ã‚£ã‚¿ã§ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¯ãƒ©ã‚¹ã‚’ç‰¹åˆ¥æ‰±ã„ã™ã‚‹ãŸã‚ã«ä½¿ç”¨)
 
-	// Šî’êƒNƒ‰ƒX‚ğÄ‹A“I‚ÉŒŸõ‚µ‚ÄƒvƒƒpƒeƒB‚ğæ“¾‚·‚éŠÖ”
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã‚’å†å¸°çš„ã«æ¤œç´¢ã—ã¦ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’å–å¾—ã™ã‚‹é–¢æ•°
 	const PropertyInfo* FindProperty(const std::string& propName) const;
 
-	// Šî’êƒNƒ‰ƒX‚ğÄ‹A“I‚ÉŒŸõ‚µ‚Äƒƒ\ƒbƒh‚ğæ“¾‚·‚éŠÖ”
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã‚’å†å¸°çš„ã«æ¤œç´¢ã—ã¦ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å–å¾—ã™ã‚‹é–¢æ•°
 	const MethodInfo* FindMethod(const std::string& methodName) const;
 };
 
-// —ñ‹“Œ^‚Ì’l‚Ìƒƒ^î•ñ
+// åˆ—æŒ™å‹ã®å€¤ã®ãƒ¡ã‚¿æƒ…å ±
 struct EnumValueInfo
 {
 	std::string name;
 	int         value = 0;
-	bool        hasExplicitValue = false; // ’l‚ª–¾¦‚³‚ê‚Ä‚¢‚é‚©
+	bool        hasExplicitValue = false; // å€¤ãŒæ˜ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹
 };
 
-// —ñ‹“Œ^‚Ìƒƒ^î•ñ
+// åˆ—æŒ™å‹ã®ãƒ¡ã‚¿æƒ…å ±
 struct EnumInfo
 {
 	std::string name;
-	std::string underlyingType = "int"; // enum class : uint ‚È‚Ç
-	bool        isClass = false; // enum class ‚©‚Ç‚¤‚©
+	std::string underlyingType = "int"; // enum class : uint ãªã©
+	bool        isClass = false; // enum class ã‹ã©ã†ã‹
 	std::vector<EnumValueInfo> values;
 };
 
-// \‘¢‘Ì‚Ìƒƒ^î•ñ
+// æ§‹é€ ä½“ã®ãƒ¡ã‚¿æƒ…å ±
 struct StructInfo
 {
 	std::string name;
 	std::vector<PropertyInfo> properties;
 };
 
-// ---- ƒŠƒtƒŒƒNƒVƒ‡ƒ““o˜^ƒVƒXƒeƒ€ ----
+// ---- ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ç™»éŒ²ã‚·ã‚¹ãƒ†ãƒ  ----
 class ReflectionRegistry
 {
 public:
-	// ƒNƒ‰ƒX“o˜^
+	// ã‚¯ãƒ©ã‚¹ç™»éŒ²
 	static void Register(const ClassMeta& meta);
-	// —ñ‹“Œ^“o˜^
+	// åˆ—æŒ™å‹ç™»éŒ²
 	static void RegisterEnum(const EnumInfo& meta);
-	// \‘¢‘Ì“o˜^
+	// æ§‹é€ ä½“ç™»éŒ²
 	static void RegisterStruct(const StructInfo& meta);
-	// ƒNƒ‰ƒXŒŸõ
+	// ã‚¯ãƒ©ã‚¹æ¤œç´¢
 	static const ClassMeta* FindClass(const std::string& name);
-	// —ñ‹“Œ^ŒŸõ
+	// åˆ—æŒ™å‹æ¤œç´¢
 	static const EnumInfo* FindEnum(const std::string& name);
-	// \‘¢‘ÌŒŸõ
+	// æ§‹é€ ä½“æ¤œç´¢
 	static const StructInfo* FindStruct(const std::string& name);
-	// ‘SƒXƒNƒŠƒvƒg‚Ìƒƒ^î•ñ‚ğƒNƒŠƒA
+	// å…¨ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ¡ã‚¿æƒ…å ±ã‚’ã‚¯ãƒªã‚¢
 	static void UnregisterScriptClasses();
 private:
 	static std::unordered_map<std::string, ClassMeta>& GetClassRegistry();
@@ -274,16 +274,16 @@ private:
 	static std::unordered_map<std::string, StructInfo>& GetStructRegistry();
 };
 
-// -------------------------- ƒwƒ‹ƒp[ŠÖ” ---------------------
+// -------------------------- ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•° ---------------------
 
-// ”Ä—pƒwƒ‹ƒp[
+// æ±ç”¨ãƒ˜ãƒ«ãƒ‘ãƒ¼
 template <typename T>
 T AnyCast(const std::any& a)
 {
 	return std::any_cast<T>(a);
 }
 
-// ƒƒ“ƒoŠÖ”ƒ|ƒCƒ“ƒ^ ¨ invoker •ÏŠ·
+// ãƒ¡ãƒ³ãƒé–¢æ•°ãƒã‚¤ãƒ³ã‚¿ â†’ invoker å¤‰æ›
 template <typename TClass, typename TRet, typename... TArgs, std::size_t... I>
 auto MakeInvokerImpl(TRet (TClass::*fn)(TArgs...), std::index_sequence<I...>)
 {
@@ -301,7 +301,7 @@ auto MakeInvokerImpl(TRet (TClass::*fn)(TArgs...), std::index_sequence<I...>)
 		}
 	};
 }
-// const ƒƒ“ƒoŠÖ”ƒI[ƒo[ƒ[ƒh
+// const ãƒ¡ãƒ³ãƒé–¢æ•°ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 template <typename TClass, typename TRet, typename... TArgs, std::size_t... I>
 auto MakeInvokerImpl(TRet (TClass::*fn)(TArgs...) const, std::index_sequence<I...>)
 {
@@ -320,22 +320,22 @@ auto MakeInvokerImpl(TRet (TClass::*fn)(TArgs...) const, std::index_sequence<I..
 	};
 }
 
-// ƒƒ“ƒoŠÖ”ƒ|ƒCƒ“ƒ^ ¨ invoker •ÏŠ·‚ÌƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒg
+// ãƒ¡ãƒ³ãƒé–¢æ•°ãƒã‚¤ãƒ³ã‚¿ â†’ invoker å¤‰æ›ã®ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆ
 template <typename TClass, typename TRet, typename... TArgs>
 auto MakeInvoker(TRet (TClass::*fn)(TArgs...))
 {
 	return MakeInvokerImpl(fn, std::index_sequence_for<TArgs...>{});
 }
-// const ƒƒ“ƒoŠÖ”ƒI[ƒo[ƒ[ƒh
+// const ãƒ¡ãƒ³ãƒé–¢æ•°ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 template <typename TClass, typename TRet, typename... TArgs>
 auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 {
 	return MakeInvokerImpl(fn, std::index_sequence_for<TArgs...>{});
 }
 
-// -------------------------- ƒ}ƒNƒ’è‹` ---------------------
+// -------------------------- ãƒã‚¯ãƒ­å®šç¾© ---------------------
 
-// ---- ƒ}ƒNƒ ----
+// ---- ãƒã‚¯ãƒ­ ----
 #if 0
 #define REGISTER_CLASS(ClassName, BaseName) \
     namespace { struct ClassName##_AutoRegister { \
@@ -367,7 +367,7 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
             meta.bases = []{ \
                 std::vector<std::string> v; \
                 std::string s = #__VA_ARGS__; \
-                /* ƒJƒ“ƒ}‹æØ‚è‚Å•ªŠ„ */ \
+                /* ã‚«ãƒ³ãƒåŒºåˆ‡ã‚Šã§åˆ†å‰² */ \
                 std::istringstream ss(s); std::string t; \
                 while (std::getline(ss, t, ',')) { \
                     auto b = t.find_first_not_of(" \t"); \
@@ -384,7 +384,7 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
         p.type   = #propType; \
         p.name   = #propName; \
         p.offset = GetOffset(&ClassName::propName); \
-		p.attributes = {}; /* ‘®«‚Í‹ó‚Ì‚Ü‚Ü */ \
+		p.attributes = {}; /* å±æ€§ã¯ç©ºã®ã¾ã¾ */ \
         p.getter = [](void* inst) -> std::any { \
             return static_cast<ClassName*>(inst)->propName; \
         }; \
@@ -453,9 +453,9 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 				return static_cast<ClassName*>(inst)->GetterFunc(); \
 			}; \
 			p.setter = [](void* inst, std::any val) { \
-				static_cast<ClassName*>(inst)->propName = std::any_cast<propType>(val); /* ƒZƒbƒ^[‚Í’Êí’Ê‚èƒtƒB[ƒ‹ƒh‚ÉƒAƒNƒZƒX */ \
+				static_cast<ClassName*>(inst)->propName = std::any_cast<propType>(val); /* ã‚»ãƒƒã‚¿ãƒ¼ã¯é€šå¸¸é€šã‚Šãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ã‚¢ã‚¯ã‚»ã‚¹ */ \
 			}; \
-			p.hasCustomGetter = true; /* ƒQƒbƒ^[ƒƒ\ƒbƒh‚ªw’è‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO */ \
+			p.hasCustomGetter = true; /* ã‚²ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚° */ \
 			meta.properties.push_back(p); \
 		}
 
@@ -467,12 +467,12 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 			p.offset = GetOffset(&ClassName::propName); \
 			p.attributes = std::vector<AttributeInfo>{ __VA_ARGS__  }; \
 			p.getter = [](void* inst) -> std::any { \
-				return static_cast<ClassName*>(inst)->propName; /* ƒQƒbƒ^[‚Í’Êí’Ê‚èƒtƒB[ƒ‹ƒh‚ÉƒAƒNƒZƒX */ \
+				return static_cast<ClassName*>(inst)->propName; /* ã‚²ãƒƒã‚¿ãƒ¼ã¯é€šå¸¸é€šã‚Šãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ã‚¢ã‚¯ã‚»ã‚¹ */ \
 			}; \
 			p.setter = [](void* inst, std::any val) { \
 				static_cast<ClassName*>(inst)->SetterFunc(std::any_cast<propType>(val)); \
 			}; \
-			p.hasCustomSetter = true; /* ƒZƒbƒ^[ƒƒ\ƒbƒh‚ªw’è‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO */ \
+			p.hasCustomSetter = true; /* ã‚»ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚° */ \
 			meta.properties.push_back(p); \
 		}
 
@@ -489,8 +489,8 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 			p.setter = [](void* inst, std::any val) { \
 				static_cast<ClassName*>(inst)->SetterFunc(std::any_cast<propType>(val)); \
 			}; \
-			p.hasCustomGetter = true; /* ƒQƒbƒ^[ƒƒ\ƒbƒh‚ªw’è‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO */ \
-			p.hasCustomSetter = true; /* ƒZƒbƒ^[ƒƒ\ƒbƒh‚ªw’è‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO */ \
+			p.hasCustomGetter = true; /* ã‚²ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚° */ \
+			p.hasCustomSetter = true; /* ã‚»ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚° */ \
 			meta.properties.push_back(p); \
 		}
 
@@ -499,14 +499,14 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
         } \
     } ClassName##_AutoRegisterInstance; };
 
-// —ñ‹“Œ^“o˜^ƒ}ƒNƒ
+// åˆ—æŒ™å‹ç™»éŒ²ãƒã‚¯ãƒ­
 
 #define REGISTER_ENUM(EnumName) \
 	namespace { struct EnumName##_AutoRegister { \
 		EnumName##_AutoRegister() { \
 			EnumInfo meta; \
 			meta.name = #EnumName; \
-			static int _enumValueCounter = 0; /* ’l‚ª–¾¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ì©“®ƒJƒEƒ“ƒ^[ */
+			static int _enumValueCounter = 0; /* å€¤ãŒæ˜ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã®è‡ªå‹•ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ */
 
 #define UNDERLYING_TYPE(Type) \
 			meta.underlyingType = #Type;
@@ -515,13 +515,13 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 			{ \
 				EnumValueInfo v; \
 				v.name = ValueName; \
-				if constexpr (sizeof(#__VA_ARGS__) > 1) /* ’l‚ª–¾¦‚³‚ê‚Ä‚¢‚éê‡ */ \
+				if constexpr (sizeof(#__VA_ARGS__) > 1) /* å€¤ãŒæ˜ç¤ºã•ã‚Œã¦ã„ã‚‹å ´åˆ */ \
 				{ \
 					v.value = __VA_ARGS__; \
 					v.hasExplicitValue = true; \
-					_enumValueCounter = v.value + 1; /* ƒJƒEƒ“ƒ^[‚ğ–¾¦‚³‚ê‚½’l‚ÌŸ‚ÉXV */ \
+					_enumValueCounter = v.value + 1; /* ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’æ˜ç¤ºã•ã‚ŒãŸå€¤ã®æ¬¡ã«æ›´æ–° */ \
 				} \
-				else /* ’l‚ª–¾¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í©“®ƒJƒEƒ“ƒ^[‚ğg—p */ \
+				else /* å€¤ãŒæ˜ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯è‡ªå‹•ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’ä½¿ç”¨ */ \
 				{ \
 					v.value = _enumValueCounter++; \
 					v.hasExplicitValue = false; \
@@ -535,7 +535,7 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 	} EnumName##_AutoRegisterInstance; };
 
 
-// \‘¢‘Ì“o˜^ƒ}ƒNƒ
+// æ§‹é€ ä½“ç™»éŒ²ãƒã‚¯ãƒ­
 #define REGISTER_STRUCT(StructName) \
 	namespace { struct StructName##_AutoRegister { \
 		static size_t StructMetaOffset(auto StructName::* member) \

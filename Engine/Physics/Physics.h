@@ -9,14 +9,14 @@
 #include "Engine/Core/Layer.h"
 #include "Engine/Physics/CollisionEvent.h"
 
-//#define BINARY_PHYSICS_DATA // •Ё—ќѓfЃ[ѓ^‚рѓoѓCѓiѓЉЊ`Ћ®‚Е•Ы‘¶‚·‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBѓfѓoѓbѓO—p‚Й—LЊш‚Й‚·‚й‚±‚Ж‚Є‚Е‚«‚Ь‚·ЃB
+//#define BINARY_PHYSICS_DATA // з‰©зђ†гѓ‡гѓјг‚їг‚’гѓђг‚¤гѓЉгѓЄеЅўејЏгЃ§дїќе­гЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚гѓ‡гѓђгѓѓг‚°з”ЁгЃ«жњ‰еЉ№гЃ«гЃ™г‚‹гЃ“гЃЁгЃЊгЃ§гЃЌгЃѕгЃ™гЂ‚
 
 enum class PhysicMaterialCombineMode
 {
-	Average,    // •Ѕ‹П’l‚рЋg—p‚µ‚ДЏХ“Л”Ѕ‰ћ‚рЊvЋZ
-	Minimum,    // ЌЕЏ¬’l‚рЋg—p‚µ‚ДЏХ“Л”Ѕ‰ћ‚рЊvЋZ
-	Multiply,   // ЏжЋZ‚µ‚ДЏХ“Л”Ѕ‰ћ‚рЊvЋZ
-	Maximum     // ЌЕ‘е’l‚рЋg—p‚µ‚ДЏХ“Л”Ѕ‰ћ‚рЊvЋZ
+	Average,    // е№іеќ‡еЂ¤г‚’дЅїз”ЁгЃ—гЃ¦иЎќзЄЃеЏЌеїњг‚’иЁ€з®—
+	Minimum,    // жњЂе°ЏеЂ¤г‚’дЅїз”ЁгЃ—гЃ¦иЎќзЄЃеЏЌеїњг‚’иЁ€з®—
+	Multiply,   // д№—з®—гЃ—гЃ¦иЎќзЄЃеЏЌеїњг‚’иЁ€з®—
+	Maximum     // жњЂе¤§еЂ¤г‚’дЅїз”ЁгЃ—гЃ¦иЎќзЄЃеЏЌеїњг‚’иЁ€з®—
 };
 
 using ActorHandle = int;
@@ -35,119 +35,119 @@ using MaterialHandle = int;
 
 #define DEFAULT_MATERIAL_HANDLE 0
 
-// 1ѓtѓЊЃ[ѓЂ‚ ‚Ѕ‚и‚МЌЕ‘еђЪђG“_ђ”
+// 1гѓ•гѓ¬гѓјгѓ гЃ‚гЃџг‚ЉгЃ®жњЂе¤§жЋҐи§¦з‚№ж•°
 #define MAX_CONTACTS_PER_PAIR 8
 
 class Rigidbody;
 class Collider;
 
-// ѓAѓNѓ^Ѓ[‚МѓfЃ[ѓ^‚рЉЗ—ќ‚·‚йЌ\‘ў‘М
+// г‚ўг‚Їг‚їгѓјгЃ®гѓ‡гѓјг‚їг‚’з®Ўзђ†гЃ™г‚‹ж§‹йЂ дЅ“
 struct ActorData
 {
-	physx::PxRigidActor* actor; // ѓAѓNѓ^Ѓ[‚Ц‚Мѓ|ѓCѓ“ѓ^
-	Transform* transform; // ѓAѓNѓ^Ѓ[‚Мѓgѓ‰ѓ“ѓXѓtѓHЃ[ѓЂ‚Ц‚Мѓ|ѓCѓ“ѓ^
+	physx::PxRigidActor* actor; // г‚ўг‚Їг‚їгѓјгЃёгЃ®гѓќг‚¤гѓіг‚ї
+	Transform* transform; // г‚ўг‚Їг‚їгѓјгЃ®гѓ€гѓ©гѓіг‚№гѓ•г‚©гѓјгѓ гЃёгЃ®гѓќг‚¤гѓіг‚ї
 };
 
 struct RaycastHit
 {
-	Vector3 point; // ЏХ“Л“_‚М€К’u
-	Vector3 normal; // ЏХ“Л–К‚М–@ђь
-	float distance; // ѓЊѓC‚М”­ЋЛ“_‚©‚зЏХ“Л“_‚Ь‚Е‚М‹——Ј
-	Collider* collider; // ЏХ“Л‚µ‚ЅѓRѓ‰ѓCѓ_‚Ц‚Мѓ|ѓCѓ“ѓ^
+	Vector3 point; // иЎќзЄЃз‚№гЃ®дЅЌзЅ®
+	Vector3 normal; // иЎќзЄЃйќўгЃ®жі•з·љ
+	float distance; // гѓ¬г‚¤гЃ®з™єе°„з‚№гЃ‹г‚‰иЎќзЄЃз‚№гЃѕгЃ§гЃ®и·ќй›ў
+	Collider* collider; // иЎќзЄЃгЃ—гЃџг‚ігѓ©г‚¤гѓЂгЃёгЃ®гѓќг‚¤гѓіг‚ї
 };
 
-// •Ё—ќѓ}ѓeѓЉѓAѓ‹‚М“Бђ«‚р’и‹`‚·‚йЌ\‘ў‘М
+// з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®з‰№жЂ§г‚’е®љзѕ©гЃ™г‚‹ж§‹йЂ дЅ“
 struct PhysicsMaterialData
 {
-	std::string name; // ѓ}ѓeѓЉѓAѓ‹‚М–ј‘O
-	float staticFriction = DEFAULT_STATIC_FRICTION; // ђГЋ~–ЂЋCЊWђ”
-	float dynamicFriction = DEFAULT_DYNAMIC_FRICTION; // “®–ЂЋCЊWђ”
-	float bounciness = DEFAULT_BOUNCINESS; // ”Ѕ”­ЊWђ”
-	PhysicMaterialCombineMode frictionCombineMode = DEFAULT_FRICTION_COMBINE_MODE; // –ЂЋC‚М‘g‚ЭЌ‡‚н‚№ѓ‚Ѓ[ѓh
-	PhysicMaterialCombineMode bounceCombineMode = DEFAULT_BOUNCE_COMBINE_MODE; // ”Ѕ”­‚М‘g‚ЭЌ‡‚н‚№ѓ‚Ѓ[ѓh
+	std::string name; // гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰Ќ
+	float staticFriction = DEFAULT_STATIC_FRICTION; // йќ™ж­ўж‘©ж“¦дї‚ж•°
+	float dynamicFriction = DEFAULT_DYNAMIC_FRICTION; // е‹•ж‘©ж“¦дї‚ж•°
+	float bounciness = DEFAULT_BOUNCINESS; // еЏЌз™єдї‚ж•°
+	PhysicMaterialCombineMode frictionCombineMode = DEFAULT_FRICTION_COMBINE_MODE; // ж‘©ж“¦гЃ®зµ„гЃїеђ€г‚ЏгЃ›гѓўгѓјгѓ‰
+	PhysicMaterialCombineMode bounceCombineMode = DEFAULT_BOUNCE_COMBINE_MODE; // еЏЌз™єгЃ®зµ„гЃїеђ€г‚ЏгЃ›гѓўгѓјгѓ‰
 };
 
-// •Ё—ќѓ}ѓeѓЉѓAѓ‹‚рЉЗ—ќ‚·‚йЌ\‘ў‘М
+// з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«г‚’з®Ўзђ†гЃ™г‚‹ж§‹йЂ дЅ“
 struct PhysicsMaterial
 {
-	MaterialHandle handle; // ѓ}ѓeѓЉѓAѓ‹‚Мѓnѓ“ѓhѓ‹
-	PhysicsMaterialData data; // ѓ}ѓeѓЉѓAѓ‹‚М“Бђ«ѓfЃ[ѓ^
-	physx::PxMaterial* pxMaterial; // •Ё—ќѓGѓ“ѓWѓ“‚Мѓ}ѓeѓЉѓAѓ‹‚Ц‚Мѓ|ѓCѓ“ѓ^
+	MaterialHandle handle; // гѓћгѓ†гѓЄг‚ўгѓ«гЃ®гѓЏгѓігѓ‰гѓ«
+	PhysicsMaterialData data; // гѓћгѓ†гѓЄг‚ўгѓ«гЃ®з‰№жЂ§гѓ‡гѓјг‚ї
+	physx::PxMaterial* pxMaterial; // з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®гѓћгѓ†гѓЄг‚ўгѓ«гЃёгЃ®гѓќг‚¤гѓіг‚ї
 };
 
 struct ColliderData
 {
-	//ActorHandle actorHandle; // ѓRѓ‰ѓCѓ_‚Є‘®‚·‚йѓAѓNѓ^Ѓ[‚Мѓnѓ“ѓhѓ‹
-	//ShapeHandle shapeHandle; // ѓRѓ‰ѓCѓ_‚МЊ`Џу‚Мѓnѓ“ѓhѓ‹
-	MaterialHandle materialHandle; // ѓRѓ‰ѓCѓ_‚Й“K—p‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚Мѓnѓ“ѓhѓ‹
-	bool isTrigger; // ѓgѓЉѓKЃ[‚©‚З‚¤‚©
-	float contactOffset; // ђЪђGѓIѓtѓZѓbѓg
-	Collider* collider; // ѓRѓ‰ѓCѓ_‚Ц‚Мѓ|ѓCѓ“ѓ^ЃiѓIѓvѓVѓ‡ѓ“ЃA•K—v‚Й‰ћ‚¶‚ДЋg—pЃj
+	//ActorHandle actorHandle; // г‚ігѓ©г‚¤гѓЂгЃЊе±ћгЃ™г‚‹г‚ўг‚Їг‚їгѓјгЃ®гѓЏгѓігѓ‰гѓ«
+	//ShapeHandle shapeHandle; // г‚ігѓ©г‚¤гѓЂгЃ®еЅўзЉ¶гЃ®гѓЏгѓігѓ‰гѓ«
+	MaterialHandle materialHandle; // г‚ігѓ©г‚¤гѓЂгЃ«йЃ©з”ЁгЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®гѓЏгѓігѓ‰гѓ«
+	bool isTrigger; // гѓ€гѓЄг‚¬гѓјгЃ‹гЃ©гЃ†гЃ‹
+	float contactOffset; // жЋҐи§¦г‚Єгѓ•г‚»гѓѓгѓ€
+	Collider* collider; // г‚ігѓ©г‚¤гѓЂгЃёгЃ®гѓќг‚¤гѓіг‚їпј€г‚Єгѓ—г‚·гѓ§гѓігЂЃеї…и¦ЃгЃ«еїњгЃгЃ¦дЅїз”Ёпј‰
 };
 
-// ѓRѓ‰ѓCѓ_Ѓ[‚МЊ`Џу‚р’и‹`‚·‚йЌ\‘ў‘М
+// г‚ігѓ©г‚¤гѓЂгѓјгЃ®еЅўзЉ¶г‚’е®љзѕ©гЃ™г‚‹ж§‹йЂ дЅ“
 struct BoxColliderData : public ColliderData
 {
-	Vector3 halfExtents; // ѓ{ѓbѓNѓX‚М”ј•Є‚МѓTѓCѓYЃi•ќ/2, Ќ‚‚і/2, ‰њЌs‚«/2Ѓj
-	Vector3 center; // ѓ{ѓbѓNѓX‚М’†ђS€К’uЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
+	Vector3 halfExtents; // гѓњгѓѓг‚Їг‚№гЃ®еЌЉе€†гЃ®г‚µг‚¤г‚єпј€е№…/2, й«гЃ•/2, еҐҐиЎЊгЃЌ/2пј‰
+	Vector3 center; // гѓњгѓѓг‚Їг‚№гЃ®дё­еїѓдЅЌзЅ®пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
 };
 
 struct SphereColliderData : public ColliderData
 {
-	float radius; // ‹…‚М”јЊa
-	Vector3 center; // ‹…‚М’†ђS€К’uЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
+	float radius; // зђѓгЃ®еЌЉеѕ„
+	Vector3 center; // зђѓгЃ®дё­еїѓдЅЌзЅ®пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
 };
 
 struct CapsuleColliderData : public ColliderData
 {
-	float radius; // ѓJѓvѓZѓ‹‚М”јЊa
-	float height; // ѓJѓvѓZѓ‹‚МЌ‚‚іЃi’†ђS‚©‚з—ј’[‚Ь‚Е‚М‹——ЈЃj
-	Vector3 center; // ѓJѓvѓZѓ‹‚М’†ђS€К’uЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
+	float radius; // г‚«гѓ—г‚»гѓ«гЃ®еЌЉеѕ„
+	float height; // г‚«гѓ—г‚»гѓ«гЃ®й«гЃ•пј€дё­еїѓгЃ‹г‚‰дёЎз«ЇгЃѕгЃ§гЃ®и·ќй›ўпј‰
+	Vector3 center; // г‚«гѓ—г‚»гѓ«гЃ®дё­еїѓдЅЌзЅ®пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
 };
 
 struct MeshColliderData : public ColliderData
 {
-	std::vector<Vector3> vertices; // ѓЃѓbѓVѓ…‚М’ё“_ѓfЃ[ѓ^
-	std::vector<int> indices; // ѓЃѓbѓVѓ…‚МѓCѓ“ѓfѓbѓNѓXѓfЃ[ѓ^
+	std::vector<Vector3> vertices; // гѓЎгѓѓг‚·гѓҐгЃ®й ‚з‚№гѓ‡гѓјг‚ї
+	std::vector<int> indices; // гѓЎгѓѓг‚·гѓҐгЃ®г‚¤гѓігѓ‡гѓѓг‚Їг‚№гѓ‡гѓјг‚ї
 };
 
 struct HeightFieldColliderData : public ColliderData
 {
-	std::vector<float> heightData; // Ќ‚‚іѓtѓBЃ[ѓ‹ѓh‚МЌ‚‚іѓfЃ[ѓ^
-	int numRows; // Ќ‚‚іѓtѓBЃ[ѓ‹ѓh‚МЌsђ”
-	int numCols; // Ќ‚‚іѓtѓBЃ[ѓ‹ѓh‚М—сђ”
-	float rowScale; // Ќs•ыЊь‚МѓXѓPЃ[ѓ‹
-	float colScale; // —с•ыЊь‚МѓXѓPЃ[ѓ‹
+	std::vector<float> heightData; // й«гЃ•гѓ•г‚Јгѓјгѓ«гѓ‰гЃ®й«гЃ•гѓ‡гѓјг‚ї
+	int numRows; // й«гЃ•гѓ•г‚Јгѓјгѓ«гѓ‰гЃ®иЎЊж•°
+	int numCols; // й«гЃ•гѓ•г‚Јгѓјгѓ«гѓ‰гЃ®е€—ж•°
+	float rowScale; // иЎЊж–№еђ‘гЃ®г‚№г‚±гѓјгѓ«
+	float colScale; // е€—ж–№еђ‘гЃ®г‚№г‚±гѓјгѓ«
 };
 
 struct CharacterControllerData : public ColliderData
 {
-	float radius; // ѓLѓѓѓ‰ѓNѓ^Ѓ[ѓRѓ“ѓgѓЌЃ[ѓ‰Ѓ[‚М”јЊa
-	float height; // ѓLѓѓѓ‰ѓNѓ^Ѓ[ѓRѓ“ѓgѓЌЃ[ѓ‰Ѓ[‚МЌ‚‚і
-	Vector3 center; // ѓLѓѓѓ‰ѓNѓ^Ѓ[ѓRѓ“ѓgѓЌЃ[ѓ‰Ѓ[‚М’†ђS€К’uЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
+	float radius; // г‚­гѓЈгѓ©г‚Їг‚їгѓјг‚ігѓігѓ€гѓ­гѓјгѓ©гѓјгЃ®еЌЉеѕ„
+	float height; // г‚­гѓЈгѓ©г‚Їг‚їгѓјг‚ігѓігѓ€гѓ­гѓјгѓ©гѓјгЃ®й«гЃ•
+	Vector3 center; // г‚­гѓЈгѓ©г‚Їг‚їгѓјг‚ігѓігѓ€гѓ­гѓјгѓ©гѓјгЃ®дё­еїѓдЅЌзЅ®пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
 };
 
 
-// •Ё—ќѓGѓ“ѓWѓ“‚МѓCѓxѓ“ѓgѓRЃ[ѓ‹ѓoѓbѓN‚рЏ€—ќ‚·‚йѓNѓ‰ѓX
+// з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®г‚¤гѓ™гѓігѓ€г‚ігѓјгѓ«гѓђгѓѓг‚Їг‚’е‡¦зђ†гЃ™г‚‹г‚Їгѓ©г‚№
 class SimulationEventCallback : public physx::PxSimulationEventCallback
 {
 public:
-	// ѓgѓЉѓKЃ[‚МЊp‘±ѓCѓxѓ“ѓg‚МѓyѓA‚рѓNѓЉѓA‚·‚йЉЦђ”
+	// гѓ€гѓЄг‚¬гѓјгЃ®з¶™з¶љг‚¤гѓ™гѓігѓ€гЃ®гѓљг‚ўг‚’г‚ЇгѓЄг‚ўгЃ™г‚‹й–ўж•°
 	void ClearTriggerStayPairs();
 
-	// “Б’и‚МЊ`Џу‚ЙЉЦA‚·‚йѓgѓЉѓKЃ[‚МЊp‘±ѓCѓxѓ“ѓg‚МѓyѓA‚рѓNѓЉѓA‚·‚йЉЦђ”
+	// з‰№е®љгЃ®еЅўзЉ¶гЃ«й–ўйЂЈгЃ™г‚‹гѓ€гѓЄг‚¬гѓјгЃ®з¶™з¶љг‚¤гѓ™гѓігѓ€гЃ®гѓљг‚ўг‚’г‚ЇгѓЄг‚ўгЃ™г‚‹й–ўж•°
 	void ClearTriggerStayPairsForShape(physx::PxShape* shape);
 
-	// •Ё—ќѓGѓ“ѓWѓ“‚МѓCѓxѓ“ѓg‚рЏ€—ќ‚·‚йЉЦђ”
+	// з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®г‚¤гѓ™гѓігѓ€г‚’е‡¦зђ†гЃ™г‚‹й–ўж•°
 	void Update();
 
-	// ЏХ“ЛѓCѓxѓ“ѓg‚МЊД‚СЏo‚µЉЦђ”
+	// иЎќзЄЃг‚¤гѓ™гѓігѓ€гЃ®е‘јгЃіе‡єгЃ—й–ўж•°
 	void CallCollisionEvents();
-	// ѓgѓЉѓKЃ[ѓCѓxѓ“ѓg‚МЊД‚СЏo‚µЉЦђ”
+	// гѓ€гѓЄг‚¬гѓјг‚¤гѓ™гѓігѓ€гЃ®е‘јгЃіе‡єгЃ—й–ўж•°
 	void CallTriggerEvents();
 
 protected:
-	// PxSimulationEventCallback ‚МЏѓђ€‰ј‘zЉЦђ”‚рѓIЃ[ѓoЃ[ѓ‰ѓCѓh
+	// PxSimulationEventCallback гЃ®зґ”зІ‹д»®жѓій–ўж•°г‚’г‚Єгѓјгѓђгѓјгѓ©г‚¤гѓ‰
 	void onConstraintBreak(physx::PxConstraintInfo* constraints, physx::PxU32 count) override{}
 	void onWake(physx::PxActor** actors, physx::PxU32 count) override{}
 	void onSleep(physx::PxActor** actors, physx::PxU32 count) override{}
@@ -157,32 +157,32 @@ protected:
 
 private:
 	using ShapePair = std::pair<physx::PxShape*, physx::PxShape*>;
-	std::map<ShapePair, physx::PxTriggerPair> pxTriggerStayPairs; // ѓgѓЉѓKЃ[‚МЊp‘±ѓCѓxѓ“ѓg‚рЉЗ—ќ‚·‚й‚Ѕ‚Я‚Мѓ}ѓbѓv
+	std::map<ShapePair, physx::PxTriggerPair> pxTriggerStayPairs; // гѓ€гѓЄг‚¬гѓјгЃ®з¶™з¶љг‚¤гѓ™гѓігѓ€г‚’з®Ўзђ†гЃ™г‚‹гЃџг‚ЃгЃ®гѓћгѓѓгѓ—
 
-	std::vector<std::pair<Collider*, CollisionInfo>> collisionEnterEvents{}; // ЏХ“ЛЉJЋnѓCѓxѓ“ѓg‚МѓyѓA‚рЉЗ—ќ‚·‚й‚Ѕ‚Я‚МѓxѓNѓ^Ѓ[
-	std::vector<std::pair<Collider*, CollisionInfo>> collisionStayEvents{}; // ЏХ“ЛЊp‘±ѓCѓxѓ“ѓg‚МѓyѓA‚рЉЗ—ќ‚·‚й‚Ѕ‚Я‚МѓxѓNѓ^Ѓ[
-	std::vector<std::pair<Collider*, CollisionInfo>> collisionExitEvents{}; // ЏХ“ЛЏI—№ѓCѓxѓ“ѓg‚МѓyѓA‚рЉЗ—ќ‚·‚й‚Ѕ‚Я‚МѓxѓNѓ^Ѓ[
-	std::vector<std::pair<Collider*, TriggerInfo>> triggerEnterEvents{}; // ѓgѓЉѓKЃ[ЉJЋnѓCѓxѓ“ѓg‚МѓyѓA‚рЉЗ—ќ‚·‚й‚Ѕ‚Я‚МѓxѓNѓ^Ѓ[
-	//std::vector<std::pair<Collider*, TriggerInfo>> triggerStayEvents{}; // ѓgѓЉѓKЃ[Њp‘±ѓCѓxѓ“ѓg‚МѓyѓA‚рЉЗ—ќ‚·‚й‚Ѕ‚Я‚МѓxѓNѓ^Ѓ[
-	std::vector<std::pair<Collider*, TriggerInfo>> triggerExitEvents{}; // ѓgѓЉѓKЃ[ЏI—№ѓCѓxѓ“ѓg‚МѓyѓA‚рЉЗ—ќ‚·‚й‚Ѕ‚Я‚МѓxѓNѓ^Ѓ[
+	std::vector<std::pair<Collider*, CollisionInfo>> collisionEnterEvents{}; // иЎќзЄЃй–‹е§‹г‚¤гѓ™гѓігѓ€гЃ®гѓљг‚ўг‚’з®Ўзђ†гЃ™г‚‹гЃџг‚ЃгЃ®гѓ™г‚Їг‚їгѓј
+	std::vector<std::pair<Collider*, CollisionInfo>> collisionStayEvents{}; // иЎќзЄЃз¶™з¶љг‚¤гѓ™гѓігѓ€гЃ®гѓљг‚ўг‚’з®Ўзђ†гЃ™г‚‹гЃџг‚ЃгЃ®гѓ™г‚Їг‚їгѓј
+	std::vector<std::pair<Collider*, CollisionInfo>> collisionExitEvents{}; // иЎќзЄЃзµ‚дє†г‚¤гѓ™гѓігѓ€гЃ®гѓљг‚ўг‚’з®Ўзђ†гЃ™г‚‹гЃџг‚ЃгЃ®гѓ™г‚Їг‚їгѓј
+	std::vector<std::pair<Collider*, TriggerInfo>> triggerEnterEvents{}; // гѓ€гѓЄг‚¬гѓјй–‹е§‹г‚¤гѓ™гѓігѓ€гЃ®гѓљг‚ўг‚’з®Ўзђ†гЃ™г‚‹гЃџг‚ЃгЃ®гѓ™г‚Їг‚їгѓј
+	//std::vector<std::pair<Collider*, TriggerInfo>> triggerStayEvents{}; // гѓ€гѓЄг‚¬гѓјз¶™з¶љг‚¤гѓ™гѓігѓ€гЃ®гѓљг‚ўг‚’з®Ўзђ†гЃ™г‚‹гЃџг‚ЃгЃ®гѓ™г‚Їг‚їгѓј
+	std::vector<std::pair<Collider*, TriggerInfo>> triggerExitEvents{}; // гѓ€гѓЄг‚¬гѓјзµ‚дє†г‚¤гѓ™гѓігѓ€гЃ®гѓљг‚ўг‚’з®Ўзђ†гЃ™г‚‹гЃџг‚ЃгЃ®гѓ™г‚Їг‚їгѓј
 };
 
-// ѓNѓGѓЉѓtѓBѓ‹ѓ^ѓRЃ[ѓ‹ѓoѓbѓN‚рЏ€—ќ‚·‚йѓNѓ‰ѓX
+// г‚Їг‚ЁгѓЄгѓ•г‚Јгѓ«г‚їг‚ігѓјгѓ«гѓђгѓѓг‚Їг‚’е‡¦зђ†гЃ™г‚‹г‚Їгѓ©г‚№
 class FilterShader : public physx::PxQueryFilterCallback
 {
 public:
-	// ѓRѓЉѓWѓ‡ѓ“ѓyѓA‚МѓtѓBѓ‹ѓ^ѓЉѓ“ѓO‚рЌs‚¤ЉЦђ”
+	// г‚ігѓЄг‚ёгѓ§гѓігѓљг‚ўгЃ®гѓ•г‚Јгѓ«г‚їгѓЄгѓіг‚°г‚’иЎЊгЃ†й–ўж•°
 	static physx::PxFilterFlags SimulationFilter(
 		physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
 		physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
 		physx::PxPairFlags& pairFlags, const void* constantBlock, physx::PxU32 constantBlockSize);
 
-	// PxQueryFilterCallback ‚МЏѓђ€‰ј‘zЉЦђ”‚рѓIЃ[ѓoЃ[ѓ‰ѓCѓh
+	// PxQueryFilterCallback гЃ®зґ”зІ‹д»®жѓій–ўж•°г‚’г‚Єгѓјгѓђгѓјгѓ©г‚¤гѓ‰
 	physx::PxQueryHitType::Enum preFilter(const physx::PxFilterData& filterData, const physx::PxShape* shape, const physx::PxRigidActor* actor, physx::PxHitFlags& queryFlags) override;
 	physx::PxQueryHitType::Enum postFilter(const physx::PxFilterData& filterData, const physx::PxQueryHit& hit, const physx::PxShape* shape, const physx::PxRigidActor* actor) override;
 };
 
-// •Ё—ќѓGѓ“ѓWѓ“‚рЉЗ—ќ‚·‚йѓNѓ‰ѓX
+// з‰©зђ†г‚Ёгѓіг‚ёгѓіг‚’з®Ўзђ†гЃ™г‚‹г‚Їгѓ©г‚№
 class Physics
 {
 public:
@@ -190,701 +190,701 @@ public:
 	~Physics();
 
 	/**
-	 * @brief •Ё—ќѓGѓ“ѓWѓ“‚МЏ‰Љъ‰»
+	 * @brief з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®е€ќжњџеЊ–
 	 */
 	static void Initialize();
 	/**
-	 * @brief •Ё—ќѓGѓ“ѓWѓ“‚МЏI—№Џ€—ќ
+	 * @brief з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®зµ‚дє†е‡¦зђ†
 	 */
 	static void Terminate();
 
 	/**
-	 * @brief •Ё—ќѓGѓ“ѓWѓ“‚МђЭ’и‚р•Ы‘¶
-	 * @details •Ё—ќѓGѓ“ѓWѓ“‚МЊ»ЌЭ‚МђЭ’и‚р•Ы‘¶‚µ‚Ь‚·ЃB‚±‚к‚Й‚НЃA•Ё—ќѓ}ѓeѓЉѓAѓ‹‚М“Бђ«‚вѓЊѓCѓ„Ѓ[ђЭ’и‚И‚З‚ЄЉЬ‚Ь‚к‚Ь‚·ЃBѓQЃ[ѓЂ‚МЏI—№Ћћ‚вѓrѓ‹ѓh‘O‚И‚З‚ЙЊД‚СЏo‚і‚к‚й‚±‚Ж‚р‘z’и‚µ‚Д‚ў‚Ь‚·ЃB
+	 * @brief з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®иЁ­е®љг‚’дїќе­
+	 * @details з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®зЏѕењЁгЃ®иЁ­е®љг‚’дїќе­гЃ—гЃѕгЃ™гЂ‚гЃ“г‚ЊгЃ«гЃЇгЂЃз‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®з‰№жЂ§г‚„гѓ¬г‚¤гѓ¤гѓјиЁ­е®љгЃЄгЃ©гЃЊеђ«гЃѕг‚ЊгЃѕгЃ™гЂ‚г‚Ігѓјгѓ гЃ®зµ‚дє†ж™‚г‚„гѓ“гѓ«гѓ‰е‰ЌгЃЄгЃ©гЃ«е‘јгЃіе‡єгЃ•г‚Њг‚‹гЃ“гЃЁг‚’жѓіе®љгЃ—гЃ¦гЃ„гЃѕгЃ™гЂ‚
 	 */
 	static void SaveSettings();
 
 	/**
-	 * @brief •Ё—ќѓGѓ“ѓWѓ“‚МЏу‘Ф‚рѓЉѓZѓbѓg
-	 * @details ‚·‚Ч‚Д‚М•Ё—ќѓIѓuѓWѓFѓNѓg‚рЌнЏњ‚µЃA•Ё—ќѓGѓ“ѓWѓ“‚МЏу‘Ф‚рѓЉѓZѓbѓg‚µ‚Ь‚·ЃBѓVЃ[ѓ“‚МђШ‚и‘Ц‚¦‚вѓQЃ[ѓЂ‚МѓЉѓZѓbѓgЋћ‚И‚З‚ЙЊД‚СЏo‚і‚к‚й‚±‚Ж‚р‘z’и‚µ‚Д‚ў‚Ь‚·ЃB
+	 * @brief з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®зЉ¶ж…‹г‚’гѓЄг‚»гѓѓгѓ€
+	 * @details гЃ™гЃ№гЃ¦гЃ®з‰©зђ†г‚Єгѓ–г‚ёг‚§г‚Їгѓ€г‚’е‰Љй™¤гЃ—гЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®зЉ¶ж…‹г‚’гѓЄг‚»гѓѓгѓ€гЃ—гЃѕгЃ™гЂ‚г‚·гѓјгѓігЃ®е€‡г‚Љж›їгЃ€г‚„г‚Ігѓјгѓ гЃ®гѓЄг‚»гѓѓгѓ€ж™‚гЃЄгЃ©гЃ«е‘јгЃіе‡єгЃ•г‚Њг‚‹гЃ“гЃЁг‚’жѓіе®љгЃ—гЃ¦гЃ„гЃѕгЃ™гЂ‚
 	 */
 	static void Clean();
 
-	// --- ѓVѓЉѓAѓ‰ѓCѓY / ѓfѓVѓЉѓAѓ‰ѓCѓY ---
+	// --- г‚·гѓЄг‚ўгѓ©г‚¤г‚є / гѓ‡г‚·гѓЄг‚ўгѓ©г‚¤г‚є ---
 
 	/**
-	 * @brief •Ё—ќѓGѓ“ѓWѓ“‚МЏу‘Ф‚рJSONЊ`Ћ®‚ЕѓVѓЉѓAѓ‰ѓCѓY
-	 * @return •Ё—ќѓGѓ“ѓWѓ“‚МЏу‘Ф‚р•\‚·JSONѓIѓuѓWѓFѓNѓg
+	 * @brief з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®зЉ¶ж…‹г‚’JSONеЅўејЏгЃ§г‚·гѓЄг‚ўгѓ©г‚¤г‚є
+	 * @return з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®зЉ¶ж…‹г‚’иЎЁгЃ™JSONг‚Єгѓ–г‚ёг‚§г‚Їгѓ€
 	 */
 	static json Serialize();
 
 	/**
-	 * @brief JSONЊ`Ћ®‚МѓfЃ[ѓ^‚©‚з•Ё—ќѓGѓ“ѓWѓ“‚МЏу‘Ф‚рѓfѓVѓЉѓAѓ‰ѓCѓY
-	 * @param data •Ё—ќѓGѓ“ѓWѓ“‚МЏу‘Ф‚р•\‚·JSONѓIѓuѓWѓFѓNѓg
+	 * @brief JSONеЅўејЏгЃ®гѓ‡гѓјг‚їгЃ‹г‚‰з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®зЉ¶ж…‹г‚’гѓ‡г‚·гѓЄг‚ўгѓ©г‚¤г‚є
+	 * @param data з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®зЉ¶ж…‹г‚’иЎЁгЃ™JSONг‚Єгѓ–г‚ёг‚§г‚Їгѓ€
 	 */
 	static void Deserialize(const json& data);
 
 	/**
-	 * @brief •Ё—ќѓGѓ“ѓWѓ“‚МЌXђV
-	 * @param fixedDeltaTime ЊЕ’иЌXђV‚Мѓfѓ‹ѓ^ѓ^ѓCѓЂ
+	 * @brief з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®ж›ґж–°
+	 * @param fixedDeltaTime е›єе®љж›ґж–°гЃ®гѓ‡гѓ«г‚їг‚їг‚¤гѓ 
 	 */
 	static void FixedUpdate(float fixedDeltaTime);
 
 	/**
-	 * @brief •Ё—ќѓGѓ“ѓWѓ“‚МѓfѓoѓbѓO•`‰ж
-	 * @param rtx •`‰ж‚Й•K—v‚ИѓRѓ“ѓeѓLѓXѓgЏо•с‚рЋќ‚ВRenderContext‚Ц‚Мѓ|ѓCѓ“ѓ^
+	 * @brief з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®гѓ‡гѓђгѓѓг‚°жЏЏз”»
+	 * @param rtx жЏЏз”»гЃ«еї…и¦ЃгЃЄг‚ігѓігѓ†г‚­г‚№гѓ€жѓ…е ±г‚’жЊЃгЃ¤RenderContextгЃёгЃ®гѓќг‚¤гѓіг‚ї
 	 */
 	static void RenderDebug(RenderContext* rtx);
 
 	/**
-	 * @brief •Ё—ќѓGѓ“ѓWѓ“‚МѓfѓoѓbѓO•`‰ж
+	 * @brief з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®гѓ‡гѓђгѓѓг‚°жЏЏз”»
 	 */
 	static void DrawGUI();
 
-	// --- ѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg‚©‚з‚М“o^—p ---
+	// --- г‚ігѓігѓќгѓјгѓЌгѓігѓ€гЃ‹г‚‰гЃ®з™»йЊІз”Ё ---
 	
 	/**
-	 * @brief Rigidbody‚р•K—v‚Й‰ћ‚¶‚Дђ¶ђ¬‚µЃA•Ё—ќѓGѓ“ѓWѓ“‚Й“o^‚·‚й
-	 * @param rigidbody “o^‚·‚йRigidbodyѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
+	 * @brief Rigidbodyг‚’еї…и¦ЃгЃ«еїњгЃгЃ¦з”џж€ђгЃ—гЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃ«з™»йЊІгЃ™г‚‹
+	 * @param rigidbody з™»йЊІгЃ™г‚‹Rigidbodyг‚ігѓігѓќгѓјгѓЌгѓігѓ€
 	 */
 	static void RegisterPendingRigidbody(Rigidbody* rigidbody);
 
 	/**
-	 * @brief “o^‚р•Ы—Ї‚µ‚Д‚ў‚йRigidbody‚р•Ё—ќѓGѓ“ѓWѓ“‚©‚з“o^‰рЏњ‚·‚й
-	 * @param rigidbody “o^‰рЏњ‚·‚йRigidbodyѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
+	 * @brief з™»йЊІг‚’дїќз•™гЃ—гЃ¦гЃ„г‚‹Rigidbodyг‚’з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ‹г‚‰з™»йЊІи§Јй™¤гЃ™г‚‹
+	 * @param rigidbody з™»йЊІи§Јй™¤гЃ™г‚‹Rigidbodyг‚ігѓігѓќгѓјгѓЌгѓігѓ€
 	 */
 	static void UnregisterPendingRigidbody(Rigidbody* rigidbody);
 
 	/**
-	 * @brief Collider‚р•K—v‚Й‰ћ‚¶‚Дђ¶ђ¬‚µЃA•Ё—ќѓGѓ“ѓWѓ“‚Й“o^‚·‚й
-	 * @param collider “o^‚·‚йColliderѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
+	 * @brief Colliderг‚’еї…и¦ЃгЃ«еїњгЃгЃ¦з”џж€ђгЃ—гЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃ«з™»йЊІгЃ™г‚‹
+	 * @param collider з™»йЊІгЃ™г‚‹Colliderг‚ігѓігѓќгѓјгѓЌгѓігѓ€
 	 */
 	static void RegisterPendingCollider(Collider* collider);
 
 	/**
-	 * @brief “o^‚р•Ы—Ї‚µ‚Д‚ў‚йCollider‚р•Ё—ќѓGѓ“ѓWѓ“‚©‚з“o^‰рЏњ‚·‚й
-	 * @param collider “o^‰рЏњ‚·‚йColliderѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
+	 * @brief з™»йЊІг‚’дїќз•™гЃ—гЃ¦гЃ„г‚‹Colliderг‚’з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ‹г‚‰з™»йЊІи§Јй™¤гЃ™г‚‹
+	 * @param collider з™»йЊІи§Јй™¤гЃ™г‚‹Colliderг‚ігѓігѓќгѓјгѓЌгѓігѓ€
 	 */
 	static void UnregisterPendingCollider(Collider* collider);
 
 	/**
-	 * @brief “o^‚р•Ы—Ї‚µ‚Д‚ў‚й‚а‚М‚р‚·‚Ч‚Д•Ё—ќѓGѓ“ѓWѓ“‚Й“o^‚·‚й
+	 * @brief з™»йЊІг‚’дїќз•™гЃ—гЃ¦гЃ„г‚‹г‚‚гЃ®г‚’гЃ™гЃ№гЃ¦з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ«з™»йЊІгЃ™г‚‹
 	 */
 	static void FlushPendingRegistrations();
 
 	/**
-	 * @brief Actor‚р•K—v‚Й‰ћ‚¶‚Дђ¶ђ¬‚µЃAѓRѓ‰ѓCѓ_Ѓ[‚рЋќ‚ВѓQЃ[ѓЂѓIѓuѓWѓFѓNѓg‚р•Ё—ќѓGѓ“ѓWѓ“‚Й“o^‚·‚й
-	 * @param transform “o^‚·‚йѓRѓ‰ѓCѓ_Ѓ[‚рЋќ‚ВѓQЃ[ѓЂѓIѓuѓWѓFѓNѓg‚МTransformѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
-	 * @param isDynamic “o^‚·‚йѓRѓ‰ѓCѓ_Ѓ[‚Є“®“I‚©‚З‚¤‚©
-	 * @return “o^‚і‚к‚ЅActor‚МActorHandleЃB“o^‚ЙЋё”s‚µ‚ЅЏкЌ‡‚НINVALID_ACTOR_HANDLE‚р•Ф‚·
+	 * @brief Actorг‚’еї…и¦ЃгЃ«еїњгЃгЃ¦з”џж€ђгЃ—гЂЃг‚ігѓ©г‚¤гѓЂгѓјг‚’жЊЃгЃ¤г‚Ігѓјгѓ г‚Єгѓ–г‚ёг‚§г‚Їгѓ€г‚’з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ«з™»йЊІгЃ™г‚‹
+	 * @param transform з™»йЊІгЃ™г‚‹г‚ігѓ©г‚¤гѓЂгѓјг‚’жЊЃгЃ¤г‚Ігѓјгѓ г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®Transformг‚ігѓігѓќгѓјгѓЌгѓігѓ€
+	 * @param isDynamic з™»йЊІгЃ™г‚‹г‚ігѓ©г‚¤гѓЂгѓјгЃЊе‹•зљ„гЃ‹гЃ©гЃ†гЃ‹
+	 * @return з™»йЊІгЃ•г‚ЊгЃџActorгЃ®ActorHandleгЂ‚з™»йЊІгЃ«е¤±ж•—гЃ—гЃџе ґеђ€гЃЇINVALID_ACTOR_HANDLEг‚’иї”гЃ™
 	 */
 	static ActorHandle RegisterBody(Transform* transform, bool isDynamic);
 
 	/**
-	 * @brief ѓRѓ‰ѓCѓ_Ѓ[‚рЋќ‚ВѓQЃ[ѓЂѓIѓuѓWѓFѓNѓg‚р•Ё—ќѓGѓ“ѓWѓ“‚©‚з“o^‰рЏњ‚·‚й
-	 * @param transform “o^‰рЏњ‚·‚йѓRѓ‰ѓCѓ_Ѓ[‚рЋќ‚ВѓQЃ[ѓЂѓIѓuѓWѓFѓNѓg‚МTransformѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
+	 * @brief г‚ігѓ©г‚¤гѓЂгѓјг‚’жЊЃгЃ¤г‚Ігѓјгѓ г‚Єгѓ–г‚ёг‚§г‚Їгѓ€г‚’з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ‹г‚‰з™»йЊІи§Јй™¤гЃ™г‚‹
+	 * @param transform з™»йЊІи§Јй™¤гЃ™г‚‹г‚ігѓ©г‚¤гѓЂгѓјг‚’жЊЃгЃ¤г‚Ігѓјгѓ г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®Transformг‚ігѓігѓќгѓјгѓЌгѓігѓ€
 	 */
 	static void UnregisterBody(Transform* transform);
 
 	/**
-	 * @brief Transform‚Є”jЉь‚і‚к‚Ѕ‚Ж‚«‚МѓRЃ[ѓ‹ѓoѓbѓNЉЦђ”ЃBЉЦA‚·‚йActor‚вShape‚р•Ё—ќѓGѓ“ѓWѓ“‚©‚зЌнЏњ‚·‚йЃB
-	 * @param transform ”jЉь‚і‚к‚йTransformѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
-	 * @details Transform‚Є”jЉь‚і‚к‚й‚ЖЃA‚»‚МTransform‚ЙЉЦA•t‚Ї‚з‚к‚ЅActor‚вShape‚а•Ё—ќѓGѓ“ѓWѓ“‚©‚зЌнЏњ‚і‚к‚й•K—v‚Є‚ ‚и‚Ь‚·ЃB‚±‚МЉЦђ”‚НЃATransform‚МѓfѓXѓgѓ‰ѓNѓ^‚вOnDestroy()‚И‚З‚М“KђШ‚ИЏкЏЉ‚ЕЊД‚СЏo‚і‚к‚й‚±‚Ж‚р‘z’и‚µ‚Д‚ў‚Ь‚·ЃB
+	 * @brief TransformгЃЊз ґжЈ„гЃ•г‚ЊгЃџгЃЁгЃЌгЃ®г‚ігѓјгѓ«гѓђгѓѓг‚Їй–ўж•°гЂ‚й–ўйЂЈгЃ™г‚‹Actorг‚„Shapeг‚’з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ‹г‚‰е‰Љй™¤гЃ™г‚‹гЂ‚
+	 * @param transform з ґжЈ„гЃ•г‚Њг‚‹Transformг‚ігѓігѓќгѓјгѓЌгѓігѓ€
+	 * @details TransformгЃЊз ґжЈ„гЃ•г‚Њг‚‹гЃЁгЂЃгЃќгЃ®TransformгЃ«й–ўйЂЈд»гЃ‘г‚‰г‚ЊгЃџActorг‚„Shapeг‚‚з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ‹г‚‰е‰Љй™¤гЃ•г‚Њг‚‹еї…и¦ЃгЃЊгЃ‚г‚ЉгЃѕгЃ™гЂ‚гЃ“гЃ®й–ўж•°гЃЇгЂЃTransformгЃ®гѓ‡г‚№гѓ€гѓ©г‚Їг‚їг‚„OnDestroy()гЃЄгЃ©гЃ®йЃ©е€‡гЃЄе ґж‰ЂгЃ§е‘јгЃіе‡єгЃ•г‚Њг‚‹гЃ“гЃЁг‚’жѓіе®љгЃ—гЃ¦гЃ„гЃѕгЃ™гЂ‚
 	 */
 	static void OnTrnasformDestroyed(Transform* transform);
 
-	// --- Њ`Џу (Collider) ‚М’З‰Б ---
+	// --- еЅўзЉ¶ (Collider) гЃ®иїЅеЉ  ---
 
 	/**
-	 * @brief BoxShape‚рђ¶ђ¬‚µЃA‘О‰ћ‚·‚йActor‚ЙѓAѓ^ѓbѓ`ЃA•Ё—ќѓGѓ“ѓWѓ“‚Ц‚М“o^‚рЌs‚¤ЃB
-	 * @param transform BoxCollider‚р’З‰Б‚·‚йTransformѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
-	 * @param data ’З‰Б‚·‚йBoxCollider‚МЊ`ЏуѓfЃ[ѓ^
-	 * @param outHandle ’З‰Б‚і‚к‚ЅBoxCollider‚МShapeHandle‚рЉi”[‚·‚йЋQЏЖЃB’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚Н—LЊш‚ИShapeHandle‚ЄЉi”[‚і‚кЃAЋё”s‚µ‚ЅЏкЌ‡‚НINVALID_SHAPE_HANDLE‚ЄЉi”[‚і‚к‚Ь‚·ЃB
-	 * @return ’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НtrueЃAЋё”s‚µ‚ЅЏкЌ‡‚Нfalse
+	 * @brief BoxShapeг‚’з”џж€ђгЃ—гЂЃеЇѕеїњгЃ™г‚‹ActorгЃ«г‚ўг‚їгѓѓгѓЃгЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃёгЃ®з™»йЊІг‚’иЎЊгЃ†гЂ‚
+	 * @param transform BoxColliderг‚’иїЅеЉ гЃ™г‚‹Transformг‚ігѓігѓќгѓјгѓЌгѓігѓ€
+	 * @param data иїЅеЉ гЃ™г‚‹BoxColliderгЃ®еЅўзЉ¶гѓ‡гѓјг‚ї
+	 * @param outHandle иїЅеЉ гЃ•г‚ЊгЃџBoxColliderгЃ®ShapeHandleг‚’ж јзґЌгЃ™г‚‹еЏ‚з…§гЂ‚иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇжњ‰еЉ№гЃЄShapeHandleгЃЊж јзґЌгЃ•г‚ЊгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇINVALID_SHAPE_HANDLEгЃЊж јзґЌгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇtrueгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇfalse
 	 */
 	static bool AddBoxShape(Transform* transform, const BoxColliderData& data, ShapeHandle& outHandle);
 
 	/**
-	 * @brief SphereShape‚рђ¶ђ¬‚µЃA‘О‰ћ‚·‚йActor‚ЙѓAѓ^ѓbѓ`ЃA•Ё—ќѓGѓ“ѓWѓ“‚Ц‚М“o^‚рЌs‚¤ЃB
-	 * @param transform SphereCollider‚р’З‰Б‚·‚йTransformѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
-	 * @param data ’З‰Б‚·‚йSphereCollider‚МЊ`ЏуѓfЃ[ѓ^
-	 * @param outHandle ’З‰Б‚і‚к‚ЅSphereCollider‚МShapeHandle‚рЉi”[‚·‚йЋQЏЖЃB’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚Н—LЊш‚ИShapeHandle‚ЄЉi”[‚і‚кЃAЋё”s‚µ‚ЅЏкЌ‡‚НINVALID_SHAPE_HANDLE‚ЄЉi”[‚і‚к‚Ь‚·ЃB
-	 * @return ’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НtrueЃAЋё”s‚µ‚ЅЏкЌ‡‚Нfalse
+	 * @brief SphereShapeг‚’з”џж€ђгЃ—гЂЃеЇѕеїњгЃ™г‚‹ActorгЃ«г‚ўг‚їгѓѓгѓЃгЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃёгЃ®з™»йЊІг‚’иЎЊгЃ†гЂ‚
+	 * @param transform SphereColliderг‚’иїЅеЉ гЃ™г‚‹Transformг‚ігѓігѓќгѓјгѓЌгѓігѓ€
+	 * @param data иїЅеЉ гЃ™г‚‹SphereColliderгЃ®еЅўзЉ¶гѓ‡гѓјг‚ї
+	 * @param outHandle иїЅеЉ гЃ•г‚ЊгЃџSphereColliderгЃ®ShapeHandleг‚’ж јзґЌгЃ™г‚‹еЏ‚з…§гЂ‚иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇжњ‰еЉ№гЃЄShapeHandleгЃЊж јзґЌгЃ•г‚ЊгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇINVALID_SHAPE_HANDLEгЃЊж јзґЌгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇtrueгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇfalse
 	 */
 	static bool AddSphereShape(Transform* transform, const SphereColliderData& data, ShapeHandle& outHandle);
 
 	/**
-	 * @brief CapsuleShape‚рђ¶ђ¬‚µЃA‘О‰ћ‚·‚йActor‚ЙѓAѓ^ѓbѓ`ЃA•Ё—ќѓGѓ“ѓWѓ“‚Ц‚М“o^‚рЌs‚¤ЃB
-	 * @param transform CapsuleCollider‚р’З‰Б‚·‚йTransformѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
-	 * @param data ’З‰Б‚·‚йCapsuleCollider‚МЊ`ЏуѓfЃ[ѓ^
-	 * @param outHandle ’З‰Б‚і‚к‚ЅCapsuleCollider‚МShapeHandle‚рЉi”[‚·‚йЋQЏЖЃB’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚Н—LЊш‚ИShapeHandle‚ЄЉi”[‚і‚кЃAЋё”s‚µ‚ЅЏкЌ‡‚НINVALID_SHAPE_HANDLE‚ЄЉi”[‚і‚к‚Ь‚·ЃB
-	 * @return ’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НtrueЃAЋё”s‚µ‚ЅЏкЌ‡‚Нfalse
+	 * @brief CapsuleShapeг‚’з”џж€ђгЃ—гЂЃеЇѕеїњгЃ™г‚‹ActorгЃ«г‚ўг‚їгѓѓгѓЃгЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃёгЃ®з™»йЊІг‚’иЎЊгЃ†гЂ‚
+	 * @param transform CapsuleColliderг‚’иїЅеЉ гЃ™г‚‹Transformг‚ігѓігѓќгѓјгѓЌгѓігѓ€
+	 * @param data иїЅеЉ гЃ™г‚‹CapsuleColliderгЃ®еЅўзЉ¶гѓ‡гѓјг‚ї
+	 * @param outHandle иїЅеЉ гЃ•г‚ЊгЃџCapsuleColliderгЃ®ShapeHandleг‚’ж јзґЌгЃ™г‚‹еЏ‚з…§гЂ‚иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇжњ‰еЉ№гЃЄShapeHandleгЃЊж јзґЌгЃ•г‚ЊгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇINVALID_SHAPE_HANDLEгЃЊж јзґЌгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇtrueгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇfalse
 	 */
 	static bool AddCapsuleShape(Transform* transform, const CapsuleColliderData& data, ShapeHandle& outHandle);
 
 	/**
-	 * @brief TriangleMeshShape‚рђ¶ђ¬‚µЃA‘О‰ћ‚·‚йActor‚ЙѓAѓ^ѓbѓ`ЃA•Ё—ќѓGѓ“ѓWѓ“‚Ц‚М“o^‚рЌs‚¤ЃB
-	 * @param transform MeshCollider‚р’З‰Б‚·‚йTransformѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
-	 * @param data ’З‰Б‚·‚йMeshCollider‚МЊ`ЏуѓfЃ[ѓ^
-	 * @param outHandle ’З‰Б‚і‚к‚ЅMeshCollider‚МShapeHandle‚рЉi”[‚·‚йЋQЏЖЃB’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚Н—LЊш‚ИShapeHandle‚ЄЉi”[‚і‚кЃAЋё”s‚µ‚ЅЏкЌ‡‚НINVALID_SHAPE_HANDLE‚ЄЉi”[‚і‚к‚Ь‚·ЃB
-	 * @return ’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НtrueЃAЋё”s‚µ‚ЅЏкЌ‡‚Нfalse
+	 * @brief TriangleMeshShapeг‚’з”џж€ђгЃ—гЂЃеЇѕеїњгЃ™г‚‹ActorгЃ«г‚ўг‚їгѓѓгѓЃгЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃёгЃ®з™»йЊІг‚’иЎЊгЃ†гЂ‚
+	 * @param transform MeshColliderг‚’иїЅеЉ гЃ™г‚‹Transformг‚ігѓігѓќгѓјгѓЌгѓігѓ€
+	 * @param data иїЅеЉ гЃ™г‚‹MeshColliderгЃ®еЅўзЉ¶гѓ‡гѓјг‚ї
+	 * @param outHandle иїЅеЉ гЃ•г‚ЊгЃџMeshColliderгЃ®ShapeHandleг‚’ж јзґЌгЃ™г‚‹еЏ‚з…§гЂ‚иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇжњ‰еЉ№гЃЄShapeHandleгЃЊж јзґЌгЃ•г‚ЊгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇINVALID_SHAPE_HANDLEгЃЊж јзґЌгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇtrueгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇfalse
 	 */
 	static bool AddTriangleMeshShape(Transform* transform, const MeshColliderData& data, ShapeHandle& outHandle);
 
 	/**
-	 * @brief ConvexMeshShape‚рђ¶ђ¬‚µЃA‘О‰ћ‚·‚йActor‚ЙѓAѓ^ѓbѓ`ЃA•Ё—ќѓGѓ“ѓWѓ“‚Ц‚М“o^‚рЌs‚¤ЃB
-	 * @param transform ConvexMeshCollider‚р’З‰Б‚·‚йTransformѓRѓ“ѓ|Ѓ[ѓlѓ“ѓg
-	 * @param data ’З‰Б‚·‚йConvexMeshCollider‚МЊ`ЏуѓfЃ[ѓ^
-	 * @param outHandle ’З‰Б‚і‚к‚ЅConvexMeshCollider‚МShapeHandle‚рЉi”[‚·‚йЋQЏЖЃB’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚Н—LЊш‚ИShapeHandle‚ЄЉi”[‚і‚кЃAЋё”s‚µ‚ЅЏкЌ‡‚НINVALID_SHAPE_HANDLE‚ЄЉi”[‚і‚к‚Ь‚·ЃB
-	 * @return ’З‰Б‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НtrueЃAЋё”s‚µ‚ЅЏкЌ‡‚Нfalse
+	 * @brief ConvexMeshShapeг‚’з”џж€ђгЃ—гЂЃеЇѕеїњгЃ™г‚‹ActorгЃ«г‚ўг‚їгѓѓгѓЃгЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃёгЃ®з™»йЊІг‚’иЎЊгЃ†гЂ‚
+	 * @param transform ConvexMeshColliderг‚’иїЅеЉ гЃ™г‚‹Transformг‚ігѓігѓќгѓјгѓЌгѓігѓ€
+	 * @param data иїЅеЉ гЃ™г‚‹ConvexMeshColliderгЃ®еЅўзЉ¶гѓ‡гѓјг‚ї
+	 * @param outHandle иїЅеЉ гЃ•г‚ЊгЃџConvexMeshColliderгЃ®ShapeHandleг‚’ж јзґЌгЃ™г‚‹еЏ‚з…§гЂ‚иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇжњ‰еЉ№гЃЄShapeHandleгЃЊж јзґЌгЃ•г‚ЊгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇINVALID_SHAPE_HANDLEгЃЊж јзґЌгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return иїЅеЉ гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇtrueгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇfalse
 	 */
 	static bool AddConvexMeshShape(Transform* transform, const MeshColliderData& data, ShapeHandle& outHandle);
 
-	// --- Њ`Џу (Collider) ‚МЏо•сЋж“ѕ ---
+	// --- еЅўзЉ¶ (Collider) гЃ®жѓ…е ±еЏ–еѕ— ---
 
 
-	// --- Њ`Џу (Collider) ‚МЏо•сђЭ’и ---
+	// --- еЅўзЉ¶ (Collider) гЃ®жѓ…е ±иЁ­е®љ ---
 
 
-	// --- ѓVЃ[ѓ“‚МђЭ’и ---
+	// --- г‚·гѓјгѓігЃ®иЁ­е®љ ---
 
 	/**
-	 * @brief ѓVЃ[ѓ“‚МЏd—Н‚рђЭ’и‚·‚й
-	 * @param gravity ђЭ’и‚·‚йЏd—Н‚МѓxѓNѓgѓ‹ЃB’КЏн‚НYЋІ•ыЊь‚Й•‰‚М’l‚рђЭ’и‚µ‚Ь‚·Ѓi—б: (0, -9.81, 0)ЃjЃB
+	 * @brief г‚·гѓјгѓігЃ®й‡ЌеЉ›г‚’иЁ­е®љгЃ™г‚‹
+	 * @param gravity иЁ­е®љгЃ™г‚‹й‡ЌеЉ›гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚йЂљеёёгЃЇYи»ёж–№еђ‘гЃ«иІ гЃ®еЂ¤г‚’иЁ­е®љгЃ—гЃѕгЃ™пј€дѕ‹: (0, -9.81, 0)пј‰гЂ‚
 	 */
 	static void SetGravity(const Vector3& gravity);
 
 	/**
-	 * @brief ѓVЃ[ѓ“‚МЏd—Н‚рЋж“ѕ‚·‚й
-	 * @return Њ»ЌЭ‚МѓVЃ[ѓ“‚МЏd—Н‚МѓxѓNѓgѓ‹
+	 * @brief г‚·гѓјгѓігЃ®й‡ЌеЉ›г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @return зЏѕењЁгЃ®г‚·гѓјгѓігЃ®й‡ЌеЉ›гЃ®гѓ™г‚Їгѓ€гѓ«
 	 */
 	static Vector3 GetGravity();
 
 
-	// --- ѓЊѓCѓLѓѓѓXѓg ---
+	// --- гѓ¬г‚¤г‚­гѓЈг‚№гѓ€ ---
 
 	/**
-	 * @brief ѓЊѓCѓLѓѓѓXѓg‚рЋАЌs‚·‚й
-	 * @param origin ѓЊѓC‚М”­ЋЛ“_‚М€К’u
-	 * @param direction ѓЊѓC‚М”­ЋЛ•ыЊьЃiђі‹K‰»‚і‚к‚Д‚ў‚й•K—v‚Є‚ ‚и‚Ь‚·Ѓj
-	 * @param maxDistance ѓЊѓC‚МЌЕ‘е‹——Ј
-	 * @param hitInfo ѓЊѓC‚ЄЏХ“Л‚µ‚ЅЏкЌ‡‚ЙЏХ“ЛЏо•с‚рЉi”[‚·‚йRaycastHitЌ\‘ў‘М‚Ц‚МЋQЏЖЃBѓЊѓC‚ЄЏХ“Л‚µ‚И‚©‚Б‚ЅЏкЌ‡‚Н“а—e‚Є•ПЌX‚і‚к‚Ь‚№‚сЃB
-	 * @param layerMask ѓЊѓCѓLѓѓѓXѓg‚ЕЊџЏo‚·‚йѓЊѓCѓ„Ѓ[‚Мѓrѓbѓgѓtѓ‰ѓOЃBЏИ—Є‚µ‚ЅЏкЌ‡‚Н‚·‚Ч‚Д‚МѓЊѓCѓ„Ѓ[‚ЄЊџЏo‚і‚к‚Ь‚·ЃB
-	 * @return ѓЊѓC‚Є‰Ѕ‚©‚ЙЏХ“Л‚µ‚ЅЏкЌ‡‚НtrueЃAЏХ“Л‚µ‚И‚©‚Б‚ЅЏкЌ‡‚Нfalse
+	 * @brief гѓ¬г‚¤г‚­гѓЈг‚№гѓ€г‚’е®џиЎЊгЃ™г‚‹
+	 * @param origin гѓ¬г‚¤гЃ®з™єе°„з‚№гЃ®дЅЌзЅ®
+	 * @param direction гѓ¬г‚¤гЃ®з™єе°„ж–№еђ‘пј€ж­Ји¦ЏеЊ–гЃ•г‚ЊгЃ¦гЃ„г‚‹еї…и¦ЃгЃЊгЃ‚г‚ЉгЃѕгЃ™пј‰
+	 * @param maxDistance гѓ¬г‚¤гЃ®жњЂе¤§и·ќй›ў
+	 * @param hitInfo гѓ¬г‚¤гЃЊиЎќзЄЃгЃ—гЃџе ґеђ€гЃ«иЎќзЄЃжѓ…е ±г‚’ж јзґЌгЃ™г‚‹RaycastHitж§‹йЂ дЅ“гЃёгЃ®еЏ‚з…§гЂ‚гѓ¬г‚¤гЃЊиЎќзЄЃгЃ—гЃЄгЃ‹гЃЈгЃџе ґеђ€гЃЇе†…е®№гЃЊе¤‰ж›ґгЃ•г‚ЊгЃѕгЃ›г‚“гЂ‚
+	 * @param layerMask гѓ¬г‚¤г‚­гѓЈг‚№гѓ€гЃ§ж¤ње‡єгЃ™г‚‹гѓ¬г‚¤гѓ¤гѓјгЃ®гѓ“гѓѓгѓ€гѓ•гѓ©г‚°гЂ‚зњЃз•ҐгЃ—гЃџе ґеђ€гЃЇгЃ™гЃ№гЃ¦гЃ®гѓ¬г‚¤гѓ¤гѓјгЃЊж¤ње‡єгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return гѓ¬г‚¤гЃЊдЅ•гЃ‹гЃ«иЎќзЄЃгЃ—гЃџе ґеђ€гЃЇtrueгЂЃиЎќзЄЃгЃ—гЃЄгЃ‹гЃЈгЃџе ґеђ€гЃЇfalse
 	 */
 	static bool Raycast(const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit& hitInfo, LayerMask layerMask = 0xFFFFFFFF);
 
 
 
-	// --- ѓЊѓCѓ„Ѓ[ђЭ’и ---
+	// --- гѓ¬г‚¤гѓ¤гѓјиЁ­е®љ ---
 
 	/**
-	 * @brief Shape‚МѓЊѓCѓ„Ѓ[‚рђЭ’и‚·‚й
-	 * @param shapeHandle ѓЊѓCѓ„Ѓ[‚рђЭ’и‚·‚йShape‚МShapeHandle
-	 * @param layer ђЭ’и‚·‚йѓЊѓCѓ„Ѓ[‚МIDЃi0~31Ѓj
+	 * @brief ShapeгЃ®гѓ¬г‚¤гѓ¤гѓјг‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle гѓ¬г‚¤гѓ¤гѓјг‚’иЁ­е®љгЃ™г‚‹ShapeгЃ®ShapeHandle
+	 * @param layer иЁ­е®љгЃ™г‚‹гѓ¬г‚¤гѓ¤гѓјгЃ®IDпј€0~31пј‰
 	 */
 	static void SetLayer(const ShapeHandle& shapeHandle, Layer layer);
 
 	/**
-	 * @brief Shape‚МѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚рђЭ’и‚·‚й
-	 * @param shapeHandle ѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚рђЭ’и‚·‚йShape‚МShapeHandle
-	 * @param layerMask ђЭ’и‚·‚йѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚Мѓrѓbѓgѓtѓ‰ѓO
+	 * @brief ShapeгЃ®гѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚Їг‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle гѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚Їг‚’иЁ­е®љгЃ™г‚‹ShapeгЃ®ShapeHandle
+	 * @param layerMask иЁ­е®љгЃ™г‚‹гѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚ЇгЃ®гѓ“гѓѓгѓ€гѓ•гѓ©г‚°
 	 */
 	static void SetLayerMask(const ShapeHandle& shapeHandle, LayerMask layerMask);
 
 	/**
-	 * @brief Shape‚МѓЊѓCѓ„Ѓ[‚ЖѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚рђЭ’и‚·‚й
-	 * @param shapeHandle ѓЊѓCѓ„Ѓ[‚ЖѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚рђЭ’и‚·‚йShape‚МShapeHandle
-	 * @param layer ђЭ’и‚·‚йѓЊѓCѓ„Ѓ[‚МIDЃi0~31Ѓj
-	 * @param layerMask ђЭ’и‚·‚йѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚Мѓrѓbѓgѓtѓ‰ѓO
+	 * @brief ShapeгЃ®гѓ¬г‚¤гѓ¤гѓјгЃЁгѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚Їг‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle гѓ¬г‚¤гѓ¤гѓјгЃЁгѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚Їг‚’иЁ­е®љгЃ™г‚‹ShapeгЃ®ShapeHandle
+	 * @param layer иЁ­е®љгЃ™г‚‹гѓ¬г‚¤гѓ¤гѓјгЃ®IDпј€0~31пј‰
+	 * @param layerMask иЁ­е®љгЃ™г‚‹гѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚ЇгЃ®гѓ“гѓѓгѓ€гѓ•гѓ©г‚°
 	 */
 	static void UpdateFilterData(const ShapeHandle& shapeHandle, Layer layer, LayerMask layerMask);
 
 	/**
-	 * @brief Shape‚МѓЊѓCѓ„Ѓ[‚рЋж“ѕ‚·‚й
-	 * @param shapeHandle ѓЊѓCѓ„Ѓ[‚рЋж“ѕ‚·‚йShape‚МShapeHandle
-	 * @return Ћж“ѕ‚µ‚ЅѓЊѓCѓ„Ѓ[‚МIDЃi0~31ЃjЃBЋж“ѕ‚ЙЋё”s‚µ‚ЅЏкЌ‡‚Н0‚р•Ф‚µ‚Ь‚·ЃB
+	 * @brief ShapeгЃ®гѓ¬г‚¤гѓ¤гѓјг‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param shapeHandle гѓ¬г‚¤гѓ¤гѓјг‚’еЏ–еѕ—гЃ™г‚‹ShapeгЃ®ShapeHandle
+	 * @return еЏ–еѕ—гЃ—гЃџгѓ¬г‚¤гѓ¤гѓјгЃ®IDпј€0~31пј‰гЂ‚еЏ–еѕ—гЃ«е¤±ж•—гЃ—гЃџе ґеђ€гЃЇ0г‚’иї”гЃ—гЃѕгЃ™гЂ‚
 	 */
 	//static Layer GetLayer(const ShapeHandle& shapeHandle);
 
 	/**
-	 * @brief Shape‚МѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚рЋж“ѕ‚·‚й
-	 * @param shapeHandle ѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚рЋж“ѕ‚·‚йShape‚МShapeHandle
-	 * @return Ћж“ѕ‚µ‚ЅѓЊѓCѓ„Ѓ[ѓ}ѓXѓN‚Мѓrѓbѓgѓtѓ‰ѓOЃBЋж“ѕ‚ЙЋё”s‚µ‚ЅЏкЌ‡‚Н0‚р•Ф‚µ‚Ь‚·ЃB
+	 * @brief ShapeгЃ®гѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚Їг‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param shapeHandle гѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚Їг‚’еЏ–еѕ—гЃ™г‚‹ShapeгЃ®ShapeHandle
+	 * @return еЏ–еѕ—гЃ—гЃџгѓ¬г‚¤гѓ¤гѓјгѓћг‚№г‚ЇгЃ®гѓ“гѓѓгѓ€гѓ•гѓ©г‚°гЂ‚еЏ–еѕ—гЃ«е¤±ж•—гЃ—гЃџе ґеђ€гЃЇ0г‚’иї”гЃ—гЃѕгЃ™гЂ‚
 	 */
 	//static LayerMask GetLayerMask(const ShapeHandle& shapeHandle);
 
 	/**
-	 * @brief Ћw’и‚µ‚ЅѓЊѓCѓ„Ѓ[‚МЏХ“Лѓ}ѓXѓN‚рЋж“ѕ‚·‚й
-	 * @param layer ЏХ“Лѓ}ѓXѓN‚рЋж“ѕ‚·‚йѓЊѓCѓ„Ѓ[‚МIDЃi0~31Ѓj
-	 * @return Ћж“ѕ‚µ‚ЅЏХ“Лѓ}ѓXѓN‚Мѓrѓbѓgѓtѓ‰ѓOЃBЋж“ѕ‚ЙЋё”s‚µ‚ЅЏкЌ‡‚Н0‚р•Ф‚µ‚Ь‚·ЃB
+	 * @brief жЊ‡е®љгЃ—гЃџгѓ¬г‚¤гѓ¤гѓјгЃ®иЎќзЄЃгѓћг‚№г‚Їг‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param layer иЎќзЄЃгѓћг‚№г‚Їг‚’еЏ–еѕ—гЃ™г‚‹гѓ¬г‚¤гѓ¤гѓјгЃ®IDпј€0~31пј‰
+	 * @return еЏ–еѕ—гЃ—гЃџиЎќзЄЃгѓћг‚№г‚ЇгЃ®гѓ“гѓѓгѓ€гѓ•гѓ©г‚°гЂ‚еЏ–еѕ—гЃ«е¤±ж•—гЃ—гЃџе ґеђ€гЃЇ0г‚’иї”гЃ—гЃѕгЃ™гЂ‚
 	 */
 	static LayerMask GetCollisionMask(Layer layer);
 
 	/**
-	 * @brief 2‚В‚МѓЊѓCѓ„Ѓ[ЉФ‚МЏХ“Л‚р–іЋ‹‚·‚й‚©‚З‚¤‚©‚рЋж“ѕ‚·‚й
-	 * @param layer1 ѓЊѓCѓ„Ѓ[1‚МIDЃi0~31Ѓj
-	 * @param layer2 ѓЊѓCѓ„Ѓ[2‚МIDЃi0~31Ѓj
-	 * @return –іЋ‹‚·‚йЏкЌ‡‚НtrueЃA–іЋ‹‚µ‚И‚ўЏкЌ‡‚Нfalse
+	 * @brief 2гЃ¤гЃ®гѓ¬г‚¤гѓ¤гѓјй–“гЃ®иЎќзЄЃг‚’з„Ўи¦–гЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param layer1 гѓ¬г‚¤гѓ¤гѓј1гЃ®IDпј€0~31пј‰
+	 * @param layer2 гѓ¬г‚¤гѓ¤гѓј2гЃ®IDпј€0~31пј‰
+	 * @return з„Ўи¦–гЃ™г‚‹е ґеђ€гЃЇtrueгЂЃз„Ўи¦–гЃ—гЃЄгЃ„е ґеђ€гЃЇfalse
 	 */
 	static bool GetIgnoreLayerCollision(Layer layer1, Layer layer2);
 
 	/**
-	 * @brief 2‚В‚МѓЊѓCѓ„Ѓ[ЉФ‚МЏХ“Л‚р–іЋ‹‚·‚й‚©‚З‚¤‚©‚рђЭ’и‚·‚й
-	 * @param layer1 ѓЊѓCѓ„Ѓ[1‚МIDЃi0~31Ѓj
-	 * @param layer2 ѓЊѓCѓ„Ѓ[2‚МIDЃi0~31Ѓj
-	 * @param ignore –іЋ‹‚·‚йЏкЌ‡‚НtrueЃA–іЋ‹‚µ‚И‚ўЏкЌ‡‚НfalseЃBЏИ—Є‚µ‚ЅЏкЌ‡‚Нtrue‚Й‚И‚и‚Ь‚·ЃB
+	 * @brief 2гЃ¤гЃ®гѓ¬г‚¤гѓ¤гѓјй–“гЃ®иЎќзЄЃг‚’з„Ўи¦–гЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹г‚’иЁ­е®љгЃ™г‚‹
+	 * @param layer1 гѓ¬г‚¤гѓ¤гѓј1гЃ®IDпј€0~31пј‰
+	 * @param layer2 гѓ¬г‚¤гѓ¤гѓј2гЃ®IDпј€0~31пј‰
+	 * @param ignore з„Ўи¦–гЃ™г‚‹е ґеђ€гЃЇtrueгЂЃз„Ўи¦–гЃ—гЃЄгЃ„е ґеђ€гЃЇfalseгЂ‚зњЃз•ҐгЃ—гЃџе ґеђ€гЃЇtrueгЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 */
 	static void SetIgnoreLayerCollision(Layer layer1, Layer layer2, bool ignore = true);
 
 
-	// --- •Ё—ќѓ}ѓeѓЉѓAѓ‹‚М’З‰Б ---
+	// --- з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®иїЅеЉ  ---
 
 	/**
-	 * @brief •Ё—ќѓ}ѓeѓЉѓAѓ‹‚рЌмђ¬‚µ‚Д•Ё—ќѓGѓ“ѓWѓ“‚Й“o^‚·‚й
-	 * @param data Ќмђ¬‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚М“Бђ«‚р•\‚·PhysicsMaterialDataЌ\‘ў‘М
-	 * @param overrideHandle Ќмђ¬‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚ЙЉ„‚и“–‚Д‚йMaterialHandleЃBЏИ—Є‚µ‚ЅЏкЌ‡‚НЋ©“®“I‚ЙЉ„‚и“–‚Д‚з‚к‚Ь‚·ЃBЉщ‘¶‚М—LЊш‚ИMaterialHandle‚рЋw’и‚µ‚ЅЏкЌ‡‚НЃA‚»‚МMaterialHandle‚рЋќ‚В•Ё—ќѓ}ѓeѓЉѓAѓ‹‚ЄЏгЏ‘‚«‚і‚к‚Ь‚·ЃB
-	 * @return Ќмђ¬‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НЌмђ¬‚і‚к‚Ѕ•Ё—ќѓ}ѓeѓЉѓAѓ‹‚р•\‚·PhysicsMaterialЌ\‘ў‘МЃAЋё”s‚µ‚ЅЏкЌ‡‚Н–іЊш‚ИMaterialHandle‚рЋќ‚ВPhysicsMaterialЌ\‘ў‘М
+	 * @brief з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«г‚’дЅњж€ђгЃ—гЃ¦з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ«з™»йЊІгЃ™г‚‹
+	 * @param data дЅњж€ђгЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®з‰№жЂ§г‚’иЎЁгЃ™PhysicsMaterialDataж§‹йЂ дЅ“
+	 * @param overrideHandle дЅњж€ђгЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ«е‰Іг‚ЉеЅ“гЃ¦г‚‹MaterialHandleгЂ‚зњЃз•ҐгЃ—гЃџе ґеђ€гЃЇи‡Єе‹•зљ„гЃ«е‰Іг‚ЉеЅ“гЃ¦г‚‰г‚ЊгЃѕгЃ™гЂ‚ж—ўе­гЃ®жњ‰еЉ№гЃЄMaterialHandleг‚’жЊ‡е®љгЃ—гЃџе ґеђ€гЃЇгЂЃгЃќгЃ®MaterialHandleг‚’жЊЃгЃ¤з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃЊдёЉж›ёгЃЌгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return дЅњж€ђгЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇдЅњж€ђгЃ•г‚ЊгЃџз‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«г‚’иЎЁгЃ™PhysicsMaterialж§‹йЂ дЅ“гЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇз„ЎеЉ№гЃЄMaterialHandleг‚’жЊЃгЃ¤PhysicsMaterialж§‹йЂ дЅ“
 	 */
 	static PhysicsMaterial CreateAndRegisterMaterial(const PhysicsMaterialData& data, MaterialHandle overrideHandle = INVALID_MATERIAL_HANDLE);
 
-	// --- •Ё—ќѓ}ѓeѓЉѓAѓ‹‚МЌнЏњ ---
+	// --- з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®е‰Љй™¤ ---
 
 	/**
-	 * @brief •Ё—ќѓ}ѓeѓЉѓAѓ‹‚рЌнЏњ‚µЃA•Ё—ќѓGѓ“ѓWѓ“‚©‚з“o^‰рЏњ‚·‚й
-	 * @param handle ЌнЏњ‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚МMaterialHandle
+	 * @brief з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«г‚’е‰Љй™¤гЃ—гЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃ‹г‚‰з™»йЊІи§Јй™¤гЃ™г‚‹
+	 * @param handle е‰Љй™¤гЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®MaterialHandle
 	 */
 	static void RemoveMaterial(MaterialHandle handle);
 
 
-	// --- •Ё—ќѓ}ѓeѓЉѓAѓ‹‚МЏо•сЋж“ѕ ---
+	// --- з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®жѓ…е ±еЏ–еѕ— ---
 
 	/**
-	 * @brief •Ё—ќѓ}ѓeѓЉѓAѓ‹‚М“Бђ«‚рЋж“ѕ‚·‚й
-	 * @param handle “Бђ«‚рЋж“ѕ‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚МMaterialHandle
-	 * @param outMaterial Ћж“ѕ‚µ‚Ѕ•Ё—ќѓ}ѓeѓЉѓAѓ‹‚М“Бђ«‚рЉi”[‚·‚йPhysicsMaterialDataЌ\‘ў‘М‚Ц‚МЋQЏЖ
-	 * @return Ћж“ѕ‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НtrueЃAЋё”s‚µ‚ЅЏкЌ‡‚Нfalse
+	 * @brief з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®з‰№жЂ§г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle з‰№жЂ§г‚’еЏ–еѕ—гЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®MaterialHandle
+	 * @param outMaterial еЏ–еѕ—гЃ—гЃџз‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®з‰№жЂ§г‚’ж јзґЌгЃ™г‚‹PhysicsMaterialDataж§‹йЂ дЅ“гЃёгЃ®еЏ‚з…§
+	 * @return еЏ–еѕ—гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇtrueгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇfalse
 	 */
 	static bool GetMaterialData(MaterialHandle handle, PhysicsMaterialData& outMaterial);
 
-	// --- •Ё—ќѓ}ѓeѓЉѓAѓ‹‚МЏо•сђЭ’и ---
+	// --- з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®жѓ…е ±иЁ­е®љ ---
 
 	/**
-	 * @brief •Ё—ќѓ}ѓeѓЉѓAѓ‹‚М“Бђ«‚рђЭ’и‚·‚й
-	 * @param handle “Бђ«‚рђЭ’и‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚МMaterialHandle
-	 * @param material ђЭ’и‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚М“Бђ«‚р•\‚·PhysicsMaterialDataЌ\‘ў‘М
-	 * @return ђЭ’и‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НtrueЃAЋё”s‚µ‚ЅЏкЌ‡‚Нfalse
+	 * @brief з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®з‰№жЂ§г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle з‰№жЂ§г‚’иЁ­е®љгЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®MaterialHandle
+	 * @param material иЁ­е®љгЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®з‰№жЂ§г‚’иЎЁгЃ™PhysicsMaterialDataж§‹йЂ дЅ“
+	 * @return иЁ­е®љгЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇtrueгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇfalse
 	 */
 	static bool SetMaterialData(MaterialHandle handle, const PhysicsMaterialData& material);
 
-	// --- •Ё—ќѓ}ѓeѓЉѓAѓ‹ѓ}ѓbѓv‚МЉЗ—ќ ---
+	// --- з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гѓћгѓѓгѓ—гЃ®з®Ўзђ† ---
 
 	/**
-	 * @brief •Ё—ќѓ}ѓeѓЉѓAѓ‹‚М–ј‘O‚ЖMaterialHandle‚Мѓ}ѓbѓv‚рЌXђV‚·‚й
-	 * @details •Ё—ќѓ}ѓeѓЉѓAѓ‹‚М’З‰БЃAЌнЏњЃA“Бђ«‚М•ПЌX‚И‚З‚ЄЌs‚н‚к‚ЅЌЫ‚ЙЃA‚±‚МЉЦђ”‚рЊД‚СЏo‚µ‚Дѓ}ѓbѓv‚рЌЕђV‚МЏу‘Ф‚Й•Ы‚В•K—v‚Є‚ ‚и‚Ь‚·ЃB
+	 * @brief з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰ЌгЃЁMaterialHandleгЃ®гѓћгѓѓгѓ—г‚’ж›ґж–°гЃ™г‚‹
+	 * @details з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®иїЅеЉ гЂЃе‰Љй™¤гЂЃз‰№жЂ§гЃ®е¤‰ж›ґгЃЄгЃ©гЃЊиЎЊг‚Џг‚ЊгЃџйљ›гЃ«гЂЃгЃ“гЃ®й–ўж•°г‚’е‘јгЃіе‡єгЃ—гЃ¦гѓћгѓѓгѓ—г‚’жњЂж–°гЃ®зЉ¶ж…‹гЃ«дїќгЃ¤еї…и¦ЃгЃЊгЃ‚г‚ЉгЃѕгЃ™гЂ‚
 	 */
 	static void UpdateMaterialNameMap();
 
-	// --- •Ё—ќѓ}ѓeѓЉѓAѓ‹‚М–ј‘O‚©‚зMaterialHandle‚рЋж“ѕ‚·‚й ---
+	// --- з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰ЌгЃ‹г‚‰MaterialHandleг‚’еЏ–еѕ—гЃ™г‚‹ ---
 
 	/**
-	 * @brief •Ё—ќѓ}ѓeѓЉѓAѓ‹‚М–ј‘O‚©‚зMaterialHandle‚рЋж“ѕ‚·‚й
-	 * @param name Ћж“ѕ‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚М–ј‘O
-	 * @param outHandle Ћж“ѕ‚µ‚ЅMaterialHandle‚рЉi”[‚·‚йЋQЏЖЃBЋж“ѕ‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚Н—LЊш‚ИMaterialHandle‚ЄЉi”[‚і‚кЃAЋё”s‚µ‚ЅЏкЌ‡‚НINVALID_MATERIAL_HANDLE‚ЄЉi”[‚і‚к‚Ь‚·ЃB
-	 * @return Ћж“ѕ‚Йђ¬Њч‚µ‚ЅЏкЌ‡‚НtrueЃAЋё”s‚µ‚ЅЏкЌ‡‚Нfalse
+	 * @brief з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰ЌгЃ‹г‚‰MaterialHandleг‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param name еЏ–еѕ—гЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰Ќ
+	 * @param outHandle еЏ–еѕ—гЃ—гЃџMaterialHandleг‚’ж јзґЌгЃ™г‚‹еЏ‚з…§гЂ‚еЏ–еѕ—гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇжњ‰еЉ№гЃЄMaterialHandleгЃЊж јзґЌгЃ•г‚ЊгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇINVALID_MATERIAL_HANDLEгЃЊж јзґЌгЃ•г‚ЊгЃѕгЃ™гЂ‚
+	 * @return еЏ–еѕ—гЃ«ж€ђеЉџгЃ—гЃџе ґеђ€гЃЇtrueгЂЃе¤±ж•—гЃ—гЃџе ґеђ€гЃЇfalse
 	 */
 	static bool GetMaterialHandleByName(const std::string& name, MaterialHandle& outHandle);
 
 	/**
-	 * @brief ‚·‚Ч‚Д‚М•Ё—ќѓ}ѓeѓЉѓAѓ‹‚М–ј‘O‚ЖMaterialHandle‚рЋж“ѕ‚·‚й
-	 * @param outNames ‚·‚Ч‚Д‚М•Ё—ќѓ}ѓeѓЉѓAѓ‹‚М–ј‘O‚рЉi”[‚·‚йstd::vector<const char*>‚Ц‚МЋQЏЖ
-	 * @param outHandles ‚·‚Ч‚Д‚М•Ё—ќѓ}ѓeѓЉѓAѓ‹‚МMaterialHandle‚рЉi”[‚·‚йstd::vector<MaterialHandle>‚Ц‚МЋQЏЖ
+	 * @brief гЃ™гЃ№гЃ¦гЃ®з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰ЌгЃЁMaterialHandleг‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param outNames гЃ™гЃ№гЃ¦гЃ®з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰Ќг‚’ж јзґЌгЃ™г‚‹std::vector<const char*>гЃёгЃ®еЏ‚з…§
+	 * @param outHandles гЃ™гЃ№гЃ¦гЃ®з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®MaterialHandleг‚’ж јзґЌгЃ™г‚‹std::vector<MaterialHandle>гЃёгЃ®еЏ‚з…§
 	 */
 	static void GetAllMaterialNamesAndHandles(std::vector<const char*>& outNames, std::vector<MaterialHandle>& outHandles);
 
 
-	// --- •Ё—ќ‘ЂЌм (Rigidbody) ‚М‘‹Њы ---
+	// --- з‰©зђ†ж“ЌдЅњ (Rigidbody) гЃ®зЄ“еЏЈ ---
 
 	/**
-	 * @brief Actor‚МЋї—К‚рђЭ’и‚·‚й
-	 * @param handle Ћї—К‚рђЭ’и‚·‚йActorHandle
-	 * @param mass ђЭ’и‚·‚йЋї—К‚М’l
+	 * @brief ActorгЃ®иіЄй‡Џг‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle иіЄй‡Џг‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param mass иЁ­е®љгЃ™г‚‹иіЄй‡ЏгЃ®еЂ¤
 	 */
 	static void SetMass(const ActorHandle& handle, float mass);
 
 	/**
-	 * @brief Actor‚МЉµђ«ѓeѓ“ѓ\ѓ‹‚рђЭ’и‚·‚й
-	 * @param handle Љµђ«ѓeѓ“ѓ\ѓ‹‚рђЭ’и‚·‚йActorHandle
-	 * @param inertiaTensor ђЭ’и‚·‚йЉµђ«ѓeѓ“ѓ\ѓ‹‚МѓxѓNѓgѓ‹Ѓix, y, zђ¬•Є‚Є‚»‚к‚ј‚к‚МЋІ‚МЉµђ«ѓ‚Ѓ[ѓЃѓ“ѓg‚р•\‚·Ѓj
+	 * @brief ActorгЃ®ж…ЈжЂ§гѓ†гѓіг‚Ѕгѓ«г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle ж…ЈжЂ§гѓ†гѓіг‚Ѕгѓ«г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param inertiaTensor иЁ­е®љгЃ™г‚‹ж…ЈжЂ§гѓ†гѓіг‚Ѕгѓ«гЃ®гѓ™г‚Їгѓ€гѓ«пј€x, y, zж€ђе€†гЃЊгЃќг‚ЊгЃћг‚ЊгЃ®и»ёгЃ®ж…ЈжЂ§гѓўгѓјгѓЎгѓігѓ€г‚’иЎЁгЃ™пј‰
 	 */
 	static void SetInertiaTensor(const ActorHandle& handle, const Vector3& inertiaTensor);
 
 	/**
-	 * @brief Actor‚р‹N‚±‚·
-	 * @param handle ‹N‚±‚·ActorHandle
-	 * @details •Ё—ќѓGѓ“ѓWѓ“‚Е‚НЃA€к’иЋћЉФ“®‚«‚Є‚И‚ўѓAѓNѓ^Ѓ[‚НЋ©“®“I‚ЙѓXѓЉЃ[ѓvЏу‘Ф‚Й‚И‚и‚Ь‚·ЃBѓXѓЉЃ[ѓvЏу‘Ф‚МѓAѓNѓ^Ѓ[‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚МЊvЋZ‚©‚зЏњЉO‚і‚к‚й‚Ѕ‚ЯЃAѓpѓtѓHЃ[ѓ}ѓ“ѓX‚ЄЊьЏг‚µ‚Ь‚·ЃB‚Ѕ‚ѕ‚µЃAѓXѓЉЃ[ѓvЏу‘Ф‚МѓAѓNѓ^Ѓ[‚НЉO•”‚©‚з‚М—Н‚вЏХЊ‚‚рЋу‚Ї‚Д‚а”Ѕ‰ћ‚µ‚Ь‚№‚сЃBWakeUpЉЦђ”‚рЊД‚СЏo‚·‚±‚Ж‚ЕЃAѓXѓЉЃ[ѓvЏу‘Ф‚МѓAѓNѓ^Ѓ[‚р‹N‚±‚µ‚Д•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚ЙЌД‚СЋQ‰Б‚і‚№‚й‚±‚Ж‚Є‚Е‚«‚Ь‚·ЃB
+	 * @brief Actorг‚’иµ·гЃ“гЃ™
+	 * @param handle иµ·гЃ“гЃ™ActorHandle
+	 * @details з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ§гЃЇгЂЃдёЂе®љж™‚й–“е‹•гЃЌгЃЊгЃЄгЃ„г‚ўг‚Їг‚їгѓјгЃЇи‡Єе‹•зљ„гЃ«г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ®г‚ўг‚Їг‚їгѓјгЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®иЁ€з®—гЃ‹г‚‰й™¤е¤–гЃ•г‚Њг‚‹гЃџг‚ЃгЂЃгѓ‘гѓ•г‚©гѓјгѓћгѓіг‚№гЃЊеђ‘дёЉгЃ—гЃѕгЃ™гЂ‚гЃџгЃ гЃ—гЂЃг‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ®г‚ўг‚Їг‚їгѓјгЃЇе¤–йѓЁгЃ‹г‚‰гЃ®еЉ›г‚„иЎќж’ѓг‚’еЏ—гЃ‘гЃ¦г‚‚еЏЌеїњгЃ—гЃѕгЃ›г‚“гЂ‚WakeUpй–ўж•°г‚’е‘јгЃіе‡єгЃ™гЃ“гЃЁгЃ§гЂЃг‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ®г‚ўг‚Їг‚їгѓјг‚’иµ·гЃ“гЃ—гЃ¦з‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ«е†ЌгЃіеЏ‚еЉ гЃ•гЃ›г‚‹гЃ“гЃЁгЃЊгЃ§гЃЌгЃѕгЃ™гЂ‚
 	 */
 	static void WakeUp(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚рѓXѓЉЃ[ѓvЏу‘Ф‚Й‚·‚й
-	 * @param handle ѓXѓЉЃ[ѓvЏу‘Ф‚Й‚·‚йActorHandle
-	 * @details •Ё—ќѓGѓ“ѓWѓ“‚Е‚НЃA€к’иЋћЉФ“®‚«‚Є‚И‚ўѓAѓNѓ^Ѓ[‚НЋ©“®“I‚ЙѓXѓЉЃ[ѓvЏу‘Ф‚Й‚И‚и‚Ь‚·ЃBѓXѓЉЃ[ѓvЏу‘Ф‚МѓAѓNѓ^Ѓ[‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚МЊvЋZ‚©‚зЏњЉO‚і‚к‚й‚Ѕ‚ЯЃAѓpѓtѓHЃ[ѓ}ѓ“ѓX‚ЄЊьЏг‚µ‚Ь‚·ЃB‚Ѕ‚ѕ‚µЃAѓXѓЉЃ[ѓvЏу‘Ф‚МѓAѓNѓ^Ѓ[‚НЉO•”‚©‚з‚М—Н‚вЏХЊ‚‚рЋу‚Ї‚Д‚а”Ѕ‰ћ‚µ‚Ь‚№‚сЃBPutToSleepЉЦђ”‚рЊД‚СЏo‚·‚±‚Ж‚ЕЃAѓAѓNѓ^Ѓ[‚р‹­ђ§“I‚ЙѓXѓЉЃ[ѓvЏу‘Ф‚Й‚·‚й‚±‚Ж‚Є‚Е‚«‚Ь‚·ЃB
+	 * @brief Actorг‚’г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ«гЃ™г‚‹
+	 * @param handle г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ«гЃ™г‚‹ActorHandle
+	 * @details з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ§гЃЇгЂЃдёЂе®љж™‚й–“е‹•гЃЌгЃЊгЃЄгЃ„г‚ўг‚Їг‚їгѓјгЃЇи‡Єе‹•зљ„гЃ«г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ®г‚ўг‚Їг‚їгѓјгЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®иЁ€з®—гЃ‹г‚‰й™¤е¤–гЃ•г‚Њг‚‹гЃџг‚ЃгЂЃгѓ‘гѓ•г‚©гѓјгѓћгѓіг‚№гЃЊеђ‘дёЉгЃ—гЃѕгЃ™гЂ‚гЃџгЃ гЃ—гЂЃг‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ®г‚ўг‚Їг‚їгѓјгЃЇе¤–йѓЁгЃ‹г‚‰гЃ®еЉ›г‚„иЎќж’ѓг‚’еЏ—гЃ‘гЃ¦г‚‚еЏЌеїњгЃ—гЃѕгЃ›г‚“гЂ‚PutToSleepй–ўж•°г‚’е‘јгЃіе‡єгЃ™гЃ“гЃЁгЃ§гЂЃг‚ўг‚Їг‚їгѓјг‚’еј·е€¶зљ„гЃ«г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ«гЃ™г‚‹гЃ“гЃЁгЃЊгЃ§гЃЌгЃѕгЃ™гЂ‚
 	 */
 	static void PutToSleep(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚МЉµђ«ѓeѓ“ѓ\ѓ‹‚М‰с“]‚рђЭ’и‚·‚й
-	 * @param handle Љµђ«ѓeѓ“ѓ\ѓ‹‚М‰с“]‚рђЭ’и‚·‚йActorHandle
-	 * @param inertiaTensorRotation ђЭ’и‚·‚йЉµђ«ѓeѓ“ѓ\ѓ‹‚М‰с“]‚р•\‚·ѓNѓHЃ[ѓ^ѓjѓIѓ“
+	 * @brief ActorгЃ®ж…ЈжЂ§гѓ†гѓіг‚Ѕгѓ«гЃ®е›ћи»ўг‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle ж…ЈжЂ§гѓ†гѓіг‚Ѕгѓ«гЃ®е›ћи»ўг‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param inertiaTensorRotation иЁ­е®љгЃ™г‚‹ж…ЈжЂ§гѓ†гѓіг‚Ѕгѓ«гЃ®е›ћи»ўг‚’иЎЁгЃ™г‚Їг‚©гѓјг‚їгѓ‹г‚Єгѓі
 	 */
 	static bool IsSleeping(const ActorHandle& handle);
 
 	/**
-	 * @brief Shape‚М•Ё—ќѓ}ѓeѓЉѓAѓ‹‚рђЭ’и‚·‚й
-	 * @param shapeHandle •Ё—ќѓ}ѓeѓЉѓAѓ‹‚рђЭ’и‚·‚йShapeHandle
-	 * @param materialHandle ђЭ’и‚·‚й•Ё—ќѓ}ѓeѓЉѓAѓ‹‚МMaterialHandle
+	 * @brief ShapeгЃ®з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«г‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«г‚’иЁ­е®љгЃ™г‚‹ShapeHandle
+	 * @param materialHandle иЁ­е®љгЃ™г‚‹з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«гЃ®MaterialHandle
 	 */
 	static void SetMaterial(const ShapeHandle& shapeHandle, const MaterialHandle& materialHandle);
 
 	/**
-	 * @brief Shape‚МѓgѓЉѓKЃ[Џу‘Ф‚рђЭ’и‚·‚й
-	 * @param shapeHandle ѓgѓЉѓKЃ[Џу‘Ф‚рђЭ’и‚·‚йShapeHandle
-	 * @param isTrigger ѓgѓЉѓKЃ[Џу‘Ф‚р•\‚·ѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НѓgѓЉѓKЃ[‚Ж‚µ‚Д‹@”\‚µЃAfalse‚МЏкЌ‡‚Н’КЏн‚МѓRѓ‰ѓCѓ_Ѓ[‚Ж‚µ‚Д‹@”\‚µ‚Ь‚·ЃB
+	 * @brief ShapeгЃ®гѓ€гѓЄг‚¬гѓјзЉ¶ж…‹г‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle гѓ€гѓЄг‚¬гѓјзЉ¶ж…‹г‚’иЁ­е®љгЃ™г‚‹ShapeHandle
+	 * @param isTrigger гѓ€гѓЄг‚¬гѓјзЉ¶ж…‹г‚’иЎЁгЃ™гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇгѓ€гѓЄг‚¬гѓјгЃЁгЃ—гЃ¦ж©џиѓЅгЃ—гЂЃfalseгЃ®е ґеђ€гЃЇйЂљеёёгЃ®г‚ігѓ©г‚¤гѓЂгѓјгЃЁгЃ—гЃ¦ж©џиѓЅгЃ—гЃѕгЃ™гЂ‚
 	 */
 	static void SetTrigger(const ShapeHandle& shapeHandle, bool isTrigger);
 
 	/**
-	 * @brief Shape‚МђЪђGѓIѓtѓZѓbѓg‚рђЭ’и‚·‚й
-	 * @param shapeHandle ђЪђGѓIѓtѓZѓbѓg‚рђЭ’и‚·‚йShapeHandle
-	 * @param contactOffset ђЭ’и‚·‚йђЪђGѓIѓtѓZѓbѓg‚М’lЃBђЪђGѓIѓtѓZѓbѓg‚НЃA•Ё—ќѓGѓ“ѓWѓ“‚ЄЏХ“Л‚рЊџЏo‚·‚йЌЫ‚М‹——Ј‚М—]—T‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ShapeгЃ®жЋҐи§¦г‚Єгѓ•г‚»гѓѓгѓ€г‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle жЋҐи§¦г‚Єгѓ•г‚»гѓѓгѓ€г‚’иЁ­е®љгЃ™г‚‹ShapeHandle
+	 * @param contactOffset иЁ­е®љгЃ™г‚‹жЋҐи§¦г‚Єгѓ•г‚»гѓѓгѓ€гЃ®еЂ¤гЂ‚жЋҐи§¦г‚Єгѓ•г‚»гѓѓгѓ€гЃЇгЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃЊиЎќзЄЃг‚’ж¤ње‡єгЃ™г‚‹йљ›гЃ®и·ќй›ўгЃ®дЅ™иЈ•г‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static void SetContactOffset(const ShapeHandle& shapeHandle, float contactOffset);
 
 	/**
-	 * @brief Actor‚МЏd—Н‚М‰e‹ї‚рђЭ’и‚·‚й
-	 * @param handle Џd—Н‚М‰e‹ї‚рђЭ’и‚·‚йActorHandle
-	 * @param useGravity Џd—Н‚М‰e‹ї‚рЋу‚Ї‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НЏd—Н‚М‰e‹ї‚рЋу‚ЇЃAfalse‚МЏкЌ‡‚НЏd—Н‚М‰e‹ї‚рЋу‚Ї‚Ь‚№‚сЃB
+	 * @brief ActorгЃ®й‡ЌеЉ›гЃ®еЅ±йџїг‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle й‡ЌеЉ›гЃ®еЅ±йџїг‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param useGravity й‡ЌеЉ›гЃ®еЅ±йџїг‚’еЏ—гЃ‘г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇй‡ЌеЉ›гЃ®еЅ±йџїг‚’еЏ—гЃ‘гЂЃfalseгЃ®е ґеђ€гЃЇй‡ЌеЉ›гЃ®еЅ±йџїг‚’еЏ—гЃ‘гЃѕгЃ›г‚“гЂ‚
 	 */
 	static void SetUseGravity(const ActorHandle& handle, bool useGravity);
 
 	/**
-	 * @brief Actor‚МA‘±ЏХ“ЛЊџЏo (CCD) ‚МЋg—p‚рђЭ’и‚·‚й
-	 * @param handle CCD‚МЋg—p‚рђЭ’и‚·‚йActorHandle
-	 * @param useCCD CCD‚рЋg—p‚·‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НCCD‚рЋg—p‚µЃAfalse‚МЏкЌ‡‚НЋg—p‚µ‚Ь‚№‚сЃBCCD‚НЃAЌ‚‘¬‚Е€Ъ“®‚·‚й•Ё‘М‚Є‘ј‚М•Ё‘М‚р‚·‚и”І‚Ї‚й‚М‚р–h‚®‚Ѕ‚Я‚М‹@”\‚Е‚·ЃB
+	 * @brief ActorгЃ®йЂЈз¶љиЎќзЄЃж¤ње‡є (CCD) гЃ®дЅїз”Ёг‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle CCDгЃ®дЅїз”Ёг‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param useCCD CCDг‚’дЅїз”ЁгЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇCCDг‚’дЅїз”ЁгЃ—гЂЃfalseгЃ®е ґеђ€гЃЇдЅїз”ЁгЃ—гЃѕгЃ›г‚“гЂ‚CCDгЃЇгЂЃй«йЂџгЃ§з§»е‹•гЃ™г‚‹з‰©дЅ“гЃЊд»–гЃ®з‰©дЅ“г‚’гЃ™г‚ЉжЉњгЃ‘г‚‹гЃ®г‚’йІгЃђгЃџг‚ЃгЃ®ж©џиѓЅгЃ§гЃ™гЂ‚
 	 */
 	static void SetUseCCD(const ActorHandle& handle, bool useCCD);
 
 	/**
-	 * @brief Actor‚М€Ъ“®‚в‰с“]‚Мђ§–с‚рђЭ’и‚·‚й
-	 * @param handle €Ъ“®‚в‰с“]‚Мђ§–с‚рђЭ’и‚·‚йActorHandle
-	 * @param constraints ђЭ’и‚·‚йRigidbodyConstraints‚М’lЃB•Ўђ”‚Мђ§–с‚р‘g‚ЭЌ‡‚н‚№‚й‚±‚Ж‚Є‚Е‚«‚Ь‚·ЃB
+	 * @brief ActorгЃ®з§»е‹•г‚„е›ћи»ўгЃ®е€¶зґ„г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle з§»е‹•г‚„е›ћи»ўгЃ®е€¶зґ„г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param constraints иЁ­е®љгЃ™г‚‹RigidbodyConstraintsгЃ®еЂ¤гЂ‚и¤‡ж•°гЃ®е€¶зґ„г‚’зµ„гЃїеђ€г‚ЏгЃ›г‚‹гЃ“гЃЁгЃЊгЃ§гЃЌгЃѕгЃ™гЂ‚
 	 */
 	static void SetConstraints(const ActorHandle& handle, physx::PxRigidDynamicLockFlags constraints);
 
 	/**
-	 * @brief Actor‚М€Ъ“®‚в‰с“]‚Мђ§–с‚рЋж“ѕ‚·‚й
-	 * @param handle €Ъ“®‚в‰с“]‚Мђ§–с‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Ћж“ѕ‚µ‚ЅRigidbodyConstraints‚М’lЃB•Ўђ”‚Мђ§–с‚ЄђЭ’и‚і‚к‚Д‚ў‚йЏкЌ‡‚НЃA‚»‚к‚з‚Є‘g‚ЭЌ‡‚н‚і‚к‚Ѕ’l‚Є•Ф‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®з§»е‹•г‚„е›ћи»ўгЃ®е€¶зґ„г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle з§»е‹•г‚„е›ћи»ўгЃ®е€¶зґ„г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return еЏ–еѕ—гЃ—гЃџRigidbodyConstraintsгЃ®еЂ¤гЂ‚и¤‡ж•°гЃ®е€¶зґ„гЃЊиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹е ґеђ€гЃЇгЂЃгЃќг‚Њг‚‰гЃЊзµ„гЃїеђ€г‚ЏгЃ•г‚ЊгЃџеЂ¤гЃЊиї”гЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static physx::PxRigidDynamicLockFlags GetConstraints(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚МђьЊ`ЊёђЉ‚рђЭ’и‚·‚й
-	 * @param handle ђьЊ`ЊёђЉ‚рђЭ’и‚·‚йActorHandle
-	 * @param linearDamping ђЭ’и‚·‚йђьЊ`ЊёђЉ‚М’lЃBђьЊ`ЊёђЉ‚НЃA•Ё‘М‚М‘¬“x‚Й”д—б‚µ‚ДЊё‘¬‚·‚йЊш‰К‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®з·љеЅўжё›иЎ°г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle з·љеЅўжё›иЎ°г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param linearDamping иЁ­е®љгЃ™г‚‹з·љеЅўжё›иЎ°гЃ®еЂ¤гЂ‚з·љеЅўжё›иЎ°гЃЇгЂЃз‰©дЅ“гЃ®йЂџеє¦гЃ«жЇ”дѕ‹гЃ—гЃ¦жё›йЂџгЃ™г‚‹еЉ№жћњг‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static void SetLinearDamping(const ActorHandle& handle, float linearDamping);
 
 	/**
-	 * @brief Actor‚МђьЊ`ЊёђЉ‚рЋж“ѕ‚·‚й
-	 * @param handle ђьЊ`ЊёђЉ‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Ћж“ѕ‚µ‚ЅђьЊ`ЊёђЉ‚М’lЃBђьЊ`ЊёђЉ‚НЃA•Ё‘М‚М‘¬“x‚Й”д—б‚µ‚ДЊё‘¬‚·‚йЊш‰К‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®з·љеЅўжё›иЎ°г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle з·љеЅўжё›иЎ°г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return еЏ–еѕ—гЃ—гЃџз·љеЅўжё›иЎ°гЃ®еЂ¤гЂ‚з·љеЅўжё›иЎ°гЃЇгЂЃз‰©дЅ“гЃ®йЂџеє¦гЃ«жЇ”дѕ‹гЃ—гЃ¦жё›йЂџгЃ™г‚‹еЉ№жћњг‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static float GetLinearDamping(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚МђьЊ`’пЌR‚рђЭ’и‚·‚й
-	 * @param handle ђьЊ`’пЌR‚рђЭ’и‚·‚йActorHandle
-	 * @param linearDrag ђЭ’и‚·‚йђьЊ`’пЌR‚М’lЃBђьЊ`’пЌR‚НЃA•Ё‘М‚М‘¬“x‚Й”д—б‚µ‚ДЊё‘¬‚·‚йЊш‰К‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®з·љеЅўжЉµжЉ—г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle з·љеЅўжЉµжЉ—г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param linearDrag иЁ­е®љгЃ™г‚‹з·љеЅўжЉµжЉ—гЃ®еЂ¤гЂ‚з·љеЅўжЉµжЉ—гЃЇгЂЃз‰©дЅ“гЃ®йЂџеє¦гЃ«жЇ”дѕ‹гЃ—гЃ¦жё›йЂџгЃ™г‚‹еЉ№жћњг‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static void SetLinearDrag(const ActorHandle& handle, float linearDrag);
 
 	/**
-	 * @brief Actor‚МђьЊ`’пЌR‚рЋж“ѕ‚·‚й
-	 * @param handle ђьЊ`’пЌR‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Ћж“ѕ‚µ‚ЅђьЊ`’пЌR‚М’lЃBђьЊ`’пЌR‚НЃA•Ё‘М‚М‘¬“x‚Й”д—б‚µ‚ДЊё‘¬‚·‚йЊш‰К‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®з·љеЅўжЉµжЉ—г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle з·љеЅўжЉµжЉ—г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return еЏ–еѕ—гЃ—гЃџз·љеЅўжЉµжЉ—гЃ®еЂ¤гЂ‚з·љеЅўжЉµжЉ—гЃЇгЂЃз‰©дЅ“гЃ®йЂџеє¦гЃ«жЇ”дѕ‹гЃ—гЃ¦жё›йЂџгЃ™г‚‹еЉ№жћњг‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static float GetLinearDrag(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚МЌЕ‘еђьЊ`‘¬“x‚рђЭ’и‚·‚й
-	 * @param handle ЌЕ‘еђьЊ`‘¬“x‚рђЭ’и‚·‚йActorHandle
-	 * @param maxLinearVelocity ђЭ’и‚·‚йЌЕ‘еђьЊ`‘¬“x‚М’lЃBЌЕ‘еђьЊ`‘¬“x‚НЃA•Ё‘М‚Є€Ъ“®‚Е‚«‚йЌЕ‘е‚М‘¬“x‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®жњЂе¤§з·љеЅўйЂџеє¦г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle жњЂе¤§з·љеЅўйЂџеє¦г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param maxLinearVelocity иЁ­е®љгЃ™г‚‹жњЂе¤§з·љеЅўйЂџеє¦гЃ®еЂ¤гЂ‚жњЂе¤§з·љеЅўйЂџеє¦гЃЇгЂЃз‰©дЅ“гЃЊз§»е‹•гЃ§гЃЌг‚‹жњЂе¤§гЃ®йЂџеє¦г‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static void SetMaxLinearVelocity(const ActorHandle& handle, float maxLinearVelocity);
 
 	/**
-	 * @brief Actor‚МЌЕ‘еђьЊ`‘¬“x‚рЋж“ѕ‚·‚й
-	 * @param handle ЌЕ‘еђьЊ`‘¬“x‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Ћж“ѕ‚µ‚ЅЌЕ‘еђьЊ`‘¬“x‚М’lЃBЌЕ‘еђьЊ`‘¬“x‚НЃA•Ё‘М‚Є€Ъ“®‚Е‚«‚йЌЕ‘е‚М‘¬“x‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®жњЂе¤§з·љеЅўйЂџеє¦г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle жњЂе¤§з·љеЅўйЂџеє¦г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return еЏ–еѕ—гЃ—гЃџжњЂе¤§з·љеЅўйЂџеє¦гЃ®еЂ¤гЂ‚жњЂе¤§з·љеЅўйЂџеє¦гЃЇгЂЃз‰©дЅ“гЃЊз§»е‹•гЃ§гЃЌг‚‹жњЂе¤§гЃ®йЂџеє¦г‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static float GetMaxLinearVelocity(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚МЉpЊёђЉ‚рђЭ’и‚·‚й
-	 * @param handle ЉpЊёђЉ‚рђЭ’и‚·‚йActorHandle
-	 * @param angularDamping ђЭ’и‚·‚йЉpЊёђЉ‚М’lЃBЉpЊёђЉ‚НЃA•Ё‘М‚МЉp‘¬“x‚Й”д—б‚µ‚ДЊё‘¬‚·‚йЊш‰К‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®и§’жё›иЎ°г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle и§’жё›иЎ°г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param angularDamping иЁ­е®љгЃ™г‚‹и§’жё›иЎ°гЃ®еЂ¤гЂ‚и§’жё›иЎ°гЃЇгЂЃз‰©дЅ“гЃ®и§’йЂџеє¦гЃ«жЇ”дѕ‹гЃ—гЃ¦жё›йЂџгЃ™г‚‹еЉ№жћњг‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static void SetAngularDamping(const ActorHandle& handle, float angularDamping);
 
 	/**
-	 * @brief Actor‚МЉpЊёђЉ‚рЋж“ѕ‚·‚й
-	 * @param handle ЉpЊёђЉ‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Ћж“ѕ‚µ‚ЅЉpЊёђЉ‚М’lЃBЉpЊёђЉ‚НЃA•Ё‘М‚МЉp‘¬“x‚Й”д—б‚µ‚ДЊё‘¬‚·‚йЊш‰К‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®и§’жё›иЎ°г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle и§’жё›иЎ°г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return еЏ–еѕ—гЃ—гЃџи§’жё›иЎ°гЃ®еЂ¤гЂ‚и§’жё›иЎ°гЃЇгЂЃз‰©дЅ“гЃ®и§’йЂџеє¦гЃ«жЇ”дѕ‹гЃ—гЃ¦жё›йЂџгЃ™г‚‹еЉ№жћњг‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static float GetAngularDamping(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚МЉp’пЌR‚рђЭ’и‚·‚й
-	 * @param handle Љp’пЌR‚рђЭ’и‚·‚йActorHandle
-	 * @param angularDrag ђЭ’и‚·‚йЉp’пЌR‚М’lЃBЉp’пЌR‚НЃA•Ё‘М‚МЉp‘¬“x‚Й”д—б‚µ‚ДЊё‘¬‚·‚йЊш‰К‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®и§’жЉµжЉ—г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle и§’жЉµжЉ—г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param angularDrag иЁ­е®љгЃ™г‚‹и§’жЉµжЉ—гЃ®еЂ¤гЂ‚и§’жЉµжЉ—гЃЇгЂЃз‰©дЅ“гЃ®и§’йЂџеє¦гЃ«жЇ”дѕ‹гЃ—гЃ¦жё›йЂџгЃ™г‚‹еЉ№жћњг‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static void SetAngularDrag(const ActorHandle& handle, float angularDrag);
 
 	/**
-	 * @brief Actor‚МЉp’пЌR‚рЋж“ѕ‚·‚й
-	 * @param handle Љp’пЌR‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Ћж“ѕ‚µ‚ЅЉp’пЌR‚М’lЃBЉp’пЌR‚НЃA•Ё‘М‚МЉp‘¬“x‚Й”д—б‚µ‚ДЊё‘¬‚·‚йЊш‰К‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®и§’жЉµжЉ—г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle и§’жЉµжЉ—г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return еЏ–еѕ—гЃ—гЃџи§’жЉµжЉ—гЃ®еЂ¤гЂ‚и§’жЉµжЉ—гЃЇгЂЃз‰©дЅ“гЃ®и§’йЂџеє¦гЃ«жЇ”дѕ‹гЃ—гЃ¦жё›йЂџгЃ™г‚‹еЉ№жћњг‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static float GetAngularDrag(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚МЌЕ‘еЉp‘¬“x‚рђЭ’и‚·‚й
-	 * @param handle ЌЕ‘еЉp‘¬“x‚рђЭ’и‚·‚йActorHandle
-	 * @param maxAngularVelocity ђЭ’и‚·‚йЌЕ‘еЉp‘¬“x‚М’lЃBЌЕ‘еЉp‘¬“x‚НЃA•Ё‘М‚Є‰с“]‚Е‚«‚йЌЕ‘е‚М‘¬“x‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®жњЂе¤§и§’йЂџеє¦г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle жњЂе¤§и§’йЂџеє¦г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param maxAngularVelocity иЁ­е®љгЃ™г‚‹жњЂе¤§и§’йЂџеє¦гЃ®еЂ¤гЂ‚жњЂе¤§и§’йЂџеє¦гЃЇгЂЃз‰©дЅ“гЃЊе›ћи»ўгЃ§гЃЌг‚‹жњЂе¤§гЃ®йЂџеє¦г‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static void SetMaxAngularVelocity(const ActorHandle& handle, float maxAngularVelocity);
 
 	/**
-	 * @brief Actor‚МЌЕ‘еЉp‘¬“x‚рЋж“ѕ‚·‚й
-	 * @param handle ЌЕ‘еЉp‘¬“x‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Ћж“ѕ‚µ‚ЅЌЕ‘еЉp‘¬“x‚М’lЃBЌЕ‘еЉp‘¬“x‚НЃA•Ё‘М‚Є‰с“]‚Е‚«‚йЌЕ‘е‚М‘¬“x‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®жњЂе¤§и§’йЂџеє¦г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle жњЂе¤§и§’йЂџеє¦г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return еЏ–еѕ—гЃ—гЃџжњЂе¤§и§’йЂџеє¦гЃ®еЂ¤гЂ‚жњЂе¤§и§’йЂџеє¦гЃЇгЂЃз‰©дЅ“гЃЊе›ћи»ўгЃ§гЃЌг‚‹жњЂе¤§гЃ®йЂџеє¦г‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static float GetMaxAngularVelocity(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚МѓXѓЉЃ[ѓvЏу‘Ф‚рђЭ’и‚·‚й
-	 * @param handle ѓXѓЉЃ[ѓvЏу‘Ф‚рђЭ’и‚·‚йActorHandle
-	 * @param isSleeping ѓXѓЉЃ[ѓvЏу‘Ф‚р•\‚·ѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НActor‚ЄѓXѓЉЃ[ѓvЏу‘Ф‚Й‚И‚иЃA•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚И‚­‚И‚и‚Ь‚·ЃBfalse‚МЏкЌ‡‚НActor‚ЄѓAѓNѓeѓBѓu‚ИЏу‘Ф‚Й‚И‚иЃA•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚й‚ж‚¤‚Й‚И‚и‚Ь‚·ЃB
+	 * @brief ActorгЃ®г‚№гѓЄгѓјгѓ—зЉ¶ж…‹г‚’иЁ­е®љгЃ™г‚‹
+	 * @param handle г‚№гѓЄгѓјгѓ—зЉ¶ж…‹г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param isSleeping г‚№гѓЄгѓјгѓ—зЉ¶ж…‹г‚’иЎЁгЃ™гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇActorгЃЊг‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ«гЃЄг‚ЉгЂЃз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘гЃЄгЃЏгЃЄг‚ЉгЃѕгЃ™гЂ‚falseгЃ®е ґеђ€гЃЇActorгЃЊг‚ўг‚Їгѓ†г‚Јгѓ–гЃЄзЉ¶ж…‹гЃ«гЃЄг‚ЉгЂЃз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘г‚‹г‚€гЃ†гЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 */
 	static void SetSleepThreshold(const ActorHandle& handle, float sleepThreshold);
 
 	/**
-	 * @brief Actor‚МѓXѓЉЃ[ѓvЏу‘Ф‚рЋж“ѕ‚·‚й
-	 * @param handle ѓXѓЉЃ[ѓvЏу‘Ф‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Ћж“ѕ‚µ‚ЅѓXѓЉЃ[ѓvЏу‘Ф‚М’lЃBѓXѓЉЃ[ѓvЏу‘Ф‚НЃA•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚И‚­‚И‚й‘¬“x‚Ми‡’l‚р•\‚·’l‚ЕЃA’КЏн‚Нђі‚М’l‚ЕђЭ’и‚і‚к‚Ь‚·ЃB
+	 * @brief ActorгЃ®г‚№гѓЄгѓјгѓ—зЉ¶ж…‹г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle г‚№гѓЄгѓјгѓ—зЉ¶ж…‹г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return еЏ–еѕ—гЃ—гЃџг‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ®еЂ¤гЂ‚г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃЇгЂЃз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘гЃЄгЃЏгЃЄг‚‹йЂџеє¦гЃ®й–ѕеЂ¤г‚’иЎЁгЃ™еЂ¤гЃ§гЂЃйЂљеёёгЃЇж­ЈгЃ®еЂ¤гЃ§иЁ­е®љгЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static float GetSleepThreshold(const ActorHandle& handle);
 
 	/**
-	 * @brief Actor‚Й—Н‚р‰Б‚¦‚й
-	 * @param handle —Н‚р‰Б‚¦‚йActorHandle
-	 * @param force ‰Б‚¦‚й—Н‚МѓxѓNѓgѓ‹ ЃiѓOѓЌЃ[ѓoѓ‹ЌА•WЃj
-	 * @param mode —Н‚М‰Б‚¦•ы‚рЋw’и‚·‚й•Ё—ќѓGѓ“ѓWѓ“‚М—Нѓ‚Ѓ[ѓhЃi—б: eFORCE, eIMPULSE‚И‚ЗЃj
+	 * @brief ActorгЃ«еЉ›г‚’еЉ гЃ€г‚‹
+	 * @param handle еЉ›г‚’еЉ гЃ€г‚‹ActorHandle
+	 * @param force еЉ гЃ€г‚‹еЉ›гЃ®гѓ™г‚Їгѓ€гѓ« пј€г‚°гѓ­гѓјгѓђгѓ«еє§жЁ™пј‰
+	 * @param mode еЉ›гЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®еЉ›гѓўгѓјгѓ‰пј€дѕ‹: eFORCE, eIMPULSEгЃЄгЃ©пј‰
 	 */
 	static void AddForce(const ActorHandle& handle, const Vector3& force, physx::PxForceMode::Enum mode);
 
 	/**
-	 * @brief Actor‚М“Б’и‚М€К’u‚Й—Н‚р‰Б‚¦‚йЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
-	 * @param handle —Н‚р‰Б‚¦‚йActorHandle
-	 * @param localForce ‰Б‚¦‚й—Н‚МѓxѓNѓgѓ‹ ЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
-	 * @param localPosition —Н‚р‰Б‚¦‚й€К’u‚МѓxѓNѓgѓ‹ЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
-	 * @param mode —Н‚М‰Б‚¦•ы‚рЋw’и‚·‚й•Ё—ќѓGѓ“ѓWѓ“‚М—Нѓ‚Ѓ[ѓhЃi—б: eFORCE, eIMPULSE‚И‚ЗЃj
+	 * @brief ActorгЃ®з‰№е®љгЃ®дЅЌзЅ®гЃ«еЉ›г‚’еЉ гЃ€г‚‹пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
+	 * @param handle еЉ›г‚’еЉ гЃ€г‚‹ActorHandle
+	 * @param localForce еЉ гЃ€г‚‹еЉ›гЃ®гѓ™г‚Їгѓ€гѓ« пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
+	 * @param localPosition еЉ›г‚’еЉ гЃ€г‚‹дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
+	 * @param mode еЉ›гЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®еЉ›гѓўгѓјгѓ‰пј€дѕ‹: eFORCE, eIMPULSEгЃЄгЃ©пј‰
 	 */
 	static void AddLocalForceAtLocalPosition(const ActorHandle& handle, const Vector3& localForce, const Vector3& localPosition, physx::PxForceMode::Enum mode);
 
 	/**
-	 * @brief Actor‚М“Б’и‚М€К’u‚Й—Н‚р‰Б‚¦‚йЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
-	 * @param handle —Н‚р‰Б‚¦‚йActorHandle
-	 * @param localForce ‰Б‚¦‚й—Н‚МѓxѓNѓgѓ‹ ЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
-	 * @param position —Н‚р‰Б‚¦‚й€К’u‚МѓxѓNѓgѓ‹ЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
-	 * @param mode —Н‚М‰Б‚¦•ы‚рЋw’и‚·‚й•Ё—ќѓGѓ“ѓWѓ“‚М—Нѓ‚Ѓ[ѓhЃi—б: eFORCE, eIMPULSE‚И‚ЗЃj
+	 * @brief ActorгЃ®з‰№е®љгЃ®дЅЌзЅ®гЃ«еЉ›г‚’еЉ гЃ€г‚‹пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
+	 * @param handle еЉ›г‚’еЉ гЃ€г‚‹ActorHandle
+	 * @param localForce еЉ гЃ€г‚‹еЉ›гЃ®гѓ™г‚Їгѓ€гѓ« пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
+	 * @param position еЉ›г‚’еЉ гЃ€г‚‹дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
+	 * @param mode еЉ›гЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®еЉ›гѓўгѓјгѓ‰пј€дѕ‹: eFORCE, eIMPULSEгЃЄгЃ©пј‰
 	 */
 	static void AddLocalForceAtPosition(const ActorHandle& handle, const Vector3& localForce, const Vector3& position, physx::PxForceMode::Enum mode);
 
 	/**
-	 * @brief Actor‚М“Б’и‚М€К’u‚Й—Н‚р‰Б‚¦‚йЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
-	 * @param handle —Н‚р‰Б‚¦‚йActorHandle
-	 * @param force ‰Б‚¦‚й—Н‚МѓxѓNѓgѓ‹ ЃiѓOѓЌЃ[ѓoѓ‹ЌА•WЃj
-	 * @param localPosition —Н‚р‰Б‚¦‚й€К’u‚МѓxѓNѓgѓ‹ЃiѓЌЃ[ѓJѓ‹ЌА•WЃj
-	 * @param mode —Н‚М‰Б‚¦•ы‚рЋw’и‚·‚й•Ё—ќѓGѓ“ѓWѓ“‚М—Нѓ‚Ѓ[ѓhЃi—б: eFORCE, eIMPULSE‚И‚ЗЃj
+	 * @brief ActorгЃ®з‰№е®љгЃ®дЅЌзЅ®гЃ«еЉ›г‚’еЉ гЃ€г‚‹пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
+	 * @param handle еЉ›г‚’еЉ гЃ€г‚‹ActorHandle
+	 * @param force еЉ гЃ€г‚‹еЉ›гЃ®гѓ™г‚Їгѓ€гѓ« пј€г‚°гѓ­гѓјгѓђгѓ«еє§жЁ™пј‰
+	 * @param localPosition еЉ›г‚’еЉ гЃ€г‚‹дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«пј€гѓ­гѓјг‚«гѓ«еє§жЁ™пј‰
+	 * @param mode еЉ›гЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®еЉ›гѓўгѓјгѓ‰пј€дѕ‹: eFORCE, eIMPULSEгЃЄгЃ©пј‰
 	 */
 	static void AddForceAtLocalPosition(const ActorHandle& handle, const Vector3& force, const Vector3& localPosition, physx::PxForceMode::Enum mode);
 
 	/**
-	 * @brief Actor‚М“Б’и‚М€К’u‚Й—Н‚р‰Б‚¦‚й
-	 * @param handle —Н‚р‰Б‚¦‚йActorHandle
-	 * @param force ‰Б‚¦‚й—Н‚МѓxѓNѓgѓ‹ ЃiѓOѓЌЃ[ѓoѓ‹ЌА•WЃj
-	 * @param position —Н‚р‰Б‚¦‚й€К’u‚МѓxѓNѓgѓ‹ЃiѓOѓЌЃ[ѓoѓ‹ЌА•WЃj
-	 * @param mode —Н‚М‰Б‚¦•ы‚рЋw’и‚·‚й•Ё—ќѓGѓ“ѓWѓ“‚М—Нѓ‚Ѓ[ѓhЃi—б: eFORCE, eIMPULSE‚И‚ЗЃj
+	 * @brief ActorгЃ®з‰№е®љгЃ®дЅЌзЅ®гЃ«еЉ›г‚’еЉ гЃ€г‚‹
+	 * @param handle еЉ›г‚’еЉ гЃ€г‚‹ActorHandle
+	 * @param force еЉ гЃ€г‚‹еЉ›гЃ®гѓ™г‚Їгѓ€гѓ« пј€г‚°гѓ­гѓјгѓђгѓ«еє§жЁ™пј‰
+	 * @param position еЉ›г‚’еЉ гЃ€г‚‹дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«пј€г‚°гѓ­гѓјгѓђгѓ«еє§жЁ™пј‰
+	 * @param mode еЉ›гЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®еЉ›гѓўгѓјгѓ‰пј€дѕ‹: eFORCE, eIMPULSEгЃЄгЃ©пј‰
 	 */
 	static void AddForceAtPosition(const ActorHandle& handle, const Vector3& force, const Vector3& position, physx::PxForceMode::Enum mode);
 
 	/**
-	 * @brief Actor‚Йѓgѓ‹ѓN‚р‰Б‚¦‚й
-	 * @param handle ѓgѓ‹ѓN‚р‰Б‚¦‚йActorHandle
-	 * @param torque ‰Б‚¦‚йѓgѓ‹ѓN‚МѓxѓNѓgѓ‹ (‰с“]ЋІ‚М•ыЊь‚р•\‚·ѓxѓNѓgѓ‹‚ЕЃAѓxѓNѓgѓ‹‚М‘е‚«‚і‚Єѓgѓ‹ѓN‚М‹­‚і‚р•\‚·)
-	 * @param mode ѓgѓ‹ѓN‚М‰Б‚¦•ы‚рЋw’и‚·‚й•Ё—ќѓGѓ“ѓWѓ“‚М—Нѓ‚Ѓ[ѓhЃi—б: eFORCE, eIMPULSE‚И‚ЗЃj
+	 * @brief ActorгЃ«гѓ€гѓ«г‚Їг‚’еЉ гЃ€г‚‹
+	 * @param handle гѓ€гѓ«г‚Їг‚’еЉ гЃ€г‚‹ActorHandle
+	 * @param torque еЉ гЃ€г‚‹гѓ€гѓ«г‚ЇгЃ®гѓ™г‚Їгѓ€гѓ« (е›ћи»ўи»ёгЃ®ж–№еђ‘г‚’иЎЁгЃ™гѓ™г‚Їгѓ€гѓ«гЃ§гЂЃгѓ™г‚Їгѓ€гѓ«гЃ®е¤§гЃЌгЃ•гЃЊгѓ€гѓ«г‚ЇгЃ®еј·гЃ•г‚’иЎЁгЃ™)
+	 * @param mode гѓ€гѓ«г‚ЇгЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®еЉ›гѓўгѓјгѓ‰пј€дѕ‹: eFORCE, eIMPULSEгЃЄгЃ©пј‰
 	 */
 	static void AddTorque(const ActorHandle& handle, const Vector3& torque, physx::PxForceMode::Enum mode);
 
 	/**
-	 * @brief Actor‚М‘¬“x‚р’јђЪђЭ’и‚·‚й
-	 * @param handle ‘¬“x‚рђЭ’и‚·‚йActorHandle
-	 * @param velocity ђЭ’и‚·‚й‘¬“x‚МѓxѓNѓgѓ‹
+	 * @brief ActorгЃ®йЂџеє¦г‚’з›ґжЋҐиЁ­е®љгЃ™г‚‹
+	 * @param handle йЂџеє¦г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param velocity иЁ­е®љгЃ™г‚‹йЂџеє¦гЃ®гѓ™г‚Їгѓ€гѓ«
 	 */
 	static void SetVelocity(const ActorHandle& handle, const Vector3& velocity);
 
 	/**
-	 * @brief Actor‚М‘¬“x‚рЋж“ѕ‚·‚й
-	 * @param handle ‘¬“x‚рЋж“ѕ‚·‚йActorHandle
-	 * @param outVelocity Ћж“ѕ‚µ‚Ѕ‘¬“x‚рЉi”[‚·‚йVector3ЋQЏЖ
+	 * @brief ActorгЃ®йЂџеє¦г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle йЂџеє¦г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @param outVelocity еЏ–еѕ—гЃ—гЃџйЂџеє¦г‚’ж јзґЌгЃ™г‚‹Vector3еЏ‚з…§
 	 */
 	static void GetVelocity(const ActorHandle& handle, Vector3& outVelocity);
 
 	/**
-	 * @brief Actor‚МЉp‘¬“x‚р’јђЪђЭ’и‚·‚й
-	 * @param handle Љp‘¬“x‚рђЭ’и‚·‚йActorHandle
-	 * @param angularVelocity ђЭ’и‚·‚йЉp‘¬“x‚МѓxѓNѓgѓ‹
+	 * @brief ActorгЃ®и§’йЂџеє¦г‚’з›ґжЋҐиЁ­е®љгЃ™г‚‹
+	 * @param handle и§’йЂџеє¦г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param angularVelocity иЁ­е®љгЃ™г‚‹и§’йЂџеє¦гЃ®гѓ™г‚Їгѓ€гѓ«
 	 */
 	static void SetAngularVelocity(const ActorHandle& handle, const Vector3& angularVelocity);
 
 	/**
-	 * @brief Actor‚МЉp‘¬“x‚рЋж“ѕ‚·‚й
-	 * @param handle Љp‘¬“x‚рЋж“ѕ‚·‚йActorHandle
-	 * @param outAngularVelocity Ћж“ѕ‚µ‚ЅЉp‘¬“x‚рЉi”[‚·‚йVector3ЋQЏЖ
+	 * @brief ActorгЃ®и§’йЂџеє¦г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle и§’йЂџеє¦г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @param outAngularVelocity еЏ–еѕ—гЃ—гЃџи§’йЂџеє¦г‚’ж јзґЌгЃ™г‚‹Vector3еЏ‚з…§
 	 */
 	static void GetAngularVelocity(const ActorHandle& handle, Vector3& outAngularVelocity);
 
 	/**
-	 * @brief ѓLѓlѓ}ѓeѓBѓbѓNђЭ’и‚рЌs‚¤ЃBѓLѓlѓ}ѓeѓBѓbѓN‚ИѓIѓuѓWѓFѓNѓg‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚ёЃA’јђЪ€К’u‚в‰с“]‚рђЭ’и‚Е‚«‚Ь‚·ЃB
-	 * @param handle ѓLѓlѓ}ѓeѓBѓbѓNђЭ’и‚рЌs‚¤ActorHandle
-	 * @param isKinematic ѓLѓlѓ}ѓeѓBѓbѓN‚Й‚·‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НѓLѓlѓ}ѓeѓBѓbѓNЃAfalse‚МЏкЌ‡‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚й‚ж‚¤‚Й‚И‚и‚Ь‚·ЃB
+	 * @brief г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇиЁ­е®љг‚’иЎЊгЃ†гЂ‚г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃЄг‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘гЃљгЂЃз›ґжЋҐдЅЌзЅ®г‚„е›ћи»ўг‚’иЁ­е®љгЃ§гЃЌгЃѕгЃ™гЂ‚
+	 * @param handle г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇиЁ­е®љг‚’иЎЊгЃ†ActorHandle
+	 * @param isKinematic г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃ«гЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇг‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЂЃfalseгЃ®е ґеђ€гЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘г‚‹г‚€гЃ†гЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 */
 	static void SetKinematic(const ActorHandle& handle, bool isKinematic);
 
 	/**
-	 * @brief ѓLѓlѓ}ѓeѓBѓbѓN‚ИActor‚М–Ъ•W€К’u‚Ж‰с“]‚рђЭ’и‚·‚йЃBѓLѓlѓ}ѓeѓBѓbѓN‚ИActor‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚И‚ў‚Ѕ‚ЯЃA‚±‚МЉЦђ”‚Е’јђЪ€К’u‚в‰с“]‚рђЭ’и‚Е‚«‚Ь‚·ЃB
-	 * @param handle –Ъ•W€К’u‚Ж‰с“]‚рђЭ’и‚·‚йActorHandle
-	 * @param pos ђЭ’и‚·‚й–Ъ•W€К’u‚МѓxѓNѓgѓ‹
-	 * @param rot ђЭ’и‚·‚й–Ъ•W‰с“]‚МѓNѓHЃ[ѓ^ѓjѓIѓ“
+	 * @brief г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃЄActorгЃ®з›®жЁ™дЅЌзЅ®гЃЁе›ћи»ўг‚’иЁ­е®љгЃ™г‚‹гЂ‚г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃЄActorгЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘гЃЄгЃ„гЃџг‚ЃгЂЃгЃ“гЃ®й–ўж•°гЃ§з›ґжЋҐдЅЌзЅ®г‚„е›ћи»ўг‚’иЁ­е®љгЃ§гЃЌгЃѕгЃ™гЂ‚
+	 * @param handle з›®жЁ™дЅЌзЅ®гЃЁе›ћи»ўг‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param pos иЁ­е®љгЃ™г‚‹з›®жЁ™дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«
+	 * @param rot иЁ­е®љгЃ™г‚‹з›®жЁ™е›ћи»ўгЃ®г‚Їг‚©гѓјг‚їгѓ‹г‚Єгѓі
 	 */
 	static void SetKinematicTarget(const ActorHandle& handle, const Vector3& pos, const Quaternion& rot);
 
 	/**
-	 * @brief Actor‚МѓOѓЌЃ[ѓoѓ‹ѓ|Ѓ[ѓY‚р’јђЪђЭ’и‚·‚й
-	 * @param handle ѓOѓЌЃ[ѓoѓ‹ѓ|Ѓ[ѓY‚рђЭ’и‚·‚йActorHandle
-	 * @param pos ђЭ’и‚·‚йѓOѓЌЃ[ѓoѓ‹€К’u‚МѓxѓNѓgѓ‹
-	 * @param rot ђЭ’и‚·‚йѓOѓЌЃ[ѓoѓ‹‰с“]‚МѓNѓHЃ[ѓ^ѓjѓIѓ“
+	 * @brief ActorгЃ®г‚°гѓ­гѓјгѓђгѓ«гѓќгѓјг‚єг‚’з›ґжЋҐиЁ­е®љгЃ™г‚‹
+	 * @param handle г‚°гѓ­гѓјгѓђгѓ«гѓќгѓјг‚єг‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param pos иЁ­е®љгЃ™г‚‹г‚°гѓ­гѓјгѓђгѓ«дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«
+	 * @param rot иЁ­е®љгЃ™г‚‹г‚°гѓ­гѓјгѓђгѓ«е›ћи»ўгЃ®г‚Їг‚©гѓјг‚їгѓ‹г‚Єгѓі
 	 */
 	static void SetGlobalPose(const ActorHandle& handle, const Vector3& pos, const Quaternion& rot);
 
 	/**
-	 * @brief Actor‚МѓOѓЌЃ[ѓoѓ‹ѓ|Ѓ[ѓY‚рЋж“ѕ‚·‚й
-	 * @param handle ѓOѓЌЃ[ѓoѓ‹ѓ|Ѓ[ѓY‚рЋж“ѕ‚·‚йActorHandle
-	 * @param outPos Ћж“ѕ‚µ‚ЅѓOѓЌЃ[ѓoѓ‹€К’u‚рЉi”[‚·‚йVector3ЋQЏЖ
-	 * @param outRot Ћж“ѕ‚µ‚ЅѓOѓЌЃ[ѓoѓ‹‰с“]‚рЉi”[‚·‚йQuaternionЋQЏЖ
+	 * @brief ActorгЃ®г‚°гѓ­гѓјгѓђгѓ«гѓќгѓјг‚єг‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param handle г‚°гѓ­гѓјгѓђгѓ«гѓќгѓјг‚єг‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @param outPos еЏ–еѕ—гЃ—гЃџг‚°гѓ­гѓјгѓђгѓ«дЅЌзЅ®г‚’ж јзґЌгЃ™г‚‹Vector3еЏ‚з…§
+	 * @param outRot еЏ–еѕ—гЃ—гЃџг‚°гѓ­гѓјгѓђгѓ«е›ћи»ўг‚’ж јзґЌгЃ™г‚‹QuaternionеЏ‚з…§
 	 */
 	static void GetGlobalPose(const ActorHandle& handle, Vector3& outPos, Quaternion& outRot);
 
 	/**
-	 * @brief Shape‚МѓЌЃ[ѓJѓ‹ѓ|Ѓ[ѓY‚рЋж“ѕ‚·‚й
-	 * @param shapeHandle ѓЌЃ[ѓJѓ‹ѓ|Ѓ[ѓY‚рЋж“ѕ‚·‚йShapeHandle
-	 * @param outLocalPos Ћж“ѕ‚µ‚ЅѓЌЃ[ѓJѓ‹€К’u‚рЉi”[‚·‚йVector3ЋQЏЖ
-	 * @param outLocalRot Ћж“ѕ‚µ‚ЅѓЌЃ[ѓJѓ‹‰с“]‚рЉi”[‚·‚йQuaternionЋQЏЖ
+	 * @brief ShapeгЃ®гѓ­гѓјг‚«гѓ«гѓќгѓјг‚єг‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param shapeHandle гѓ­гѓјг‚«гѓ«гѓќгѓјг‚єг‚’еЏ–еѕ—гЃ™г‚‹ShapeHandle
+	 * @param outLocalPos еЏ–еѕ—гЃ—гЃџгѓ­гѓјг‚«гѓ«дЅЌзЅ®г‚’ж јзґЌгЃ™г‚‹Vector3еЏ‚з…§
+	 * @param outLocalRot еЏ–еѕ—гЃ—гЃџгѓ­гѓјг‚«гѓ«е›ћи»ўг‚’ж јзґЌгЃ™г‚‹QuaternionеЏ‚з…§
 	 */
 	static void GetLocalPose(const ShapeHandle& shapeHandle, Vector3& outLocalPos, Quaternion& outLocalRot);
 
 	/**
-	 * @brief Shape‚МѓЌЃ[ѓJѓ‹ѓ|Ѓ[ѓY‚рђЭ’и‚·‚й
-	 * @param shapeHandle ѓЌЃ[ѓJѓ‹ѓ|Ѓ[ѓY‚рђЭ’и‚·‚йShapeHandle
-	 * @param localPos ђЭ’и‚·‚йѓЌЃ[ѓJѓ‹€К’u‚МѓxѓNѓgѓ‹
-	 * @param localRot ђЭ’и‚·‚йѓЌЃ[ѓJѓ‹‰с“]‚МѓNѓHЃ[ѓ^ѓjѓIѓ“
+	 * @brief ShapeгЃ®гѓ­гѓјг‚«гѓ«гѓќгѓјг‚єг‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle гѓ­гѓјг‚«гѓ«гѓќгѓјг‚єг‚’иЁ­е®љгЃ™г‚‹ShapeHandle
+	 * @param localPos иЁ­е®љгЃ™г‚‹гѓ­гѓјг‚«гѓ«дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«
+	 * @param localRot иЁ­е®љгЃ™г‚‹гѓ­гѓјг‚«гѓ«е›ћи»ўгЃ®г‚Їг‚©гѓјг‚їгѓ‹г‚Єгѓі
 	 */
 	static void SetLocalPose(const ShapeHandle& shapeHandle, const Vector3& localPos, const Quaternion& localRot);
 
 	/**
-	 * @brief Shape‚МѓWѓIѓЃѓgѓЉ‚рЋж“ѕ‚·‚й
-	 * @param shapeHandle ѓWѓIѓЃѓgѓЉ‚рЋж“ѕ‚·‚йShapeHandle
-	 * @param outGeometry Ћж“ѕ‚µ‚ЅѓWѓIѓЃѓgѓЉ‚рЉi”[‚·‚йphysx::PxGeometryЋQЏЖ
+	 * @brief ShapeгЃ®г‚ёг‚ЄгѓЎгѓ€гѓЄг‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param shapeHandle г‚ёг‚ЄгѓЎгѓ€гѓЄг‚’еЏ–еѕ—гЃ™г‚‹ShapeHandle
+	 * @param outGeometry еЏ–еѕ—гЃ—гЃџг‚ёг‚ЄгѓЎгѓ€гѓЄг‚’ж јзґЌгЃ™г‚‹physx::PxGeometryеЏ‚з…§
 	 */
 	static void GetGeometry(const ShapeHandle& shapeHandle, physx::PxGeometry& outGeometry);
 	
 	/**
-	 * @brief Shape‚МѓWѓIѓЃѓgѓЉ‚рђЭ’и‚·‚й
-	 * @param shapeHandle ѓWѓIѓЃѓgѓЉ‚рђЭ’и‚·‚йShapeHandle
-	 * @param geometry ђЭ’и‚·‚йѓWѓIѓЃѓgѓЉ‚Мphysx::PxGeometryЌ\‘ў‘М
+	 * @brief ShapeгЃ®г‚ёг‚ЄгѓЎгѓ€гѓЄг‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle г‚ёг‚ЄгѓЎгѓ€гѓЄг‚’иЁ­е®љгЃ™г‚‹ShapeHandle
+	 * @param geometry иЁ­е®љгЃ™г‚‹г‚ёг‚ЄгѓЎгѓ€гѓЄгЃ®physx::PxGeometryж§‹йЂ дЅ“
 	 */
 	static void SetGeometry(const ShapeHandle& shapeHandle, const physx::PxGeometry& geometry);
 
 	/**
-	 * @brief Actor‚М—LЊш/–іЊш‚рђЭ’и‚·‚й
-	 * @param actorHandle —LЊш/–іЊш‚рђЭ’и‚·‚йActorHandle
-	 * @param enable Actor‚р—LЊш‚Й‚·‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НActor‚Є—LЊш‚Й‚И‚иЃA•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚Й‰e‹ї‚р—^‚¦‚й‚ж‚¤‚Й‚И‚и‚Ь‚·ЃBfalse‚МЏкЌ‡‚НActor‚Є–іЊш‚Й‚И‚иЃA•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚Й‰e‹ї‚р—^‚¦‚И‚­‚И‚и‚Ь‚·ЃB
+	 * @brief ActorгЃ®жњ‰еЉ№/з„ЎеЉ№г‚’иЁ­е®љгЃ™г‚‹
+	 * @param actorHandle жњ‰еЉ№/з„ЎеЉ№г‚’иЁ­е®љгЃ™г‚‹ActorHandle
+	 * @param enable Actorг‚’жњ‰еЉ№гЃ«гЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇActorгЃЊжњ‰еЉ№гЃ«гЃЄг‚ЉгЂЃз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ«еЅ±йџїг‚’дёЋгЃ€г‚‹г‚€гЃ†гЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚falseгЃ®е ґеђ€гЃЇActorгЃЊз„ЎеЉ№гЃ«гЃЄг‚ЉгЂЃз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ«еЅ±йџїг‚’дёЋгЃ€гЃЄгЃЏгЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 */
 	static void SetActorEnable(const ActorHandle& actorHandle, bool enable);
 
 	/**
-	 * @brief Actor‚М—LЊш/–іЊш‚рЋж“ѕ‚·‚й
-	 * @param actorHandle —LЊш/–іЊш‚рЋж“ѕ‚·‚йActorHandle
-	 * @return Actor‚Є—LЊш‚ИЏкЌ‡‚НtrueЃA–іЊш‚ИЏкЌ‡‚Нfalse
+	 * @brief ActorгЃ®жњ‰еЉ№/з„ЎеЉ№г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param actorHandle жњ‰еЉ№/з„ЎеЉ№г‚’еЏ–еѕ—гЃ™г‚‹ActorHandle
+	 * @return ActorгЃЊжњ‰еЉ№гЃЄе ґеђ€гЃЇtrueгЂЃз„ЎеЉ№гЃЄе ґеђ€гЃЇfalse
 	 */
 	static bool IsActorEnabled(const ActorHandle& actorHandle);
 
 	/**
-	 * @brief Shape‚М—LЊш/–іЊш‚рђЭ’и‚·‚й
-	 * @param shapeHandle —LЊш/–іЊш‚рђЭ’и‚·‚йShapeHandle
-	 * @param enable Shape‚р—LЊш‚Й‚·‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НShape‚Є—LЊш‚Й‚И‚иЃA•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚Й‰e‹ї‚р—^‚¦‚й‚ж‚¤‚Й‚И‚и‚Ь‚·ЃBfalse‚МЏкЌ‡‚НShape‚Є–іЊш‚Й‚И‚иЃA•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚Й‰e‹ї‚р—^‚¦‚И‚­‚И‚и‚Ь‚·ЃB
-	 * @param colliderData Shape‚М—LЊш/–іЊш‚рђЭ’и‚·‚йЌЫ‚Й•K—v‚ИColliderDataЌ\‘ў‘МЃBShape‚р—LЊш‚Й‚·‚йЏкЌ‡‚НЃAColliderData‚Й•K—v‚ИЏо•с‚рђЭ’и‚µ‚Д“n‚·•K—v‚Є‚ ‚и‚Ь‚·ЃBShape‚р–іЊш‚Й‚·‚йЏкЌ‡‚НЃAColliderData‚Н–іЋ‹‚і‚к‚Ь‚·ЃB
+	 * @brief ShapeгЃ®жњ‰еЉ№/з„ЎеЉ№г‚’иЁ­е®љгЃ™г‚‹
+	 * @param shapeHandle жњ‰еЉ№/з„ЎеЉ№г‚’иЁ­е®љгЃ™г‚‹ShapeHandle
+	 * @param enable Shapeг‚’жњ‰еЉ№гЃ«гЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇShapeгЃЊжњ‰еЉ№гЃ«гЃЄг‚ЉгЂЃз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ«еЅ±йџїг‚’дёЋгЃ€г‚‹г‚€гЃ†гЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚falseгЃ®е ґеђ€гЃЇShapeгЃЊз„ЎеЉ№гЃ«гЃЄг‚ЉгЂЃз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ«еЅ±йџїг‚’дёЋгЃ€гЃЄгЃЏгЃЄг‚ЉгЃѕгЃ™гЂ‚
+	 * @param colliderData ShapeгЃ®жњ‰еЉ№/з„ЎеЉ№г‚’иЁ­е®љгЃ™г‚‹йљ›гЃ«еї…и¦ЃгЃЄColliderDataж§‹йЂ дЅ“гЂ‚Shapeг‚’жњ‰еЉ№гЃ«гЃ™г‚‹е ґеђ€гЃЇгЂЃColliderDataгЃ«еї…и¦ЃгЃЄжѓ…е ±г‚’иЁ­е®љгЃ—гЃ¦жёЎгЃ™еї…и¦ЃгЃЊгЃ‚г‚ЉгЃѕгЃ™гЂ‚Shapeг‚’з„ЎеЉ№гЃ«гЃ™г‚‹е ґеђ€гЃЇгЂЃColliderDataгЃЇз„Ўи¦–гЃ•г‚ЊгЃѕгЃ™гЂ‚
 	 */
 	static void SetShapeEnable(const ShapeHandle& shapeHandle, bool enable, const ColliderData& colliderData);
 
 	/**
-	 * @brief Shape‚М—LЊш/–іЊш‚рЋж“ѕ‚·‚й
-	 * @param shapeHandle —LЊш/–іЊш‚рЋж“ѕ‚·‚йShapeHandle
-	 * @return Shape‚Є—LЊш‚ИЏкЌ‡‚НtrueЃA–іЊш‚ИЏкЌ‡‚Нfalse
+	 * @brief ShapeгЃ®жњ‰еЉ№/з„ЎеЉ№г‚’еЏ–еѕ—гЃ™г‚‹
+	 * @param shapeHandle жњ‰еЉ№/з„ЎеЉ№г‚’еЏ–еѕ—гЃ™г‚‹ShapeHandle
+	 * @return ShapeгЃЊжњ‰еЉ№гЃЄе ґеђ€гЃЇtrueгЂЃз„ЎеЉ№гЃЄе ґеђ€гЃЇfalse
 	 */
 	static bool IsShapeEnabled(const ShapeHandle& shapeHandle);
 	
-	static bool HasActor(Transform* transform); // Transform* ‚Й‘О‰ћ‚·‚й ActorHandle ‚Є‘¶ЌЭ‚·‚й‚©‚рЉm”F‚·‚йЉЦђ”
+	static bool HasActor(Transform* transform); // Transform* гЃ«еЇѕеїњгЃ™г‚‹ ActorHandle гЃЊе­ењЁгЃ™г‚‹гЃ‹г‚’зўєиЄЌгЃ™г‚‹й–ўж•°
 
-	static bool HasShape(ShapeHandle shapeHandle); // ShapeHandle ‚Й‘О‰ћ‚·‚й PxShape* ‚Є‘¶ЌЭ‚·‚й‚©‚рЉm”F‚·‚йЉЦђ”
+	static bool HasShape(ShapeHandle shapeHandle); // ShapeHandle гЃ«еЇѕеїњгЃ™г‚‹ PxShape* гЃЊе­ењЁгЃ™г‚‹гЃ‹г‚’зўєиЄЌгЃ™г‚‹й–ўж•°
 
 
-	static ActorHandle GetActorHandle(Transform* transform); // Transform* ‚Й‘О‰ћ‚·‚й ActorHandle ‚рЋж“ѕ‚·‚йЉЦђ”(‘¶ЌЭ‚µ‚И‚ўЏкЌ‡‚Н-1‚р•Ф‚·)
+	static ActorHandle GetActorHandle(Transform* transform); // Transform* гЃ«еЇѕеїњгЃ™г‚‹ ActorHandle г‚’еЏ–еѕ—гЃ™г‚‹й–ўж•°(е­ењЁгЃ—гЃЄгЃ„е ґеђ€гЃЇ-1г‚’иї”гЃ™)
 
-	static ActorHandle CreateActorHandle(); // ActorHandle ‚рђV‹KЌмђ¬‚·‚йЉЦђ”
+	static ActorHandle CreateActorHandle(); // ActorHandle г‚’ж–°и¦ЏдЅњж€ђгЃ™г‚‹й–ўж•°
 
-	static Transform* GetTransform(ActorHandle actorHandle); // ActorHandle ‚Й‘О‰ћ‚·‚й Transform* ‚рЋж“ѕ‚·‚йЉЦђ”(‘¶ЌЭ‚µ‚И‚ўЏкЌ‡‚Нnullptr‚р•Ф‚·)
+	static Transform* GetTransform(ActorHandle actorHandle); // ActorHandle гЃ«еЇѕеїњгЃ™г‚‹ Transform* г‚’еЏ–еѕ—гЃ™г‚‹й–ўж•°(е­ењЁгЃ—гЃЄгЃ„е ґеђ€гЃЇnullptrг‚’иї”гЃ™)
 
-	static physx::PxRigidActor* GetActor(ActorHandle actorHandle); // ActorHandle ‚Й‘О‰ћ‚·‚й PxRigidActor* ‚рЋж“ѕ‚·‚йЉЦђ”(‘¶ЌЭ‚µ‚И‚ўЏкЌ‡‚Нnullptr‚р•Ф‚·)
+	static physx::PxRigidActor* GetActor(ActorHandle actorHandle); // ActorHandle гЃ«еЇѕеїњгЃ™г‚‹ PxRigidActor* г‚’еЏ–еѕ—гЃ™г‚‹й–ўж•°(е­ењЁгЃ—гЃЄгЃ„е ґеђ€гЃЇnullptrг‚’иї”гЃ™)
 
-	static physx::PxShape* GetShape(ShapeHandle shapeHandle); // ShapeHandle ‚Й‘О‰ћ‚·‚й PxShape* ‚рЋж“ѕ‚·‚йЉЦђ”(‘¶ЌЭ‚µ‚И‚ўЏкЌ‡‚Нnullptr‚р•Ф‚·)
+	static physx::PxShape* GetShape(ShapeHandle shapeHandle); // ShapeHandle гЃ«еЇѕеїњгЃ™г‚‹ PxShape* г‚’еЏ–еѕ—гЃ™г‚‹й–ўж•°(е­ењЁгЃ—гЃЄгЃ„е ґеђ€гЃЇnullptrг‚’иї”гЃ™)
 
-	static ShapeHandle GetShapeHandle(physx::PxShape* shape); // PxShape* ‚Й‘О‰ћ‚·‚й ShapeHandle ‚рЋж“ѕ‚·‚йЉЦђ”(‘¶ЌЭ‚µ‚И‚ўЏкЌ‡‚Н-1‚р•Ф‚·)
+	static ShapeHandle GetShapeHandle(physx::PxShape* shape); // PxShape* гЃ«еЇѕеїњгЃ™г‚‹ ShapeHandle г‚’еЏ–еѕ—гЃ™г‚‹й–ўж•°(е­ењЁгЃ—гЃЄгЃ„е ґеђ€гЃЇ-1г‚’иї”гЃ™)
 
-	//static ShapeHandle AddShape(ActorHandle actorHandle, physx::PxShape* shape); // ActorHandle ‚Й‘О‰ћ‚·‚й PxRigidActor* ‚Й PxShape* ‚р’З‰Б‚µЃA‘О‰ћ‚·‚й ShapeHandle ‚р•Ф‚·ЉЦђ”(’З‰Б‚ЙЋё”s‚µ‚ЅЏкЌ‡‚Н-1‚р•Ф‚·)
+	//static ShapeHandle AddShape(ActorHandle actorHandle, physx::PxShape* shape); // ActorHandle гЃ«еЇѕеїњгЃ™г‚‹ PxRigidActor* гЃ« PxShape* г‚’иїЅеЉ гЃ—гЂЃеЇѕеїњгЃ™г‚‹ ShapeHandle г‚’иї”гЃ™й–ўж•°(иїЅеЉ гЃ«е¤±ж•—гЃ—гЃџе ґеђ€гЃЇ-1г‚’иї”гЃ™)
 
-	static ShapeHandle CreateShapeHandle(); // ShapeHandle ‚рђV‹KЌмђ¬‚·‚йЉЦђ”
+	static ShapeHandle CreateShapeHandle(); // ShapeHandle г‚’ж–°и¦ЏдЅњж€ђгЃ™г‚‹й–ўж•°
 
-	static void RegisterShape(ShapeHandle shapeHandle, physx::PxShape* shape); // ShapeHandle ‚Ж PxShape* ‚р‘О‰ћ•t‚Ї‚Д“o^‚·‚йЉЦђ”
+	static void RegisterShape(ShapeHandle shapeHandle, physx::PxShape* shape); // ShapeHandle гЃЁ PxShape* г‚’еЇѕеїњд»гЃ‘гЃ¦з™»йЊІгЃ™г‚‹й–ўж•°
 
-	static void RemoveActor(ActorHandle actorHandle); // Transform* ‚Ж ActorHandle ‚Й‘О‰ћ‚·‚й PxRigidActor* ‚рЌнЏњ‚·‚йЉЦђ”
+	static void RemoveActor(ActorHandle actorHandle); // Transform* гЃЁ ActorHandle гЃ«еЇѕеїњгЃ™г‚‹ PxRigidActor* г‚’е‰Љй™¤гЃ™г‚‹й–ўж•°
 
-	static void RemoveShape(ShapeHandle shapeHandle); // ActorHandle ‚Ж ShapeHandle ‚Й‘О‰ћ‚·‚й PxShape* ‚рЌнЏњ‚·‚йЉЦђ”
+	static void RemoveShape(ShapeHandle shapeHandle); // ActorHandle гЃЁ ShapeHandle гЃ«еЇѕеїњгЃ™г‚‹ PxShape* г‚’е‰Љй™¤гЃ™г‚‹й–ўж•°
 
-	//static void ClearShapes(ActorHandle actorHandle); // ActorHandle ‚Й‘О‰ћ‚·‚й PxRigidActor* ‚©‚з‚·‚Ч‚Д‚МЊ`Џу‚рЌнЏњ‚·‚йЉЦђ”
+	//static void ClearShapes(ActorHandle actorHandle); // ActorHandle гЃ«еЇѕеїњгЃ™г‚‹ PxRigidActor* гЃ‹г‚‰гЃ™гЃ№гЃ¦гЃ®еЅўзЉ¶г‚’е‰Љй™¤гЃ™г‚‹й–ўж•°
 
 	static physx::PxScene* GetScene() { return pxScene; }
 
@@ -895,35 +895,35 @@ public:
 	static physx::PxControllerManager* GetControllerManager() { return pxControllerManager; }
 
 private:
-	static inline ActorHandle nextActorHandle = 1; // Ћџ‚ЙЉ„‚и“–‚Д‚йActorHandle‚М’l
+	static inline ActorHandle nextActorHandle = 1; // ж¬ЎгЃ«е‰Іг‚ЉеЅ“гЃ¦г‚‹ActorHandleгЃ®еЂ¤
 	
-	static inline ShapeHandle nextShapeHandle = 1; // Ћџ‚ЙЉ„‚и“–‚Д‚йShapeHandle‚М’l
+	static inline ShapeHandle nextShapeHandle = 1; // ж¬ЎгЃ«е‰Іг‚ЉеЅ“гЃ¦г‚‹ShapeHandleгЃ®еЂ¤
 
-	static inline std::unordered_map<ActorHandle, ActorData> m_actorMap; // ActorHandle ‚р PxRigidActor* ‚Йѓ}ѓbѓsѓ“ѓO‚·‚й‚Ѕ‚Я‚МѓnѓbѓVѓ…ѓ}ѓbѓv
+	static inline std::unordered_map<ActorHandle, ActorData> m_actorMap; // ActorHandle г‚’ PxRigidActor* гЃ«гѓћгѓѓгѓ”гѓіг‚°гЃ™г‚‹гЃџг‚ЃгЃ®гѓЏгѓѓг‚·гѓҐгѓћгѓѓгѓ—
 
-	static inline std::map<ShapeHandle, physx::PxShape*> m_shapeMap; // ShapeHandle ‚р PxShape* ‚Йѓ}ѓbѓsѓ“ѓO‚·‚й‚Ѕ‚Я‚Мѓ}ѓbѓvЃBunordered_map ‚Е‚Н‚И‚­ map ‚рЋg—p‚µ‚Д‚ў‚й—ќ—R‚НЃAShapeHandle ‚ЄA‘±‚µ‚Ѕђ®ђ”‚Е‚ ‚й‚Ѕ‚ЯЃAmap ‚М•ы‚ЄЊш—¦“I‚ЙЉЗ—ќ‚Е‚«‚й‚Ж”»’f‚µ‚Ѕ‚Ѕ‚Я‚Е‚·ЃB
+	static inline std::map<ShapeHandle, physx::PxShape*> m_shapeMap; // ShapeHandle г‚’ PxShape* гЃ«гѓћгѓѓгѓ”гѓіг‚°гЃ™г‚‹гЃџг‚ЃгЃ®гѓћгѓѓгѓ—гЂ‚unordered_map гЃ§гЃЇгЃЄгЃЏ map г‚’дЅїз”ЁгЃ—гЃ¦гЃ„г‚‹зђ†з”±гЃЇгЂЃShapeHandle гЃЊйЂЈз¶љгЃ—гЃџж•ґж•°гЃ§гЃ‚г‚‹гЃџг‚ЃгЂЃmap гЃ®ж–№гЃЊеЉ№зЋ‡зљ„гЃ«з®Ўзђ†гЃ§гЃЌг‚‹гЃЁе€¤ж–­гЃ—гЃџгЃџг‚ЃгЃ§гЃ™гЂ‚
 
-	static inline std::unordered_map<MaterialHandle, PhysicsMaterial> m_materialMap; // MaterialHandle ‚рѓLЃ[ЃAPhysicsMaterial ‚р’l‚Ж‚·‚йѓnѓbѓVѓ…ѓ}ѓbѓv
+	static inline std::unordered_map<MaterialHandle, PhysicsMaterial> m_materialMap; // MaterialHandle г‚’г‚­гѓјгЂЃPhysicsMaterial г‚’еЂ¤гЃЁгЃ™г‚‹гѓЏгѓѓг‚·гѓҐгѓћгѓѓгѓ—
 
-	static inline std::vector<std::pair<std::string, MaterialHandle>> m_materialNameMap; // ѓ}ѓeѓЉѓAѓ‹‚М–ј‘O‚ЖMaterialHandle‚МѓyѓA‚рЉi”[‚·‚йѓxѓNѓ^Ѓ[ЃBѓ}ѓeѓЉѓAѓ‹‚М–ј‘O‚©‚зMaterialHandle‚рЊџЌх‚·‚й‚Ѕ‚Я‚ЙЋg—p‚µ‚Ь‚·ЃB
-	static inline bool m_materialNameMapDirty = false; // ѓ}ѓeѓЉѓAѓ‹‚М–ј‘O‚ЖMaterialHandle‚Мѓ}ѓbѓv‚ЄЌЕђV‚Е‚И‚ў‚±‚Ж‚рЋ¦‚·ѓtѓ‰ѓOЃBѓ}ѓeѓЉѓAѓ‹‚М’З‰БЃAЌнЏњЃA“Бђ«‚М•ПЌX‚И‚З‚ЄЌs‚н‚к‚ЅЌЫ‚Йtrue‚ЙђЭ’и‚і‚кЃAUpdateMaterialNameMap()‚ЄЊД‚СЏo‚і‚к‚ЅЌЫ‚Йfalse‚ЙѓЉѓZѓbѓg‚і‚к‚Ь‚·ЃB
+	static inline std::vector<std::pair<std::string, MaterialHandle>> m_materialNameMap; // гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰ЌгЃЁMaterialHandleгЃ®гѓљг‚ўг‚’ж јзґЌгЃ™г‚‹гѓ™г‚Їг‚їгѓјгЂ‚гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰ЌгЃ‹г‚‰MaterialHandleг‚’ж¤њзґўгЃ™г‚‹гЃџг‚ЃгЃ«дЅїз”ЁгЃ—гЃѕгЃ™гЂ‚
+	static inline bool m_materialNameMapDirty = false; // гѓћгѓ†гѓЄг‚ўгѓ«гЃ®еђЌе‰ЌгЃЁMaterialHandleгЃ®гѓћгѓѓгѓ—гЃЊжњЂж–°гЃ§гЃЄгЃ„гЃ“гЃЁг‚’з¤єгЃ™гѓ•гѓ©г‚°гЂ‚гѓћгѓ†гѓЄг‚ўгѓ«гЃ®иїЅеЉ гЂЃе‰Љй™¤гЂЃз‰№жЂ§гЃ®е¤‰ж›ґгЃЄгЃ©гЃЊиЎЊг‚Џг‚ЊгЃџйљ›гЃ«trueгЃ«иЁ­е®љгЃ•г‚ЊгЂЃUpdateMaterialNameMap()гЃЊе‘јгЃіе‡єгЃ•г‚ЊгЃџйљ›гЃ«falseгЃ«гѓЄг‚»гѓѓгѓ€гЃ•г‚ЊгЃѕгЃ™гЂ‚
 
-	// --- ѓЊѓCѓ„Ѓ[ЏХ“ЛђЭ’и‚МЉЗ—ќ ---
+	// --- гѓ¬г‚¤гѓ¤гѓјиЎќзЄЃиЁ­е®љгЃ®з®Ўзђ† ---
 
-	// ѓЊѓCѓ„Ѓ[ID‚рѓLЃ[ЃAѓЊѓCѓ„Ѓ[‚М–ј‘O‚р’l‚Ж‚·‚йѓnѓbѓVѓ…ѓ}ѓbѓvЃBѓЊѓCѓ„Ѓ[ID‚©‚зѓЊѓCѓ„Ѓ[‚М–ј‘O‚рЋж“ѕ‚·‚й‚Ѕ‚Я‚ЙЋg—p‚µ‚Ь‚·ЃB
+	// гѓ¬г‚¤гѓ¤гѓјIDг‚’г‚­гѓјгЂЃгѓ¬г‚¤гѓ¤гѓјгЃ®еђЌе‰Ќг‚’еЂ¤гЃЁгЃ™г‚‹гѓЏгѓѓг‚·гѓҐгѓћгѓѓгѓ—гЂ‚гѓ¬г‚¤гѓ¤гѓјIDгЃ‹г‚‰гѓ¬г‚¤гѓ¤гѓјгЃ®еђЌе‰Ќг‚’еЏ–еѕ—гЃ™г‚‹гЃџг‚ЃгЃ«дЅїз”ЁгЃ—гЃѕгЃ™гЂ‚
 	static inline std::unordered_map<Layer, std::string> m_layerNameMap;
 
-	// ’З‰Б‘Т‚ї‚МRigidbody‚ЖCollider‚МѓЉѓXѓgЃB‚±‚к‚з‚НЃA•Ё—ќѓGѓ“ѓWѓ“‚МЌXђVѓ‹Ѓ[ѓv‚М“KђШ‚Иѓ^ѓCѓ~ѓ“ѓO‚Е•Ё—ќѓGѓ“ѓWѓ“‚Й’З‰Б‚і‚к‚Ь‚·ЃB
+	// иїЅеЉ еѕ…гЃЎгЃ®RigidbodyгЃЁColliderгЃ®гѓЄг‚№гѓ€гЂ‚гЃ“г‚Њг‚‰гЃЇгЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®ж›ґж–°гѓ«гѓјгѓ—гЃ®йЃ©е€‡гЃЄг‚їг‚¤гѓџгѓіг‚°гЃ§з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ«иїЅеЉ гЃ•г‚ЊгЃѕгЃ™гЂ‚
 	static std::vector<Rigidbody*> s_pendingRigidbodies;
 	static std::vector<Collider*> s_pendingColliders;
 
-	// --- ѓRЃ[ѓ‹ѓoѓbѓN‚МѓCѓ“ѓXѓ^ѓ“ѓX ---
+	// --- г‚ігѓјгѓ«гѓђгѓѓг‚ЇгЃ®г‚¤гѓіг‚№г‚їгѓіг‚№ ---
 
-	static inline SimulationEventCallback m_simulationEventCallback; // •Ё—ќѓGѓ“ѓWѓ“‚МѓCѓxѓ“ѓgѓRЃ[ѓ‹ѓoѓbѓN‚рЏ€—ќ‚·‚йѓCѓ“ѓXѓ^ѓ“ѓX
+	static inline SimulationEventCallback m_simulationEventCallback; // з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®г‚¤гѓ™гѓігѓ€г‚ігѓјгѓ«гѓђгѓѓг‚Їг‚’е‡¦зђ†гЃ™г‚‹г‚¤гѓіг‚№г‚їгѓіг‚№
 
-	static inline FilterShader m_filterShader; // ѓNѓGѓЉѓtѓBѓ‹ѓ^ѓRЃ[ѓ‹ѓoѓbѓN‚рЏ€—ќ‚·‚йѓCѓ“ѓXѓ^ѓ“ѓX
+	static inline FilterShader m_filterShader; // г‚Їг‚ЁгѓЄгѓ•г‚Јгѓ«г‚їг‚ігѓјгѓ«гѓђгѓѓг‚Їг‚’е‡¦зђ†гЃ™г‚‹г‚¤гѓіг‚№г‚їгѓіг‚№
 
-	// --- PhysXЉЦA‚МѓЃѓ“ѓo•Пђ” ---
+	// --- PhysXй–ўйЂЈгЃ®гѓЎгѓігѓђе¤‰ж•° ---
 	static inline physx::PxDefaultAllocator			pxAllocator;
 	static inline physx::PxDefaultErrorCallback		pxErrorCallback;
 	static inline physx::PxFoundation*				pxFoundation = nullptr;

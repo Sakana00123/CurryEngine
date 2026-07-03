@@ -74,7 +74,7 @@ bool Selectable::IsHovering() const
 
 void Selectable::UpdateVisual() 
 {
-	// F‚Ì—Dæ“xFPressing > Hovering > Selected > Default
+	// è‰²ã®å„ªå…ˆåº¦ï¼šPressing > Hovering > Selected > Default
 	Image* image = GetImage();
 	if (!image) return;
 	if (!interactable) image->color = disabledColor;
@@ -130,7 +130,7 @@ void Selectable::DrawProperty(const PropertyDrawContext& context)
 		SetInteractable(isInteractable);
 	}
 
-	//ƒCƒxƒ“ƒg
+	//ã‚¤ãƒ™ãƒ³ãƒˆ
 	{
 		ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
@@ -144,7 +144,7 @@ void Selectable::DrawProperty(const PropertyDrawContext& context)
 			for (size_t i = 0; i < 4; i++) {
 				ImGui::PushID(static_cast<int>(i));
 
-				//ƒhƒƒbƒvæ
+				//ãƒ‰ãƒ­ãƒƒãƒ—å…ˆ
 				ImGui::Text(directions[i]);
 				//ImGui::SameLine();
 				ImGui::Button(navigations[i] ? navigations[i]->gameObject->name.c_str() : "None(Selectable)");
@@ -180,12 +180,12 @@ void Selectable::DrawProperty(const PropertyDrawContext& context)
 	ImGui::ColorEdit4("DisabledColor", &disabledColor.r);
 #else
 
-	bool isInteractable = IsInteractable(); // Œ»İ‚ÌƒCƒ“ƒ^ƒ‰ƒNƒeƒBƒuó‘Ô‚ğæ“¾
+	bool isInteractable = IsInteractable(); // ç¾åœ¨ã®ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’å–å¾—
 	
-	// ©“®¶¬‚³‚ê‚½ƒvƒƒpƒeƒB•`‰æ‚ğŒÄ‚Ño‚·
+	// è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚’å‘¼ã³å‡ºã™
 	Component::DrawProperty(context);
 
-	// ƒCƒ“ƒ^ƒ‰ƒNƒeƒBƒuó‘Ô‚Ì•ÏX‚ğŒŸo‚µ‚Ä”½‰f
+	// ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã®å¤‰æ›´ã‚’æ¤œå‡ºã—ã¦åæ˜ 
 	if (isInteractable != IsInteractable()) {
 		SetInteractable(IsInteractable());
 	}

@@ -4,16 +4,16 @@
 
 namespace ProceduralMesh
 {
-	// ƒNƒƒbƒhƒƒbƒVƒ…‚ğ¶¬
+	// ã‚¯ãƒ¯ãƒƒãƒ‰ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆ
 	std::shared_ptr<Mesh> CreateQuad(float width, float height);
-	// •½–ÊƒƒbƒVƒ…‚ğ¶¬
+	// å¹³é¢ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆ
 	std::shared_ptr<Mesh> CreatePlane(float width, float height, uint32_t widthSegments = 1, uint32_t heightSegments = 1);
-	// ƒLƒ…[ƒuƒƒbƒVƒ…‚ğ¶¬
+	// ã‚­ãƒ¥ãƒ¼ãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆ
 	std::shared_ptr<Mesh> CreateCube(float width, float height, float depth);
-	// ‹…ƒƒbƒVƒ…‚ğ¶¬
+	// çƒãƒ¡ãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆ
 	std::shared_ptr<Mesh> CreateSphere(float radius, uint32_t longitudeSegments = 16, uint32_t latitudeSegments = 16);
-	// ‰~’ŒƒƒbƒVƒ…‚ğ¶¬
+	// å††æŸ±ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆ
 	std::shared_ptr<Mesh> CreateCylinder(float radius, float height, uint32_t radialSegments = 16);
-	// ƒJƒvƒZƒ‹ƒƒbƒVƒ…‚ğ¶¬
+	// ã‚«ãƒ—ã‚»ãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆ
 	std::shared_ptr<Mesh> CreateCapsule(float radius, float height, uint32_t radialSegments = 16, uint32_t heightSegments = 8);
 }

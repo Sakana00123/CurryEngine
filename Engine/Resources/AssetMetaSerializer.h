@@ -8,37 +8,37 @@ namespace CurryEngine::Resources
 	{
 	public:
 		/**
-		 * @brief ƒAƒZƒbƒgƒƒ^ƒf[ƒ^‚ğ•Û‘¶‚·‚éŠÖ”B
-		 * @param meta •Û‘¶‚·‚éƒAƒZƒbƒgƒƒ^ƒf[ƒ^B
-		 * @return •Û‘¶‚ª¬Œ÷‚µ‚½ê‡‚ÍtrueA¸”s‚µ‚½ê‡‚Ífalse‚ğ•Ô‚µ‚Ü‚·B
+		 * @brief ã‚¢ã‚»ãƒƒãƒˆãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹é–¢æ•°ã€‚
+		 * @param meta ä¿å­˜ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã€‚
+		 * @return ä¿å­˜ãŒæˆåŠŸã—ãŸå ´åˆã¯trueã€å¤±æ•—ã—ãŸå ´åˆã¯falseã‚’è¿”ã—ã¾ã™ã€‚
 		 */
 		static bool Save(const AssetMeta& meta);
 		/**
-		 * @brief ƒAƒZƒbƒgƒƒ^ƒf[ƒ^‚ğ“Ç‚İ‚ŞŠÖ”B
-		 * @param assetPath “Ç‚İ‚ŞƒAƒZƒbƒg‚ÌƒpƒXB
-		 * @return “Ç‚İ‚ñ‚¾ƒAƒZƒbƒgƒƒ^ƒf[ƒ^B“Ç‚İ‚İ‚É¸”s‚µ‚½ê‡‚Í‹ó‚ÌAssetMeta‚ğ•Ô‚µ‚Ü‚·B
+		 * @brief ã‚¢ã‚»ãƒƒãƒˆãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€é–¢æ•°ã€‚
+		 * @param assetPath èª­ã¿è¾¼ã‚€ã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹ã€‚
+		 * @return èª­ã¿è¾¼ã‚“ã ã‚¢ã‚»ãƒƒãƒˆãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã€‚èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ãŸå ´åˆã¯ç©ºã®AssetMetaã‚’è¿”ã—ã¾ã™ã€‚
 		 */
 		static AssetMeta Load(const std::filesystem::path& assetPath);
 
 
 		/**
-		 * @brief ƒAƒZƒbƒg‚ÌƒpƒX‚©‚ç‘Î‰‚·‚éƒƒ^ƒf[ƒ^ƒtƒ@ƒCƒ‹‚ÌƒpƒX‚ğæ“¾‚·‚éŠÖ”B
-		 * @param assetPath ƒAƒZƒbƒg‚ÌƒpƒXB
-		 * @return ‘Î‰‚·‚éƒƒ^ƒf[ƒ^ƒtƒ@ƒCƒ‹‚ÌƒpƒXB
+		 * @brief ã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹ã‹ã‚‰å¯¾å¿œã™ã‚‹ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹é–¢æ•°ã€‚
+		 * @param assetPath ã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹ã€‚
+		 * @return å¯¾å¿œã™ã‚‹ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã€‚
 		 */
 		static std::filesystem::path MetaPathFor(const std::filesystem::path& assetPath);
 
 		/**
-		 * @brief •¶š—ñ‚©‚çAssetType‚ğæ“¾‚·‚éŠÖ”B
-		 * @param typeStr AssetType‚ğ•\‚·•¶š—ñB
-		 * @return ‘Î‰‚·‚éAssetTypeB•¶š—ñ‚ª•s³‚Èê‡‚ÍAssetType::Unknown‚ğ•Ô‚µ‚Ü‚·B
+		 * @brief æ–‡å­—åˆ—ã‹ã‚‰AssetTypeã‚’å–å¾—ã™ã‚‹é–¢æ•°ã€‚
+		 * @param typeStr AssetTypeã‚’è¡¨ã™æ–‡å­—åˆ—ã€‚
+		 * @return å¯¾å¿œã™ã‚‹AssetTypeã€‚æ–‡å­—åˆ—ãŒä¸æ­£ãªå ´åˆã¯AssetType::Unknownã‚’è¿”ã—ã¾ã™ã€‚
 		 */
 		static AssetType AssetTypeFromString(const std::string& typeStr);
 
 		/**
-		 * @brief AssetType‚ğ•¶š—ñ‚É•ÏŠ·‚·‚éŠÖ”B
-		 * @param type •ÏŠ·‚·‚éAssetTypeB
-		 * @return ‘Î‰‚·‚é•¶š—ñBAssetType‚ª•s³‚Èê‡‚Í"Unknown"‚ğ•Ô‚µ‚Ü‚·B
+		 * @brief AssetTypeã‚’æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹é–¢æ•°ã€‚
+		 * @param type å¤‰æ›ã™ã‚‹AssetTypeã€‚
+		 * @return å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã€‚AssetTypeãŒä¸æ­£ãªå ´åˆã¯"Unknown"ã‚’è¿”ã—ã¾ã™ã€‚
 		 */
 		static std::string AssetTypeToString(AssetType type);
 

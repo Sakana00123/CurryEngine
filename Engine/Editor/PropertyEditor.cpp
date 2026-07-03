@@ -12,14 +12,14 @@ namespace CurryEngine
 	void PropertyEditor::DrawProperty(const PropertyInfo* prop, const PropertyDrawContext* context)
 	{
 		if (!prop || !context || context->IsEmpty()) return;
-		if (prop->GetAttribute("HideInInspector")) return; // HideInInspector ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚µ‚È‚¢
+		if (prop->GetAttribute("HideInInspector")) return; // HideInInspector å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã—ãªã„
 
 #ifdef USE_IMGUI
-		ImGui::PushID(prop->name.c_str()); // “¯‚¶–¼‘O‚ÌƒvƒƒpƒeƒB‚ª•¡”‚ ‚éê‡‚É¯•Ê‚Å‚«‚é‚æ‚¤‚É ID ‚ğ’Ç‰Á
+		ImGui::PushID(prop->name.c_str()); // åŒã˜åå‰ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒè¤‡æ•°ã‚ã‚‹å ´åˆã«è­˜åˆ¥ã§ãã‚‹ã‚ˆã†ã« ID ã‚’è¿½åŠ 
 
 		IPropertyDrawer* drawer = nullptr;
-		// ƒvƒƒpƒeƒB‚ÌŒ^‚É‘Î‰‚·‚éƒhƒƒ[‚ğ PropertyDrawerRegistry ‚©‚çæ“¾
-		if (auto* customAttr = prop->GetAttribute("CustomDrawer")) // CustomDrawer ‘®«‚ª‚ ‚ê‚ÎAˆø”‚©‚çƒhƒƒ[‚ÌƒNƒ‰ƒX–¼‚©‚çƒhƒƒ[‚ğæ“¾
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å‹ã«å¯¾å¿œã™ã‚‹ãƒ‰ãƒ­ãƒ¯ãƒ¼ã‚’ PropertyDrawerRegistry ã‹ã‚‰å–å¾—
+		if (auto* customAttr = prop->GetAttribute("CustomDrawer")) // CustomDrawer å±æ€§ãŒã‚ã‚Œã°ã€å¼•æ•°ã‹ã‚‰ãƒ‰ãƒ­ãƒ¯ãƒ¼ã®ã‚¯ãƒ©ã‚¹åã‹ã‚‰ãƒ‰ãƒ­ãƒ¯ãƒ¼ã‚’å–å¾—
 		{
 			if (!customAttr->args.empty())
 			{
@@ -30,21 +30,21 @@ namespace CurryEngine
 					LOG_WARNING("No property drawer found for class name: " + drawerClassName);
 				}
 			}
-			else // CustomDrawer ‘®«‚ª‚ ‚é‚Ì‚ÉƒNƒ‰ƒX–¼‚ªw’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍŒx‚ğo‚·
+			else // CustomDrawer å±æ€§ãŒã‚ã‚‹ã®ã«ã‚¯ãƒ©ã‚¹åãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯è­¦å‘Šã‚’å‡ºã™
 			{
 				LOG_WARNING("CustomDrawer attribute found but no class name specified for property: " + prop->name);
 			}
 		}
-		else // CustomDrawer ‘®«‚ª‚È‚¢ê‡‚ÍAƒvƒƒpƒeƒB‚ÌŒ^‚É‘Î‰‚·‚éƒhƒƒ[‚ğæ“¾
+		else // CustomDrawer å±æ€§ãŒãªã„å ´åˆã¯ã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å‹ã«å¯¾å¿œã™ã‚‹ãƒ‰ãƒ­ãƒ¯ãƒ¼ã‚’å–å¾—
 		{
 			drawer = PropertyDrawerRegistry::Get().Find(prop->type);
 		}
 
 		if (drawer)
 		{
-			ImGui::BeginDisabled(prop->GetAttribute("ReadOnly") != nullptr); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í‘€ì‚ğ–³Œø‰»
+			ImGui::BeginDisabled(prop->GetAttribute("ReadOnly") != nullptr); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æ“ä½œã‚’ç„¡åŠ¹åŒ–
 
-			// ƒhƒƒ[‚ğg—p‚µ‚ÄƒvƒƒpƒeƒB‚ğ•`‰æ
+			// ãƒ‰ãƒ­ãƒ¯ãƒ¼ã‚’ä½¿ç”¨ã—ã¦ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»
 			drawer->Draw(*prop, *context);
 
 			ImGui::EndDisabled();
@@ -64,28 +64,28 @@ namespace CurryEngine
 	{
 		if (!prop || !context || context->IsEmpty())
 			return;
-		// targets[0] ‚ğŠî€‚É‚µ‚ÄA‘¼‚Ì targets[i] ‚Æ”äŠr‚µ‚È‚ª‚çƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
-		// —á‚¦‚ÎAtargets[0] ‚ÌƒvƒƒpƒeƒB’l‚ğæ“¾‚µA‘¼‚Ì targets[i] ‚Ì“¯‚¶ƒvƒƒpƒeƒB’l‚Æ”äŠr‚µ‚ÄA’l‚ªˆÙ‚È‚éê‡‚Íu•¡”‚Ì’lv‚Æ•\¦‚·‚é‚È‚Ç‚Ìˆ—‚ªl‚¦‚ç‚ê‚Ü‚·B
-		// ‚±‚±‚Å‚Í—á‚Æ‚µ‚ÄA’Pƒ‚É targets[0] ‚ÌƒvƒƒpƒeƒB’l‚ğ•`‰æ‚·‚éƒR[ƒh‚ğ¦‚µ‚Ü‚·B
+		// targets[0] ã‚’åŸºæº–ã«ã—ã¦ã€ä»–ã® targets[i] ã¨æ¯”è¼ƒã—ãªãŒã‚‰ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
+		// ä¾‹ãˆã°ã€targets[0] ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å€¤ã‚’å–å¾—ã—ã€ä»–ã® targets[i] ã®åŒã˜ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å€¤ã¨æ¯”è¼ƒã—ã¦ã€å€¤ãŒç•°ãªã‚‹å ´åˆã¯ã€Œè¤‡æ•°ã®å€¤ã€ã¨è¡¨ç¤ºã™ã‚‹ãªã©ã®å‡¦ç†ãŒè€ƒãˆã‚‰ã‚Œã¾ã™ã€‚
+		// ã“ã“ã§ã¯ä¾‹ã¨ã—ã¦ã€å˜ç´”ã« targets[0] ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å€¤ã‚’æç”»ã™ã‚‹ã‚³ãƒ¼ãƒ‰ã‚’ç¤ºã—ã¾ã™ã€‚
 		Component* primaryTarget = context->Primary();
 		if (!primaryTarget)
 			return;
 
 		if (prop->GetAttribute("HideInInspector") != nullptr)
 		{
-			return; // HideInInspector ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚µ‚È‚¢
+			return; // HideInInspector å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã—ãªã„
 		}
 		ImGui::PushID(prop->name.c_str());
 
-		// ƒtƒB[ƒ‹ƒh‚Ì’l‚ğæ“¾
+		// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®å€¤ã‚’å–å¾—
 		std::any propertyAny = prop->getter(context->Primary());
 
-		// ƒ‰ƒxƒ‹‚Ìæ“¾
+		// ãƒ©ãƒ™ãƒ«ã®å–å¾—
 		const char* label = prop->name.c_str();
 
-		// ƒc[ƒ‹ƒ`ƒbƒv‚Ìæ“¾
+		// ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®å–å¾—
 		const char* tooltip = nullptr;
-		if (auto* tooltipAttr = prop->GetAttribute("Tooltip")) // Tooltip ‘®«‚ª‚ ‚ê‚ÎAˆø”‚©‚çƒc[ƒ‹ƒ`ƒbƒv‚ğæ“¾
+		if (auto* tooltipAttr = prop->GetAttribute("Tooltip")) // Tooltip å±æ€§ãŒã‚ã‚Œã°ã€å¼•æ•°ã‹ã‚‰ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’å–å¾—
 		{
 			if (!tooltipAttr->args.empty())
 			{
@@ -93,36 +93,36 @@ namespace CurryEngine
 			}
 		}
 
-		// ‘®«‚Ìæ“¾
-		bool readOnly = prop->GetAttribute("ReadOnly") != nullptr; // ReadOnly ‘®«‚ª‚ ‚é‚©‚Ç‚¤‚©
+		// å±æ€§ã®å–å¾—
+		bool readOnly = prop->GetAttribute("ReadOnly") != nullptr; // ReadOnly å±æ€§ãŒã‚ã‚‹ã‹ã©ã†ã‹
 
-		// int/float ‚Ì•`‰æ‚É•K—v‚È•Ï”‚Ì‰Šú’l
+		// int/float ã®æç”»ã«å¿…è¦ãªå¤‰æ•°ã®åˆæœŸå€¤
 		float speed = 1.0f;
 		const char* format = nullptr;
-		std::pair<std::any, std::any> range{ std::any(), std::any() }; // Range ‘®«‚Ìˆø”‚ğŠi”[‚·‚éƒyƒA (min, max)
+		std::pair<std::any, std::any> range{ std::any(), std::any() }; // Range å±æ€§ã®å¼•æ•°ã‚’æ ¼ç´ã™ã‚‹ãƒšã‚¢ (min, max)
 		ImGuiSliderFlags sliderFlags = 0;
-		// int/float ‚Ì•`‰æ‚É•K—v‚È‘®«‚Ìæ“¾
+		// int/float ã®æç”»ã«å¿…è¦ãªå±æ€§ã®å–å¾—
 		{
-			if (auto* speedAttr = prop->GetAttribute("Speed")) // Speed ‘®«‚ª‚ ‚ê‚ÎAˆø”‚©‚ç speed ‚ğæ“¾
+			if (auto* speedAttr = prop->GetAttribute("Speed")) // Speed å±æ€§ãŒã‚ã‚Œã°ã€å¼•æ•°ã‹ã‚‰ speed ã‚’å–å¾—
 			{
 				if (!speedAttr->args.empty())
 				{
 					speed = std::stof(speedAttr->args[0]);
 				}
 			}
-			if (readOnly) // ReadOnly ‘®«‚ª‚ ‚ê‚ÎAflags ‚É ImGuiSliderFlags_ReadOnly ‚ğƒZƒbƒg
+			if (readOnly) // ReadOnly å±æ€§ãŒã‚ã‚Œã°ã€flags ã« ImGuiSliderFlags_ReadOnly ã‚’ã‚»ãƒƒãƒˆ
 			{
-				sliderFlags |= ImGuiSliderFlags_NoInput; // ImGui ‚É‚Í ReadOnly ƒtƒ‰ƒO‚ª‚È‚¢‚½‚ßA“ü—Í‚ğ–³Œø‰»‚·‚éƒtƒ‰ƒO‚ğg—p
-				sliderFlags |= ImGuiSliderFlags_AlwaysClamp; // “ü—Í‚ğ–³Œø‰»‚·‚éê‡‚Å‚àAƒhƒ‰ƒbƒO‚Å‚Ì•ÒW‚Í‰Â”\‚É‚·‚é‚½‚ß‚Éí‚ÉƒNƒ‰ƒ“ƒv‚·‚éƒtƒ‰ƒO‚ğƒZƒbƒg
+				sliderFlags |= ImGuiSliderFlags_NoInput; // ImGui ã«ã¯ ReadOnly ãƒ•ãƒ©ã‚°ãŒãªã„ãŸã‚ã€å…¥åŠ›ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ãƒ•ãƒ©ã‚°ã‚’ä½¿ç”¨
+				sliderFlags |= ImGuiSliderFlags_AlwaysClamp; // å…¥åŠ›ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹å ´åˆã§ã‚‚ã€ãƒ‰ãƒ©ãƒƒã‚°ã§ã®ç·¨é›†ã¯å¯èƒ½ã«ã™ã‚‹ãŸã‚ã«å¸¸ã«ã‚¯ãƒ©ãƒ³ãƒ—ã™ã‚‹ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
 			}
-			if (auto* formatAttr = prop->GetAttribute("Format")) // Format ‘®«‚ª‚ ‚ê‚ÎAˆø”‚©‚ç format ‚ğæ“¾
+			if (auto* formatAttr = prop->GetAttribute("Format")) // Format å±æ€§ãŒã‚ã‚Œã°ã€å¼•æ•°ã‹ã‚‰ format ã‚’å–å¾—
 			{
 				if (!formatAttr->args.empty())
 				{
 					format = formatAttr->args[0].c_str();
 				}
 			}
-			if (auto* rangeAttr = prop->GetAttribute("Range")) // Range ‘®«‚ª‚ ‚ê‚ÎAˆø”‚©‚ç range ‚ğæ“¾
+			if (auto* rangeAttr = prop->GetAttribute("Range")) // Range å±æ€§ãŒã‚ã‚Œã°ã€å¼•æ•°ã‹ã‚‰ range ã‚’å–å¾—
 			{
 				if (rangeAttr->args.size() >= 2)
 				{
@@ -133,108 +133,108 @@ namespace CurryEngine
 		}
 
 
-		// ƒtƒB[ƒ‹ƒh‚ÌŒ^‚É‰‚¶‚Ä•`‰æ
+		// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®å‹ã«å¿œã˜ã¦æç”»
 		if (prop->type == "int")
 		{
-			static int prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
+			static int prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
 			int value = std::any_cast<int>(propertyAny);
-			// •¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’l‚ª¬İ‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ä•\¦‚ğ•Ï‚¦‚é
+			// è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¦è¡¨ç¤ºã‚’å¤‰ãˆã‚‹
 			bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<int>(*context, *prop);
 
 			IMGUI_PROPERTY_EX(label, tooltip);
-			if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-			int min = range.first.has_value() ? std::stoi(std::any_cast<std::string>(range.first)) : 0; // Range ‘®«‚Ì min ‚ğæ“¾B‚È‚¯‚ê‚Î 0 ‚ğƒfƒtƒHƒ‹ƒg‚É‚·‚é
-			int max = range.second.has_value() ? std::stoi(std::any_cast<std::string>(range.second)) : 0; // Range ‘®«‚Ì max ‚ğæ“¾B‚È‚¯‚ê‚Î 0 ‚ğƒfƒtƒHƒ‹ƒg‚É‚·‚é
-			if (format == nullptr) // Format ‘®«‚ª‚È‚¢ê‡‚ÍAƒfƒtƒHƒ‹ƒg‚ÌƒtƒH[ƒ}ƒbƒg‚ğİ’è
+			if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+			int min = range.first.has_value() ? std::stoi(std::any_cast<std::string>(range.first)) : 0; // Range å±æ€§ã® min ã‚’å–å¾—ã€‚ãªã‘ã‚Œã° 0 ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ã™ã‚‹
+			int max = range.second.has_value() ? std::stoi(std::any_cast<std::string>(range.second)) : 0; // Range å±æ€§ã® max ã‚’å–å¾—ã€‚ãªã‘ã‚Œã° 0 ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ã™ã‚‹
+			if (format == nullptr) // Format å±æ€§ãŒãªã„å ´åˆã¯ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’è¨­å®š
 			{
 				format = "%d";
 			}
-			if (mixed) // ’l‚ª¬İ‚µ‚Ä‚¢‚éê‡‚ÍA•\¦‚ğ‹ó—“‚É‚·‚é
+			if (mixed) // å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€è¡¨ç¤ºã‚’ç©ºæ¬„ã«ã™ã‚‹
 			{
 				format = "---";
 			}
 
-			// GUI ‚Ìƒhƒ‰ƒbƒO‘€ì‚Å’l‚ğ•ÒW
+			// GUI ã®ãƒ‰ãƒ©ãƒƒã‚°æ“ä½œã§å€¤ã‚’ç·¨é›†
 			ImGui::DragInt("##int", &value, speed, min, max, format, sliderFlags);
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = value;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				int newValue = value; /* Œ»İ‚Ì’l‚ğæ“¾ */
+				int newValue = value; /* ç¾åœ¨ã®å€¤ã‚’å–å¾— */
 				if (newValue != prevValue)
 				{
-					// ‘Sƒ^[ƒQƒbƒg‚É“K—p
+					// å…¨ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«é©ç”¨
 					CurryEngine::PropertyDrawHelper::ApplyToAll<int>(*context, *prop, newValue);
 					//IMGUI_PROPERTY_COMMAND_INT(label, newValue, prevValue);
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
 			}
-			if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+			if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		}
 		else if (prop->type == "float")
 		{
-			static float prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
+			static float prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
 			float value = std::any_cast<float>(propertyAny);
 			IMGUI_PROPERTY_EX(label, tooltip);
-			if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-			float min = range.first.has_value() ? std::stof(std::any_cast<std::string>(range.first)) : 0.0f; // Range ‘®«‚Ì min ‚ğæ“¾B‚È‚¯‚ê‚Î 0.0f ‚ğƒfƒtƒHƒ‹ƒg‚É‚·‚é
-			float max = range.second.has_value() ? std::stof(std::any_cast<std::string>(range.second)) : 0.0f; // Range ‘®«‚Ì max ‚ğæ“¾B‚È‚¯‚ê‚Î 0.0f ‚ğƒfƒtƒHƒ‹ƒg‚É‚·‚é
-			if (format == nullptr) // Format ‘®«‚ª‚È‚¢ê‡‚ÍAƒfƒtƒHƒ‹ƒg‚ÌƒtƒH[ƒ}ƒbƒg‚ğİ’è
+			if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+			float min = range.first.has_value() ? std::stof(std::any_cast<std::string>(range.first)) : 0.0f; // Range å±æ€§ã® min ã‚’å–å¾—ã€‚ãªã‘ã‚Œã° 0.0f ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ã™ã‚‹
+			float max = range.second.has_value() ? std::stof(std::any_cast<std::string>(range.second)) : 0.0f; // Range å±æ€§ã® max ã‚’å–å¾—ã€‚ãªã‘ã‚Œã° 0.0f ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ã™ã‚‹
+			if (format == nullptr) // Format å±æ€§ãŒãªã„å ´åˆã¯ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’è¨­å®š
 			{
 				format = "%.3f";
 			}
 			bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<float>(*context, *prop);
-			if (mixed) // ’l‚ª¬İ‚µ‚Ä‚¢‚éê‡‚ÍA•\¦‚ğ‹ó—“‚É‚·‚é
+			if (mixed) // å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€è¡¨ç¤ºã‚’ç©ºæ¬„ã«ã™ã‚‹
 			{
 				format = "---";
 			}
 
-			// GUI ‚Ìƒhƒ‰ƒbƒO‘€ì‚Å’l‚ğ•ÒW
+			// GUI ã®ãƒ‰ãƒ©ãƒƒã‚°æ“ä½œã§å€¤ã‚’ç·¨é›†
 			ImGui::DragFloat("##float", &value, speed, min, max, format, sliderFlags);
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = value;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				float newValue = value; /* Œ»İ‚Ì’l‚ğæ“¾ */
+				float newValue = value; /* ç¾åœ¨ã®å€¤ã‚’å–å¾— */
 				if (newValue != prevValue)
 				{
 					//IMGUI_PROPERTY_COMMAND_FLOAT(label, newValue, prevValue);
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
 			}
-			if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+			if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		}
 		else if (prop->type == "bool")
 		{
-			static bool prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
+			static bool prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
 			bool value = std::any_cast<bool>(propertyAny);
 			bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<bool>(*context, *prop);
 			IMGUI_PROPERTY_EX(label, tooltip);
-			if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-			int flags = mixed ? -1 : (value ? 1 : 0); // ’l‚ª¬İ‚µ‚Ä‚¢‚éê‡‚ÍAƒtƒ‰ƒO‚ğ -1 ‚É‚µ‚Ä•\¦‚ğMixed‚É‚·‚éB‚»‚¤‚Å‚È‚¢ê‡‚ÍA’l‚É‰‚¶‚Äƒtƒ‰ƒO‚ğ 1 ‚Ü‚½‚Í 0 ‚É‚·‚éB
+			if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+			int flags = mixed ? -1 : (value ? 1 : 0); // å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€ãƒ•ãƒ©ã‚°ã‚’ -1 ã«ã—ã¦è¡¨ç¤ºã‚’Mixedã«ã™ã‚‹ã€‚ãã†ã§ãªã„å ´åˆã¯ã€å€¤ã«å¿œã˜ã¦ãƒ•ãƒ©ã‚°ã‚’ 1 ã¾ãŸã¯ 0 ã«ã™ã‚‹ã€‚
 			if (ImGui::CheckboxFlags("##bool", &flags, value))
 			{
-				value = (flags & 1) != 0; // ƒtƒ‰ƒO‚ÌÅ‰ºˆÊƒrƒbƒg‚ª 1 ‚È‚ç trueA‚»‚¤‚Å‚È‚¢‚È‚ç false
+				value = (flags & 1) != 0; // ãƒ•ãƒ©ã‚°ã®æœ€ä¸‹ä½ãƒ“ãƒƒãƒˆãŒ 1 ãªã‚‰ trueã€ãã†ã§ãªã„ãªã‚‰ false
 				CurryEngine::PropertyDrawHelper::ApplyToAll<bool>(*context, *prop, value);
 			}
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = value;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				bool newValue = value; /* Œ»İ‚Ì’l‚ğæ“¾ */
+				bool newValue = value; /* ç¾åœ¨ã®å€¤ã‚’å–å¾— */
 				if (newValue != prevValue)
 				{
 					//IMGUI_PROPERTY_COMMAND_BOOL(label, newValue, prevValue);
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
 			}
-			if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+			if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		}
 		else if (prop->type == "std::string" || prop->type == "string" || prop->type == "String")
 		{
@@ -242,34 +242,34 @@ namespace CurryEngine
 			std::string oldValue = value;
 			bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<std::string>(*context, *prop);
 			IMGUI_PROPERTY_EX(label, tooltip);
-			if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
+			if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
 			char buffer[256];
 			if (mixed)
 			{
-				strncpy_s(buffer, "---", sizeof(buffer)); // ’l‚ª¬İ‚µ‚Ä‚¢‚éê‡‚ÍA•\¦‚ğ‹ó—“‚É‚·‚é
+				strncpy_s(buffer, "---", sizeof(buffer)); // å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€è¡¨ç¤ºã‚’ç©ºæ¬„ã«ã™ã‚‹
 			}
 			else
 			{
 				strncpy_s(buffer, value.c_str(), sizeof(buffer));
 			}
-			buffer[sizeof(buffer) - 1] = '\0'; // ƒoƒbƒtƒ@‚ÌÅŒã‚ğ null ‚ÅI’[
-			static std::string prevValue = value; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
-			bool valueChanged = false; // ’l‚ª•ÏX‚³‚ê‚½‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+			buffer[sizeof(buffer) - 1] = '\0'; // ãƒãƒƒãƒ•ã‚¡ã®æœ€å¾Œã‚’ null ã§çµ‚ç«¯
+			static std::string prevValue = value; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
+			bool valueChanged = false; // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 			valueChanged |= ImGui::InputText("##string", buffer, sizeof(buffer));
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = value;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				std::string newValue(buffer); /* Œ»İ‚Ì’l‚ğæ“¾ */
+				std::string newValue(buffer); /* ç¾åœ¨ã®å€¤ã‚’å–å¾— */
 				if (newValue != prevValue)
 				{
 					//IMGUI_PROPERTY_COMMAND_STRING(label, newValue, oldValue);
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
 			}
-			if (valueChanged) // ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İ std::string ‚ğXV
+			if (valueChanged) // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ std::string ã‚’æ›´æ–°
 			{
 				value = buffer;
 				if (value.length() > 255)
@@ -277,93 +277,93 @@ namespace CurryEngine
 					value.resize(255); // 256 - 1 (null terminator)
 				}
 			}
-			if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+			if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		}
 		else if (prop->type == "Vector2" || (prop->type.find("XMFLOAT2") != std::string::npos))
 		{
-			static Vector2 prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
+			static Vector2 prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
 			Vector2 value = std::any_cast<Vector2>(propertyAny);
-			// •¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’l‚ª¬İ‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ä•\¦‚ğ•Ï‚¦‚é
+			// è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¦è¡¨ç¤ºã‚’å¤‰ãˆã‚‹
 			bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<Vector2>(*context, *prop);
-			const char* format = mixed ? "---" : "%.3f"; // ’l‚ª¬İ‚µ‚Ä‚¢‚éê‡‚ÍA•\¦‚ğ‹ó—“‚É‚·‚é
+			const char* format = mixed ? "---" : "%.3f"; // å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€è¡¨ç¤ºã‚’ç©ºæ¬„ã«ã™ã‚‹
 
 			IMGUI_PROPERTY_EX(label, tooltip);
-			if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-			bool valueChanged = false; // ’l‚ª•ÏX‚³‚ê‚½‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+			if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+			bool valueChanged = false; // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 			valueChanged |= ImGui::DragFloat2("##vector2", &value.x);
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = value;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				Vector2 newValue = value; /* Œ»İ‚Ì’l‚ğæ“¾ */
+				Vector2 newValue = value; /* ç¾åœ¨ã®å€¤ã‚’å–å¾— */
 				if (!Vector2::Equal(newValue, prevValue))
 				{
 					//IMGUI_PROPERTY_COMMAND_VECTOR2(label, newValue, prevValue);
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
 			}
-			if (valueChanged) // ’l‚ª•ÏX‚³‚ê‚½ê‡‚Í Vector2 ‚ğXV
+			if (valueChanged) // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ Vector2 ã‚’æ›´æ–°
 			{
 				CurryEngine::PropertyDrawHelper::ApplyToAll<Vector2>(*context, *prop, value);
 			}
-			if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+			if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		}
 		else if (prop->type == "Vector3" || (prop->type.find("XMFLOAT3") != std::string::npos))
 		{
-			static Vector3 prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
+			static Vector3 prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
 			Vector3 value = std::any_cast<Vector3>(propertyAny);
-			// •¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’l‚ª¬İ‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ä•\¦‚ğ•Ï‚¦‚é
+			// è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¦è¡¨ç¤ºã‚’å¤‰ãˆã‚‹
 			bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<Vector3>(*context, *prop);
 			const char* format = "%.3f";
-			format = mixed ? "---" : format; // ’l‚ª¬İ‚µ‚Ä‚¢‚éê‡‚ÍA•\¦‚ğ‹ó—“‚É‚·‚é
+			format = mixed ? "---" : format; // å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€è¡¨ç¤ºã‚’ç©ºæ¬„ã«ã™ã‚‹
 
 			IMGUI_PROPERTY_EX(label, tooltip);
-			if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-			bool valueChanged = false; // ’l‚ª•ÏX‚³‚ê‚½‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+			if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+			bool valueChanged = false; // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 			valueChanged |= ImGui::DragFloat3("##vector3", &value.x, 1.0f, 0.0f, 0.0f, format);
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = value;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				Vector3 newValue = value; /* Œ»İ‚Ì’l‚ğæ“¾ */
+				Vector3 newValue = value; /* ç¾åœ¨ã®å€¤ã‚’å–å¾— */
 				if (!Vector3::Equal(newValue, prevValue))
 				{
 					//IMGUI_PROPERTY_COMMAND_VECTOR3(label, newValue, prevValue);
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
 			}
-			if (valueChanged) // ’l‚ª•ÏX‚³‚ê‚½ê‡‚Í Vector3 ‚ğXV
+			if (valueChanged) // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ Vector3 ã‚’æ›´æ–°
 			{
 				CurryEngine::PropertyDrawHelper::ApplyToAll<Vector3>(*context, *prop, value);
 			}
-			if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+			if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		}
 		else if (prop->type == "Quaternion" || (prop->type.find("XMFLOAT4") != std::string::npos))
 		{
-			static Vector3 prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
-			static Vector3 editorEuler; /* •ÒW’†‚ÌƒIƒCƒ‰[Šp‚ğ•Û‚·‚éÃ“I•Ï” */
-			static bool isEditing = false; /* •ÒW’†‚©‚Ç‚¤‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO */
+			static Vector3 prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
+			static Vector3 editorEuler; /* ç·¨é›†ä¸­ã®ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
+			static bool isEditing = false; /* ç·¨é›†ä¸­ã‹ã©ã†ã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚° */
 			Quaternion value = std::any_cast<Quaternion>(propertyAny);
-			if (!isEditing) /* •ÒWŠJn‘O‚ÉŒ»İ‚Ì’l‚ğƒIƒCƒ‰[Šp‚É•ÏŠ·‚µ‚Ä•Û‘¶ */
+			if (!isEditing) /* ç·¨é›†é–‹å§‹å‰ã«ç¾åœ¨ã®å€¤ã‚’ã‚ªã‚¤ãƒ©ãƒ¼è§’ã«å¤‰æ›ã—ã¦ä¿å­˜ */
 			{
 				editorEuler = value.ToEuler();
 			}
 
 			IMGUI_PROPERTY_EX(label, tooltip);
-			if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-			bool valueChanged = false; // ’l‚ª•ÏX‚³‚ê‚½‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+			if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+			bool valueChanged = false; // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 			valueChanged |= ImGui::DragFloat3("##rotation", &editorEuler.x);
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = value.ToEuler();
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				// •ÏX‚³‚ê‚½ƒIƒCƒ‰[Šp‚Æ‘O‰ñ‚ÌƒIƒCƒ‰[Šp‚Ì·•ª‚ğŒvZ‚µ‚ÄƒNƒH[ƒ^ƒjƒIƒ“‚É•ÏŠ·
+				// å¤‰æ›´ã•ã‚ŒãŸã‚ªã‚¤ãƒ©ãƒ¼è§’ã¨å‰å›ã®ã‚ªã‚¤ãƒ©ãƒ¼è§’ã®å·®åˆ†ã‚’è¨ˆç®—ã—ã¦ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã«å¤‰æ›
 				Vector3 newValue = editorEuler;
 				{
 					Quaternion newRot = Quaternion::FromEuler(newValue);
@@ -378,76 +378,76 @@ namespace CurryEngine
 
 					CurryEngine::PropertyDrawHelper::ApplyToAll<Quaternion>(*context, *prop, newRot);
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
-				isEditing = false; /* •ÒWI—¹ */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
+				isEditing = false; /* ç·¨é›†çµ‚äº† */
 			}
-			if (valueChanged) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Í Transform ‚Ì‰ñ“]‚ğXV */
+			if (valueChanged) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ Transform ã®å›è»¢ã‚’æ›´æ–° */
 			{
 				CurryEngine::PropertyDrawHelper::ApplyToAll<Quaternion>(*context, *prop, Quaternion::FromEuler(editorEuler));
-				isEditing = true; /* •ÒW’† */
+				isEditing = true; /* ç·¨é›†ä¸­ */
 			}
-			if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+			if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		}
 		//else if (prop->type == "Vector4" || (prop->type.find("XMFLOAT4") != std::string::npos))
 		//{
-		//	static Vector4 prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
+		//	static Vector4 prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
 		//	Vector4 value = std::any_cast<Vector4>(propertyAny);
-		//	// •¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’l‚ª¬İ‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ä•\¦‚ğ•Ï‚¦‚é
+		//	// è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¦è¡¨ç¤ºã‚’å¤‰ãˆã‚‹
 		//	bool mixed = CurryEngine::PropertyDrawHelper::HasMixedValues<Vector4>(*context, *prop);
-		//	const char* format = mixed ? "---" : "%.3f"; // ’l‚ª¬İ‚µ‚Ä‚¢‚éê‡‚ÍA•\¦‚ğ‹ó—“‚É‚·‚é
+		//	const char* format = mixed ? "---" : "%.3f"; // å€¤ãŒæ··åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€è¡¨ç¤ºã‚’ç©ºæ¬„ã«ã™ã‚‹
 		//	IMGUI_PROPERTY_EX(label, tooltip);
-		//	if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-		//	bool valueChanged = false; // ’l‚ª•ÏX‚³‚ê‚½‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+		//	if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+		//	bool valueChanged = false; // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 		//	valueChanged |= ImGui::DragFloat4("##vector4", &value.x, 1.0f, 0.0f, 0.0f, format);
-		//	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+		//	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 		//	{
 		//		prevValue = value;
 		//	}
-		//	if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+		//	if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 		//	{
-		//		Vector4 newValue = value; /* Œ»İ‚Ì’l‚ğæ“¾ */
+		//		Vector4 newValue = value; /* ç¾åœ¨ã®å€¤ã‚’å–å¾— */
 		//		if (!Vector4::Equal(newValue, prevValue))
 		//		{
 		//			IMGUI_PROPERTY_COMMAND_VECTOR4(label, newValue, prevValue);
 		//		}
-		//		prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
+		//		prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
 		//	}
-		//	if (valueChanged) // ’l‚ª•ÏX‚³‚ê‚½ê‡‚Í Vector4 ‚ğXV
+		//	if (valueChanged) // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ Vector4 ã‚’æ›´æ–°
 		//	{
 		//		CurryEngine::PropertyDrawHelper::ApplyToAll<Vector4>(*context, *prop, value);
 		//	}
-		//	if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+		//	if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		//}
 		else if (prop->type == "Color")
 		{
-			static Color prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
+			static Color prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
 			Color value = std::any_cast<Color>(propertyAny);
 			IMGUI_PROPERTY_EX(label, tooltip);
-			if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-			bool valueChanged = false; // ’l‚ª•ÏX‚³‚ê‚½‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+			if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+			bool valueChanged = false; // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 			valueChanged |= ImGui::ColorEdit4("##color", &value.r);
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = value;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				Color newValue = value; /* Œ»İ‚Ì’l‚ğæ“¾ */
+				Color newValue = value; /* ç¾åœ¨ã®å€¤ã‚’å–å¾— */
 				if (newValue.r != prevValue.r || newValue.g != prevValue.g || newValue.b != prevValue.b || newValue.a != prevValue.a)
 				{
 					//IMGUI_PROPERTY_COMMAND_COLOR(label, newValue, prevValue);
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
 			}
-			if (valueChanged) // ’l‚ª•ÏX‚³‚ê‚½ê‡‚Í Color ‚ğXV
+			if (valueChanged) // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ Color ã‚’æ›´æ–°
 			{
 				CurryEngine::PropertyDrawHelper::ApplyToAll<Color>(*context, *prop, value);
 			}
-			if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
+			if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
 		}
 		else if (prop->type == "ObjectId")
 		{
-			if (auto referenceAttr = prop->GetAttribute("ObjectReference")) // ObjectReference ‘®«‚ª‚ ‚éê‡‚Ì‚İƒhƒƒbƒv‚ğó‚¯“ü‚ê‚é
+			if (auto referenceAttr = prop->GetAttribute("ObjectReference")) // ObjectReference å±æ€§ãŒã‚ã‚‹å ´åˆã®ã¿ãƒ‰ãƒ­ãƒƒãƒ—ã‚’å—ã‘å…¥ã‚Œã‚‹
 			{
 				if (referenceAttr->args.empty())
 				{
@@ -455,11 +455,11 @@ namespace CurryEngine
 					ImGui::PopID();
 					return;
 				}
-				static ObjectId prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
+				static ObjectId prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
 				ObjectId value = std::any_cast<ObjectId>(propertyAny);
 				IMGUI_PROPERTY_EX(label, tooltip);
-				if (readOnly) ImGui::BeginDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚ğ–³Œø‰»
-				std::string refTypeName = referenceAttr->args[0]; // Reference ‘®«‚Ìˆø”‚ÍQÆæ‚ÌŒ^–¼ (—á: "Transform", "GameObejct") ‚ğ‘z’è
+				if (readOnly) ImGui::BeginDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã‚’ç„¡åŠ¹åŒ–
+				std::string refTypeName = referenceAttr->args[0]; // Reference å±æ€§ã®å¼•æ•°ã¯å‚ç…§å…ˆã®å‹å (ä¾‹: "Transform", "GameObejct") ã‚’æƒ³å®š
 				std::string displayText = "None";
 				if (refTypeName == "GameObject")
 				{
@@ -467,11 +467,11 @@ namespace CurryEngine
 					if (refObj)
 					{
 						const auto& refObjName = refObj ? refObj->GetName() : "Unknown";
-						displayText = (value).IsValid() ? refObjName : "None"; // QÆæ‚ÌƒIƒuƒWƒFƒNƒg–¼‚ğ•\¦‚É’Ç‰Á
+						displayText = (value).IsValid() ? refObjName : "None"; // å‚ç…§å…ˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã‚’è¡¨ç¤ºã«è¿½åŠ 
 					}
 					else
 					{
-						displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // QÆæ‚Ìî•ñ‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ì•\¦
+						displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // å‚ç…§å…ˆã®æƒ…å ±ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã®è¡¨ç¤º
 					}
 				}
 				else
@@ -484,42 +484,42 @@ namespace CurryEngine
 						{
 							const auto& refObj = refComponent->GetOwner();
 							const auto& refObjName = refObj ? refObj->GetName() : "Unknown";
-							displayText = (value).IsValid() ? refObjName : "None"; // QÆæ‚ÌƒIƒuƒWƒFƒNƒg–¼‚ğ•\¦‚É’Ç‰Á
+							displayText = (value).IsValid() ? refObjName : "None"; // å‚ç…§å…ˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã‚’è¡¨ç¤ºã«è¿½åŠ 
 						}
 						else
 						{
-							displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // QÆæ‚Ìî•ñ‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ì•\¦
+							displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // å‚ç…§å…ˆã®æƒ…å ±ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã®è¡¨ç¤º
 						}
 					}
 					else
 					{
-						displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // QÆæ‚Ìî•ñ‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ì•\¦
+						displayText = (value).IsValid() ? ("Unknown(" + std::to_string((value).Value()) + ")") : "None"; // å‚ç…§å…ˆã®æƒ…å ±ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã®è¡¨ç¤º
 					}
 				}
-				displayText += "(" + refTypeName + ")"; // QÆæ‚ÌŒ^–¼‚ğ•\¦‚É’Ç‰Á
-				displayText += "##" + prop->name; // “¯‚¶–¼‘O‚ÌƒvƒƒpƒeƒB‚ª•¡”‚ ‚éê‡‚É¯•Ê‚Å‚«‚é‚æ‚¤‚É ID ‚ğ’Ç‰Á
-				ImGui::Button(displayText.c_str()); // ƒhƒƒbƒvƒ^[ƒQƒbƒg‚Æ‚µ‚Ä‹@”\‚·‚éƒ{ƒ^ƒ“‚ğ•`‰æ
-				if (ImGui::BeginDragDropTarget()) // ƒhƒƒbƒv‘€ì‚Ìó‚¯“ü‚ê‚ğŠJn
+				displayText += "(" + refTypeName + ")"; // å‚ç…§å…ˆã®å‹åã‚’è¡¨ç¤ºã«è¿½åŠ 
+				displayText += "##" + prop->name; // åŒã˜åå‰ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒè¤‡æ•°ã‚ã‚‹å ´åˆã«è­˜åˆ¥ã§ãã‚‹ã‚ˆã†ã« ID ã‚’è¿½åŠ 
+				ImGui::Button(displayText.c_str()); // ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦æ©Ÿèƒ½ã™ã‚‹ãƒœã‚¿ãƒ³ã‚’æç”»
+				if (ImGui::BeginDragDropTarget()) // ãƒ‰ãƒ­ãƒƒãƒ—æ“ä½œã®å—ã‘å…¥ã‚Œã‚’é–‹å§‹
 				{
-					// ƒhƒƒbƒv‚³‚ê‚½ƒyƒCƒ[ƒh‚Ìƒ^ƒCƒv‚ğ’è‹`i—á: "ReferenceFieldName"jB‚±‚±‚Å‚Í referenceAttr ‚Ìˆø”‚©‚çQÆæ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŒ^–¼‚ğæ“¾‚µ‚Äg—p‚·‚é‚±‚Æ‚ğ‘z’è
+					// ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚¿ã‚¤ãƒ—ã‚’å®šç¾©ï¼ˆä¾‹: "ReferenceFieldName"ï¼‰ã€‚ã“ã“ã§ã¯ referenceAttr ã®å¼•æ•°ã‹ã‚‰å‚ç…§å…ˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å‹åã‚’å–å¾—ã—ã¦ä½¿ç”¨ã™ã‚‹ã“ã¨ã‚’æƒ³å®š
 					{
-						const char* payloadType = (refTypeName).c_str(); // ƒhƒƒbƒv‰Â”\‚ÈƒyƒCƒ[ƒh‚Ìƒ^ƒCƒv‚ğ’è‹`i—á: "ReferenceFieldName"j
+						const char* payloadType = (refTypeName).c_str(); // ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ãªãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚¿ã‚¤ãƒ—ã‚’å®šç¾©ï¼ˆä¾‹: "ReferenceFieldName"ï¼‰
 
-						// QÆæ‚ÌŒ^‚ª GameObject ‚Å‚È‚¢ê‡iComponentŒ^j‚ÍAGameObject ‚ÌƒyƒCƒ[ƒh‚àó‚¯“ü‚ê‚é‚æ‚¤‚É‚·‚éB‚±‚ê‚É‚æ‚èAƒ†[ƒU[‚Í GameObject ‚ğƒhƒƒbƒv‚µ‚ÄA‚»‚Ì GameObject ‚Éw’è‚³‚ê‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‚ ‚ê‚Î©“®“I‚É‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğQÆ‚·‚é‚±‚Æ‚ª‚Å‚«‚é‚æ‚¤‚É‚È‚éB
-						if (refTypeName != "GameObject") // QÆæ‚ÌŒ^‚ª GameObject ‚Å‚È‚¢ê‡‚ÍAGameObject‚ÌƒyƒCƒ[ƒh‚àó‚¯“ü‚ê‚é
+						// å‚ç…§å…ˆã®å‹ãŒ GameObject ã§ãªã„å ´åˆï¼ˆComponentå‹ï¼‰ã¯ã€GameObject ã®ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‚‚å—ã‘å…¥ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚ã“ã‚Œã«ã‚ˆã‚Šã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯ GameObject ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã—ã¦ã€ãã® GameObject ã«æŒ‡å®šã•ã‚ŒãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒã‚ã‚Œã°è‡ªå‹•çš„ã«ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å‚ç…§ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã‚ˆã†ã«ãªã‚‹ã€‚
+						if (refTypeName != "GameObject") // å‚ç…§å…ˆã®å‹ãŒ GameObject ã§ãªã„å ´åˆã¯ã€GameObjectã®ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‚‚å—ã‘å…¥ã‚Œã‚‹
 						{
-							if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) // "GameObject" ƒ^ƒO‚ÌƒyƒCƒ[ƒh‚ğó‚¯“ü‚ê‚é
+							if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) // "GameObject" ã‚¿ã‚°ã®ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‚’å—ã‘å…¥ã‚Œã‚‹
 							{
-								if (payload->DataSize == sizeof(ObjectId)) // ƒyƒCƒ[ƒh‚ÌƒTƒCƒY‚ª ObjectId ‚Æ“¯‚¶‚Å‚ ‚é‚±‚Æ‚ğŠm”F
+								if (payload->DataSize == sizeof(ObjectId)) // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚ºãŒ ObjectId ã¨åŒã˜ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
 								{
-									ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ƒyƒCƒ[ƒh‚©‚ç ObjectId ‚ğæ“¾
-									ObjectId newComponentId = ObjectId::Invalid(); // ƒhƒƒbƒv‚³‚ê‚½ GameObject ‚©‚çæ“¾‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì ObjectId ‚ğ•Û‚·‚é•Ï”
-									// ƒhƒƒbƒv‚³‚ê‚½ GameObject ‚Éw’è‚³‚ê‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‚ ‚ê‚Î‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì ObjectId ‚ğæ“¾
+									ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‹ã‚‰ ObjectId ã‚’å–å¾—
+									ObjectId newComponentId = ObjectId::Invalid(); // ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸ GameObject ã‹ã‚‰å–å¾—ã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® ObjectId ã‚’ä¿æŒã™ã‚‹å¤‰æ•°
+									// ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸ GameObject ã«æŒ‡å®šã•ã‚ŒãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒã‚ã‚Œã°ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® ObjectId ã‚’å–å¾—
 									if (auto* droppedObj = ObjectManager::Find(droppedId))
 									{
 										if (auto refComponent = droppedObj->GetComponentByTypeName(refTypeName))
 										{
-											newComponentId = refComponent->GetId(); // ƒhƒƒbƒv‚³‚ê‚½ GameObject ‚Ìw’è‚³‚ê‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì ObjectId ‚ğg—p
+											newComponentId = refComponent->GetId(); // ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸ GameObject ã®æŒ‡å®šã•ã‚ŒãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® ObjectId ã‚’ä½¿ç”¨
 										}
 										else
 										{
@@ -530,7 +530,7 @@ namespace CurryEngine
 									{
 										Console::LogWarning("Dropped GameObject not found: " + std::to_string(droppedId.Value()));
 									}
-									value = newComponentId; // ƒtƒB[ƒ‹ƒh‚Éƒhƒƒbƒv‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì ObjectId ‚ğİ’è
+									value = newComponentId; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® ObjectId ã‚’è¨­å®š
 									std::string refTypeDisplay = (refTypeName == "GameObject") ? "GameObject" : ("Component(" + refTypeName + ")");
 									const auto& droppedObj = ObjectManager::Find(newComponentId);
 									const auto& droppedObjName = droppedObj ? droppedObj->GetName() : "Unknown";
@@ -541,16 +541,16 @@ namespace CurryEngine
 									/*IMGUI_PROPERTY_COMMAND(label, ObjectId, newComponentId, prevValue,
 										newValueLog,
 										prevValueLog);*/
-									prevValue = newComponentId; // ‘O‰ñ‚Ì’l‚ğXV
+									prevValue = newComponentId; // å‰å›ã®å€¤ã‚’æ›´æ–°
 								}
 							}
 						}
-						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(payloadType)) // "ObjectReference" ƒ^ƒO‚ÌƒyƒCƒ[ƒh‚ğó‚¯“ü‚ê‚é
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(payloadType)) // "ObjectReference" ã‚¿ã‚°ã®ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‚’å—ã‘å…¥ã‚Œã‚‹
 						{
-							if (payload->DataSize == sizeof(ObjectId)) // ƒyƒCƒ[ƒh‚ÌƒTƒCƒY‚ª ObjectId ‚Æ“¯‚¶‚Å‚ ‚é‚±‚Æ‚ğŠm”F
+							if (payload->DataSize == sizeof(ObjectId)) // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚ºãŒ ObjectId ã¨åŒã˜ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
 							{
-								ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ƒyƒCƒ[ƒh‚©‚ç ObjectId ‚ğæ“¾
-								value = droppedId; // ƒtƒB[ƒ‹ƒh‚Éƒhƒƒbƒv‚³‚ê‚½ ObjectId ‚ğİ’è
+								ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‹ã‚‰ ObjectId ã‚’å–å¾—
+								value = droppedId; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸ ObjectId ã‚’è¨­å®š
 								std::string refTypeDisplay = (refTypeName == "GameObject") ? "GameObject" : ("Component(" + refTypeName + ")");
 								const auto& droppedObj = ObjectManager::Find(droppedId);
 								const auto& droppedObjName = droppedObj ? droppedObj->GetName() : "Unknown";
@@ -562,21 +562,21 @@ namespace CurryEngine
 								/*IMGUI_PROPERTY_COMMAND(label, ObjectId, droppedId, prevValue,
 									newValueLog,
 									prevValueLog);*/
-								prevValue = droppedId; // ‘O‰ñ‚Ì’l‚ğXV
+								prevValue = droppedId; // å‰å›ã®å€¤ã‚’æ›´æ–°
 							}
 						}
 					}
-					ImGui::EndDragDropTarget(); // ƒhƒƒbƒv‘€ì‚Ìó‚¯“ü‚ê‚ğI—¹
+					ImGui::EndDragDropTarget(); // ãƒ‰ãƒ­ãƒƒãƒ—æ“ä½œã®å—ã‘å…¥ã‚Œã‚’çµ‚äº†
 				}
-				if (readOnly) ImGui::EndDisabled(); // ReadOnly ‘®«‚ª‚ ‚éê‡‚Í•`‰æ‚Ì–³Œø‰»‚ğI—¹
-				else // ReadOnly ‘®«‚ª‚È‚¢ê‡‚ÍA•ÒW—p‚Ì’Ç‰Á UI ‚ğ•\¦
+				if (readOnly) ImGui::EndDisabled(); // ReadOnly å±æ€§ãŒã‚ã‚‹å ´åˆã¯æç”»ã®ç„¡åŠ¹åŒ–ã‚’çµ‚äº†
+				else // ReadOnly å±æ€§ãŒãªã„å ´åˆã¯ã€ç·¨é›†ç”¨ã®è¿½åŠ  UI ã‚’è¡¨ç¤º
 				{
-					// Xƒ{ƒ^ƒ“‚ÅQÆæ‚ğƒNƒŠƒA‚Å‚«‚é‚æ‚¤‚É‚·‚é
+					// Xãƒœã‚¿ãƒ³ã§å‚ç…§å…ˆã‚’ã‚¯ãƒªã‚¢ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 					ImGui::SameLine();
 					if (ImGui::Button(("X##clear" + std::string(prop->name)).c_str()))
 					{
 						ObjectId oldValue = value;
-						value = ObjectId::Invalid(); // QÆ‚ğƒNƒŠƒA
+						value = ObjectId::Invalid(); // å‚ç…§ã‚’ã‚¯ãƒªã‚¢
 
 						const std::string refTypeDisplay = (refTypeName == "GameObject") ? "GameObject" : ("Component(" + refTypeName + ")");
 						const auto& prevObj = ObjectManager::Find(oldValue);
@@ -587,10 +587,10 @@ namespace CurryEngine
 						/*IMGUI_PROPERTY_COMMAND(label, ObjectId, ObjectId::Invalid(), oldValue,
 							newValueLog,
 							prevValueLog);*/
-						prevValue = ObjectId::Invalid(); // ‘O‰ñ‚Ì’l‚ğXV
+						prevValue = ObjectId::Invalid(); // å‰å›ã®å€¤ã‚’æ›´æ–°
 					}
 
-					// ... ƒ{ƒ^ƒ“‚ÅQÆæ‚ğ‘I‘ğ‚Å‚«‚é‚æ‚¤‚É‚·‚é
+					// ... ãƒœã‚¿ãƒ³ã§å‚ç…§å…ˆã‚’é¸æŠã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 					ImGui::SameLine();
 					if (ImGui::Button(("...##select" + std::string(prop->name)).c_str()))
 					{
@@ -598,26 +598,26 @@ namespace CurryEngine
 						ImGui::OpenPopup(("Select Object##" + prop->name).c_str(), popupFlags);
 					}
 
-					// ƒ|ƒbƒvƒAƒbƒv‚ªŠJ‚¢‚Ä‚¢‚éê‡‚Ì‚İAƒIƒuƒWƒFƒNƒg‘I‘ğ—p‚Ì UI ‚ğ•\¦
+					// ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãŒé–‹ã„ã¦ã„ã‚‹å ´åˆã®ã¿ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé¸æŠç”¨ã® UI ã‚’è¡¨ç¤º
 					else if (ImGui::IsPopupOpen(("Select Object##" + prop->name).c_str()))
 					{
 						Scene* currentScene = SceneManager::GetLoadingSceneOrCurrentScene();
-						if (currentScene) // ƒ|ƒbƒvƒAƒbƒv‚ğŠJ‚­ƒtƒ‰ƒO‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚éê‡‚Ì‚İƒ|ƒbƒvƒAƒbƒv‚ğ•\¦
+						if (currentScene) // ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‹ããƒ•ãƒ©ã‚°ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’è¡¨ç¤º
 						{
 							const auto& allObjects = currentScene->objectManager->GetAll();
 							if (ImGui::BeginPopup(("Select Object##" + prop->name).c_str()))
 							{
 								if (refTypeName == "GameObject")
 								{
-									// ‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ğ‘I‘ğˆ‚É‚·‚é
+									// ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é¸æŠè‚¢ã«ã™ã‚‹
 									for (const auto& obj : allObjects)
 									{
-										bool isSelected = (value == obj->id); // Œ»İ‚Ì’l‚ÆƒIƒuƒWƒFƒNƒg‚Ì ID ‚ª“™‚µ‚¢‚©‚Ç‚¤‚©
+										bool isSelected = (value == obj->id); // ç¾åœ¨ã®å€¤ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ãŒç­‰ã—ã„ã‹ã©ã†ã‹
 										ImGuiSelectableFlags flags = 0;
 										if (ImGui::Selectable(obj->name.c_str(), isSelected, flags))
 										{
 											ObjectId oldValue = value;
-											value = obj->id; // ƒtƒB[ƒ‹ƒh‚É‘I‘ğ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Ì ID ‚ğİ’è
+											value = obj->id; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«é¸æŠã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ã‚’è¨­å®š
 
 											std::string refTypeDisplay = "GameObject";
 											const auto& prevObj = ObjectManager::Find(oldValue);
@@ -628,37 +628,37 @@ namespace CurryEngine
 											/*IMGUI_PROPERTY_COMMAND(label, ObjectId, obj->id, oldValue,
 												std::to_string(obj->id.Value()),
 												std::to_string(oldValue.Value()));*/
-											prevValue = obj->id; // ‘O‰ñ‚Ì’l‚ğXV
-											ImGui::CloseCurrentPopup(); // ‘I‘ğŒã‚Éƒ|ƒbƒvƒAƒbƒv‚ğ•Â‚¶‚é
+											prevValue = obj->id; // å‰å›ã®å€¤ã‚’æ›´æ–°
+											ImGui::CloseCurrentPopup(); // é¸æŠå¾Œã«ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‰ã˜ã‚‹
 										}
 									}
 								}
 								else
 								{
-									// referenceAttr ‚Ìˆø” refTypeName ‚ğg‚Á‚ÄA“Á’è‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚¾‚¯‚ğ‘I‘ğˆ‚É‚·‚é
+									// referenceAttr ã®å¼•æ•° refTypeName ã‚’ä½¿ã£ã¦ã€ç‰¹å®šã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã ã‘ã‚’é¸æŠè‚¢ã«ã™ã‚‹
 									for (const auto& obj : allObjects)
 									{
-										// ƒIƒuƒWƒFƒNƒg‚ª refTypeName ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+										// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ refTypeName ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 										if (auto refComponent = obj->GetComponentByTypeName(refTypeName))
 										{
-											// Header‚Æ‚µ‚ÄAowener‚Ì–¼‘O‚ğ•\¦‚·‚é
+											// Headerã¨ã—ã¦ã€owenerã®åå‰ã‚’è¡¨ç¤ºã™ã‚‹
 											ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_DefaultOpen;
 											if (obj->GetComponentsByTypeName(refTypeName).size() == 1)
 											{
-												nodeFlags |= ImGuiTreeNodeFlags_Leaf; // ƒIƒuƒWƒFƒNƒg‚ª refTypeName ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ1‚Â‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚ÍAHeader‚ğLeaf‚É‚·‚é
-												if (value == refComponent->id) // Œ»İ‚Ì’l‚ÆƒIƒuƒWƒFƒNƒg‚Ì ID ‚ª“™‚µ‚¢ê‡‚ÍAHeader‚ğ‘I‘ğó‘Ô‚É‚·‚é
+												nodeFlags |= ImGuiTreeNodeFlags_Leaf; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ refTypeName ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’1ã¤ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ã€Headerã‚’Leafã«ã™ã‚‹
+												if (value == refComponent->id) // ç¾åœ¨ã®å€¤ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ãŒç­‰ã—ã„å ´åˆã¯ã€Headerã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 												{
 													nodeFlags |= ImGuiTreeNodeFlags_Selected;
 												}
 											}
 											if (ImGui::TreeNodeEx((obj->GetName() + "##" + std::to_string(obj->id.Value())).c_str(), nodeFlags))
 											{
-												if (nodeFlags & ImGuiTreeNodeFlags_Leaf) // ƒIƒuƒWƒFƒNƒg‚ª refTypeName ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ1‚Â‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚ÍA‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’¼Ú‘I‘ğ‚·‚é
+												if (nodeFlags & ImGuiTreeNodeFlags_Leaf) // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ refTypeName ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’1ã¤ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ã€ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç›´æ¥é¸æŠã™ã‚‹
 												{
-													if (ImGui::IsItemActivated()) // Header‚ªƒAƒNƒeƒBƒu‚É‚È‚Á‚½ê‡iƒNƒŠƒbƒN‚³‚ê‚½ê‡j
+													if (ImGui::IsItemActivated()) // HeaderãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã£ãŸå ´åˆï¼ˆã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸå ´åˆï¼‰
 													{
 														ObjectId oldValue = value;
-														value = refComponent->id; // ƒtƒB[ƒ‹ƒh‚É‘I‘ğ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Ì ID ‚ğİ’è
+														value = refComponent->id; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«é¸æŠã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ã‚’è¨­å®š
 														std::string refTypeDisplay = "Component(" + refTypeName + ")";
 														const auto& prevObj = ObjectManager::Find(oldValue);
 														const auto& prevObjName = prevObj ? prevObj->GetName() : "Unknown";
@@ -667,17 +667,17 @@ namespace CurryEngine
 														/*IMGUI_PROPERTY_COMMAND(label, ObjectId, refComponent->id, oldValue,
 															newValueLog,
 															prevValueLog);*/
-														prevValue = refComponent->id; // ‘O‰ñ‚Ì’l‚ğXV
-														ImGui::CloseCurrentPopup(); // ‘I‘ğŒã‚Éƒ|ƒbƒvƒAƒbƒv‚ğ•Â‚¶‚é
+														prevValue = refComponent->id; // å‰å›ã®å€¤ã‚’æ›´æ–°
+														ImGui::CloseCurrentPopup(); // é¸æŠå¾Œã«ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‰ã˜ã‚‹
 													}
 												}
 												else
 												{
-													// ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O‚Ì‰º‚ÉA‚»‚ÌƒIƒuƒWƒFƒNƒg‚ª‚Â refTypeName ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚·‚×‚Ä•\¦‚·‚é
+													// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã®ä¸‹ã«ã€ãã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæŒã¤ refTypeName ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã™ã¹ã¦è¡¨ç¤ºã™ã‚‹
 													auto components = obj->GetComponentsByTypeName(refTypeName);
 													for (const auto& comp : components)
 													{
-														bool isSelected = (value == comp->id); // Œ»İ‚Ì’l‚ÆƒIƒuƒWƒFƒNƒg‚Ì ID ‚ª“™‚µ‚¢‚©‚Ç‚¤‚©
+														bool isSelected = (value == comp->id); // ç¾åœ¨ã®å€¤ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ãŒç­‰ã—ã„ã‹ã©ã†ã‹
 														ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
 														if (isSelected)
 														{
@@ -686,7 +686,7 @@ namespace CurryEngine
 														if (ImGui::TreeNodeEx(comp->GetTypeName().c_str(), flags))
 														{
 															ObjectId oldValue = value;
-															value = comp->id; // ƒtƒB[ƒ‹ƒh‚É‘I‘ğ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Ì ID ‚ğİ’è
+															value = comp->id; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«é¸æŠã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ã‚’è¨­å®š
 
 															std::string refTypeDisplay = "Component(" + refTypeName + ")";
 															const auto& prevObj = ObjectManager::Find(oldValue);
@@ -697,8 +697,8 @@ namespace CurryEngine
 															/*IMGUI_PROPERTY_COMMAND(label, ObjectId, comp->id, oldValue,
 																newValueLog,
 																prevValueLog);*/
-															prevValue = comp->id; // ‘O‰ñ‚Ì’l‚ğXV
-															ImGui::CloseCurrentPopup(); // ‘I‘ğŒã‚Éƒ|ƒbƒvƒAƒbƒv‚ğ•Â‚¶‚é
+															prevValue = comp->id; // å‰å›ã®å€¤ã‚’æ›´æ–°
+															ImGui::CloseCurrentPopup(); // é¸æŠå¾Œã«ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‰ã˜ã‚‹
 														}
 													}
 												}

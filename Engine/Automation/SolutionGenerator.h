@@ -3,20 +3,20 @@
 
 /**************************************************
  * @file
- * @brief Visual Studio ‚Åƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ğ¶¬‚·‚éƒ†[ƒeƒBƒŠƒeƒB
- * @details ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡‚ÉAƒvƒƒWƒFƒNƒgƒtƒ@ƒCƒ‹‚Æƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ğ¶¬‚·‚éB
- *          ¶¬‚É‚Í C# ‚ÌƒXƒNƒŠƒvƒg‚ğg—p‚µAVisual Studio ‚Ì Developer Command Prompt ‚ğŒÄ‚Ño‚µ‚ÄÀs‚·‚éB
+ * @brief Visual Studio ã§ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã™ã‚‹ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
+ * @details ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã«ã€ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã¨ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+ *          ç”Ÿæˆã«ã¯ C# ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ä½¿ç”¨ã—ã€Visual Studio ã® Developer Command Prompt ã‚’å‘¼ã³å‡ºã—ã¦å®Ÿè¡Œã™ã‚‹ã€‚
  **************************************************/
 
 class SolutionGenerator
 {
 public:
 	/**
-	 * @brief ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ÆƒvƒƒWƒFƒNƒgƒtƒ@ƒCƒ‹‚ğ¶¬‚·‚éB
-	 * @param projectRoot ƒvƒƒWƒFƒNƒg‚Ìƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ
-	 * @param projectName ƒvƒƒWƒFƒNƒg–¼i—á: "CurryEngine"j
-	 * @param runtimeDllPath ƒ‰ƒ“ƒ^ƒCƒ€ DLL ‚ÌƒpƒXi—á: "./CurryEngine.Runtime.dll"j
-	 * @return ¶¬‚É¬Œ÷‚µ‚½ê‡‚Í trueA¸”s‚µ‚½ê‡‚Í false ‚ğ•Ô‚·B
+	 * @brief ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã¨ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+	 * @param projectRoot ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+	 * @param projectName ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆåï¼ˆä¾‹: "CurryEngine"ï¼‰
+	 * @param runtimeDllPath ãƒ©ãƒ³ã‚¿ã‚¤ãƒ  DLL ã®ãƒ‘ã‚¹ï¼ˆä¾‹: "./CurryEngine.Runtime.dll"ï¼‰
+	 * @return ç”Ÿæˆã«æˆåŠŸã—ãŸå ´åˆã¯ trueã€å¤±æ•—ã—ãŸå ´åˆã¯ false ã‚’è¿”ã™ã€‚
 	 */
 	static bool Generate(const std::string& projectRoot,
 		const std::string& projectName,

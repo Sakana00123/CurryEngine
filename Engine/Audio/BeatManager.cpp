@@ -22,22 +22,22 @@ bool BeatManager::IsBeatTiming()
 
 void BeatManager::Update(float deltaTime)
 {
-	// ‹È‚ÌÄ¶ŠÔ‚ÌXV
+	// æ›²ã®å†ç”Ÿæ™‚é–“ã®æ›´æ–°
 	previousSongTime = songTime;
 	songTime += deltaTime;
 
-	// ƒr[ƒgƒJƒEƒ“ƒg‚ÌXV
+	// ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã®æ›´æ–°
 	beatCount = static_cast<int>(songTime / beatInterval);
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	isBeatTiming = false;
 
-	// ‘O‰ñ‚Ìƒr[ƒgƒJƒEƒ“ƒg‚Æ”äŠr‚µ‚ÄAƒr[ƒg‚ª•Ï‚í‚Á‚½‚©‚ğƒ`ƒFƒbƒN
+	// å‰å›ã®ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã¨æ¯”è¼ƒã—ã¦ã€ãƒ“ãƒ¼ãƒˆãŒå¤‰ã‚ã£ãŸã‹ã‚’ãƒã‚§ãƒƒã‚¯
 	if (beatCount != previousBeatCount)
 	{
 		previousBeatCount = beatCount;
 
-		// ƒr[ƒg‚ª•Ï‚í‚Á‚½‚Æ‚«‚Ìˆ—
+		// ãƒ“ãƒ¼ãƒˆãŒå¤‰ã‚ã£ãŸã¨ãã®å‡¦ç†
 		isBeatTiming = true;
 	}
 }

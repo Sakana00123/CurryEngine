@@ -1,28 +1,28 @@
 #pragma once
 #include <string>
 /**
- * @brief w’è‚µ‚½ƒtƒ@ƒCƒ‹‚ğŠÖ˜A•t‚¯‚ç‚ê‚½ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÅŠJ‚­B
- * @param filePath ŠJ‚­ƒtƒ@ƒCƒ‹‚ÌƒpƒXB
+ * @brief æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã§é–‹ãã€‚
+ * @param filePath é–‹ããƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã€‚
  */
 void OpenFileWithDefaultApplication(const std::wstring& filePath);
 
 /**
- * @brief w’è‚µ‚½Àsƒtƒ@ƒCƒ‹‚ğ”ñ•\¦‚ÅÀs‚µAI—¹‚ğ‘Ò‹@‚·‚éB
- * @param exePath Àsƒtƒ@ƒCƒ‹‚ÌƒpƒXB
- * @param args ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”B
- * @param currentDirectory ƒvƒƒZƒX‚Ìì‹ÆƒfƒBƒŒƒNƒgƒŠB
- * @param outExitCode ƒvƒƒZƒX‚ÌI—¹ƒR[ƒh‚ğŠi”[‚·‚é•Ï”‚Ö‚ÌQÆB
- * @param timeoutMs ƒvƒƒZƒX‚ÌI—¹‚ğ‘Ò‚Âƒ^ƒCƒ€ƒAƒEƒgŠÔiƒ~ƒŠ•bjBƒfƒtƒHƒ‹ƒg‚Í–³ŒÀ‘Ò‹@B
- * @return ƒvƒƒZƒX‚Ì‹N“®‚É¬Œ÷‚µ‚½ê‡‚Í trueA¸”s‚µ‚½ê‡‚Í false ‚ğ•Ô‚·B
+ * @brief æŒ‡å®šã—ãŸå®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã‚’éè¡¨ç¤ºã§å®Ÿè¡Œã—ã€çµ‚äº†ã‚’å¾…æ©Ÿã™ã‚‹ã€‚
+ * @param exePath å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã€‚
+ * @param args ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°ã€‚
+ * @param currentDirectory ãƒ—ãƒ­ã‚»ã‚¹ã®ä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã€‚
+ * @param outExitCode ãƒ—ãƒ­ã‚»ã‚¹ã®çµ‚äº†ã‚³ãƒ¼ãƒ‰ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã¸ã®å‚ç…§ã€‚
+ * @param timeoutMs ãƒ—ãƒ­ã‚»ã‚¹ã®çµ‚äº†ã‚’å¾…ã¤ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚é–“ï¼ˆãƒŸãƒªç§’ï¼‰ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ç„¡é™å¾…æ©Ÿã€‚
+ * @return ãƒ—ãƒ­ã‚»ã‚¹ã®èµ·å‹•ã«æˆåŠŸã—ãŸå ´åˆã¯ trueã€å¤±æ•—ã—ãŸå ´åˆã¯ false ã‚’è¿”ã™ã€‚
  */
 bool RunHiddenAndWait(const std::wstring& exePath, const std::wstring& args, const std::wstring& currentDirectory, DWORD& outExitCode, DWORD timeoutMs = INFINITE);
 
 
 /**
- * @brief Visual Studio ‚Åw’è‚µ‚½ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ğŠJ‚«A“Á’è‚Ìƒtƒ@ƒCƒ‹‚Æs‚ÉƒWƒƒƒ“ƒv‚·‚éB
- * @param slnPath ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ÌƒpƒXB
- * @param filePath ƒWƒƒƒ“ƒvæ‚Ìƒtƒ@ƒCƒ‹‚ÌƒpƒXB
- * @param lineNumber ƒWƒƒƒ“ƒvæ‚Ìs”Ô†iÈ—ª‰Â”\AƒfƒtƒHƒ‹ƒg‚Í -1 ‚Ås”Ô†‚È‚µjB
- * @return ƒWƒƒƒ“ƒv‚É¬Œ÷‚µ‚½ê‡‚Í trueA¸”s‚µ‚½ê‡‚Í false ‚ğ•Ô‚·B
+ * @brief Visual Studio ã§æŒ‡å®šã—ãŸã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã€ç‰¹å®šã®ãƒ•ã‚¡ã‚¤ãƒ«ã¨è¡Œã«ã‚¸ãƒ£ãƒ³ãƒ—ã™ã‚‹ã€‚
+ * @param slnPath ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã€‚
+ * @param filePath ã‚¸ãƒ£ãƒ³ãƒ—å…ˆã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã€‚
+ * @param lineNumber ã‚¸ãƒ£ãƒ³ãƒ—å…ˆã®è¡Œç•ªå·ï¼ˆçœç•¥å¯èƒ½ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ -1 ã§è¡Œç•ªå·ãªã—ï¼‰ã€‚
+ * @return ã‚¸ãƒ£ãƒ³ãƒ—ã«æˆåŠŸã—ãŸå ´åˆã¯ trueã€å¤±æ•—ã—ãŸå ´åˆã¯ false ã‚’è¿”ã™ã€‚
  */
 bool OpenFileInVisualStudio(const std::wstring& slnPath, const std::wstring& filePath, int lineNumber = -1);

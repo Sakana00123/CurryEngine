@@ -2,7 +2,7 @@
 #include "Vector3.h"
 
 
-// 定数ベクトルの定義
+// 螳壽焚繝吶け繝医Ν縺ｮ螳夂ｾｩ
 const Vector3 Vector3::Up{ 0,1,0 };
 const Vector3 Vector3::Down{ 0,-1,0 };
 const Vector3 Vector3::Right{ 1,0,0 };

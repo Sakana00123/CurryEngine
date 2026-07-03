@@ -8,8 +8,8 @@ namespace CurryEngine
 	namespace Utils
 	{
 		/**
-		 * @brief ���f���C���|�[�^�[�̃C���^�[�t�F�[�X�B���f���t�@�C����ǂݍ��݁A`ModelAsset` �ɕϊ����邽�߂̒��ۃN���X�B
-		 * @details ��̓I�ȃ��f���t�H�[�}�b�g�i��: OBJ, FBX, GLTF�j���Ƃɂ��̃C���^�[�t�F�[�X���������邱�ƂŁA�قȂ�t�H�[�}�b�g�̃��f���𓝈�I�Ɉ������Ƃ��ł��܂��B
+		 * @brief モデルインポーターのインターフェース。モデルファイルを読み込み、`ModelAsset` に変換するための抽象クラス。
+		 * @details 具体的なモデルフォーマット（例: OBJ, FBX, GLTF）ごとにこのインターフェースを実装することで、異なるフォーマットのモデルを統一的に扱うことができます。
 		 */
 		class IModelImporter
 		{
@@ -17,15 +17,15 @@ namespace CurryEngine
 			virtual ~IModelImporter() = default;
 
 			/**
-			 * @brief ���f���t�@�C����ǂݍ��݁A`ModelAsset` �ɕϊ����鏃�����z�֐��B
-			 * @param path �ǂݍ��ރ��f���t�@�C���̃p�X�B
-			 * @param asset �ǂݍ��񂾃��f���f�[�^���i�[���� `ModelAsset` �I�u�W�F�N�g�ւ̎Q�ƁB
+			 * @brief モデルファイルを読み込み、`ModelAsset` に変換する純粋仮想関数。
+			 * @param path 読み込むモデルファイルのパス。
+			 * @param asset 読み込んだモデルデータを格納する `ModelAsset` オブジェクトへの参照。
 			 */
 			virtual bool Import(const std::string& path, ModelAsset& asset) = 0;
 
 			/**
-			 * @brief ���̃C���|�[�^�[���T�|�[�g����t�@�C���g���q�̃��X�g��Ԃ��������z�֐��B
-			 * @return �T�|�[�g����t�@�C���g���q�̃��X�g�i��: {".obj", ".fbx", ".gltf"}�j�B
+			 * @brief このインポーターがサポートするファイル拡張子のリストを返す純粋仮想関数。
+			 * @return サポートするファイル拡張子のリスト（例: {".obj", ".fbx", ".gltf"}）。
 			 */
 			virtual std::vector<std::string> GetSupportedExtensions() const = 0;
 		};

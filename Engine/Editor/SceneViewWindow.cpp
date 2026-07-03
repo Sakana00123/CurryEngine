@@ -19,19 +19,19 @@ namespace CurryEngine
 
 	void SceneViewWindow::Draw(RenderContext* rtx, Scene* scene)
 	{
-		// ƒV[ƒ“‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO‚ÆƒIƒuƒWƒFƒNƒg‘I‘ğ‚ÌŠÇ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+		// ã‚·ãƒ¼ãƒ³ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé¸æŠã®ç®¡ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 		ImGui::Begin("Scene");
 
-		// ƒV[ƒ“ƒrƒ…[‚ğ•\¦‚·‚é‘O‚ÉAã•”‚Éƒc[ƒ‹ƒo[‚ğ”z’u
+		// ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹å‰ã«ã€ä¸Šéƒ¨ã«ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚’é…ç½®
 		float sceneViewToolbarHeight = EditorGUI::DrawSceneViewToolbar();
 
-		// 16:9‚ÌƒAƒXƒyƒNƒg”ä‚ğˆÛ‚µ‚Â‚ÂA—˜—p‰Â”\‚ÈƒXƒy[ƒX‚ÉÅ‘åŒÀ•\¦‚·‚é‚½‚ß‚ÌŒvZ
+		// 16:9ã®ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã‚’ç¶­æŒã—ã¤ã¤ã€åˆ©ç”¨å¯èƒ½ãªã‚¹ãƒšãƒ¼ã‚¹ã«æœ€å¤§é™è¡¨ç¤ºã™ã‚‹ãŸã‚ã®è¨ˆç®—
 		const float targetAspect = 16.0f / 9.0f;
 		ImVec2 avail = ImGui::GetContentRegionAvail();
 		ImVec2 displaySize;
 		ImVec2 offset(0, 0);
 
-		// ƒAƒXƒyƒNƒg”ä‚É‰‚¶‚ÄƒTƒCƒY‚ğ’²®
+		// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã«å¿œã˜ã¦ã‚µã‚¤ã‚ºã‚’èª¿æ•´
 		float availAspect = avail.x / avail.y;
 		if (availAspect > targetAspect) {
 			displaySize.y = avail.y;
@@ -44,13 +44,13 @@ namespace CurryEngine
 			offset.y = (avail.y - displaySize.y) * 0.5f;
 		}
 
-		// ƒZƒ“ƒ^ƒŠƒ“ƒO
+		// ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°
 		ImGui::SetCursorPos(ImVec2(
 			ImGui::GetCursorPosX() + offset.x,
 			ImGui::GetCursorPosY() + offset.y
 		));
 
-		// ƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚ÌSRV‚ğImGui::Image‚Å•\¦
+		// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã®SRVã‚’ImGui::Imageã§è¡¨ç¤º
 		ID3D11ShaderResourceView* srv = nullptr;
 		if (rtx->acceptRendering) {
 			if (RenderTexture* renderTarget = static_cast<RenderTexture*>(rtx->GetSharedResource("PostProcessPass_RenderTexture")))
@@ -59,29 +59,29 @@ namespace CurryEngine
 			}
 		}
 		if (srv == nullptr) {
-			// ƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ‚ğ•\¦
+			// ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¡¨ç¤º
 			static std::shared_ptr<AssetTexture> whiteTexture;
 			if (!whiteTexture) {
 				whiteTexture = std::make_shared<AssetTexture>();
 				whiteTexture->MakeDummy(Graphics::GetDevice(), 0xFFFFFFFF, 16);
 			}
-			srv = whiteTexture->GetSRV(); // ƒfƒtƒHƒ‹ƒg”’ƒeƒNƒXƒ`ƒƒ
+			srv = whiteTexture->GetSRV(); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆç™½ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		}
 
 		ImGui::Image(srv, displaySize);
 
-		// ImGui::Image‚Ì•\¦‹éŒ`‚ğæ“¾‚µAİ’è
+		// ImGui::Imageã®è¡¨ç¤ºçŸ©å½¢ã‚’å–å¾—ã—ã€è¨­å®š
 		if (ImGui::IsWindowHovered())
 		{
-			ImVec2 imageMin = ImGui::GetItemRectMin(); // ¶ãƒXƒNƒŠ[ƒ“À•W
-			ImVec2 imageMax = ImGui::GetItemRectMax(); // ‰E‰ºƒXƒNƒŠ[ƒ“À•W
-			//”ÍˆÍİ’è
+			ImVec2 imageMin = ImGui::GetItemRectMin(); // å·¦ä¸Šã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
+			ImVec2 imageMax = ImGui::GetItemRectMax(); // å³ä¸‹ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
+			//ç¯„å›²è¨­å®š
 			Graphics::SetScreenRect(imageMin.x, imageMin.y, imageMax.x, imageMax.y);
 
-			// Image‚Ì”ÍˆÍ“à‚ÉƒJ[ƒ\ƒ‹‚ª‚ ‚é‚©‚ÅƒtƒH[ƒJƒX”»’è
+			// Imageã®ç¯„å›²å†…ã«ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã‚‹ã‹ã§ãƒ•ã‚©ãƒ¼ã‚«ã‚¹åˆ¤å®š
 			if (ImGui::IsMouseHoveringRect(imageMin, imageMax)) {
 				if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseClicked(ImGuiMouseButton_Right)) {
-					ImGui::SetWindowFocus(); // ƒV[ƒ“ƒrƒ…[ƒEƒBƒ“ƒhƒE‚ÉƒtƒH[ƒJƒX‚ğİ’è
+					ImGui::SetWindowFocus(); // ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’è¨­å®š
 				}
 				auto navWindow = ImGui::GetCurrentContext()->NavWindow;
 				std::string windowName = navWindow ? navWindow->Name : "None";
@@ -97,17 +97,17 @@ namespace CurryEngine
 
 		if (scene != nullptr)
 		{
-			//ƒMƒYƒ‚
+			//ã‚®ã‚ºãƒ¢
 			scene->GetObjectManager()->DrawGuizmo(rtx);
 
 
-			// ƒV[ƒ“ƒrƒ…[‚ÌƒŒƒCƒLƒƒƒXƒg‚É‚æ‚éƒIƒuƒWƒFƒNƒg‘I‘ğ
+			// ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã«ã‚ˆã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé¸æŠ
 			if (isSceneWindowFocused && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 			{
-				// ƒMƒYƒ‚‚ÉG‚ê‚Ä‚¢‚éê‡‚ÍŠ®‘SƒXƒLƒbƒv
+				// ã‚®ã‚ºãƒ¢ã«è§¦ã‚Œã¦ã„ã‚‹å ´åˆã¯å®Œå…¨ã‚¹ã‚­ãƒƒãƒ—
 				bool isOverGuizmo = ImGuizmo::IsOver() || ImGuizmo::IsUsing();
 
-				// ImGui ‚ÌUI—v‘fiƒ{ƒ^ƒ“AƒXƒ‰ƒCƒ_[“™j‚ÉG‚ê‚Ä‚¢‚È‚¢
+				// ImGui ã®UIè¦ç´ ï¼ˆãƒœã‚¿ãƒ³ã€ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ç­‰ï¼‰ã«è§¦ã‚Œã¦ã„ãªã„
 				bool isOverImGuiItem = ImGui::IsAnyItemActive();
 
 				if (!isOverGuizmo && !isOverImGuiItem)
@@ -129,17 +129,17 @@ namespace CurryEngine
 
 					if (physxHit && physxHitDistance <= aabbHitDistance)
 					{
-						// PhysXƒqƒbƒg
+						// PhysXãƒ’ãƒƒãƒˆ
 						selectedObj = scene->FindGameObjectPtrById(
 							hitInfo.collider->GetOwner()->GetId());
 					}
 					else if (aabbHit)
 					{
-						// AABBƒqƒbƒg
+						// AABBãƒ’ãƒƒãƒˆ
 						selectedObj = aabbHitInfo.hitObject.lock();
 					}
 
-					// ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğ‘I‘ğBCtrlƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚Í‘I‘ğ‚É’Ç‰ÁA‚»‚¤‚Å‚È‚¢ê‡‚Í’P“Æ‘I‘ğB‰½‚àƒqƒbƒg‚µ‚È‚©‚Á‚½ê‡‚ÍACtrlƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‘I‘ğ‰ğœB
+					// ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é¸æŠã€‚Ctrlã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯é¸æŠã«è¿½åŠ ã€ãã†ã§ãªã„å ´åˆã¯å˜ç‹¬é¸æŠã€‚ä½•ã‚‚ãƒ’ãƒƒãƒˆã—ãªã‹ã£ãŸå ´åˆã¯ã€Ctrlã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãªã‘ã‚Œã°é¸æŠè§£é™¤ã€‚
 					if (selectedObj)
 					{
 						if (EditorSelection* sel = scene->GetObjectManager()->GetEditorSelection())
@@ -150,7 +150,7 @@ namespace CurryEngine
 					}
 					else if (!ImGui::GetIO().KeyCtrl)
 					{
-						// ‰½‚àƒqƒbƒg‚µ‚È‚©‚Á‚½ ¨ ‘I‘ğ‰ğœ
+						// ä½•ã‚‚ãƒ’ãƒƒãƒˆã—ãªã‹ã£ãŸ â†’ é¸æŠè§£é™¤
 						if (EditorSelection* sel = scene->GetObjectManager()->GetEditorSelection())
 						{
 							sel->Clear();

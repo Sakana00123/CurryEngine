@@ -8,8 +8,8 @@ public:
 	LightBase() = default;
 	virtual ~LightBase() override = default;
 	
-	virtual void OnEnable() override = 0; // ƒ‰ƒCƒg‚Ì—LŒø‰»‚Ìˆ—i—áFƒ‰ƒCƒgƒŠƒXƒg‚Ö‚Ì“o˜^j
-	virtual void OnDisable() override = 0; // ƒ‰ƒCƒg‚Ì–³Œø‰»‚Ìˆ—i—áFƒ‰ƒCƒgƒŠƒXƒg‚©‚ç‚Ìíœj
+	virtual void OnEnable() override = 0; // ãƒ©ã‚¤ãƒˆã®æœ‰åŠ¹åŒ–æ™‚ã®å‡¦ç†ï¼ˆä¾‹ï¼šãƒ©ã‚¤ãƒˆãƒªã‚¹ãƒˆã¸ã®ç™»éŒ²ï¼‰
+	virtual void OnDisable() override = 0; // ãƒ©ã‚¤ãƒˆã®ç„¡åŠ¹åŒ–æ™‚ã®å‡¦ç†ï¼ˆä¾‹ï¼šãƒ©ã‚¤ãƒˆãƒªã‚¹ãƒˆã‹ã‚‰ã®å‰Šé™¤ï¼‰
 
-	bool m_InternalEnable = true; // ƒ‰ƒCƒg‚Ì—LŒøó‘Ôi“à•”ŠÇ——pj
+	bool m_InternalEnable = true; // ãƒ©ã‚¤ãƒˆã®æœ‰åŠ¹çŠ¶æ…‹ï¼ˆå†…éƒ¨ç®¡ç†ç”¨ï¼‰
 };

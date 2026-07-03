@@ -5,12 +5,12 @@ namespace CurryEngine::Resources
 {
 	enum class TextureImporterType
 	{
-		Default, // �f�t�H���g�̃e�N�X�`���C���|�[�^�[�B��ʓI�ȃe�N�X�`���̃C���|�[�g�Ɏg�p�����ݒ��񋟂��܂��B
-		NormalMap, // �@���}�b�v�p�̃e�N�X�`���C���|�[�^�[�B�@���}�b�v�̓����ɍ��킹���ݒ��񋟂��܂��B
-		GUI, // GUI�p�̃e�N�X�`���C���|�[�^�[�B�G�f�B�^��UI�Ɏg�p�����e�N�X�`���̃C���|�[�g�ɓK�����ݒ��񋟂��܂��B
-		Sprite, // �X�v���C�g�p�̃e�N�X�`���C���|�[�^�[�B�Q�[���̃X�v���C�g�Ɏg�p�����e�N�X�`���̃C���|�[�g�ɓK�����ݒ��񋟂��܂��B
-		SpriteAtlas, // �X�v���C�g�A�g���X�p�̃e�N�X�`���C���|�[�^�[�B�����̃X�v���C�g��1�̃e�N�X�`���ɂ܂Ƃ߂邽�߂̃C���|�[�g�ݒ��񋟂��܂��B
-		Cubemap, // �L���[�u�}�b�v�p�̃e�N�X�`���C���|�[�^�[�B���}�b�v��X�J�C�{�b�N�X�Ɏg�p�����e�N�X�`���̃C���|�[�g�ɓK�����ݒ��񋟂��܂��B
+		Default, // デフォルトのテクスチャインポーター。一般的なテクスチャのインポートに使用される設定を提供します。
+		NormalMap, // 法線マップ用のテクスチャインポーター。法線マップの特性に合わせた設定を提供します。
+		GUI, // GUI用のテクスチャインポーター。エディタのUIに使用されるテクスチャのインポートに適した設定を提供します。
+		Sprite, // スプライト用のテクスチャインポーター。ゲームのスプライトに使用されるテクスチャのインポートに適した設定を提供します。
+		SpriteAtlas, // スプライトアトラス用のテクスチャインポーター。複数のスプライトを1つのテクスチャにまとめるためのインポート設定を提供します。
+		Cubemap, // キューブマップ用のテクスチャインポーター。環境マップやスカイボックスに使用されるテクスチャのインポートに適した設定を提供します。
 	};
 	NLOHMANN_JSON_SERIALIZE_ENUM(TextureImporterType, {
 		{TextureImporterType::Default, "Default"},
@@ -23,16 +23,16 @@ namespace CurryEngine::Resources
 
 
 	/**
-	 * @brief �e�N�X�`���̃C���|�[�g�ݒ��\���\���́B�e�N�X�`���A�Z�b�g�̃C���|�[�g���Ɏg�p�����ݒ��ێ����܂��B
-	 * @details ���̍\���̂́A�e�N�X�`���A�Z�b�g�̃C���|�[�g�Ɋ֘A����ݒ���܂Ƃ߂ĊǗ����邽�߂̂��̂ł��B�Ⴆ�΁A�~�b�v�}�b�v�̐����∳�k�`���ȂǁA�e�N�X�`���̕i����p�t�H�[�}���X�ɉe����^����ݒ���܂݂܂��B
+	 * @brief テクスチャのインポート設定を表す構造体。テクスチャアセットのインポート時に使用される設定を保持します。
+	 * @details この構造体は、テクスチャアセットのインポートに関連する設定をまとめて管理するためのものです。例えば、ミップマップの生成や圧縮形式など、テクスチャの品質やパフォーマンスに影響を与える設定を含みます。
 	 */
 	struct TextureImportSettings : public IImportSettings
 	{
-		TextureImporterType textureType = TextureImporterType::Default; // �C���|�[�^�[�̎�ނ��w�肷��t�B�[���h��ǉ�
+		TextureImporterType textureType = TextureImporterType::Default; // インポーターの種類を指定するフィールドを追加
 		bool generateMipmaps = true;
 		std::string compression = "BC7";
 
-		// nlohmann::json��NLOHMANN_DEFINE_TYPE�n�}�N����to_json/from_json����������
+		// nlohmann::jsonのNLOHMANN_DEFINE_TYPE系マクロでto_json/from_jsonを自動生成
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(TextureImportSettings, textureType, generateMipmaps, compression)
 	};
 }

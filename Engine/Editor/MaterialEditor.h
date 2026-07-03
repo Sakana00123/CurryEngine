@@ -10,10 +10,10 @@ namespace CurryEngine::Resources
 namespace CurryEngine::Editor
 {
 	/**
-	 * @brief �}�e���A���G�f�B�^�N���X
-	 * - �}�e���A���̃v���p�e�B��ҏW���邽�߂�GUI���
-	 * - �}�e���A���̃V�F�[�_�A�e�N�X�`���A�萔�o�b�t�@�̒l��ҏW�\
-	 * - ImGui�Ȃǂ�GUI���C�u�������g�p���ĕ`��
+	 * @brief マテリアルエディタクラス
+	 * - マテリアルのプロパティを編集するためのGUIを提供
+	 * - マテリアルのシェーダ、テクスチャ、定数バッファの値を編集可能
+	 * - ImGuiなどのGUIライブラリを使用して描画
 	 */
 	class MaterialEditor
 	{
@@ -23,21 +23,21 @@ namespace CurryEngine::Editor
 
 #ifdef USE_IMGUI
 		/**
-		 * @brief �}�e���A���G�f�B�^��GUI��`�悵�܂��B
-		 * @param context �`��R���e�L�X�g�B
-		 * - ImGui���g�p���ă}�e���A���̃v���p�e�B��\���E�ҏW���܂��B
+		 * @brief マテリアルエディタのGUIを描画します。
+		 * @param context 描画コンテキスト。
+		 * - ImGuiを使用してマテリアルのプロパティを表示・編集します。
 		 */
 		void DrawGUI(RenderContext* context);
 #endif // USE_IMGUI
 
 		/**
-		 * @brief �}�e���A���̕ύX��ۑ����܂��B
-		 * - �ҏW�����}�e���A���̃v���p�e�B���A�Z�b�g�Ƃ��ĕۑ����܂��B
+		 * @brief マテリアルの変更を保存します。
+		 * - 編集したマテリアルのプロパティをアセットとして保存します。
 		 */
 		void Save();
 
 	private:
 		std::shared_ptr<CurryEngine::Resources::AssetMaterial> m_material;
-		bool m_isOpen{ false }; ///< �G�f�B�^���J���Ă��邩�ǂ����̃t���O
+		bool m_isOpen{ false }; ///< エディタが開いているかどうかのフラグ
 	};
 }

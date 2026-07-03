@@ -9,10 +9,10 @@ class Event : public Component
 	float time;
 	float delay;
 
-	std::function<bool()> condition;					// ‹N“®ğŒ
-	std::function<bool(GameObject*)> conditionInThis;   // ‹N“®ğŒ
-	std::function<void()> onTriggered;					// ğŒ‚ğ–‚½‚µ‚½‚Æ‚«‚Ìˆ—
-	std::function<void(GameObject*)> onTriggeredThis;   // ğŒ‚ğ–‚½‚µ‚½‚Æ‚«‚Ìˆ—
+	std::function<bool()> condition;					// èµ·å‹•æ¡ä»¶
+	std::function<bool(GameObject*)> conditionInThis;   // èµ·å‹•æ¡ä»¶
+	std::function<void()> onTriggered;					// æ¡ä»¶ã‚’æº€ãŸã—ãŸã¨ãã®å‡¦ç†
+	std::function<void(GameObject*)> onTriggeredThis;   // æ¡ä»¶ã‚’æº€ãŸã—ãŸã¨ãã®å‡¦ç†
 public:
 	
 	Event(bool oneShot = false, float delay = 0.0f) : oneShot(oneShot), delay(delay), time(0.f), triggered(false) {};
@@ -23,51 +23,51 @@ public:
 		if ((!condition && !conditionInThis) || (!onTriggered && !onTriggeredThis)) return;
 		if (oneShot && triggered) return;
 
-		//ğŒ‚ğ–‚½‚µ‚Ä‚¢‚ÄA‚©‚Â’x‰„‚ªİ’è‚³‚ê‚Ä‚¢‚é
+		//æ¡ä»¶ã‚’æº€ãŸã—ã¦ã„ã¦ã€ã‹ã¤é…å»¶ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹æ™‚
 		if (time > 0) {
 			time -= elapsedTime;
 			if (time <= 0) {
-				//‹N“®
+				//èµ·å‹•
 				OnTrigger();
 				time = 0.f;
 			}
 		}
 
-		//ğŒ‚ğ–‚½‚µ‚Ä‚¢‚é‚©”»’è
+		//æ¡ä»¶ã‚’æº€ãŸã—ã¦ã„ã‚‹ã‹åˆ¤å®š
 		if (condition ? condition() : conditionInThis(this->gameObject)) {
-			//’x‰„‚ªİ’è‚³‚ê‚Ä‚¢‚½‚ç
+			//é…å»¶ãŒè¨­å®šã•ã‚Œã¦ã„ãŸã‚‰
 			if (delay > 0) {
 				time = delay;
 				return;
 			}
-			//‹N“®
+			//èµ·å‹•
 			OnTrigger();
 		}
 	}
 
-	//‹N“®ğŒ‚ğİ’è
+	//èµ·å‹•æ¡ä»¶ã‚’è¨­å®š
 	template<class T>
 	void SetTriggerCondition(bool (T::* func)(void), T* instance) {
 		condition = std::bind(func, instance);
 	}
-	//‹N“®ğŒ‚ğİ’è
+	//èµ·å‹•æ¡ä»¶ã‚’è¨­å®š
 	void SetTriggerCondition(bool (*func)()) {
 		condition = func;
 	}
-	//‹N“®ğŒ‚ğİ’è
+	//èµ·å‹•æ¡ä»¶ã‚’è¨­å®š
 	void SetTriggerCondition(bool (*func)(GameObject* object)) {
 		conditionInThis = std::bind(func, this->gameObject);
 	}
-	//ğŒ‚ğ–‚½‚µ‚½‚ÌƒCƒxƒ“ƒg‚ğİ’è
+	//æ¡ä»¶ã‚’æº€ãŸã—ãŸæ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®š
 	template<class T>
 	void SetOnTriggeredEvent(void(T::* func)(void), T* instance) {
 		onTriggered = std::bind(func, instance);
 	}
-	//ğŒ‚ğ–‚½‚µ‚½‚ÌƒCƒxƒ“ƒg‚ğİ’è
+	//æ¡ä»¶ã‚’æº€ãŸã—ãŸæ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®š
 	void SetOnTriggeredEvent(void (*func)()) {
 		onTriggered = func;
 	}
-	//ğŒ‚ğ–‚½‚µ‚½‚ÌƒCƒxƒ“ƒg‚ğİ’è
+	//æ¡ä»¶ã‚’æº€ãŸã—ãŸæ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®š
 	void SetOnTriggeredEvent(void (*func)(GameObject* object)) {
 		onTriggeredThis = std::bind(func, this->gameObject);
 	}

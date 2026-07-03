@@ -8,26 +8,26 @@ class GraphicRaycaster;
 
 struct RaycastResult
 {
-	GameObject* gameObject = nullptr;//ƒqƒbƒg‚µ‚½GameObject(UI—v‘f)
-	ObjectId hitGraphicId = ObjectId::Invalid(); //ƒqƒbƒg‚µ‚½Graphic‚ÌID(UI—v‘f‚Ì•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg)
+	GameObject* gameObject = nullptr;//ãƒ’ãƒƒãƒˆã—ãŸGameObject(UIè¦ç´ )
+	ObjectId hitGraphicId = ObjectId::Invalid(); //ãƒ’ãƒƒãƒˆã—ãŸGraphicã®ID(UIè¦ç´ ã®æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ)
 
-	//float distance = 0.0f;//g‚Á‚Ä‚È‚¢
-	//Vector3 worldPosition{};//g‚Á‚Ä‚È‚¢
-	//Vector3 worldNormal{};//g‚Á‚Ä‚È‚¢
+	//float distance = 0.0f;//ä½¿ã£ã¦ãªã„
+	//Vector3 worldPosition{};//ä½¿ã£ã¦ãªã„
+	//Vector3 worldNormal{};//ä½¿ã£ã¦ãªã„
 
 	Vector2 screenPosition{};
 
-	int sortingLayer = 0;//‚Ü‚¾g‚Á‚Ä‚È‚¢
-	int sortingOrder = 0;//‚Ü‚¾g‚Á‚Ä‚È‚¢
-	int depth = 0;//‚Ü‚¾g‚Á‚Ä‚È‚¢
+	int sortingLayer = 0;//ã¾ã ä½¿ã£ã¦ãªã„
+	int sortingOrder = 0;//ã¾ã ä½¿ã£ã¦ãªã„
+	int depth = 0;//ã¾ã ä½¿ã£ã¦ãªã„
 	//GraphicRaycaster* module = nullptr;
-	ObjectId moduleId = ObjectId::Invalid(); //ƒqƒbƒg‚µ‚½GraphicRaycaster‚ÌID(UI—v‘f‚Ì•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg) // ‚Ü‚¾g‚Á‚Ä‚È‚¢
+	ObjectId moduleId = ObjectId::Invalid(); //ãƒ’ãƒƒãƒˆã—ãŸGraphicRaycasterã®ID(UIè¦ç´ ã®æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ) // ã¾ã ä½¿ã£ã¦ãªã„
 
 	bool IsValid() const;
 
-	//ƒqƒbƒg‚µ‚½GameObject‚ğæ“¾‚·‚éB‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·B
+	//ãƒ’ãƒƒãƒˆã—ãŸGameObjectã‚’å–å¾—ã™ã‚‹ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã™ã€‚
 	GameObject* GetHitGameObject() const;
 
-	//ƒqƒbƒg‚µ‚½GraphicƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚·‚éB‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·B
+	//ãƒ’ãƒƒãƒˆã—ãŸGraphicã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã™ã€‚
 	std::shared_ptr<Graphic> GetHitGraphic() const;
 };

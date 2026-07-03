@@ -6,13 +6,13 @@
 
 /**
  * @file
- * @brief Šeí D3D11 ƒŒƒ“ƒ_[ƒXƒe[ƒgiƒTƒ“ƒvƒ‰[/[“x/ƒuƒŒƒ“ƒh/ƒ‰ƒXƒ^ƒ‰ƒCƒUj‚ÌƒvƒŠƒZƒbƒgŠÇ—B
- * @details ¶¬Ï‚İƒXƒe[ƒg‚Ìæ“¾‚âƒoƒCƒ“ƒhŠÖ”‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief å„ç¨® D3D11 ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆï¼ˆã‚µãƒ³ãƒ—ãƒ©ãƒ¼/æ·±åº¦/ãƒ–ãƒ¬ãƒ³ãƒ‰/ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ï¼‰ã®ãƒ—ãƒªã‚»ãƒƒãƒˆç®¡ç†ã€‚
+ * @details ç”Ÿæˆæ¸ˆã¿ã‚¹ãƒ†ãƒ¼ãƒˆã®å–å¾—ã‚„ãƒã‚¤ãƒ³ãƒ‰é–¢æ•°ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 
-// ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg
+// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆ
 /**
- * @brief ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg‚ÌƒvƒŠƒZƒbƒgí•ÊB
+ * @brief ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒ—ãƒªã‚»ãƒƒãƒˆç¨®åˆ¥ã€‚
  */
 enum class SamplerState
 {
@@ -35,14 +35,14 @@ enum class SamplerState
 };
 
 /**
- * @brief ƒTƒ“ƒvƒ‰[ƒoƒCƒ“ƒh‚ÌƒOƒ‹[ƒsƒ“ƒOƒtƒ‰ƒOB
- * @details Wrap/Border/Clamp ‚²‚Æ‚ÉƒvƒŠƒZƒbƒg‚ğ‚Ü‚Æ‚ß‚ÄƒoƒCƒ“ƒh‚·‚é—p“rB
+ * @brief ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ãƒã‚¤ãƒ³ãƒ‰ã®ã‚°ãƒ«ãƒ¼ãƒ”ãƒ³ã‚°ãƒ•ãƒ©ã‚°ã€‚
+ * @details Wrap/Border/Clamp ã”ã¨ã«ãƒ—ãƒªã‚»ãƒƒãƒˆã‚’ã¾ã¨ã‚ã¦ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹ç”¨é€”ã€‚
  */
 enum class SamplerFlags { Wrap, Border, Clamp, EnumCount };
 
-// ƒfƒvƒXƒXƒe[ƒg
+// ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ¼ãƒˆ
 /**
- * @brief [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg‚ÌƒvƒŠƒZƒbƒgí•ÊB
+ * @brief æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒ—ãƒªã‚»ãƒƒãƒˆç¨®åˆ¥ã€‚
  */
 enum class DepthStencilState
 {
@@ -54,9 +54,9 @@ enum class DepthStencilState
 	EnumCount
 };
 
-// ƒuƒŒƒ“ƒhƒXƒe[ƒg
+// ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
 /**
- * @brief ƒuƒŒƒ“ƒhƒXƒe[ƒg‚ÌƒvƒŠƒZƒbƒgí•ÊB
+ * @brief ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒ—ãƒªã‚»ãƒƒãƒˆç¨®åˆ¥ã€‚
  */
 enum class BlendState
 {
@@ -69,9 +69,9 @@ enum class BlendState
 	EnumCount
 };
 
-// ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg
+// ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ
 /**
- * @brief ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚ÌƒvƒŠƒZƒbƒgí•ÊB
+ * @brief ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒ—ãƒªã‚»ãƒƒãƒˆç¨®åˆ¥ã€‚
  */
 enum class RasterizerState
 {
@@ -86,22 +86,22 @@ enum class RasterizerState
 };
 
 /**
- * @brief ƒŒƒ“ƒ_[ƒXƒe[ƒgƒvƒŠƒZƒbƒg‚ğ‚Ü‚Æ‚ß‚Ä•ÛE“K—p‚·‚éƒNƒ‰ƒXB
+ * @brief ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆãƒ—ãƒªã‚»ãƒƒãƒˆã‚’ã¾ã¨ã‚ã¦ä¿æŒãƒ»é©ç”¨ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
  */
 class RenderState
 {
 public:
 	/**
-	 * @brief ƒXƒe[ƒgƒIƒuƒWƒFƒNƒgŒQ‚ğì¬‚µ‚Ü‚·B
-	 * @param device D3D11 ƒfƒoƒCƒXB
+	 * @brief ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç¾¤ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
 	 */
 	RenderState(ID3D11Device* device);
 	~RenderState() = default;
 
 	/**
-	 * @brief ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg‚ğ‚Ü‚Æ‚ß‚ÄƒoƒCƒ“ƒh‚µ‚Ü‚·iƒvƒŠƒZƒbƒgjB
-	 * @param immediateContext ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgB
-	 * @param flag Wrap/Border/Clamp ‚Ì‚¢‚¸‚ê‚©B
+	 * @brief ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ã¾ã¨ã‚ã¦ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ï¼ˆãƒ—ãƒªã‚»ãƒƒãƒˆï¼‰ã€‚
+	 * @param immediateContext ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
+	 * @param flag Wrap/Border/Clamp ã®ã„ãšã‚Œã‹ã€‚
 	 */
 	void BindSamplerStates(ID3D11DeviceContext* immediateContext) const {
 		std::vector<ID3D11SamplerState*> samplers;
@@ -113,47 +113,47 @@ public:
 		immediateContext->CSSetSamplers(0, static_cast<UINT>(samplers.size()), samplers.data());
 	}
 	/**
-	 * @brief ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg‚ğæ“¾‚µ‚Ü‚·B
-	 * @param state æ“¾‚·‚éƒvƒŠƒZƒbƒgB
-	 * @return `ID3D11SamplerState*` ‚ÌƒAƒhƒŒƒXB
+	 * @brief ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @param state å–å¾—ã™ã‚‹ãƒ—ãƒªã‚»ãƒƒãƒˆã€‚
+	 * @return `ID3D11SamplerState*` ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚
 	 */
 	ID3D11SamplerState** GetSamplerState(SamplerState state) {
 		size_t index = static_cast<size_t>(state);
 		return samplerStates[index].GetAddressOf();
 	}
 	/**
-	 * @brief [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg‚ğƒoƒCƒ“ƒh‚µ‚Ü‚·B
-	 * @param immediateContext ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgB
-	 * @param state ƒoƒCƒ“ƒh‚·‚éƒvƒŠƒZƒbƒgB
-	 * @param stencilRef ƒXƒeƒ“ƒVƒ‹QÆ’lB
+	 * @brief æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚
+	 * @param immediateContext ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
+	 * @param state ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹ãƒ—ãƒªã‚»ãƒƒãƒˆã€‚
+	 * @param stencilRef ã‚¹ãƒ†ãƒ³ã‚·ãƒ«å‚ç…§å€¤ã€‚
 	 */
 	void BindDepthStencilState(ID3D11DeviceContext* immediateContext, DepthStencilState state, UINT stencilRef = 0) {
 		immediateContext->OMSetDepthStencilState(depthStencilStates[static_cast<size_t>(state)].Get(), stencilRef);
 	}
 	/**
-	 * @brief ƒuƒŒƒ“ƒhƒXƒe[ƒg‚ğƒoƒCƒ“ƒh‚µ‚Ü‚·B
-	 * @param immediateContext ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgB
-	 * @param state ƒoƒCƒ“ƒh‚·‚éƒvƒŠƒZƒbƒgB
+	 * @brief ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚
+	 * @param immediateContext ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
+	 * @param state ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹ãƒ—ãƒªã‚»ãƒƒãƒˆã€‚
 	 */
 	void BindBlendState(ID3D11DeviceContext* immediateContext, BlendState state) {
 		immediateContext->OMSetBlendState(blendStates[static_cast<size_t>(state)].Get(), NULL, 0xFFFFFFFF);
 	}
 	/**
-	 * @brief ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚ğƒoƒCƒ“ƒh‚µ‚Ü‚·B
-	 * @param immediateContext ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgB
-	 * @param state ƒoƒCƒ“ƒh‚·‚éƒvƒŠƒZƒbƒgB
+	 * @brief ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚
+	 * @param immediateContext ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
+	 * @param state ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹ãƒ—ãƒªã‚»ãƒƒãƒˆã€‚
 	 */
 	void BindRasterizerState(ID3D11DeviceContext* immediateContext, RasterizerState state) {
 		immediateContext->RSSetState(rasterizerStates[static_cast<size_t>(state)].Get());
 	}
 
 public:
-	/** @brief ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg”z—ñB*/
+	/** @brief ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆé…åˆ—ã€‚*/
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerStates[static_cast<int>(SamplerState::EnumCount)];
-	/** @brief [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg”z—ñB*/
+	/** @brief æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆé…åˆ—ã€‚*/
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilStates[static_cast<int>(DepthStencilState::EnumCount)];
-	/** @brief ƒuƒŒƒ“ƒhƒXƒe[ƒg”z—ñB*/
+	/** @brief ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆé…åˆ—ã€‚*/
 	Microsoft::WRL::ComPtr<ID3D11BlendState>		blendStates[static_cast<int>(BlendState::EnumCount)];
-	/** @brief ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg”z—ñB*/
+	/** @brief ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆé…åˆ—ã€‚*/
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>	rasterizerStates[static_cast<int>(RasterizerState::EnumCount)];
 };

@@ -6,7 +6,7 @@
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #include "../tinygltf-release/tiny_gltf.h"
 
-// TODO: ƒoƒbƒ`ƒƒbƒVƒ…‚Ì•ªŠò‚Ì‚¹‚¢‚ÅƒR[ƒh‚ª•¡G‚É‚È‚Á‚Ä‚¢‚é‚Ì‚ÅA‚ ‚Æ‚ÅƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‚·‚é‚±‚ÆB
+// TODO: ãƒãƒƒãƒãƒ¡ãƒƒã‚·ãƒ¥ã®åˆ†å²ã®ã›ã„ã§ã‚³ãƒ¼ãƒ‰ãŒè¤‡é›‘ã«ãªã£ã¦ã„ã‚‹ã®ã§ã€ã‚ã¨ã§ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ã“ã¨ã€‚
 #define SUPPORT_BATCHING
 
 namespace CurryEngine
@@ -14,23 +14,23 @@ namespace CurryEngine
 	namespace Utils
 	{
 		/**
-		 * @brief GLTF ƒ‚ƒfƒ‹ƒCƒ“ƒ|[ƒ^[BGLTF Œ`®‚Ìƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İA`ModelAsset` ‚É•ÏŠ·‚·‚éƒNƒ‰ƒXB
-		 * @details tinygltf ƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚µ‚Ä GLTF ƒtƒ@ƒCƒ‹‚ğ‰ğÍ‚µAƒ‚ƒfƒ‹ƒf[ƒ^‚ğ `ModelAsset` ‚ÉŠi”[‚µ‚Ü‚·B
+		 * @brief GLTF ãƒ¢ãƒ‡ãƒ«ã‚¤ãƒ³ãƒãƒ¼ã‚¿ãƒ¼ã€‚GLTF å½¢å¼ã®ãƒ¢ãƒ‡ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã€`ModelAsset` ã«å¤‰æ›ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
+		 * @details tinygltf ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã—ã¦ GLTF ãƒ•ã‚¡ã‚¤ãƒ«ã‚’è§£æã—ã€ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’ `ModelAsset` ã«æ ¼ç´ã—ã¾ã™ã€‚
 		 */
 		class GltfImporter : public IModelImporter
 		{
 		public:
 			virtual ~GltfImporter() = default;
 			/**
-			 * @brief GLTF ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İA`ModelAsset` ‚É•ÏŠ·‚·‚éŠÖ”B
-			 * @param path “Ç‚İ‚Ş GLTF ƒtƒ@ƒCƒ‹‚ÌƒpƒXB
-			 * @param asset “Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹ƒf[ƒ^‚ğŠi”[‚·‚é `ModelAsset` ƒIƒuƒWƒFƒNƒg‚Ö‚ÌQÆB
-			 * @return ¬Œ÷‚µ‚½ê‡‚Í trueA¸”s‚µ‚½ê‡‚Í false ‚ğ•Ô‚µ‚Ü‚·B
+			 * @brief GLTF ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã€`ModelAsset` ã«å¤‰æ›ã™ã‚‹é–¢æ•°ã€‚
+			 * @param path èª­ã¿è¾¼ã‚€ GLTF ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã€‚
+			 * @param asset èª­ã¿è¾¼ã‚“ã ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹ `ModelAsset` ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®å‚ç…§ã€‚
+			 * @return æˆåŠŸã—ãŸå ´åˆã¯ trueã€å¤±æ•—ã—ãŸå ´åˆã¯ false ã‚’è¿”ã—ã¾ã™ã€‚
 			 */
 			bool Import(const std::string& path, ModelAsset& asset) override;
 			/**
-			 * @brief ‚±‚ÌƒCƒ“ƒ|[ƒ^[‚ªƒTƒ|[ƒg‚·‚éƒtƒ@ƒCƒ‹Šg’£q‚ÌƒŠƒXƒg‚ğ•Ô‚·ŠÖ”B
-			 * @return ƒTƒ|[ƒg‚·‚éƒtƒ@ƒCƒ‹Šg’£q‚ÌƒŠƒXƒgi—á: {".gltf", ".glb"}jB
+			 * @brief ã“ã®ã‚¤ãƒ³ãƒãƒ¼ã‚¿ãƒ¼ãŒã‚µãƒãƒ¼ãƒˆã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã®ãƒªã‚¹ãƒˆã‚’è¿”ã™é–¢æ•°ã€‚
+			 * @return ã‚µãƒãƒ¼ãƒˆã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã®ãƒªã‚¹ãƒˆï¼ˆä¾‹: {".gltf", ".glb"}ï¼‰ã€‚
 			 */
 			std::vector<std::string> GetSupportedExtensions() const override;
 

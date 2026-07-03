@@ -6,41 +6,41 @@
 
 void DebugRenderPass::Initialize()
 {
-	// DebugRenderPass‚Ì‰Šú‰»ˆ—‚ğÀ‘•
+	// DebugRenderPassã®åˆæœŸåŒ–å‡¦ç†ã‚’å®Ÿè£…
 	DebugRenderer::Initialize();
 }
 
 void DebugRenderPass::Finalize()
 {
-	// DebugRenderPass‚ÌI—¹ˆ—‚ğÀ‘•
+	// DebugRenderPassã®çµ‚äº†å‡¦ç†ã‚’å®Ÿè£…
 	DebugRenderer::Finalize();
 }
 
 void DebugRenderPass::Execute(RenderContext* rtx, Scene* scene)
 {
-	// DebugRenderPass‚ÌÀsˆ—‚ğÀ‘•
+	// DebugRenderPassã®å®Ÿè¡Œå‡¦ç†ã‚’å®Ÿè£…
 #ifdef _DEBUG
-// ƒOƒŠƒbƒh‚Ì•`‰æ
+// ã‚°ãƒªãƒƒãƒ‰ã®æç”»
 
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 
-	// [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgİ’è
+	// æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	renderState->BindDepthStencilState(immediateContext, DepthStencilState::TestOnly);
-	// ƒ‰ƒXƒ^ƒ‰ƒCƒUİ’è
+	// ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶è¨­å®š
 	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
-	// ƒuƒŒƒ“ƒhƒXƒe[ƒgİ’è
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	renderState->BindBlendState(immediateContext, BlendState::Transparency);
 
-	// Physics‚ÌƒfƒoƒbƒO•`‰æ
+	// Physicsã®ãƒ‡ãƒãƒƒã‚°æç”»
 	Physics::RenderDebug(rtx);
 
-	static constexpr float GridSize = 10.0f; // ƒOƒŠƒbƒh‚Ì‘S‘ÌƒTƒCƒY
-	static constexpr int GridDivisions = static_cast<int>(GridSize); // ƒOƒŠƒbƒh‚Ì•ªŠ„”(1m‚²‚Æ‚Éü‚ğˆø‚­)
-	static const Color gridColor = Color::White; // ƒOƒŠƒbƒh‚ÌF
+	static constexpr float GridSize = 10.0f; // ã‚°ãƒªãƒƒãƒ‰ã®å…¨ä½“ã‚µã‚¤ã‚º
+	static constexpr int GridDivisions = static_cast<int>(GridSize); // ã‚°ãƒªãƒƒãƒ‰ã®åˆ†å‰²æ•°(1mã”ã¨ã«ç·šã‚’å¼•ã)
+	static const Color gridColor = Color::White; // ã‚°ãƒªãƒƒãƒ‰ã®è‰²
 	DebugRenderer::DrawGrid(Vector3::Zero, GridSize, GridDivisions, gridColor);
 
-	// ƒfƒoƒbƒO•`‰æ
+	// ãƒ‡ãƒãƒƒã‚°æç”»
 	DebugRenderer::DrawAll(rtx);
 #endif // _DEBUG
 }

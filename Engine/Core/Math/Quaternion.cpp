@@ -58,7 +58,7 @@ XMVECTOR Quaternion::ToXMVector() const
 
 Vector3 Quaternion::ToEuler() const
 {
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚©‚çƒIƒCƒ‰[Špi“xj‚Ö‚Ì•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‹ã‚‰ã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼ˆåº¦ï¼‰ã¸ã®å¤‰æ›
 	XMFLOAT4X4 rotationMatrix;
 	XMStoreFloat4x4(&rotationMatrix, XMMatrixRotationQuaternion(XMLoadFloat4(this)));
 	float sx = rotationMatrix.m[2][1];
@@ -107,21 +107,21 @@ XMMATRIX Quaternion::ToMatrix() const
 
 bool Quaternion::Equal(const Quaternion& q1, const Quaternion& q2)
 {
-	// q ‚Æ -q ‚Í“¯‚¶‰ñ“]‚È‚Ì‚ÅAƒhƒbƒgÏ‚Ìâ‘Î’l‚Å”äŠr
+	// q ã¨ -q ã¯åŒã˜å›è»¢ãªã®ã§ã€ãƒ‰ãƒƒãƒˆç©ã®çµ¶å¯¾å€¤ã§æ¯”è¼ƒ
 	float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 	return std::abs(dot) >= 1.0f;
 }
 
 bool Quaternion::NotEqual(const Quaternion& q1, const Quaternion& q2)
 {
-	// q ‚Æ -q ‚Í“¯‚¶‰ñ“]‚È‚Ì‚ÅAƒhƒbƒgÏ‚Ìâ‘Î’l‚Å”äŠr
+	// q ã¨ -q ã¯åŒã˜å›è»¢ãªã®ã§ã€ãƒ‰ãƒƒãƒˆç©ã®çµ¶å¯¾å€¤ã§æ¯”è¼ƒ
 	float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 	return std::abs(dot) < 1.0f;
 }
 
 bool Quaternion::NearEqual(const Quaternion& q1, const Quaternion& q2, float epsilon)
 {
-	// q ‚Æ -q ‚Í“¯‚¶‰ñ“]‚È‚Ì‚ÅAƒhƒbƒgÏ‚Ìâ‘Î’l‚Å”äŠr
+	// q ã¨ -q ã¯åŒã˜å›è»¢ãªã®ã§ã€ãƒ‰ãƒƒãƒˆç©ã®çµ¶å¯¾å€¤ã§æ¯”è¼ƒ
 	float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 	return std::abs(dot) >= 1.0f - epsilon;
 }

@@ -9,7 +9,7 @@ CONST LONG SHADOWMAP_HEIGHT{ 2048 };
 
 void ShadowMapPass::Initialize()
 {
-	// ƒVƒƒƒhƒEƒ}ƒbƒv—p‚ÌƒŠƒ\[ƒX‚Ì‰Šú‰»
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ç”¨ã®ãƒªã‚½ãƒ¼ã‚¹ã®åˆæœŸåŒ–
 	cascadedShadowMaps = std::make_unique<CascadedShadowMaps>(Graphics::GetDevice(), SHADOWMAP_WIDTH * 4, SHADOWMAP_HEIGHT * 4);
 }
 
@@ -18,12 +18,12 @@ void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 
-    //ƒV[ƒ“‘S‘Ì‚ÌƒLƒƒƒvƒ`ƒƒI—¹
+    //ã‚·ãƒ¼ãƒ³å…¨ä½“ã®ã‚­ãƒ£ãƒ—ãƒãƒ£çµ‚äº†
     //auto frameBuffer = static_cast<FrameBuffer*>(rtx->GetSharedResource("FrameBuffer"));
     //frameBuffer->Deactivate(immediateContext);
 
     
-	// ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒAƒNƒeƒBƒu‰»
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–
     cascadedShadowMaps->Clear(immediateContext);
     cascadedShadowMaps->Activate(immediateContext, rtx->view, rtx->projection, rtx->lightDirection, criticalDepthValue, 3/*cbSlot*/);
     
@@ -32,17 +32,17 @@ void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
     renderState->BindBlendState(immediateContext, BlendState::Opaque);
 
 
-    // ƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚ÌƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğRenderContext‚É‹¤—LƒŠƒ\[ƒX‚Æ‚µ‚Äİ’è
+    // ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’RenderContextã«å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã¨ã—ã¦è¨­å®š
     //rtx->SetSharedResource("OpaquePass_ColorMap", frameBuffer->shader_resource_views[0].Get());
     //rtx->SetSharedResource("OpaquePass_DepthMap", frameBuffer->shader_resource_views[1].Get());
 	
-	// ‚±‚±‚Ü‚ÅPreRenderPass‚Å•`‰æ‚µ‚½“à—e‚ğƒVƒƒƒhƒEƒ}ƒbƒv“K—pƒpƒX‚Åg—p‚·‚é‚½‚ßAPreRenderPass‚ÌƒŒƒ“ƒ_[ƒeƒNƒXƒ`ƒƒ‚ÌƒJƒ‰[ƒoƒbƒtƒ@‚Æ[“xƒoƒbƒtƒ@‚ğ‹¤—LƒŠƒ\[ƒX‚Æ‚µ‚ÄRenderContext‚Éİ’è
+	// ã“ã“ã¾ã§PreRenderPassã§æç”»ã—ãŸå†…å®¹ã‚’ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—é©ç”¨ãƒ‘ã‚¹ã§ä½¿ç”¨ã™ã‚‹ãŸã‚ã€PreRenderPassã®ãƒ¬ãƒ³ãƒ€ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã¨æ·±åº¦ãƒãƒƒãƒ•ã‚¡ã‚’å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã¨ã—ã¦RenderContextã«è¨­å®š
 	auto preRenderTexture = static_cast<RenderTexture*>(rtx->GetSharedResource("PreRenderTexture"));
     rtx->SetSharedResource("OpaquePass_ColorTexture", preRenderTexture->GetColorTexture());
     rtx->SetSharedResource("OpaquePass_DepthTexture", preRenderTexture->GetDepthTexture());
 
 
-    //ƒVƒƒƒhƒEƒ}ƒbƒv¶¬•`‰æ
+    //ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ç”Ÿæˆæç”»
     {
         ProfileScopedSection_2(0, "CastShadows", ImGuiControl::Profiler::Red);
         for (const std::shared_ptr<GameObject>& object : scene->objectManager->GetAll())
@@ -62,10 +62,10 @@ void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
     }
     //cascadedShadowMaps->Deactivate(immediateContext);
 
-	// ƒVƒƒƒhƒEƒ}ƒbƒv¶¬ŒãAƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÉØ‚è‘Ö‚¦‚é
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ç”Ÿæˆå¾Œã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆ‡ã‚Šæ›¿ãˆã‚‹
     rtx->SetDefaultRenderTarget();
 
-	// ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğRenderContext‚É‹¤—LƒŠƒ\[ƒX‚Æ‚µ‚Äİ’è
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’RenderContextã«å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã¨ã—ã¦è¨­å®š
 	rtx->SetSharedResource("ShadowMapPass_DepthTexture", cascadedShadowMaps->GetDepthTexture());
 
 }

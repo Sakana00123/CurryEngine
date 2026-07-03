@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "AnimationEditor.h"
 
-// ------------------------------- ƒƒ“ƒoŠÖ”ŒQ ----------------------------------------
+// ------------------------------- ãƒ¡ãƒ³ãƒé–¢æ•°ç¾¤ ----------------------------------------
 
 void AnimationEditor::Open()
 {
@@ -28,14 +28,14 @@ void AnimationEditor::SetAnimationClip(std::unique_ptr<AnimationClip> clip)
 	animationClip = std::move(clip);
 }
 
-// ------------------------------- ”Ä—pŠÖ” ----------------------------------------
-// ŠÔ‚ğXÀ•W‚É•ÏŠ·
+// ------------------------------- æ±ç”¨é–¢æ•° ----------------------------------------
+// æ™‚é–“ã‚’Xåº§æ¨™ã«å¤‰æ›
 float AnimationEditor::XToTime(float x, ImVec2 origin, float pixelsPerSecond)
 {
 	return (x - origin.x) / pixelsPerSecond;
 }
 
-// XÀ•W‚ğŠÔ‚É•ÏŠ·
+// Xåº§æ¨™ã‚’æ™‚é–“ã«å¤‰æ›
 float AnimationEditor::TimeToX(float time, ImVec2 origin, float pixelsPerSecond)
 {
 	return origin.x + time * pixelsPerSecond;
@@ -43,20 +43,20 @@ float AnimationEditor::TimeToX(float time, ImVec2 origin, float pixelsPerSecond)
 
 namespace
 {
-	// 1”‚ ‚½‚è‚ÌŠÔ‚ğæ“¾
+	// 1æ‹ã‚ãŸã‚Šã®æ™‚é–“ã‚’å–å¾—
 	float BeatTime(const SnapSettings & snap)
 	{
 		return 60.0f / snap.bpm;
 	}
 
-	// 1‚Â‚Ì•ªŠ„‚ ‚½‚è‚ÌŠÔ‚ğæ“¾
+	// 1ã¤ã®åˆ†å‰²ã‚ãŸã‚Šã®æ™‚é–“ã‚’å–å¾—
 	float SubDivisionTime(const SnapSettings & snap)
 	{
 		return BeatTime(snap) / static_cast<float>(snap.subdivisions);
 	}
 }
 
-// ŠÔ‚ğƒXƒiƒbƒv
+// æ™‚é–“ã‚’ã‚¹ãƒŠãƒƒãƒ—
 float AnimationEditor::SnapTime(float time, const SnapSettings& snap)
 {
 	switch (snap.mode)
@@ -77,7 +77,7 @@ float AnimationEditor::SnapTime(float time, const SnapSettings& snap)
 }
 
 
-// ƒ}ƒEƒX‚ªƒ^ƒCƒ€ƒ‰ƒCƒ““à‚É‚ ‚é‚©‚Ç‚¤‚©‚ğ”»’è
+// ãƒã‚¦ã‚¹ãŒã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³å†…ã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 bool AnimationEditor::IsMouseInTimeline(ImVec2 origin, ImVec2 size)
 {
 	ImVec2 mousePos = ImGui::GetIO().MousePos;
@@ -85,7 +85,7 @@ bool AnimationEditor::IsMouseInTimeline(ImVec2 origin, ImVec2 size)
 		mousePos.y >= origin.y && mousePos.y <= origin.y + size.y;
 }
 
-// ƒ}ƒEƒX‚ªƒL[ƒtƒŒ[ƒ€ã‚É‚ ‚é‚©‚Ç‚¤‚©‚ğ”»’è
+// ãƒã‚¦ã‚¹ãŒã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ä¸Šã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 bool AnimationEditor::IsMouseOverKey(ImVec2 keyPos, float radius)
 {
 	ImVec2 mousePos = ImGui::GetIO().MousePos;
@@ -94,48 +94,48 @@ bool AnimationEditor::IsMouseOverKey(ImVec2 keyPos, float radius)
 	return (dx * dx + dy * dy) <= (radius * radius);
 }
 
-// TODO: –¢g—pŠÖ”
+// TODO: æœªä½¿ç”¨é–¢æ•°
 void AnimationEditor::HandleZoom(TimelineView& view)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	if (io.MouseWheel != 0.0f && IsMouseInTimeline(view.origin, view.size))
 	{
-		// ƒY[ƒ€‚Ì’†S‚ğƒ}ƒEƒXˆÊ’u‚Éİ’è
+		// ã‚ºãƒ¼ãƒ ã®ä¸­å¿ƒã‚’ãƒã‚¦ã‚¹ä½ç½®ã«è¨­å®š
 		float mouseTime = XToTime(io.MousePos.x, view.origin, view.pixelsPerSecond);
-		// ƒY[ƒ€”{—¦‚ğŒvZ
-		float zoomFactor = 1.0f + io.MouseWheel * 0.1f; // ƒzƒC[ƒ‹1‰ñ“]‚ ‚½‚è10%‚ÌƒY[ƒ€
-		// V‚µ‚¢ pixelsPerSecond ‚ğŒvZ
+		// ã‚ºãƒ¼ãƒ å€ç‡ã‚’è¨ˆç®—
+		float zoomFactor = 1.0f + io.MouseWheel * 0.1f; // ãƒ›ã‚¤ãƒ¼ãƒ«1å›è»¢ã‚ãŸã‚Š10%ã®ã‚ºãƒ¼ãƒ 
+		// æ–°ã—ã„ pixelsPerSecond ã‚’è¨ˆç®—
 		float newPPS = view.pixelsPerSecond * zoomFactor;
-		// Å¬EÅ‘å§ŒÀ‚ğ“K—p
+		// æœ€å°ãƒ»æœ€å¤§åˆ¶é™ã‚’é©ç”¨
 		newPPS = std::clamp(newPPS, view.minPPS, view.maxPPS);
-		// pixelsPerSecond ‚ğXV
+		// pixelsPerSecond ã‚’æ›´æ–°
 		view.pixelsPerSecond = newPPS;
-		// ƒY[ƒ€’†S‚ğˆÛ‚·‚é‚½‚ß‚É origin ‚ğ’²®
+		// ã‚ºãƒ¼ãƒ ä¸­å¿ƒã‚’ç¶­æŒã™ã‚‹ãŸã‚ã« origin ã‚’èª¿æ•´
 		float newOriginX = io.MousePos.x - mouseTime * view.pixelsPerSecond;
 		view.origin.x = newOriginX;
 	}
 }
 
-// ------------------------------- ƒƒCƒ“ŠÖ”ŒQ ----------------------------------------
+// ------------------------------- ãƒ¡ã‚¤ãƒ³é–¢æ•°ç¾¤ ----------------------------------------
 
 void AnimationEditor::DrawGUI()
 {
-	// GUI •`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// GUI æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 	ImGui::Begin("Animation Editor", &isOpen);
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	static bool isInitialized = false;
 	if (!isInitialized)
 	{
-		// ‰Šú‰»ˆ—
+		// åˆæœŸåŒ–å‡¦ç†
 		animationClip = std::make_unique<AnimationClip>();
 		animationClip->length = 3.0f;
 		animationClip->fps = 60.0f;
 		animationClip->tracks.clear();
 		for (int i = 0; i < 3; ++i)
 		{
-			// ‰¼‚É3‚Â‚Ìƒgƒ‰ƒbƒN‚ğ’Ç‰Á
-			// ÀÛ‚É‚Í‹ï‘Ì“I‚Èƒgƒ‰ƒbƒNƒNƒ‰ƒX‚ğÀ‘•‚µ‚Ä’Ç‰Á‚·‚é•K—v‚ª‚ ‚è‚Ü‚·
+			// ä»®ã«3ã¤ã®ãƒˆãƒ©ãƒƒã‚¯ã‚’è¿½åŠ 
+			// å®Ÿéš›ã«ã¯å…·ä½“çš„ãªãƒˆãƒ©ãƒƒã‚¯ã‚¯ãƒ©ã‚¹ã‚’å®Ÿè£…ã—ã¦è¿½åŠ ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™
 			Track track;
 			track.name = "Value Track " + std::to_string(i + 1);
 			track.value = std::make_unique<ValueTrack>();
@@ -149,22 +149,22 @@ void AnimationEditor::DrawGUI()
 			animationClip->tracks.push_back(std::move(track));
 		}
 
-		length = animationClip->length; // ƒfƒtƒHƒ‹ƒg‚ÌƒAƒjƒ[ƒVƒ‡ƒ“’·‚³
+		length = animationClip->length; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é•·ã•
 		currentTime = 0.0f;
 		isInitialized = true;
 	}
 
-	// ƒc[ƒ‹ƒo[
+	// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼
 	DrawToolbar();
 
 	ImGui::Separator();
 
-	// ƒ^ƒCƒ€ƒ‰ƒCƒ“ƒGƒŠƒA
+	// ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã‚¨ãƒªã‚¢
 	DrawTimelineArea();
 
 	ImGui::Separator();
 
-	// ƒCƒ“ƒXƒyƒNƒ^
+	// ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿
 	DrawInspector();
 	
 	ImGui::End();
@@ -173,57 +173,57 @@ void AnimationEditor::DrawGUI()
 
 void AnimationEditor::DrawToolbar()
 {
-	// ƒc[ƒ‹ƒo[•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 
-	// Ä¶§Œä
+	// å†ç”Ÿåˆ¶å¾¡
 	if (isPlaying)
 	{
-		// Ä¶’†‚Ìê‡AŠÔ‚ği‚ß‚é
+		// å†ç”Ÿä¸­ã®å ´åˆã€æ™‚é–“ã‚’é€²ã‚ã‚‹
 		currentTime += ImGui::GetIO().DeltaTime;
 
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’·‚³‚ğ’´‚¦‚½ê‡‚Ìˆ—
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é•·ã•ã‚’è¶…ãˆãŸå ´åˆã®å‡¦ç†
 		if (currentTime > length)
 		{
 			if (isLooping)
 			{
-				currentTime = 0.0f; // ƒ‹[ƒv‚·‚éê‡‚ÍŠÔ‚ğƒŠƒZƒbƒg
+				currentTime = 0.0f; // ãƒ«ãƒ¼ãƒ—ã™ã‚‹å ´åˆã¯æ™‚é–“ã‚’ãƒªã‚»ãƒƒãƒˆ
 			}
 			else
 			{
-				currentTime = length; // ’â~‚·‚éê‡‚ÍÅ‘åŠÔ‚ÉŒÅ’è
-				isPlaying = false;    // Ä¶’â~
+				currentTime = length; // åœæ­¢ã™ã‚‹å ´åˆã¯æœ€å¤§æ™‚é–“ã«å›ºå®š
+				isPlaying = false;    // å†ç”Ÿåœæ­¢
 			}
 		}
 	}
 
 	if (ImGui::Button("Play"))
 	{
-		// Ä¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚Ìˆ—
+		// å†ç”Ÿãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã¨ãã®å‡¦ç†
 		isPlaying = true;
 	}
 	ImGui::SameLine();
 
 	if (ImGui::Button("Pause"))
 	{
-		// ˆê’â~ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚Ìˆ—
+		// ä¸€æ™‚åœæ­¢ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã¨ãã®å‡¦ç†
 		isPlaying = false;
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("Stop"))
 	{
-		// ’â~ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚Ìˆ—
-		currentTime = 0.0f; // ŠÔ‚ğƒŠƒZƒbƒg
+		// åœæ­¢ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã¨ãã®å‡¦ç†
+		currentTime = 0.0f; // æ™‚é–“ã‚’ãƒªã‚»ãƒƒãƒˆ
 		isPlaying = false;
 	}
 
 	ImGui::SameLine();
-	// ƒ‹[ƒvØ‘Ö
+	// ãƒ«ãƒ¼ãƒ—åˆ‡æ›¿
 	ImGui::Checkbox("Loop", &isLooping);
 
 	ImGui::SameLine();
 
-	// ƒXƒiƒbƒvƒ‚[ƒh‘I‘ğ
+	// ã‚¹ãƒŠãƒƒãƒ—ãƒ¢ãƒ¼ãƒ‰é¸æŠ
 	ImGui::SetNextItemWidth(100.0f);
 	const char* snapModeNames[] = { "None", "Frame", "Beat" };
 	int currentSnapMode = static_cast<int>(snapSettings.mode);
@@ -249,8 +249,8 @@ void AnimationEditor::DrawToolbar()
 			ImGui::SetNextItemWidth(75.0f);
 			static const char* divisions[] = { "1/1", "1/2", "1/4", "1/8", "1/16" };
 			static constexpr int divisionValues[] = { 1, 2, 4, 8, 16 };
-			int currentDivisionIndex = 2; // ƒfƒtƒHƒ‹ƒg‚Í1/4
-			// Œ»İ‚Ì•ªŠ„”‚É‘Î‰‚·‚éƒCƒ“ƒfƒbƒNƒX‚ğŒ©‚Â‚¯‚é
+			int currentDivisionIndex = 2; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯1/4
+			// ç¾åœ¨ã®åˆ†å‰²æ•°ã«å¯¾å¿œã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¦‹ã¤ã‘ã‚‹
 			for (size_t i = 0; i < IM_ARRAYSIZE(divisionValues); ++i)
 			{
 				if (divisionValues[i] == snapSettings.subdivisions)
@@ -259,10 +259,10 @@ void AnimationEditor::DrawToolbar()
 					break;
 				}
 			}
-			// ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Å•ªŠ„”‚ğ‘I‘ğ
+			// ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã§åˆ†å‰²æ•°ã‚’é¸æŠ
 			if (ImGui::Combo("##SubDivisions", &currentDivisionIndex, divisions, IM_ARRAYSIZE(divisions)))
 			{
-				// ‘I‘ğ‚³‚ê‚½•ªŠ„”‚ğİ’è
+				// é¸æŠã•ã‚ŒãŸåˆ†å‰²æ•°ã‚’è¨­å®š
 				snapSettings.subdivisions = divisionValues[currentDivisionIndex];
 			}
 			break;
@@ -273,11 +273,11 @@ void AnimationEditor::DrawToolbar()
 
 	ImGui::SameLine();
 
-	// ŠÔƒXƒ‰ƒCƒ_[
+	// æ™‚é–“ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼
 	ImGui::SetNextItemWidth(100.0f);
 	ImGui::SliderFloat(
 		"Time",
-		&currentTime, // Œ»İ‚ÌŠÔ‚ğw‚·ƒ|ƒCƒ“ƒ^‚ğw’è
+		&currentTime, // ç¾åœ¨ã®æ™‚é–“ã‚’æŒ‡ã™ãƒã‚¤ãƒ³ã‚¿ã‚’æŒ‡å®š
 		0.0f,
 		length
 	);
@@ -291,10 +291,10 @@ void AnimationEditor::DrawToolbar()
 
 void AnimationEditor::DrawTimelineArea()
 {
-	// ƒ^ƒCƒ€ƒ‰ƒCƒ“ƒGƒŠƒA•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã‚¨ãƒªã‚¢æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 	ImVec2 size = ImGui::GetContentRegionAvail();
 
-	float trackListWidth = 150.0f; // ƒgƒ‰ƒbƒNƒŠƒXƒg‚Ì•
+	float trackListWidth = 150.0f; // ãƒˆãƒ©ãƒƒã‚¯ãƒªã‚¹ãƒˆã®å¹…
 
 	ImGui::BeginChild("TrackList", ImVec2(trackListWidth, size.y), true);
 	DrawTrackList();
@@ -302,7 +302,7 @@ void AnimationEditor::DrawTimelineArea()
 
 	ImGui::SameLine();
 
-	// ƒ^ƒCƒ€ƒ‰ƒCƒ“‚ÆƒL[ƒtƒŒ[ƒ€•`‰æ
+	// ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã¨ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ æç”»
 	ImGui::BeginChild("Timeline", ImVec2(0, size.y), true);
 	
 	DrawTimeline();
@@ -313,7 +313,7 @@ void AnimationEditor::DrawTimelineArea()
 void AnimationEditor::DrawTrackList()
 {
 	int i = 0;
-	// ƒgƒ‰ƒbƒNƒŠƒXƒg•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ãƒˆãƒ©ãƒƒã‚¯ãƒªã‚¹ãƒˆæç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 	for (const auto& track : animationClip->tracks)
 	{
 		ImGui::PushID(i++);
@@ -321,9 +321,9 @@ void AnimationEditor::DrawTrackList()
 
 		if (isSelected)
 		{
-			// ƒgƒ‰ƒbƒN‚ª‘I‘ğ‚³‚ê‚½‚Æ‚«‚Ìˆ—
+			// ãƒˆãƒ©ãƒƒã‚¯ãŒé¸æŠã•ã‚ŒãŸã¨ãã®å‡¦ç†
 			selectedKey.track = (track.value.get());
-			selectedKey.keyIndex = -1; // ƒL[ƒtƒŒ[ƒ€‚Í–¢‘I‘ğ‚É‚·‚é
+			selectedKey.keyIndex = -1; // ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã¯æœªé¸æŠã«ã™ã‚‹
 		}
 		ImGui::PopID();
 	}
@@ -331,13 +331,13 @@ void AnimationEditor::DrawTrackList()
 
 void AnimationEditor::DrawTimeline()
 {
-	// ƒ^ƒCƒ€ƒ‰ƒCƒ“•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 
 	ImDrawList* draw = ImGui::GetWindowDrawList();
 	ImVec2 origin = ImGui::GetCursorScreenPos();
 	ImVec2 size = ImGui::GetContentRegionAvail();
 
-	// ”wŒi
+	// èƒŒæ™¯
 	draw->AddRectFilled(
 		origin,
 		ImVec2(origin.x + size.x, origin.y + size.y),
@@ -345,7 +345,7 @@ void AnimationEditor::DrawTimeline()
 	);
 
 #if 0
-	// ŠÔ–Ú·‚è
+	// æ™‚é–“ç›®ç››ã‚Š
 	for (int i = 0; static_cast<float>(i) <= length; ++i)
 	{
 		const float x = origin.x + static_cast<float>(i) * pixelsPerSecond;
@@ -356,7 +356,7 @@ void AnimationEditor::DrawTimeline()
 		);
 	}
 #else
-	// ŠÔ–Ú·‚èiƒXƒiƒbƒvİ’è‚É‰‚¶‚Ä•`‰æj
+	// æ™‚é–“ç›®ç››ã‚Šï¼ˆã‚¹ãƒŠãƒƒãƒ—è¨­å®šã«å¿œã˜ã¦æç”»ï¼‰
 	switch (snapSettings.mode)
 	{
 	case SnapMode::Frame:
@@ -373,18 +373,18 @@ void AnimationEditor::DrawTimeline()
 #endif // 0
 
 
-	// ƒNƒŠƒbƒNˆ—
+	// ã‚¯ãƒªãƒƒã‚¯å‡¦ç†
 	if (IsMouseInTimeline(origin, size))
 	{
 		if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 		{
-			// ƒNƒŠƒbƒNˆÊ’u‚©‚çŠÔ‚ğŒvZ‚µ‚Äİ’è
+			// ã‚¯ãƒªãƒƒã‚¯ä½ç½®ã‹ã‚‰æ™‚é–“ã‚’è¨ˆç®—ã—ã¦è¨­å®š
 			float t = XToTime(ImGui::GetIO().MousePos.x, origin, pixelsPerSecond);
 			currentTime = std::clamp(t, 0.0f, length);
 		}
 	}
 
-	// Œ»İŠÔƒJ[ƒ\ƒ‹
+	// ç¾åœ¨æ™‚é–“ã‚«ãƒ¼ã‚½ãƒ«
 	float cursorX = origin.x + currentTime * pixelsPerSecond;
 	draw->AddLine(
 		ImVec2(cursorX, origin.y),
@@ -393,29 +393,29 @@ void AnimationEditor::DrawTimeline()
 		2.0f
 	);
 
-	// Šeƒgƒ‰ƒbƒN‚ÌƒL[ƒtƒŒ[ƒ€‚ğ•`‰æ
+	// å„ãƒˆãƒ©ãƒƒã‚¯ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æç”»
 	DrawKeys(selectedKey.track, origin, pixelsPerSecond, origin.y + size.y / 2.0f);
 
 }
 
 void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPerSecond, float trackY)
 {
-	// ƒL[ƒtƒŒ[ƒ€•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 
-	// ƒgƒ‰ƒbƒN‚ª‘¶İ‚µ‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+	// ãƒˆãƒ©ãƒƒã‚¯ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	if (!track) return;
 
 	ImDrawList* draw = ImGui::GetWindowDrawList();
 	static constexpr float radius = 5.0f;
 
-	// ‚¢‚¸‚ê‚©‚ÌƒL[ƒtƒŒ[ƒ€‚ªƒzƒo[‚³‚ê‚Ä‚¢‚é‚©
+	// ã„ãšã‚Œã‹ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ãŒãƒ›ãƒãƒ¼ã•ã‚Œã¦ã„ã‚‹ã‹
 	bool hoveredAnyKey = false;
 	bool clickedOnKey = false;
 
-	// ŠeƒL[ƒtƒŒ[ƒ€‚ğ•`‰æ
+	// å„ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æç”»
 	for (int i = 0; i < track->keys.size(); ++i)
 	{
-		// ƒL[ƒtƒŒ[ƒ€‚ÌˆÊ’uŒvZ
+		// ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®ä½ç½®è¨ˆç®—
 		auto& key = track->keys[i];
 
 		ImVec2 keyPos;
@@ -423,18 +423,18 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 		keyPos.y = trackY;
 
 		bool hovered = IsMouseOverKey(keyPos, radius);
-		hoveredAnyKey |= hovered; // ‚¢‚¸‚ê‚©‚ÌƒL[ƒtƒŒ[ƒ€‚ªƒzƒo[‚³‚ê‚Ä‚¢‚é‚©
+		hoveredAnyKey |= hovered; // ã„ãšã‚Œã‹ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ãŒãƒ›ãƒãƒ¼ã•ã‚Œã¦ã„ã‚‹ã‹
 		bool clicked = hovered &&
 			ImGui::IsMouseClicked(ImGuiMouseButton_Left);
 
-		// ƒzƒo[‚Ìˆ—
+		// ãƒ›ãƒãƒ¼æ™‚ã®å‡¦ç†
 		if (hovered && !dragState.dragging)
 		{
-			// ƒzƒo[‚Ìƒc[ƒ‹ƒ`ƒbƒv•\¦
+			// ãƒ›ãƒãƒ¼æ™‚ã®ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—è¡¨ç¤º
 			ImGui::SetTooltip("Time: %.2f\nValue: %.2f", key.time, key.value);
 		}
 
-		// ƒNƒŠƒbƒN‚Å‘I‘ğ
+		// ã‚¯ãƒªãƒƒã‚¯ã§é¸æŠ
 		if (clicked)
 		{
 			selectedKey.track = track;
@@ -442,7 +442,7 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 			clickedOnKey = true;
 		}
 
-		// Œ©‚½–Ú
+		// è¦‹ãŸç›®
 		const bool selected =
 			(selectedKey.track == track &&
 				selectedKey.keyIndex == i);
@@ -451,10 +451,10 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 			selected ? IM_COL32(255, 200, 0, 255) :
 			hovered ? IM_COL32(220, 220, 150, 255) :
 			IM_COL32(200, 200, 100, 255);
-		// ƒL[ƒtƒŒ[ƒ€‚Ì•`‰æ
+		// ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®æç”»
 		draw->AddCircleFilled(keyPos, radius, color);
 
-		// ƒhƒ‰ƒbƒOŠJnˆ—
+		// ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹å‡¦ç†
 		if (selected && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 		{
 			dragState.dragging = true;
@@ -465,23 +465,23 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 
 			dragState.grabOffsetTime = mouseTime - key.time;
 		}
-		// ƒhƒ‰ƒbƒOˆ—
+		// ãƒ‰ãƒ©ãƒƒã‚°å‡¦ç†
 		if (dragState.dragging && draggingKey == &key &&
 			ImGui::IsMouseDragging(ImGuiMouseButton_Left))
 		{
 			float mouseTime =
 				XToTime(ImGui::GetIO().MousePos.x, origin, pixelsPerSecond);
 
-			// ƒXƒiƒbƒvˆ—
+			// ã‚¹ãƒŠãƒƒãƒ—å‡¦ç†
 			mouseTime = SnapTime(mouseTime, snapSettings);
 
 			if (snapSettings.mode != SnapMode::None)
 			{
-				// ƒXƒiƒbƒv‚ª—LŒø‚Èê‡AƒIƒtƒZƒbƒg‚ğƒŠƒZƒbƒg
+				// ã‚¹ãƒŠãƒƒãƒ—ãŒæœ‰åŠ¹ãªå ´åˆã€ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
 				dragState.grabOffsetTime = 0.0f;
 			}
 
-			// ƒL[ƒtƒŒ[ƒ€‚ÌŠÔ‚ğXV
+			// ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ™‚é–“ã‚’æ›´æ–°
 			draggingKey->time =
 				std::clamp(
 					mouseTime - dragState.grabOffsetTime,
@@ -489,15 +489,15 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 					length
 				);
 		}
-		// ƒhƒ‰ƒbƒOI—¹ˆ—
+		// ãƒ‰ãƒ©ãƒƒã‚°çµ‚äº†å‡¦ç†
 		if (dragState.dragging && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
 		{
 			dragState.dragging = false;
 
-			// –{‘Ì‚ğƒ\[ƒg
+			// æœ¬ä½“ã‚’ã‚½ãƒ¼ãƒˆ
 			track->Sort();
 
-			// ‘I‘ğƒCƒ“ƒfƒbƒNƒX‚ğÄæ“¾
+			// é¸æŠã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å†å–å¾—
 			for (int j = 0; j < track->keys.size(); ++j)
 			{
 				if (&track->keys[j] == draggingKey)
@@ -511,22 +511,22 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 		}
 	}
 
-	// ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ÅV‚µ‚¢ƒL[ƒtƒŒ[ƒ€‚ğ’Ç‰Á
+	// ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã§æ–°ã—ã„ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¿½åŠ 
 	if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 	{
 		float mouseX = ImGui::GetIO().MousePos.x;
 		float time = XToTime(mouseX, origin, pixelsPerSecond);
-		// V‚µ‚¢ƒL[ƒtƒŒ[ƒ€‚ğ’Ç‰Á
-		float value = 0.0f; // ƒfƒtƒHƒ‹ƒg’l
+		// æ–°ã—ã„ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¿½åŠ 
+		float value = 0.0f; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤
 		track->AddKeyframe(std::clamp(time, 0.0f, length), value);
 	}
 	else if (!hoveredAnyKey && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !clickedOnKey)
 	{
-		// ƒL[ƒtƒŒ[ƒ€ˆÈŠO‚ÌêŠ‚ªƒNƒŠƒbƒN‚³‚ê‚½ê‡AƒL[ƒtƒŒ[ƒ€‘I‘ğ‚ğ‰ğœ
+		// ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ä»¥å¤–ã®å ´æ‰€ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸå ´åˆã€ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ é¸æŠã‚’è§£é™¤
 		UnselectKey();
 	}
 
-	// Delete ƒL[‚Å‘I‘ğ’†‚ÌƒL[ƒtƒŒ[ƒ€‚ğíœ
+	// Delete ã‚­ãƒ¼ã§é¸æŠä¸­ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å‰Šé™¤
 	if (ImGui::Shortcut(ImGuiKey_Delete))
 	{
 		DeleteSelectedKey();
@@ -534,10 +534,10 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 
 	//if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 	//{
-	//	// ‰EƒNƒŠƒbƒNƒƒjƒ…[
+	//	// å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 	//	ImGui::OpenPopup("KeyframeContextMenu");
 
-	//	// ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚Ì“à—e
+	//	// ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å†…å®¹
 	//	if (ImGui::BeginPopup("KeyframeContextMenu"))
 	//	{
 	//		if (selectedKey.IsValid())
@@ -559,7 +559,7 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 
 void AnimationEditor::DrawKeyframes()
 {
-	// ƒL[ƒtƒŒ[ƒ€•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 	ImDrawList* draw = ImGui::GetWindowDrawList();
 	ImVec2 origin = ImGui::GetCursorScreenPos();
 	ImVec2 size = ImGui::GetContentRegionAvail();
@@ -569,12 +569,12 @@ void AnimationEditor::DrawKeyframes()
 	{
 		if (auto valueTrack = (track.value.get()))
 		{
-			// Šeƒgƒ‰ƒbƒN‚ÌƒL[ƒtƒŒ[ƒ€‚ğ•`‰æ
+			// å„ãƒˆãƒ©ãƒƒã‚¯ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æç”»
 			for (const auto& keyframe : valueTrack->keys)
 			{
-				// ƒL[ƒtƒŒ[ƒ€‚Ì•`‰æˆ—
+				// ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®æç”»å‡¦ç†
 				float x = origin.x + keyframe.time * pixelsPerSecond;
-				float y = origin.y + 20.0f; // ‰¼‚ÌYˆÊ’u
+				float y = origin.y + 20.0f; // ä»®ã®Yä½ç½®
 
 				draw->AddCircleFilled(
 					ImVec2(x, y),
@@ -605,10 +605,10 @@ void AnimationEditor::DrawInspector()
 
 void AnimationEditor::DrawSecondLines(float length, ImVec2 origin, ImVec2 size, float pixelsPerSecond)
 {
-	// •bƒ‰ƒCƒ“•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ç§’ãƒ©ã‚¤ãƒ³æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 	ImDrawList* draw = ImGui::GetWindowDrawList();
 	int secondCount = static_cast<int>(length);
-	// •bƒ‰ƒCƒ“‚Ì•`‰æ
+	// ç§’ãƒ©ã‚¤ãƒ³ã®æç”»
 	for (int i = 0; i <= secondCount; ++i)
 	{
 		const float x = TimeToX(static_cast<float>(i), origin, pixelsPerSecond);
@@ -623,12 +623,12 @@ void AnimationEditor::DrawSecondLines(float length, ImVec2 origin, ImVec2 size, 
 
 void AnimationEditor::DrawFrameLines(float length, const SnapSettings& snap, ImVec2 origin, ImVec2 size, float pixelsPerSecond)
 {
-	// ƒtƒŒ[ƒ€ƒ‰ƒCƒ“•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ©ã‚¤ãƒ³æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 	ImDrawList* draw = ImGui::GetWindowDrawList();
 	float frameTime = 1.0f / snap.fps;
 	int frameCount = static_cast<int>(length / frameTime);
 
-	// ƒtƒŒ[ƒ€ƒ‰ƒCƒ“‚Ì•`‰æ
+	// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ©ã‚¤ãƒ³ã®æç”»
 	for (int i = 0; i <= frameCount; ++i)
 	{
 		const float t = static_cast<float>(i) * frameTime;
@@ -644,13 +644,13 @@ void AnimationEditor::DrawFrameLines(float length, const SnapSettings& snap, ImV
 
 void AnimationEditor::DrawBeatLines(float length, const SnapSettings& snap, ImVec2 origin, ImVec2 size, float pixelsPerSecond)
 {
-	// ƒr[ƒgƒ‰ƒCƒ“•`‰æƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
+	// ãƒ“ãƒ¼ãƒˆãƒ©ã‚¤ãƒ³æç”»ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 	ImDrawList* draw = ImGui::GetWindowDrawList();
 	float beatTime = BeatTime(snap);
 	float divisionTime = SubDivisionTime(snap);
 	int divisionCount = static_cast<int>(length / divisionTime);
 	
-	// ƒr[ƒgƒ‰ƒCƒ“‚Ì•`‰æ
+	// ãƒ“ãƒ¼ãƒˆãƒ©ã‚¤ãƒ³ã®æç”»
 	for (int i = 0; i <= divisionCount; ++i)
 	{
 		const float t = static_cast<float>(i) * divisionTime;
@@ -684,18 +684,18 @@ void AnimationEditor::DrawBeatLines(float length, const SnapSettings& snap, ImVe
 
 void AnimationEditor::UnselectKey()
 {
-	// ‘I‘ğ’†‚ÌƒL[ƒtƒŒ[ƒ€‚Ì‘I‘ğ‚ğ‰ğœ
+	// é¸æŠä¸­ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®é¸æŠã‚’è§£é™¤
 	selectedKey.keyIndex = -1;
 	draggingKey = nullptr;
 }
 
 void AnimationEditor::DeleteSelectedKey()
 {
-	// ‘I‘ğ’†‚ÌƒL[ƒtƒŒ[ƒ€‚ğíœ
+	// é¸æŠä¸­ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å‰Šé™¤
 	if (selectedKey.IsValid())
 	{
 		auto& keys = selectedKey.track->keys;
 		keys.erase(keys.begin() + selectedKey.keyIndex);
-		UnselectKey(); // ‘I‘ğ‰ğœ
+		UnselectKey(); // é¸æŠè§£é™¤
 	}
 }

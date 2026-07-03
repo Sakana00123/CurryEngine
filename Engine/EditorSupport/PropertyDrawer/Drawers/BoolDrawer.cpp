@@ -20,7 +20,7 @@ namespace CurryEngine
 		bool edited = false;
 		if (mixed)
 		{
-			// �l�����݂��Ă���ꍇ�́A�t���O�� -1 �ɂ��ĕ\����Mixed�ɂ���B�����łȂ��ꍇ�́A�l�ɉ����ăt���O�� 1 �܂��� 0 �ɂ���B
+			// 値が混在している場合は、フラグを -1 にして表示をMixedにする。そうでない場合は、値に応じてフラグを 1 または 0 にする。
 			if (ImGui::CheckboxFlags("##bool", &v, -1))
 			{
 				value = !value;
@@ -38,12 +38,12 @@ namespace CurryEngine
 
 		if (edited)
 		{
-			// �l���ύX���ꂽ�Ƃ��̏����B�����I������Ă���ꍇ�́A���ׂĂ̑Ώۂɑ΂��ĐV�����l��K�p���܂��B
+			// 値が変更されたときの処理。複数選択されている場合は、すべての対象に対して新しい値を適用します。
 			PropertyDrawHelper::ApplyToAll<bool>(context, prop, value);
 		}
 		if (ImGui::IsItemDeactivatedAfterEdit())
 		{
-			// �l�̃R�~�b�g�����B���[�U�[���ҏW�����������Ƃ��ɁAUndo/Redo �R�}���h�𔭍s���܂��B
+			// 値のコミット処理。ユーザーが編集を完了したときに、Undo/Redo コマンドを発行します。
 			PropertyDrawHelper::CommitEdit<bool>(prop, context, m_state, value,
 				[](const bool& v) {
 					return v ? "True" : "False";

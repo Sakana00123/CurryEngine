@@ -1,26 +1,26 @@
 #include "pch.h"
 #include "VerticalLayoutGroup.h"
 
-// ‚¢‚¸‚ê‚©‚Ìƒ}ƒNƒ‚ğg—p‚µ‚ÄƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ“o˜^‚µ‚Ü‚·B•K—v‚É‰‚¶‚Ä‘®«‚àw’è‚Å‚«‚Ü‚·B
+// ã„ãšã‚Œã‹ã®ãƒã‚¯ãƒ­ã‚’ä½¿ç”¨ã—ã¦ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç™»éŒ²ã—ã¾ã™ã€‚å¿…è¦ã«å¿œã˜ã¦å±æ€§ã‚‚æŒ‡å®šã§ãã¾ã™ã€‚
 //REGISTER_COMPONENT(VerticalLayoutGroup, "UserScripts")
 REGISTER_COMPONENT_WITH_ATTRIBUTES(VerticalLayoutGroup, "UI", ComponentAttributes::ExecuteInEditMode, {})
 
 
 void VerticalLayoutGroup::Start()
 {
-	// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŠJn‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒé–‹å§‹ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 }
 
 void VerticalLayoutGroup::Update(float deltaTime)
 {
-	// –ˆƒtƒŒ[ƒ€‚ÌXVˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ›´æ–°å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 	UpdateLayout();
 }
 
 void VerticalLayoutGroup::UpdateLayout()
 {
-	// ‚’¼•ûŒü‚ÌƒŒƒCƒAƒEƒg‚ğXV‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
-	// q—v‘f‚Ì RectTransform ‚ğæ“¾‚µ‚ÄApadding ‚â spacing ‚ğl—¶‚µ‚Ä”z’u‚ğŒvZ‚µ‚Ü‚·B
+	// å‚ç›´æ–¹å‘ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’æ›´æ–°ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
+	// å­è¦ç´ ã® RectTransform ã‚’å–å¾—ã—ã¦ã€padding ã‚„ spacing ã‚’è€ƒæ…®ã—ã¦é…ç½®ã‚’è¨ˆç®—ã—ã¾ã™ã€‚
 	auto rectTransform = GetRectTransform();
 	if (!rectTransform) return;
 
@@ -33,7 +33,7 @@ void VerticalLayoutGroup::UpdateLayout()
 	const int childCount = static_cast<int>(childRects.size());
 	const float totalSpacing = spacing * (childCount - 1);
 
-	// q—v‘f‚Ì‚‚³‚ğŒvZ
+	// å­è¦ç´ ã®é«˜ã•ã‚’è¨ˆç®—
 	std::vector<float> childHeights(childCount);
 	float fixedTotal = 0.0f;
 	for (int i = 0; i < childCount; ++i)
@@ -42,7 +42,7 @@ void VerticalLayoutGroup::UpdateLayout()
 		childHeights[i] = preferredHeight;
 		fixedTotal += preferredHeight;
 	}
-	// ForceExpand: —]”’‚ğ‹Ï“™‚É•ª”z
+	// ForceExpand: ä½™ç™½ã‚’å‡ç­‰ã«åˆ†é…
 	if (childForceExpandHeight)
 	{
 		float extraSpace = (std::max)(0.0f, innerHeight - fixedTotal - totalSpacing);
@@ -53,22 +53,22 @@ void VerticalLayoutGroup::UpdateLayout()
 		}
 	}
 
-	// å²‚ÌŠJnˆÊ’u‚ğŒvZ (ã‘µ‚¦A’†‰›‘µ‚¦A‰º‘µ‚¦)
+	// ä¸»è»¸ã®é–‹å§‹ä½ç½®ã‚’è¨ˆç®— (ä¸Šæƒãˆã€ä¸­å¤®æƒãˆã€ä¸‹æƒãˆ)
 	float totalUsed = totalSpacing;
 	for (float h : childHeights) totalUsed += h;
 
 	float startY = paddingTop;
 
-	if (layoutAlignment == 1) // ’†‰›‘µ‚¦
+	if (layoutAlignment == 1) // ä¸­å¤®æƒãˆ
 	{
 		startY = paddingTop + (innerHeight - totalUsed) * 0.5f;
 	}
-	else if (layoutAlignment == 2) // ‰º‘µ‚¦
+	else if (layoutAlignment == 2) // ä¸‹æƒãˆ
 	{
 		startY = paddingTop + (innerHeight - totalUsed);
 	}
 
-	// q—v‘f‚ğ”z’u
+	// å­è¦ç´ ã‚’é…ç½®
 	float cursor = startY;
 	for (int i = 0; i < childCount; ++i)
 	{
@@ -76,21 +76,21 @@ void VerticalLayoutGroup::UpdateLayout()
 		float childWidth = childControlWidth ? innerWidth : rect->size.x;
 		float childHeight = childControlHeight ? childHeights[i] : rect->size.y;
 
-		// Œğ·²‚Ì”z’u
+		// äº¤å·®è»¸ã®é…ç½®
 		float localX = paddingLeft;
-		if (layoutAlignment == 1) // ’†‰›‘µ‚¦
+		if (layoutAlignment == 1) // ä¸­å¤®æƒãˆ
 		{
 			localX = paddingLeft + (innerWidth - childWidth) * 0.5f;
 		}
-		else if (layoutAlignment == 2) // ‰E‘µ‚¦
+		else if (layoutAlignment == 2) // å³æƒãˆ
 		{
 			localX = paddingLeft + (innerWidth - childWidth);
 		}
 		
-		// q—v‘f‚ÌˆÊ’u‚ğİ’è
+		// å­è¦ç´ ã®ä½ç½®ã‚’è¨­å®š
 		rect->SetAnchorMin({ 0, 0 });
 		rect->SetAnchorMax({ 0, 0 });
-		rect->SetPivot({ 0, 0 }); // ¶ã‚ğŠî€‚É”z’u
+		rect->SetPivot({ 0, 0 }); // å·¦ä¸Šã‚’åŸºæº–ã«é…ç½®
 		rect->SetAnchoredPosition({ localX, cursor });
 		rect->SetSize({ childWidth, childHeight });
 

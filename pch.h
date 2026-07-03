@@ -1,6 +1,6 @@
 #pragma once
 
-// C++�W�����C�u�����i�悭�g�����́j
+// C++標準ライブラリ（よく使うもの）
 #include <vector>
 #include <string>
 #include <memory>
@@ -22,7 +22,7 @@
 #endif // USE_IMGUI
 
 
-// ���ɂقڑS�̂Ŏg���w�b�_�[������΂����ɒǉ�
+// 他にほぼ全体で使うヘッダーがあればここに追加
 #include "Engine/Common/EngineCommon.h"
 
 #ifndef ENGINE_API

@@ -33,17 +33,17 @@ PrimitiveRenderer::PrimitiveRenderer()
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 #else
 
-	// ƒ}ƒeƒŠƒAƒ‹‚ğì¬
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ä½œæˆ
 	material = std::make_shared<Material>();
 	//auto shader = std::make_shared<Shader>();
 	
-	// ƒVƒF[ƒ_‚ğ“Ç‚İ‚İAƒ}ƒeƒŠƒAƒ‹‚Éİ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ã‚’èª­ã¿è¾¼ã¿ã€ãƒãƒ†ãƒªã‚¢ãƒ«ã«è¨­å®š
 	std::shared_ptr<Shader> vs = ResourceManager::GetShader<VertexShader>("geometric_primitive_vs");
 	std::shared_ptr<Shader> ps = ResourceManager::GetShader<PixelShader>("geometric_primitive_ps");
 	material->SetShader(device, vs);
 	material->SetShader(device, ps);
 
-	// ƒfƒtƒHƒ‹ƒg‚Ì”’Fƒ}ƒeƒŠƒAƒ‹‚ğİ’è
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ç™½è‰²ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®š
 	material->SetValue("materialColor", Color::White);
 
 #endif // !USE_MATERIAL
@@ -71,11 +71,11 @@ void PrimitiveRenderer::SetShape(const Shape& shape)
 void PrimitiveRenderer::CreateCube(ID3D11Device* device)
 {
 	Vertex vertices[24]{};
-	// ƒTƒCƒY‚ª1.0‚Ì³—§•û‘Ìƒf[ƒ^‚ğì¬‚·‚éidS‚ğŒ´“_‚É‚·‚éjB³—§•û‘Ì‚ÌƒRƒ“ƒgƒ[ƒ‹ƒ|ƒCƒ“ƒg”‚Í‚WŒÂA
-	// ‚P‚Â‚ÌƒRƒ“ƒgƒ[ƒ‹ƒ|ƒCƒ“ƒg‚ÌˆÊ’u‚É‚Í–@ü‚ÌŒü‚«‚ªˆá‚¤’¸“_‚ª‚RŒÂ‚ ‚é‚Ì‚Å’¸“_î•ñ‚Ì‘”‚Í‚Wx‚R‚Q‚SŒÂA
-	// ’¸“_î•ñ”z—ñiverticesj‚É‚·‚×‚Ä‚Ì’¸“_‚ÌˆÊ’uE–@üî•ñ‚ğŠi”[‚·‚éB
+	// ã‚µã‚¤ã‚ºãŒ1.0ã®æ­£ç«‹æ–¹ä½“ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ï¼ˆé‡å¿ƒã‚’åŸç‚¹ã«ã™ã‚‹ï¼‰ã€‚æ­£ç«‹æ–¹ä½“ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒã‚¤ãƒ³ãƒˆæ•°ã¯ï¼˜å€‹ã€
+	// ï¼‘ã¤ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒã‚¤ãƒ³ãƒˆã®ä½ç½®ã«ã¯æ³•ç·šã®å‘ããŒé•ã†é ‚ç‚¹ãŒï¼“å€‹ã‚ã‚‹ã®ã§é ‚ç‚¹æƒ…å ±ã®ç·æ•°ã¯ï¼˜xï¼“ï¼ï¼’ï¼”å€‹ã€
+	// é ‚ç‚¹æƒ…å ±é…åˆ—ï¼ˆverticesï¼‰ã«ã™ã¹ã¦ã®é ‚ç‚¹ã®ä½ç½®ãƒ»æ³•ç·šæƒ…å ±ã‚’æ ¼ç´ã™ã‚‹ã€‚
 
-	//Front(¶ã0,‰Eã1,¶‰º2,‰E‰º3)
+	//Front(å·¦ä¸Š0,å³ä¸Š1,å·¦ä¸‹2,å³ä¸‹3)
 	{
 		vertices[0].position = { -0.5f, 0.5f, -0.5f };
 		vertices[1].position = { 0.5f, 0.5f, -0.5f };
@@ -84,7 +84,7 @@ void PrimitiveRenderer::CreateCube(ID3D11Device* device)
 
 		vertices[0].normal = vertices[1].normal = vertices[2].normal = vertices[3].normal = { 0,0,-1 };
 	}
-	//Right(¶ã4,‰Eã5,¶‰º6,‰E‰º7)
+	//Right(å·¦ä¸Š4,å³ä¸Š5,å·¦ä¸‹6,å³ä¸‹7)
 	{
 		vertices[4].position = { 0.5f, 0.5f, -0.5f };
 		vertices[5].position = { 0.5f, 0.5f, 0.5f };
@@ -131,10 +131,10 @@ void PrimitiveRenderer::CreateCube(ID3D11Device* device)
 	}
 
 	uint32_t indices[36]{};
-	// ³—§•û‘Ì‚Í‚U–Ê‚¿A‚P‚Â‚Ì–Ê‚Í‚Q‚Â‚Ì‚RŠpŒ`ƒ|ƒŠƒSƒ“‚Å\¬‚³‚ê‚é‚Ì‚ÅA‚RŠpŒ`ƒ|ƒŠƒSƒ“‚Ì‘”‚Í‚Ux‚Q‚P‚QŒÂA
-	// ³—§•û‘Ì‚ğ•`‰æ‚·‚é‚½‚ß‚É‚P‚Q‰ñ‚Ì‚RŠpŒ`ƒ|ƒŠƒSƒ“•`‰æ‚ª•K—vA‚æ‚Á‚ÄQÆ‚³‚ê‚é’¸“_î•ñ‚Í‚P‚Qx‚R‚R‚U‰ñA
-	// ‚RŠpŒ`ƒ|ƒŠƒSƒ“‚ªQÆ‚·‚é’¸“_î•ñ‚ÌƒCƒ“ƒfƒbƒNƒXi’¸“_”Ô†j‚ğ•`‰æ‡‚É”z—ñiindicesj‚ÉŠi”[‚·‚éB
-	// Œv‰ñ‚è‚ª•\–Ê‚É‚È‚é‚æ‚¤‚ÉŠi”[‚·‚é‚±‚ÆB
+	// æ­£ç«‹æ–¹ä½“ã¯ï¼–é¢æŒã¡ã€ï¼‘ã¤ã®é¢ã¯ï¼’ã¤ã®ï¼“è§’å½¢ãƒãƒªã‚´ãƒ³ã§æ§‹æˆã•ã‚Œã‚‹ã®ã§ã€ï¼“è§’å½¢ãƒãƒªã‚´ãƒ³ã®ç·æ•°ã¯ï¼–xï¼’ï¼ï¼‘ï¼’å€‹ã€
+	// æ­£ç«‹æ–¹ä½“ã‚’æç”»ã™ã‚‹ãŸã‚ã«ï¼‘ï¼’å›ã®ï¼“è§’å½¢ãƒãƒªã‚´ãƒ³æç”»ãŒå¿…è¦ã€ã‚ˆã£ã¦å‚ç…§ã•ã‚Œã‚‹é ‚ç‚¹æƒ…å ±ã¯ï¼‘ï¼’xï¼“ï¼ï¼“ï¼–å›ã€
+	// ï¼“è§’å½¢ãƒãƒªã‚´ãƒ³ãŒå‚ç…§ã™ã‚‹é ‚ç‚¹æƒ…å ±ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆé ‚ç‚¹ç•ªå·ï¼‰ã‚’æç”»é †ã«é…åˆ—ï¼ˆindicesï¼‰ã«æ ¼ç´ã™ã‚‹ã€‚
+	// æ™‚è¨ˆå›ã‚ŠãŒè¡¨é¢ã«ãªã‚‹ã‚ˆã†ã«æ ¼ç´ã™ã‚‹ã“ã¨ã€‚
 
 	//Front
 	indices[0] = 2;
@@ -189,7 +189,7 @@ void PrimitiveRenderer::CreateCube(ID3D11Device* device)
 	indices[34] = 21;
 	indices[35] = 23;
 
-	//ƒoƒbƒtƒ@¶¬
+	//ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	CreateComBuffers(device, vertices, 24, indices, 36);
 
 	shape = Shape::Cube;
@@ -197,13 +197,13 @@ void PrimitiveRenderer::CreateCube(ID3D11Device* device)
 
 void PrimitiveRenderer::CreateCylinder(ID3D11Device* device, int segmentCount)
 {
-	// ’¸“_ƒf[ƒ^AƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ì¶¬(”¼Œa1A‚‚³1‚Ì’PˆÊ‰~’Œ‚ğ¶¬‚·‚éB)
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ç”Ÿæˆ(åŠå¾„1ã€é«˜ã•1ã®å˜ä½å††æŸ±ã‚’ç”Ÿæˆã™ã‚‹ã€‚)
 
 	std::vector<Vertex> vertices/*((segmentCount * 6) + 2)*/;
 	std::vector<uint32_t> indices/*(segmentCount * 12)*/;
-	// ‰~’Œ‚Ì‘¤–Ê‚ÍA‰~ü‚ğ segmentCount “™•ª‚µ‚ÄAŠeƒZƒOƒƒ“ƒg‚ğ‚Q‚Â‚ÌOŠpŒ`‚Å\¬‚·‚éB
+	// å††æŸ±ã®å´é¢ã¯ã€å††å‘¨ã‚’ segmentCount ç­‰åˆ†ã—ã¦ã€å„ã‚»ã‚°ãƒ¡ãƒ³ãƒˆã‚’ï¼’ã¤ã®ä¸‰è§’å½¢ã§æ§‹æˆã™ã‚‹ã€‚
 	float angleStep = DirectX::XM_2PI / segmentCount;
-	//ã‰º–Ê
+	//ä¸Šä¸‹é¢
 	for (int t = 0; t < 2; t++) {
 		DirectX::XMFLOAT3 normal{ 0,1,0 };
 		normal.y = (t == 0) ? 1.f : -1.f;
@@ -230,7 +230,7 @@ void PrimitiveRenderer::CreateCylinder(ID3D11Device* device, int segmentCount)
 			}
 		}
 	}
-	//‘¤–Ê
+	//å´é¢
 	int beginIndex = 2 * segmentCount + 4;
 	for (int i = 0; i < segmentCount * 2; i += 2) {
 		float theta0 = i * angleStep;
@@ -260,22 +260,22 @@ void PrimitiveRenderer::CreateCylinder(ID3D11Device* device, int segmentCount)
 
 void PrimitiveRenderer::CreateSphere(ID3D11Device* device, int stackCount, int sliceCount)
 {
-    //’¸“_ƒf[ƒ^AƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ì¶¬(”¼Œa1‚Ì’PˆÊ‹…‚ğ¶¬‚·‚é)
+    //é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ç”Ÿæˆ(åŠå¾„1ã®å˜ä½çƒã‚’ç”Ÿæˆã™ã‚‹)
     std::vector<Vertex> vertices;
     vertices.reserve(static_cast<size_t>(stackCount + 1) * static_cast<size_t>(sliceCount + 1));
 
     for (int stack = 0; stack <= stackCount; ++stack) {
-        float phi = XM_PI * stack / stackCount; // ˆÜ“x
+        float phi = XM_PI * stack / stackCount; // ç·¯åº¦
 
         for (int slice = 0; slice <= sliceCount; ++slice) {
-            float theta = XM_2PI * slice / sliceCount; // Œo“x
-            // ‹ÉÀ•W‚©‚ç’¼ŒğÀ•W‚É•ÏŠ·
+            float theta = XM_2PI * slice / sliceCount; // çµŒåº¦
+            // æ¥µåº§æ¨™ã‹ã‚‰ç›´äº¤åº§æ¨™ã«å¤‰æ›
             XMFLOAT3 position = {
                 sinf(phi) * cosf(theta), // x
                 cosf(phi),                // y
                 sinf(phi) * sinf(theta)  // z
             };
-            // –¾¦“I‚É³‹K‰»‚µ‚Ä–@ü‚ğ‹‚ß‚éiˆÀ‘Sôj
+            // æ˜ç¤ºçš„ã«æ­£è¦åŒ–ã—ã¦æ³•ç·šã‚’æ±‚ã‚ã‚‹ï¼ˆå®‰å…¨ç­–ï¼‰
             DirectX::XMVECTOR vpos = DirectX::XMLoadFloat3(&position);
             DirectX::XMVECTOR vnorm = DirectX::XMVector3Normalize(vpos);
             XMFLOAT3 normal;
@@ -293,7 +293,7 @@ void PrimitiveRenderer::CreateSphere(ID3D11Device* device, int stackCount, int s
             int a = stack * (sliceCount + 1) + slice;
             int b = a + sliceCount + 1;
 
-            // ƒgƒ‰ƒCƒAƒ“ƒOƒ‹‚Ì¶¬
+            // ãƒˆãƒ©ã‚¤ã‚¢ãƒ³ã‚°ãƒ«ã®ç”Ÿæˆ
             indices.push_back(a);
             indices.push_back(b);
             indices.push_back(a + 1);
@@ -314,7 +314,7 @@ void PrimitiveRenderer::CreateComBuffers(ID3D11Device* device, Vertex* vertices,
 {
 	HRESULT hr{ S_OK };
 
-	// ’¸“_ƒoƒbƒtƒ@AƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ì¶¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	D3D11_BUFFER_DESC buffer_desc{};
 	D3D11_SUBRESOURCE_DATA subresource_data{};
 	buffer_desc.ByteWidth = static_cast<UINT>(sizeof(Vertex) * vertexCount);
@@ -339,7 +339,7 @@ void PrimitiveRenderer::CreateComBuffers(ID3D11Device* device, Vertex* vertices,
 
 void PrimitiveRenderer::Render(RenderContext* rtx)
 {
-	// ƒoƒbƒtƒ@‚ª‚È‚¢ê‡‚Í•`‰æ‚µ‚È‚¢
+	// ãƒãƒƒãƒ•ã‚¡ãŒãªã„å ´åˆã¯æç”»ã—ãªã„
 	if (!vertexBuffer || !indexBuffer)
 	{
 		return;
@@ -347,7 +347,7 @@ void PrimitiveRenderer::Render(RenderContext* rtx)
 
 	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
 
-	// ’¸“_ƒoƒbƒtƒ@AƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒZƒbƒg
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
 	uint32_t stride{ sizeof(Vertex) };
 	uint32_t offset{ 0 };
 	immediateContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
@@ -356,14 +356,14 @@ void PrimitiveRenderer::Render(RenderContext* rtx)
 
 #ifdef USE_MATERIAL
 
-	// ƒ}ƒeƒŠƒAƒ‹‚ÌƒZƒbƒg
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ã®ã‚»ãƒƒãƒˆ
 	//material->SetVector("materialColor", color);
 	material->SetValue("world", gameObject->transform->GetWorld());
 	material->Apply(rtx);
 
 #else
 
-	// ƒVƒF[ƒ_[AƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚ÌƒZƒbƒg
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®ã‚»ãƒƒãƒˆ
 	immediateContext->IASetInputLayout(inputLayout.Get());
 
 	immediateContext->VSSetShader(vertexShader.Get(), nullptr, 0);
@@ -375,7 +375,7 @@ void PrimitiveRenderer::Render(RenderContext* rtx)
 
 #endif // USE_MATERIAL
 
-	// •`‰æ
+	// æç”»
 	D3D11_BUFFER_DESC buffer_desc{};
 	indexBuffer->GetDesc(&buffer_desc);
 	immediateContext->DrawIndexed(buffer_desc.ByteWidth / sizeof(uint32_t), 0, 0);
@@ -413,12 +413,12 @@ void PrimitiveRenderer::DrawProperty(const PropertyDrawContext& context)
 
 Math::BoundingBox PrimitiveRenderer::CalculateAABB() const
 {
-	// ƒ[ƒ‹ƒh•ÏŠ·‚ğl—¶‚µ‚½AABB‚ğŒvZ‚µ‚Ä•Ô‚·
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ã‚’è€ƒæ…®ã—ãŸAABBã‚’è¨ˆç®—ã—ã¦è¿”ã™
 	Math::BoundingBox aabb;
 	
 	XMFLOAT3 scale = gameObject->transform->GetWorldScale();
 
-	// ƒXƒP[ƒ‹‚ğl—¶‚µ‚½AABB‚ğŒvZi—§•û‘Ì‚ÌƒTƒCƒY‚ª1.0‚È‚Ì‚ÅA-0.5`0.5‚ğƒXƒP[ƒ‹‚ÅŠg‘åk¬j
+	// ã‚¹ã‚±ãƒ¼ãƒ«ã‚’è€ƒæ…®ã—ãŸAABBã‚’è¨ˆç®—ï¼ˆç«‹æ–¹ä½“ã®ã‚µã‚¤ã‚ºãŒ1.0ãªã®ã§ã€-0.5ã€œ0.5ã‚’ã‚¹ã‚±ãƒ¼ãƒ«ã§æ‹¡å¤§ç¸®å°ï¼‰
 	aabb = Math::BoundingBox({ -0.5f * scale.x, -0.5f * scale.y, -0.5f * scale.z }, { 0.5f * scale.x, 0.5f * scale.y, 0.5f * scale.z });
 
 	return aabb;

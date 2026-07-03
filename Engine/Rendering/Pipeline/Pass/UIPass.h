@@ -4,9 +4,9 @@
 class UIPass : public RenderPass
 {
 public:
-	// UIPass‚Ì‰Šú‰»ˆ—
+	// UIPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
-	// UIPass‚ÌÀ‘•
+	// UIPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 };

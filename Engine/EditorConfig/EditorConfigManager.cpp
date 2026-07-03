@@ -17,19 +17,19 @@
 	_RawPtr = new _Type; \
 	_RawPtr->ResetToDefault();
 
-// JSON �ɏ������ލۂɁA�Y������|�C���^�����݂���΃V���A���C�Y����}�N��
+// JSON に書き込む際に、該当するポインタが存在すればシリアライズするマクロ
 #define SERIALIZE_CONFIG_DATA_PTR(_RawPtr, _Json, _Key) \
 	if (_RawPtr) { \
 		_Json[_Key] = _RawPtr->Serialize(); \
 	}
 
-// JSON ����ǂݍ��ލۂɁA�Y������L�[�����݂���΃f�V���A���C�Y����}�N��
+// JSON から読み込む際に、該当するキーが存在すればデシリアライズするマクロ
 #define DESERIALIZE_CONFIG_DATA_PTR(_RawPtr, _Json, _Key) \
 	if (_Json.contains(_Key)) { \
 		_RawPtr->Deserialize(_Json[_Key]); \
 	}
 
-// LoadConfig ���ŁA�f�t�H���g�̐ݒ���쐬���Ă��� JSON ����ǂݍ��ނ��߂̃}�N��(�L�[��_RawPtr�̖��O�ɂȂ�܂�)
+// LoadConfig 内で、デフォルトの設定を作成してから JSON から読み込むためのマクロ(キーは_RawPtrの名前になります)
 #define SETUP_CONFIG_DATA_PTR(_Type, _RawPtr, _Json) \
 	CREATE_DEFAULT_CONFIG_DATA_PTR(_Type, _RawPtr) \
 	DESERIALIZE_CONFIG_DATA_PTR(_RawPtr, _Json, #_RawPtr)

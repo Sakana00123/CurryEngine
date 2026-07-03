@@ -6,57 +6,57 @@
 #include "Engine/EditorSupport/SetValueCommand.h"
 #include "Engine/Core/Object.h"
 
-// ImGui‚ÌŠeƒvƒƒpƒeƒB‚Ì•`‰æ‚ğŠÈ—ª‰»‚·‚é‚½‚ß‚Ìƒwƒ‹ƒp[ŠÖ”ŒQ
+// ImGuiã®å„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®æç”»ã‚’ç°¡ç•¥åŒ–ã™ã‚‹ãŸã‚ã®ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ç¾¤
 
-constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½‚ß‚Ì’è”
+constexpr float ImGuiPropertyNameWidth = 120.0f; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã®å¹…ã‚’å›ºå®šã™ã‚‹ãŸã‚ã®å®šæ•°
 
-// ƒvƒƒpƒeƒBƒZƒNƒVƒ‡ƒ“‚ÌŠJn
+// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®é–‹å§‹
 #define IMGUI_PROPERTY_BEGIN() \
 		ImGui::BeginTable("PropertyTable", 2, ImGuiTableFlags_SizingFixedFit); \
 		ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, ImGuiPropertyNameWidth); \
 		ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch); \
 		
-// ƒvƒƒpƒeƒBƒZƒNƒVƒ‡ƒ“‚ÌI—¹
+// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®çµ‚äº†
 #define IMGUI_PROPERTY_END() \
 		ImGui::EndTable();
 
-// ƒvƒƒpƒeƒB–¼‚Ì•`‰æ(name: •\¦–¼)
+// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã®æç”»(name: è¡¨ç¤ºå)
 #define IMGUI_PROPERTY(name) \
 		ImGui::TableNextRow(); \
 		ImGui::TableSetColumnIndex(0); \
 		ImGui::Text(name); \
 		ImGui::TableSetColumnIndex(1);
 
-// ƒvƒƒpƒeƒB‚Ì’l‚Ì•`‰æBƒvƒƒpƒeƒB–¼‚Í‘O‚Ìs‚Å IMGUI_PROPERTY ƒ}ƒNƒ‚ğ—p‚¢‚Ä•`‰æ‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ª‘O’ñB’l‚Ì•`‰æ‚Í‚±‚Ìƒ}ƒNƒ‚ğŒÄ‚Ño‚µ‚½êŠ‚Ås‚¤•K—v‚ª‚ ‚éB
+// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã®æç”»ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã¯å‰ã®è¡Œã§ IMGUI_PROPERTY ãƒã‚¯ãƒ­ã‚’ç”¨ã„ã¦æç”»ã•ã‚Œã¦ã„ã‚‹ã“ã¨ãŒå‰æã€‚å€¤ã®æç”»ã¯ã“ã®ãƒã‚¯ãƒ­ã‚’å‘¼ã³å‡ºã—ãŸå ´æ‰€ã§è¡Œã†å¿…è¦ãŒã‚ã‚‹ã€‚
 #define IMGUI_PROPERTY_INDENT() \
 		ImGui::TableNextRow(); \
 		ImGui::TableSetColumnIndex(0); \
-		ImGui::Text("  "); /* ƒCƒ“ƒfƒ“ƒg—p‚Ì‹ó”’‚ğ•`‰æ */ \
+		ImGui::Text("  "); /* ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆç”¨ã®ç©ºç™½ã‚’æç”» */ \
 		ImGui::TableSetColumnIndex(1);
 
-// ƒvƒƒpƒeƒB–¼‚Ì•`‰æ‚Æƒc[ƒ‹ƒ`ƒbƒv‚Ì•\¦(name: •\¦–¼, tooltip: ƒc[ƒ‹ƒ`ƒbƒv‚Ì“à—eBnullptr ‚Ìê‡‚Íƒc[ƒ‹ƒ`ƒbƒv‚ğ•\¦‚µ‚È‚¢)
+// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åã®æç”»ã¨ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®è¡¨ç¤º(name: è¡¨ç¤ºå, tooltip: ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®å†…å®¹ã€‚nullptr ã®å ´åˆã¯ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’è¡¨ç¤ºã—ãªã„)
 #define IMGUI_PROPERTY_EX(name, tooltip) \
 		ImGui::TableNextRow(); \
 		ImGui::TableSetColumnIndex(0); \
 		ImGui::Text(name); \
-		if (ImGui::IsItemHovered() && tooltip) { ImGui::SetTooltip("%s", tooltip); } /* ƒc[ƒ‹ƒ`ƒbƒv‚ğ•\¦ */ \
+		if (ImGui::IsItemHovered() && tooltip) { ImGui::SetTooltip("%s", tooltip); } /* ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’è¡¨ç¤º */ \
 		ImGui::TableSetColumnIndex(1);
 
 
 
-// ƒvƒƒpƒeƒB‚ÌUndoERedo‚Ì‚½‚ß‚ÌƒRƒ}ƒ“ƒhÀsŠÖ”ƒ}ƒNƒB(name: ƒvƒƒpƒeƒB–¼, type: Œ^–¼, newValue: V‚µ‚¢’l, oldValue: ŒÃ‚¢’l, newValueStr: V‚µ‚¢’l‚Ì•¶š—ñ•\Œ», oldValueStr: ŒÃ‚¢’l‚Ì•¶š—ñ•\Œ»)¦ObjectƒNƒ‰ƒX‚ğŒp³‚µ‚Ä‚¢‚éƒNƒ‰ƒX‚Å‚Ì‚İg—p‰Â”\BƒvƒƒpƒeƒB‚ÌƒAƒhƒŒƒX‚ÍObjectƒNƒ‰ƒX‚ÌGetPropertyAddressŠÖ”‚ğ—p‚¢‚Äæ“¾‚³‚ê‚éBƒvƒƒpƒeƒB‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍƒGƒ‰[ƒƒO‚ªo—Í‚³‚ê‚éB
+// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®Undoãƒ»Redoã®ãŸã‚ã®ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œé–¢æ•°ãƒã‚¯ãƒ­ã€‚(name: ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å, type: å‹å, newValue: æ–°ã—ã„å€¤, oldValue: å¤ã„å€¤, newValueStr: æ–°ã—ã„å€¤ã®æ–‡å­—åˆ—è¡¨ç¾, oldValueStr: å¤ã„å€¤ã®æ–‡å­—åˆ—è¡¨ç¾)â€»Objectã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã—ã¦ã„ã‚‹ã‚¯ãƒ©ã‚¹ã§ã®ã¿ä½¿ç”¨å¯èƒ½ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯Objectã‚¯ãƒ©ã‚¹ã®GetPropertyAddressé–¢æ•°ã‚’ç”¨ã„ã¦å–å¾—ã•ã‚Œã‚‹ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ãƒ­ã‚°ãŒå‡ºåŠ›ã•ã‚Œã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND(name, type, newValue, oldValue, newValueStr, oldValueStr) \
 		CurryEngine::History::ExecuteCommand( \
 			std::make_shared<CurryEngine::SetValueCommand<std::pair<std::string, type>>>( \
 				"Set " + std::string(name) + " old:" + oldValueStr + " new:" + newValueStr, \
 				[this](const std::pair<std::string, type>& pair) { \
 					if (Object* object = dynamic_cast<Object*>(this)) { \
-						auto* prop = object->GetClassMeta()->FindProperty(pair.first); /*ƒvƒƒpƒeƒB‚Ìƒƒ^î•ñ‚ğæ“¾*/ \
+						auto* prop = object->GetClassMeta()->FindProperty(pair.first); /*ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ãƒ¡ã‚¿æƒ…å ±ã‚’å–å¾—*/ \
 						if (prop) { \
-							prop->setter(this, pair.second); /*ƒvƒƒpƒeƒB‚Ì’l‚ğ•ÏX*/ \
+							prop->setter(this, pair.second); /*ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’å¤‰æ›´*/ \
 						} \
 						else { \
-							Console::LogError("Property not found: " + pair.first); /*ƒvƒƒpƒeƒB‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍƒGƒ‰[ƒƒO‚ğo—Í*/ \
+							Console::LogError("Property not found: " + pair.first); /*ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ãƒ­ã‚°ã‚’å‡ºåŠ›*/ \
 						} \
 					} \
 				}, \
@@ -65,7 +65,7 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 			) \
 		);
 
-// ƒWƒFƒlƒŠƒbƒN‚ÈƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhBObjectƒNƒ‰ƒX‚ğŒp³‚µ‚Ä‚¢‚È‚­‚Ä‚àg—p‰Â”\BƒvƒƒpƒeƒB‚Ì’l‚ğƒZƒbƒg‚·‚éŠÖ”‚Íˆø” setter ‚Å“n‚·•K—v‚ª‚ ‚éBsetter ‚ÍV‚µ‚¢’l‚ğˆø”‚Éæ‚èAƒvƒƒpƒeƒB‚Ì’l‚ğ•ÏX‚·‚éŠÖ”‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢B
+// ã‚¸ã‚§ãƒãƒªãƒƒã‚¯ãªãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚Objectã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã—ã¦ã„ãªãã¦ã‚‚ä½¿ç”¨å¯èƒ½ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹é–¢æ•°ã¯å¼•æ•° setter ã§æ¸¡ã™å¿…è¦ãŒã‚ã‚‹ã€‚setter ã¯æ–°ã—ã„å€¤ã‚’å¼•æ•°ã«å–ã‚Šã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’å¤‰æ›´ã™ã‚‹é–¢æ•°ã§ãªã‘ã‚Œã°ãªã‚‰ãªã„ã€‚
 #define IMGUI_PROPERTY_COMMAND_CUSTOM(name, newValue, oldValue, newValueStr, oldValueStr, setter) \
 		CurryEngine::History::ExecuteCommand( \
 			std::make_shared<CurryEngine::SetValueCommand<decltype(newValue)>>( \
@@ -76,210 +76,210 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 			) \
 		);
 
-// ƒWƒFƒlƒŠƒbƒN‚ÈƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhBObjectƒNƒ‰ƒX‚ğŒp³‚µ‚Ä‚¢‚È‚­‚Ä‚àg—p‰Â”\B’l‚Ì•¶š—ñ•\Œ»‚Í’Pƒ‚É”’l‚ğ•¶š—ñ‰»‚µ‚½‚à‚Ì‚É‚È‚éBƒvƒƒpƒeƒB‚Ì’l‚ğƒZƒbƒg‚·‚éŠÖ”‚Íˆø” setter ‚Å“n‚·•K—v‚ª‚ ‚éBsetter ‚ÍV‚µ‚¢’l‚ğˆø”‚Éæ‚èAƒvƒƒpƒeƒB‚Ì’l‚ğ•ÏX‚·‚éŠÖ”‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢B
+// ã‚¸ã‚§ãƒãƒªãƒƒã‚¯ãªãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚Objectã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã—ã¦ã„ãªãã¦ã‚‚ä½¿ç”¨å¯èƒ½ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯å˜ç´”ã«æ•°å€¤ã‚’æ–‡å­—åˆ—åŒ–ã—ãŸã‚‚ã®ã«ãªã‚‹ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹é–¢æ•°ã¯å¼•æ•° setter ã§æ¸¡ã™å¿…è¦ãŒã‚ã‚‹ã€‚setter ã¯æ–°ã—ã„å€¤ã‚’å¼•æ•°ã«å–ã‚Šã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’å¤‰æ›´ã™ã‚‹é–¢æ•°ã§ãªã‘ã‚Œã°ãªã‚‰ãªã„ã€‚
 #define IMGUI_PROPERTY_COMMAND_CUSTOM_SIMPLE(name, newValue, oldValue, setter) \
 		IMGUI_PROPERTY_COMMAND_CUSTOM(name, newValue, oldValue, std::to_string(newValue), std::to_string(oldValue), setter)
 
-// ƒWƒFƒlƒŠƒbƒN‚ÈƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhBObjectƒNƒ‰ƒX‚ğŒp³‚µ‚Ä‚¢‚È‚­‚Ä‚àg—p‰Â”\B’l‚Ì•¶š—ñ•\Œ»‚Í’Pƒ‚É”’l‚ğ•¶š—ñ‰»‚µ‚½‚à‚Ì‚É‚È‚éBƒfƒtƒHƒ‹ƒgƒZƒbƒ^[‚Í’Pƒ‚É•Ï”‚É’l‚ğƒZƒbƒg‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚É‚È‚éBsetter ‚ğÈ—ª‚µ‚½‚¢ê‡‚Í‚±‚Ìƒ}ƒNƒ‚ğg—p‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+// ã‚¸ã‚§ãƒãƒªãƒƒã‚¯ãªãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚Objectã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã—ã¦ã„ãªãã¦ã‚‚ä½¿ç”¨å¯èƒ½ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯å˜ç´”ã«æ•°å€¤ã‚’æ–‡å­—åˆ—åŒ–ã—ãŸã‚‚ã®ã«ãªã‚‹ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚»ãƒƒã‚¿ãƒ¼ã¯å˜ç´”ã«å¤‰æ•°ã«å€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã«ãªã‚‹ã€‚setter ã‚’çœç•¥ã—ãŸã„å ´åˆã¯ã“ã®ãƒã‚¯ãƒ­ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_DEFAULT(name, var, newValue, oldValue) \
-		IMGUI_PROPERTY_COMMAND_CUSTOM_SIMPLE(name, newValue, oldValue, [this](const decltype(newValue)& v) { var = v; }) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+		IMGUI_PROPERTY_COMMAND_CUSTOM_SIMPLE(name, newValue, oldValue, [this](const decltype(newValue)& v) { var = v; }) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 
 
-// ’Pƒ‚ÈŒ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í’Pƒ‚É”’l‚ğ•¶š—ñ‰»‚µ‚½‚à‚Ì‚É‚È‚éB
+// å˜ç´”ãªå‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯å˜ç´”ã«æ•°å€¤ã‚’æ–‡å­—åˆ—åŒ–ã—ãŸã‚‚ã®ã«ãªã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_SIMPLE(name, type, newValue, oldValue) \
 		IMGUI_PROPERTY_COMMAND(name, type, newValue, oldValue, std::to_string(newValue), std::to_string(oldValue))
 
-// •¶š—ñŒ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í‚»‚Ì‚Ü‚Ü’l‚É‚È‚éB
+// æ–‡å­—åˆ—å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯ãã®ã¾ã¾å€¤ã«ãªã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_STRING(name, newValue, oldValue) \
 		IMGUI_PROPERTY_COMMAND(name, std::string, newValue, oldValue, newValue, oldValue)
 
-// —ñ‹“Œ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í items ”z—ñ‚©‚çæ“¾‚³‚ê‚éB
+// åˆ—æŒ™å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯ items é…åˆ—ã‹ã‚‰å–å¾—ã•ã‚Œã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_ENUM(name, newValue, oldValue, items) \
 		IMGUI_PROPERTY_COMMAND(name, int, newValue, oldValue, items[newValue], items[oldValue])
 
-// ƒu[ƒ‹Œ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í "true" ‚Ü‚½‚Í "false" ‚É‚È‚éB
+// ãƒ–ãƒ¼ãƒ«å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯ "true" ã¾ãŸã¯ "false" ã«ãªã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_BOOL(name, newValue, oldValue) \
 		IMGUI_PROPERTY_COMMAND(name, bool, newValue, oldValue, (newValue ? "true" : "false"), (oldValue ? "true" : "false"))
 
-// •‚“®¬”“_Œ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í’Pƒ‚É”’l‚ğ•¶š—ñ‰»‚µ‚½‚à‚Ì‚É‚È‚éB
+// æµ®å‹•å°æ•°ç‚¹å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯å˜ç´”ã«æ•°å€¤ã‚’æ–‡å­—åˆ—åŒ–ã—ãŸã‚‚ã®ã«ãªã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_FLOAT(name, newValue, oldValue) \
 		IMGUI_PROPERTY_COMMAND(name, float, newValue, oldValue, std::to_string(newValue), std::to_string(oldValue))
 
-// ®”Œ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í’Pƒ‚É”’l‚ğ•¶š—ñ‰»‚µ‚½‚à‚Ì‚É‚È‚éB
+// æ•´æ•°å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯å˜ç´”ã«æ•°å€¤ã‚’æ–‡å­—åˆ—åŒ–ã—ãŸã‚‚ã®ã«ãªã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_INT(name, newValue, oldValue) \
 		IMGUI_PROPERTY_COMMAND(name, int, newValue, oldValue, std::to_string(newValue), std::to_string(oldValue))
 
-// Vector2Œ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í "(x,y)" ‚ÌŒ`®‚Å•\¦‚³‚ê‚éB
+// Vector2å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯ "(x,y)" ã®å½¢å¼ã§è¡¨ç¤ºã•ã‚Œã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_VECTOR2(name, newValue, oldValue) \
 		IMGUI_PROPERTY_COMMAND(name, Vector2, newValue, oldValue, "(" + std::to_string(newValue.x) + "," + std::to_string(newValue.y) + ")", \
 			"(" + std::to_string(oldValue.x) + "," + std::to_string(oldValue.y) + ")")
 
-// Vector3Œ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í "(x,y,z)" ‚ÌŒ`®‚Å•\¦‚³‚ê‚éB
+// Vector3å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯ "(x,y,z)" ã®å½¢å¼ã§è¡¨ç¤ºã•ã‚Œã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_VECTOR3(name, newValue, oldValue) \
 		IMGUI_PROPERTY_COMMAND(name, Vector3, newValue, oldValue, "(" + std::to_string(newValue.x) + "," + std::to_string(newValue.y) + "," + std::to_string(newValue.z) + ")", \
 			"(" + std::to_string(oldValue.x) + "," + std::to_string(oldValue.y) + "," + std::to_string(oldValue.z) + ")")
 
-// ColorŒ^‚ÌƒvƒƒpƒeƒBƒRƒ}ƒ“ƒhB’l‚Ì•¶š—ñ•\Œ»‚Í "(r,g,b,a)" ‚ÌŒ`®‚Å•\¦‚³‚ê‚éB
+// Colorå‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚³ãƒãƒ³ãƒ‰ã€‚å€¤ã®æ–‡å­—åˆ—è¡¨ç¾ã¯ "(r,g,b,a)" ã®å½¢å¼ã§è¡¨ç¤ºã•ã‚Œã‚‹ã€‚
 #define IMGUI_PROPERTY_COMMAND_COLOR(name, newValue, oldValue) \
 		IMGUI_PROPERTY_COMMAND(name, Color, newValue, oldValue, \
 			"(" + std::to_string(newValue.r) + "," + std::to_string(newValue.g) + "," + std::to_string(newValue.b) + "," + std::to_string(newValue.a) + ")", \
 			"(" + std::to_string(oldValue.r) + "," + std::to_string(oldValue.g) + "," + std::to_string(oldValue.b) + "," + std::to_string(oldValue.a) + ")")
 
-// ŠeŒ^‚ÌƒvƒƒpƒeƒB•`‰æŠÖ”
+// å„å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»é–¢æ•°
 
-// ®”Œ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: •Ï”, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”, ...: ImGui::DragInt‚Ìˆø”)
+// æ•´æ•°å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: å¤‰æ•°, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°, ...: ImGui::DragIntã®å¼•æ•°)
 #define IMGUI_PROPERTY_INT(name, var, edited, ...) \
 		{ \
 			ImGui::PushID(&var); \
 			IMGUI_PROPERTY(name) \
 			edited |= ImGui::DragInt("##int", &var, ##__VA_ARGS__); \
-			static int prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+			static int prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 			{ \
 				prevValue = var; \
 			} \
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 			{ \
 				int newValue = var; \
-				if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+				if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 				{ \
-					IMGUI_PROPERTY_COMMAND_DEFAULT(name, var, newValue, prevValue) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+					IMGUI_PROPERTY_COMMAND_DEFAULT(name, var, newValue, prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 				} \
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 			} \
 			ImGui::PopID(); \
 		}
 
-// •‚“®¬”“_Œ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: •Ï”, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”, ...: ImGui::DragFloat‚Ìˆø”)
+// æµ®å‹•å°æ•°ç‚¹å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: å¤‰æ•°, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°, ...: ImGui::DragFloatã®å¼•æ•°)
 #define IMGUI_PROPERTY_FLOAT(name, var, edited, ...) \
 		 { \
 			ImGui::PushID(&var); \
 			IMGUI_PROPERTY(name) \
 			edited |= ImGui::DragFloat("##float", &var, ##__VA_ARGS__); \
-			static float prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+			static float prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 			{ \
 				prevValue = var; \
 			} \
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 				{ \
 					float newValue = var; \
-					if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+					if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 					{ \
-						IMGUI_PROPERTY_COMMAND_DEFAULT(name, var, newValue, prevValue) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+						IMGUI_PROPERTY_COMMAND_DEFAULT(name, var, newValue, prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 					} \
-					prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+					prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 				} \
 			ImGui::PopID(); \
 		}
 
-// ƒu[ƒ‹Œ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: •Ï”, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”)
+// ãƒ–ãƒ¼ãƒ«å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: å¤‰æ•°, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°)
 #define IMGUI_PROPERTY_BOOL(name, var, edited) \
 		{ \
 			ImGui::PushID(&var); \
 			IMGUI_PROPERTY(name) \
 			edited |= ImGui::Checkbox("##bool", &var); \
-			static bool prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+			static bool prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 			{ \
 				prevValue = var; \
 			} \
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 				{ \
 					bool newValue = var; \
-					if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+					if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 					{ \
-						IMGUI_PROPERTY_COMMAND_DEFAULT(name, var, newValue, prevValue) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+						IMGUI_PROPERTY_COMMAND_DEFAULT(name, var, newValue, prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 					} \
-					prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+					prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 				} \
 			ImGui::PopID(); \
 		}
 		
 
-// •¶š—ñŒ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: std::string•Ï”, bufferSize: ƒoƒbƒtƒ@ƒTƒCƒY, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”)¦var‚Ístd::string‚Å’è‹`‚³‚ê‚Ä‚¢‚é‘O’ñBImGui::InputText‚ÍCƒXƒ^ƒCƒ‹‚Ì•¶š—ñ‚ğˆµ‚¤‚½‚ßA“à•”‚Åƒoƒbƒtƒ@‚ğ—pˆÓ‚µ‚Ästd::string‚Ì“à—e‚ğƒRƒs[‚µ‚Ä‚©‚çInputText‚É“n‚·•K—v‚ª‚ ‚éB•ÒW‚ªŠm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅCommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é‚½‚ßA‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï”‚à—pˆÓ‚µ‚Ä‚¢‚éB
+// æ–‡å­—åˆ—å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: std::stringå¤‰æ•°, bufferSize: ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°)â€»varã¯std::stringã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹å‰æã€‚ImGui::InputTextã¯Cã‚¹ã‚¿ã‚¤ãƒ«ã®æ–‡å­—åˆ—ã‚’æ‰±ã†ãŸã‚ã€å†…éƒ¨ã§ãƒãƒƒãƒ•ã‚¡ã‚’ç”¨æ„ã—ã¦std::stringã®å†…å®¹ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ã‹ã‚‰InputTextã«æ¸¡ã™å¿…è¦ãŒã‚ã‚‹ã€‚ç·¨é›†ãŒç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ãŸã‚ã€å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•°ã‚‚ç”¨æ„ã—ã¦ã„ã‚‹ã€‚
 #define IMGUI_PROPERTY_STRING(name, var, bufferSize, edited) \
 		{ \
 			ImGui::PushID(&var); \
-			char var##_buffer[bufferSize]; /* •Ï”‚Ístd::string‚Å’è‹`‚³‚ê‚Ä‚¢‚é‘O’ñ */ \
-			strncpy_s(var##_buffer, var.data(), bufferSize); /* •Ï”‚Ì“à—e‚ğƒoƒbƒtƒ@‚ÉƒRƒs[ */ \
+			char var##_buffer[bufferSize]; /* å¤‰æ•°ã¯std::stringã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹å‰æ */ \
+			strncpy_s(var##_buffer, var.data(), bufferSize); /* å¤‰æ•°ã®å†…å®¹ã‚’ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ */ \
 			IMGUI_PROPERTY(name) \
 			if (ImGui::InputText("##string", var##_buffer, bufferSize)) \
 			{ \
-				var = var##_buffer; /* “ü—Í‚ª•ÏX‚³‚ê‚½‚ç•Ï”‚É”½‰f */ \
-				edited = true; /* •ÒW‚³‚ê‚½ƒtƒ‰ƒO‚ğ—§‚Ä‚é */ \
+				var = var##_buffer; /* å…¥åŠ›ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰å¤‰æ•°ã«åæ˜  */ \
+				edited = true; /* ç·¨é›†ã•ã‚ŒãŸãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹ */ \
 			}\
-			static std::string prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-			 if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+			static std::string prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+			 if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 			{ \
 				prevValue = var; \
 			} \
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 			{ \
 				std::string newValue = var##_buffer; \
-				if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+				if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 				{ \
-					IMGUI_PROPERTY_COMMAND_CUSTOM(name, std::string(newValue), std::string(prevValue), std::string(newValue), std::string(prevValue), [this](const std::string& v) { var = v; }) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+					IMGUI_PROPERTY_COMMAND_CUSTOM(name, std::string(newValue), std::string(prevValue), std::string(newValue), std::string(prevValue), [this](const std::string& v) { var = v; }) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 				} \
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 			}\
 			ImGui::PopID(); \
 		}
 
-// Šg’£q¶¬
+// æ‹¡å¼µå­ç”Ÿæˆ
 #define EXT_1(a) "*." #a "*"
 #define EXT_2(a,b) "*." #a ";*." #b "*"
 #define EXT_3(a,b,c) "*." #a ";*." #b ";*." #c "*"
 #define EXT_4(a,b,c,d) "*." #a ";*." #b ";*." #c ";*." #d "*"
 #define EXT_5(a,b,c,d,e) "*." #a ";*." #b ";*." #c ";*." #d ";*." #e "*"
 
-// ˆø”ƒJƒEƒ“ƒg
+// å¼•æ•°ã‚«ã‚¦ãƒ³ãƒˆ
 #define GET_MACRO(_1,_2,_3,_4,_5,NAME,...) NAME
 #define EXT(...) GET_MACRO(__VA_ARGS__, EXT_5, EXT_4, EXT_3, EXT_2, EXT_1)(__VA_ARGS__)
 
-// ƒ_ƒCƒAƒƒOƒtƒBƒ‹ƒ^¶¬ (name: •\¦–¼, ...: Šg’£q)
-// —á: FILTER("Image Files", png, jpg) -> "Image Files (*.png;*.jpg)\0*.png;*.jpg\0"
+// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ•ã‚£ãƒ«ã‚¿ç”Ÿæˆ (name: è¡¨ç¤ºå, ...: æ‹¡å¼µå­)
+// ä¾‹: FILTER("Image Files", png, jpg) -> "Image Files (*.png;*.jpg)\0*.png;*.jpg\0"
 #define FILTER(name, ...) name " (" EXT(__VA_ARGS__) ")\0" EXT(__VA_ARGS__) "\0"
 
-// ƒ_ƒCƒAƒƒO‚ğŠJ‚­ƒ{ƒ^ƒ“•t‚«•¶š—ñƒvƒƒpƒeƒB(name: •\¦–¼, var: std::string•Ï”, bufferSize: ƒoƒbƒtƒ@ƒTƒCƒY, dialogFilter: ƒ_ƒCƒAƒƒO‚Ìƒtƒ@ƒCƒ‹ƒtƒBƒ‹ƒ^, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”)
-// ¦var‚Ístd::string‚Å’è‹`‚³‚ê‚Ä‚¢‚é‘O’ñBImGui::InputText‚ÍCƒXƒ^ƒCƒ‹‚Ì•¶š—ñ‚ğˆµ‚¤‚½‚ßA“à•”‚Åƒoƒbƒtƒ@‚ğ—pˆÓ‚µ‚Ästd::string‚Ì“à—e‚ğƒRƒs[‚µ‚Ä‚©‚çInputText‚É“n‚·•K—v‚ª‚ ‚éB•ÒW‚ªŠm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅCommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é‚½‚ßA‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï”‚à—pˆÓ‚µ‚Ä‚¢‚éBƒ_ƒCƒAƒƒO‚Åƒtƒ@ƒCƒ‹‚ª‘I‘ğ‚³‚ê‚½ê‡‚à“¯—l‚ÉCommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚éB
+// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‹ããƒœã‚¿ãƒ³ä»˜ãæ–‡å­—åˆ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: std::stringå¤‰æ•°, bufferSize: ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º, dialogFilter: ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ•ã‚£ãƒ«ã‚¿, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°)
+// â€»varã¯std::stringã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹å‰æã€‚ImGui::InputTextã¯Cã‚¹ã‚¿ã‚¤ãƒ«ã®æ–‡å­—åˆ—ã‚’æ‰±ã†ãŸã‚ã€å†…éƒ¨ã§ãƒãƒƒãƒ•ã‚¡ã‚’ç”¨æ„ã—ã¦std::stringã®å†…å®¹ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ã‹ã‚‰InputTextã«æ¸¡ã™å¿…è¦ãŒã‚ã‚‹ã€‚ç·¨é›†ãŒç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ãŸã‚ã€å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•°ã‚‚ç”¨æ„ã—ã¦ã„ã‚‹ã€‚ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§ãƒ•ã‚¡ã‚¤ãƒ«ãŒé¸æŠã•ã‚ŒãŸå ´åˆã‚‚åŒæ§˜ã«Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ã€‚
 #define IMGUI_PROPERTY_STRING_WITH_DIALOG(name, var, bufferSize, dialogFilter, edited) \
 		ImGui::PushID(&var); \
-		char var##_buffer[bufferSize]; /* •Ï”‚Ístd::string‚Å’è‹`‚³‚ê‚Ä‚¢‚é‘O’ñ */ \
-		strncpy_s(var##_buffer, var.data(), bufferSize); /* •Ï”‚Ì“à—e‚ğƒoƒbƒtƒ@‚ÉƒRƒs[ */ \
+		char var##_buffer[bufferSize]; /* å¤‰æ•°ã¯std::stringã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹å‰æ */ \
+		strncpy_s(var##_buffer, var.data(), bufferSize); /* å¤‰æ•°ã®å†…å®¹ã‚’ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ */ \
 		IMGUI_PROPERTY(name) \
 		if (ImGui::InputText("##string_with_dialog", var##_buffer, bufferSize)) \
 		{ \
-			var = var##_buffer; /* “ü—Í‚ª•ÏX‚³‚ê‚½‚ç•Ï”‚É”½‰f */ \
-			edited = true; /* •ÒW‚³‚ê‚½ƒtƒ‰ƒO‚ğ—§‚Ä‚é */ \
+			var = var##_buffer; /* å…¥åŠ›ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰å¤‰æ•°ã«åæ˜  */ \
+			edited = true; /* ç·¨é›†ã•ã‚ŒãŸãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹ */ \
 		}\
 		ImGui::SameLine(); \
-		bool selected = false; /* ƒ_ƒCƒAƒƒO‚Åƒtƒ@ƒCƒ‹‚ª‘I‘ğ‚³‚ê‚½‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO */ \
+		bool selected = false; /* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§ãƒ•ã‚¡ã‚¤ãƒ«ãŒé¸æŠã•ã‚ŒãŸã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚° */ \
 		if (ImGui::Button("...")) { \
 			char filepath[260] = {}; \
 			if (Dialog::OpenFileName(filepath, sizeof(filepath), dialogFilter) == DialogResult::OK) { \
-				var = filepath; /* ƒ_ƒCƒAƒƒO‚Å‘I‘ğ‚³‚ê‚½ƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Ï”‚É”½‰f */ \
-				edited = true; /* •ÒW‚³‚ê‚½ƒtƒ‰ƒO‚ğ—§‚Ä‚é */ \
+				var = filepath; /* ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’å¤‰æ•°ã«åæ˜  */ \
+				edited = true; /* ç·¨é›†ã•ã‚ŒãŸãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹ */ \
 				selected = true; \
 			} \
 		}\
-		static std::string prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-		if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+		static std::string prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+		if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 		{ \
 			prevValue = var; \
 		} \
-		if (ImGui::IsItemDeactivatedAfterEdit() || selected) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+		if (ImGui::IsItemDeactivatedAfterEdit() || selected) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 		{ \
 			std::string newValue = var; \
-			if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+			if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 			{ \
-				IMGUI_PROPERTY_COMMAND_CUSTOM(name, std::string(newValue), std::string(prevValue), std::string(newValue), std::string(prevValue), [this](const std::string& v) { var = v; }) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+				IMGUI_PROPERTY_COMMAND_CUSTOM(name, std::string(newValue), std::string(prevValue), std::string(newValue), std::string(prevValue), [this](const std::string& v) { var = v; }) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 			} \
-			prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+			prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 		}\
 		ImGui::PopID();
 
-// —ñ‹“Œ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: •Ï”, items: ƒAƒCƒeƒ€‚Ì”z—ñ, itemCount: ƒAƒCƒeƒ€”)
+// åˆ—æŒ™å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: å¤‰æ•°, items: ã‚¢ã‚¤ãƒ†ãƒ ã®é…åˆ—, itemCount: ã‚¢ã‚¤ãƒ†ãƒ æ•°)
 #define IMGUI_PROPERTY_ENUM(name, var, items, itemCount) \
 		ImGui::PushID(&var); \
 		IMGUI_PROPERTY(name) \
@@ -287,16 +287,16 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 			for (int n = 0; n < itemCount; n++) { \
 				bool isSelected = (static_cast<int>(var) == n); \
 				if (ImGui::Selectable(items[n], isSelected)) { \
-					var = static_cast<decltype(var)>(n); /* ‘I‘ğ‚³‚ê‚½ƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ•Ï”‚É”½‰f */ \
+					var = static_cast<decltype(var)>(n); /* é¸æŠã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å¤‰æ•°ã«åæ˜  */ \
 					auto newValue = var; \
-					auto oldValue = static_cast<decltype(var)>(isSelected ? n : var); /* •ÏX‘O‚Ì’l‚ÍA‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ªŒ»İ‚Ì’l‚Æ“¯‚¶ê‡‚Í‚»‚Ì’lA‚»‚¤‚Å‚È‚¢ê‡‚ÍŒ»İ‚Ì’l‚É‚È‚é */ \
-					if (newValue != oldValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+					auto oldValue = static_cast<decltype(var)>(isSelected ? n : var); /* å¤‰æ›´å‰ã®å€¤ã¯ã€é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ãŒç¾åœ¨ã®å€¤ã¨åŒã˜å ´åˆã¯ãã®å€¤ã€ãã†ã§ãªã„å ´åˆã¯ç¾åœ¨ã®å€¤ã«ãªã‚‹ */ \
+					if (newValue != oldValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 					{ \
-						IMGUI_PROPERTY_COMMAND_ENUM(name, newValue, oldValue, items) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+						IMGUI_PROPERTY_COMMAND_ENUM(name, newValue, oldValue, items) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 					} \
 				} \
 				if (isSelected) { \
-					ImGui::SetItemDefaultFocus(); /* ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ğ“–‚Ä‚é */ \
+					ImGui::SetItemDefaultFocus(); /* é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’å½“ã¦ã‚‹ */ \
 				} \
 			} \
 			ImGui::EndCombo(); \
@@ -304,118 +304,118 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 		ImGui::PopID();
 
 
-// ƒxƒNƒgƒ‹Œ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: •Ï”, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”, ...: ImGui::DragFloat2‚Ìˆø”)
+// ãƒ™ã‚¯ãƒˆãƒ«å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: å¤‰æ•°, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°, ...: ImGui::DragFloat2ã®å¼•æ•°)
 #define IMGUI_PROPERTY_VECTOR2(name, var, edited, ...) \
 		{ \
 			ImGui::PushID(&var); \
 			IMGUI_PROPERTY(name) \
 			edited |= ImGui::DragFloat2("##vector2", reinterpret_cast<float*>(&var), ##__VA_ARGS__); \
-			static Vector2 prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+			static Vector2 prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 			{ \
 				prevValue = var; \
 			} \
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 			{ \
 				Vector2 newValue = var; \
-				if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+				if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 				{ \
 					IMGUI_PROPERTY_COMMAND_CUSTOM(name, var, newValue, prevValue, \
 						"(" + std::to_string(newValue.x) + "," + std::to_string(newValue.y) + ")", \
 						"(" + std::to_string(prevValue.x) + "," + std::to_string(prevValue.y) + ")", \
-						[this](const Vector2& v) { var = v; }) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+						[this](const Vector2& v) { var = v; }) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 				} \
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 			}\
 			ImGui::PopID(); \
 		}
 
-// ƒxƒNƒgƒ‹Œ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: •Ï”, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”, ...: ImGui::DragFloat3‚Ìˆø”)
+// ãƒ™ã‚¯ãƒˆãƒ«å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: å¤‰æ•°, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°, ...: ImGui::DragFloat3ã®å¼•æ•°)
 #define IMGUI_PROPERTY_VECTOR3(name, var, edited, ...) \
 		{ \
 			ImGui::PushID(&var); \
 			IMGUI_PROPERTY(name) \
 			edited |= ImGui::DragFloat3("##vector3", reinterpret_cast<float*>(&var), ##__VA_ARGS__); \
-			static Vector3 prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+			static Vector3 prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 			{ \
 				prevValue = var; \
 			} \
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 			{ \
 				Vector3 newValue = var; \
-				if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+				if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 				{ \
 					IMGUI_PROPERTY_COMMAND_CUSTOM(name, newValue, prevValue, \
 						"(" + std::to_string(newValue.x) + "," + std::to_string(newValue.y) + "," + std::to_string(newValue.z) + ")", \
 						"(" + std::to_string(prevValue.x) + "," + std::to_string(prevValue.y) + "," + std::to_string(prevValue.z) + ")", \
-						[this](const Vector3& v) { var = v; }) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+						[this](const Vector3& v) { var = v; }) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 				} \
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 			}\
 			ImGui::PopID(); \
 		}
 
 
-// ƒNƒH[ƒ^ƒjƒIƒ“Œ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: •Ï”, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”, ...: ImGui::DragFloat4‚Ìˆø”)
+// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: å¤‰æ•°, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°, ...: ImGui::DragFloat4ã®å¼•æ•°)
 #define IMGUI_PROPERTY_QUATERNION(name, var, edited, ...) \
 		{ \
 			ImGui::PushID(&var); \
 			IMGUI_PROPERTY(name) \
 			edited |= ImGui::DragFloat4("##quaternion", reinterpret_cast<float*>(&var), ##__VA_ARGS__); \
-			static Quaternion prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+			static Quaternion prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 			{ \
 				prevValue = var; \
 			} \
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 			{ \
 				Quaternion newValue = var; \
-				if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+				if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 				{ \
 					IMGUI_PROPERTY_COMMAND_CUSTOM(name, newValue, prevValue, \
 						"(" + std::to_string(newValue.x) + "," + std::to_string(newValue.y) + "," + std::to_string(newValue.z) + "," + std::to_string(newValue.w) + ")", \
 						"(" + std::to_string(prevValue.x) + "," + std::to_string(prevValue.y) + "," + std::to_string(prevValue.z) + "," + std::to_string(prevValue.w) + ")", \
-						[this](const Quaternion& v) { var = v; }) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+						[this](const Quaternion& v) { var = v; }) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 				} \
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 			}\
 			ImGui::PopID(); \
 		}
 
-// FŒ^ƒvƒƒpƒeƒB(name: •\¦–¼, var: •Ï”, edited: •ÒW‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·•Ï”)
+// è‰²å‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, var: å¤‰æ•°, edited: ç·¨é›†ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™å¤‰æ•°)
 #define IMGUI_PROPERTY_COLOR(name, var, edited) \
 		{ \
 			ImGui::PushID(&var); \
 			IMGUI_PROPERTY(name) \
 			edited |= ImGui::ColorEdit4("##color", reinterpret_cast<float*>(&var)); \
-			static Color prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */ \
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */ \
+			static Color prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */ \
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */ \
 			{ \
 				prevValue = var; \
 			} \
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* Šm’è‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅACommand‚ğì¬‚µ‚ÄUndoRedoStack‚É’Ç‰Á‚·‚é */ \
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç¢ºå®šã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã€Commandã‚’ä½œæˆã—ã¦UndoRedoStackã«è¿½åŠ ã™ã‚‹ */ \
 			{ \
 				Color newValue = var; \
-				if (newValue != prevValue) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İƒRƒ}ƒ“ƒh‚ğ’Ç‰Á */ \
+				if (newValue != prevValue) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ  */ \
 				{ \
 					IMGUI_PROPERTY_COMMAND_CUSTOM(name, newValue, prevValue, \
 						"(" + std::to_string(newValue.r) + "," + std::to_string(newValue.g) + "," + std::to_string(newValue.b) + "," + std::to_string(newValue.a) + ")", \
 						"(" + std::to_string(prevValue.r) + "," + std::to_string(prevValue.g) + "," + std::to_string(prevValue.b) + "," + std::to_string(prevValue.a) + ")", \
-						[this](const Color& v) { var = v; }) /* ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚éƒ‰ƒ€ƒ_ŠÖ”‚ğ“n‚· */ \
+						[this](const Color& v) { var = v; }) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°ã‚’æ¸¡ã™ */ \
 				} \
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğV‚µ‚¢’l‚ÉXV */ \
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ–°ã—ã„å€¤ã«æ›´æ–° */ \
 			}\
 			ImGui::PopID(); \
 		}
 
-// ƒRƒ“ƒ|[ƒlƒ“ƒgQÆƒvƒƒpƒeƒB(name: •\¦–¼, v: QÆ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌObjectId•Ï”, ownerV: QÆ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŠ—LÒ‚ÌObjectId•Ï”, tooltip: ƒc[ƒ‹ƒ`ƒbƒv‚Æ‚µ‚Ä•\¦‚·‚é•¶š—ñ)
+// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‚ç…§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, v: å‚ç…§ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ObjectIdå¤‰æ•°, ownerV: å‚ç…§ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®æ‰€æœ‰è€…ã®ObjectIdå¤‰æ•°, tooltip: ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã¨ã—ã¦è¡¨ç¤ºã™ã‚‹æ–‡å­—åˆ—)
 #define IMGUI_PROPERTY_COMPONENT_REFERENCE(name, v, ownerV, tooltip) \
 		{ \
 			ImGui::PushID(&v); \
 			IMGUI_PROPERTY(name) \
 			{ \
-				/*ƒhƒƒbƒvƒ^[ƒQƒbƒg‚Ìİ’è*/ \
+				/*ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®è¨­å®š*/ \
 				if (ImGui::BeginDragDropTarget()) { \
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload((name).c_str())) { \
 						ObjectId* droppedIdPtr = (ObjectId*)payload->Data; \
@@ -428,11 +428,11 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 								std::string valueStr = "Component(objectId: " + std::to_string(pair.second.first.Value()) + ", ownerId: " + std::to_string(pair.second.second.Value()) + ")"; \
 									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr.c_str()); \
 								}, \
-								std::make_pair(name, std::make_pair(v, ownerV)), /* •ÏX‘O‚Ì’l */ \
-								std::make_pair(name, std::make_pair(droppedId, droppedOwnerId)) /* •ÏXŒã‚Ì’l */ \
+								std::make_pair(name, std::make_pair(v, ownerV)), /* å¤‰æ›´å‰ã®å€¤ */ \
+								std::make_pair(name, std::make_pair(droppedId, droppedOwnerId)) /* å¤‰æ›´å¾Œã®å€¤ */ \
 							) \
 						); \
-						/*ƒXƒNƒŠƒvƒgƒtƒB[ƒ‹ƒh‚ğXV‚·‚é*/ \
+						/*ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’æ›´æ–°ã™ã‚‹*/ \
 						std::string valueStr = "Component(objectId: " + std::to_string(droppedId.Value()) + ", ownerId: " + std::to_string(droppedOwnerId.Value()) + ")"; \
 						ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), valueStr.c_str()); \
 						v = droppedId; \
@@ -440,7 +440,7 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 					} \
 					ImGui::EndDragDropTarget(); \
 				} \
-				/*ƒNƒŠƒAƒ{ƒ^ƒ“*/ \
+				/*ã‚¯ãƒªã‚¢ãƒœã‚¿ãƒ³*/ \
 				ImGui::SameLine(); \
 				if (ImGui::Button("X")) {\
 					CurryEngine::History::ExecuteCommand( \
@@ -450,8 +450,8 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 								std::string valueStr = "Component(objectId: " + std::to_string(pair.second.first.Value()) + ", ownerId: " + std::to_string(pair.second.second.Value()) + ")"; \
 								ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr.c_str()); \
 							}, \
-							std::make_pair(name, std::make_pair(v, ownerV)), /* •ÏX‘O‚Ì’l */ \
-							std::make_pair(name, std::make_pair(ObjectId::Invalid(), ObjectId::Invalid())) /* •ÏXŒã‚Ì’l */ \
+							std::make_pair(name, std::make_pair(v, ownerV)), /* å¤‰æ›´å‰ã®å€¤ */ \
+							std::make_pair(name, std::make_pair(ObjectId::Invalid(), ObjectId::Invalid())) /* å¤‰æ›´å¾Œã®å€¤ */ \
 						) \
 					); \
 					v = ObjectId::Invalid(); \
@@ -463,13 +463,13 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 			ImGui::PopID(); \
 		}
 
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgQÆƒvƒƒpƒeƒB(name: •\¦–¼, v: QÆ‚·‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌObjectId•Ï”, tooltip: ƒc[ƒ‹ƒ`ƒbƒv‚Æ‚µ‚Ä•\¦‚·‚é•¶š—ñ)
+// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‚ç…§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£(name: è¡¨ç¤ºå, v: å‚ç…§ã™ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ObjectIdå¤‰æ•°, tooltip: ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã¨ã—ã¦è¡¨ç¤ºã™ã‚‹æ–‡å­—åˆ—)
 #define IMGUI_PROPERTY_GAMEOBJECT_REFERENCE(name, v, tooltip) \
 		{ \
 			ImGui::PushID(&v); \
 			IMGUI_PROPERTY(name) \
 			{ \
-				/*ƒhƒƒbƒvƒ^[ƒQƒbƒg‚Ìİ’è*/ \
+				/*ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®è¨­å®š*/ \
 				if (ImGui::BeginDragDropTarget()) { \
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) { \
 						ObjectId* droppedIdPtr = (ObjectId*)payload->Data; \
@@ -481,11 +481,11 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // ƒvƒƒpƒeƒB–¼‚Ì•‚ğŒÅ’è‚·‚é‚½
 									std::string valueStr = "GameObject(objectId: " + std::to_string(pair.second.Value()) + ")"; \
 									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr.c_str()); \
 								}, \
-								std::make_pair(name, v), /* •ÏX‘O‚Ì’l */ \
-								std::make_pair(name, droppedId) /* •ÏXŒã‚Ì’l */ \
+								std::make_pair(name, v), /* å¤‰æ›´å‰ã®å€¤ */ \
+								std::make_pair(name, droppedId) /* å¤‰æ›´å¾Œã®å€¤ */ \
 							) \
 						); \
-						/*ƒXƒNƒŠƒvƒgƒtƒB[ƒ‹ƒh‚ğXV‚·‚é*/ \
+						/*ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’æ›´æ–°ã™ã‚‹*/ \
 						std::string valueStr = "GameObject(objectId: " + std::to_string(droppedId.Value()) + ")"; \
 						ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), valueStr.c_str()); \
 						v = droppedId; \

@@ -24,12 +24,12 @@ struct AnimationEvent
 {
     struct Event
     {
-        float time = 0.0f; // ƒCƒxƒ“ƒg”­¶ŠÔ
-        std::function<void()> func; // ƒCƒxƒ“ƒgŠÖ”
-        bool isCalled = false; // ƒCƒxƒ“ƒg‚ªŒÄ‚Ño‚³‚ê‚½‚©(“à•”—pBİ’è•s—v)
+        float time = 0.0f; // ã‚¤ãƒ™ãƒ³ãƒˆç™ºç”Ÿæ™‚é–“
+        std::function<void()> func; // ã‚¤ãƒ™ãƒ³ãƒˆé–¢æ•°
+        bool isCalled = false; // ã‚¤ãƒ™ãƒ³ãƒˆãŒå‘¼ã³å‡ºã•ã‚ŒãŸã‹(å†…éƒ¨ç”¨ã€‚è¨­å®šä¸è¦)
     };
 
-    std::vector<Event> events; // ƒCƒxƒ“ƒgƒŠƒXƒg
+    std::vector<Event> events; // ã‚¤ãƒ™ãƒ³ãƒˆãƒªã‚¹ãƒˆ
 };
 
 class GltfModelRenderer : public Renderer
@@ -53,7 +53,7 @@ class GltfModelRenderer : public Renderer
     std::function<void(RenderContext*)> preRenderFunc;
     std::function<void(RenderContext*)> postRenderFunc;
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“’†‚ÌƒCƒxƒ“ƒgİ’è
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã®ã‚¤ãƒ™ãƒ³ãƒˆè¨­å®š
     AnimationEvent animationEvent;
 
 #ifdef _DEBUG
@@ -85,38 +85,38 @@ public:
         return onlyShadow;
     }
 
-    // ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚Ì·‚µ‘Ö‚¦
+    // ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®å·®ã—æ›¿ãˆ
     void ReplacePixelShader(ID3D11Device* device, const char* filePath);
     void ReplaceVertexShader(ID3D11Device* device, const char* filePath);
     void ReplaceCSMVertexShader(ID3D11Device* device, const char* filePath);
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿ
     void SetAnimation(int index, bool blend = true, const AnimationEvent& animEvent = {}) {
-        animationIndex = index; // ƒAƒjƒ[ƒVƒ‡ƒ“ƒCƒ“ƒfƒbƒNƒX‚ğİ’è
-        time = 0; // ƒAƒjƒ[ƒVƒ‡ƒ“ŠÔ‚ğƒŠƒZƒbƒg
-        timeRate = 1.0f; // Ä¶‘¬“x‚ğƒŠƒZƒbƒg
-        isBlendStart = blend; // ƒuƒŒƒ“ƒhŠJnƒtƒ‰ƒO‚ğİ’è
-        isAnimationCompleted = false; // ƒAƒjƒ[ƒVƒ‡ƒ“Š®—¹ƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
-        animationEvent = animEvent; // ƒAƒjƒ[ƒVƒ‡ƒ“ƒCƒxƒ“ƒg‚ğİ’è
-		time = BeatManager::GetTimeInCurrentBeat(); // ƒr[ƒg‚É“¯Šú‚³‚¹‚é
+        animationIndex = index; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¨­å®š
+        time = 0; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ™‚é–“ã‚’ãƒªã‚»ãƒƒãƒˆ
+        timeRate = 1.0f; // å†ç”Ÿé€Ÿåº¦ã‚’ãƒªã‚»ãƒƒãƒˆ
+        isBlendStart = blend; // ãƒ–ãƒ¬ãƒ³ãƒ‰é–‹å§‹ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+        isAnimationCompleted = false; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å®Œäº†ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
+        animationEvent = animEvent; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®š
+		time = BeatManager::GetTimeInCurrentBeat(); // ãƒ“ãƒ¼ãƒˆã«åŒæœŸã•ã›ã‚‹
     }
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿ
     void SetAnimation(const std::string& name, bool blend = true, const AnimationEvent& animEvent = {})
     {
         SetAnimation(GetAnimationIndex(name), blend, animEvent);
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶‘¬“x‚ğİ’è
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿé€Ÿåº¦ã‚’è¨­å®š
     void SetAnimationTimeRate(float rate) { timeRate = rate; }
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶‘¬“x‚ğæ“¾
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿé€Ÿåº¦ã‚’å–å¾—
     float GetAnimationTimeRate() const { return timeRate; }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒhŠÔ‚ğİ’è
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰æ™‚é–“ã‚’è¨­å®š
     void SetAnimationBlendTime(float blendTime) { animationBlendTime = blendTime; }
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒhŠÔ‚ğæ“¾
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰æ™‚é–“ã‚’å–å¾—
     float GetAnimationBlendTime() const { return animationBlendTime; }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ–¼‘O‚©‚çæ“¾
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’åå‰ã‹ã‚‰å–å¾—
     int GetAnimationIndex(const std::string& name) const {
 		auto& animations = m_asset->animations;
         for (int i = 0; i < animations.size(); i++) {
@@ -132,7 +132,7 @@ public:
         this->time = time;
     }
 
-    // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“–¼‚ğæ“¾
+    // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åã‚’å–å¾—
     std::string GetCurrentAnimationName() const
     {
 		auto& animations = m_asset->animations;
@@ -141,63 +141,63 @@ public:
         return animations[animationIndex].name;
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘”‚ğæ“¾
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç·æ•°ã‚’å–å¾—
     int GetAnimationCount() const { return static_cast<int>(m_asset->animations.size()); }
 
-    // w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒjƒ[ƒVƒ‡ƒ“–¼‚ğæ“¾
+    // æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åã‚’å–å¾—
     std::string GetAnimationName(int index) const {
 		auto& animations = m_asset->animations;
         if (index < 0 || index >= animations.size()) return "";
         return animations[index].name;
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’·‚³‚ğæ“¾
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é•·ã•ã‚’å–å¾—
     float GetAnimationDuration(int index) const {
 		auto& animations = m_asset->animations;
         if (index < 0 || index >= animations.size()) return 0.0f;
         return animations[index].duration;
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’·‚³‚ğæ“¾
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é•·ã•ã‚’å–å¾—
     float GetCurrentAnimationDuration() const {
         return GetAnimationDuration(animationIndex);
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ªŠ®—¹‚µ‚½‚©
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå®Œäº†ã—ãŸã‹
     bool IsAnimationCompleted() const { return isAnimationCompleted; }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì—LŒø/–³Œø‚ğİ’è
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®š
     void SetAnimationEnable(bool enable) { animationEnable = enable; }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ª—LŒø‚©
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒæœ‰åŠ¹ã‹
     bool IsAnimationEnable() const { return animationEnable; }
 
-    // ƒuƒŒƒ“ƒh‚Ì—LŒø/–³Œø‚ğİ’è
+    // ãƒ–ãƒ¬ãƒ³ãƒ‰ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®š
     void SetBlendEnable(bool enable) { blendEnable = enable; }
-    // ƒuƒŒƒ“ƒh‚ª—LŒø‚©
+    // ãƒ–ãƒ¬ãƒ³ãƒ‰ãŒæœ‰åŠ¹ã‹
     bool IsBlendEnable() const { return blendEnable; }
-    // ƒ‹[ƒvİ’è
+    // ãƒ«ãƒ¼ãƒ—è¨­å®š
     void SetLoop(bool loop) { this->loop = loop; }
-    // ƒ‹[ƒvæ“¾
+    // ãƒ«ãƒ¼ãƒ—å–å¾—
     bool IsLoop() const { return loop; }
 
-    ////w’è‚Ìƒm[ƒhæ“¾
+    ////æŒ‡å®šã®ãƒãƒ¼ãƒ‰å–å¾—
     //struct Node;
     //Node* FindNode(const std::string& name) {
-    //    //w’è‚Ìƒm[ƒh‚Ì–¼‘O‚ª‘¶İ‚·‚é‚©ŒŸõ
+    //    //æŒ‡å®šã®ãƒãƒ¼ãƒ‰ã®åå‰ãŒå­˜åœ¨ã™ã‚‹ã‹æ¤œç´¢
     //    for (Node& node : nodes) {
     //        if (node.name == name) {
     //            return &node;
     //        }
     //    }
-    //    //w’è‚Ìƒm[ƒh‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚çnull‚ğ•Ô‚·
+    //    //æŒ‡å®šã®ãƒãƒ¼ãƒ‰ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã‚‰nullã‚’è¿”ã™
     //    return nullptr;
     //}
 
-    //// ƒ‚ƒfƒ‹‚ÌƒWƒ‡ƒCƒ“ƒg‚Ìƒ[ƒ‹ƒh‹óŠÔ‚Ì position ‚ğ•Ô‚·ŠÖ”
+    //// ãƒ¢ãƒ‡ãƒ«ã®ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã®ãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã® position ã‚’è¿”ã™é–¢æ•°
     //DirectX::XMFLOAT3 GetJointWorldPosition(/*size_t nodeIndex,*/const std::string& name, const std::vector<Node>& animatedNodes, const DirectX::XMFLOAT4X4& transform)
     //{
-    //    // ŠY“–‚·‚éƒm[ƒh‚ğ’T‚·
+    //    // è©²å½“ã™ã‚‹ãƒãƒ¼ãƒ‰ã‚’æ¢ã™
     //    for (auto needNode : animatedNodes)
     //    {
     //        if (needNode.name == name)
@@ -210,7 +210,7 @@ public:
     //        }
     //    }
 
-    //    // ‚à‚µ‚È‚¯‚ê‚Î
+    //    // ã‚‚ã—ãªã‘ã‚Œã°
     //    _ASSERT("Node's name is mistake or here is not your want nodes!!");
 
     //    return { 0.0f,0.0f,0.0f };
@@ -220,7 +220,7 @@ public:
     GltfModelRenderer();
     virtual ~GltfModelRenderer() = default;
 
-	// ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
+	// ãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	void LoadModel(ID3D11Device* device, const std::string& filePath, bool staticBatching);
 
     void SetModelAsset(std::shared_ptr<ModelAsset> asset);
@@ -235,10 +235,10 @@ public:
 #endif // USE_IMGUI
 
 
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json Serialize() const override;
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	void Deserialize(const json& jsonData) override;
 
 
@@ -277,10 +277,10 @@ private:
     void Animate(size_t animationIndex, float time, std::vector<Node>& animatedNodes);
 
 public:
-    float time = 0; // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒo‰ßŠÔ(•b)
-    float timeRate = 1.0f; // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶‘¬“x
-    float animationBlendTime = 1.2f; // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒhŠÔ(•b)
-    int animationIndex = 0; // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒCƒ“ƒfƒbƒNƒX
-    bool loop = true;//ƒ‹[ƒvİ’è
-	std::shared_ptr<ModelAsset> m_asset; // ƒ‚ƒfƒ‹ƒAƒZƒbƒg
+    float time = 0; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çµŒéæ™‚é–“(ç§’)
+    float timeRate = 1.0f; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿé€Ÿåº¦
+    float animationBlendTime = 1.2f; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰æ™‚é–“(ç§’)
+    int animationIndex = 0; // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+    bool loop = true;//ãƒ«ãƒ¼ãƒ—è¨­å®š
+	std::shared_ptr<ModelAsset> m_asset; // ãƒ¢ãƒ‡ãƒ«ã‚¢ã‚»ãƒƒãƒˆ
 };

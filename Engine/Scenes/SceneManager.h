@@ -9,30 +9,30 @@
 
 /**
  * @file
- * @brief ƒV[ƒ“‚Ì¶¬EØ‘ÖEXVE•`‰æ‚ğŠÇ—‚·‚éƒ}ƒl[ƒWƒƒB
- * @details ƒV[ƒ“‚Ì“o˜^A“¯Šú/”ñ“¯Šúƒ[ƒhAƒ[ƒfƒBƒ“ƒOƒV[ƒ“§ŒäA
- *          ƒ‰ƒCƒtƒTƒCƒNƒ‹ŒÄ‚Ño‚µiUpdate/Render/Draw ‚È‚Çj‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief ã‚·ãƒ¼ãƒ³ã®ç”Ÿæˆãƒ»åˆ‡æ›¿ãƒ»æ›´æ–°ãƒ»æç”»ã‚’ç®¡ç†ã™ã‚‹ãƒãƒãƒ¼ã‚¸ãƒ£ã€‚
+ * @details ã‚·ãƒ¼ãƒ³ã®ç™»éŒ²ã€åŒæœŸ/éåŒæœŸãƒ­ãƒ¼ãƒ‰ã€ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚·ãƒ¼ãƒ³åˆ¶å¾¡ã€
+ *          ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«å‘¼ã³å‡ºã—ï¼ˆUpdate/Render/Draw ãªã©ï¼‰ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class SceneManager
 {
 public:
-	/** @brief ƒV[ƒ“‚Ìó‘Ô—ñ‹“Œ^B*/
+	/** @brief ã‚·ãƒ¼ãƒ³ã®çŠ¶æ…‹åˆ—æŒ™å‹ã€‚*/
 	enum class State
 	{
-		Editing, // ƒGƒfƒBƒbƒgƒ‚[ƒh
-		Playing, // ƒvƒŒƒCƒ‚[ƒh
-		Paused, // ƒ|[ƒYƒ‚[ƒh
-		EditToPlay, // ƒGƒfƒBƒbƒg‚©‚çƒvƒŒƒC‚ÖˆÚs’†
-		PlayToEdit, // ƒvƒŒƒC‚©‚çƒGƒfƒBƒbƒg‚ÖˆÚs’†
+		Editing, // ã‚¨ãƒ‡ã‚£ãƒƒãƒˆãƒ¢ãƒ¼ãƒ‰
+		Playing, // ãƒ—ãƒ¬ã‚¤ãƒ¢ãƒ¼ãƒ‰
+		Paused, // ãƒãƒ¼ã‚ºãƒ¢ãƒ¼ãƒ‰
+		EditToPlay, // ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‹ã‚‰ãƒ—ãƒ¬ã‚¤ã¸ç§»è¡Œä¸­
+		PlayToEdit, // ãƒ—ãƒ¬ã‚¤ã‹ã‚‰ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã¸ç§»è¡Œä¸­
 	};
-	/** @brief ƒV[ƒ“‚Ìó‘ÔB*/
+	/** @brief ã‚·ãƒ¼ãƒ³ã®çŠ¶æ…‹ã€‚*/
 #ifdef _DEBUG
 	static inline State state = State::Editing;
 #else
 	static inline State state = State::Playing;
 #endif // _DEBUG
 
-	/** @brief ƒV[ƒ“ƒGƒ“ƒgƒŠ\‘¢‘ÌB*/
+	/** @brief ã‚·ãƒ¼ãƒ³ã‚¨ãƒ³ãƒˆãƒªæ§‹é€ ä½“ã€‚*/
 	struct SceneEntry
 	{
 		bool enabled;
@@ -41,112 +41,112 @@ public:
 
 	private:
 #ifdef USE_IMGUI
-		// ƒVƒŠƒAƒ‰ƒCƒY‘ÎÛŠO‚ÌƒtƒB[ƒ‹ƒh
+		// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå¯¾è±¡å¤–ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 		friend class BuildSettingsWindow;
-		bool selected = false; // ƒrƒ‹ƒhİ’èƒEƒBƒ“ƒhƒE‚Å‚Ì‘I‘ğó‘Ô  
+		bool selected = false; // ãƒ“ãƒ«ãƒ‰è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã§ã®é¸æŠçŠ¶æ…‹  
 #endif // USE_IMGUI
 	};
-	/** @brief “o˜^‚³‚ê‚Ä‚¢‚éƒV[ƒ“‚ÌƒGƒ“ƒgƒŠƒŠƒXƒgB*/
+	/** @brief ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚·ãƒ¼ãƒ³ã®ã‚¨ãƒ³ãƒˆãƒªãƒªã‚¹ãƒˆã€‚*/
 	static inline std::vector<SceneEntry> sceneEntries;
 
-	/** @brief ƒV[ƒ“ƒf[ƒ^\‘¢‘ÌB*/
+	/** @brief ã‚·ãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ã€‚*/
 	struct SceneData
 	{
 		std::string sceneName;
 		json sceneJson;
 	};
-	/** @brief ‘O‰ñ‚ÌƒV[ƒ“ƒf[ƒ^B*/
+	/** @brief å‰å›ã®ã‚·ãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿ã€‚*/
 	static inline SceneData previousData;
-	/** @brief ƒ‰ƒ“ƒ^ƒCƒ€—pƒV[ƒ“–¼‚ÌÚ”ö«B*/
+	/** @brief ãƒ©ãƒ³ã‚¿ã‚¤ãƒ ç”¨ã‚·ãƒ¼ãƒ³åã®æ¥å°¾è¾ã€‚*/
 	static inline std::string runtimeSuffix = "_runtime";
 private:
 	friend class Framework;
 	friend class EditorGUI;
 	friend class BuildSettingsWindow;
-	/** @brief Å‰‚É‹N“®‚·‚éƒV[ƒ“–¼B*/
+	/** @brief æœ€åˆã«èµ·å‹•ã™ã‚‹ã‚·ãƒ¼ãƒ³åã€‚*/
 	static inline std::string firstSceneName;
-	/** @brief “o˜^‚³‚ê‚Ä‚¢‚éƒV[ƒ“–¼‚ÌƒŠƒXƒgB*/
+	/** @brief ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚·ãƒ¼ãƒ³åã®ãƒªã‚¹ãƒˆã€‚*/
 	static inline std::vector<std::string> sceneNames;
-	/** @brief Œ»İ‚ÌƒV[ƒ“B*/
+	/** @brief ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã€‚*/
 	static inline std::unique_ptr<Scene> currentScene;
-	/** @brief Ÿ‚ÌƒV[ƒ“iƒ[ƒh’†jB*/
+	/** @brief æ¬¡ã®ã‚·ãƒ¼ãƒ³ï¼ˆãƒ­ãƒ¼ãƒ‰ä¸­ï¼‰ã€‚*/
 	static inline std::unique_ptr<Scene> nextScene;
-	/** @brief ƒ[ƒfƒBƒ“ƒOƒV[ƒ“–¼B*/
+	/** @brief ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚·ãƒ¼ãƒ³åã€‚*/
 	static inline std::string loadingSceneName = "EmptyScene";
 	static inline std::string editorLoadingSceneName = "EmptyScene";
-	/** @brief ƒ[ƒh‘Ò‚¿‚ÌƒV[ƒ“–¼B*/
+	/** @brief ãƒ­ãƒ¼ãƒ‰å¾…ã¡ã®ã‚·ãƒ¼ãƒ³åã€‚*/
 	static inline std::string pendingSceneName;
-	/** @brief ƒV[ƒ“ƒ[ƒh‘Ò‚¿ƒLƒ…[B*/
+	/** @brief ã‚·ãƒ¼ãƒ³ãƒ­ãƒ¼ãƒ‰å¾…ã¡ã‚­ãƒ¥ãƒ¼ã€‚*/
 	static inline std::queue<std::unique_ptr<Scene>> sceneLoadQueue;
-	/** @brief ”ñ“¯Šúƒ[ƒh‚Ì–¢—ˆƒIƒuƒWƒFƒNƒgB*/
+	/** @brief éåŒæœŸãƒ­ãƒ¼ãƒ‰ã®æœªæ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚*/
 	static inline std::future<void> future;
 public:
-	/** @brief ƒV[ƒ“ƒ}ƒl[ƒWƒƒ‚ğ‰Šú‰»‚µ‚Ü‚·B*/
+	/** @brief ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚*/
 	static void Initialize();
-	/** @brief ƒtƒŒ[ƒ€‚ÌŠJnˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ ã®é–‹å§‹å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	static void BeginFrame();
-	/** @brief ƒtƒŒ[ƒ€‚ÌI—¹ˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ ã®çµ‚äº†å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	static void EndFrame();
 	
 	/**
-	 * @brief ƒtƒŒ[ƒ€XV‚ğs‚¢‚Ü‚·B
-	 * @param deltaTime Œo‰ßŠÔi•bjB
+	 * @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã‚’è¡Œã„ã¾ã™ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	static void Update(float deltaTime);
 	/**
-	 * @brief 3D •`‰æ‚Ì‘Oˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B
-	 * @param rtx ƒŒƒ“ƒ_[ƒRƒ“ƒeƒLƒXƒgB
+	 * @brief 3D æç”»ã®å‰å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚
+	 * @param rtx ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	static void BeginRendering(RenderContext* rtx);
 	/**
-	 * @brief 3D •`‰æˆ—i–{ˆ—j‚ğŒÄ‚Ño‚µ‚Ü‚·B
-	 * @param rtx ƒŒƒ“ƒ_[ƒRƒ“ƒeƒLƒXƒgB
+	 * @brief 3D æç”»å‡¦ç†ï¼ˆæœ¬å‡¦ç†ï¼‰ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚
+	 * @param rtx ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	static void Render(RenderContext* rtx);
 	/**
-	 * @brief 3D •`‰æ‚ÌŒãˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B
-	 * @param rtx ƒŒƒ“ƒ_[ƒRƒ“ƒeƒLƒXƒgB
+	 * @brief 3D æç”»ã®å¾Œå‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚
+	 * @param rtx ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	static void EndRendering(RenderContext* rtx);
 	/**
-	 * @brief 2D •`‰æˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B
-	 * @param rtx ƒŒƒ“ƒ_[ƒRƒ“ƒeƒLƒXƒgB
+	 * @brief 2D æç”»å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚
+	 * @param rtx ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	static void Draw(RenderContext* rtx);
 	/**
-	 * @brief GUI •`‰æˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B
-	 * @param acceptRendering ƒV[ƒ“ƒŒƒ“ƒ_ƒŠƒ“ƒOó‚¯“ü‚ê”»’èB
+	 * @brief GUI æç”»å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚
+	 * @param acceptRendering ã‚·ãƒ¼ãƒ³ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°å—ã‘å…¥ã‚Œåˆ¤å®šã€‚
 	 */
 	static void DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx);
 	/**
-	 * @brief ƒ}ƒl[ƒWƒƒ‚ÆƒV[ƒ“‚ÌI—¹ˆ—‚ğs‚¢‚Ü‚·B
+	 * @brief ãƒãƒãƒ¼ã‚¸ãƒ£ã¨ã‚·ãƒ¼ãƒ³ã®çµ‚äº†å‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	static void Finalize();
 
-	/* ƒV[ƒ“ƒ}ƒl[ƒWƒƒ‚Ìó‘Ô‚ğ•Û‘¶‚µ‚Ü‚·B*/
+	/* ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ã®çŠ¶æ…‹ã‚’ä¿å­˜ã—ã¾ã™ã€‚*/
 	static void SaveSettings();
 public:
 	/**
-	 * @brief Å‰‚É‹N“®‚·‚éƒV[ƒ“‚ğİ’è‚µ‚Ü‚·B
-	 * @param name ƒV[ƒ“–¼i“o˜^–¼jB
+	 * @brief æœ€åˆã«èµ·å‹•ã™ã‚‹ã‚·ãƒ¼ãƒ³ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param name ã‚·ãƒ¼ãƒ³åï¼ˆç™»éŒ²åï¼‰ã€‚
 	 */
 	static void SetFirstScene(const std::string& name);
 
 	/**
-	 * @brief Å‰‚ÌƒV[ƒ“–¼‚ğXV‚µ‚Ü‚·B
-	 * @details sceneEntries ‚ÌÅ‰‚Ì—LŒø‚ÈƒV[ƒ“‚ğ firstSceneName ‚Éİ’è‚µ‚Ü‚·B
+	 * @brief æœ€åˆã®ã‚·ãƒ¼ãƒ³åã‚’æ›´æ–°ã—ã¾ã™ã€‚
+	 * @details sceneEntries ã®æœ€åˆã®æœ‰åŠ¹ãªã‚·ãƒ¼ãƒ³ã‚’ firstSceneName ã«è¨­å®šã—ã¾ã™ã€‚
 	 */
 	static void UpdateFirstSceneName();
 
 	/**
-	 * @brief Å‰‚ÌƒV[ƒ“‚ğƒ[ƒh‚µ‚ÄØ‚è‘Ö‚¦‚Ü‚·B
+	 * @brief æœ€åˆã®ã‚·ãƒ¼ãƒ³ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã¦åˆ‡ã‚Šæ›¿ãˆã¾ã™ã€‚
 	 */
 	static void LoadFirstScene();
 
 	/**
-	 * @brief ƒ[ƒfƒBƒ“ƒOƒV[ƒ“‚ğİ’è‚µ‚Ü‚·B
-	 * @param name ƒ[ƒfƒBƒ“ƒO•\¦‚É—p‚¢‚éƒV[ƒ“–¼B
-	 * @details Šù‘¶‚ÌƒV[ƒ“–¼ƒŠƒXƒg‚©‚çd•¡‚ğ”ğ‚¯‚é‚½‚ß‚ÉœŠO‚µ‚Ü‚·B
+	 * @brief ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚·ãƒ¼ãƒ³ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param name ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°è¡¨ç¤ºã«ç”¨ã„ã‚‹ã‚·ãƒ¼ãƒ³åã€‚
+	 * @details æ—¢å­˜ã®ã‚·ãƒ¼ãƒ³åãƒªã‚¹ãƒˆã‹ã‚‰é‡è¤‡ã‚’é¿ã‘ã‚‹ãŸã‚ã«é™¤å¤–ã—ã¾ã™ã€‚
 	 */
 	static void SetLoadingScene(const std::string& name) {
 		loadingSceneName = name;
@@ -159,47 +159,47 @@ public:
 	}
 
 	/**
-	 * @brief ƒV[ƒ“‚ğ‘¦‚ÉØ‚è‘Ö‚¦‚Ü‚·i‹­§jB
-	 * @param nextSceneName Ÿ‚ÌƒV[ƒ“–¼B
+	 * @brief ã‚·ãƒ¼ãƒ³ã‚’å³æ™‚ã«åˆ‡ã‚Šæ›¿ãˆã¾ã™ï¼ˆå¼·åˆ¶ï¼‰ã€‚
+	 * @param nextSceneName æ¬¡ã®ã‚·ãƒ¼ãƒ³åã€‚
 	 */
 	static void ChangeScene(const std::string& nextSceneName);
 
 	/**
-	 * @brief ƒV[ƒ“•ÏX‚ğ—v‹‚µ‚Ü‚·iƒ[ƒhŠ®—¹‚Ü‚Åƒ[ƒfƒBƒ“ƒOƒV[ƒ“‚ğ•\¦jB
-	 * @param nextSceneName ƒ[ƒhŠ®—¹Œã‚É‘JˆÚ‚·‚éƒV[ƒ“–¼B
+	 * @brief ã‚·ãƒ¼ãƒ³å¤‰æ›´ã‚’è¦æ±‚ã—ã¾ã™ï¼ˆãƒ­ãƒ¼ãƒ‰å®Œäº†ã¾ã§ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚·ãƒ¼ãƒ³ã‚’è¡¨ç¤ºï¼‰ã€‚
+	 * @param nextSceneName ãƒ­ãƒ¼ãƒ‰å®Œäº†å¾Œã«é·ç§»ã™ã‚‹ã‚·ãƒ¼ãƒ³åã€‚
 	 */
 	static void LoadScene(const std::string& nextSceneName);
 
 	/**
-	 * @brief ƒV[ƒ“‚ğ–‘O‚É”ñ“¯Šúƒ[ƒh‚µ‚Ü‚·B
-	 * @param loadSceneName –‘Oƒ[ƒh‚·‚éƒV[ƒ“–¼B
+	 * @brief ã‚·ãƒ¼ãƒ³ã‚’äº‹å‰ã«éåŒæœŸãƒ­ãƒ¼ãƒ‰ã—ã¾ã™ã€‚
+	 * @param loadSceneName äº‹å‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã‚·ãƒ¼ãƒ³åã€‚
 	 */
 	static void LoadSceneAsync(const std::string& loadSceneName);
 
 	/**
-	 * @brief Ÿ‚ÌƒV[ƒ“‚Ö‚Ì‘JˆÚ‚ğ‹–‰Â‚µ‚Ü‚·B
+	 * @brief æ¬¡ã®ã‚·ãƒ¼ãƒ³ã¸ã®é·ç§»ã‚’è¨±å¯ã—ã¾ã™ã€‚
 	 */
 	static void AllowTransition();
 
 	/**
-	 * @brief ”ñ“¯Šúƒ[ƒh‚ªŠ®—¹‚µ‚½‚©‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief éåŒæœŸãƒ­ãƒ¼ãƒ‰ãŒå®Œäº†ã—ãŸã‹ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	static bool IsLoadingComplete();
 
 	/**
-	 * @brief ƒV[ƒ“‚Ì‘JˆÚ’†‚©‚Ç‚¤‚©‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief ã‚·ãƒ¼ãƒ³ã®é·ç§»ä¸­ã‹ã©ã†ã‹ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	static bool IsTransition();
 
 	/**
-	 * @brief Œ»İ‚ÌƒV[ƒ“‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Œ»İ‚ÌƒV[ƒ“ƒ|ƒCƒ“ƒ^B
+	 * @brief ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ãƒã‚¤ãƒ³ã‚¿ã€‚
 	 */
 	static inline Scene* GetCurrentScene() { return currentScene.get(); }
 
 	/**
-	 * @brief ƒ[ƒh’†‚ÌƒV[ƒ“‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍŒ»İ‚ÌƒV[ƒ“‚ğ•Ô‚µ‚Ü‚·B
-	 * @return ƒ[ƒh’†‚ÌƒV[ƒ“‚Ü‚½‚ÍŒ»İ‚ÌƒV[ƒ“‚Ìƒ|ƒCƒ“ƒ^B
+	 * @brief ãƒ­ãƒ¼ãƒ‰ä¸­ã®ã‚·ãƒ¼ãƒ³ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return ãƒ­ãƒ¼ãƒ‰ä¸­ã®ã‚·ãƒ¼ãƒ³ã¾ãŸã¯ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®ãƒã‚¤ãƒ³ã‚¿ã€‚
 	 */
 	static inline Scene* GetLoadingSceneOrCurrentScene() {
 		if (nextScene) return nextScene.get();
@@ -208,36 +208,36 @@ public:
 	}
 
 	/**
-	 * @brief Œ»İƒAƒNƒeƒBƒu‚ÈƒV[ƒ“iƒ[ƒh’†ƒV[ƒ“ŠÜ‚Şj‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒAƒNƒeƒBƒuƒV[ƒ“‚Ì”z—ñB
+	 * @brief ç¾åœ¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚·ãƒ¼ãƒ³ï¼ˆãƒ­ãƒ¼ãƒ‰ä¸­ã‚·ãƒ¼ãƒ³å«ã‚€ï¼‰ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚·ãƒ¼ãƒ³ã®é…åˆ—ã€‚
 	 */
 	static std::vector<Scene*> GetActiveScenes();
 
-	/** @brief •ÒWƒ‚[ƒh‚É“ü‚éˆ—B*/
+	/** @brief ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹å‡¦ç†ã€‚*/
 	static void EnterEdit();
 
-	/** @brief ƒvƒŒƒCƒ‚[ƒh‚É“ü‚éˆ—B*/
+	/** @brief ãƒ—ãƒ¬ã‚¤ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹å‡¦ç†ã€‚*/
 	static void EnterPlay();
 
-	/** @brief ƒ|[ƒYƒ‚[ƒh‚É“ü‚éˆ—B*/
+	/** @brief ãƒãƒ¼ã‚ºãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹å‡¦ç†ã€‚*/
 	static void EnterPause();
 
-	/** @brief ƒvƒŒƒCƒ‚[ƒh‚ğÄŠJ‚·‚éˆ—B*/
+	/** @brief ãƒ—ãƒ¬ã‚¤ãƒ¢ãƒ¼ãƒ‰ã‚’å†é–‹ã™ã‚‹å‡¦ç†ã€‚*/
 	static void ResumePlay();
 
 	/**
-	 * @brief ƒV[ƒ“‚ğ“o˜^‚µ‚Ü‚·B
-	 * @param path “o˜^‚·‚éƒV[ƒ“‚Ìƒtƒ@ƒCƒ‹ƒpƒXB
+	 * @brief ã‚·ãƒ¼ãƒ³ã‚’ç™»éŒ²ã—ã¾ã™ã€‚
+	 * @param path ç™»éŒ²ã™ã‚‹ã‚·ãƒ¼ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
 	 */
 	static void Register(const std::string& path);
 
-	/* ƒV[ƒ“ƒ}ƒl[ƒWƒƒ‚Ìó‘Ô‚ğƒVƒŠƒAƒ‰ƒCƒY‚µ‚Ü‚·B*/
+	/* ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ã®çŠ¶æ…‹ã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã—ã¾ã™ã€‚*/
 	static json Serialize();
 
-	/* ƒV[ƒ“ƒ}ƒl[ƒWƒƒ‚Ìó‘Ô‚ğƒfƒVƒŠƒAƒ‰ƒCƒY‚µ‚Ü‚·B*/
+	/* ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ã®çŠ¶æ…‹ã‚’ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã—ã¾ã™ã€‚*/
 	static void Deserialize(const json& j);
 
 private:
-	/** @brief ƒ‰ƒ“ƒ^ƒCƒ€—pƒV[ƒ“ƒtƒ@ƒCƒ‹‚ğƒNƒŠ[ƒ“ƒAƒbƒv‚µ‚Ü‚·B*/
+	/** @brief ãƒ©ãƒ³ã‚¿ã‚¤ãƒ ç”¨ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—ã—ã¾ã™ã€‚*/
 	static void CleanRuntimeFiles();
 };

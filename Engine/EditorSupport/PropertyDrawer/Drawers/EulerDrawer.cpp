@@ -19,7 +19,7 @@ namespace CurryEngine
         Quaternion value = std::any_cast<Quaternion>(prop.getter(context.Primary()));
         //bool mixed = PropertyDrawHelper::HasMixedValues<Quaternion>(context, prop);
         int mixedFlags = PropertyDrawHelper::MixedValueComponentFlag<Quaternion>(context, prop, componentCount, [](const Quaternion& a, const Quaternion& b, int componentIndex) {
-            return std::abs(a[componentIndex] - b[componentIndex]) < 1e-6f; // •‚“®¬”“_”‚Ì”äŠr‚ÍAâ‘Î’l‚Ì·‚ª¬‚³‚¢‚©‚Ç‚¤‚©‚Å”»’è
+            return std::abs(a[componentIndex] - b[componentIndex]) < 1e-6f; // æµ®å‹•å°æ•°ç‚¹æ•°ã®æ¯”è¼ƒã¯ã€çµ¶å¯¾å€¤ã®å·®ãŒå°ã•ã„ã‹ã©ã†ã‹ã§åˆ¤å®š
 			});
 
         float vSpeed = 0.1f;
@@ -54,12 +54,12 @@ namespace CurryEngine
 
         if (isEditingPending)
         {
-            // ‘O‰ñ‚ÌƒtƒŒ[ƒ€‚Å•ÒWŠJŽn‚ªŒŸo‚³‚ê‚Ä‚¢‚é‚Ì‚ÉAŒ»Ý‚ÌƒtƒŒ[ƒ€‚Å IsItemActivated() ‚ª false ‚Ìê‡‚ÍA•ÒW’†ƒtƒ‰ƒO‚ðƒŠƒZƒbƒg‚·‚é
+            // å‰å›žã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ç·¨é›†é–‹å§‹ãŒæ¤œå‡ºã•ã‚Œã¦ã„ã‚‹ã®ã«ã€ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ IsItemActivated() ãŒ false ã®å ´åˆã¯ã€ç·¨é›†ä¸­ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
             isEditing = false;
             isEditingPending = false;
 		}
 
-        // ŠO•”•ÏXŒŸoi•ÒW’†‚Å‚È‚­A‚©‚ÂŽ©•ª‚ªÅŒã‚É‘‚¢‚½’l‚ÆˆÙ‚È‚éê‡‚Ì‚Ý“¯Šú‚·‚éj
+        // å¤–éƒ¨å¤‰æ›´æ¤œå‡ºï¼ˆç·¨é›†ä¸­ã§ãªãã€ã‹ã¤è‡ªåˆ†ãŒæœ€å¾Œã«æ›¸ã„ãŸå€¤ã¨ç•°ãªã‚‹å ´åˆã®ã¿åŒæœŸã™ã‚‹ï¼‰
         if (!isEditing && value != prevQuat)
         {
             euler = value.ToEuler();
@@ -88,11 +88,11 @@ namespace CurryEngine
             }
 		}
 
-        // •ÒWŠJŽn
+        // ç·¨é›†é–‹å§‹
         if (ImGui::IsItemActivated())
         {
             isEditing = true;
-            eulerOnActivated = euler;  // •ÒWŠJŽnŽž‚ÌƒIƒCƒ‰[Šp‚ð‹L˜^iToEuler() ‚ðŒÄ‚Î‚È‚¢j
+            eulerOnActivated = euler;  // ç·¨é›†é–‹å§‹æ™‚ã®ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‚’è¨˜éŒ²ï¼ˆToEuler() ã‚’å‘¼ã°ãªã„ï¼‰
         }
 
         if (edited)
@@ -102,19 +102,19 @@ namespace CurryEngine
             prevQuat = newQuat;
         }
 
-        // •ÒWŠ®—¹ ¨ Undo/Redo ƒRƒ}ƒ“ƒh”­s
+        // ç·¨é›†å®Œäº† â†’ Undo/Redo ã‚³ãƒžãƒ³ãƒ‰ç™ºè¡Œ
         if (ImGui::IsItemDeactivatedAfterEdit())
         {
-			isEditingPending = true; // •ÒWŠ®—¹‚ªŒŸo‚³‚ê‚½ƒtƒŒ[ƒ€‚ÅAŽŸ‚ÌƒtƒŒ[ƒ€‚Ì–`“ª‚Å•ÒW’†ƒtƒ‰ƒO‚ðƒŠƒZƒbƒg‚·‚é‚½‚ß‚Ìƒtƒ‰ƒO‚ðƒZƒbƒg
+			isEditingPending = true; // ç·¨é›†å®Œäº†ãŒæ¤œå‡ºã•ã‚ŒãŸãƒ•ãƒ¬ãƒ¼ãƒ ã§ã€æ¬¡ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®å†’é ­ã§ç·¨é›†ä¸­ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
             
             Quaternion quatBefore = Quaternion::FromEuler(eulerOnActivated);
             Quaternion quatAfter = Quaternion::FromEuler(euler);
 
-			prevQuat = quatAfter; // ƒRƒ}ƒ“ƒhŽÀs‘O‚É prevQuat ‚ðXV‚µ‚Ä‚¨‚­iƒRƒ}ƒ“ƒh‚ÌŽÀs’†‚ÉŠO•”•ÏX‚ª‚ ‚Á‚Ä‚àAŒÃ‚¢’l‚Æ”äŠr‚µ‚Ä³‚µ‚­ŒŸo‚Å‚«‚é‚æ‚¤‚É‚·‚é‚½‚ßj
+			prevQuat = quatAfter; // ã‚³ãƒžãƒ³ãƒ‰å®Ÿè¡Œå‰ã« prevQuat ã‚’æ›´æ–°ã—ã¦ãŠãï¼ˆã‚³ãƒžãƒ³ãƒ‰ã®å®Ÿè¡Œä¸­ã«å¤–éƒ¨å¤‰æ›´ãŒã‚ã£ã¦ã‚‚ã€å¤ã„å€¤ã¨æ¯”è¼ƒã—ã¦æ­£ã—ãæ¤œå‡ºã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ï¼‰
 
             if (Quaternion::NotEqual(quatBefore, quatAfter))
             {
-                // Undo ƒƒO•¶Žš—ñ‚ÍƒIƒCƒ‰[Šp‚©‚ç’¼Ú¶¬iToEuler() ‚ðŒÄ‚Î‚È‚¢j
+                // Undo ãƒ­ã‚°æ–‡å­—åˆ—ã¯ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‹ã‚‰ç›´æŽ¥ç”Ÿæˆï¼ˆToEuler() ã‚’å‘¼ã°ãªã„ï¼‰
                 auto toStr = [](const Vector3& e) {
                     return "(" + std::to_string(e.x) + ", "
                         + std::to_string(e.y) + ", "
@@ -139,7 +139,7 @@ namespace CurryEngine
                         description,
                         [](const CommandData& data) {
                             PropertyDrawHelper::ApplyToAll<Quaternion>(data.ctx, data.prop, data.quat);
-                            // Quaternion ‚Æ“¯Žž‚ÉƒIƒCƒ‰[Šp‚à•œŒ³ ¨ ToEuler() ‚ªŒÄ‚Î‚ê‚È‚¢
+                            // Quaternion ã¨åŒæ™‚ã«ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‚‚å¾©å…ƒ â†’ ToEuler() ãŒå‘¼ã°ã‚Œãªã„
                             data.eulerState->Prev(data.prop.name) = data.euler;
                             data.externalChangeState->Prev(data.prop.name) = data.quat;
                         },

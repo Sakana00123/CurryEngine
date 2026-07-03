@@ -19,13 +19,13 @@ public:
 	void Draw(ID3D11DeviceContext* immediateContext);
 
 
-	// プロパティ描画
+	// 繝励Ο繝代ユ繧｣謠冗判
 	void DrawProperty();
 
-	// シリアライズ
+	// 繧ｷ繝ｪ繧｢繝ｩ繧､繧ｺ
 	json Serialize() const;
 
-	// デシリアライズ
+	// 繝�繧ｷ繝ｪ繧｢繝ｩ繧､繧ｺ
 	void Deserialize(const json& j);
 
 private:

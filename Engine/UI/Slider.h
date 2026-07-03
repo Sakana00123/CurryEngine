@@ -6,7 +6,7 @@ class Slider : public Selectable, public IDragHandler, public IEndDragHandler
 private:
 	bool isDragging = false;
 public:
-	//HorizontalF…•½AVerticalF‚’¼
+	//Horizontalï¼šæ°´å¹³ã€Verticalï¼šå‚ç›´
 	enum class Direction { LeftToRight, RightToLeft, TopToBottom, BottomToTop };
 public:
 	Slider() = default;
@@ -58,7 +58,7 @@ private:
 	float normalizedValue = 0.f;
 	Direction direction = Direction::LeftToRight;
 
-	//®”‚Ì‚İg—p‚Å‚«‚é‚æ‚¤‚É‚·‚é‚©
+	//æ•´æ•°ã®ã¿ä½¿ç”¨ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹
 	bool wholeNumbers = false;
 	std::vector<std::function<void(float)>> onValueChangedFunctions;
 

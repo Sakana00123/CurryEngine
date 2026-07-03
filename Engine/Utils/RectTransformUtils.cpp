@@ -16,12 +16,12 @@ void RectTransformUtils::SetAnchorAndPivotWithoutAffectingPosition(
 	if (rect == nullptr || rect->GetParent() == nullptr)
 		return;
 
-	//e‚ÌƒTƒCƒY
+	//è¦ªã®ã‚µã‚¤ã‚º
 	RectTransform* parent = rect->GetParent();
 	XMFLOAT2 parentSize = parent->GetWorldSize();
 	XMVECTOR ParentSize = XMLoadFloat2(&parentSize);
 	
-	//Œ»İ‚Ì’l‚ğ‘Ş”ğ
+	//ç¾åœ¨ã®å€¤ã‚’é€€é¿
 	XMVECTOR OldAnchorMin = XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&rect->anchorMin));
 	XMVECTOR OldAnchorMax = XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&rect->anchorMax));
 	XMVECTOR OldPivot = XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&rect->pivot));
@@ -30,17 +30,17 @@ void RectTransformUtils::SetAnchorAndPivotWithoutAffectingPosition(
 	XMVECTOR NewAnchorMax = XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&newAnchorMax));
 	XMVECTOR NewPivot = XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&newPivot));
 
-	// ƒAƒ“ƒJ[‚É‚æ‚éˆÊ’u•Ï‰»•â³
+	// ã‚¢ãƒ³ã‚«ãƒ¼ã«ã‚ˆã‚‹ä½ç½®å¤‰åŒ–è£œæ­£
 	XMVECTOR AnchorOffsetDelta =
 		((NewAnchorMin - OldAnchorMin) * ParentSize +
 			(NewAnchorMax - OldAnchorMax) * ParentSize) * 0.5f;
 
-	// ƒsƒ{ƒbƒg‚É‚æ‚é•â³
+	// ãƒ”ãƒœãƒƒãƒˆã«ã‚ˆã‚‹è£œæ­£
 	XMFLOAT2 size = rect->GetWorldSize();
 	XMVECTOR Size = XMLoadFloat2(&size);
 	XMVECTOR PivotOffsetDelta = (NewPivot - OldPivot) * Size;
 
-	// anchoredPosition ‚ğæ“¾‚µ‚Ä•â³
+	// anchoredPosition ã‚’å–å¾—ã—ã¦è£œæ­£
 	Vector2 anchoredPosition = rect->GetAnchoredPosition();
 	XMVECTOR anchoredPosV = XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&anchoredPosition));
 	XMVECTOR corrected = anchoredPosV - AnchorOffsetDelta + PivotOffsetDelta;
@@ -49,7 +49,7 @@ void RectTransformUtils::SetAnchorAndPivotWithoutAffectingPosition(
 	XMStoreFloat2(reinterpret_cast<XMFLOAT2*>(&correctedPosition), corrected);
 	rect->SetAnchoredPosition(correctedPosition);
 
-	// ÀÛ‚É Anchor ‚Æ Pivot ‚ğ•ÏX
+	// å®Ÿéš›ã« Anchor ã¨ Pivot ã‚’å¤‰æ›´
 	rect->SetAnchorMin(newAnchorMin);
 	rect->SetAnchorMax(newAnchorMax);
 	rect->SetPivot(newPivot);
@@ -61,10 +61,10 @@ void RectTransformUtils::SetAnchordPositionBy3DTransform(
 {
 	if (rect == nullptr || targetTransform == nullptr)
 		return;
-	//3DÀ•W‚ğƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·
+	//3Dåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›
 	XMFLOAT2 screenPos;
 	{
-		//Œ»İ‚ÌƒJƒƒ‰‚ÌView‚ÆProjection‚ğ‹‚ß‚é
+		//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã®Viewã¨Projectionã‚’æ±‚ã‚ã‚‹
 #if 1
 		auto cam = SceneManager::GetCurrentScene()->cameraSystem.GetMainCamera();
 		XMMATRIX View = cam->GetViewMatrix();
@@ -76,11 +76,11 @@ void RectTransformUtils::SetAnchordPositionBy3DTransform(
 		XMMATRIX Projection = XMLoadFloat4x4(&projection);
 #endif // 0
 
-		//ƒXƒNƒŠ[ƒ“ƒTƒCƒY
+		//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚º
 		float screenSizeX = 1920, screenSizeY = 1080;
 		//Graphics::GetScreenSize(screenSizeX, screenSizeY);
 
-		//ƒ[ƒ‹ƒhÀ•W‚ğƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›
 		XMVECTOR ScreenPosition = XMVector3Project(
 			XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&targetTransform->GetWorldPosition())),
 			0.0f,
@@ -95,7 +95,7 @@ void RectTransformUtils::SetAnchordPositionBy3DTransform(
 		);
 		XMStoreFloat2(&screenPos, ScreenPosition);
 	}
-	//ƒAƒ“ƒJ[ƒ|ƒWƒVƒ‡ƒ“‚Æ‚µ‚Äİ’è
+	//ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¸ã‚·ãƒ§ãƒ³ã¨ã—ã¦è¨­å®š
 	rect->SetAnchoredPositionByAnchor({ 0,0 }, { screenPos.x, screenPos.y });
 }
 
@@ -103,14 +103,14 @@ Vector3 RectTransformUtils::UIScreenToWorld(
 	const Vector2& screenPos,
 	float depth)
 {
-	//Œ»İ‚ÌƒJƒƒ‰‚ÌView‚ÆProjection‚ğ‹‚ß‚é
+	//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã®Viewã¨Projectionã‚’æ±‚ã‚ã‚‹
 	auto cam = SceneManager::GetCurrentScene()->cameraSystem.GetMainCamera();
 	XMMATRIX View = cam->GetViewMatrix();
 	XMMATRIX Projection = cam->GetProjectionMatrix();
-	//ƒXƒNƒŠ[ƒ“ƒTƒCƒY
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚º
 	float screenSizeX = 1920, screenSizeY = 1080;
 	//Graphics::GetScreenSize(screenSizeX, screenSizeY);
-	//ƒXƒNƒŠ[ƒ“À•W‚ğƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã«å¤‰æ›
 	XMVECTOR GetWorldPosition = XMVector3Unproject(
 		XMVectorSet(screenPos.x, screenPos.y, depth, 1.0f),
 		0.0f,
@@ -131,14 +131,14 @@ Vector3 RectTransformUtils::UIScreenToWorld(
 XMFLOAT2 RectTransformUtils::WorldToUIScreen(
 	const Vector3& worldPos)
 {
-	//Œ»İ‚ÌƒJƒƒ‰‚ÌView‚ÆProjection‚ğ‹‚ß‚é
+	//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã®Viewã¨Projectionã‚’æ±‚ã‚ã‚‹
 	auto cam = SceneManager::GetCurrentScene()->cameraSystem.GetMainCamera();
 	XMMATRIX View = cam->GetViewMatrix();
 	XMMATRIX Projection = cam->GetProjectionMatrix();
-	//ƒXƒNƒŠ[ƒ“ƒTƒCƒY
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚º
 	float screenSizeX = 1920, screenSizeY = 1080;
 	//Graphics::GetScreenSize(screenSizeX, screenSizeY);
-	//ƒ[ƒ‹ƒhÀ•W‚ğƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›
 	XMVECTOR ScreenPosition = XMVector3Project(
 		XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&worldPos)),
 		0.0f,

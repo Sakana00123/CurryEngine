@@ -7,44 +7,44 @@
 
 /**
  * @file
- * @brief ƒI[ƒfƒBƒI‰ğÍƒ†[ƒeƒBƒŠƒeƒBB
- * @details ‰¹ºƒf[ƒ^‚Ìü”g”‰ğÍ‚â”gŒ`‰ğÍ‚ğs‚¢‚Ü‚·B
+ * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè§£æãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã€‚
+ * @details éŸ³å£°ãƒ‡ãƒ¼ã‚¿ã®å‘¨æ³¢æ•°è§£æã‚„æ³¢å½¢è§£æã‚’è¡Œã„ã¾ã™ã€‚
  */
 
 
 /**
- * @brief ƒXƒyƒNƒgƒ‹ƒoƒ“ƒh‚ÌƒŒƒxƒ‹’lB
+ * @brief ã‚¹ãƒšã‚¯ãƒˆãƒ«ãƒãƒ³ãƒ‰ã®ãƒ¬ãƒ™ãƒ«å€¤ã€‚
  */
 struct SpectrumBand
 {
-	float value = 0.0f; 	//!< ƒoƒ“ƒh‚ÌƒŒƒxƒ‹’lB(0.0-1.0)
-	float smoothed = 0.0f;	//!< •½ŠŠ‰»Ï‚İƒŒƒxƒ‹’lB(0.0-1.0)
+	float value = 0.0f; 	//!< ãƒãƒ³ãƒ‰ã®ãƒ¬ãƒ™ãƒ«å€¤ã€‚(0.0-1.0)
+	float smoothed = 0.0f;	//!< å¹³æ»‘åŒ–æ¸ˆã¿ãƒ¬ãƒ™ãƒ«å€¤ã€‚(0.0-1.0)
 };
 
 /**
- * @brief ƒI[ƒfƒBƒI‰ğÍŒ‹‰ÊB
+ * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè§£æçµæœã€‚
  */
 struct AudioAnalyzerResult
 {
-	std::vector<SpectrumBand> lowBands; 	//!< ’áü”g”‘Ñˆæ‚ÌƒŒƒxƒ‹’lŒQB(Bass‚Ìw•W)
-	std::vector<SpectrumBand> midBands;		//!< ’†ü”g”‘Ñˆæ‚ÌƒŒƒxƒ‹’lŒQB(Mid‚Ìw•W)
-	std::vector<SpectrumBand> highBands;	//!< ‚ü”g”‘Ñˆæ‚ÌƒŒƒxƒ‹’lŒQB(Treble‚Ìw•W)
+	std::vector<SpectrumBand> lowBands; 	//!< ä½å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ¬ãƒ™ãƒ«å€¤ç¾¤ã€‚(Bassã®æŒ‡æ¨™)
+	std::vector<SpectrumBand> midBands;		//!< ä¸­å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ¬ãƒ™ãƒ«å€¤ç¾¤ã€‚(Midã®æŒ‡æ¨™)
+	std::vector<SpectrumBand> highBands;	//!< é«˜å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ¬ãƒ™ãƒ«å€¤ç¾¤ã€‚(Trebleã®æŒ‡æ¨™)
 
-	float lowPeak = 0.0f;   //!< ’áü”g”‘Ñˆæ‚Ìƒs[ƒN’lB(Bass‚Ìw•W)
-	float midPeak = 0.0f;   //!< ’†ü”g”‘Ñˆæ‚Ìƒs[ƒN’lB(Mid‚Ìw•W)
-	float highPeak = 0.0f;  //!< ‚ü”g”‘Ñˆæ‚Ìƒs[ƒN’lB(Treble‚Ìw•W)
+	float lowPeak = 0.0f;   //!< ä½å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ”ãƒ¼ã‚¯å€¤ã€‚(Bassã®æŒ‡æ¨™)
+	float midPeak = 0.0f;   //!< ä¸­å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ”ãƒ¼ã‚¯å€¤ã€‚(Midã®æŒ‡æ¨™)
+	float highPeak = 0.0f;  //!< é«˜å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ”ãƒ¼ã‚¯å€¤ã€‚(Trebleã®æŒ‡æ¨™)
 
-	float overallRMS = 0.0f;  //!< ‘S‘Ì‚ÌRMS’lB(‰¹—ÊŠ´‚Ìw•W)
+	float overallRMS = 0.0f;  //!< å…¨ä½“ã®RMSå€¤ã€‚(éŸ³é‡æ„Ÿã®æŒ‡æ¨™)
 };
 
 /**
- * @brief ƒI[ƒfƒBƒI‰ğÍƒNƒ‰ƒXB
- * @details ‰¹ºƒf[ƒ^‚ÌRMS/ƒs[ƒN’lŒvZ‚âFFT‰ğÍ‚ğs‚¢‚Ü‚·B
+ * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè§£æã‚¯ãƒ©ã‚¹ã€‚
+ * @details éŸ³å£°ãƒ‡ãƒ¼ã‚¿ã®RMS/ãƒ”ãƒ¼ã‚¯å€¤è¨ˆç®—ã‚„FFTè§£æã‚’è¡Œã„ã¾ã™ã€‚
  */
 class AudioAnalyzer
 {
 public:
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	~AudioAnalyzer()
 	{
 		if (fftConfig) {
@@ -54,26 +54,26 @@ public:
 	}
 
 	/**
-	 * @brief ‰ğÍŒ‹‰ÊB
+	 * @brief è§£æçµæœã€‚
 	 */
 	struct Result
 	{
-		float rms; 						//!< RMSiRoot Mean Squarej’lB
-		float peak; 					//!< ƒs[ƒN’lB
-		std::vector<float> spectrum;	// <! ƒXƒyƒNƒgƒ‹ƒf[ƒ^B
+		float rms; 						//!< RMSï¼ˆRoot Mean Squareï¼‰å€¤ã€‚
+		float peak; 					//!< ãƒ”ãƒ¼ã‚¯å€¤ã€‚
+		std::vector<float> spectrum;	// <! ã‚¹ãƒšã‚¯ãƒˆãƒ«ãƒ‡ãƒ¼ã‚¿ã€‚
 
-		/** @brief w’èü”g”‘Ñˆæ‚Ì•½‹Ï’l‚ğæ“¾‚µ‚Ü‚·B
-		 *  @param freqStart ŠJnü”g”iHzjB
-		 *  @param freqEnd I—¹ü”g”iHzjB
-		 *  @param sampleRate ƒTƒ“ƒvƒ‹ƒŒ[ƒgiHzjBƒfƒtƒHƒ‹ƒg‚Í 44100 HzB
-		 *  @result w’è‘Ñˆæ‚Ì•½‹Ï’lB
+		/** @brief æŒ‡å®šå‘¨æ³¢æ•°å¸¯åŸŸã®å¹³å‡å€¤ã‚’å–å¾—ã—ã¾ã™ã€‚
+		 *  @param freqStart é–‹å§‹å‘¨æ³¢æ•°ï¼ˆHzï¼‰ã€‚
+		 *  @param freqEnd çµ‚äº†å‘¨æ³¢æ•°ï¼ˆHzï¼‰ã€‚
+		 *  @param sampleRate ã‚µãƒ³ãƒ—ãƒ«ãƒ¬ãƒ¼ãƒˆï¼ˆHzï¼‰ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ 44100 Hzã€‚
+		 *  @result æŒ‡å®šå¸¯åŸŸã®å¹³å‡å€¤ã€‚
 		 */
 		[[nodiscard]] float GetBandValue(float freqStart, float freqEnd, int sampleRate = 44100) const
 		{
 			if (spectrum.empty() || freqStart >= freqEnd || sampleRate <= 0) {
 				return 0.0f;
 			}
-			int fftSize = (static_cast<int>(spectrum.size()) - 1) * 2; // FFT ƒTƒCƒY‚ğŒvZ
+			int fftSize = (static_cast<int>(spectrum.size()) - 1) * 2; // FFT ã‚µã‚¤ã‚ºã‚’è¨ˆç®—
 			int startIndex = static_cast<int>((freqStart / sampleRate) * fftSize);
 			int endIndex = static_cast<int>((freqEnd / sampleRate) * fftSize);
 			startIndex = std::clamp(startIndex, 0, static_cast<int>(spectrum.size()) - 1);
@@ -86,29 +86,29 @@ public:
 		}
 	};
 
-	/** @brief ‰Šú‰»ˆ—B*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ã€‚*/
 	void Initialize(IXAudio2SourceVoice* voice, const Audio::AudioBuffer* buffer);
 
-	/** @brief ƒtƒŒ[ƒ€XVB*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚*/
 	void Update(float deltaTime);
 
-	/** @brief ‰ğÍŒ‹‰Ê‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief è§£æçµæœã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	[[nodiscard]] const Result& GetResult() const { return result; }
 
-	/** @brief ƒI[ƒfƒBƒI‰ğÍ‚ÌÚ×Œ‹‰Ê‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè§£æã®è©³ç´°çµæœã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	[[nodiscard]] const AudioAnalyzerResult& GetAnalyzerResult() const { return analyzerResult; }
 
-	/** @brief Ä¶Šî€ˆÊ’u‚ÌƒŠƒZƒbƒgB*/
+	/** @brief å†ç”ŸåŸºæº–ä½ç½®ã®ãƒªã‚»ãƒƒãƒˆã€‚*/
 	void ResetPlaybackBase() { baseCaptured = false; }
 private:
 
-	/** @brief RMS ‚Æƒs[ƒN’l‚ğŒvZ‚µ‚Ü‚·B*/
+	/** @brief RMS ã¨ãƒ”ãƒ¼ã‚¯å€¤ã‚’è¨ˆç®—ã—ã¾ã™ã€‚*/
 	void ComputeRMSAndPeak(const float* samples, size_t sampleCount);
 
-	/** @brief FFT ‰ğÍ‚ğs‚¢‚Ü‚·B*/
+	/** @brief FFT è§£æã‚’è¡Œã„ã¾ã™ã€‚*/
 	void AnalyzeFFT(const float* samples, size_t sampleCount);
 
-	/** @brief ü”g”‘Ñˆæ‚²‚Æ‚ÌƒŒƒxƒ‹‚ğXV‚µ‚Ü‚·B*/
+	/** @brief å‘¨æ³¢æ•°å¸¯åŸŸã”ã¨ã®ãƒ¬ãƒ™ãƒ«ã‚’æ›´æ–°ã—ã¾ã™ã€‚*/
 	void UpdateBands();
 
 private:
@@ -119,15 +119,15 @@ private:
 	size_t pcmSize = 0;
 
 	Result result = {};
-	std::vector<float> previousSmoothed; // ‘O‰ñ‚Ì•½ŠŠ‰»Ï‚İƒf[ƒ^
+	std::vector<float> previousSmoothed; // å‰å›ã®å¹³æ»‘åŒ–æ¸ˆã¿ãƒ‡ãƒ¼ã‚¿
 	AudioAnalyzerResult analyzerResult = {};
-	std::vector<float> tempBuffer; // •ªÍ—pˆêƒoƒbƒtƒ@ifloat‚É•ÏŠ·j
+	std::vector<float> tempBuffer; // åˆ†æç”¨ä¸€æ™‚ãƒãƒƒãƒ•ã‚¡ï¼ˆfloatã«å¤‰æ›ï¼‰
 
 	kiss_fftr_cfg fftConfig = nullptr;
-	int fftSize = 1024; // ƒEƒBƒ“ƒhƒEƒTƒCƒY
-	int spectrumSize = fftSize / 2 + 1; // ƒXƒyƒNƒgƒ‹ƒTƒCƒY
+	int fftSize = 1024; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+	int spectrumSize = fftSize / 2 + 1; // ã‚¹ãƒšã‚¯ãƒˆãƒ«ã‚µã‚¤ã‚º
 
-	// Ä¶‚²‚Æ‚Ì‘Š‘ÎˆÊ’uŒvZ—p‚ÌŠî€
+	// å†ç”Ÿã”ã¨ã®ç›¸å¯¾ä½ç½®è¨ˆç®—ç”¨ã®åŸºæº–
 	uint64_t baseSamplesPlayed = 0;
 	bool baseCaptured = false;
 };

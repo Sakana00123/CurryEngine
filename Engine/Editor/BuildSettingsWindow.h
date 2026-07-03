@@ -14,15 +14,15 @@ public:
 	}
 
 
-	/** @brief ƒEƒBƒ“ƒhƒE‚ğ•\¦‚µ‚Ü‚·B*/
+	/** @brief ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚*/
 	void Show();
 
-	/** @brief GUI ‚ğ•`‰æ‚µ‚Ü‚·B*/
+	/** @brief GUI ã‚’æç”»ã—ã¾ã™ã€‚*/
 	void DrawGUI();
 
 private:
 
-	// --- Build/Package i’» ---
+	// --- Build/Package é€²æ— ---
 	struct ProcessProgress
 	{
 		std::vector<std::string> logs;
@@ -33,51 +33,51 @@ private:
 	};
 
 	std::mutex      m_progressMutex;
-	ProcessProgress m_buildProgress;    // RunBuild() —p
-	ProcessProgress m_packageProgress;  // PackageBuildOutput() —p
+	ProcessProgress m_buildProgress;    // RunBuild() ç”¨
+	ProcessProgress m_packageProgress;  // PackageBuildOutput() ç”¨
 
 #ifdef USE_IMGUI
 
-	/** @brief İ’è‚ğ•`‰æ‚µ‚Ü‚·B*/
+	/** @brief è¨­å®šã‚’æç”»ã—ã¾ã™ã€‚*/
 	void DrawSettings();
 
-	/** @brief ƒrƒ‹ƒh‚ÉŠÜ‚ß‚éƒV[ƒ“‚ÌƒZƒŒƒNƒ^‚ğ•`‰æ‚µ‚Ü‚·B*/
+	/** @brief ãƒ“ãƒ«ãƒ‰ã«å«ã‚ã‚‹ã‚·ãƒ¼ãƒ³ã®ã‚»ãƒ¬ã‚¯ã‚¿ã‚’æç”»ã—ã¾ã™ã€‚*/
 	void DrawScenesInBuild(const char* label);
 
-	/** @brief ƒRƒs[‚·‚éƒtƒ@ƒCƒ‹‚ÌƒZƒŒƒNƒ^‚ğ•`‰æ‚µ‚Ü‚·B*/
+	/** @brief ã‚³ãƒ”ãƒ¼ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚»ãƒ¬ã‚¯ã‚¿ã‚’æç”»ã—ã¾ã™ã€‚*/
 	bool DrawFileSelector(const char* label, std::string& path, const char* filter = "*.*");
 
-	/** @brief ƒfƒBƒŒƒNƒgƒŠƒZƒŒƒNƒ^‚ğ•`‰æ‚µ‚Ü‚·B*/
+	/** @brief ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚»ãƒ¬ã‚¯ã‚¿ã‚’æç”»ã—ã¾ã™ã€‚*/
 	bool DrawDirectorySelector(const char* label, std::string& path);
 
-	/** @brief ƒrƒ‹ƒhƒ{ƒ^ƒ“‚ğ•`‰æ‚µ‚Ü‚·B*/
+	/** @brief ãƒ“ãƒ«ãƒ‰ãƒœã‚¿ãƒ³ã‚’æç”»ã—ã¾ã™ã€‚*/
 	void DrawBuildButton();
 
-	/** @brief ƒrƒ‹ƒh/ƒpƒbƒP[ƒWi’»ƒpƒlƒ‹‚ğ•`‰æ‚µ‚Ü‚·B*/
+	/** @brief ãƒ“ãƒ«ãƒ‰/ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸é€²æ—ãƒ‘ãƒãƒ«ã‚’æç”»ã—ã¾ã™ã€‚*/
 	void DrawProgressPanel(const char* id, const ProcessProgress& prog, bool isRunning);
 
 #endif // USE_IMGUI
 
-	/** @brief ƒrƒ‹ƒhİ’è‚ğ•Û‘¶‚µ‚Ü‚·B*/
+	/** @brief ãƒ“ãƒ«ãƒ‰è¨­å®šã‚’ä¿å­˜ã—ã¾ã™ã€‚*/
 	void SaveBuildSettings();
-	/** @brief ƒrƒ‹ƒhİ’è‚ğ“Ç‚İ‚İ‚Ü‚·B*/
+	/** @brief ãƒ“ãƒ«ãƒ‰è¨­å®šã‚’èª­ã¿è¾¼ã¿ã¾ã™ã€‚*/
 	void LoadBuildSettings();
 
 
-	/** @brief ƒrƒ‹ƒh‚ğÀs‚µ‚Ü‚·B*/
+	/** @brief ãƒ“ãƒ«ãƒ‰ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚*/
 	void RunBuild();
 
-	/** @brief ƒrƒ‹ƒho—Í‚ğƒpƒbƒP[ƒW‰»‚µ‚Ü‚·B*/
+	/** @brief ãƒ“ãƒ«ãƒ‰å‡ºåŠ›ã‚’ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åŒ–ã—ã¾ã™ã€‚*/
 	void PackageBuildOutput();
 
 
-	bool m_showWindow = false; //!< ƒEƒBƒ“ƒhƒE‚Ì•\¦ƒtƒ‰ƒO
-	BuildSettings m_settings; //!< Œ»İ‚Ìƒrƒ‹ƒhİ’è
-	bool m_isBuilding = false; //!< ƒrƒ‹ƒh’†‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-	bool m_isPackaging = false; //!< ƒpƒbƒP[ƒW‰»’†‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	bool m_showWindow = false; //!< ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤ºãƒ•ãƒ©ã‚°
+	BuildSettings m_settings; //!< ç¾åœ¨ã®ãƒ“ãƒ«ãƒ‰è¨­å®š
+	bool m_isBuilding = false; //!< ãƒ“ãƒ«ãƒ‰ä¸­ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+	bool m_isPackaging = false; //!< ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åŒ–ä¸­ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 
-	std::string appName; //!< ƒAƒvƒŠƒP[ƒVƒ‡ƒ“–¼‚ÌƒLƒƒƒbƒVƒ…iImGui ‚Ì InputText —pj
-	std::string iconPath; //!< ƒAƒCƒRƒ“ƒpƒX‚ÌƒLƒƒƒbƒVƒ…iImGui ‚Ì InputText —pj
-	std::string outputDir; //!< o—ÍƒfƒBƒŒƒNƒgƒŠ‚ÌƒLƒƒƒbƒVƒ…iImGui ‚Ì InputText —pj
+	std::string appName; //!< ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³åã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ï¼ˆImGui ã® InputText ç”¨ï¼‰
+	std::string iconPath; //!< ã‚¢ã‚¤ã‚³ãƒ³ãƒ‘ã‚¹ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ï¼ˆImGui ã® InputText ç”¨ï¼‰
+	std::string outputDir; //!< å‡ºåŠ›ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ï¼ˆImGui ã® InputText ç”¨ï¼‰
 
 };

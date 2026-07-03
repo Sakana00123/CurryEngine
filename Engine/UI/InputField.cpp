@@ -8,7 +8,7 @@ REGISTER_COMPONENT_WITH_ATTRIBUTES(InputField, "UI", ComponentAttributes::Disall
 
 InputField::InputField() 
 {
-	//ƒJ[ƒ\ƒ‹ƒ‰ƒCƒ“¶¬
+	//ã‚«ãƒ¼ã‚½ãƒ«ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
 	auto device = Graphics::GetDevice();
 	cursorLine = std::make_unique<Sprite>(device);
 }
@@ -100,7 +100,7 @@ void InputField::OnUpdateSelected(BaseEventData* eventData)
 				}
 				tempStr.insert(cursorPos, inputStr);
 				size_t insertedLength = tempStr.length() - prevLength;
-				textComponent->SetText(tempStr);//Šm’è•¶š‚ğƒoƒbƒtƒ@‚É’Ç‰Á
+				textComponent->SetText(tempStr);//ç¢ºå®šæ–‡å­—ã‚’ãƒãƒƒãƒ•ã‚¡ã«è¿½åŠ 
 				CursorUpdate(static_cast<int>(insertedLength));
 			}
 			else if (wParam == VK_RETURN) {//Enter
@@ -111,8 +111,8 @@ void InputField::OnUpdateSelected(BaseEventData* eventData)
 				}
 				else if ((inputFlags & static_cast<int>(InputFlag::CommitOnEnter)) != 0)
 				{
-					// Šm’èˆ—i•K—v‚É‰‚¶‚ÄƒCƒxƒ“ƒg”­s‚È‚Çj
-					// ‚±‚±‚Å‚Í’Pƒ‚ÉƒtƒH[ƒJƒX‚ğŠO‚·—á
+					// ç¢ºå®šå‡¦ç†ï¼ˆå¿…è¦ã«å¿œã˜ã¦ã‚¤ãƒ™ãƒ³ãƒˆç™ºè¡Œãªã©ï¼‰
+					// ã“ã“ã§ã¯å˜ç´”ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’å¤–ã™ä¾‹
 					isFocus = false;
 					CursorUpdate();
 				}
@@ -146,12 +146,12 @@ void InputField::OnUpdateSelected(BaseEventData* eventData)
 void InputField::OnPointerDown(PointerEventData* eventData)
 {
 	Selectable::OnPointerDown(eventData);
-	// ƒNƒŠƒbƒNˆÊ’u‚ÉƒJ[ƒ\ƒ‹‚ğˆÚ“®
+	// ã‚¯ãƒªãƒƒã‚¯ä½ç½®ã«ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç§»å‹•
 	Text* textComponent = GetTextComponent();
 	if (!textComponent)
 		return;
 
-	// ‹éŒ`“à‚É‚¢‚é‚©ƒ`ƒFƒbƒN
+	// çŸ©å½¢å†…ã«ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 	if (!GetRectTransform()->Contains(eventData->position))
 		return;
 

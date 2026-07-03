@@ -27,7 +27,7 @@ namespace CurryEngine
 			ComPtr<ID3D11Resource> textureResource;
 			if (!LoadTextureFromFile(meta, textureView, textureResource))
 			{
-				LOG_ERROR(u8"ƒeƒNƒXƒ`ƒƒ‚ÌƒCƒ“ƒ|[ƒg‚É¸”s‚µ‚Ü‚µ‚½: " + meta.path.u8string());
+				LOG_ERROR(u8"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ: " + meta.path.u8string());
 				return nullptr;
 			}
 			ComPtr<ID3D11Texture2D> texture2D;
@@ -36,7 +36,7 @@ namespace CurryEngine
 			{
 				std::string hrStr = "HRESULT: " + std::to_string(hr);
 				std::u8string hrU8Str(hrStr.begin(), hrStr.end());
-				std::u8string errorMsg = u8"ƒŠƒ\[ƒX‚©‚ç ID3D11Texture2D ‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½: " + meta.path.u8string() + u8", " + hrU8Str;
+				std::u8string errorMsg = u8"ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ ID3D11Texture2D ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ: " + meta.path.u8string() + u8", " + hrU8Str;
 				LOG_ERROR(errorMsg);
 				return nullptr;
 			}
@@ -58,13 +58,13 @@ namespace CurryEngine
 			std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
 			HRESULT hr = S_OK;
 
-			// ƒCƒ“ƒ|[ƒgİ’è‚Ìæ“¾
+			// ã‚¤ãƒ³ãƒãƒ¼ãƒˆè¨­å®šã®å–å¾—
 			TextureImportSettings settings = meta.GetImportSettings<TextureImportSettings>();
 
-			// “Ç‚İ‚İŠÖ”‚Ìˆø”‚Ìİ’è
+			// èª­ã¿è¾¼ã¿é–¢æ•°ã®å¼•æ•°ã®è¨­å®š
 			ID3D11Device*						device			= Graphics::GetDevice();
 			std::wstring						filePathW		= filePath.wstring();
-			size_t								maxsize			= 0; // 0‚Í§ŒÀ‚È‚µ
+			size_t								maxsize			= 0; // 0ã¯åˆ¶é™ãªã—
 			D3D11_USAGE							usage			= D3D11_USAGE_DEFAULT;
 			unsigned int						bindFlags		= D3D11_BIND_SHADER_RESOURCE;
 			unsigned int						cpuAccessFlags	= 0;
@@ -75,7 +75,7 @@ namespace CurryEngine
 
 			if (extension == ".dds")
 			{
-				// DirectX::CreateDDSTextureFromFileEx ‚ğg—p‚µ‚ÄDDSƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚Ş
+				// DirectX::CreateDDSTextureFromFileEx ã‚’ä½¿ç”¨ã—ã¦DDSãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã‚€
 				hr = DirectX::CreateDDSTextureFromFileEx(
 					device,
 					filePathW.c_str(),
@@ -92,7 +92,7 @@ namespace CurryEngine
 			}
 			else
 			{
-				// DirectX::CreateWICTextureFromFileEx ‚ğg—p‚µ‚Ä‚»‚Ì‘¼‚ÌƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚Ş
+				// DirectX::CreateWICTextureFromFileEx ã‚’ä½¿ç”¨ã—ã¦ãã®ä»–ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã‚€
 				hr = DirectX::CreateWICTextureFromFileEx(
 					device,
 					filePathW.c_str(),
@@ -110,7 +110,7 @@ namespace CurryEngine
 			{
 				std::string hrStr = "HRESULT: " + std::to_string(hr);
 				std::u8string hrU8Str(hrStr.begin(), hrStr.end());
-				std::u8string errorMsg = u8"ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ¸”s: " + meta.path.u8string() + u8", " + hrU8Str;
+				std::u8string errorMsg = u8"ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿å¤±æ•—: " + meta.path.u8string() + u8", " + hrU8Str;
 				LOG_ERROR(errorMsg);
 				return false;
 			}

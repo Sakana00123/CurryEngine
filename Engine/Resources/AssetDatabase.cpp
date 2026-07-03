@@ -10,17 +10,17 @@ namespace CurryEngine
 {
 	namespace Resources
 	{
-		std::unordered_map<std::filesystem::path, AssetMeta> AssetDatabase::s_metaByPath; ///< ƒAƒZƒbƒgƒpƒX‚ğƒL[‚Æ‚µ‚½ƒAƒZƒbƒgƒƒ^ƒf[ƒ^‚Ìƒ}ƒbƒv
-		std::unordered_map<std::string, std::filesystem::path> AssetDatabase::s_pathById; ///< ƒAƒZƒbƒgID‚ğƒL[‚Æ‚µ‚½ƒAƒZƒbƒgƒpƒX‚Ìƒ}ƒbƒv
-		std::filesystem::path AssetDatabase::s_assetRootDir; ///< ƒAƒZƒbƒg‚Ìƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX
-		bool AssetDatabase::s_initialized = false; ///< ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+		std::unordered_map<std::filesystem::path, AssetMeta> AssetDatabase::s_metaByPath; ///< ã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã‚’ã‚­ãƒ¼ã¨ã—ãŸã‚¢ã‚»ãƒƒãƒˆãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒãƒ—
+		std::unordered_map<std::string, std::filesystem::path> AssetDatabase::s_pathById; ///< ã‚¢ã‚»ãƒƒãƒˆIDã‚’ã‚­ãƒ¼ã¨ã—ãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ãƒãƒƒãƒ—
+		std::filesystem::path AssetDatabase::s_assetRootDir; ///< ã‚¢ã‚»ãƒƒãƒˆã®ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹
+		bool AssetDatabase::s_initialized = false; ///< ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 
 		namespace
 		{
 			std::filesystem::path NormalizePath(const std::filesystem::path& path)
 			{
 				std::filesystem::path normalized = path.lexically_normal();
-				normalized.make_preferred(); // OS‚ÉˆË‘¶‚µ‚½ƒpƒX‹æØ‚è•¶š‚É•ÏŠ·
+				normalized.make_preferred(); // OSã«ä¾å­˜ã—ãŸãƒ‘ã‚¹åŒºåˆ‡ã‚Šæ–‡å­—ã«å¤‰æ›
 				return normalized;
 			}
 		}
@@ -32,10 +32,10 @@ namespace CurryEngine
 
 			s_assetWatcher.Start(s_assetRootDir);
 
-			// Šù‘¶‚Ì.metaƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚Åƒf[ƒ^ƒx[ƒX‚ğ\’z
+			// æ—¢å­˜ã®.metaãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’æ§‹ç¯‰
 			LoadExistingMetaFiles();
 
-			// ƒf[ƒ^ƒx[ƒX‚Ì®‡«‚ğŒŸØ
+			// ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æ•´åˆæ€§ã‚’æ¤œè¨¼
 			ValidateOnStartup();
 			s_initialized = true;
 		}
@@ -60,12 +60,12 @@ namespace CurryEngine
 			{
 				if (entry.path().extension() == ".meta")
 				{
-					// ‘Î‰‚·‚éÀƒtƒ@ƒCƒ‹‚ÌƒpƒXi.meta‚ğœ‚¢‚½ƒpƒXj
+					// å¯¾å¿œã™ã‚‹å®Ÿãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ï¼ˆ.metaã‚’é™¤ã„ãŸãƒ‘ã‚¹ï¼‰
 					std::filesystem::path assetPath = entry.path();
-					assetPath = assetPath.native().substr(0, assetPath.native().size() - 5); // ".meta"‚ğœ‹
+					assetPath = assetPath.native().substr(0, assetPath.native().size() - 5); // ".meta"ã‚’é™¤å»
 
 					AssetMeta meta = AssetMetaSerializer::Load(assetPath);
-					if (!meta.id.IsValid()) continue; // “Ç‚İ‚İ¸”s‚ÍƒXƒLƒbƒv
+					if (!meta.id.IsValid()) continue; // èª­ã¿è¾¼ã¿å¤±æ•—ã¯ã‚¹ã‚­ãƒƒãƒ—
 
 					s_metaByPath[assetPath] = meta;
 					s_pathById[meta.id.ToString()] = assetPath;
@@ -75,40 +75,40 @@ namespace CurryEngine
 
 		void AssetDatabase::ValidateOnStartup()
 		{
-			std::vector<std::filesystem::path> orphanedMetas;   // .meta‚Í‚ ‚é‚ªÀƒtƒ@ƒCƒ‹‚ª‚È‚¢
-			std::vector<std::filesystem::path> missingMetas;    // Àƒtƒ@ƒCƒ‹‚Í‚ ‚é‚ª.meta‚ª‚È‚¢
-			std::unordered_map<std::string, std::vector<std::filesystem::path>> duplicateIds; // IDd•¡
+			std::vector<std::filesystem::path> orphanedMetas;   // .metaã¯ã‚ã‚‹ãŒå®Ÿãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã„
+			std::vector<std::filesystem::path> missingMetas;    // å®Ÿãƒ•ã‚¡ã‚¤ãƒ«ã¯ã‚ã‚‹ãŒ.metaãŒãªã„
+			std::unordered_map<std::string, std::vector<std::filesystem::path>> duplicateIds; // IDé‡è¤‡
 
-			// s_metaByPath‚ğ‘–¸
+			// s_metaByPathã‚’èµ°æŸ»
 			for (auto& [path, meta] : s_metaByPath)
 			{
-				// Àƒtƒ@ƒCƒ‹‚Ì‘¶İŠm”F
+				// å®Ÿãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ç¢ºèª
 				if (!std::filesystem::exists(path))
 					orphanedMetas.push_back(path);
 
-				// IDd•¡Šm”F
+				// IDé‡è¤‡ç¢ºèª
 				duplicateIds[meta.id.ToString()].push_back(path);
 			}
 
-			// ƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚ğ‘–¸‚µ‚Ä.meta‚Ì‚È‚¢Àƒtƒ@ƒCƒ‹‚ğŒŸo
+			// ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥ä¸‹ã‚’èµ°æŸ»ã—ã¦.metaã®ãªã„å®Ÿãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œå‡º
 			for (const auto& entry : std::filesystem::recursive_directory_iterator(s_assetRootDir))
 			{
 				std::filesystem::path path = entry.path();
 
-				// .metaƒtƒ@ƒCƒ‹©‘Ì‚ÍƒXƒLƒbƒv
+				// .metaãƒ•ã‚¡ã‚¤ãƒ«è‡ªä½“ã¯ã‚¹ã‚­ãƒƒãƒ—
 				if (path.extension() == ".meta") continue;
 
 				if (s_metaByPath.find(path) == s_metaByPath.end())
 					missingMetas.push_back(path);
 			}
 
-			// Œ‹‰Ê‚ğƒƒOo—Í
+			// çµæœã‚’ãƒ­ã‚°å‡ºåŠ›
 			for (const auto& path : orphanedMetas)
 				LOG_WARNING(u8"Orphaned .meta (no asset file): " + path.u8string());
 
 			for (const auto& path : missingMetas)
 			{
-				// ©“®C•œ: .meta‚ª‚È‚¢‚È‚çV‹KImport
+				// è‡ªå‹•ä¿®å¾©: .metaãŒãªã„ãªã‚‰æ–°è¦Import
 				LOG_WARNING(u8"Missing .meta, auto-importing: " + path.u8string());
 				Import(path);
 			}
@@ -117,7 +117,7 @@ namespace CurryEngine
 			{
 				if (paths.size() > 1)
 				{
-					// IDd•¡‚Íd‘å‚È–â‘è‚È‚Ì‚ÅƒGƒ‰[‚Æ‚µ‚ÄƒƒOo—Í
+					// IDé‡è¤‡ã¯é‡å¤§ãªå•é¡Œãªã®ã§ã‚¨ãƒ©ãƒ¼ã¨ã—ã¦ãƒ­ã‚°å‡ºåŠ›
 					LOG_ERROR("Duplicate AssetId detected: " + id);
 					for (const auto& p : paths)
 						LOG_ERROR(u8"  -> " + p.u8string());
@@ -132,15 +132,15 @@ namespace CurryEngine
 
 			AssetMeta meta = AssetMetaSerializer::Load(normalizedPath);
 			if (meta.id.IsValid()) {
-				// .meta‚ª‚ ‚é = Šù‘¶ƒAƒZƒbƒgBID‚ğÄ—˜—p
+				// .metaãŒã‚ã‚‹ = æ—¢å­˜ã‚¢ã‚»ãƒƒãƒˆã€‚IDã‚’å†åˆ©ç”¨
 			}
 			else {
-				// .meta‚ª–³‚¢ = V‹KƒAƒZƒbƒgBID‚ğV‹K”­s
+				// .metaãŒç„¡ã„ = æ–°è¦ã‚¢ã‚»ãƒƒãƒˆã€‚IDã‚’æ–°è¦ç™ºè¡Œ
 				AssetId newId(Utils::IdGenerator::GenerateAssetId());
 				AssetType inferredType = AssetTypeUtils::DetectFromExtension(
-					normalizedPath.extension().string()); // Šg’£q‚©‚ç„‘ª
+					normalizedPath.extension().string()); // æ‹¡å¼µå­ã‹ã‚‰æ¨æ¸¬
 				bool isFolder = std::filesystem::is_directory(normalizedPath);
-				nlohmann::json defaultSettings = nlohmann::json(); // ƒfƒtƒHƒ‹ƒg‚ÌƒCƒ“ƒ|[ƒgİ’èi•K—v‚É‰‚¶‚Ä•ÏXj
+				nlohmann::json defaultSettings = nlohmann::json(); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆè¨­å®šï¼ˆå¿…è¦ã«å¿œã˜ã¦å¤‰æ›´ï¼‰
 
 				meta = AssetMeta(newId, normalizedPath, inferredType, isFolder, defaultSettings);
 				AssetMetaSerializer::Save(meta);
@@ -207,9 +207,9 @@ namespace CurryEngine
 			s_metaByPath.clear();
 			s_pathById.clear();
 			
-			// ƒAƒZƒbƒgƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚Ì‚·‚×‚Ä‚Ì.metaƒtƒ@ƒCƒ‹‚ğÄ“Ç‚İ‚İ‚µ‚Äƒf[ƒ^ƒx[ƒX‚ğÄ\’z
+			// ã‚¢ã‚»ãƒƒãƒˆãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥ä¸‹ã®ã™ã¹ã¦ã®.metaãƒ•ã‚¡ã‚¤ãƒ«ã‚’å†èª­ã¿è¾¼ã¿ã—ã¦ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’å†æ§‹ç¯‰
 			LoadExistingMetaFiles();
-			// ƒf[ƒ^ƒx[ƒX‚Ì®‡«‚ğÄŒŸØ
+			// ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æ•´åˆæ€§ã‚’å†æ¤œè¨¼
 			ValidateOnStartup();
 		}
 
@@ -221,7 +221,7 @@ namespace CurryEngine
 			auto it = s_metaByPath.find(normalizedOldPath);
 			if (it == s_metaByPath.end())
 			{
-				// ŒÃ‚¢ƒpƒX‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+				// å¤ã„ãƒ‘ã‚¹ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 				LOG_WARNING((u8"[AssetDatabase] Rename failed: old path not found: " + normalizedOldPath.u8string()));
 				return;
 			}
@@ -235,8 +235,8 @@ namespace CurryEngine
 			meta.path = normalizedNewPath;
 			s_metaByPath.erase(it);
 			s_metaByPath[normalizedNewPath] = meta;
-			s_pathById[meta.id.ToString()] = normalizedNewPath; // ID‚Í•Ï‚í‚ç‚È‚¢‚Ì‚ÅAƒpƒX‚¾‚¯XV
-			// •ÏXŒã‚ÌƒpƒX‚Åƒƒ^ƒf[ƒ^‚ğ•Û‘¶
+			s_pathById[meta.id.ToString()] = normalizedNewPath; // IDã¯å¤‰ã‚ã‚‰ãªã„ã®ã§ã€ãƒ‘ã‚¹ã ã‘æ›´æ–°
+			// å¤‰æ›´å¾Œã®ãƒ‘ã‚¹ã§ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜
 			AssetMetaSerializer::Save(meta);
 		}
 
@@ -253,8 +253,8 @@ namespace CurryEngine
 					AssetMeta meta = it->second;
 					std::filesystem::path newPath = normalizedNewPrefix / std::filesystem::relative(it->first, normalizedOldPrefix);
 					meta.path = newPath;
-					entriesToRename.emplace_back(newPath, meta); // V‚µ‚¢ƒL[‚ÆXV‚³‚ê‚½ƒƒ^ƒf[ƒ^‚ğ•Û‘¶
-					// ŒÃ‚¢ƒƒ^ƒtƒ@ƒCƒ‹‚ğíœ
+					entriesToRename.emplace_back(newPath, meta); // æ–°ã—ã„ã‚­ãƒ¼ã¨æ›´æ–°ã•ã‚ŒãŸãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜
+					// å¤ã„ãƒ¡ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤
 					std::filesystem::path oldMetaFilePath = AssetMetaSerializer::MetaPathFor(it->first);
 					if (std::filesystem::exists(oldMetaFilePath))
 					{
@@ -264,15 +264,15 @@ namespace CurryEngine
 					{
 						LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + oldMetaFilePath.u8string());
 					}
-					it = s_metaByPath.erase(it); // Œã‚ÅV‚µ‚¢ƒL[‚ÅÄ‘}“ü‚·‚é‚½‚ßA‚±‚±‚Åíœ
+					it = s_metaByPath.erase(it); // å¾Œã§æ–°ã—ã„ã‚­ãƒ¼ã§å†æŒ¿å…¥ã™ã‚‹ãŸã‚ã€ã“ã“ã§å‰Šé™¤
 				}
 				else ++it;
 			}
 			for (const auto& [newPath, meta] : entriesToRename)
 			{
-				AssetMetaSerializer::Save(meta); // ƒƒ^ƒf[ƒ^‚ğ•Û‘¶
-				s_metaByPath[newPath] = meta; // V‚µ‚¢ƒL[‚ÅÄ‘}“ü
-				s_pathById[meta.id.ToString()] = newPath; // ID‚Í•Ï‚í‚ç‚È‚¢‚Ì‚ÅAƒpƒX‚¾‚¯XV
+				AssetMetaSerializer::Save(meta); // ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜
+				s_metaByPath[newPath] = meta; // æ–°ã—ã„ã‚­ãƒ¼ã§å†æŒ¿å…¥
+				s_pathById[meta.id.ToString()] = newPath; // IDã¯å¤‰ã‚ã‚‰ãªã„ã®ã§ã€ãƒ‘ã‚¹ã ã‘æ›´æ–°
 			}
 		}
 
@@ -291,7 +291,7 @@ namespace CurryEngine
 			auto it = s_metaByPath.find(normalizedPath);
 			if (it != s_metaByPath.end())
 			{
-				// ƒƒ^ƒf[ƒ^ƒtƒ@ƒCƒ‹‚ğíœ
+				// ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤
 				std::filesystem::path metaFilePath = AssetMetaSerializer::MetaPathFor(normalizedPath);
 				if (std::filesystem::exists(metaFilePath))
 				{
@@ -302,7 +302,7 @@ namespace CurryEngine
 					LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + metaFilePath.u8string());
 				}
 
-				// ƒ}ƒbƒv‚©‚çíœ
+				// ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤
 				s_pathById.erase(it->second.id.ToString());
 				s_metaByPath.erase(it);
 			}
@@ -315,7 +315,7 @@ namespace CurryEngine
 			{
 				if (it->first.string().starts_with(normalizedPrefix.string()))
 				{
-					// ƒƒ^ƒf[ƒ^ƒtƒ@ƒCƒ‹‚ğíœ
+					// ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤
 					std::filesystem::path metaFilePath = AssetMetaSerializer::MetaPathFor(it->first);
 					if (std::filesystem::exists(metaFilePath))
 					{
@@ -325,9 +325,9 @@ namespace CurryEngine
 					{
 						LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + metaFilePath.u8string());
 					}
-					// ƒ}ƒbƒv‚©‚çíœ
+					// ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤
 					s_pathById.erase(it->second.id.ToString());
-					it = s_metaByPath.erase(it); // erase‚ÍƒCƒeƒŒ[ƒ^‚ğ•Ô‚·‚Ì‚ÅAŸ‚Ì—v‘f‚Éi‚Ş
+					it = s_metaByPath.erase(it); // eraseã¯ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’è¿”ã™ã®ã§ã€æ¬¡ã®è¦ç´ ã«é€²ã‚€
 				}
 				else ++it;
 			}

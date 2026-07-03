@@ -4,10 +4,10 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include <filesystem>
 
-#include <assimp/Importer.hpp>		 // C++ƒCƒ“ƒ^[ƒtƒF[ƒX
-#include <assimp/Exporter.hpp> 		 // C++ƒCƒ“ƒ^[ƒtƒF[ƒX
-#include <assimp/scene.h>            // o—Íƒf[ƒ^\‘¢
-#include <assimp/postprocess.h>      // Œãˆ—ƒtƒ‰ƒO
+#include <assimp/Importer.hpp>		 // C++ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
+#include <assimp/Exporter.hpp> 		 // C++ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
+#include <assimp/scene.h>            // å‡ºåŠ›ãƒ‡ãƒ¼ã‚¿æ§‹é€ 
+#include <assimp/postprocess.h>      // å¾Œå‡¦ç†ãƒ•ãƒ©ã‚°
 #include <Engine\Resources\AssetModel.h>
 
 namespace CurryEngine
@@ -18,7 +18,7 @@ namespace CurryEngine
 		{
 			std::shared_ptr<AssetModel> modelResource = std::make_shared<AssetModel>();
 
-			// TODO: ƒCƒ“ƒ|[ƒ^[‚ğŠg’£‚µ‚ÄAFBX‚âOBJ‚È‚Ç‚Ì‘¼‚ÌŒ`®‚àƒTƒ|[ƒg‚·‚é‚æ‚¤‚É‚·‚é
+			// TODO: ã‚¤ãƒ³ãƒãƒ¼ã‚¿ãƒ¼ã‚’æ‹¡å¼µã—ã¦ã€FBXã‚„OBJãªã©ã®ä»–ã®å½¢å¼ã‚‚ã‚µãƒãƒ¼ãƒˆã™ã‚‹ã‚ˆã†ã«ã™ã‚‹
 #if 0
 			if (std::filesystem::path(meta.path).extension() == ".gltf" || std::filesystem::path(meta.path).extension() == ".glb")
 			{
@@ -29,7 +29,7 @@ namespace CurryEngine
 					return nullptr;
 				}
 
-				// ƒŠƒ\[ƒX‚Ìì¬‚ÆƒAƒbƒvƒ[ƒh
+				// ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆã¨ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
 				auto device = Graphics::GetDevice();
 				modelResource->CreateAndUploadResources(device);
 			}

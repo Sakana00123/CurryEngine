@@ -46,20 +46,20 @@
 
 ObjectManager::ObjectManager(Scene* scene) : scene(scene), selectNode(nullptr), inspectorNode(nullptr)
 {
-	// ‘I‘ğŠÇ—‚Ì‰Šú‰»
+	// é¸æŠç®¡ç†ã®åˆæœŸåŒ–
 	selection = new EditorSelection();
 }
 
 ObjectManager::~ObjectManager()
 {
-	// ‘I‘ğŠÇ—ƒIƒuƒWƒFƒNƒg‚Ìíœ
+	// é¸æŠç®¡ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰Šé™¤
 	if (selection) {
 		delete selection;
 		selection = nullptr;
 	}
 
 
-	// ‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ğíœ
+	// ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤
 	objects.clear();
 }
 
@@ -68,25 +68,25 @@ void ObjectManager::BeginFrame()
 	std::function<void(GameObject*)> BeginFrame = [&](GameObject* object)
 		{
 			object->BeginFrame();
-			// q‚ğƒRƒs[‚µ‚ÄˆÀ‘S‚Éƒ‹[ƒv
+			// å­ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦å®‰å…¨ã«ãƒ«ãƒ¼ãƒ—
 			auto& childrenCopy = object->children;
 			for (auto child : childrenCopy) {
 				BeginFrame(child);
 			}
 		};
 
-	// e‚ğ‚½‚È‚¢ƒIƒuƒWƒFƒNƒg‚É‘Î‚µ‚ÄBeginFrame‚ğŒÄ‚Ño‚·
+	// è¦ªã‚’æŒãŸãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦BeginFrameã‚’å‘¼ã³å‡ºã™
 	for (int i = 0; i < objects.size(); i++) {
 		auto& object = objects[i];
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌBeginFrame‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
+		// è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®BeginFrameã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
-		// e‚ğ‚½‚È‚¢ƒIƒuƒWƒFƒNƒg‚É‘Î‚µ‚ÄBeginFrame‚ğŒÄ‚Ño‚·
+		// è¦ªã‚’æŒãŸãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦BeginFrameã‚’å‘¼ã³å‡ºã™
 		BeginFrame(object.get());
 	}
-	// PersistentObjectManager‚ÌƒIƒuƒWƒFƒNƒg‚àXV
+	// PersistentObjectManagerã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚‚æ›´æ–°
 	for (auto& object : PersistentObjectManager::GetObjects()) {
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
@@ -100,7 +100,7 @@ void ObjectManager::EndFrame()
 	std::function<void(GameObject*)> EndFrame = [&](GameObject* object)
 		{
 			object->EndFrame();
-			// q‚ğƒRƒs[‚µ‚ÄˆÀ‘S‚Éƒ‹[ƒv
+			// å­ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦å®‰å…¨ã«ãƒ«ãƒ¼ãƒ—
 			auto& childrenCopy = object->children;
 			for (auto child : childrenCopy) {
 				EndFrame(child);
@@ -123,12 +123,12 @@ void ObjectManager::EndFrame()
 
 void ObjectManager::Start()
 {
-	// ‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚É‘Î‚µ‚ÄŠJnˆ—‚ğŒÄ‚Ño‚·
+	// ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦é–‹å§‹å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	std::function<void(GameObject*)> Start = [&](GameObject* object)
 		{
-			object->AwakeComponents(); // ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌAwake‚ğŒÄ‚Ño‚·
-			object->RefreshActiveInHierarchy(); // ŠK‘w“à‚ÌƒAƒNƒeƒBƒuó‘Ô‚ğXV
-			// q‚ğƒRƒs[‚µ‚ÄˆÀ‘S‚Éƒ‹[ƒv
+			object->AwakeComponents(); // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®Awakeã‚’å‘¼ã³å‡ºã™
+			object->RefreshActiveInHierarchy(); // éšå±¤å†…ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’æ›´æ–°
+			// å­ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦å®‰å…¨ã«ãƒ«ãƒ¼ãƒ—
 			auto& childrenCopy = object->children;
 			for (auto child : childrenCopy) {
 				Start(child);
@@ -145,17 +145,17 @@ void ObjectManager::Start()
 
 void ObjectManager::PreUpdate(float deltaTime)
 {
-	// íœ—\–ñ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚ğíœ
+	// å‰Šé™¤äºˆç´„ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤
 	{
 		ProfileScopedSection_2(0, "EraseObjects", ImGuiControl::Profiler::Blue);
 
 		if (!erases.empty())
 		{
-			// ’x‰„íœ‚·‚éƒIƒuƒWƒFƒNƒg‚ğˆê“I‚É•Û‚·‚é‚½‚ß‚Ì”z—ñ
+			// é…å»¶å‰Šé™¤ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¸€æ™‚çš„ã«ä¿æŒã™ã‚‹ãŸã‚ã®é…åˆ—
 			std::vector<std::shared_ptr<GameObject>> delayErases;
 			for (auto& obj : erases) {
 				if (obj) {
-					// ’x‰„’l‚ª0‚æ‚è‘å‚«‚¢ê‡‚Ííœ‚ğ’x‚ç‚¹‚é
+					// é…å»¶å€¤ãŒ0ã‚ˆã‚Šå¤§ãã„å ´åˆã¯å‰Šé™¤ã‚’é…ã‚‰ã›ã‚‹
 					if (obj->destroyDelay > 0.0f) {
 						obj->destroyDelay -= deltaTime;
 						delayErases.push_back(obj);
@@ -163,28 +163,28 @@ void ObjectManager::PreUpdate(float deltaTime)
 				}
 			}
 			for (auto& obj : delayErases) {
-				// ’x‰„íœ‚·‚éƒIƒuƒWƒFƒNƒg‚ğíœ—\–ñƒŠƒXƒg‚©‚çœŠO
+				// é…å»¶å‰Šé™¤ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤äºˆç´„ãƒªã‚¹ãƒˆã‹ã‚‰é™¤å¤–
 				erases.erase(std::remove(erases.begin(), erases.end(), obj), erases.end());
 			}
 
-			// íœ‘O‚ÉƒIƒuƒWƒFƒNƒg‚ÌOnDestroy‚ğŒÄ‚Ño‚·
+			// å‰Šé™¤å‰ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®OnDestroyã‚’å‘¼ã³å‡ºã™
 			for (auto& obj : erases) {
 				if (obj) {
-					// ‘I‘ğó‘Ô‚©‚ç‰ğœ‚µ‚Ä shared_ptr ‚ÌQÆ‚ğŠmÀ‚Éè•ú‚·
+					// é¸æŠçŠ¶æ…‹ã‹ã‚‰è§£é™¤ã—ã¦ shared_ptr ã®å‚ç…§ã‚’ç¢ºå®Ÿã«æ‰‹æ”¾ã™
 					if (inspectorNode == obj.get()) {
 						Reset();
 					}
 
-					// ‘I‘ğó‘Ô‚©‚ç‰ğœ‚µ‚Ä shared_ptr ‚ÌQÆ‚ğŠmÀ‚Éè•ú‚·
+					// é¸æŠçŠ¶æ…‹ã‹ã‚‰è§£é™¤ã—ã¦ shared_ptr ã®å‚ç…§ã‚’ç¢ºå®Ÿã«æ‰‹æ”¾ã™
 					if (selection && selection->IsSelected(obj)) {
 						selection->Deselect(obj);
 					}
 					obj->OnDestroy();
-					obj->SetActive(false); // ƒIƒuƒWƒFƒNƒg‚ğ”ñƒAƒNƒeƒBƒu‚É‚·‚é
+					obj->SetActive(false); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
 				}
 			}
 
-			// ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ‚ÌƒIƒuƒWƒFƒNƒg‚ğíœ
+			// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤
 			objects.erase(std::remove_if(objects.begin(), objects.end(),
 				[&](const auto& obj) {
 					return std::find(erases.begin(), erases.end(), obj) != erases.end();
@@ -192,10 +192,10 @@ void ObjectManager::PreUpdate(float deltaTime)
 				objects.end());
 			erases.clear();
 
-			erases = delayErases; // ’x‰„íœ‚·‚éƒIƒuƒWƒFƒNƒg‚ğc‚·
+			erases = delayErases; // é…å»¶å‰Šé™¤ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ®‹ã™
 		}
 	}
-	// ƒRƒ“ƒ|[ƒlƒ“ƒgƒLƒƒƒbƒVƒ…‚ğXV
+	// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’æ›´æ–°
 	{
 		ProfileScopedSection_2(0, "UpdateComponentCache", ImGuiControl::Profiler::Color::Green);
 
@@ -213,7 +213,7 @@ void ObjectManager::PreUpdate(float deltaTime)
 
 void ObjectManager::Update(float elapsedTime)
 {
-	//—Dæ“x‚Åƒ\[ƒg
+	//å„ªå…ˆåº¦ã§ã‚½ãƒ¼ãƒˆ
 	{
 		ProfileScopedSection_2(0, "SortObjects", ImGuiControl::Profiler::Yellow);
 		CurryEngine::OrderManager::Sort(objects);
@@ -223,7 +223,7 @@ void ObjectManager::Update(float elapsedTime)
 		{
 			object->Update(elapsedTime);
 
-			//—Dæ“x‚Åƒ\[ƒg
+			//å„ªå…ˆåº¦ã§ã‚½ãƒ¼ãƒˆ
 			std::sort(object->children.begin(), object->children.end(),
 				[](GameObject* a, GameObject* b) {
 					if (!a) return false;
@@ -231,7 +231,7 @@ void ObjectManager::Update(float elapsedTime)
 					return a->priority < b->priority;
 				});
 
-			// ƒ\[ƒgŒã‚Ìq‚ğƒRƒs[‚µ‚Äƒ‹[ƒv
+			// ã‚½ãƒ¼ãƒˆå¾Œã®å­ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ãƒ«ãƒ¼ãƒ—
 			std::vector<GameObject*> childrenCopy = object->children;
 			for (auto child : childrenCopy) {
 
@@ -240,29 +240,29 @@ void ObjectManager::Update(float elapsedTime)
 		};
 	for (int i = 0; i < objects.size(); i++) {
 		auto& object = objects[i];
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌUpdate‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
+		// è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®Updateã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 
-		// Œv‘ªŠJn
+		// è¨ˆæ¸¬é–‹å§‹
 		ProfileScopedSection_3(0, object->name.c_str(), ImGuiControl::Profiler::Green);
 
-		// e‚ğ‚½‚È‚¢ƒIƒuƒWƒFƒNƒg‚É‘Î‚µ‚ÄUpdate‚ğŒÄ‚Ño‚·
+		// è¦ªã‚’æŒãŸãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦Updateã‚’å‘¼ã³å‡ºã™
 		Update(object.get());
 	}
 	for (auto& object : PersistentObjectManager::GetObjects()) {
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌUpdate‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
+		// è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®Updateã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 
-		// Œv‘ªŠJn
+		// è¨ˆæ¸¬é–‹å§‹
 		ProfileScopedSection_3(0, object->name.c_str(), ImGuiControl::Profiler::Dark);
 
-		// e‚ğ‚½‚È‚¢ƒIƒuƒWƒFƒNƒg‚É‘Î‚µ‚ÄUpdate‚ğŒÄ‚Ño‚·
+		// è¦ªã‚’æŒãŸãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦Updateã‚’å‘¼ã³å‡ºã™
 		Update(object.get());
 	}
 }
@@ -272,7 +272,7 @@ void ObjectManager::LateUpdate(float elapsedTime)
 	std::function<void(GameObject*)> LateUpdate = [&](GameObject* object)
 		{
 			object->LateUpdate(elapsedTime);
-			// q‚ğƒRƒs[‚µ‚ÄˆÀ‘S‚Éƒ‹[ƒv
+			// å­ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦å®‰å…¨ã«ãƒ«ãƒ¼ãƒ—
 			auto& childrenCopy = object->children;
 			for (auto child : childrenCopy) {
 				LateUpdate(child);
@@ -280,18 +280,18 @@ void ObjectManager::LateUpdate(float elapsedTime)
 		};
 	for (int i = 0; i < objects.size(); i++) {
 		auto& object = objects[i];
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌUpdate‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
+		// è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®Updateã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 		LateUpdate(object.get());
 	}
 	for (auto& object : PersistentObjectManager::GetObjects()) {
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌUpdate‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
+		// è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®Updateã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 		LateUpdate(object.get());
 	}
@@ -302,7 +302,7 @@ void ObjectManager::FixedUpdate(float fixedElapsedTime)
 	std::function<void(GameObject*)> FixedUpdate = [&](GameObject* object)
 		{
 			object->FixedUpdate(fixedElapsedTime);
-			// q‚ğƒRƒs[‚µ‚ÄˆÀ‘S‚Éƒ‹[ƒv
+			// å­ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦å®‰å…¨ã«ãƒ«ãƒ¼ãƒ—
 			auto& childrenCopy = object->children;
 			for (auto child : childrenCopy) {
 				FixedUpdate(child);
@@ -310,18 +310,18 @@ void ObjectManager::FixedUpdate(float fixedElapsedTime)
 		};
 	for (int i = 0; i < objects.size(); i++) {
 		auto& object = objects[i];
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌUpdate‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
+		// è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®Updateã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 		FixedUpdate(object.get());
 	}
 	for (auto& object : PersistentObjectManager::GetObjects()) {
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌUpdate‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
+		// è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®Updateã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 		FixedUpdate(object.get());
 	}
@@ -340,23 +340,23 @@ void ObjectManager::Render(RenderContext* rtx)
 			object->EndRendering(rtx);
 		};
 
-	std::vector<std::shared_ptr<GameObject>> renderQueue; // •`‰æ‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg‚ğŠi”[‚·‚éƒLƒ…[
+	std::vector<std::shared_ptr<GameObject>> renderQueue; // æç”»å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ ¼ç´ã™ã‚‹ã‚­ãƒ¥ãƒ¼
 
 	for (int i = 0; i < objects.size(); i++) {
 		auto& object = objects[i];
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// //e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌUpdate‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
-		// –³Œø‰»‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Í•`‰æ‚µ‚È‚¢
+		// //è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®Updateã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
+		// ç„¡åŠ¹åŒ–ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯æç”»ã—ãªã„
 		if (weakObj.expired()/* || weakObj.lock()->parent*/) continue;
 
-		// TODO: ‚ ‚Æ‚ÅƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‚·‚é‚±‚ÆBGltfModelRenderer‚Ìƒ}ƒeƒŠƒAƒ‹‚ÌƒAƒ‹ƒtƒ@ƒ‚[ƒh‚ğƒ`ƒFƒbƒN‚µ‚ÄA“§‰ßƒIƒuƒWƒFƒNƒg‚ÍŒã‚Å•`‰æ‚·‚é‚æ‚¤‚É‚·‚éB
+		// TODO: ã‚ã¨ã§ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ã“ã¨ã€‚GltfModelRendererã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®ã‚¢ãƒ«ãƒ•ã‚¡ãƒ¢ãƒ¼ãƒ‰ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ã€é€éã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯å¾Œã§æç”»ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
 		if (auto* gltfModelRenderer = object->GetComponent<GltfModelRenderer>()) {
 			auto& materials = gltfModelRenderer->GetModelAsset()->materials;
 			if (!materials.empty() && materials[0].data.alphaMode != 0) {
-				// “§‰ßƒIƒuƒWƒFƒNƒg‚Í’Êí‚Ì•`‰æƒpƒX‚Å•`‰æ‚³‚ê‚é‚½‚ßA‚±‚±‚Å‚ÍƒXƒLƒbƒv
-				renderQueue.push_back(object); // Œã‚Å•`‰æ‚·‚é‚½‚ß‚ÉƒLƒ…[‚É’Ç‰Á
+				// é€éã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯é€šå¸¸ã®æç”»ãƒ‘ã‚¹ã§æç”»ã•ã‚Œã‚‹ãŸã‚ã€ã“ã“ã§ã¯ã‚¹ã‚­ãƒƒãƒ—
+				renderQueue.push_back(object); // å¾Œã§æç”»ã™ã‚‹ãŸã‚ã«ã‚­ãƒ¥ãƒ¼ã«è¿½åŠ 
 				continue;
 			}
 		}
@@ -371,10 +371,10 @@ void ObjectManager::Render(RenderContext* rtx)
 
 
 	for (auto& object : PersistentObjectManager::GetObjects()) {
-		// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 		if (!object) continue;
 		std::weak_ptr<GameObject> weakObj = object;
-		// e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Íe‚ÌUpdate‚ÅXV‚³‚ê‚é‚Ì‚ÅƒXƒLƒbƒv
+		// è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¦ªã®Updateã§æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 		Render(rtx, object.get());
 	}
@@ -391,7 +391,7 @@ void ObjectManager::Draw(RenderContext* rtx)
 
 	std::vector<UIDrawCall> drawCalls;
 
-	// ƒtƒ‰ƒbƒgûWiÄ‹Aj
+	// ãƒ•ãƒ©ãƒƒãƒˆåé›†ï¼ˆå†å¸°ï¼‰
 	std::function<void(GameObject*, int, D3D11_RECT, bool)> Collect
 		= [&](GameObject* object, int parentZ, D3D11_RECT parentScissor, bool hasScissor)
 		{
@@ -400,11 +400,11 @@ void ObjectManager::Draw(RenderContext* rtx)
 
 			int myZ = parentZ + rt->localSortingOrder;
 
-			// ‚±‚ÌƒIƒuƒWƒFƒNƒg©g‚ªƒ}ƒXƒN‚ğ‚Â‚©Šm”F
+			// ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè‡ªèº«ãŒãƒã‚¹ã‚¯ã‚’æŒã¤ã‹ç¢ºèª
 			D3D11_RECT myScissor = parentScissor;
 			if (auto mask = object->GetComponent<Mask>()) {
 				D3D11_RECT r = mask->GetScissorRect();
-				// e‚Æ‚ÌŒğ·‚ğ‚Æ‚éiƒlƒXƒg‚µ‚½ƒ}ƒXƒN‚Ì³‚µ‚¢‹““®j
+				// è¦ªã¨ã®äº¤å·®ã‚’ã¨ã‚‹ï¼ˆãƒã‚¹ãƒˆã—ãŸãƒã‚¹ã‚¯ã®æ­£ã—ã„æŒ™å‹•ï¼‰
 				if (hasScissor) {
 					myScissor.left = max(parentScissor.left, r.left);
 					myScissor.top = max(parentScissor.top, r.top);
@@ -434,13 +434,13 @@ void ObjectManager::Draw(RenderContext* rtx)
 	collectRoots(objects);
 	collectRoots(PersistentObjectManager::GetObjects());
 
-	// ƒ\[ƒgistable_sort‚ÅƒqƒGƒ‰ƒ‹ƒL[‡‚ğˆÛj
+	// ã‚½ãƒ¼ãƒˆï¼ˆstable_sortã§ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ãƒ¼é †ã‚’ç¶­æŒï¼‰
 	std::stable_sort(drawCalls.begin(), drawCalls.end(),
 		[](const UIDrawCall& a, const UIDrawCall& b) {
 			return a.globalZ < b.globalZ;
 		});
 
-	// •`‰æ
+	// æç”»
 	for (auto& call : drawCalls) {
 		if (call.hasScissor) {
 			rtx->immediateContext->RSSetScissorRects(1, &call.scissorRect);
@@ -456,7 +456,7 @@ void ObjectManager::Draw(RenderContext* rtx)
 	}
 }
 
-// ¶ã(0,0) ‰E‰º(width,height)‚ğ‚»‚Ì‚Ü‚ÜNDC‚Éƒ}ƒbƒsƒ“ƒO‚·‚é³Ë‰e
+// å·¦ä¸Š(0,0) å³ä¸‹(width,height)ã‚’ãã®ã¾ã¾NDCã«ãƒãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹æ­£å°„å½±
 inline void Ortho2D(float left, float right, float bottom, float top, float zNear, float zFar, float* m)
 {
 	m[0] = 2.0f / (right - left);  m[1] = 0;                     m[2] = 0;                     m[3] = 0;
@@ -484,7 +484,7 @@ inline XMFLOAT4X4 ComputePivotMatrix(const std::vector<std::shared_ptr<GameObjec
 	}
 	center /= objects.size();
 
-	// ƒsƒ{ƒbƒgs—ñ‚Í’†SˆÊ’u‚ğ”½‰f‚µ‚½•½sˆÚ“®s—ñ
+	// ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã¯ä¸­å¿ƒä½ç½®ã‚’åæ˜ ã—ãŸå¹³è¡Œç§»å‹•è¡Œåˆ—
 	return XMFLOAT4X4{
 		1, 0, 0, 0,
 		0, 1, 0, 0,
@@ -510,26 +510,26 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 		}
 		if (!allHaveTransform)
 		{
-			return; // ‘I‘ğ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Ì’†‚ÉTransform‚ğ‚½‚È‚¢‚à‚Ì‚ª‚ ‚éê‡‚ÍƒMƒYƒ‚‚ğ•\¦‚µ‚È‚¢
+			return; // é¸æŠã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä¸­ã«Transformã‚’æŒãŸãªã„ã‚‚ã®ãŒã‚ã‚‹å ´åˆã¯ã‚®ã‚ºãƒ¢ã‚’è¡¨ç¤ºã—ãªã„
 		}
 
 		const auto* configPtr = EditorConfigManager::GetSceneViewConfig();
-		const SceneViewConfig& config = configPtr ? *configPtr : SceneViewConfig{}; // İ’è‚ª‚È‚¢ê‡‚ÍƒfƒtƒHƒ‹ƒg’l‚ğg—p
+		const SceneViewConfig& config = configPtr ? *configPtr : SceneViewConfig{}; // è¨­å®šãŒãªã„å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’ä½¿ç”¨
 		
 		ImGuizmo::MODE mode = static_cast<ImGuizmo::MODE>(config.guizmoPivotMode);
 
 		static ImGuizmo::OPERATION operation = ImGuizmo::TRANSLATE;
-		// ƒVƒ‡[ƒgƒJƒbƒgƒL[‚Å‘€ìƒ‚[ƒh‚ğØ‚è‘Ö‚¦‚é (Q: BOUNDS, W: TRANSLATE, E: ROTATE, R: SCALE)
-		// “Á’è‚ÌƒEƒBƒ“ƒhƒE‚ªƒtƒH[ƒJƒX‚³‚ê‚Ä‚é‚Æ‚«‚É‚Ì‚İƒVƒ‡[ƒgƒJƒbƒg‚ğ—LŒø‚É‚·‚é
+		// ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã§æ“ä½œãƒ¢ãƒ¼ãƒ‰ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ (Q: BOUNDS, W: TRANSLATE, E: ROTATE, R: SCALE)
+		// ç‰¹å®šã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚Œã¦ã‚‹ã¨ãã«ã®ã¿ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹
 		std::vector<std::string> allowedWindowNames = {
-			"Scene", // ƒV[ƒ“ƒrƒ…[‚Å—LŒø
-			"Hierarchy"  // ƒqƒGƒ‰ƒ‹ƒL[‚Å—LŒø
+			"Scene", // ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã§æœ‰åŠ¹
+			"Hierarchy"  // ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ãƒ¼ã§æœ‰åŠ¹
 		};
 		std::string currentWindowName = ImGui::GetCurrentWindow()->Name;
 		bool isShortcutAllowed = false;
 		for (const auto& allowedName : allowedWindowNames) {
 			if (currentWindowName.find(allowedName) != std::string::npos) {
-				// ƒtƒH[ƒJƒX‚³‚ê‚Ä‚¢‚éƒEƒBƒ“ƒhƒE‚ª‹–‰Â‚³‚ê‚½ƒEƒBƒ“ƒhƒE‚Ì‚¢‚¸‚ê‚©‚Éˆê’v‚·‚éê‡AƒVƒ‡[ƒgƒJƒbƒg‚ğ—LŒø‚É‚·‚é
+				// ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚Œã¦ã„ã‚‹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¨±å¯ã•ã‚ŒãŸã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã„ãšã‚Œã‹ã«ä¸€è‡´ã™ã‚‹å ´åˆã€ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹
 				isShortcutAllowed = true;
 				break;
 			}
@@ -554,7 +554,7 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 			}
 		}
 
-		// ƒXƒiƒbƒv’l
+		// ã‚¹ãƒŠãƒƒãƒ—å€¤
 		Vector3 snapValue{};
 		switch (operation)
 		{
@@ -563,7 +563,7 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 		case ImGuizmo::SCALE: if (config.scaleSnap.enabled) snapValue = config.scaleSnap.snapValue; break;
 		};
 
-		//UIŒn‚ÌƒIƒuƒWƒFƒNƒg‚ğ‘I‘ğ‚µ‚Ä‚¢‚é‚Æ‚«
+		//UIç³»ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é¸æŠã—ã¦ã„ã‚‹ã¨ã
 		bool hasRectTransform = false;
 		for (const auto& obj : objs)
 		{
@@ -575,20 +575,20 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 		}
 		if (hasRectTransform) 
 		{
-			return; // UIƒIƒuƒWƒFƒNƒg‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍƒMƒYƒ‚‚ğ•\¦‚µ‚È‚¢(ƒMƒYƒ‚”ñ‘Î‰‚Ì‚½‚ß)
+			return; // UIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒé¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚®ã‚ºãƒ¢ã‚’è¡¨ç¤ºã—ãªã„(ã‚®ã‚ºãƒ¢éå¯¾å¿œã®ãŸã‚)
 		}
 
-		static bool wasDragging = false; // ‘OƒtƒŒ[ƒ€‚ªƒhƒ‰ƒbƒO’†‚¾‚Á‚½‚©‚ğ•Û‘¶‚·‚é•Ï”
-		static std::vector<XMFLOAT4X4> initialWorlds; // ‘€ìŠJn‘O‚Ìƒ[ƒ‹ƒhs—ñ‚ğ•Û‘¶‚·‚é•Ï”
-		static XMFLOAT4X4 initialPivotMatrix; // ‘€ìŠJn‘O‚Ìƒsƒ{ƒbƒgs—ñ‚ğ•Û‘¶‚·‚é•Ï”
-		static XMFLOAT4X4 currentPivotMatrix; // Œ»İ‚Ìƒsƒ{ƒbƒgs—ñ‚ğ•Û‘¶‚·‚é•Ï”
+		static bool wasDragging = false; // å‰ãƒ•ãƒ¬ãƒ¼ãƒ ãŒãƒ‰ãƒ©ãƒƒã‚°ä¸­ã ã£ãŸã‹ã‚’ä¿å­˜ã™ã‚‹å¤‰æ•°
+		static std::vector<XMFLOAT4X4> initialWorlds; // æ“ä½œé–‹å§‹å‰ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ä¿å­˜ã™ã‚‹å¤‰æ•°
+		static XMFLOAT4X4 initialPivotMatrix; // æ“ä½œé–‹å§‹å‰ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã‚’ä¿å­˜ã™ã‚‹å¤‰æ•°
+		static XMFLOAT4X4 currentPivotMatrix; // ç¾åœ¨ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã‚’ä¿å­˜ã™ã‚‹å¤‰æ•°
 		XMFLOAT4X4 pivotMatrix = (wasDragging)
-			? currentPivotMatrix // ƒhƒ‰ƒbƒO’†‚ÍŒ»İ‚Ìƒsƒ{ƒbƒgs—ñ‚ğg—p‚·‚é
+			? currentPivotMatrix // ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã¯ç¾åœ¨ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã‚’ä½¿ç”¨ã™ã‚‹
 			: (objs.size() == 1)
-				? objs[0]->GetTransform()->GetWorld() // ’Pˆê‘I‘ğ‚Ìê‡‚Í‚»‚ÌƒIƒuƒWƒFƒNƒg‚Ìƒ[ƒ‹ƒhs—ñ‚ğƒsƒ{ƒbƒg‚É‚·‚é
-				: ComputePivotMatrix(objs); // •¡”‘I‘ğ‚Ìê‡‚Í‹¤’Ê‚ÌTransform‚Ìƒ[ƒ‹ƒhs—ñ‚ğƒsƒ{ƒbƒg‚É‚·‚é
+				? objs[0]->GetTransform()->GetWorld() // å˜ä¸€é¸æŠã®å ´åˆã¯ãã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ãƒ”ãƒœãƒƒãƒˆã«ã™ã‚‹
+				: ComputePivotMatrix(objs); // è¤‡æ•°é¸æŠã®å ´åˆã¯å…±é€šã®Transformã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ãƒ”ãƒœãƒƒãƒˆã«ã™ã‚‹
 
-		//ƒMƒYƒ‚
+		//ã‚®ã‚ºãƒ¢
 		ImGuizmo::SetDrawlist();
 
 		float left, top, right, bottom;
@@ -601,7 +601,7 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 		XMFLOAT4X4 deltaPivotMatrix;
 		XMStoreFloat4x4(&deltaPivotMatrix, XMMatrixIdentity());
 
-		// ƒMƒYƒ‚‚Ì‘€ì
+		// ã‚®ã‚ºãƒ¢ã®æ“ä½œ
 		bool manipulated = ImGuizmo::Manipulate(
 			&view._11,
 			&projection._11,
@@ -612,40 +612,40 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 			(snapValue.Length() > 0) ? &snapValue.x : nullptr
 		);
 
-		bool isDragging = ImGuizmo::IsUsing(); // ƒMƒYƒ‚‚ğ‘€ì’†‚©‚Ç‚¤‚©
+		bool isDragging = ImGuizmo::IsUsing(); // ã‚®ã‚ºãƒ¢ã‚’æ“ä½œä¸­ã‹ã©ã†ã‹
 
 
-		if (isDragging && !wasDragging) // ƒMƒYƒ‚‚Ì‘€ì‚ğŠJn‚µ‚½ƒtƒŒ[ƒ€
+		if (isDragging && !wasDragging) // ã‚®ã‚ºãƒ¢ã®æ“ä½œã‚’é–‹å§‹ã—ãŸãƒ•ãƒ¬ãƒ¼ãƒ 
 		{
 			initialWorlds.clear();
 			for (const auto& obj : objs) {
 				initialWorlds.push_back(obj->GetTransform()->GetWorld());
 			}
 			initialPivotMatrix = pivotMatrix;
-			currentPivotMatrix = pivotMatrix; // Œ»İ‚Ìƒsƒ{ƒbƒgs—ñ‚à‰Šú’l‚Å‰Šú‰»
+			currentPivotMatrix = pivotMatrix; // ç¾åœ¨ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã‚‚åˆæœŸå€¤ã§åˆæœŸåŒ–
 		}
 		
-		if (isDragging) // ƒMƒYƒ‚‚Ì‘€ì’†
+		if (isDragging) // ã‚®ã‚ºãƒ¢ã®æ“ä½œä¸­
 		{
-			currentPivotMatrix = pivotMatrix; // Œ»İ‚Ìƒsƒ{ƒbƒgs—ñ‚ğXV
+			currentPivotMatrix = pivotMatrix; // ç¾åœ¨ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã‚’æ›´æ–°
 
-			XMMATRIX initialPivot = XMLoadFloat4x4(&initialPivotMatrix); // ‘€ìŠJn‘O‚Ìƒsƒ{ƒbƒgs—ñ
+			XMMATRIX initialPivot = XMLoadFloat4x4(&initialPivotMatrix); // æ“ä½œé–‹å§‹å‰ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—
 			XMMATRIX initialPivotInv = XMMatrixInverse(nullptr, initialPivot);
-			XMMATRIX currentPivot = XMLoadFloat4x4(&pivotMatrix); // Œ»İ‚Ìƒsƒ{ƒbƒgs—ñ
+			XMMATRIX currentPivot = XMLoadFloat4x4(&pivotMatrix); // ç¾åœ¨ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—
 
-			// ƒsƒ{ƒbƒgs—ñ‚Ì•Ï‰»—Ê‚ğŒvZ‚·‚é‚½‚ß‚ÉAŒ»İ‚Ìƒsƒ{ƒbƒgs—ñ‚Æ‘€ìŠJn‘O‚Ìƒsƒ{ƒbƒgs—ñ‚Ì‹ts—ñ‚ğŠ|‚¯‡‚í‚¹‚é
-			// ‚±‚ê‚É‚æ‚èAƒsƒ{ƒbƒgs—ñ‚Ì•Ï‰»—Ê‚ª“¾‚ç‚ê‚éB‚±‚ê‚ğŠeƒIƒuƒWƒFƒNƒg‚Ìƒ[ƒ‹ƒhs—ñ‚É“K—p‚·‚é‚±‚Æ‚ÅAƒMƒYƒ‚‚Ì‘€ì‚ªƒIƒuƒWƒFƒNƒg‚É”½‰f‚³‚ê‚éB
-			XMMATRIX pivotDelta = XMMatrixMultiply(currentPivot, initialPivotInv); // ƒsƒ{ƒbƒgs—ñ‚Ì•Ï‰»—Ê‚ğŒvZ
+			// ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã®å¤‰åŒ–é‡ã‚’è¨ˆç®—ã™ã‚‹ãŸã‚ã«ã€ç¾åœ¨ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã¨æ“ä½œé–‹å§‹å‰ã®ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã®é€†è¡Œåˆ—ã‚’æ›ã‘åˆã‚ã›ã‚‹
+			// ã“ã‚Œã«ã‚ˆã‚Šã€ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã®å¤‰åŒ–é‡ãŒå¾—ã‚‰ã‚Œã‚‹ã€‚ã“ã‚Œã‚’å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã«é©ç”¨ã™ã‚‹ã“ã¨ã§ã€ã‚®ã‚ºãƒ¢ã®æ“ä½œãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«åæ˜ ã•ã‚Œã‚‹ã€‚
+			XMMATRIX pivotDelta = XMMatrixMultiply(currentPivot, initialPivotInv); // ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã®å¤‰åŒ–é‡ã‚’è¨ˆç®—
 			
 			for (size_t i = 0; i < objs.size(); i++) {
 				const auto& obj = objs[i];
 				Transform* t = obj->GetTransform();
 				XMMATRIX initialWorld = XMLoadFloat4x4(&initialWorlds[i]);
 
-				// ƒIƒuƒWƒFƒNƒg‚Ìƒ[ƒ‹ƒhs—ñ‚Éƒsƒ{ƒbƒgs—ñ‚Ì•Ï‰»—Ê‚ğ“K—p‚·‚é‚½‚ß‚ÉAƒsƒ{ƒbƒgs—ñ‚Ì•Ï‰»—Ê‚ÆƒIƒuƒWƒFƒNƒg‚Ì‰Šúƒ[ƒ‹ƒhs—ñ‚ğŠ|‚¯‡‚í‚¹‚é
+				// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã«ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã®å¤‰åŒ–é‡ã‚’é©ç”¨ã™ã‚‹ãŸã‚ã«ã€ãƒ”ãƒœãƒƒãƒˆè¡Œåˆ—ã®å¤‰åŒ–é‡ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’æ›ã‘åˆã‚ã›ã‚‹
 				XMMATRIX newWorld = XMMatrixMultiply(pivotDelta, initialWorld);
 
-				// V‚µ‚¢ƒ[ƒ‹ƒhs—ñ‚ğƒXƒP[ƒ‹A‰ñ“]AˆÊ’u‚É•ª‰ğ‚µ‚ÄƒIƒuƒWƒFƒNƒg‚ÌTransform‚É”½‰f‚³‚¹‚é
+				// æ–°ã—ã„ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ã‚¹ã‚±ãƒ¼ãƒ«ã€å›è»¢ã€ä½ç½®ã«åˆ†è§£ã—ã¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Transformã«åæ˜ ã•ã›ã‚‹
 				XMVECTOR newScale, newRot, newPos;
 				XMMatrixDecompose(&newScale, &newRot, &newPos, newWorld);
 				XMFLOAT3 s;
@@ -660,10 +660,10 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 			}
 		}
 
-		if (!isDragging && wasDragging) // ƒMƒYƒ‚‚Ì‘€ì‚ğI—¹‚µ‚½ƒtƒŒ[ƒ€
+		if (!isDragging && wasDragging) // ã‚®ã‚ºãƒ¢ã®æ“ä½œã‚’çµ‚äº†ã—ãŸãƒ•ãƒ¬ãƒ¼ãƒ 
 		{
-			if (initialWorlds.size() == objs.size()) { // •Û‘¶‚³‚ê‚Ä‚¢‚é‘€ìŠJn‘O‚Ìƒ[ƒ‹ƒhs—ñ‚Ì”‚ªŒ»İ‚Ì‘I‘ğƒIƒuƒWƒFƒNƒg‚Ì”‚Æˆê’v‚µ‚Ä‚¢‚é‚±‚Æ‚ğŠm”F
-				// History‚É•ÏX‚ğ‹L˜^‚·‚éB
+			if (initialWorlds.size() == objs.size()) { // ä¿å­˜ã•ã‚Œã¦ã„ã‚‹æ“ä½œé–‹å§‹å‰ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ•°ãŒç¾åœ¨ã®é¸æŠã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ•°ã¨ä¸€è‡´ã—ã¦ã„ã‚‹ã“ã¨ã‚’ç¢ºèª
+				// Historyã«å¤‰æ›´ã‚’è¨˜éŒ²ã™ã‚‹ã€‚
 				using namespace CurryEngine;
 				auto cmd = std::make_shared<CompoundCommand>("Transform Change");
 
@@ -686,16 +686,16 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 					XMStoreFloat3(&newS, newScale);
 					XMStoreFloat4(&newR, newRot);
 					XMStoreFloat3(&newP, newPos);
-					// •ÏX‘O‚Ì’l‚ğ•Û‘¶
+					// å¤‰æ›´å‰ã®å€¤ã‚’ä¿å­˜
 					Vector3 prevPos(oldP);
 					Vector3 prevScale(oldS);
 					Quaternion prevRot(oldR);
-					// •ÏXŒã‚Ì’l‚ğ•Û‘¶
+					// å¤‰æ›´å¾Œã®å€¤ã‚’ä¿å­˜
 					Vector3 newPosVec(newP);
 					Vector3 newScaleVec(newS);
 					Quaternion newRotQuat(newR);
 
-					// ƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ä—š—ğ‚É’Ç‰Á
+					// ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¦å±¥æ­´ã«è¿½åŠ 
 					cmd->AddCommand(std::make_unique<SetValueCommand<Vector3>>(
 						"Position",
 						[t](const Vector3& value) { t->SetWorldPosition(value); },
@@ -715,25 +715,25 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 						newRotQuat
 					));
 				}
-				// ƒRƒ}ƒ“ƒh‚ğ—š—ğ‚É’Ç‰Á
+				// ã‚³ãƒãƒ³ãƒ‰ã‚’å±¥æ­´ã«è¿½åŠ 
 				History::ExecuteCommand(cmd);
 			}
-			initialWorlds.clear(); // ‘€ìŠJn‘O‚Ìƒ[ƒ‹ƒhs—ñ‚Ì•Û‘¶‚ğƒNƒŠƒA
+			initialWorlds.clear(); // æ“ä½œé–‹å§‹å‰ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®ä¿å­˜ã‚’ã‚¯ãƒªã‚¢
 		}
 
-		wasDragging = isDragging; // Œ»İ‚Ìƒhƒ‰ƒbƒOó‘Ô‚ğ•Û‘¶‚µ‚Ä‚¨‚­
+		wasDragging = isDragging; // ç¾åœ¨ã®ãƒ‰ãƒ©ãƒƒã‚°çŠ¶æ…‹ã‚’ä¿å­˜ã—ã¦ãŠã
 
-		//// ƒMƒYƒ‚‚Ì‘€ì
+		//// ã‚®ã‚ºãƒ¢ã®æ“ä½œ
 		//if (manipulated)
 		//{
-		//	XMVECTOR Scale, Rotation, Position;//ƒ[ƒ‹ƒhÀ•W‚ğ•Û‘¶
+		//	XMVECTOR Scale, Rotation, Position;//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ä¿å­˜
 		//	XMMATRIX W = XMLoadFloat4x4(&world);
 
 		//	XMFLOAT3 s;
 		//	XMFLOAT4 r;
 		//	XMFLOAT3 p;
 
-		//	//ƒ[ƒ‹ƒhs—ñ‚ğŠe—v‘f‚É•ª‰ğ‚µAXV
+		//	//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’å„è¦ç´ ã«åˆ†è§£ã—ã€æ›´æ–°
 		//	if (XMMatrixDecompose(&Scale, &Rotation, &Position, W))
 		//	{
 		//		XMStoreFloat3(&s, Scale);
@@ -770,13 +770,13 @@ GameObject* ObjectManager::Find(const std::string& name)
 		if (scene)
 		{
 			for (auto& object : scene->objectManager->objects) {
-				// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+				// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				if (!object) continue;
-				// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+				// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				std::weak_ptr<GameObject> weakObj = object;
 				if (weakObj.expired()) continue;
 
-				// –¼‘O‚ªˆê’v‚µ‚½‚ç•Ô‚·
+				// åå‰ãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 				if (object->GetName() == name) {
 					return object.get();
 				}
@@ -784,13 +784,13 @@ GameObject* ObjectManager::Find(const std::string& name)
 		}
 	}
 	for (auto& object : PersistentObjectManager::GetObjects()) {
-		// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if (!object) continue;
-		// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+		// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		std::weak_ptr<GameObject> weakObj = object;
 		if (weakObj.expired()) continue;
 
-		// –¼‘O‚ªˆê’v‚µ‚½‚ç•Ô‚·
+		// åå‰ãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 		if (object->GetName() == name) {
 			return object.get();
 		}
@@ -804,12 +804,12 @@ GameObject* ObjectManager::Find(const ObjectId& id)
 		if (scene)
 		{
 			for (auto& object : scene->objectManager->objects) {
-				// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+				// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				if (!object) continue;
-				// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+				// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				std::weak_ptr<GameObject> weakObj = object;
 				if (weakObj.expired()) continue;
-				// ID‚ªˆê’v‚µ‚½‚ç•Ô‚·
+				// IDãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 				if (object->GetId() == id) {
 					return object.get();
 				}
@@ -817,12 +817,12 @@ GameObject* ObjectManager::Find(const ObjectId& id)
 		}
 	}
 	for (auto& object : PersistentObjectManager::GetObjects()) {
-		// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if (!object) continue;
-		// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+		// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		std::weak_ptr<GameObject> weakObj = object;
 		if (weakObj.expired()) continue;
-		// ID‚ªˆê’v‚µ‚½‚ç•Ô‚·
+		// IDãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 		if (object->GetId() == id) {
 			return object.get();
 		}
@@ -837,12 +837,12 @@ std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const std::string& name)
 		if (scene)
 		{
 			for (auto& object : scene->objectManager->objects) {
-				// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+				// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				if (!object) continue;
-				// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+				// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				std::weak_ptr<GameObject> weakObj = object;
 				if (weakObj.expired()) continue;
-				// –¼‘O‚ªˆê’v‚µ‚½‚ç•Ô‚·
+				// åå‰ãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 				if (object->GetName() == name) {
 					return object;
 				}
@@ -850,12 +850,12 @@ std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const std::string& name)
 		}
 	}
 	for (auto& object : PersistentObjectManager::GetObjects()) {
-		// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if (!object) continue;
-		// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+		// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		std::weak_ptr<GameObject> weakObj = object;
 		if (weakObj.expired()) continue;
-		// –¼‘O‚ªˆê’v‚µ‚½‚ç•Ô‚·
+		// åå‰ãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 		if (object->GetName() == name) {
 			return object;
 		}
@@ -869,12 +869,12 @@ std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const ObjectId& id)
 		if (scene)
 		{
 			for (auto& object : scene->objectManager->objects) {
-				// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+				// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				if (!object) continue;
-				// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+				// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 				std::weak_ptr<GameObject> weakObj = object;
 				if (weakObj.expired()) continue;
-				// ID‚ªˆê’v‚µ‚½‚ç•Ô‚·
+				// IDãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 				if (object->GetId() == id) {
 					return object;
 				}
@@ -882,12 +882,12 @@ std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const ObjectId& id)
 		}
 	}
 	for (auto& object : PersistentObjectManager::GetObjects()) {
-		// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if (!object) continue;
-		// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+		// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		std::weak_ptr<GameObject> weakObj = object;
 		if (weakObj.expired()) continue;
-		// ID‚ªˆê’v‚µ‚½‚ç•Ô‚·
+		// IDãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 		if (object->GetId() == id) {
 			return object;
 		}
@@ -918,49 +918,49 @@ std::shared_ptr<Component> ObjectManager::FindComponent(const ObjectId& id)
 GameObject* ObjectManager::FindInObjects(const std::string& name)
 {
 	for (auto& object : objects) {
-		// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if (!object) continue;
-		// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+		// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		std::weak_ptr<GameObject> weakObj = object;
 		if (weakObj.expired()) continue;
-		// –¼‘O‚ªˆê’v‚µ‚½‚ç•Ô‚·
+		// åå‰ãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 		if (object->GetName() == name) {
 			return object.get();
 		}
 	}
-	// Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚Ínullptr‚ğ•Ô‚·
+	// è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã¯nullptrã‚’è¿”ã™
 	return nullptr;
 }
 
 GameObject* ObjectManager::FindInObjects(const ObjectId& id)
 {
 	for (auto& object : objects) {
-		// ƒIƒuƒWƒFƒNƒg‚ªnullptr‚Ìê‡‚ÍƒXƒLƒbƒv
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullptrã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if (!object) continue;
-		// ãQÆ‚ªØ‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+		// å¼±å‚ç…§ãŒåˆ‡ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		std::weak_ptr<GameObject> weakObj = object;
 		if (weakObj.expired()) continue;
-		// ID‚ªˆê’v‚µ‚½‚ç•Ô‚·
+		// IDãŒä¸€è‡´ã—ãŸã‚‰è¿”ã™
 		if (object->GetId() == id) {
 			return object.get();
 		}
 	}
-	// Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚Ínullptr‚ğ•Ô‚·
+	// è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã¯nullptrã‚’è¿”ã™
 	return nullptr;
 }
 
 void ObjectManager::Destroy(const std::string& name) {
 	std::shared_ptr<GameObject> object = Find_Ptr(name);
 	if (object) {
-		// ‚·‚Å‚Éíœ—\’èƒŠƒXƒg‚É‚ ‚é‚©‚Ç‚¤‚©‚ğŠm”F
+		// ã™ã§ã«å‰Šé™¤äºˆå®šãƒªã‚¹ãƒˆã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèª
 		auto it = std::find(erases.begin(), erases.end(), object);
 		if (it != erases.end()) {
-			return; // ‚·‚Å‚Éíœ—\’èƒŠƒXƒg‚É‚ ‚éê‡‚Í‰½‚à‚µ‚È‚¢
+			return; // ã™ã§ã«å‰Šé™¤äºˆå®šãƒªã‚¹ãƒˆã«ã‚ã‚‹å ´åˆã¯ä½•ã‚‚ã—ãªã„
 		}
-		// ƒIƒuƒWƒFƒNƒg‚ğ”jŠü—\’èƒŠƒXƒg‚É’Ç‰Á
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç ´æ£„äºˆå®šãƒªã‚¹ãƒˆã«è¿½åŠ 
 		erases.emplace_back(object);
 
-		// qƒIƒuƒWƒFƒNƒg‚àÄ‹A“I‚Éíœ
+		// å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚‚å†å¸°çš„ã«å‰Šé™¤
 		DestroyChildren(object.get());
 	}
 }
@@ -969,7 +969,7 @@ void ObjectManager::DestroyChildren(GameObject* object) {
 	if (object) {
 		for (GameObject* child : object->GetChildren()) {
 			Destroy(child->GetName());
-			//DestroyChildren(child); // qƒIƒuƒWƒFƒNƒg‚ÍDestroyŠÖ”“à‚ÅÄ‹A“I‚Éíœ‚³‚ê‚é‚½‚ßA‚±‚±‚Å‚ÍŒÄ‚Ño‚³‚È‚¢
+			//DestroyChildren(child); // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯Destroyé–¢æ•°å†…ã§å†å¸°çš„ã«å‰Šé™¤ã•ã‚Œã‚‹ãŸã‚ã€ã“ã“ã§ã¯å‘¼ã³å‡ºã•ãªã„
 		}
 	}
 }
@@ -985,7 +985,7 @@ void ObjectManager::Register(std::shared_ptr<GameObject> object)
 			object->SetPriority(tailPriority);
 		}
 		objects.push_back(object);
-		object->scene = scene; // ƒV[ƒ“‚ğİ’è
+		object->scene = scene; // ã‚·ãƒ¼ãƒ³ã‚’è¨­å®š
 	}
 }
 
@@ -1019,7 +1019,7 @@ void ObjectManager::LockInspector(bool lock)
 
 json ObjectManager::Serialize() const
 {
-	// ‘SƒIƒuƒWƒFƒNƒg‚ğJSON‚ÉƒVƒŠƒAƒ‰ƒCƒY
+	// å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’JSONã«ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json j;
 	for (auto& object : objects) {
 		json obj = object->Serialize();
@@ -1034,7 +1034,7 @@ void ObjectManager::Deserialize(const json& j)
 {
 	if (!j.is_array()) return;
 
-	// JSONƒf[ƒ^‚©‚çƒIƒuƒWƒFƒNƒg‚ğ•œŒ³
+	// JSONãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¾©å…ƒ
 	for (const json& item : j) {
 		if (item.contains("name") && item["name"].is_string()) {
 			std::shared_ptr<GameObject> object = std::make_shared<GameObject>();
@@ -1043,16 +1043,16 @@ void ObjectManager::Deserialize(const json& j)
 		}
 	}
 
-	// ƒŒƒKƒV[ID‚ğV‚µ‚¢ID‚É•ÏŠ·‚·‚é
+	// ãƒ¬ã‚¬ã‚·ãƒ¼IDã‚’æ–°ã—ã„IDã«å¤‰æ›ã™ã‚‹
 	SceneMigrator::Migrate(this);
 
-	// eqŠÖŒW‚Ì•œŒ³
+	// è¦ªå­é–¢ä¿‚ã®å¾©å…ƒ
 	for (const json& item : j) {
 		if (item.contains("name") && item["name"].is_string()) {
 			std::string name = item["name"];
 			if (GameObject* object = FindInObjects(name))
 			{
-				// eID‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡AeƒIƒuƒWƒFƒNƒg‚ğ’T‚µ‚Äİ’è
+				// è¦ªIDãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã€è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¢ã—ã¦è¨­å®š
 				if (object->pendingParentID.IsValid())
 				{
 					GameObject* parent = FindInObjects(object->pendingParentID);
@@ -1064,10 +1064,10 @@ void ObjectManager::Deserialize(const json& j)
 					}
 					object->pendingParentID = ObjectId::Invalid();
 				}
-				// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY
+				// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 				object->DeserializeComponents(item, {});
 
-				// ƒAƒNƒeƒBƒuó‘Ô‚ÌXV
+				// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã®æ›´æ–°
 				object->RefreshActiveInHierarchy();
 
 			}
@@ -1080,7 +1080,7 @@ GameObject* ObjectManager::Duplicate(GameObject* original)
 {
 	if (!original) return nullptr;
 
-	// ƒIƒŠƒWƒiƒ‹‚ÌƒIƒuƒWƒFƒNƒg‚ğƒVƒŠƒAƒ‰ƒCƒY(q‚àŠÜ‚Ş)
+	// ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º(å­ã‚‚å«ã‚€)
 	std::vector<GameObject*> targets;
 	std::function<void(GameObject*)> collectObjects = [&](GameObject* obj)
 		{
@@ -1092,27 +1092,27 @@ GameObject* ObjectManager::Duplicate(GameObject* original)
 	collectObjects(original);
 
 #if 0
-	std::unordered_map<ObjectId, ObjectId> idMap; // ŒÃ‚¢ID‚©‚çV‚µ‚¢ID‚Ö‚Ìƒ}ƒbƒsƒ“ƒO
+	std::unordered_map<ObjectId, ObjectId> idMap; // å¤ã„IDã‹ã‚‰æ–°ã—ã„IDã¸ã®ãƒãƒƒãƒ”ãƒ³ã‚°
 
-	// V‚µ‚¢ID‚ğ¶¬‚µ‚Äƒ}ƒbƒsƒ“ƒO‚ğì¬
+	// æ–°ã—ã„IDã‚’ç”Ÿæˆã—ã¦ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ä½œæˆ
 	for (GameObject* obj : targets) {
 		ObjectId oldID = obj->id;
-		ObjectId newID = ObjectId::Generate(); // V‚µ‚¢ID‚ğ¶¬
+		ObjectId newID = ObjectId::Generate(); // æ–°ã—ã„IDã‚’ç”Ÿæˆ
 		idMap[oldID] = newID;
 	}
 
-	// eID‚ğ•ÏŠ·‚·‚éŠÖ”
+	// è¦ªIDã‚’å¤‰æ›ã™ã‚‹é–¢æ•°
 	std::function<ObjectId(ObjectId)> convertParent = [&](ObjectId oldParentID) {
 		auto it = idMap.find(oldParentID);
 		if (it != idMap.end()) {
 			return it->second;
 		}
-		return ObjectId::Invalid(); // Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡
+		return ObjectId::Invalid(); // è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆ
 		};
 #endif // 0
 
 
-	// ƒIƒuƒWƒFƒNƒg‚ğJSON‚ÉƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’JSONã«ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json j;
 	for (GameObject* obj : targets) {
 		json objJson = obj->Serialize();
@@ -1124,29 +1124,29 @@ GameObject* ObjectManager::Duplicate(GameObject* original)
 	}
 
 #if 0
-	// ƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚ğƒNƒŠƒA
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
 	targets.clear();
 
-	// V‚µ‚¢ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚ÄƒfƒVƒŠƒAƒ‰ƒCƒY
+	// æ–°ã—ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¦ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	for (const json& item : j)
 	{
 		if (item.contains("name") && item["name"].is_string())
 		{
 			std::shared_ptr<GameObject> newObject = std::make_shared<GameObject>();
 			newObject->Deserialize(item);
-			// ƒ†ƒj[ƒN‚È–¼‘O‚É•ÏX
+			// ãƒ¦ãƒ‹ãƒ¼ã‚¯ãªåå‰ã«å¤‰æ›´
 			newObject->name = newObject->MakeUniqueName(newObject->name);
 
-			// V‚µ‚¢ID‚ğİ’è
+			// æ–°ã—ã„IDã‚’è¨­å®š
 			ObjectId oldID = newObject->id;
 			newObject->id = idMap[oldID];
-			// eID‚ğ•ÏŠ·‚µ‚Äİ’è
+			// è¦ªIDã‚’å¤‰æ›ã—ã¦è¨­å®š
 			newObject->pendingParentID = convertParent(newObject->pendingParentID);
 
-			// V‚µ‚¢ƒIƒuƒWƒFƒNƒg‚ğ“o˜^
+			// æ–°ã—ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç™»éŒ²
 			Register(newObject);
 
-			// V‚µ‚¢ƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚É’Ç‰Á
+			// æ–°ã—ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆã«è¿½åŠ 
 			targets.push_back(newObject.get());
 		}
 	}
@@ -1157,7 +1157,7 @@ GameObject* ObjectManager::Duplicate(GameObject* original)
 	GameObject* rootObject = Instantiate(j);
 
 #if 0
-	// eqŠÖŒW‚Ì•œŒ³
+	// è¦ªå­é–¢ä¿‚ã®å¾©å…ƒ
 	for (size_t i = 0; i < j.size(); ++i)
 	{
 		const json& item = j[i];
@@ -1165,7 +1165,7 @@ GameObject* ObjectManager::Duplicate(GameObject* original)
 		{
 			std::string name = item["name"];
 			GameObject* newObject = targets[i];
-			// eID‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡AeƒIƒuƒWƒFƒNƒg‚ğ’T‚µ‚Äİ’è
+			// è¦ªIDãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã€è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¢ã—ã¦è¨­å®š
 			if (newObject->pendingParentID.IsValid())
 			{
 				GameObject* parent = FindInObjects(newObject->pendingParentID);
@@ -1179,13 +1179,13 @@ GameObject* ObjectManager::Duplicate(GameObject* original)
 				}
 				newObject->pendingParentID = ObjectId::Invalid();
 			}
-			// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY
+			// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 			newObject->DeserializeComponents(item);
 		}
 	}
 
 
-	// ƒ‹[ƒgƒIƒuƒWƒFƒNƒg‚ğæ“¾
+	// ãƒ«ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 	for (GameObject* obj : targets)
 	{
 		if (obj->parent == nullptr)
@@ -1196,32 +1196,32 @@ GameObject* ObjectManager::Duplicate(GameObject* original)
 	}
 #endif // 0
 
-	// ƒ‹[ƒgƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚Á‚½ê‡Aƒ‹[ƒgƒIƒuƒWƒFƒNƒg‚Ìe‚ÉA•¡»Œ³‚Ìe‚ğİ’è
+	// ãƒ«ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã€ãƒ«ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦ªã«ã€è¤‡è£½å…ƒã®è¦ªã‚’è¨­å®š
 	if (rootObject && original)
 	{
 		rootObject->SetParent(original->GetParent());
-		// ƒAƒNƒeƒBƒuó‘Ô‚ÌXV
+		// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã®æ›´æ–°
 		rootObject->RefreshActiveInHierarchy();
 	}
 
-	// ƒ‹[ƒgƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+	// ãƒ«ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	return rootObject;
 }
 
 GameObject* ObjectManager::Instantiate(const json& j)
 {
 	if (j.is_null()) return nullptr;
-	std::unordered_map<ObjectId, ObjectId> idMap; // ŒÃ‚¢ID‚©‚çV‚µ‚¢ID‚Ö‚Ìƒ}ƒbƒsƒ“ƒO
-	// V‚µ‚¢ID‚ğ¶¬‚µ‚Äƒ}ƒbƒsƒ“ƒO‚ğì¬
+	std::unordered_map<ObjectId, ObjectId> idMap; // å¤ã„IDã‹ã‚‰æ–°ã—ã„IDã¸ã®ãƒãƒƒãƒ”ãƒ³ã‚°
+	// æ–°ã—ã„IDã‚’ç”Ÿæˆã—ã¦ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ä½œæˆ
 	for (const json& item : j)
 	{
 		if (item.contains("id"))
 		{
-			// ŒÃ‚¢ID‚ğæ“¾i®”Œ^‚©•¶š—ñŒ^‚Ì‚Ç‚¿‚ç‚©‚Å•Û‘¶‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ß—¼•û‚É‘Î‰j
+			// å¤ã„IDã‚’å–å¾—ï¼ˆæ•´æ•°å‹ã‹æ–‡å­—åˆ—å‹ã®ã©ã¡ã‚‰ã‹ã§ä¿å­˜ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ä¸¡æ–¹ã«å¯¾å¿œï¼‰
 			ObjectId oldID = item["id"].is_number_integer()
-				? ObjectId::FromLegacy(item["id"].get<int>()) // ®”Œ^‚Ìê‡‚Í‹ŒŒ`®‚©‚ç•ÏŠ·
-				: ObjectId::FromString(item["id"].get<std::string>()); // •¶š—ñŒ^‚Ìê‡‚Í‚»‚Ì‚Ü‚Ü•ÏŠ·
-			ObjectId newID = ObjectId::Generate(); // V‚µ‚¢ID‚ğ¶¬
+				? ObjectId::FromLegacy(item["id"].get<int>()) // æ•´æ•°å‹ã®å ´åˆã¯æ—§å½¢å¼ã‹ã‚‰å¤‰æ›
+				: ObjectId::FromString(item["id"].get<std::string>()); // æ–‡å­—åˆ—å‹ã®å ´åˆã¯ãã®ã¾ã¾å¤‰æ›
+			ObjectId newID = ObjectId::Generate(); // æ–°ã—ã„IDã‚’ç”Ÿæˆ
 			idMap[oldID] = newID;
 		}
 		if (item.contains("components"))
@@ -1236,49 +1236,49 @@ GameObject* ObjectManager::Instantiate(const json& j)
 			}
 		}
 	}
-	// eID‚ğ•ÏŠ·‚·‚éŠÖ”
+	// è¦ªIDã‚’å¤‰æ›ã™ã‚‹é–¢æ•°
 	std::function<ObjectId(ObjectId)> convertParent = [&](ObjectId oldParentID) {
 		auto it = idMap.find(oldParentID);
 		if (it != idMap.end()) {
 			return it->second;
 		}
-		return ObjectId::Invalid(); // Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡
+		return ObjectId::Invalid(); // è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆ
 		};
 	GameObject* rootObject = nullptr;
 	std::vector<GameObject*> targets;
-	// ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚ÄƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¦ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	for (const json& item : j)
 	{
 		if (item.contains("name") && item["name"].is_string())
 		{
 			std::shared_ptr<GameObject> newObject = std::make_shared<GameObject>();
 			newObject->Deserialize(item);
-			// ƒ†ƒj[ƒN‚È–¼‘O‚É•ÏX
+			// ãƒ¦ãƒ‹ãƒ¼ã‚¯ãªåå‰ã«å¤‰æ›´
 			newObject->name = newObject->MakeUniqueName(newObject->GetName());
-			// V‚µ‚¢ID‚ğİ’è
+			// æ–°ã—ã„IDã‚’è¨­å®š
 			ObjectId oldID = newObject->GetId();
 			newObject->SetId(idMap[oldID]);
-			// eID‚ğ•ÏŠ·‚µ‚Äİ’è
+			// è¦ªIDã‚’å¤‰æ›ã—ã¦è¨­å®š
 			newObject->pendingParentID = convertParent(newObject->pendingParentID);
-			// V‚µ‚¢ƒIƒuƒWƒFƒNƒg‚ğ“o˜^
+			// æ–°ã—ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç™»éŒ²
 			Register(newObject);
-			// ƒ‹[ƒgƒIƒuƒWƒFƒNƒg‚Ìİ’è
+			// ãƒ«ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®š
 			if (!newObject->pendingParentID.IsValid())
 			{
 				rootObject = newObject.get();
 			}
-			// V‚µ‚¢ƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚É’Ç‰Á
+			// æ–°ã—ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆã«è¿½åŠ 
 			targets.push_back(newObject.get());
 		}
 	}
-	// eqŠÖŒW‚Ì•œŒ³
+	// è¦ªå­é–¢ä¿‚ã®å¾©å…ƒ
 	for (size_t i = 0; i < j.size(); ++i)
 	{
 		const json& item = j[i];
 		if (item.contains("name") && item["name"].is_string())
 		{
 			GameObject* newObject = targets[i];
-			// eID‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡AeƒIƒuƒWƒFƒNƒg‚ğ’T‚µ‚Äİ’è
+			// è¦ªIDãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã€è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¢ã—ã¦è¨­å®š
 			if (newObject->pendingParentID.IsValid())
 			{
 				GameObject* parent = FindInObjects(newObject->pendingParentID);
@@ -1290,14 +1290,14 @@ GameObject* ObjectManager::Instantiate(const json& j)
 				{
 					newObject->SetParent(nullptr);
 				}
-				newObject->pendingParentID = ObjectId::Invalid(); // eID‚ğƒŠƒZƒbƒg
+				newObject->pendingParentID = ObjectId::Invalid(); // è¦ªIDã‚’ãƒªã‚»ãƒƒãƒˆ
 			}
-			// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒfƒVƒŠƒAƒ‰ƒCƒYiidMap‚ğ“n‚·j
+			// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºï¼ˆidMapã‚’æ¸¡ã™ï¼‰
 			newObject->DeserializeComponents(item, idMap);
 		}
 	}
 
-	// ƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒvƒƒpƒeƒB“à‚Ì ObjectId ‚Ì·‚µ‘Ö‚¦iFixupj
+	// ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å†…ã® ObjectId ã®å·®ã—æ›¿ãˆï¼ˆFixupï¼‰
 	for (GameObject* obj : targets)
 	{
 		auto replaceObjectIds = [&](Object* targetObj) {
@@ -1317,7 +1317,7 @@ GameObject* ObjectManager::Instantiate(const json& j)
 							ObjectId* idPtr = reinterpret_cast<ObjectId*>(base + prop.offset);
 							auto it = idMap.find(*idPtr);
 							if (it != idMap.end()) {
-								*idPtr = it->second; // QÆæ‚ª•¡»‘ÎÛ‚Ìê‡‚ÍV‚µ‚¢ID‚É‘‚«Š·‚¦
+								*idPtr = it->second; // å‚ç…§å…ˆãŒè¤‡è£½å¯¾è±¡ã®å ´åˆã¯æ–°ã—ã„IDã«æ›¸ãæ›ãˆ
 							}
 						}
 					}
@@ -1336,11 +1336,11 @@ GameObject* ObjectManager::Instantiate(const json& j)
 
 	if (rootObject)
 	{
-		// ƒAƒNƒeƒBƒuó‘Ô‚ÌXV
+		// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã®æ›´æ–°
 		rootObject->RefreshActiveInHierarchy();
 	}
 
-	// ¶¬‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‘¦‚ÉƒLƒƒƒbƒVƒ…‚É“o˜^
+	// ç”Ÿæˆã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å³æ™‚ã«ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ç™»éŒ²
 	for (GameObject* obj : targets)
 	{
 		for (const auto& comp : obj->GetAllComponents())
@@ -1367,7 +1367,7 @@ void ObjectManager::SaveGameObject(GameObject* object, const std::string& filePa
 	collectObjects(object);
 
 	
-	// ƒIƒuƒWƒFƒNƒg‚ğƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json j;
 	for (GameObject* obj : targets) {
 		json objJson = obj->Serialize();
@@ -1375,6 +1375,6 @@ void ObjectManager::SaveGameObject(GameObject* object, const std::string& filePa
 			j.push_back(objJson);
 		}
 	}
-	// JSONƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶
+	// JSONãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
 	JsonFileHandler::SaveJsonToFile(j, filePath, JsonIOFormat::Binary);
 }

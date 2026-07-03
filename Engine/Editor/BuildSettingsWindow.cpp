@@ -12,24 +12,24 @@
 #endif // USE_IMGUI
 
 
-// ƒoƒbƒNƒXƒ‰ƒbƒVƒ…‚ğƒXƒ‰ƒbƒVƒ…‚É“ˆêi.rc ‚ÍƒXƒ‰ƒbƒVƒ…‚ª–³“ïj
+// ãƒãƒƒã‚¯ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã«çµ±ä¸€ï¼ˆ.rc ã¯ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ãŒç„¡é›£ï¼‰
 static std::string NormalizePath(const std::string& path) {
 	std::string result = path;
 	std::replace(result.begin(), result.end(), '\\', '/');
 	return result;
 }
 
-// Shift-JIS (CP932) ¨ UTF-8 •ÏŠ·ƒwƒ‹ƒp[
+// Shift-JIS (CP932) â†’ UTF-8 å¤‰æ›ãƒ˜ãƒ«ãƒ‘ãƒ¼
 static std::string SjisToUtf8(const std::string& sjis)
 {
 	if (sjis.empty()) return {};
 
-	// SJIS ¨ UTF-16
+	// SJIS â†’ UTF-16
 	int wlen = MultiByteToWideChar(932, 0, sjis.c_str(), (int)sjis.size(), nullptr, 0);
 	std::wstring wide(wlen, L'\0');
 	MultiByteToWideChar(932, 0, sjis.c_str(), (int)sjis.size(), wide.data(), wlen);
 
-	// UTF-16 ¨ UTF-8
+	// UTF-16 â†’ UTF-8
 	int ulen = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), wlen, nullptr, 0, nullptr, nullptr);
 	std::string utf8(ulen, '\0');
 	WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), wlen, utf8.data(), ulen, nullptr, nullptr);
@@ -48,7 +48,7 @@ void BuildSettingsWindow::DrawGUI()
 #ifdef USE_IMGUI
 	if (!m_showWindow) return;
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking;
-	// ƒEƒBƒ“ƒhƒE‚ğ’†‰›‚É•\¦
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä¸­å¤®ã«è¡¨ç¤º
 	ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(1200, 500), ImGuiCond_FirstUseEver);
 	ImGui::Begin("Build Settings", &m_showWindow, windowFlags);
@@ -60,7 +60,7 @@ void BuildSettingsWindow::DrawGUI()
 		ImGui::Spacing();
 		if (m_isBuilding || m_buildProgress.finished)
 		{
-			// mutex ‰z‚µ‚ÉƒRƒs[
+			// mutex è¶Šã—ã«ã‚³ãƒ”ãƒ¼
 			ProcessProgress snap;
 			{ std::lock_guard lock(m_progressMutex); snap = m_buildProgress; }
 			DrawProgressPanel("##build_log", snap, m_isBuilding);
@@ -75,7 +75,7 @@ void BuildSettingsWindow::DrawGUI()
 	}
 	ImGui::End();
 
-	// ƒEƒBƒ“ƒhƒE‚ª•Â‚¶‚ç‚ê‚½‚Æ‚«‚Éİ’è‚ğ•Û‘¶‚·‚é
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‰ã˜ã‚‰ã‚ŒãŸã¨ãã«è¨­å®šã‚’ä¿å­˜ã™ã‚‹
 	if (!m_showWindow)
 	{
 		SaveBuildSettings();
@@ -88,7 +88,7 @@ void BuildSettingsWindow::DrawGUI()
 
 void BuildSettingsWindow::DrawSettings()
 {
-	// ƒV[ƒ“‚ÌƒŠƒXƒg‚ğ•`‰æ
+	// ã‚·ãƒ¼ãƒ³ã®ãƒªã‚¹ãƒˆã‚’æç”»
 	DrawScenesInBuild("Scenes In Build");
 
 	IMGUI_PROPERTY_BEGIN();
@@ -113,7 +113,7 @@ void BuildSettingsWindow::DrawSettings()
 
 	IMGUI_PROPERTY_END();
 
-	// ƒRƒs[ƒAƒCƒeƒ€‚ÌƒŠƒXƒg‚ğ•`‰æ
+	// ã‚³ãƒ”ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒªã‚¹ãƒˆã‚’æç”»
 	ImGui::SeparatorText("Copy Items");
 	for (size_t i = 0; i < m_settings.copyItems.size(); i++)
 	{
@@ -155,11 +155,11 @@ void BuildSettingsWindow::DrawSettings()
 				IMGUI_PROPERTY(("[" + std::to_string(j) + "]").c_str());
 				const size_t bufferSize = MAX_PATH;
 				char buffer[MAX_PATH] = {};
-				// Œ»İ‚ÌƒpƒX‚ğƒoƒbƒtƒ@‚ÉƒRƒs[‚·‚éiShift-JIS ‚Åj
+				// ç¾åœ¨ã®ãƒ‘ã‚¹ã‚’ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ï¼ˆShift-JIS ã§ï¼‰
 				strncpy_s(buffer, item.exclude[j].c_str(), bufferSize - 1);
 				if (ImGui::InputText("##file", buffer, bufferSize))
 				{
-					// ƒ†[ƒU[‚ª’¼ÚƒeƒLƒXƒg‚ğ•ÒW‚µ‚ÄƒpƒX‚ğ•ÏX‚µ‚½‚Æ‚«‚Ìˆ—
+					// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç›´æ¥ãƒ†ã‚­ã‚¹ãƒˆã‚’ç·¨é›†ã—ã¦ãƒ‘ã‚¹ã‚’å¤‰æ›´ã—ãŸã¨ãã®å‡¦ç†
 					item.exclude[j] = SjisToUtf8(buffer);
 				}
 				IMGUI_PROPERTY_END();
@@ -185,50 +185,50 @@ void BuildSettingsWindow::DrawSettings()
 
 void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 {
-	// ƒrƒ‹ƒh‚ÉŠÜ‚ß‚éƒV[ƒ“‚ÌƒZƒŒƒNƒ^‚ÌÀ‘•
+	// ãƒ“ãƒ«ãƒ‰ã«å«ã‚ã‚‹ã‚·ãƒ¼ãƒ³ã®ã‚»ãƒ¬ã‚¯ã‚¿ã®å®Ÿè£…
 	ImGui::Text("%s", label);
-	// ƒhƒƒbƒvƒ^[ƒQƒbƒg‚ğì¬
+	// ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ä½œæˆ
 	ImGui::BeginChild("SceneList", ImVec2(0, 150), ImGuiChildFlags_Borders);
 	{
-		bool removeThisFrame = false; // ¡ƒtƒŒ[ƒ€‚Åíœ‚·‚éƒV[ƒ“‚ª‚ ‚é‚©‚Ç‚¤‚©
-		std::string setFirstSceneCandidate = SceneManager::firstSceneName; // Å‰‚ÌƒV[ƒ“‚Éİ’è‚·‚éŒó•âi‰EƒNƒŠƒbƒNƒƒjƒ…[‚Å‘I‘ğ‚³‚ê‚½ƒV[ƒ“–¼j
-		int setFirstSceneIndexThisFrame = -1; // ¡ƒtƒŒ[ƒ€‚ÅÅ‰‚ÌƒV[ƒ“‚Éİ’è‚·‚éƒV[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒXi‰EƒNƒŠƒbƒNƒƒjƒ…[‚Å‘I‘ğ‚³‚ê‚½ƒV[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒXj
+		bool removeThisFrame = false; // ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§å‰Šé™¤ã™ã‚‹ã‚·ãƒ¼ãƒ³ãŒã‚ã‚‹ã‹ã©ã†ã‹
+		std::string setFirstSceneCandidate = SceneManager::firstSceneName; // æœ€åˆã®ã‚·ãƒ¼ãƒ³ã«è¨­å®šã™ã‚‹å€™è£œï¼ˆå³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§é¸æŠã•ã‚ŒãŸã‚·ãƒ¼ãƒ³åï¼‰
+		int setFirstSceneIndexThisFrame = -1; // ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§æœ€åˆã®ã‚·ãƒ¼ãƒ³ã«è¨­å®šã™ã‚‹ã‚·ãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆå³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§é¸æŠã•ã‚ŒãŸã‚·ãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰
 		int index = 0;
 		int selectedCount = static_cast<int>(std::count_if(SceneManager::sceneEntries.begin(), SceneManager::sceneEntries.end(),
-			[](const SceneManager::SceneEntry& entry) { return entry.selected; })); // ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒV[ƒ“‚Ì”
+			[](const SceneManager::SceneEntry& entry) { return entry.selected; })); // é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚·ãƒ¼ãƒ³ã®æ•°
 
 		for (auto& entry : SceneManager::sceneEntries)
 		{
 			ImGui::PushID(index);
 
-			// ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ÆƒV[ƒ“–¼‚ğ“¯‚¶s‚É•\¦
-#if 0 // ƒrƒ‹ƒh‚ÉŠÜ‚ß‚é‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Í¡‚Ì‚Æ‚±‚ë•s—v‚»‚¤‚È‚Ì‚Å”ñ•\¦‚É‚·‚é
+			// ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã¨ã‚·ãƒ¼ãƒ³åã‚’åŒã˜è¡Œã«è¡¨ç¤º
+#if 0 // ãƒ“ãƒ«ãƒ‰ã«å«ã‚ã‚‹ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã¯ä»Šã®ã¨ã“ã‚ä¸è¦ãã†ãªã®ã§éè¡¨ç¤ºã«ã™ã‚‹
 			ImGui::Checkbox("##includeInBuild", &entry.enabled);
 			ImGui::SameLine();
 #endif // 0
 			ImGuiSelectableFlags flags = ImGuiSelectableFlags_SelectOnClick;
 			if (!entry.enabled)
-			{// –³Œø‚ÈƒV[ƒ“‚Í‘I‘ğ‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
+			{// ç„¡åŠ¹ãªã‚·ãƒ¼ãƒ³ã¯é¸æŠã§ããªã„ã‚ˆã†ã«ã™ã‚‹
 				flags |= ImGuiSelectableFlags_Disabled;
 			}
-			// ƒV[ƒ“–¼‚ğ•\¦
+			// ã‚·ãƒ¼ãƒ³åã‚’è¡¨ç¤º
 			bool wasSelected = entry.selected;
 			if (ImGui::Selectable(entry.name.c_str(), &wasSelected, flags))
 			{
-				// ƒNƒŠƒbƒN‚³‚ê‚½‚Æ‚«‚Ìˆ—
+				// ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã¨ãã®å‡¦ç†
 				bool ctrl = ImGui::GetIO().KeyCtrl;
 				bool shift = ImGui::GetIO().KeyShift;
 				if (shift)
 				{
-					// Shift ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Í”ÍˆÍ‘I‘ğ‚·‚é
+					// Shift ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ã¨ãã¯ç¯„å›²é¸æŠã™ã‚‹
 					if (SceneManager::sceneEntries.size() > 1)
 					{
-						// ÅŒã‚É‘I‘ğ‚³‚ê‚½ƒGƒ“ƒgƒŠ‚ğŒ©‚Â‚¯‚é
+						// æœ€å¾Œã«é¸æŠã•ã‚ŒãŸã‚¨ãƒ³ãƒˆãƒªã‚’è¦‹ã¤ã‘ã‚‹
 						auto lastSelectedIt = std::find_if(SceneManager::sceneEntries.begin(), SceneManager::sceneEntries.end(),
 							[](const SceneManager::SceneEntry& e) { return e.selected; });
 						if (lastSelectedIt != SceneManager::sceneEntries.end())
 						{
-							// ”ÍˆÍ‘I‘ğ‚·‚é
+							// ç¯„å›²é¸æŠã™ã‚‹
 							int lastSelectedIndex = static_cast<int>(std::distance(SceneManager::sceneEntries.begin(), lastSelectedIt));
 							int currentIndex = index;
 							int start = (std::min)(lastSelectedIndex, currentIndex);
@@ -240,24 +240,24 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 						}
 						else
 						{
-							entry.selected = true; // ÅŒã‚É‘I‘ğ‚³‚ê‚½ƒGƒ“ƒgƒŠ‚ª‚È‚¢ê‡‚Í’Pƒ‚É‘I‘ğó‘Ô‚É‚·‚é
+							entry.selected = true; // æœ€å¾Œã«é¸æŠã•ã‚ŒãŸã‚¨ãƒ³ãƒˆãƒªãŒãªã„å ´åˆã¯å˜ç´”ã«é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 						}
 					}
 					else
 					{
-						entry.selected = true; // ƒV[ƒ“‚ª1‚Â‚µ‚©‚È‚¢ê‡‚Í’Pƒ‚É‘I‘ğó‘Ô‚É‚·‚é
+						entry.selected = true; // ã‚·ãƒ¼ãƒ³ãŒ1ã¤ã—ã‹ãªã„å ´åˆã¯å˜ç´”ã«é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 					}
 				}
 				else
 				{
 					if (ctrl)
 					{
-						// Ctrl ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Í‘I‘ğó‘Ô‚ğƒgƒOƒ‹‚·‚é
+						// Ctrl ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ã¨ãã¯é¸æŠçŠ¶æ…‹ã‚’ãƒˆã‚°ãƒ«ã™ã‚‹
 						entry.selected = !entry.selected;
 					}
 					else
 					{
-						// Ctrl ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚Í’Pˆê‘I‘ğ‚É‚·‚é
+						// Ctrl ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãªã„ã¨ãã¯å˜ä¸€é¸æŠã«ã™ã‚‹
 						for (auto& otherEntry : SceneManager::sceneEntries)
 						{
 							if (&otherEntry != &entry)
@@ -265,41 +265,41 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 								otherEntry.selected = false;
 							}
 						}
-						entry.selected = true; // ƒNƒŠƒbƒN‚³‚ê‚½ƒGƒ“ƒgƒŠ‚ğ‘I‘ğó‘Ô‚É‚·‚é
+						entry.selected = true; // ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚¨ãƒ³ãƒˆãƒªã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 					}
 				}
 
 			}
 
-			// ‘I‘ğ‚³‚ê‚Ä‚é‚Ìˆ—
+			// é¸æŠã•ã‚Œã¦ã‚‹æ™‚ã®å‡¦ç†
 			if (entry.selected)
 			{
-				// Delete ƒL[‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚Éíœ‚·‚é
+				// Delete ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã¨ãã«å‰Šé™¤ã™ã‚‹
 				if (ImGui::Shortcut(ImGuiKey::ImGuiKey_Delete, ImGuiInputFlags_None))
 				{
-					removeThisFrame = true; // ¡ƒtƒŒ[ƒ€‚Åíœ‚·‚éƒtƒ‰ƒO‚ğ—§‚Ä‚é
+					removeThisFrame = true; // ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§å‰Šé™¤ã™ã‚‹ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 				}
 
-				// ƒV[ƒ“‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éó‘Ô‚Å‰EƒNƒŠƒbƒN‚³‚ê‚½‚Æ‚«‚ÉƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ğ•\¦
+				// ã‚·ãƒ¼ãƒ³ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹çŠ¶æ…‹ã§å³ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã¨ãã«ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤º
 				if (ImGui::BeginPopupContextItem(entry.name.c_str(), ImGuiPopupFlags_MouseButtonRight))
 				{
 					bool isFirstScene = (entry.name == SceneManager::firstSceneName);
 					if (ImGui::MenuItem("Set First Scene", NULL, isFirstScene, selectedCount == 1))
 					{
-						setFirstSceneIndexThisFrame = index; // ¡ƒtƒŒ[ƒ€‚ÅÅ‰‚ÌƒV[ƒ“‚Éİ’è‚·‚éƒV[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ•Û‘¶
+						setFirstSceneIndexThisFrame = index; // ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§æœ€åˆã®ã‚·ãƒ¼ãƒ³ã«è¨­å®šã™ã‚‹ã‚·ãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä¿å­˜
 					}
 					bool isLoadingScene = (entry.name == SceneManager::loadingSceneName);
 					if (ImGui::MenuItem("Set Loading Scene", NULL, isLoadingScene, selectedCount == 1))
 					{
-						SceneManager::SetLoadingScene(entry.name); // ¡ƒtƒŒ[ƒ€‚ÅÅ‰‚ÌƒV[ƒ“‚Éİ’è‚·‚éƒV[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ•Û‘¶
+						SceneManager::SetLoadingScene(entry.name); // ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§æœ€åˆã®ã‚·ãƒ¼ãƒ³ã«è¨­å®šã™ã‚‹ã‚·ãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä¿å­˜
 					}
 
 					if (ImGui::MenuItem("Remove", "Delete"))
 					{
-						removeThisFrame = true; // ¡ƒtƒŒ[ƒ€‚Åíœ‚·‚éƒtƒ‰ƒO‚ğ—§‚Ä‚é
+						removeThisFrame = true; // ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§å‰Šé™¤ã™ã‚‹ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 						if (isLoadingScene)
 						{
-							SceneManager::SetLoadingScene("EmptyScene"); // ƒ[ƒfƒBƒ“ƒOƒV[ƒ“‚Éİ’è‚³‚ê‚Ä‚¢‚éƒV[ƒ“‚ªíœ‚³‚ê‚éê‡‚ÍAEmptyScene
+							SceneManager::SetLoadingScene("EmptyScene"); // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚·ãƒ¼ãƒ³ã«è¨­å®šã•ã‚Œã¦ã„ã‚‹ã‚·ãƒ¼ãƒ³ãŒå‰Šé™¤ã•ã‚Œã‚‹å ´åˆã¯ã€EmptyScene
 						}
 					}
 					ImGui::EndPopup();
@@ -310,21 +310,21 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 		}
 		if (removeThisFrame)
 		{
-			// ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒV[ƒ“‚ğíœ‚·‚é
+			// é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚·ãƒ¼ãƒ³ã‚’å‰Šé™¤ã™ã‚‹
 			SceneManager::sceneEntries.erase(
 				std::remove_if(SceneManager::sceneEntries.begin(), SceneManager::sceneEntries.end(),
 					[](const SceneManager::SceneEntry& entry) { return entry.selected; }),
 				SceneManager::sceneEntries.end()
 			);
-			SceneManager::UpdateFirstSceneName(); // Å‰‚ÌƒV[ƒ“‚Ì–¼‘O‚ğXV‚·‚é
+			SceneManager::UpdateFirstSceneName(); // æœ€åˆã®ã‚·ãƒ¼ãƒ³ã®åå‰ã‚’æ›´æ–°ã™ã‚‹
 		}
 		if (setFirstSceneIndexThisFrame != -1)
 		{
-			// Å‰‚ÌƒV[ƒ“‚Éİ’è‚·‚éŒó•â‚ª¡ƒtƒŒ[ƒ€‚Å•ÏX‚³‚ê‚Ä‚¢‚éê‡‚ÍAÅ‰‚ÌƒV[ƒ“‚ğXV‚·‚é
+			// æœ€åˆã®ã‚·ãƒ¼ãƒ³ã«è¨­å®šã™ã‚‹å€™è£œãŒä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§å¤‰æ›´ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€æœ€åˆã®ã‚·ãƒ¼ãƒ³ã‚’æ›´æ–°ã™ã‚‹
 			SceneManager::SetFirstScene(SceneManager::sceneEntries[setFirstSceneIndexThisFrame].name);
 		}
 
-		// ƒEƒBƒ“ƒhƒE’¼‰º‚ÅƒNƒŠƒbƒN‚³‚ê‚½‚Æ‚«‚É‘S‘I‘ğ‚ğ‰ğœ‚·‚é‚½‚ß‚Ìˆ—
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç›´ä¸‹ã§ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã¨ãã«å…¨é¸æŠã‚’è§£é™¤ã™ã‚‹ãŸã‚ã®å‡¦ç†
 		if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
 		{
 			for (auto& entry : SceneManager::sceneEntries)
@@ -334,17 +334,17 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 		}
 
 
-		// ƒhƒƒbƒvƒ^[ƒQƒbƒg‚Ìˆ—
+		// ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®å‡¦ç†
 		if (auto* window = ImGui::GetCurrentWindow())
 		{
 			if (ImGui::BeginDragDropTargetCustom(window->Rect(), window->ID))
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH"))
 				{
-					// ƒhƒƒbƒv‚³‚ê‚½ƒV[ƒ“‚Ì–¼‘O‚ğæ“¾
+					// ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã‚·ãƒ¼ãƒ³ã®åå‰ã‚’å–å¾—
 					const char* path = static_cast<const char*>(payload->Data);
 					std::string pathStr(path != nullptr ? path : "");
-					// ƒV[ƒ“‚ÌƒŠƒXƒg‚É’Ç‰Á
+					// ã‚·ãƒ¼ãƒ³ã®ãƒªã‚¹ãƒˆã«è¿½åŠ 
 					if (!pathStr.empty())
 					{
 						SceneManager::Register(pathStr);
@@ -359,61 +359,61 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 
 bool BuildSettingsWindow::DrawFileSelector(const char* label, std::string& path, const char* filter)
 {
-	// ƒtƒ@ƒCƒ‹ƒZƒŒƒNƒ^‚ÌÀ‘•
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚»ãƒ¬ã‚¯ã‚¿ã®å®Ÿè£…
 	IMGUI_PROPERTY(label);
 	const size_t bufferSize = MAX_PATH;
 	char buffer[MAX_PATH] = {};
-	// Œ»İ‚ÌƒpƒX‚ğƒoƒbƒtƒ@‚ÉƒRƒs[‚·‚éiShift-JIS ‚Åj
+	// ç¾åœ¨ã®ãƒ‘ã‚¹ã‚’ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ï¼ˆShift-JIS ã§ï¼‰
 	strncpy_s(buffer, path.c_str(), bufferSize - 1);
 	if (ImGui::InputText("##file", buffer, bufferSize))
 	{
-		// ƒ†[ƒU[‚ª’¼ÚƒeƒLƒXƒg‚ğ•ÒW‚µ‚ÄƒpƒX‚ğ•ÏX‚µ‚½‚Æ‚«‚Ìˆ—
+		// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç›´æ¥ãƒ†ã‚­ã‚¹ãƒˆã‚’ç·¨é›†ã—ã¦ãƒ‘ã‚¹ã‚’å¤‰æ›´ã—ãŸã¨ãã®å‡¦ç†
 		path = SjisToUtf8(buffer);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("..."))
 	{
-		// ƒtƒ@ƒCƒ‹‘I‘ğƒ_ƒCƒAƒƒO‚ğŠJ‚­
+		// ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‹ã
 		char* selectedPath = SelectFileDialog(label, filter);
 		if (selectedPath != nullptr)
 		{
-			path = SjisToUtf8(selectedPath); // ‘I‘ğ‚³‚ê‚½ƒpƒX‚ğpath‚ÉƒZƒbƒg‚·‚é
-			return true; // ƒpƒX‚ª•ÏX‚³‚ê‚½ê‡‚Ítrue‚ğ•Ô‚·
+			path = SjisToUtf8(selectedPath); // é¸æŠã•ã‚ŒãŸãƒ‘ã‚¹ã‚’pathã«ã‚»ãƒƒãƒˆã™ã‚‹
+			return true; // ãƒ‘ã‚¹ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯trueã‚’è¿”ã™
 		}
 	}
-	return false; // ƒpƒX‚ª•ÏX‚³‚ê‚È‚©‚Á‚½ê‡‚Ífalse‚ğ•Ô‚·
+	return false; // ãƒ‘ã‚¹ãŒå¤‰æ›´ã•ã‚Œãªã‹ã£ãŸå ´åˆã¯falseã‚’è¿”ã™
 }
 
 bool BuildSettingsWindow::DrawDirectorySelector(const char* label, std::string& path)
 {
-	// ƒfƒBƒŒƒNƒgƒŠƒZƒŒƒNƒ^‚ÌÀ‘•
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚»ãƒ¬ã‚¯ã‚¿ã®å®Ÿè£…
 	IMGUI_PROPERTY(label);
 	const size_t bufferSize = MAX_PATH;
 	char buffer[MAX_PATH] = {};
-	// Œ»İ‚ÌƒpƒX‚ğƒoƒbƒtƒ@‚ÉƒRƒs[‚·‚éiShift-JIS ‚Åj
+	// ç¾åœ¨ã®ãƒ‘ã‚¹ã‚’ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ï¼ˆShift-JIS ã§ï¼‰
 	strncpy_s(buffer, path.c_str(), bufferSize - 1);
 	if (ImGui::InputText("##directory", buffer, bufferSize))
 	{
-		// ƒ†[ƒU[‚ª’¼ÚƒeƒLƒXƒg‚ğ•ÒW‚µ‚ÄƒpƒX‚ğ•ÏX‚µ‚½‚Æ‚«‚Ìˆ—
+		// ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç›´æ¥ãƒ†ã‚­ã‚¹ãƒˆã‚’ç·¨é›†ã—ã¦ãƒ‘ã‚¹ã‚’å¤‰æ›´ã—ãŸã¨ãã®å‡¦ç†
 		path = SjisToUtf8(buffer);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("..."))
 	{
-		// ƒfƒBƒŒƒNƒgƒŠ‘I‘ğƒ_ƒCƒAƒƒO‚ğŠJ‚­
+		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªé¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‹ã
 		char* selectedPath = SelectDirectoryDialog(label);
 		if (selectedPath != nullptr)
 		{
-			// ¬Œ÷‚µ‚½ê‡‚Ípath‚ªXV‚³‚ê‚Ä‚¢‚é‚Í‚¸
+			// æˆåŠŸã—ãŸå ´åˆã¯pathãŒæ›´æ–°ã•ã‚Œã¦ã„ã‚‹ã¯ãš
 			std::filesystem::path fsPath(selectedPath);
-			// â‘ÎƒpƒX‚ª“ü‚Á‚Ä‚é‚Ì‚ÅAƒvƒƒWƒFƒNƒg‚©‚ç‚Ì‘Š‘ÎƒpƒX‚É•ÏŠ·‚µ‚Ä•Û‘¶‚·‚é
-			std::filesystem::path projectDir = std::filesystem::absolute("./"); // ƒvƒƒWƒFƒNƒg‚Ìƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ‚ğæ“¾i•K—v‚É‰‚¶‚Ä•ÏXj
+			// çµ¶å¯¾ãƒ‘ã‚¹ãŒå…¥ã£ã¦ã‚‹ã®ã§ã€ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹ã«å¤‰æ›ã—ã¦ä¿å­˜ã™ã‚‹
+			std::filesystem::path projectDir = std::filesystem::absolute("./"); // ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å–å¾—ï¼ˆå¿…è¦ã«å¿œã˜ã¦å¤‰æ›´ï¼‰
 			std::filesystem::path relativePath = std::filesystem::relative(fsPath, projectDir);
-			path = relativePath.string(); // ‘I‘ğ‚³‚ê‚½ƒpƒX‚ğpath‚ÉƒZƒbƒg‚·‚é
-			return true; // ƒpƒX‚ª•ÏX‚³‚ê‚½ê‡‚Ítrue‚ğ•Ô‚·
+			path = relativePath.string(); // é¸æŠã•ã‚ŒãŸãƒ‘ã‚¹ã‚’pathã«ã‚»ãƒƒãƒˆã™ã‚‹
+			return true; // ãƒ‘ã‚¹ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯trueã‚’è¿”ã™
 		}
 	}
-	return false; // ƒpƒX‚ª•ÏX‚³‚ê‚È‚©‚Á‚½ê‡‚Ífalse‚ğ•Ô‚·
+	return false; // ãƒ‘ã‚¹ãŒå¤‰æ›´ã•ã‚Œãªã‹ã£ãŸå ´åˆã¯falseã‚’è¿”ã™
 }
 
 void BuildSettingsWindow::DrawBuildButton()
@@ -428,7 +428,7 @@ void BuildSettingsWindow::DrawBuildButton()
 	{
 		bool canBuild = !m_settings.appName.empty() && !m_settings.outputDir.empty() && !SceneManager::sceneEntries.empty();
 		canBuild = canBuild && std::any_of(SceneManager::sceneEntries.begin(), SceneManager::sceneEntries.end(),
-			[](const SceneManager::SceneEntry& entry) { return entry.enabled; }); // ƒrƒ‹ƒh‚ÉŠÜ‚ß‚éƒV[ƒ“‚ª1‚Â‚Å‚à‘I‘ğ‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+			[](const SceneManager::SceneEntry& entry) { return entry.enabled; }); // ãƒ“ãƒ«ãƒ‰ã«å«ã‚ã‚‹ã‚·ãƒ¼ãƒ³ãŒ1ã¤ã§ã‚‚é¸æŠã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 		if (!canBuild)
 		{
 			ImGui::BeginDisabled();
@@ -455,7 +455,7 @@ void BuildSettingsWindow::DrawBuildButton()
 	{
 		bool canBuild = !m_settings.appName.empty() && !m_settings.outputDir.empty() && !SceneManager::sceneEntries.empty();
 		canBuild = canBuild && std::any_of(SceneManager::sceneEntries.begin(), SceneManager::sceneEntries.end(),
-			[](const SceneManager::SceneEntry& entry) { return entry.enabled; }); // ƒrƒ‹ƒh‚ÉŠÜ‚ß‚éƒV[ƒ“‚ª1‚Â‚Å‚à‘I‘ğ‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+			[](const SceneManager::SceneEntry& entry) { return entry.enabled; }); // ãƒ“ãƒ«ãƒ‰ã«å«ã‚ã‚‹ã‚·ãƒ¼ãƒ³ãŒ1ã¤ã§ã‚‚é¸æŠã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 		if (!canBuild)
 		{
 			ImGui::BeginDisabled();
@@ -475,7 +475,7 @@ void BuildSettingsWindow::DrawBuildButton()
 
 void BuildSettingsWindow::DrawProgressPanel(const char* id, const ProcessProgress& prog, bool isRunning)
 {
-	// --- ƒXƒe[ƒ^ƒXs ---
+	// --- ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡Œ ---
 	if (isRunning)
 	{
 		const char* spinner = "|/-\\";
@@ -490,7 +490,7 @@ void BuildSettingsWindow::DrawProgressPanel(const char* id, const ProcessProgres
 			ImGui::TextColored({ 1.0f, 0.3f, 0.3f, 1.0f }, "[\xe2\x9c\x97] Build Failed");
 	}
 
-	// --- ƒvƒƒOƒŒƒXƒo[ ---
+	// --- ãƒ—ãƒ­ã‚°ãƒ¬ã‚¹ãƒãƒ¼ ---
 	float fraction = (prog.progressTotal > 0)
 		? std::clamp((float)prog.progressCurrent / (float)prog.progressTotal, 0.0f, 1.0f)
 		: (prog.finished ? 1.0f : 0.0f);
@@ -513,11 +513,11 @@ void BuildSettingsWindow::DrawProgressPanel(const char* id, const ProcessProgres
 
 	ImGui::Spacing();
 
-	// --- ƒƒO•\¦ ---
+	// --- ãƒ­ã‚°è¡¨ç¤º ---
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.08f, 0.08f, 0.08f, 1.0f));
 	if (ImGui::BeginChild(id, { 0, 180 }, true, ImGuiWindowFlags_HorizontalScrollbar))
 	{
-		// mutex ‚ğÅ¬ŒÀ‚É‚µ‚ÄƒXƒiƒbƒvƒVƒ‡ƒbƒgƒRƒs[
+		// mutex ã‚’æœ€å°é™ã«ã—ã¦ã‚¹ãƒŠãƒƒãƒ—ã‚·ãƒ§ãƒƒãƒˆã‚³ãƒ”ãƒ¼
 		std::vector<std::string> snapshot;
 		{
 			std::lock_guard lock(m_progressMutex);
@@ -555,7 +555,7 @@ void BuildSettingsWindow::SaveBuildSettings()
 void BuildSettingsWindow::LoadBuildSettings()
 {
 	m_settings.Load();
-	// ƒLƒƒƒbƒVƒ…‚ÉƒRƒs[
+	// ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ã‚³ãƒ”ãƒ¼
 	appName = m_settings.appName;
 	iconPath = m_settings.iconPath;
 	outputDir = m_settings.outputDir;
@@ -563,7 +563,7 @@ void BuildSettingsWindow::LoadBuildSettings()
 
 void BuildSettingsWindow::RunBuild()
 {
-	// ƒrƒ‹ƒh’†‚Íƒrƒ‹ƒhƒ{ƒ^ƒ“‚ğ–³Œø‰»‚·‚é
+	// ãƒ“ãƒ«ãƒ‰ä¸­ã¯ãƒ“ãƒ«ãƒ‰ãƒœã‚¿ãƒ³ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹
 	if (m_isBuilding)
 	{
 		Console::LogWarning("[Build] Build is already in progress.");
@@ -571,23 +571,23 @@ void BuildSettingsWindow::RunBuild()
 	}
 
 	std::lock_guard lock(m_progressMutex);
-	m_buildProgress = {};   // ƒŠƒZƒbƒg
+	m_buildProgress = {};   // ãƒªã‚»ãƒƒãƒˆ
 
-	// İ’è‚ğ•Û‘¶‚µ‚Ä‚©‚çƒrƒ‹ƒh‚ğÀs‚·‚é
+	// è¨­å®šã‚’ä¿å­˜ã—ã¦ã‹ã‚‰ãƒ“ãƒ«ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹
 	SaveBuildSettings();
 
-	Physics::SaveSettings(); // •¨—ƒGƒ“ƒWƒ“‚Ìó‘Ô‚ğ•Û‘¶‚µ‚Ä‚¨‚­B
-	SceneManager::SaveSettings(); // ƒV[ƒ“ƒ}ƒl[ƒWƒƒ‚Ìó‘Ô‚ğ•Û‘¶‚µ‚Ä‚¨‚­B
+	Physics::SaveSettings(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®çŠ¶æ…‹ã‚’ä¿å­˜ã—ã¦ãŠãã€‚
+	SceneManager::SaveSettings(); // ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ã®çŠ¶æ…‹ã‚’ä¿å­˜ã—ã¦ãŠãã€‚
 
-	// ƒrƒ‹ƒh‘O‚ÌƒtƒbƒNi•K—v‚É‰‚¶‚Äƒrƒ‹ƒh‘O‚É‚â‚è‚½‚¢ˆ—‚ª‚ ‚ê‚Î‚±‚±‚É‘‚­j
+	// ãƒ“ãƒ«ãƒ‰å‰ã®ãƒ•ãƒƒã‚¯ï¼ˆå¿…è¦ã«å¿œã˜ã¦ãƒ“ãƒ«ãƒ‰å‰ã«ã‚„ã‚ŠãŸã„å‡¦ç†ãŒã‚ã‚Œã°ã“ã“ã«æ›¸ãï¼‰
 	{
-		// ƒrƒ‹ƒh‚·‚éƒV[ƒ“‚ğ•Û‘¶‚µ‚Ä‚¨‚­
+		// ãƒ“ãƒ«ãƒ‰ã™ã‚‹ã‚·ãƒ¼ãƒ³ã‚’ä¿å­˜ã—ã¦ãŠã
 		for (auto& entry : SceneManager::sceneEntries)
 		{
 			std::filesystem::path scenePath(entry.path);
 			std::filesystem::path buildScenePath = scenePath.replace_extension(".bin");
 
-			// ƒV[ƒ“‚ğƒrƒ‹ƒh—p‚ÌŒ`®‚Å•Û‘¶‚·‚é
+			// ã‚·ãƒ¼ãƒ³ã‚’ãƒ“ãƒ«ãƒ‰ç”¨ã®å½¢å¼ã§ä¿å­˜ã™ã‚‹
 			json cachedJson;
 			if (JsonFileHandler::LoadJsonFromFile(cachedJson, entry.path))
 			{
@@ -597,8 +597,8 @@ void BuildSettingsWindow::RunBuild()
 	}
 
 
-	// ƒrƒ‹ƒhƒRƒ}ƒ“ƒh‚ğ\’z
-	// ˆø”: build.bat <ƒAƒvƒŠƒP[ƒVƒ‡ƒ“–¼> <ƒAƒCƒRƒ“ƒpƒX> <ƒrƒ‹ƒho—ÍæƒfƒBƒŒƒNƒgƒŠ>
+	// ãƒ“ãƒ«ãƒ‰ã‚³ãƒãƒ³ãƒ‰ã‚’æ§‹ç¯‰
+	// å¼•æ•°: build.bat <ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å> <ã‚¢ã‚¤ã‚³ãƒ³ãƒ‘ã‚¹> <ãƒ“ãƒ«ãƒ‰å‡ºåŠ›å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª>
 	std::string cmd = std::format(
 		"build.bat \"{}\" \"{}\" \"{}\"",
 		m_settings.appName,
@@ -606,13 +606,13 @@ void BuildSettingsWindow::RunBuild()
 		NormalizePath(m_settings.outputDir)
 	);
 
-	// --- ƒpƒCƒvì¬ ---
+	// --- ãƒ‘ã‚¤ãƒ—ä½œæˆ ---
 	HANDLE hReadPipe = nullptr;
 	HANDLE hWritePipe = nullptr;
 
 	SECURITY_ATTRIBUTES sa{};
 	sa.nLength = sizeof(sa);
-	sa.bInheritHandle = TRUE;   // qƒvƒƒZƒX‚Éƒnƒ“ƒhƒ‹‚ğŒp³‚³‚¹‚é
+	sa.bInheritHandle = TRUE;   // å­ãƒ—ãƒ­ã‚»ã‚¹ã«ãƒãƒ³ãƒ‰ãƒ«ã‚’ç¶™æ‰¿ã•ã›ã‚‹
 	sa.lpSecurityDescriptor = nullptr;
 
 	if (!CreatePipe(&hReadPipe, &hWritePipe, &sa, 0))
@@ -621,24 +621,24 @@ void BuildSettingsWindow::RunBuild()
 		return;
 	}
 
-	// e‘¤‚Ì“Ç‚İæ‚èƒnƒ“ƒhƒ‹‚ÍŒp³•s—v
+	// è¦ªå´ã®èª­ã¿å–ã‚Šãƒãƒ³ãƒ‰ãƒ«ã¯ç¶™æ‰¿ä¸è¦
 	SetHandleInformation(hReadPipe, HANDLE_FLAG_INHERIT, 0);
 
-	// --- STARTUPINFO ‚ÉƒpƒCƒv‚ğÚ‘± ---
+	// --- STARTUPINFO ã«ãƒ‘ã‚¤ãƒ—ã‚’æ¥ç¶š ---
 	STARTUPINFOA si{};
 	si.cb = sizeof(si);
 	si.dwFlags = STARTF_USESTDHANDLES;
-	si.hStdOutput = hWritePipe;   // stdout ¨ ƒpƒCƒv
-	si.hStdError = hWritePipe;   // stderr ‚à“¯‚¶ƒpƒCƒv‚Ö
+	si.hStdOutput = hWritePipe;   // stdout â†’ ãƒ‘ã‚¤ãƒ—
+	si.hStdError = hWritePipe;   // stderr ã‚‚åŒã˜ãƒ‘ã‚¤ãƒ—ã¸
 
 	PROCESS_INFORMATION pi{};
 
 	if (!CreateProcessA(
 		nullptr, cmd.data(),
 		nullptr, nullptr,
-		TRUE,               // ƒnƒ“ƒhƒ‹Œp³‚ğ—LŒø‰»
-		CREATE_NO_WINDOW,   // ƒRƒ“ƒ\[ƒ‹”ñ•\¦
-		//CREATE_NEW_CONSOLE, // V‚µ‚¢ƒRƒ“ƒ\[ƒ‹‚ÅŠJ‚­
+		TRUE,               // ãƒãƒ³ãƒ‰ãƒ«ç¶™æ‰¿ã‚’æœ‰åŠ¹åŒ–
+		CREATE_NO_WINDOW,   // ã‚³ãƒ³ã‚½ãƒ¼ãƒ«éè¡¨ç¤º
+		//CREATE_NEW_CONSOLE, // æ–°ã—ã„ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã§é–‹ã
 		nullptr, nullptr,
 		&si, &pi))
 	{
@@ -648,14 +648,14 @@ void BuildSettingsWindow::RunBuild()
 		return;
 	}
 
-	// qƒvƒƒZƒX‚ª‘‚«‚İ‘¤ƒnƒ“ƒhƒ‹‚ğ‚Â‚Ì‚ÅAe‘¤‚Í•Â‚¶‚é
-	// ¦ ‚±‚ê‚ğ‚µ‚È‚¢‚Æ ReadFile ‚ªƒuƒƒbƒN‚µ‚½‚Ü‚Ü‚É‚È‚é
+	// å­ãƒ—ãƒ­ã‚»ã‚¹ãŒæ›¸ãè¾¼ã¿å´ãƒãƒ³ãƒ‰ãƒ«ã‚’æŒã¤ã®ã§ã€è¦ªå´ã¯é–‰ã˜ã‚‹
+	// â€» ã“ã‚Œã‚’ã—ãªã„ã¨ ReadFile ãŒãƒ–ãƒ­ãƒƒã‚¯ã—ãŸã¾ã¾ã«ãªã‚‹
 	CloseHandle(hWritePipe);
 
 	m_isBuilding = true;
 	Console::Log("[Build] Build started.");
 
-	// --- “Ç‚İæ‚èƒXƒŒƒbƒh ---
+	// --- èª­ã¿å–ã‚Šã‚¹ãƒ¬ãƒƒãƒ‰ ---
 	std::thread([this, hReadPipe, pi]() mutable
 		{
 			auto pushLog = [this](std::string line)
@@ -681,7 +681,7 @@ void BuildSettingsWindow::RunBuild()
 					remainder = remainder.substr(pos + 1);
 					if (line.empty()) continue;
 
-					// [PROGRESS_TOTAL N] ¨ ƒg[ƒ^ƒ‹‚ğƒZƒbƒg
+					// [PROGRESS_TOTAL N] â†’ ãƒˆãƒ¼ã‚¿ãƒ«ã‚’ã‚»ãƒƒãƒˆ
 					if (line.rfind("[PROGRESS_TOTAL ", 0) == 0)
 					{
 						int total = 0;
@@ -691,7 +691,7 @@ void BuildSettingsWindow::RunBuild()
 							m_buildProgress.progressTotal = total;
 						}
 					}
-					// [PROGRESS N] ¨ Œ»İƒXƒeƒbƒv‚ğƒZƒbƒg
+					// [PROGRESS N] â†’ ç¾åœ¨ã‚¹ãƒ†ãƒƒãƒ—ã‚’ã‚»ãƒƒãƒˆ
 					else if (line.rfind("[PROGRESS ", 0) == 0)
 					{
 						int cur = 0;
@@ -700,7 +700,7 @@ void BuildSettingsWindow::RunBuild()
 							std::lock_guard lock(m_progressMutex);
 							m_buildProgress.progressCurrent = cur;
 						}
-						// ƒ‰ƒxƒ‹•”•ª‚¾‚¯ƒƒO‚É—¬‚·
+						// ãƒ©ãƒ™ãƒ«éƒ¨åˆ†ã ã‘ãƒ­ã‚°ã«æµã™
 						auto labelStart = line.find("] ");
 						if (labelStart != std::string::npos)
 							pushLog(line.substr(labelStart + 2));
@@ -737,23 +737,23 @@ void BuildSettingsWindow::RunBuild()
 
 void BuildSettingsWindow::PackageBuildOutput()
 {
-	// ƒrƒ‹ƒho—Í‚ÌƒpƒbƒP[ƒW‰»ˆ—
+	// ãƒ“ãƒ«ãƒ‰å‡ºåŠ›ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åŒ–å‡¦ç†
 
-	// İ’è‚ğ•Û‘¶‚µ‚Ä‚©‚çƒrƒ‹ƒh‚ğÀs‚·‚é
+	// è¨­å®šã‚’ä¿å­˜ã—ã¦ã‹ã‚‰ãƒ“ãƒ«ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹
 	SaveBuildSettings();
 
-	Physics::SaveSettings(); // •¨—ƒGƒ“ƒWƒ“‚Ìó‘Ô‚ğ•Û‘¶‚µ‚Ä‚¨‚­B
-	SceneManager::SaveSettings(); // ƒV[ƒ“ƒ}ƒl[ƒWƒƒ‚Ìó‘Ô‚ğ•Û‘¶‚µ‚Ä‚¨‚­B
+	Physics::SaveSettings(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®çŠ¶æ…‹ã‚’ä¿å­˜ã—ã¦ãŠãã€‚
+	SceneManager::SaveSettings(); // ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ã®çŠ¶æ…‹ã‚’ä¿å­˜ã—ã¦ãŠãã€‚
 
-	// ƒrƒ‹ƒh‘O‚ÌƒtƒbƒNi•K—v‚É‰‚¶‚Äƒrƒ‹ƒh‘O‚É‚â‚è‚½‚¢ˆ—‚ª‚ ‚ê‚Î‚±‚±‚É‘‚­j
+	// ãƒ“ãƒ«ãƒ‰å‰ã®ãƒ•ãƒƒã‚¯ï¼ˆå¿…è¦ã«å¿œã˜ã¦ãƒ“ãƒ«ãƒ‰å‰ã«ã‚„ã‚ŠãŸã„å‡¦ç†ãŒã‚ã‚Œã°ã“ã“ã«æ›¸ãï¼‰
 	{
-		// ƒrƒ‹ƒh‚·‚éƒV[ƒ“‚ğ•Û‘¶‚µ‚Ä‚¨‚­
+		// ãƒ“ãƒ«ãƒ‰ã™ã‚‹ã‚·ãƒ¼ãƒ³ã‚’ä¿å­˜ã—ã¦ãŠã
 		for (auto& entry : SceneManager::sceneEntries)
 		{
 			std::filesystem::path scenePath(entry.path);
 			std::filesystem::path buildScenePath = scenePath.replace_extension(".bin");
 
-			// ƒV[ƒ“‚ğƒrƒ‹ƒh—p‚ÌŒ`®‚Å•Û‘¶‚·‚é
+			// ã‚·ãƒ¼ãƒ³ã‚’ãƒ“ãƒ«ãƒ‰ç”¨ã®å½¢å¼ã§ä¿å­˜ã™ã‚‹
 			json cachedJson;
 			if (JsonFileHandler::LoadJsonFromFile(cachedJson, entry.path))
 			{
@@ -762,8 +762,8 @@ void BuildSettingsWindow::PackageBuildOutput()
 		}
 	}
 
-	// ƒrƒ‹ƒhƒRƒ}ƒ“ƒh‚ğ\’z
-	// ˆø”: build.bat <ƒAƒvƒŠƒP[ƒVƒ‡ƒ“–¼> <ƒAƒCƒRƒ“ƒpƒX> <ƒrƒ‹ƒho—ÍæƒfƒBƒŒƒNƒgƒŠ>
+	// ãƒ“ãƒ«ãƒ‰ã‚³ãƒãƒ³ãƒ‰ã‚’æ§‹ç¯‰
+	// å¼•æ•°: build.bat <ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å> <ã‚¢ã‚¤ã‚³ãƒ³ãƒ‘ã‚¹> <ãƒ“ãƒ«ãƒ‰å‡ºåŠ›å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª>
 	std::string cmd = std::format(
 		"pack.bat \"{}\" \"{}\" \"{}\"",
 		m_settings.appName,
@@ -771,13 +771,13 @@ void BuildSettingsWindow::PackageBuildOutput()
 		NormalizePath(m_settings.outputDir)
 	);
 
-	// --- ƒpƒCƒvì¬ ---
+	// --- ãƒ‘ã‚¤ãƒ—ä½œæˆ ---
 	HANDLE hReadPipe = nullptr;
 	HANDLE hWritePipe = nullptr;
 
 	SECURITY_ATTRIBUTES sa{};
 	sa.nLength = sizeof(sa);
-	sa.bInheritHandle = TRUE;   // qƒvƒƒZƒX‚Éƒnƒ“ƒhƒ‹‚ğŒp³‚³‚¹‚é
+	sa.bInheritHandle = TRUE;   // å­ãƒ—ãƒ­ã‚»ã‚¹ã«ãƒãƒ³ãƒ‰ãƒ«ã‚’ç¶™æ‰¿ã•ã›ã‚‹
 	sa.lpSecurityDescriptor = nullptr;
 
 	if (!CreatePipe(&hReadPipe, &hWritePipe, &sa, 0))
@@ -786,24 +786,24 @@ void BuildSettingsWindow::PackageBuildOutput()
 		return;
 	}
 
-	// e‘¤‚Ì“Ç‚İæ‚èƒnƒ“ƒhƒ‹‚ÍŒp³•s—v
+	// è¦ªå´ã®èª­ã¿å–ã‚Šãƒãƒ³ãƒ‰ãƒ«ã¯ç¶™æ‰¿ä¸è¦
 	SetHandleInformation(hReadPipe, HANDLE_FLAG_INHERIT, 0);
 
-	// --- STARTUPINFO ‚ÉƒpƒCƒv‚ğÚ‘± ---
+	// --- STARTUPINFO ã«ãƒ‘ã‚¤ãƒ—ã‚’æ¥ç¶š ---
 	STARTUPINFOA si{};
 	si.cb = sizeof(si);
 	si.dwFlags = STARTF_USESTDHANDLES;
-	si.hStdOutput = hWritePipe;   // stdout ¨ ƒpƒCƒv
-	si.hStdError = hWritePipe;   // stderr ‚à“¯‚¶ƒpƒCƒv‚Ö
+	si.hStdOutput = hWritePipe;   // stdout â†’ ãƒ‘ã‚¤ãƒ—
+	si.hStdError = hWritePipe;   // stderr ã‚‚åŒã˜ãƒ‘ã‚¤ãƒ—ã¸
 
 	PROCESS_INFORMATION pi{};
 
 	if (!CreateProcessA(
 		nullptr, cmd.data(),
 		nullptr, nullptr,
-		TRUE,               // ƒnƒ“ƒhƒ‹Œp³‚ğ—LŒø‰»
-		CREATE_NO_WINDOW,   // ƒRƒ“ƒ\[ƒ‹”ñ•\¦
-		//CREATE_NEW_CONSOLE, // V‚µ‚¢ƒRƒ“ƒ\[ƒ‹‚ÅŠJ‚­
+		TRUE,               // ãƒãƒ³ãƒ‰ãƒ«ç¶™æ‰¿ã‚’æœ‰åŠ¹åŒ–
+		CREATE_NO_WINDOW,   // ã‚³ãƒ³ã‚½ãƒ¼ãƒ«éè¡¨ç¤º
+		//CREATE_NEW_CONSOLE, // æ–°ã—ã„ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã§é–‹ã
 		nullptr, nullptr,
 		&si, &pi))
 	{
@@ -813,28 +813,28 @@ void BuildSettingsWindow::PackageBuildOutput()
 		return;
 	}
 
-	// qƒvƒƒZƒX‚ª‘‚«‚İ‘¤ƒnƒ“ƒhƒ‹‚ğ‚Â‚Ì‚ÅAe‘¤‚Í•Â‚¶‚é
-	// ¦ ‚±‚ê‚ğ‚µ‚È‚¢‚Æ ReadFile ‚ªƒuƒƒbƒN‚µ‚½‚Ü‚Ü‚É‚È‚é
+	// å­ãƒ—ãƒ­ã‚»ã‚¹ãŒæ›¸ãè¾¼ã¿å´ãƒãƒ³ãƒ‰ãƒ«ã‚’æŒã¤ã®ã§ã€è¦ªå´ã¯é–‰ã˜ã‚‹
+	// â€» ã“ã‚Œã‚’ã—ãªã„ã¨ ReadFile ãŒãƒ–ãƒ­ãƒƒã‚¯ã—ãŸã¾ã¾ã«ãªã‚‹
 	CloseHandle(hWritePipe);
 
 	m_isPackaging = true;
 	Console::Log("[Build] Build started.");
 
-	// --- “Ç‚İæ‚èƒXƒŒƒbƒh ---
+	// --- èª­ã¿å–ã‚Šã‚¹ãƒ¬ãƒƒãƒ‰ ---
 	std::thread([this, hReadPipe, pi]() mutable
 		{
-			// ƒpƒCƒv‚©‚ç‚Ìo—Í‚ğ“Ç‚İæ‚éƒ‹[ƒv(OutputDebugStringA‚Éo—Í)
+			// ãƒ‘ã‚¤ãƒ—ã‹ã‚‰ã®å‡ºåŠ›ã‚’èª­ã¿å–ã‚‹ãƒ«ãƒ¼ãƒ—(OutputDebugStringAã«å‡ºåŠ›)
 			char buffer[256]{};
 			DWORD bytesRead = 0;
 			while (ReadFile(hReadPipe, buffer, sizeof(buffer) - 1, &bytesRead, nullptr) && bytesRead > 0)
 			{
-				OutputDebugStringA(buffer); // ƒfƒoƒbƒOo—Í‚É—¬‚·
+				OutputDebugStringA(buffer); // ãƒ‡ãƒãƒƒã‚°å‡ºåŠ›ã«æµã™
 			}
 
-			// ƒrƒ‹ƒhƒvƒƒZƒX‚ÌI—¹‚ğ‘Ò‹@
+			// ãƒ“ãƒ«ãƒ‰ãƒ—ãƒ­ã‚»ã‚¹ã®çµ‚äº†ã‚’å¾…æ©Ÿ
 			WaitForSingleObject(pi.hProcess, INFINITE);
 
-			// I—¹ƒR[ƒhæ“¾
+			// çµ‚äº†ã‚³ãƒ¼ãƒ‰å–å¾—
 			DWORD exitCode = 0;
 			GetExitCodeProcess(pi.hProcess, &exitCode);
 			if (exitCode == 0)
@@ -844,7 +844,7 @@ void BuildSettingsWindow::PackageBuildOutput()
 
 			CloseHandle(hReadPipe);
 
-			// ƒnƒ“ƒhƒ‹ƒŠ[ƒN–h~: pi.hProcess, pi.hThread ‚ğ•K‚¸•Â‚¶‚é
+			// ãƒãƒ³ãƒ‰ãƒ«ãƒªãƒ¼ã‚¯é˜²æ­¢: pi.hProcess, pi.hThread ã‚’å¿…ãšé–‰ã˜ã‚‹
 			if (pi.hProcess) {
 				CloseHandle(pi.hProcess);
 			}

@@ -1,22 +1,22 @@
 #include "pch.h"
 #include "HorizontalLayoutGroup.h"
 
-// ‚¢‚¸‚ê‚©‚Ìƒ}ƒNƒ‚ğg—p‚µ‚ÄƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ“o˜^‚µ‚Ü‚·B•K—v‚É‰‚¶‚Ä‘®«‚àw’è‚Å‚«‚Ü‚·B
+// ã„ãšã‚Œã‹ã®ãƒã‚¯ãƒ­ã‚’ä½¿ç”¨ã—ã¦ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç™»éŒ²ã—ã¾ã™ã€‚å¿…è¦ã«å¿œã˜ã¦å±æ€§ã‚‚æŒ‡å®šã§ãã¾ã™ã€‚
 //REGISTER_COMPONENT(HorizontalLayoutGroup, "UserScripts")
 REGISTER_COMPONENT_WITH_ATTRIBUTES(HorizontalLayoutGroup, "UI", ComponentAttributes::ExecuteInEditMode, {})
 
 
 void HorizontalLayoutGroup::Start()
 {
-	// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŠJn‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒé–‹å§‹ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 }
 
 
 
 void HorizontalLayoutGroup::UpdateLayout()
 {
-	// …•½•ûŒü‚ÌƒŒƒCƒAƒEƒg‚ğXV‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
-	// q—v‘f‚Ì RectTransform ‚ğæ“¾‚µ‚ÄApadding ‚â spacing ‚ğl—¶‚µ‚Ä”z’u‚ğŒvZ‚µ‚Ü‚·B
+	// æ°´å¹³æ–¹å‘ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’æ›´æ–°ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
+	// å­è¦ç´ ã® RectTransform ã‚’å–å¾—ã—ã¦ã€padding ã‚„ spacing ã‚’è€ƒæ…®ã—ã¦é…ç½®ã‚’è¨ˆç®—ã—ã¾ã™ã€‚
 	auto rectTransform = GetRectTransform();
 	if (!rectTransform) return;
 
@@ -29,7 +29,7 @@ void HorizontalLayoutGroup::UpdateLayout()
 	const int childCount = static_cast<int>(childRects.size());
 	const float totalSpacing = spacing * (childCount - 1);
 
-	// q—v‘f‚Ì•‚ğŒvZ
+	// å­è¦ç´ ã®å¹…ã‚’è¨ˆç®—
 	std::vector<float> childWidths(childCount);
 	float fixedTotal = 0.0f;
 	for (int i = 0; i < childCount; ++i)
@@ -39,7 +39,7 @@ void HorizontalLayoutGroup::UpdateLayout()
 		fixedTotal += preferredWidth;
 	}
 
-	// ForceExpand: —]”’‚ğ‹Ï“™‚É•ª”z
+	// ForceExpand: ä½™ç™½ã‚’å‡ç­‰ã«åˆ†é…
 	if (childForceExpandWidth)
 	{
 		float extraSpace = (std::max)(0.0f, innerWidth - fixedTotal - totalSpacing);
@@ -50,21 +50,21 @@ void HorizontalLayoutGroup::UpdateLayout()
 		}
 	}
 
-	// å²‚ÌŠJnˆÊ’u‚ğŒvZ (¶‘µ‚¦A’†‰›‘µ‚¦A‰E‘µ‚¦)
+	// ä¸»è»¸ã®é–‹å§‹ä½ç½®ã‚’è¨ˆç®— (å·¦æƒãˆã€ä¸­å¤®æƒãˆã€å³æƒãˆ)
 	float totalUsed = totalSpacing;
 	for (float w : childWidths) totalUsed += w;
 
 	float startX = paddingLeft;
-	if (layoutAlignment == 1) // ’†‰›‘µ‚¦
+	if (layoutAlignment == 1) // ä¸­å¤®æƒãˆ
 	{
 		startX = paddingLeft + (innerWidth - totalUsed) * 0.5f;
 	}
-	else if (layoutAlignment == 2) // ‰E‘µ‚¦
+	else if (layoutAlignment == 2) // å³æƒãˆ
 	{
 		startX = selfRect->GetWorldSize().x - paddingRight - totalUsed;
 	}
 
-	// q—v‘f‚ğ”z’u
+	// å­è¦ç´ ã‚’é…ç½®
 	float cursor = startX;
 	for (int i = 0; i < childCount; ++i)
 	{
@@ -72,21 +72,21 @@ void HorizontalLayoutGroup::UpdateLayout()
 		float childWidth = childControlWidth ? childWidths[i] : rect->size.x;
 		float childHeight = childControlHeight ? innerHeight : rect->size.y;
 
-		// Œğ·²(Y)‚Ìalignment
+		// äº¤å·®è»¸(Y)ã®alignment
 		float localY = paddingTop;
-		if (layoutAlignment == 1) // ’†‰›‘µ‚¦
+		if (layoutAlignment == 1) // ä¸­å¤®æƒãˆ
 		{
 			localY = paddingTop + (innerHeight - childHeight) * 0.5f;
 		}
-		else if (layoutAlignment == 2) // ‰E‘µ‚¦
+		else if (layoutAlignment == 2) // å³æƒãˆ
 		{
 			localY = selfRect->GetWorldSize().y - paddingBottom - childHeight;
 		}
 
-		// q—v‘f‚ÌƒAƒ“ƒJ[ƒ|ƒWƒVƒ‡ƒ“‚ğİ’è
+		// å­è¦ç´ ã®ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
 		rect->SetAnchorMin({ 0, 0 });
 		rect->SetAnchorMax({ 0, 0 });
-		rect->SetPivot({ 0, 0 }); // ¶ã‚ğŠî€‚É”z’u
+		rect->SetPivot({ 0, 0 }); // å·¦ä¸Šã‚’åŸºæº–ã«é…ç½®
 		rect->SetAnchoredPosition({ cursor, localY });
 		rect->SetSize({ childWidth, childHeight });
 

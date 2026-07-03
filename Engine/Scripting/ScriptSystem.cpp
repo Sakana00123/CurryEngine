@@ -21,7 +21,7 @@ extern "C" void __stdcall OnScriptClassRegistered(const ScriptClassDesc* desc)
 	if (desc->baseClass) {
 		meta.bases.push_back(desc->baseClass->name);
 	}
-	meta.isScript = true; // ƒXƒNƒŠƒvƒgƒNƒ‰ƒX‚Å‚ ‚é‚±‚Æ‚ğƒ}[ƒN
+	meta.isScript = true; // ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¯ãƒ©ã‚¹ã§ã‚ã‚‹ã“ã¨ã‚’ãƒãƒ¼ã‚¯
 
 	for (int i = 0; i < desc->propertyCount; ++i) {
 		const ScriptPropertyDesc& propDesc = desc->properties[i];
@@ -30,13 +30,13 @@ extern "C" void __stdcall OnScriptClassRegistered(const ScriptClassDesc* desc)
 		propInfo.type = propDesc.type;
 
 		propInfo.getter = [name = std::string(propDesc.name)](void* instance) -> std::any {
-			// C# ‘¤‚ÌƒXƒNƒŠƒvƒgƒCƒ“ƒXƒ^ƒ“ƒX‚©‚çƒvƒƒpƒeƒB‚Ì’l‚ğæ“¾‚·‚é‚½‚ß‚ÌƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
-			// —á‚¦‚ÎAScriptSystem ‚ğ’Ê‚¶‚Ä C# ‘¤‚É’l‚Ìæ“¾‚ğƒŠƒNƒGƒXƒg‚·‚é‚È‚Ç
+			// C# å´ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‹ã‚‰ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
+			// ä¾‹ãˆã°ã€ScriptSystem ã‚’é€šã˜ã¦ C# å´ã«å€¤ã®å–å¾—ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã™ã‚‹ãªã©
 			auto* sc = static_cast<ScriptComponent*>(instance);
 			if (auto* fieldsJson = static_cast<char*>(ScriptSystem::GetScriptFields(sc->GetGCHandle())))
 			{
 				std::string jsonStr = fieldsJson;
-				CoTaskMemFree(fieldsJson); // C# ‘¤‚Å StringToCoTaskMemUTF8 ‚ÅŠm•Û‚µ‚½ƒƒ‚ƒŠ‚ğ‰ğ•ú
+				CoTaskMemFree(fieldsJson); // C# å´ã§ StringToCoTaskMemUTF8 ã§ç¢ºä¿ã—ãŸãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾
 
 				json fields = json::parse(jsonStr, nullptr, false);
 				if (!fields.is_discarded())
@@ -74,8 +74,8 @@ extern "C" void __stdcall OnScriptClassRegistered(const ScriptClassDesc* desc)
 			}
 			};
 		propInfo.setter = [name = std::string(propDesc.name)](void* instance, std::any value) {
-			// C# ‘¤‚ÌƒXƒNƒŠƒvƒgƒCƒ“ƒXƒ^ƒ“ƒX‚ÉƒvƒƒpƒeƒB‚Ì’l‚ğİ’è‚·‚é‚½‚ß‚ÌƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
-			// —á‚¦‚ÎAScriptSystem ‚ğ’Ê‚¶‚Ä C# ‘¤‚É’l‚Ìİ’è‚ğƒŠƒNƒGƒXƒg‚·‚é‚È‚Ç
+			// C# å´ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’è¨­å®šã™ã‚‹ãŸã‚ã®ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
+			// ä¾‹ãˆã°ã€ScriptSystem ã‚’é€šã˜ã¦ C# å´ã«å€¤ã®è¨­å®šã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã™ã‚‹ãªã©
 			auto* sc = static_cast<ScriptComponent*>(instance);
 			std::string valueStr;
 			try
@@ -96,20 +96,20 @@ extern "C" void __stdcall OnScriptClassRegistered(const ScriptClassDesc* desc)
 
 void ScriptSystem::Initialize()
 {
-	// exe ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğæ“¾
+	// exe ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å–å¾—
 	char exePath[MAX_PATH];
 	GetModuleFileNameA(NULL, exePath, MAX_PATH);
 	std::string exeDir(exePath);
-	// ƒpƒX‚Ì‹æØ‚è•¶š‚ğ“ˆê
+	// ãƒ‘ã‚¹ã®åŒºåˆ‡ã‚Šæ–‡å­—ã‚’çµ±ä¸€
 	std::replace(exeDir.begin(), exeDir.end(), '/', '\\');
-	// ƒfƒBƒŒƒNƒgƒŠ•”•ª‚¾‚¯‚ğ’Šo
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªéƒ¨åˆ†ã ã‘ã‚’æŠ½å‡º
 	exeDir = exeDir.substr(0, exeDir.rfind("\\"));
 	
-	// ƒvƒƒWƒFƒNƒgİ’è‚Ì“Ç‚İ‚İ
+	// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆè¨­å®šã®èª­ã¿è¾¼ã¿
 	ProjectSettings::Load(exeDir);
 	ProjectSettingsData settings = ProjectSettings::Get();
 
-	// ƒXƒNƒŠƒvƒgƒzƒXƒg‚Ì‰Šú‰»
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ›ã‚¹ãƒˆã®åˆæœŸåŒ–
 	s_scriptHost = new ScriptHost();
 	if (!s_scriptHost->Initialize()) {
 		Console::LogError("[ScriptSystem] Failed to initialize the script host.");
@@ -119,16 +119,16 @@ void ScriptSystem::Initialize()
 	}
 
 #ifdef _DEBUG
-	// ƒXƒNƒŠƒvƒgƒEƒHƒbƒ`ƒƒ[‚Ì‰Šú‰»
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¦ã‚©ãƒƒãƒãƒ£ãƒ¼ã®åˆæœŸåŒ–
 	s_scriptWatcher = new ScriptWatcher();
 	s_scriptWatcher->Start(
 		settings.scriptWatchDirectory,
 		settings.scriptProjectPath,
 		[]() {
-			ScriptSystem::Reload(); // ƒrƒ‹ƒh¬Œ÷‚ÉƒXƒNƒŠƒvƒg‚ğƒŠƒ[ƒh‚·‚éƒR[ƒ‹ƒoƒbƒN
+			ScriptSystem::Reload(); // ãƒ“ãƒ«ãƒ‰æˆåŠŸæ™‚ã«ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ãƒªãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 		}
 	);
-	s_scriptWatcher->RequestBuild(); // ‹N“®‚Éˆê“xƒrƒ‹ƒh‚ğ—v‹‚µ‚ÄÅV‚ÌƒXƒNƒŠƒvƒg‚ğ“Ç‚İ‚Ş  
+	s_scriptWatcher->RequestBuild(); // èµ·å‹•æ™‚ã«ä¸€åº¦ãƒ“ãƒ«ãƒ‰ã‚’è¦æ±‚ã—ã¦æœ€æ–°ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’èª­ã¿è¾¼ã‚€  
 #endif // _DEBUG
 
 	Console::Log("[ScriptSystem] Script host initialized successfully.");
@@ -138,7 +138,7 @@ void ScriptSystem::Initialize()
 void ScriptSystem::Shutdown()
 {
 #ifdef _DEBUG
-	// ƒXƒNƒŠƒvƒgƒEƒHƒbƒ`ƒƒ[‚ÌI—¹ˆ—
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¦ã‚©ãƒƒãƒãƒ£ãƒ¼ã®çµ‚äº†å‡¦ç†
 	if (s_scriptWatcher) {
 		s_scriptWatcher->Stop();
 		delete s_scriptWatcher;
@@ -150,7 +150,7 @@ void ScriptSystem::Shutdown()
 		Console::LogError("[ScriptSystem] Cannot shutdown scripts because the script host is not initialized.");
 		return;
 	}
-	// ƒXƒNƒŠƒvƒgƒzƒXƒg‚ÌI—¹ˆ—
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ›ã‚¹ãƒˆã®çµ‚äº†å‡¦ç†
 	s_scriptHost->Shutdown();
 	delete s_scriptHost;
 	s_scriptHost = nullptr;
@@ -179,16 +179,16 @@ void ScriptSystem::Reload()
 		}
 	}
 
-	// C#ƒXƒNƒŠƒvƒg‚Ìƒƒ^î•ñ‚ğƒNƒŠƒA
+	// C#ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ¡ã‚¿æƒ…å ±ã‚’ã‚¯ãƒªã‚¢
 	ReflectionRegistry::UnregisterScriptClasses();
 
-	// Assembly-CSharp.dll ‚ğƒŠƒ[ƒh
+	// Assembly-CSharp.dll ã‚’ãƒªãƒ­ãƒ¼ãƒ‰
 	s_scriptHost->GetCallbacks().ReloadScripts("");
 
-	// C#‘¤‚É¡‚·‚®‘SƒNƒ‰ƒX‚Ì“o˜^‚ğ—v‹‚µ‚ÄAƒXƒNƒŠƒvƒgƒNƒ‰ƒX‚Ìƒƒ^ƒf[ƒ^‚ğXV‚·‚é
+	// C#å´ã«ä»Šã™ãå…¨ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’è¦æ±‚ã—ã¦ã€ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°ã™ã‚‹
 	//s_scriptHost->GetCallbacks().RegisterAllScriptMeta(&OnScriptClassRegistered);
 
-	// ‚·‚×‚Ä‚ÌƒXƒNƒŠƒvƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚É‘Î‚µ‚ÄƒXƒNƒŠƒvƒgƒŠƒ[ƒhˆ—‚ğŒÄ‚Ño‚·
+	// ã™ã¹ã¦ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«å¯¾ã—ã¦ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒªãƒ­ãƒ¼ãƒ‰å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	if (scene)
 	{
 		for (auto& object : scene->GetAllSceneObjects())
@@ -206,7 +206,7 @@ void ScriptSystem::Reload()
 
 void ScriptSystem::RequestScriptBuildAndReload()
 {
-	// ƒXƒNƒŠƒvƒg‚Ìƒrƒ‹ƒh‚ğ—v‹‚·‚é
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ“ãƒ«ãƒ‰ã‚’è¦æ±‚ã™ã‚‹
 	if (s_scriptWatcher)
 	{
 		s_scriptWatcher->RequestBuild();
@@ -285,7 +285,7 @@ void ScriptSystem::SetScriptField(void* gcHandle, const std::string& fieldName, 
 
 static const CollisionInfoDto& ConvertCollisionInfoToPrimitiveData(const CollisionInfo& info)
 {
-	// CollisionInfo ‚ğƒXƒNƒŠƒvƒg‘¤‚Åˆµ‚¢‚â‚·‚¢Œ`®‚É•ÏŠ·‚·‚é
+	// CollisionInfo ã‚’ã‚¹ã‚¯ãƒªãƒ—ãƒˆå´ã§æ‰±ã„ã‚„ã™ã„å½¢å¼ã«å¤‰æ›ã™ã‚‹
 	CollisionInfoDto dto{};
 	dto.selfId = info.self ? info.self->GetId().Value() : 0;
 	dto.selfColliderId = info.selfCollider ? info.selfCollider->GetId().Value() : 0;
@@ -295,7 +295,7 @@ static const CollisionInfoDto& ConvertCollisionInfoToPrimitiveData(const Collisi
 	dto.impulseY = info.impulse.y;
 	dto.impulseZ = info.impulse.z;
 	dto.contactCount = static_cast<uint32_t>(info.contacts.size());
-	// ÚG“_‚Ìî•ñ‚ğƒRƒs[‚·‚éiÅ‘å”‚Í MAX_CONTACTS_PER_PAIR ‚Å§ŒÀj
+	// æ¥è§¦ç‚¹ã®æƒ…å ±ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ï¼ˆæœ€å¤§æ•°ã¯ MAX_CONTACTS_PER_PAIR ã§åˆ¶é™ï¼‰
 	for (size_t i = 0; i < dto.contactCount && i < MAX_CONTACTS_PER_PAIR; ++i)
 	{
 		const auto& src = info.contacts[i];
@@ -317,7 +317,7 @@ static const CollisionInfoDto& ConvertCollisionInfoToPrimitiveData(const Collisi
 
 static const TriggerInfoDto& ConvertTriggerInfoToPrimitiveData(const TriggerInfo& info)
 {
-	// TriggerInfo ‚ğƒXƒNƒŠƒvƒg‘¤‚Åˆµ‚¢‚â‚·‚¢Œ`®‚É•ÏŠ·‚·‚é
+	// TriggerInfo ã‚’ã‚¹ã‚¯ãƒªãƒ—ãƒˆå´ã§æ‰±ã„ã‚„ã™ã„å½¢å¼ã«å¤‰æ›ã™ã‚‹
 	TriggerInfoDto dto{};
 	dto.selfId = info.self ? info.self->GetId().Value() : 0;
 	dto.selfColliderId = info.selfCollider ? info.selfCollider->GetId().Value() : 0;
@@ -380,6 +380,6 @@ void ScriptSystem::ClearScriptNames()
 
 void ScriptSystem::AddTempScriptName(const std::string& name)
 {
-	// ‚±‚±‚ÅƒXƒNƒŠƒvƒg–¼‚ğƒLƒƒƒbƒVƒ…‚É’Ç‰Á‚·‚é
+	// ã“ã“ã§ã‚¹ã‚¯ãƒªãƒ—ãƒˆåã‚’ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«è¿½åŠ ã™ã‚‹
 	s_tempNames.push_back(name);
 }

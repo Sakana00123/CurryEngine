@@ -38,7 +38,7 @@ void to_json(json& j, const ::Range<T>& r) {
 //		j = ref.id.ToString();
 //	}
 //	else {
-//		j = ObjectId::Invalid().ToString(); // –³Œø‚ÈID‚Íí‚É“¯‚¶•¶š—ñ‚É‚È‚é
+//		j = ObjectId::Invalid().ToString(); // ç„¡åŠ¹ãªIDã¯å¸¸ã«åŒã˜æ–‡å­—åˆ—ã«ãªã‚‹
 //	}
 //}
 
@@ -58,7 +58,7 @@ inline void to_json(json& j, const ObjectId& id) {
 		j = id.ToString();
 	}
 	else {
-		j = ObjectId::Invalid().ToString(); // –³Œø‚ÈID‚Íí‚É“¯‚¶•¶š—ñ‚É‚È‚é
+		j = ObjectId::Invalid().ToString(); // ç„¡åŠ¹ãªIDã¯å¸¸ã«åŒã˜æ–‡å­—åˆ—ã«ãªã‚‹
 	}
 }
 C_REGISTER_TYPE(ObjectId);

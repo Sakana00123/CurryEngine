@@ -27,7 +27,7 @@ namespace CurryEngine
 
                 if (fabsf(d) < 1e-8f)
                 {
-                    // ƒŒƒC‚ª‚±‚ÌŽ²‚É•½s ¨ ƒXƒ‰ƒuŠO‚È‚ç‘¦ƒ~ƒX
+                    // ãƒ¬ã‚¤ãŒã“ã®è»¸ã«å¹³è¡Œ â†’ ã‚¹ãƒ©ãƒ–å¤–ãªã‚‰å³ãƒŸã‚¹
                     if (o < lo || o > hi) return false;
                 }
                 else
@@ -54,10 +54,10 @@ namespace CurryEngine
             {
 				if (!obj || !obj->IsActive()) continue;
 
-				// Collider ƒRƒ“ƒ|[ƒlƒ“ƒg‚ðŽ‚ÂƒIƒuƒWƒFƒNƒg‚Í–³Ž‹‚·‚é
+				// Collider ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ç„¡è¦–ã™ã‚‹
                 if (obj->GetComponent<Collider>()) continue;
 
-				// ƒIƒuƒWƒFƒNƒg‚ÌƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ðŽæ“¾
+				// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’å–å¾—
                 for (auto& comp : obj->GetAllComponents())
                 {
 					if (!comp) continue;

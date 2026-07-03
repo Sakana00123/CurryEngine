@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Color.h"
-// ’θ”‚Μ’θ‹`
+// ε®ζ•°γ®ε®ηΎ©
 const Color Color::Red = Color(1.0f, 0.0f, 0.0f);
 const Color Color::Green = Color(0.0f, 1.0f, 0.0f);
 const Color Color::Blue = Color(0.0f, 0.0f, 1.0f);
@@ -30,20 +30,20 @@ void Color::ConvertToPastelColors(Color& color) {
 }
 void Color::DarkenColor(Color& color, float factor)
 {
-	// e¬•ª‚πw’θ‚µ‚½„‡‚ΕΓ‚­‚·‚ι
+	// ε„ζε†γ‚’ζ‡ε®γ—γε‰²εγ§ζ—γγ™γ‚‹
 	color.r *= factor;
 	color.g *= factor;
 	color.b *= factor;
-	// ƒAƒ‹ƒtƒ@’l‚Ν•ΟX‚µ‚Θ‚Ά
+	// γ‚Άγƒ«γƒ•γ‚΅ε€¤γ―ε¤‰ζ›΄γ—γªγ„
 }
 void Color::HexToRGB(uint32_t hexColor, Color& color, float alpha)
 {
-	// Τ¬•ª‚π’o‚µA0`1‚Μ”ΝΝ‚Ι•Ο·
+	// θµ¤ζε†γ‚’ζ½ε‡Ίγ—γ€0γ€1γ®η―„ε›²γ«ε¤‰ζ›
 	color.r = static_cast<float>((hexColor >> 16) & 0xFF) / 255.0f;
-	// —Ξ¬•ª‚π’o‚µA0`1‚Μ”ΝΝ‚Ι•Ο·
+	// η·‘ζε†γ‚’ζ½ε‡Ίγ—γ€0γ€1γ®η―„ε›²γ«ε¤‰ζ›
 	color.g = static_cast<float>((hexColor >> 8) & 0xFF) / 255.0f;
-	// Β¬•ª‚π’o‚µA0`1‚Μ”ΝΝ‚Ι•Ο·
+	// ι’ζε†γ‚’ζ½ε‡Ίγ—γ€0γ€1γ®η―„ε›²γ«ε¤‰ζ›
 	color.b = static_cast<float>(hexColor & 0xFF) / 255.0f;
-	// ƒAƒ‹ƒtƒ@’l‚πέ’θ
+	// γ‚Άγƒ«γƒ•γ‚΅ε€¤γ‚’θ¨­ε®
 	color.a = alpha;
 }

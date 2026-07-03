@@ -72,7 +72,7 @@ CascadedShadowMaps::CascadedShadowMaps(ID3D11Device* device, UINT width, UINT he
 	hr = device->CreateShaderResourceView(depthStencilBuffer.Get(), &shaderResourceViewDesc, shaderResourceView.GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// RawTexture2D ‚ğì¬
+	// RawTexture2D ã‚’ä½œæˆ
 	depthTexture = std::make_shared<RawTexture2D>(shaderResourceView.Get(), texture2dDesc);
 
 	// Create the viewport
@@ -135,7 +135,7 @@ void CascadedShadowMaps::Resize(ID3D11Device* device, UINT width, UINT height)
 	hr = device->CreateShaderResourceView(depthStencilBuffer.Get(), &shaderResourceViewDesc, shaderResourceView.GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// RawTexture2D ‚ğì¬
+	// RawTexture2D ã‚’ä½œæˆ
 	depthTexture = std::make_shared<RawTexture2D>(shaderResourceView.Get(), texture2dDesc);
 
 	// Update the viewport
@@ -198,7 +198,7 @@ void CascadedShadowMaps::Activate(ID3D11DeviceContext* immediateContext,
 		center.y /= corners.size();
 		center.z /= corners.size();
 
-		// Œõ‚Ì•ûŒü‚ª^ã‚â^‰º‚É‹ß‚¢ê‡‚ÍUpVector‚ğØ‚è‘Ö‚¦‚é
+		// å…‰ã®æ–¹å‘ãŒçœŸä¸Šã‚„çœŸä¸‹ã«è¿‘ã„å ´åˆã¯UpVectorã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 		DirectX::XMVECTOR upVector = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 		if (std::abs(lightDirection.x) < 0.001f && std::abs(lightDirection.z) < 0.001f)
 		{

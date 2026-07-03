@@ -6,15 +6,15 @@ namespace CurryEngine
 	namespace Resources
 	{
 		/**
-		 * @brief ƒAƒZƒbƒgƒ^ƒCƒv‚ÉŠÖ˜A‚·‚éƒ†[ƒeƒBƒŠƒeƒBŠÖ”‚ğ’ñ‹Ÿ‚·‚éƒNƒ‰ƒX
+		 * @brief ã‚¢ã‚»ãƒƒãƒˆã‚¿ã‚¤ãƒ—ã«é–¢é€£ã™ã‚‹ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°ã‚’æä¾›ã™ã‚‹ã‚¯ãƒ©ã‚¹
 		 */
 		class AssetTypeUtils
 		{
 		public:
 			/**
-			 * @brief ƒtƒ@ƒCƒ‹Šg’£q‚©‚çƒAƒZƒbƒgƒ^ƒCƒv‚ğæ“¾‚µ‚Ü‚·B
-			 * @param extension ƒtƒ@ƒCƒ‹Šg’£qi—á: ".png", ".fbx"j
-			 * @return ‘Î‰‚·‚éƒAƒZƒbƒgƒ^ƒCƒvA‘Î‰‚·‚é‚à‚Ì‚ª‚È‚¢ê‡‚ÍAssetType::Unknown
+			 * @brief ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã‹ã‚‰ã‚¢ã‚»ãƒƒãƒˆã‚¿ã‚¤ãƒ—ã‚’å–å¾—ã—ã¾ã™ã€‚
+			 * @param extension ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ï¼ˆä¾‹: ".png", ".fbx"ï¼‰
+			 * @return å¯¾å¿œã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã‚¿ã‚¤ãƒ—ã€å¯¾å¿œã™ã‚‹ã‚‚ã®ãŒãªã„å ´åˆã¯AssetType::Unknown
 			 */
 			static AssetType DetectFromExtension(const std::string& extension);
 		};

@@ -5,27 +5,27 @@ class MeshCollider : public Collider
 {
 	C_REFLECT(MeshCollider)
 public:
-	/** @brief ‰Šú‰»ˆ—iƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu€”õ‚È‚ÇjB*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ï¼ˆãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æº–å‚™ãªã©ï¼‰ã€‚*/
 	void Initialize() override;
-	/** @brief ƒuƒ[ƒhƒLƒƒƒXƒg“o˜^i‹óŠÔ\‘¢“™‚Ö‚Ì“o˜^jB*/
+	/** @brief ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç™»éŒ²ï¼ˆç©ºé–“æ§‹é€ ç­‰ã¸ã®ç™»éŒ²ï¼‰ã€‚*/
 	void Register() override;
-	/** @brief •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯ŠúB*/
+	/** @brief ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸã€‚*/
 	void SyncWithPhysics() override;
-	/** @brief ƒfƒoƒbƒO•`‰æB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°æç”»ã€‚*/
 	void Render(RenderContext* rtx) override;
 #ifdef USE_IMGUI
-	/** @brief ƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	//void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
-	/** @brief ƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	json Serialize() const override;
-	/** @brief ƒfƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	void Deserialize(const json& j) override;
 
 public:
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("IsConvex"), CurryEngine::PropertyAttributes::Setter("SetConvex"))
-	bool convex = false; // “ÊƒƒbƒVƒ…‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	bool convex = false; // å‡¸ãƒ¡ãƒƒã‚·ãƒ¥ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 
 	C_FUNCTION()
 	bool IsConvex() const;
@@ -33,7 +33,7 @@ public:
 	C_FUNCTION()
 	void SetConvex(bool isConvex);
 
-	/** @brief ƒƒbƒVƒ…ƒAƒZƒbƒg‚ÌƒpƒXB*/
+	/** @brief ãƒ¡ãƒƒã‚·ãƒ¥ã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹ã€‚*/
 	//C_PROPERTY()
 	//std::string meshAssetPath;
 

@@ -16,7 +16,7 @@ class ModelAsset : public Resource
 public:
 	ModelAsset() = default;
 	virtual ~ModelAsset() = default;
-	// ƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰
 	bool LoadFromFile(const std::string& path) override;
 	bool Reload() override;
 
@@ -414,7 +414,7 @@ public:
     std::vector<Node> nodes;
     std::vector<Mesh> meshes;
     std::vector<BatchMesh> batchMeshes;
-    bool staticBatching = false; // Ã“Iƒoƒbƒ`ƒ“ƒO‚ğs‚¤‚©(‰Šú‰»ˆÈ~“r’†‚Å•ÏX‚µ‚È‚¢‚±‚Æ)
+    bool staticBatching = false; // é™çš„ãƒãƒƒãƒãƒ³ã‚°ã‚’è¡Œã†ã‹(åˆæœŸåŒ–ä»¥é™é€”ä¸­ã§å¤‰æ›´ã—ãªã„ã“ã¨)
     std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> buffers;
     std::vector<Material> materials;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> materialResourceView;

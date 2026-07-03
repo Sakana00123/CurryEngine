@@ -2,7 +2,7 @@
 #include "Engine/Input/InputSystem.h"
 
 
-// ================= Keyboard ’¼‘Å‚¿ =================
+// ================= Keyboard ç›´æ‰“ã¡ =================
 
 ENGINE_API bool Input_GetKey(int vKey)
 {
@@ -22,7 +22,7 @@ ENGINE_API bool Input_GetKeyUp(int vKey)
 	return InputSystem::GetKeyRelease(vKey);
 }
 
-// ================= ƒAƒNƒVƒ‡ƒ“–¼w’è =================
+// ================= ã‚¢ã‚¯ã‚·ãƒ§ãƒ³åæŒ‡å®š =================
 
 ENGINE_API bool Input_GetAction(const char* action)
 {
@@ -42,9 +42,9 @@ ENGINE_API bool Input_GetActionUp(const char* action)
 	return InputSystem::GetInputState(action, InputStateMask::Release, DeviceFlags::All);
 }
 
-// ================= ƒXƒeƒBƒbƒNEƒ}ƒEƒXÀ•W =================
+// ================= ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãƒ»ãƒã‚¦ã‚¹åº§æ¨™ =================
 
-// ƒ}ƒEƒX‚Ìƒo[ƒ`ƒƒƒ‹ƒL[(¶/‰E/’†ƒ{ƒ^ƒ“AƒTƒCƒhƒ{ƒ^ƒ“)‚Ì”z—ñ
+// ãƒã‚¦ã‚¹ã®ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼(å·¦/å³/ä¸­ãƒœã‚¿ãƒ³ã€ã‚µã‚¤ãƒ‰ãƒœã‚¿ãƒ³)ã®é…åˆ—
 //static const int mouseVKeys[] = { VK_LBUTTON, VK_RBUTTON, VK_MBUTTON, VK_XBUTTON1, VK_XBUTTON2 };
 //
 //ENGINE_API bool Input_GetMouseButton(int button)
@@ -115,7 +115,7 @@ ENGINE_API float Input_GetMouseScrollDeltaX()
 	return InputSystem::GetWheelDelta();
 }
 
-// ================= ƒJ[ƒ\ƒ‹§Œä =================
+// ================= ã‚«ãƒ¼ã‚½ãƒ«åˆ¶å¾¡ =================
 
 ENGINE_API void Input_SetCursorLock(bool lock, bool changeVisible)
 {
@@ -132,7 +132,7 @@ ENGINE_API bool Input_GetCursorVisible()
 	return InputSystem::IsCursorVisible();
 }
 
-// ================= ƒfƒoƒCƒXó‘Ô =================
+// ================= ãƒ‡ãƒã‚¤ã‚¹çŠ¶æ…‹ =================
 
 ENGINE_API bool Input_IsGamepadConnected()
 {

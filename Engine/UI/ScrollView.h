@@ -7,31 +7,31 @@ class ScrollView : public UIComponent
 public:
 	
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("GameObject"))
-	ObjectId contentRef; // ƒXƒNƒ[ƒ‹ƒrƒ…[‚Ì“à—e‚ğ”z’u‚·‚é GameObject ‚Ö‚ÌQÆ
+	ObjectId contentRef; // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ“ãƒ¥ãƒ¼ã®å†…å®¹ã‚’é…ç½®ã™ã‚‹ GameObject ã¸ã®å‚ç…§
 
 	C_PROPERTY()
-	float scrollSensitivity = 10.f; // ƒXƒNƒ[ƒ‹‚ÌŠ´“xBƒ}ƒEƒXƒzƒC[ƒ‹‚Ì‰ñ“]—Ê‚É‘Î‚·‚éƒXƒNƒ[ƒ‹ƒIƒtƒZƒbƒg‚Ì”{—¦B
+	float scrollSensitivity = 10.f; // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã®æ„Ÿåº¦ã€‚ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ã®å›è»¢é‡ã«å¯¾ã™ã‚‹ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚ªãƒ•ã‚»ãƒƒãƒˆã®å€ç‡ã€‚
 
 private:
-	// Œ»İ‚ÌƒXƒNƒ[ƒ‹ˆÊ’u‚ğ•Û‚·‚é•Ï”B‰Šú’l‚Í (0, 0)B
+	// ç¾åœ¨ã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ä½ç½®ã‚’ä¿æŒã™ã‚‹å¤‰æ•°ã€‚åˆæœŸå€¤ã¯ (0, 0)ã€‚
 	Vector2 m_scrollPosition{ 0,0 };
 
 public:
 
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	ScrollView() = default;
 
 	/**
-	 * @brief ƒIƒuƒWƒFƒNƒg¶¬’¼Œã‚Éˆê“x‚¾‚¯ŒÄ‚Î‚ê‚Ü‚·B
-	 * @details `content` ‚Ìæ“¾E‰Šú‰»‚È‚Ç‚ğÀ‘•‘¤‚Ås‚¢‚Ü‚·B
+	 * @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆç›´å¾Œã«ä¸€åº¦ã ã‘å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @details `content` ã®å–å¾—ãƒ»åˆæœŸåŒ–ãªã©ã‚’å®Ÿè£…å´ã§è¡Œã„ã¾ã™ã€‚
 	 */
 	void Awake() override;
 
 	/**
-	 * @brief XVˆ—B
-	 * @param deltaTime ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bjB
-	 * @details ƒ}ƒEƒXƒzƒC[ƒ‹‚Ì“ü—Í‚ğŒŸo‚µA`scrollSensitivity` ‚ğl—¶‚µ‚Ä `m_scrollPosition` ‚ğXV‚µ‚Ü‚·B
-	 *          XV‚³‚ê‚½ƒXƒNƒ[ƒ‹ˆÊ’u‚ÍA`content` ‚ÌˆÊ’u‚É”½‰f‚³‚ê‚é‚±‚Æ‚ª‘z’è‚³‚ê‚Ü‚·B
+	 * @brief æ›´æ–°å‡¦ç†ã€‚
+	 * @param deltaTime å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
+	 * @details ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ã®å…¥åŠ›ã‚’æ¤œå‡ºã—ã€`scrollSensitivity` ã‚’è€ƒæ…®ã—ã¦ `m_scrollPosition` ã‚’æ›´æ–°ã—ã¾ã™ã€‚
+	 *          æ›´æ–°ã•ã‚ŒãŸã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ä½ç½®ã¯ã€`content` ã®ä½ç½®ã«åæ˜ ã•ã‚Œã‚‹ã“ã¨ãŒæƒ³å®šã•ã‚Œã¾ã™ã€‚
 	 */
 	void Update(float deltaTime) override;
 

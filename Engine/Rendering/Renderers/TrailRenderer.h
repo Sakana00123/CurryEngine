@@ -4,8 +4,8 @@
 C_ENUM()
 enum class TrailRenderMode
 {
-	Billboard, // í‚ÉƒJƒƒ‰‚É–Ê‚·‚éƒrƒ‹ƒ{[ƒh
-	Stretched, // ˆÚ“®•ûŒü‚É‰ˆ‚Á‚ÄL‚Ñ‚éƒXƒgƒŒƒbƒ`
+	Billboard, // å¸¸ã«ã‚«ãƒ¡ãƒ©ã«é¢ã™ã‚‹ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰
+	Stretched, // ç§»å‹•æ–¹å‘ã«æ²¿ã£ã¦ä¼¸ã³ã‚‹ã‚¹ãƒˆãƒ¬ãƒƒãƒ
 };
 
 class TrailRenderer : public Renderer
@@ -24,49 +24,49 @@ public:
 	//virtual void RenderDepth(RenderContext* context) override;
 
 private:
-	// ƒgƒŒƒCƒ‹‚Ì’·‚³
+	// ãƒˆãƒ¬ã‚¤ãƒ«ã®é•·ã•
 	C_PROPERTY()
 	float trailLength = 5.0f;
 
-	// ƒgƒŒƒCƒ‹‚Ì•
+	// ãƒˆãƒ¬ã‚¤ãƒ«ã®å¹…
 	C_PROPERTY()
 	float trailWidth = 0.01f;
 
-	// ƒgƒŒƒCƒ‹‚ÌF
+	// ãƒˆãƒ¬ã‚¤ãƒ«ã®è‰²
 	C_PROPERTY()
 	Color trailColor = Color::White;
 
-	// ƒgƒŒƒCƒ‹‚ªÁ‚¦‚é‚Ü‚Å‚ÌŠÔ
+	// ãƒˆãƒ¬ã‚¤ãƒ«ãŒæ¶ˆãˆã‚‹ã¾ã§ã®æ™‚é–“
 	C_PROPERTY()
 	float fadeDuration = 1.0f;
 
-	// ƒgƒŒƒCƒ‹ƒZƒOƒƒ“ƒg‚ğ’Ç‰Á‚·‚é‚½‚ß‚ÌˆÚ“®‹——£‚Ìè‡’l
+	// ãƒˆãƒ¬ã‚¤ãƒ«ã‚»ã‚°ãƒ¡ãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹ãŸã‚ã®ç§»å‹•è·é›¢ã®é–¾å€¤
 	C_PROPERTY()
 	float trailThreshold = 0.002f;
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("Transform"), CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
-	ObjectId targetTransformId; // ƒgƒŒƒCƒ‹‚ğ’Ç]‚³‚¹‚é‘ÎÛ‚Ì Transform ‚Ì ObjectId
+	ObjectId targetTransformId; // ãƒˆãƒ¬ã‚¤ãƒ«ã‚’è¿½å¾“ã•ã›ã‚‹å¯¾è±¡ã® Transform ã® ObjectId
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("GameObject"), CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
-	ObjectId targetObjectId; // ƒgƒŒƒCƒ‹‚ğ’Ç]‚³‚¹‚é‘ÎÛ‚Ì GameObject ‚Ì ObjectId
+	ObjectId targetObjectId; // ãƒˆãƒ¬ã‚¤ãƒ«ã‚’è¿½å¾“ã•ã›ã‚‹å¯¾è±¡ã® GameObject ã® ObjectId
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"), CurryEngine::PropertyAttributes::DialogFilter("Texture Files (*.png;*.jpg;*.dds)|*.png;*.jpg;*.dds|All Files (*.*)|*.*|"))
-	std::string texturePath; // ƒgƒŒƒCƒ‹‚Ég—p‚·‚éƒeƒNƒXƒ`ƒƒ‚Ìƒtƒ@ƒCƒ‹ƒpƒX
+	std::string texturePath; // ãƒˆãƒ¬ã‚¤ãƒ«ã«ä½¿ç”¨ã™ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::Tooltip("Comming Soon"))
-	int maxSegments = 50; // ƒgƒŒƒCƒ‹‚ÌÅ‘åƒZƒOƒƒ“ƒg”
+	int maxSegments = 50; // ãƒˆãƒ¬ã‚¤ãƒ«ã®æœ€å¤§ã‚»ã‚°ãƒ¡ãƒ³ãƒˆæ•°
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("Enum"), CurryEngine::PropertyAttributes::Enum("TrailRenderMode"))
-	int renderMode = 0; // ƒgƒŒƒCƒ‹‚Ì•`‰æƒ‚[ƒh
+	int renderMode = 0; // ãƒˆãƒ¬ã‚¤ãƒ«ã®æç”»ãƒ¢ãƒ¼ãƒ‰
 
 	struct TrailSegment
 	{
-		Vector3 position; // ƒZƒOƒƒ“ƒg‚ÌˆÊ’u
-		float age;       // ƒZƒOƒƒ“ƒg‚ÌŒo‰ßŠÔ
-		Color color;       // ƒZƒOƒƒ“ƒg‚ÌF
+		Vector3 position; // ã‚»ã‚°ãƒ¡ãƒ³ãƒˆã®ä½ç½®
+		float age;       // ã‚»ã‚°ãƒ¡ãƒ³ãƒˆã®çµŒéæ™‚é–“
+		Color color;       // ã‚»ã‚°ãƒ¡ãƒ³ãƒˆã®è‰²
 	};
-	std::vector<TrailSegment> segments; // ƒgƒŒƒCƒ‹‚ÌƒZƒOƒƒ“ƒgƒŠƒXƒg
+	std::vector<TrailSegment> segments; // ãƒˆãƒ¬ã‚¤ãƒ«ã®ã‚»ã‚°ãƒ¡ãƒ³ãƒˆãƒªã‚¹ãƒˆ
 
-	Vector3 lastPosition; // ‘OƒtƒŒ[ƒ€‚ÌˆÊ’u
+	Vector3 lastPosition; // å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ä½ç½®
 
 };

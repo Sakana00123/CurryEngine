@@ -12,18 +12,18 @@ public:
 	struct SubMesh {
 		uint32_t indexCount = 0;
 		uint32_t indexOffset = 0;
-		int materialIndex = -1; // ƒ}ƒeƒŠƒAƒ‹ƒCƒ“ƒfƒbƒNƒXi-1‚Íƒ}ƒeƒŠƒAƒ‹‚È‚µj
+		int materialIndex = -1; // ãƒãƒ†ãƒªã‚¢ãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆ-1ã¯ãƒãƒ†ãƒªã‚¢ãƒ«ãªã—ï¼‰
 	};
 
-	// GPUƒŠƒ\[ƒX
+	// GPUãƒªã‚½ãƒ¼ã‚¹
 	ComPtr<ID3D11Buffer> vertexBuffer;
 	ComPtr<ID3D11Buffer> indexBuffer;
-	uint32_t vertexStride = 0; // ’¸“_1‚Â‚ ‚½‚è‚ÌƒoƒCƒg”
+	uint32_t vertexStride = 0; // é ‚ç‚¹1ã¤ã‚ãŸã‚Šã®ãƒã‚¤ãƒˆæ•°
 	DXGI_FORMAT indexFormat = DXGI_FORMAT_R32_UINT;
 
 	std::vector<SubMesh> subMeshes;
-	Math::BoundingBox localBounds; // ƒ[ƒJƒ‹‹óŠÔ‚Å‚ÌƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX
+	Math::BoundingBox localBounds; // ãƒ­ãƒ¼ã‚«ãƒ«ç©ºé–“ã§ã®ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹
 
-	// ResourceƒCƒ“ƒ^[ƒtƒF[ƒX‚ÌÀ‘•
+	// Resourceã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã®å®Ÿè£…
 	bool LoadFromFile(const std::string& path) override;
 };

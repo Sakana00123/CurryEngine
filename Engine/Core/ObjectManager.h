@@ -16,30 +16,30 @@ class EditorSelection;
 class SceneManager;
 #endif // USE_IMGUI
 
-/** @brief ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒBƒV[ƒ““à‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğŠÇ—‚µ‚Ü‚·B*/
+/** @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ã€‚ã‚·ãƒ¼ãƒ³å†…ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç®¡ç†ã—ã¾ã™ã€‚*/
 class ObjectManager
 {
 public:
 	ObjectManager(Scene* scene);
 	~ObjectManager();
 
-	/** @brief ƒtƒŒ[ƒ€‚ÌŠJnˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ ã®é–‹å§‹å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	void BeginFrame();
-	/** @brief ƒtƒŒ[ƒ€‚ÌI—¹ˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ ã®çµ‚äº†å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	void EndFrame();
-	/** @brief ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠJnˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é–‹å§‹å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	void Start();
-	/** @brief ƒtƒŒ[ƒ€XV‚Ì‘Oˆ—‚ğs‚¢‚Ü‚·B(‚±‚ê‚Í•K‚¸ŒÄ‚Ño‚·‚±‚ÆB)*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã®å‰å‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚(ã“ã‚Œã¯å¿…ãšå‘¼ã³å‡ºã™ã“ã¨ã€‚)*/
 	void PreUpdate(float deltaTime);
-	/** @brief ƒtƒŒ[ƒ€XV‚ğs‚¢‚Ü‚·B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã‚’è¡Œã„ã¾ã™ã€‚*/
 	void Update(float deltaTime);
-	/** @brief ƒtƒŒ[ƒ€XV‚ÌŒãˆ—‚ğs‚¢‚Ü‚·B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã®å¾Œå‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚*/
 	void LateUpdate(float deltaTime);
-	/** @brief ŒÅ’èXV‚ğs‚¢‚Ü‚·B*/
+	/** @brief å›ºå®šæ›´æ–°ã‚’è¡Œã„ã¾ã™ã€‚*/
 	void FixedUpdate(float fixedDeltaTime);
-	/** @brief 3D •`‰æˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief 3D æç”»å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	void Render(RenderContext* rtx);
-	/** @brief 2D •`‰æˆ—‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief 2D æç”»å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	void Draw(RenderContext* rtx);
 
 	void DrawGuizmo(RenderContext* rtx);
@@ -56,82 +56,82 @@ public:
 	GameObject* FindInObjects(const std::string& name);
 	GameObject* FindInObjects(const ObjectId& id);
 	
-	/** @brief w’è‚µ‚½–¼‘O‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü—\–ñ‚µ‚Ü‚·B*/
+	/** @brief æŒ‡å®šã—ãŸåå‰ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç ´æ£„äºˆç´„ã—ã¾ã™ã€‚*/
 	void Destroy(const std::string& name);
-	/** @brief ‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	const std::vector<std::shared_ptr<GameObject>>& GetAll() const { return objects; }
-	/** @brief ‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾‚µ‚Ü‚·B(•ÏX‰Â”\)*/
+	/** @brief ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚(å¤‰æ›´å¯èƒ½)*/
 	std::vector<std::shared_ptr<GameObject>>& GetAllMutable() { return objects; }
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^•\¦’†‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿è¡¨ç¤ºä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	GameObject* GetInspectorNode() const { return inspectorNode; }
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^•\¦’†‚ÌƒIƒuƒWƒFƒNƒg‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿è¡¨ç¤ºä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	void SelectInspectorNode(GameObject* node);
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^•\¦‚ğƒƒbƒN‚µ‚Ü‚·B*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿è¡¨ç¤ºã‚’ãƒ­ãƒƒã‚¯ã—ã¾ã™ã€‚*/
 	void LockInspector(bool lock);
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^•\¦‚ªƒƒbƒN‚³‚ê‚Ä‚¢‚é‚©‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿è¡¨ç¤ºãŒãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’è¿”ã—ã¾ã™ã€‚*/
 	bool IsInspectorLocked() const { return lockInspector; }
 public:
-	/** @brief ƒVƒŠƒAƒ‰ƒCƒY‚µ‚Ü‚·B*/
+	/** @brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã—ã¾ã™ã€‚*/
 	json Serialize() const;
-	/** @brief ƒfƒVƒŠƒAƒ‰ƒCƒY‚µ‚Ü‚·B*/
+	/** @brief ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã—ã¾ã™ã€‚*/
 	void Deserialize(const json& j);
 
 	/**
-	 * @brief w’è‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğ•¡»‚µ‚Ü‚·B
-	 * @param original •¡»Œ³‚ÌƒIƒuƒWƒFƒNƒgB
-	 * @return •¡»‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^B
+	 * @brief æŒ‡å®šã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¤‡è£½ã—ã¾ã™ã€‚
+	 * @param original è¤‡è£½å…ƒã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
+	 * @return è¤‡è£½ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿ã€‚
 	 */
 	GameObject* Duplicate(GameObject* original);
 
 	/**
-	 * @brief JSON ‚©‚çƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B
-	 * @param j ƒIƒuƒWƒFƒNƒgî•ñ‚Ì JSON ƒf[ƒ^B
-	 * @return ¶¬‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^B
+	 * @brief JSON ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * @param j ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæƒ…å ±ã® JSON ãƒ‡ãƒ¼ã‚¿ã€‚
+	 * @return ç”Ÿæˆã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿ã€‚
 	 */
 	GameObject* Instantiate(const json& j);
 
 	/**
-	 * @brief ƒIƒuƒWƒFƒNƒg‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶‚µ‚Ü‚·B
-	 * @param object •Û‘¶‚·‚éƒIƒuƒWƒFƒNƒgB
-	 * @param filePath •Û‘¶æ‚Ìƒtƒ@ƒCƒ‹ƒpƒXB
+	 * @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã—ã¾ã™ã€‚
+	 * @param object ä¿å­˜ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
+	 * @param filePath ä¿å­˜å…ˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
 	 */
 	void SaveGameObject(GameObject* object, const std::string& filePath);
 
-	/** @brief ƒRƒ“ƒ|[ƒlƒ“ƒgƒLƒƒƒbƒVƒ…ƒ}ƒbƒv‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒãƒƒãƒ—ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	const std::unordered_map<ObjectId, std::weak_ptr<Component>>& GetComponentCacheMap() const { return componentCacheMap; }
 
 
-	// TODO: ‰‹}ˆ’u‚Ì‚½‚ßAŒã‚ÅƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‚·‚é‚±‚ÆB
-	/** @brief ‘¶İ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌIDƒŠƒXƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	// TODO: å¿œæ€¥å‡¦ç½®ã®ãŸã‚ã€å¾Œã§ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ã“ã¨ã€‚
+	/** @brief å­˜åœ¨ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®IDãƒªã‚¹ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	std::unordered_set<ObjectId>& GetExistingComponentIds() { return existingComponentIds; }
 
-	/** @brief ƒGƒfƒBƒ^‚Ì‘I‘ğó‘Ô‚ğŠÇ—‚·‚éƒIƒuƒWƒFƒNƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚¨ãƒ‡ã‚£ã‚¿ã®é¸æŠçŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	EditorSelection* GetEditorSelection() { return selection; }
 
-	/** @brief ƒIƒuƒWƒFƒNƒg‚Ì‘I‘ğ‚ÆƒCƒ“ƒXƒyƒNƒ^•\¦‚ğƒŠƒZƒbƒg‚µ‚Ü‚·B*/
+	/** @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é¸æŠã¨ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿è¡¨ç¤ºã‚’ãƒªã‚»ãƒƒãƒˆã—ã¾ã™ã€‚*/
 	void Reset();
 private:
 	
-	/** @brief w’è‚µ‚½ƒIƒuƒWƒFƒNƒg‚Æ‚»‚ÌqƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚µ‚Ü‚·B*/
+	/** @brief æŒ‡å®šã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ãã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç ´æ£„ã—ã¾ã™ã€‚*/
 	void DestroyChildren(GameObject* object);
 	friend class GameObjectFactory;
 	friend class GameObject;
-	/** @brief ƒIƒuƒWƒFƒNƒg‚ğ“o˜^‚µ‚Ü‚·B*/
+	/** @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç™»éŒ²ã—ã¾ã™ã€‚*/
 	void Register(std::shared_ptr<GameObject> object);
 	
 	friend class EditorGUI;
 	GameObject* selectNode = nullptr;
 	GameObject* inspectorNode = nullptr;
 	bool lockInspector = false;
-	EditorSelection* selection; // ƒGƒfƒBƒ^‚Ì‘I‘ğó‘Ô‚ğŠÇ—‚·‚éƒIƒuƒWƒFƒNƒg
+	EditorSelection* selection; // ã‚¨ãƒ‡ã‚£ã‚¿ã®é¸æŠçŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 private:
 	friend class Scene;
 	friend class Framework;
 	friend class SceneMigrator;
 	std::vector<std::shared_ptr<GameObject>> objects;
 	std::vector<std::shared_ptr<GameObject>> erases;
-	std::unordered_map<ObjectId, std::weak_ptr<Component>> componentCacheMap; // ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒLƒƒƒbƒVƒ…ƒ}ƒbƒv
+	std::unordered_map<ObjectId, std::weak_ptr<Component>> componentCacheMap; // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒãƒƒãƒ—
 
-	std::unordered_set<ObjectId> existingComponentIds; // ‘¶İ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌIDƒŠƒXƒg
-	Scene* scene = nullptr; // Š‘®ƒV[ƒ“‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	std::unordered_set<ObjectId> existingComponentIds; // å­˜åœ¨ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®IDãƒªã‚¹ãƒˆ
+	Scene* scene = nullptr; // æ‰€å±ã‚·ãƒ¼ãƒ³ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 };

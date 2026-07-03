@@ -1,7 +1,7 @@
 #pragma once
 #include <DirectXMath.h>
 
-//ƒ|ƒCƒ“ƒgƒ‰ƒCƒg
+//ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆ
 struct PointLight
 {
     UINT enable{ false };
@@ -10,7 +10,7 @@ struct PointLight
     float range{ 10.0f };
     float dummy[3]{};
 };
-//ƒXƒ|ƒbƒgƒ‰ƒCƒg
+//ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆ
 struct SpotLight
 {
     UINT enable{ false };
@@ -22,7 +22,7 @@ struct SpotLight
     float outerCorn{ 0.9f };
     float dummy;
 };
-// ƒfƒBƒŒƒNƒVƒ‡ƒiƒ‹ƒ‰ƒCƒg
+// ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒ«ãƒ©ã‚¤ãƒˆ
 struct DirectionalLight
 {
 	UINT enable{ true };
@@ -31,7 +31,7 @@ struct DirectionalLight
 	float dummy[3]{};
 };
 
-// ƒ‰ƒCƒg’è”ƒoƒbƒtƒ@—p\‘¢‘Ì
+// ãƒ©ã‚¤ãƒˆå®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨æ§‹é€ ä½“
 struct LightConstants
 {
     DirectX::XMFLOAT4 ambientColor;

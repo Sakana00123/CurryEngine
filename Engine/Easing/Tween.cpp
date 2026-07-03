@@ -8,30 +8,30 @@ void ITween::Update(float deltaTime)
 {
 	if (m_killed || m_completed)
 		return;
-	// ’x‰„ŠÔ‚Ìˆ—
+	// é…å»¶æ™‚é–“ã®å‡¦ç†
 	if (m_delay > 0.0f)
 	{
 		m_delay -= deltaTime;
 		if (m_delay > 0.0f)
 			return;
-		deltaTime = -m_delay; // ’x‰„‚ªI‚í‚Á‚½•ª‚ÌŠÔ‚ğXV‚Ég‚¤
+		deltaTime = -m_delay; // é…å»¶ãŒçµ‚ã‚ã£ãŸåˆ†ã®æ™‚é–“ã‚’æ›´æ–°ã«ä½¿ã†
 		m_delay = 0.0f;
 	}
-	// ŠJn‚ÌƒR[ƒ‹ƒoƒbƒN
+	// é–‹å§‹æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 	if (!m_started)
 	{
 		m_started = true;
 		if (m_onStart)
 			m_onStart();
 	}
-	// Œo‰ßŠÔ‚ÌXV
+	// çµŒéæ™‚é–“ã®æ›´æ–°
 	m_elapsedTime += deltaTime;
-	// “à•”XVˆ—
+	// å†…éƒ¨æ›´æ–°å‡¦ç†
 	OnUpdateInternal(deltaTime);
-	// XV‚ÌƒR[ƒ‹ƒoƒbƒN
+	// æ›´æ–°æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 	if (m_onUpdate)
 		m_onUpdate();
-	// Š®—¹”»’è
+	// å®Œäº†åˆ¤å®š
 	if (m_elapsedTime >= m_duration)
 	{
 		m_completed = true;
@@ -91,17 +91,17 @@ void Tween<T>::OnUpdateInternal(float deltaTime)
 {
 	float t = m_elapsedTime / m_duration;
 	if (t > 1.0f) t = 1.0f;
-	// ƒC[ƒWƒ“ƒOŒvZ
+	// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°è¨ˆç®—
 	
 	//float easedT = Easing::Ease(t, m_ease);
 	float easedT = t;
-	// •âŠÔ’l‚ÌŒvZ
+	// è£œé–“å€¤ã®è¨ˆç®—
 	T value = m_from + (m_to - m_from) * easedT;
-	// ‘ÎÛƒIƒuƒWƒFƒNƒg‚É’l‚ğİ’è
+	// å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å€¤ã‚’è¨­å®š
 	*m_target = value;
 }
 
-// –¾¦“I‚ÈƒCƒ“ƒXƒ^ƒ“ƒX‰»
+// æ˜ç¤ºçš„ãªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
 template class Tween<float>;
 template class Tween<int>;
 template class Tween<Vector2>;

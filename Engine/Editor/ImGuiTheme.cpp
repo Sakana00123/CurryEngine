@@ -4,7 +4,7 @@
 
 void ImGuiTheme::Initialize()
 {
-	// ‰Šúƒe[ƒ}‚ğİ’è
+	// åˆæœŸãƒ†ãƒ¼ãƒã‚’è¨­å®š
 	SetTheme(NightCurryDeluxeTheme);
 }
 
@@ -47,10 +47,10 @@ ImGuiThemeType ImGuiTheme::GetCurrentTheme()
 void ImGuiTheme::DrawGUI()
 {
 #ifdef USE_IMGUI
-	// ƒe[ƒ}•ÏX‰æ–Ê
+	// ãƒ†ãƒ¼ãƒå¤‰æ›´ç”»é¢
     if (isOpen)
     {
-		// ƒhƒbƒLƒ“ƒO–³Œø‰»
+		// ãƒ‰ãƒƒã‚­ãƒ³ã‚°ç„¡åŠ¹åŒ–
 		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking;
 
         ImGui::Begin("ImGui Theme Settings", &isOpen, windowFlags);
@@ -83,11 +83,11 @@ void ImGuiTheme::SetNightCurryDeluxeTheme()
     //------------------------------------
     // Base Palette
     //------------------------------------
-    ImVec4 curry = ImVec4(0.12f, 0.08f, 0.05f, 1.00f);  // ”wŒiiƒJƒŒ[‚Ìƒ‹[j
-    ImVec4 rice = ImVec4(0.95f, 0.93f, 0.88f, 1.00f);  // ƒeƒLƒXƒgi”’•Äj
-    ImVec4 pickle = ImVec4(0.80f, 0.25f, 0.15f, 1.00f);  // •Ÿ_’Ğ‚¯iƒAƒNƒZƒ“ƒgj
-    ImVec4 gravy = ImVec4(0.25f, 0.17f, 0.10f, 1.00f);  // ƒ‹[‚Ì‰e
-    ImVec4 highlight = ImVec4(0.95f, 0.45f, 0.25f, 1.00f);  // ‰·‚©‚İ‚Ì‚ ‚é‹­’²F
+    ImVec4 curry = ImVec4(0.12f, 0.08f, 0.05f, 1.00f);  // èƒŒæ™¯ï¼ˆã‚«ãƒ¬ãƒ¼ã®ãƒ«ãƒ¼ï¼‰
+    ImVec4 rice = ImVec4(0.95f, 0.93f, 0.88f, 1.00f);  // ãƒ†ã‚­ã‚¹ãƒˆï¼ˆç™½ç±³ï¼‰
+    ImVec4 pickle = ImVec4(0.80f, 0.25f, 0.15f, 1.00f);  // ç¦ç¥æ¼¬ã‘ï¼ˆã‚¢ã‚¯ã‚»ãƒ³ãƒˆï¼‰
+    ImVec4 gravy = ImVec4(0.25f, 0.17f, 0.10f, 1.00f);  // ãƒ«ãƒ¼ã®å½±
+    ImVec4 highlight = ImVec4(0.95f, 0.45f, 0.25f, 1.00f);  // æ¸©ã‹ã¿ã®ã‚ã‚‹å¼·èª¿è‰²
 
     //------------------------------------
     // Window / Base
@@ -213,17 +213,17 @@ void ImGuiTheme::SetCurryTheme()
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec4* colors = style.Colors;
 
-    // ƒJƒŒ[‚Ìƒ‹[i‘S‘Ì”wŒij
+    // ã‚«ãƒ¬ãƒ¼ã®ãƒ«ãƒ¼ï¼ˆå…¨ä½“èƒŒæ™¯ï¼‰
     colors[ImGuiCol_WindowBg] = ImVec4(0.10f, 0.07f, 0.03f, 1.00f);
     colors[ImGuiCol_ChildBg] = ImVec4(0.12f, 0.08f, 0.04f, 1.00f);
     colors[ImGuiCol_PopupBg] = ImVec4(0.14f, 0.10f, 0.06f, 0.98f);
     colors[ImGuiCol_Border] = ImVec4(0.25f, 0.18f, 0.10f, 1.00f);
 
-    // ‚²‚Í‚ñi•¶š‚â‹­’²j
+    // ã”ã¯ã‚“ï¼ˆæ–‡å­—ã‚„å¼·èª¿ï¼‰
     colors[ImGuiCol_Text] = ImVec4(0.96f, 0.92f, 0.85f, 1.00f);
     colors[ImGuiCol_TextDisabled] = ImVec4(0.55f, 0.50f, 0.45f, 1.00f);
 
-    // ƒ‹[‚Ì”Z’WiƒEƒBƒWƒFƒbƒgj
+    // ãƒ«ãƒ¼ã®æ¿ƒæ·¡ï¼ˆã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆï¼‰
     colors[ImGuiCol_FrameBg] = ImVec4(0.20f, 0.13f, 0.07f, 1.00f);
     colors[ImGuiCol_FrameBgHovered] = ImVec4(0.28f, 0.17f, 0.09f, 1.00f);
     colors[ImGuiCol_FrameBgActive] = ImVec4(0.36f, 0.22f, 0.11f, 1.00f);
@@ -232,24 +232,24 @@ void ImGuiTheme::SetCurryTheme()
     colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.45f, 0.28f, 0.13f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.55f, 0.33f, 0.16f, 1.00f);
 
-    // •Ÿ_’Ğ‚¯iƒAƒNƒZƒ“ƒgŒnj
+    // ç¦ç¥æ¼¬ã‘ï¼ˆã‚¢ã‚¯ã‚»ãƒ³ãƒˆç³»ï¼‰
     colors[ImGuiCol_Header] = ImVec4(0.60f, 0.18f, 0.10f, 1.00f);
     colors[ImGuiCol_HeaderHovered] = ImVec4(0.75f, 0.25f, 0.15f, 1.00f);
     colors[ImGuiCol_HeaderActive] = ImVec4(0.85f, 0.30f, 0.18f, 1.00f);
 
-    // ƒ^ƒui•Ÿ_’Ğ‚¯ƒƒCƒ“j
+    // ã‚¿ãƒ–ï¼ˆç¦ç¥æ¼¬ã‘ãƒ¡ã‚¤ãƒ³ï¼‰
     colors[ImGuiCol_Tab] = ImVec4(0.55f, 0.15f, 0.10f, 1.00f);
     colors[ImGuiCol_TabHovered] = ImVec4(0.80f, 0.25f, 0.15f, 1.00f);
     colors[ImGuiCol_TabActive] = ImVec4(0.90f, 0.30f, 0.20f, 1.00f);
     colors[ImGuiCol_TabUnfocused] = ImVec4(0.30f, 0.10f, 0.07f, 1.00f);
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.45f, 0.18f, 0.12f, 1.00f);
 
-    // ƒ{ƒ^ƒ“iƒJƒŒ[{•Ÿ_’Ğ‚¯•—j
+    // ãƒœã‚¿ãƒ³ï¼ˆã‚«ãƒ¬ãƒ¼ï¼‹ç¦ç¥æ¼¬ã‘é¢¨ï¼‰
     colors[ImGuiCol_Button] = ImVec4(0.35f, 0.20f, 0.10f, 1.00f);
     colors[ImGuiCol_ButtonHovered] = ImVec4(0.60f, 0.25f, 0.15f, 1.00f);
     colors[ImGuiCol_ButtonActive] = ImVec4(0.80f, 0.30f, 0.18f, 1.00f);
 
-    // ‘I‘ğEƒnƒCƒ‰ƒCƒg
+    // é¸æŠãƒ»ãƒã‚¤ãƒ©ã‚¤ãƒˆ
     colors[ImGuiCol_CheckMark] = ImVec4(0.95f, 0.45f, 0.25f, 1.00f);
     colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.40f, 0.20f, 1.00f);
     colors[ImGuiCol_SliderGrabActive] = ImVec4(0.95f, 0.50f, 0.30f, 1.00f);
@@ -257,12 +257,12 @@ void ImGuiTheme::SetCurryTheme()
     colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.95f, 0.50f, 0.30f, 0.60f);
     colors[ImGuiCol_ResizeGripActive] = ImVec4(0.95f, 0.50f, 0.30f, 1.00f);
 
-    // ƒƒjƒ…[ƒo[Eƒ^ƒCƒgƒ‹ƒo[
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼ãƒ»ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼
     colors[ImGuiCol_TitleBg] = ImVec4(0.20f, 0.12f, 0.05f, 1.00f);
     colors[ImGuiCol_TitleBgActive] = ImVec4(0.45f, 0.25f, 0.12f, 1.00f);
     colors[ImGuiCol_MenuBarBg] = ImVec4(0.15f, 0.10f, 0.05f, 1.00f);
 
-    // ƒg[ƒ“ƒoƒ‰ƒ“ƒX’²®iŠpŠÛEƒpƒfƒBƒ“ƒOj
+    // ãƒˆãƒ¼ãƒ³ãƒãƒ©ãƒ³ã‚¹èª¿æ•´ï¼ˆè§’ä¸¸ãƒ»ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ï¼‰
     style.WindowRounding = 6.0f;
     style.FrameRounding = 4.0f;
     style.GrabRounding = 4.0f;
@@ -277,56 +277,56 @@ void ImGuiTheme::SetDarkCurryTheme()
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec4* colors = style.Colors;
 
-    // ƒx[ƒXƒJƒ‰[
-    ImVec4 curryDark = ImVec4(0.15f, 0.10f, 0.05f, 1.0f);  // ƒJƒŒ[‚Ìƒ‹[i”wŒij
-    ImVec4 curryMedium = ImVec4(0.30f, 0.20f, 0.10f, 1.0f);  // ƒtƒŒ[ƒ€Eƒ{ƒ^ƒ“
-    ImVec4 curryLight = ImVec4(0.55f, 0.38f, 0.18f, 1.0f);  // ƒzƒo[
-    ImVec4 spice = ImVec4(0.85f, 0.45f, 0.20f, 1.0f);  // ƒXƒpƒCƒXƒIƒŒƒ“ƒWiƒAƒNƒeƒBƒuj
-    ImVec4 rice = ImVec4(0.96f, 0.92f, 0.82f, 1.0f);  // ‚²”ÑiƒeƒLƒXƒgj
-    ImVec4 plate = ImVec4(0.20f, 0.15f, 0.10f, 1.0f);  // ‚¨M
-    ImVec4 border = ImVec4(0.45f, 0.35f, 0.20f, 1.0f);  // ‹«ŠEü
+    // ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼
+    ImVec4 curryDark = ImVec4(0.15f, 0.10f, 0.05f, 1.0f);  // ã‚«ãƒ¬ãƒ¼ã®ãƒ«ãƒ¼ï¼ˆèƒŒæ™¯ï¼‰
+    ImVec4 curryMedium = ImVec4(0.30f, 0.20f, 0.10f, 1.0f);  // ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ»ãƒœã‚¿ãƒ³
+    ImVec4 curryLight = ImVec4(0.55f, 0.38f, 0.18f, 1.0f);  // ãƒ›ãƒãƒ¼
+    ImVec4 spice = ImVec4(0.85f, 0.45f, 0.20f, 1.0f);  // ã‚¹ãƒ‘ã‚¤ã‚¹ã‚ªãƒ¬ãƒ³ã‚¸ï¼ˆã‚¢ã‚¯ãƒ†ã‚£ãƒ–ï¼‰
+    ImVec4 rice = ImVec4(0.96f, 0.92f, 0.82f, 1.0f);  // ã”é£¯ï¼ˆãƒ†ã‚­ã‚¹ãƒˆï¼‰
+    ImVec4 plate = ImVec4(0.20f, 0.15f, 0.10f, 1.0f);  // ãŠçš¿
+    ImVec4 border = ImVec4(0.45f, 0.35f, 0.20f, 1.0f);  // å¢ƒç•Œç·š
 
-    // ”wŒi
+    // èƒŒæ™¯
     colors[ImGuiCol_WindowBg] = curryDark;
     colors[ImGuiCol_ChildBg] = curryDark;
     colors[ImGuiCol_PopupBg] = plate;
     colors[ImGuiCol_Border] = border;
     colors[ImGuiCol_BorderShadow] = ImVec4(0, 0, 0, 0);
 
-    // ƒ^ƒuiƒJƒŒ[•”•ªj
+    // ã‚¿ãƒ–ï¼ˆã‚«ãƒ¬ãƒ¼éƒ¨åˆ†ï¼‰
     colors[ImGuiCol_Tab] = ImVec4(0.30f, 0.22f, 0.10f, 1.00f);
     colors[ImGuiCol_TabHovered] = ImVec4(0.45f, 0.32f, 0.15f, 1.00f);
     colors[ImGuiCol_TabActive] = ImVec4(0.60f, 0.42f, 0.20f, 1.00f);
     colors[ImGuiCol_TabUnfocused] = ImVec4(0.20f, 0.15f, 0.08f, 1.00f);
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.35f, 0.25f, 0.10f, 1.00f);
 
-    // ƒeƒLƒXƒg
+    // ãƒ†ã‚­ã‚¹ãƒˆ
     colors[ImGuiCol_Text] = rice;
     colors[ImGuiCol_TextDisabled] = ImVec4(0.65f, 0.60f, 0.55f, 1.0f);
 
-    // ƒ{ƒ^ƒ“
+    // ãƒœã‚¿ãƒ³
     colors[ImGuiCol_Button] = curryMedium;
     colors[ImGuiCol_ButtonHovered] = curryLight;
     colors[ImGuiCol_ButtonActive] = spice;
 
-    // ƒtƒŒ[ƒ€i“ü—Í—“EƒXƒ‰ƒCƒ_[j
+    // ãƒ•ãƒ¬ãƒ¼ãƒ ï¼ˆå…¥åŠ›æ¬„ãƒ»ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ï¼‰
     colors[ImGuiCol_FrameBg] = curryMedium;
     colors[ImGuiCol_FrameBgHovered] = curryLight;
     colors[ImGuiCol_FrameBgActive] = spice;
 
-    // ƒ^ƒCƒgƒ‹Eƒwƒbƒ_[
+    // ã‚¿ã‚¤ãƒˆãƒ«ãƒ»ãƒ˜ãƒƒãƒ€ãƒ¼
     colors[ImGuiCol_TitleBg] = curryMedium;
     colors[ImGuiCol_TitleBgActive] = curryLight;
     colors[ImGuiCol_Header] = curryMedium;
     colors[ImGuiCol_HeaderHovered] = curryLight;
     colors[ImGuiCol_HeaderActive] = spice;
 
-    // ƒ`ƒFƒbƒNEƒXƒ‰ƒCƒ_[
+    // ãƒã‚§ãƒƒã‚¯ãƒ»ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼
     colors[ImGuiCol_CheckMark] = rice;
     colors[ImGuiCol_SliderGrab] = rice;
     colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 0.85f, 0.55f, 1.0f);
 
-    // ƒXƒNƒ[ƒ‹ƒo[EƒŠƒTƒCƒY
+    // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ãƒ»ãƒªã‚µã‚¤ã‚º
     colors[ImGuiCol_ScrollbarBg] = curryDark;
     colors[ImGuiCol_ScrollbarGrab] = curryMedium;
     colors[ImGuiCol_ScrollbarGrabHovered] = curryLight;
@@ -335,12 +335,12 @@ void ImGuiTheme::SetDarkCurryTheme()
     colors[ImGuiCol_ResizeGripHovered] = spice;
     colors[ImGuiCol_ResizeGripActive] = spice;
 
-    // ‘I‘ğE•ª—£ü
+    // é¸æŠãƒ»åˆ†é›¢ç·š
     colors[ImGuiCol_Separator] = border;
     colors[ImGuiCol_SeparatorHovered] = spice;
     colors[ImGuiCol_SeparatorActive] = spice;
 
-    // İ’èiŠÛ‚İE—]”’j
+    // è¨­å®šï¼ˆä¸¸ã¿ãƒ»ä½™ç™½ï¼‰
     style.WindowRounding = 8.0f;
     style.FrameRounding = 6.0f;
     style.GrabRounding = 6.0f;
@@ -357,16 +357,16 @@ void ImGuiTheme::SetCurryRiceTheme()
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec4* colors = style.Colors;
 
-    // --- ƒx[ƒXƒJƒ‰[iƒJƒŒ[ƒ‰ƒCƒX•—j ---
-    ImVec4 rice = ImVec4(0.95f, 0.93f, 0.85f, 1.0f);  // ‚²‚Í‚ñ
-    ImVec4 curry = ImVec4(0.50f, 0.33f, 0.10f, 1.0f);  // ƒJƒŒ[‚Ìƒ‹[
-    ImVec4 curryLight = ImVec4(0.70f, 0.45f, 0.15f, 1.0f);  // ƒJƒŒ[‚Ìƒ‹[i–¾‚é‚ßj
-    ImVec4 plate = ImVec4(0.80f, 0.80f, 0.83f, 1.0f);  // ‚¨M
-    ImVec4 fukujin = ImVec4(0.85f, 0.20f, 0.15f, 1.0f);  // •Ÿ_’Ğ‚¯iƒAƒNƒZƒ“ƒgj
-    ImVec4 text = ImVec4(0.15f, 0.10f, 0.05f, 1.0f);  // ƒƒCƒ“•¶š
+    // --- ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ï¼ˆã‚«ãƒ¬ãƒ¼ãƒ©ã‚¤ã‚¹é¢¨ï¼‰ ---
+    ImVec4 rice = ImVec4(0.95f, 0.93f, 0.85f, 1.0f);  // ã”ã¯ã‚“
+    ImVec4 curry = ImVec4(0.50f, 0.33f, 0.10f, 1.0f);  // ã‚«ãƒ¬ãƒ¼ã®ãƒ«ãƒ¼
+    ImVec4 curryLight = ImVec4(0.70f, 0.45f, 0.15f, 1.0f);  // ã‚«ãƒ¬ãƒ¼ã®ãƒ«ãƒ¼ï¼ˆæ˜ã‚‹ã‚ï¼‰
+    ImVec4 plate = ImVec4(0.80f, 0.80f, 0.83f, 1.0f);  // ãŠçš¿
+    ImVec4 fukujin = ImVec4(0.85f, 0.20f, 0.15f, 1.0f);  // ç¦ç¥æ¼¬ã‘ï¼ˆã‚¢ã‚¯ã‚»ãƒ³ãƒˆï¼‰
+    ImVec4 text = ImVec4(0.15f, 0.10f, 0.05f, 1.0f);  // ãƒ¡ã‚¤ãƒ³æ–‡å­—
     ImVec4 textDisabled = ImVec4(0.45f, 0.40f, 0.35f, 1.0f);
 
-    // --- ƒEƒBƒ“ƒhƒEE”wŒiŒn ---
+    // --- ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ»èƒŒæ™¯ç³» ---
     colors[ImGuiCol_WindowBg] = plate;
     colors[ImGuiCol_ChildBg] = ImVec4(0.83f, 0.83f, 0.86f, 1.0f);
     colors[ImGuiCol_PopupBg] = plate;
@@ -375,14 +375,14 @@ void ImGuiTheme::SetCurryRiceTheme()
     colors[ImGuiCol_SeparatorHovered] = fukujin;
     colors[ImGuiCol_SeparatorActive] = fukujin;
 
-    // ƒƒCƒ“ƒƒjƒ…[ƒo[”wŒi
-    colors[ImGuiCol_MenuBarBg] = ImVec4(0.90f, 0.80f, 0.60f, 1.0f); // –¾‚é‚ß‚ÌƒJƒŒ[F
+    // ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼èƒŒæ™¯
+    colors[ImGuiCol_MenuBarBg] = ImVec4(0.90f, 0.80f, 0.60f, 1.0f); // æ˜ã‚‹ã‚ã®ã‚«ãƒ¬ãƒ¼è‰²
 
-    // --- ƒeƒLƒXƒg ---
+    // --- ãƒ†ã‚­ã‚¹ãƒˆ ---
     colors[ImGuiCol_Text] = text;
     colors[ImGuiCol_TextDisabled] = textDisabled;
 
-    // --- ƒ{ƒ^ƒ“EƒtƒŒ[ƒ€Œn ---
+    // --- ãƒœã‚¿ãƒ³ãƒ»ãƒ•ãƒ¬ãƒ¼ãƒ ç³» ---
     colors[ImGuiCol_Button] = curry;
     colors[ImGuiCol_ButtonHovered] = fukujin;
     colors[ImGuiCol_ButtonActive] = ImVec4(0.95f, 0.30f, 0.25f, 1.0f);
@@ -390,26 +390,26 @@ void ImGuiTheme::SetCurryRiceTheme()
     colors[ImGuiCol_FrameBgHovered] = ImVec4(0.70f, 0.50f, 0.20f, 1.0f);
     colors[ImGuiCol_FrameBgActive] = ImVec4(0.85f, 0.60f, 0.25f, 1.0f);
 
-    // --- ƒ^ƒCƒgƒ‹ƒo[Eƒwƒbƒ_[ ---
+    // --- ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ãƒ»ãƒ˜ãƒƒãƒ€ãƒ¼ ---
     colors[ImGuiCol_TitleBg] = curry;
     colors[ImGuiCol_TitleBgActive] = curryLight;
     colors[ImGuiCol_Header] = curry;
     colors[ImGuiCol_HeaderHovered] = fukujin;
     colors[ImGuiCol_HeaderActive] = ImVec4(0.95f, 0.35f, 0.30f, 1.0f);
 
-    // --- ƒXƒ‰ƒCƒ_[Eƒ`ƒFƒbƒN ---
+    // --- ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ãƒ»ãƒã‚§ãƒƒã‚¯ ---
     colors[ImGuiCol_CheckMark] = rice;
     colors[ImGuiCol_SliderGrab] = rice;
     colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 0.90f, 0.65f, 1.0f);
 
-    // --- ƒ^ƒu ---
+    // --- ã‚¿ãƒ– ---
     colors[ImGuiCol_Tab] = curry;
     colors[ImGuiCol_TabHovered] = fukujin;
     colors[ImGuiCol_TabActive] = ImVec4(0.95f, 0.50f, 0.30f, 1.0f);
     colors[ImGuiCol_TabUnfocused] = ImVec4(0.55f, 0.40f, 0.20f, 1.0f);
     colors[ImGuiCol_TabUnfocusedActive] = curry;
 
-    // --- ƒOƒŠƒbƒvEƒXƒNƒ[ƒ‹ƒo[ ---
+    // --- ã‚°ãƒªãƒƒãƒ—ãƒ»ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ ---
     colors[ImGuiCol_ResizeGrip] = curry;
     colors[ImGuiCol_ResizeGripHovered] = fukujin;
     colors[ImGuiCol_ResizeGripActive] = ImVec4(0.95f, 0.35f, 0.30f, 1.0f);
@@ -418,7 +418,7 @@ void ImGuiTheme::SetCurryRiceTheme()
     colors[ImGuiCol_ScrollbarGrabHovered] = fukujin;
     colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.95f, 0.30f, 0.25f, 1.0f);
 
-    // --- ’²® ---
+    // --- èª¿æ•´ ---
     style.WindowRounding = 8.0f;
     style.FrameRounding = 6.0f;
     style.GrabRounding = 6.0f;
@@ -452,7 +452,7 @@ void ImGuiTheme::SetBeefCurryTheme()
     colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.45f, 0.30f, 0.20f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.55f, 0.35f, 0.25f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.65f, 0.40f, 0.30f, 1.00f);
-    colors[ImGuiCol_CheckMark] = ImVec4(0.85f, 0.30f, 0.25f, 1.00f); // •Ÿ_’Ğ‚¯
+    colors[ImGuiCol_CheckMark] = ImVec4(0.85f, 0.30f, 0.25f, 1.00f); // ç¦ç¥æ¼¬ã‘
     colors[ImGuiCol_SliderGrab] = ImVec4(0.65f, 0.40f, 0.25f, 1.00f);
     colors[ImGuiCol_SliderGrabActive] = ImVec4(0.75f, 0.45f, 0.25f, 1.00f);
     colors[ImGuiCol_Button] = ImVec4(0.45f, 0.25f, 0.15f, 1.00f);
@@ -498,69 +498,69 @@ void ImGuiTheme::SetGreenCurryTheme()
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec4* colors = style.Colors;
 
-    // --- V‚µ‚¢ƒx[ƒXƒg[ƒ“i–•’ƒŠ´œ‹”Åj ---
-    ImVec4 greenCurry = ImVec4(0.48f, 0.52f, 0.28f, 1.00f); // ‰©‚İŠñ‚è‚ÌƒIƒŠ[ƒuƒOƒŠ[ƒ“
-    ImVec4 coconut = ImVec4(0.95f, 0.92f, 0.85f, 1.00f); // ‚â‚â‰·‚©‚İ‚Ì‚ ‚éƒRƒRƒiƒbƒc
-    ImVec4 lime = ImVec4(0.78f, 0.83f, 0.48f, 1.00f); // ƒ‰ƒCƒ€‚Ì–¾‚é‚¢—ÎiT‚¦‚ßj
-    ImVec4 chili = ImVec4(0.82f, 0.23f, 0.14f, 1.00f); // “‚hq
-    ImVec4 turmeric = ImVec4(0.88f, 0.74f, 0.30f, 1.00f); // ‰©‹àƒXƒpƒCƒX
-    ImVec4 leaf = ImVec4(0.16f, 0.19f, 0.11f, 1.00f); // ”wŒii[—Î`ƒIƒŠ[ƒuj
+    // --- æ–°ã—ã„ãƒ™ãƒ¼ã‚¹ãƒˆãƒ¼ãƒ³ï¼ˆæŠ¹èŒ¶æ„Ÿé™¤å»ç‰ˆï¼‰ ---
+    ImVec4 greenCurry = ImVec4(0.48f, 0.52f, 0.28f, 1.00f); // é»„ã¿å¯„ã‚Šã®ã‚ªãƒªãƒ¼ãƒ–ã‚°ãƒªãƒ¼ãƒ³
+    ImVec4 coconut = ImVec4(0.95f, 0.92f, 0.85f, 1.00f); // ã‚„ã‚„æ¸©ã‹ã¿ã®ã‚ã‚‹ã‚³ã‚³ãƒŠãƒƒãƒ„
+    ImVec4 lime = ImVec4(0.78f, 0.83f, 0.48f, 1.00f); // ãƒ©ã‚¤ãƒ ã®æ˜ã‚‹ã„ç·‘ï¼ˆæ§ãˆã‚ï¼‰
+    ImVec4 chili = ImVec4(0.82f, 0.23f, 0.14f, 1.00f); // å”è¾›å­
+    ImVec4 turmeric = ImVec4(0.88f, 0.74f, 0.30f, 1.00f); // é»„é‡‘ã‚¹ãƒ‘ã‚¤ã‚¹
+    ImVec4 leaf = ImVec4(0.16f, 0.19f, 0.11f, 1.00f); // èƒŒæ™¯ï¼ˆæ·±ç·‘ã€œã‚ªãƒªãƒ¼ãƒ–ï¼‰
     ImVec4 shadow = ImVec4(0.09f, 0.11f, 0.07f, 1.00f);
 
-    // --- ”wŒi ---
+    // --- èƒŒæ™¯ ---
     colors[ImGuiCol_WindowBg] = leaf;
     colors[ImGuiCol_ChildBg] = ImVec4(0.18f, 0.20f, 0.12f, 0.95f);
     colors[ImGuiCol_PopupBg] = ImVec4(0.20f, 0.23f, 0.14f, 0.97f);
 
-    // --- ƒeƒLƒXƒg ---
+    // --- ãƒ†ã‚­ã‚¹ãƒˆ ---
     colors[ImGuiCol_Text] = coconut;
     colors[ImGuiCol_TextDisabled] = ImVec4(0.6f, 0.6f, 0.55f, 1.0f);
 
-    // --- ƒ{[ƒ_[ ---
+    // --- ãƒœãƒ¼ãƒ€ãƒ¼ ---
     colors[ImGuiCol_Border] = ImVec4(0.4f, 0.35f, 0.2f, 0.6f);
     colors[ImGuiCol_BorderShadow] = ImVec4(0, 0, 0, 0);
 
-    // --- ƒtƒŒ[ƒ€i“ü—Í—“‚È‚Çj ---
+    // --- ãƒ•ãƒ¬ãƒ¼ãƒ ï¼ˆå…¥åŠ›æ¬„ãªã©ï¼‰ ---
     colors[ImGuiCol_FrameBg] = ImVec4(0.28f, 0.32f, 0.18f, 0.9f);
     colors[ImGuiCol_FrameBgHovered] = greenCurry;
     colors[ImGuiCol_FrameBgActive] = lime;
 
-    // --- ƒ^ƒCƒgƒ‹ƒo[ ---
+    // --- ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ ---
     colors[ImGuiCol_TitleBg] = greenCurry;
     colors[ImGuiCol_TitleBgActive] = turmeric;
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.15f, 0.18f, 0.10f, 0.75f);
 
-    // --- ƒƒjƒ…[ƒo[EƒXƒNƒ[ƒ‹ƒo[ ---
+    // --- ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼ãƒ»ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ ---
     colors[ImGuiCol_MenuBarBg] = ImVec4(0.19f, 0.22f, 0.13f, 1.00f);
     colors[ImGuiCol_ScrollbarBg] = shadow;
     colors[ImGuiCol_ScrollbarGrab] = greenCurry;
     colors[ImGuiCol_ScrollbarGrabHovered] = turmeric;
     colors[ImGuiCol_ScrollbarGrabActive] = chili;
 
-    // --- ƒ^ƒu ---
+    // --- ã‚¿ãƒ– ---
     colors[ImGuiCol_Tab] = greenCurry;
     colors[ImGuiCol_TabHovered] = turmeric;
     colors[ImGuiCol_TabActive] = coconut;
     colors[ImGuiCol_TabUnfocused] = ImVec4(0.26f, 0.3f, 0.17f, 1.00f);
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.32f, 0.37f, 0.20f, 1.00f);
 
-    // --- ƒ{ƒ^ƒ“ ---
+    // --- ãƒœã‚¿ãƒ³ ---
     colors[ImGuiCol_Button] = greenCurry;
     colors[ImGuiCol_ButtonHovered] = turmeric;
     colors[ImGuiCol_ButtonActive] = chili;
 
-    // --- ƒ`ƒFƒbƒNEƒXƒ‰ƒCƒ_[‚È‚Ç ---
+    // --- ãƒã‚§ãƒƒã‚¯ãƒ»ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ãªã© ---
     colors[ImGuiCol_CheckMark] = coconut;
     colors[ImGuiCol_SliderGrab] = turmeric;
     colors[ImGuiCol_SliderGrabActive] = chili;
 
-    // --- ƒvƒƒOƒŒƒXƒo[ ---
+    // --- ãƒ—ãƒ­ã‚°ãƒ¬ã‚¹ãƒãƒ¼ ---
     colors[ImGuiCol_PlotLines] = coconut;
     colors[ImGuiCol_PlotLinesHovered] = lime;
     colors[ImGuiCol_PlotHistogram] = greenCurry;
     colors[ImGuiCol_PlotHistogramHovered] = chili;
 
-    // --- ƒiƒrƒQ[ƒVƒ‡ƒ“E‘I‘ğ ---
+    // --- ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ãƒ»é¸æŠ ---
     colors[ImGuiCol_Header] = greenCurry;
     colors[ImGuiCol_HeaderHovered] = turmeric;
     colors[ImGuiCol_HeaderActive] = chili;
@@ -579,7 +579,7 @@ void ImGuiTheme::SetGreenCurryTheme()
     colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.2f, 0.2f, 0.1f, 0.6f);
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.1f, 0.1f, 0.05f, 0.6f);
 
-    // --- ŠÛ‚İE\¬ ---
+    // --- ä¸¸ã¿ãƒ»æ§‹æˆ ---
     style.WindowRounding = 7.0f;
     style.FrameRounding = 6.0f;
     style.GrabRounding = 6.0f;
@@ -595,68 +595,68 @@ void ImGuiTheme::SetButterChickenCurryTheme()
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec4* colors = style.Colors;
 
-    // --- ƒx[ƒXƒJƒ‰[i•µˆÍ‹C‚ÌŠî”Õj ---
-    ImVec4 butter = ImVec4(0.97f, 0.83f, 0.54f, 1.00f); // ƒoƒ^[‚Ì‚æ‚¤‚È‰©F
-    ImVec4 curry = ImVec4(0.82f, 0.39f, 0.16f, 1.00f); // ”Z‚¢ƒoƒ^[ƒ`ƒLƒ“‚Ìƒ‹[
-    ImVec4 tomato = ImVec4(0.93f, 0.47f, 0.33f, 1.00f); // ƒgƒ}ƒgŠ´
-    ImVec4 cream = ImVec4(0.96f, 0.90f, 0.82f, 1.00f); // ¶ƒNƒŠ[ƒ€‚Ì–¾‚é‚¢•”•ª
-    ImVec4 rice = ImVec4(0.98f, 0.96f, 0.91f, 1.00f); // ”’‚²‚Í‚ñ
-    ImVec4 background = ImVec4(0.10f, 0.07f, 0.05f, 1.00f); // —‚¿’…‚¢‚½”wŒi
+    // --- ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ï¼ˆé›°å›²æ°—ã®åŸºç›¤ï¼‰ ---
+    ImVec4 butter = ImVec4(0.97f, 0.83f, 0.54f, 1.00f); // ãƒã‚¿ãƒ¼ã®ã‚ˆã†ãªé»„è‰²
+    ImVec4 curry = ImVec4(0.82f, 0.39f, 0.16f, 1.00f); // æ¿ƒã„ãƒã‚¿ãƒ¼ãƒã‚­ãƒ³ã®ãƒ«ãƒ¼
+    ImVec4 tomato = ImVec4(0.93f, 0.47f, 0.33f, 1.00f); // ãƒˆãƒãƒˆæ„Ÿ
+    ImVec4 cream = ImVec4(0.96f, 0.90f, 0.82f, 1.00f); // ç”Ÿã‚¯ãƒªãƒ¼ãƒ ã®æ˜ã‚‹ã„éƒ¨åˆ†
+    ImVec4 rice = ImVec4(0.98f, 0.96f, 0.91f, 1.00f); // ç™½ã”ã¯ã‚“
+    ImVec4 background = ImVec4(0.10f, 0.07f, 0.05f, 1.00f); // è½ã¡ç€ã„ãŸèƒŒæ™¯
 
-    // --- ƒEƒBƒ“ƒhƒEE”wŒi ---
+    // --- ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ»èƒŒæ™¯ ---
     colors[ImGuiCol_WindowBg] = background;
     colors[ImGuiCol_ChildBg] = ImVec4(0.12f, 0.08f, 0.05f, 0.9f);
     colors[ImGuiCol_PopupBg] = ImVec4(0.14f, 0.10f, 0.06f, 0.95f);
 
-    // --- ƒeƒLƒXƒg ---
+    // --- ãƒ†ã‚­ã‚¹ãƒˆ ---
     colors[ImGuiCol_Text] = rice;
     colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.55f, 0.50f, 1.00f);
 
-    // --- ƒ{[ƒ_[EƒZƒpƒŒ[ƒ^[ ---
+    // --- ãƒœãƒ¼ãƒ€ãƒ¼ãƒ»ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ãƒ¼ ---
     colors[ImGuiCol_Border] = ImVec4(0.50f, 0.25f, 0.10f, 0.60f);
     colors[ImGuiCol_BorderShadow] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
-    // --- ƒtƒŒ[ƒ€i“ü—Í—“AƒXƒ‰ƒCƒ_[‚È‚Çj ---
+    // --- ãƒ•ãƒ¬ãƒ¼ãƒ ï¼ˆå…¥åŠ›æ¬„ã€ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ãªã©ï¼‰ ---
     colors[ImGuiCol_FrameBg] = ImVec4(0.24f, 0.12f, 0.08f, 0.9f);
     colors[ImGuiCol_FrameBgHovered] = tomato;
     colors[ImGuiCol_FrameBgActive] = curry;
 
-    // --- ƒ^ƒCƒgƒ‹ƒo[ ---
+    // --- ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ ---
     colors[ImGuiCol_TitleBg] = curry;
     colors[ImGuiCol_TitleBgActive] = tomato;
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.15f, 0.08f, 0.05f, 0.75f);
 
-    // --- ƒƒjƒ…[ƒo[EƒXƒNƒ[ƒ‹ƒo[ ---
+    // --- ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼ãƒ»ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ ---
     colors[ImGuiCol_MenuBarBg] = ImVec4(0.18f, 0.09f, 0.05f, 1.00f);
     colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.07f, 0.05f, 1.00f);
     colors[ImGuiCol_ScrollbarGrab] = butter;
     colors[ImGuiCol_ScrollbarGrabHovered] = tomato;
     colors[ImGuiCol_ScrollbarGrabActive] = curry;
 
-    // --- ƒ^ƒu ---
+    // --- ã‚¿ãƒ– ---
     colors[ImGuiCol_Tab] = curry;
     colors[ImGuiCol_TabHovered] = tomato;
     colors[ImGuiCol_TabActive] = butter;
     colors[ImGuiCol_TabUnfocused] = ImVec4(0.25f, 0.15f, 0.08f, 1.00f);
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.35f, 0.20f, 0.10f, 1.00f);
 
-    // --- ƒ{ƒ^ƒ“ ---
+    // --- ãƒœã‚¿ãƒ³ ---
     colors[ImGuiCol_Button] = curry;
     colors[ImGuiCol_ButtonHovered] = tomato;
     colors[ImGuiCol_ButtonActive] = butter;
 
-    // --- ƒ`ƒFƒbƒNƒ{ƒbƒNƒXEƒXƒ‰ƒCƒ_[Eƒhƒƒbƒvƒ_ƒEƒ“‚È‚Ç ---
+    // --- ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãƒ»ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ãƒ»ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ãªã© ---
     colors[ImGuiCol_CheckMark] = butter;
     colors[ImGuiCol_SliderGrab] = butter;
     colors[ImGuiCol_SliderGrabActive] = tomato;
 
-    // --- ƒvƒƒOƒŒƒXƒo[ ---
+    // --- ãƒ—ãƒ­ã‚°ãƒ¬ã‚¹ãƒãƒ¼ ---
     colors[ImGuiCol_PlotLines] = butter;
     colors[ImGuiCol_PlotLinesHovered] = tomato;
     colors[ImGuiCol_PlotHistogram] = curry;
     colors[ImGuiCol_PlotHistogramHovered] = tomato;
 
-    // --- ƒiƒrƒQ[ƒVƒ‡ƒ“Eƒhƒ‰ƒbƒOE‘I‘ğ ---
+    // --- ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ãƒ»ãƒ‰ãƒ©ãƒƒã‚°ãƒ»é¸æŠ ---
     colors[ImGuiCol_Header] = curry;
     colors[ImGuiCol_HeaderHovered] = tomato;
     colors[ImGuiCol_HeaderActive] = butter;
@@ -675,7 +675,7 @@ void ImGuiTheme::SetButterChickenCurryTheme()
     colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.20f, 0.10f, 0.05f, 0.60f);
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.10f, 0.05f, 0.03f, 0.60f);
 
-    // --- ƒXƒ^ƒCƒ‹İ’è ---
+    // --- ã‚¹ã‚¿ã‚¤ãƒ«è¨­å®š ---
     style.FrameRounding = 6.0f;
     style.GrabRounding = 6.0f;
     style.WindowRounding = 8.0f;

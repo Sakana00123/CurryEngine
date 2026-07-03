@@ -13,14 +13,14 @@ void FixedJoint::Start()
 
 void FixedJoint::LateUpdate(float deltaTime)
 {
-	// connectedBody ‚ª–³Œø‚É‚È‚Á‚½ê‡‚ÍƒWƒ‡ƒCƒ“ƒg‚ğ”jŠü‚µ‚Ü‚·B
+	// connectedBody ãŒç„¡åŠ¹ã«ãªã£ãŸå ´åˆã¯ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ç ´æ£„ã—ã¾ã™ã€‚
 	if (!connectedBody.IsValid())
 	{
 		DestroyJoint();
 	}
 	if (!pxJoint)
 	{
-		// connectedBody ‚ª—LŒø‚ÅA‚Ü‚¾ƒWƒ‡ƒCƒ“ƒg‚ªì¬‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍƒWƒ‡ƒCƒ“ƒg‚ğì¬‚µ‚Ü‚·B
+		// connectedBody ãŒæœ‰åŠ¹ã§ã€ã¾ã ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆãŒä½œæˆã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
 		CreateJoint();
 	}
 }
@@ -33,22 +33,22 @@ void FixedJoint::OnDestroy()
 
 void FixedJoint::CreateJoint()
 {
-	// ‚±‚±‚Å PhysX ‚ÌŒÅ’èƒWƒ‡ƒCƒ“ƒg‚ğì¬‚·‚éˆ—‚ğÀ‘•‚µ‚Ü‚·B
-	// connectedBody ‚ª—LŒø‚Èê‡‚É‚Ì‚İƒWƒ‡ƒCƒ“ƒg‚ğì¬‚µ‚Ü‚·B
+	// ã“ã“ã§ PhysX ã®å›ºå®šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…ã—ã¾ã™ã€‚
+	// connectedBody ãŒæœ‰åŠ¹ãªå ´åˆã«ã®ã¿ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
 	if (connectedBody.IsValid())
 	{
-		// connectedBody ‚©‚ç Rigidbody ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚ÄAPhysX ‚ÌƒAƒNƒ^[‚ğæ“¾‚µ‚Ü‚·B
+		// connectedBody ã‹ã‚‰ Rigidbody ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¦ã€PhysX ã®ã‚¢ã‚¯ã‚¿ãƒ¼ã‚’å–å¾—ã—ã¾ã™ã€‚
 		if (const auto& connectedRigidbody = std::reinterpret_pointer_cast<Rigidbody>(ObjectManager::FindComponent(connectedBody)))
 		{
 			physx::PxRigidActor* actorA = Physics::GetActor(Physics::GetActorHandle(GetOwner()->GetTransform()));
 			physx::PxRigidActor * actorB = Physics::GetActor(Physics::GetActorHandle(connectedRigidbody->GetTransform()));
 			if (actorA && actorB)
 			{
-				// ƒWƒ‡ƒCƒ“ƒg‚ğì¬‚µ‚Ü‚·B‚±‚±‚Å‚ÍA—¼•û‚ÌƒAƒNƒ^[‚Ìƒ[ƒJƒ‹ƒtƒŒ[ƒ€‚ğ’PˆÊ•ÏŠ·‚µ‚Ä“n‚·•K—v‚ª‚ ‚è‚Ü‚·B
-				physx::PxTransform localFrameA = physx::PxTransform(physx::PxVec3(0,0.5f, 0), physx::PxQuat(0, 0, 0, 1)); // •K—v‚É‰‚¶‚Äƒ[ƒJƒ‹ƒtƒŒ[ƒ€‚ğİ’è
-				physx::PxTransform localFrameB = physx::PxTransform(physx::PxVec3(0, 0, 0), physx::PxQuat(0, 0, 0, 1)); // •K—v‚É‰‚¶‚Äƒ[ƒJƒ‹ƒtƒŒ[ƒ€‚ğİ’è
+				// ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚ã“ã“ã§ã¯ã€ä¸¡æ–¹ã®ã‚¢ã‚¯ã‚¿ãƒ¼ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å˜ä½å¤‰æ›ã—ã¦æ¸¡ã™å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+				physx::PxTransform localFrameA = physx::PxTransform(physx::PxVec3(0,0.5f, 0), physx::PxQuat(0, 0, 0, 1)); // å¿…è¦ã«å¿œã˜ã¦ãƒ­ãƒ¼ã‚«ãƒ«ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨­å®š
+				physx::PxTransform localFrameB = physx::PxTransform(physx::PxVec3(0, 0, 0), physx::PxQuat(0, 0, 0, 1)); // å¿…è¦ã«å¿œã˜ã¦ãƒ­ãƒ¼ã‚«ãƒ«ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨­å®š
 
-				// ‘o•û‚ÌˆÊ’u‚Ì’†“_‚ğŒvZ‚µ‚ÄAƒ[ƒJƒ‹ƒtƒŒ[ƒ€‚ÌˆÊ’u‚ğ’²®‚µ‚Ü‚·B
+				// åŒæ–¹ã®ä½ç½®ã®ä¸­ç‚¹ã‚’è¨ˆç®—ã—ã¦ã€ãƒ­ãƒ¼ã‚«ãƒ«ãƒ•ãƒ¬ãƒ¼ãƒ ã®ä½ç½®ã‚’èª¿æ•´ã—ã¾ã™ã€‚
 				{
 					physx::PxVec3 posA = actorA->getGlobalPose().p;
 					physx::PxVec3 posB = actorB->getGlobalPose().p;
@@ -57,7 +57,7 @@ void FixedJoint::CreateJoint()
 					localFrameB.p = midPoint - posB;
 				}
 
-				// PhysX ‚ÌŒÅ’èƒWƒ‡ƒCƒ“ƒg‚ğì¬‚µ‚Ü‚·B
+				// PhysX ã®å›ºå®šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
 				pxJoint = physx::PxFixedJointCreate(*Physics::GetPhysics(), actorA, localFrameA, actorB, localFrameB);
 			}
 		}

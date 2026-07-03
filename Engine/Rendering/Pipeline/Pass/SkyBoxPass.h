@@ -5,18 +5,18 @@
 class SkyBoxPass : public RenderPass
 {
 public:
-	// SkyBoxPass‚Ì‰Šú‰»ˆ—
+	// SkyBoxPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
-	// SkyBoxPass‚ÌÀ‘•
+	// SkyBoxPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
-	// SkyBoxPass‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// SkyBoxPassã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	void DrawProperty() override;
 
 private:
-	// ƒXƒJƒCƒ{ƒbƒNƒX—p‚ÌƒŠƒ\[ƒXi—á: ƒVƒF[ƒ_[AƒeƒNƒXƒ`ƒƒ‚È‚Çj‚ğ‚±‚±‚É’Ç‰Á
+	// ã‚¹ã‚«ã‚¤ãƒœãƒƒã‚¯ã‚¹ç”¨ã®ãƒªã‚½ãƒ¼ã‚¹ï¼ˆä¾‹: ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ãªã©ï¼‰ã‚’ã“ã“ã«è¿½åŠ 
 	std::unique_ptr<Skymap> skymap;
 
-	std::shared_ptr<AssetTexture> gameBackgroundTexture; // ƒQ[ƒ€”wŒiƒeƒNƒXƒ`ƒƒ
-	std::unique_ptr<Material> backgroundMaterial; // ”wŒi•`‰æ—p‚Ìƒ}ƒeƒŠƒAƒ‹
+	std::shared_ptr<AssetTexture> gameBackgroundTexture; // ã‚²ãƒ¼ãƒ èƒŒæ™¯ãƒ†ã‚¯ã‚¹ãƒãƒ£
+	std::unique_ptr<Material> backgroundMaterial; // èƒŒæ™¯æç”»ç”¨ã®ãƒãƒ†ãƒªã‚¢ãƒ«
 };

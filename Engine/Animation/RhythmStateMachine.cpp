@@ -8,22 +8,22 @@ void RhythmStateMachine::Reset(const std::string& initialState)
 
 void RhythmStateMachine::Update()
 {
-	// Œ»İ‚ÌƒXƒe[ƒg‚ğæ“¾
+	// ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—
 	RhythmAnimState* currentState = GetState(currentStateName);
 	if (!currentState)
 	{
 		return;
 	}
-	// ‘JˆÚğŒ‚ğƒ`ƒFƒbƒN
+	// é·ç§»æ¡ä»¶ã‚’ãƒã‚§ãƒƒã‚¯
 	for (const auto& transition : transitions)
 	{
 		if (transition.fromState == currentStateName)
 		{
-			// ğŒ‚ğ–‚½‚·‚©ƒ`ƒFƒbƒNi‚±‚±‚Å‚ÍŠÈ—ª‰»‚Ì‚½‚ßí‚Étrue‚Æ‚·‚éj
+			// æ¡ä»¶ã‚’æº€ãŸã™ã‹ãƒã‚§ãƒƒã‚¯ï¼ˆã“ã“ã§ã¯ç°¡ç•¥åŒ–ã®ãŸã‚å¸¸ã«trueã¨ã™ã‚‹ï¼‰
 			bool conditionsMet = true;
 			if (conditionsMet)
 			{
-				// ƒXƒe[ƒg‘JˆÚ
+				// ã‚¹ãƒ†ãƒ¼ãƒˆé·ç§»
 				currentStateName = transition.toState;
 				break;
 			}

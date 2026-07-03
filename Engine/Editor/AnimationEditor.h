@@ -5,7 +5,7 @@
 struct DragState
 {
 	bool dragging = false;
-	float grabOffsetTime = 0.0f; // ’Í‚ñ‚¾ˆÊ’u‚ÆƒL[ƒtƒŒ[ƒ€‚ÌŠÔ‚Ì·
+	float grabOffsetTime = 0.0f; // æ´ã‚“ã ä½ç½®ã¨ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ™‚é–“ã®å·®
 };
 
 struct SelectedKey
@@ -26,124 +26,124 @@ enum class SnapMode
 struct SnapSettings
 {
 	SnapMode mode = SnapMode::None;
-	float fps = 60.0f; // ƒtƒŒ[ƒ€ƒXƒiƒbƒv‚ÌƒtƒŒ[ƒ€ƒŒ[ƒg
-	float bpm = 120.0f; // ƒr[ƒgƒXƒiƒbƒv‚ÌBPM
-	int beatsPerMeasure = 4; // ƒr[ƒgƒXƒiƒbƒv‚Ì¬ß‚ ‚½‚è‚Ì””
-	int subdivisions = 4; // ƒr[ƒgƒXƒiƒbƒv‚Ì•ªŠ„”i—á: 4 = 1/4”j
+	float fps = 60.0f; // ãƒ•ãƒ¬ãƒ¼ãƒ ã‚¹ãƒŠãƒƒãƒ—æ™‚ã®ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆ
+	float bpm = 120.0f; // ãƒ“ãƒ¼ãƒˆã‚¹ãƒŠãƒƒãƒ—æ™‚ã®BPM
+	int beatsPerMeasure = 4; // ãƒ“ãƒ¼ãƒˆã‚¹ãƒŠãƒƒãƒ—æ™‚ã®å°ç¯€ã‚ãŸã‚Šã®æ‹æ•°
+	int subdivisions = 4; // ãƒ“ãƒ¼ãƒˆã‚¹ãƒŠãƒƒãƒ—æ™‚ã®åˆ†å‰²æ•°ï¼ˆä¾‹: 4 = 1/4æ‹ï¼‰
 };
 
-// ƒ^ƒCƒ€ƒ‰ƒCƒ“ƒrƒ…[‚Ìİ’è(–¢g—p)
+// ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ãƒ“ãƒ¥ãƒ¼ã®è¨­å®š(æœªä½¿ç”¨)
 struct TimelineView
 {
 	float pixelsPerSecond = 100.0f;
 	float minPPS = 20.0f;
 	float maxPPS = 500.0f;
 
-	float length = 3.0f; // ƒ^ƒCƒ€ƒ‰ƒCƒ“‚Ì’·‚³i•bj
-	ImVec2 origin; // ƒ^ƒCƒ€ƒ‰ƒCƒ“‚Ì•`‰æŠJnˆÊ’u
-	ImVec2 size;   // ƒ^ƒCƒ€ƒ‰ƒCƒ“‚Ì•`‰æƒTƒCƒY
+	float length = 3.0f; // ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã®é•·ã•ï¼ˆç§’ï¼‰
+	ImVec2 origin; // ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã®æç”»é–‹å§‹ä½ç½®
+	ImVec2 size;   // ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã®æç”»ã‚µã‚¤ã‚º
 };
 
 class AnimationEditor
 {
 public:
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒGƒfƒBƒ^‚ğŠJ‚­B*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒ‡ã‚£ã‚¿ã‚’é–‹ãã€‚*/
 	static void Open();
 
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒGƒfƒBƒ^‚ğ•Â‚¶‚éB*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒ‡ã‚£ã‚¿ã‚’é–‰ã˜ã‚‹ã€‚*/
 	static void Close();
 	
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒGƒfƒBƒ^‚ªŠJ‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾B*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒ‡ã‚£ã‚¿ãŒé–‹ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã€‚*/
 	static bool IsOpen();
 
-	/** @brief •ÒW’†‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğæ“¾B*/
+	/** @brief ç·¨é›†ä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’å–å¾—ã€‚*/
 	static AnimationClip* GetAnimationClip();
 
-	/** @brief •ÒW’†‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğİ’èB*/
+	/** @brief ç·¨é›†ä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’è¨­å®šã€‚*/
 	static void SetAnimationClip(std::unique_ptr<AnimationClip> clip);
 
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒGƒfƒBƒ^‚Ì GUI ‚ğ•`‰æB*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒ‡ã‚£ã‚¿ã® GUI ã‚’æç”»ã€‚*/
 	static void DrawGUI();
 
 private:
 
-	/** @brief ƒc[ƒ‹ƒo[‚ğ•`‰æB*/
+	/** @brief ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚’æç”»ã€‚*/
 	static void DrawToolbar();
 
-	/** @brief ƒ^ƒCƒ€ƒ‰ƒCƒ“ƒGƒŠƒA‚ğ•`‰æB*/
+	/** @brief ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã‚¨ãƒªã‚¢ã‚’æç”»ã€‚*/
 	static void DrawTimelineArea();
 
-	/** @brief ƒgƒ‰ƒbƒNƒŠƒXƒg‚ğ•`‰æB*/
+	/** @brief ãƒˆãƒ©ãƒƒã‚¯ãƒªã‚¹ãƒˆã‚’æç”»ã€‚*/
 	static void DrawTrackList();
 
-	/** @brief ƒ^ƒCƒ€ƒ‰ƒCƒ“‚ğ•`‰æB*/
+	/** @brief ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã‚’æç”»ã€‚*/
 	static void DrawTimeline();
 
 	static void DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPerSecond, float trackY);
 
-	/** @brief ƒL[ƒtƒŒ[ƒ€‚ğ•`‰æB*/
+	/** @brief ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æç”»ã€‚*/
 	static void DrawKeyframes();
 
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^‚ğ•`‰æB*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã‚’æç”»ã€‚*/
 	static void DrawInspector();
 
-	/** @brief •bü‚ğ•`‰æB*/
+	/** @brief ç§’ç·šã‚’æç”»ã€‚*/
 	static void DrawSecondLines(float length, ImVec2 origin, ImVec2 size, float pixelsPerSecond);
 
-	/** @brief ƒtƒŒ[ƒ€ƒ‰ƒCƒ“‚ğ•`‰æB*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ©ã‚¤ãƒ³ã‚’æç”»ã€‚*/
 	static void DrawFrameLines(float length, const SnapSettings& snap, ImVec2 origin, ImVec2 size, float pixelsPerSecond);
 
-	/** @brief ƒr[ƒgƒ‰ƒCƒ“‚ğ•`‰æB*/
+	/** @brief ãƒ“ãƒ¼ãƒˆãƒ©ã‚¤ãƒ³ã‚’æç”»ã€‚*/
 	static void DrawBeatLines(float length, const SnapSettings& snap, ImVec2 origin, ImVec2 size, float pixelsPerSecond);
 
-	/** @brief ƒ}ƒEƒX‚ªƒ^ƒCƒ€ƒ‰ƒCƒ““à‚É‚ ‚é‚©‚Ç‚¤‚©‚ğ”»’èB*/
+	/** @brief ãƒã‚¦ã‚¹ãŒã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³å†…ã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã€‚*/
 	static bool IsMouseInTimeline(ImVec2 origin, ImVec2 size);
-	/** @brief ƒ}ƒEƒX‚ªƒL[ƒtƒŒ[ƒ€ã‚É‚ ‚é‚©‚Ç‚¤‚©‚ğ”»’èB*/
+	/** @brief ãƒã‚¦ã‚¹ãŒã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ä¸Šã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã€‚*/
 	static bool IsMouseOverKey(ImVec2 keyPos, float radius);
-	/** @brief ŠÔ‚ğƒXƒiƒbƒvB*/
+	/** @brief æ™‚é–“ã‚’ã‚¹ãƒŠãƒƒãƒ—ã€‚*/
 	static float SnapTime(float time, const SnapSettings& snap);
-	/** @brief XÀ•W‚ğŠÔ‚É•ÏŠ·B*/
+	/** @brief Xåº§æ¨™ã‚’æ™‚é–“ã«å¤‰æ›ã€‚*/
 	static float XToTime(float x, ImVec2 origin, float pixelsPerSecond);
-	/** @brief ŠÔ‚ğXÀ•W‚É•ÏŠ·B*/
+	/** @brief æ™‚é–“ã‚’Xåº§æ¨™ã«å¤‰æ›ã€‚*/
 	static float TimeToX(float time, ImVec2 origin, float pixelsPerSecond);
 
-	/** @brief ƒY[ƒ€‘€ì‚ğˆ—B*/
+	/** @brief ã‚ºãƒ¼ãƒ æ“ä½œã‚’å‡¦ç†ã€‚*/
 	static void HandleZoom(TimelineView& view);
 
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒvƒŒƒrƒ…[‚ğ•`‰æB*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’æç”»ã€‚*/
 	//static void DrawAnimationPreview();
 
-	/** @brief ƒgƒ‰ƒbƒN’Ç‰Áƒƒjƒ…[‚ğ•`‰æB*/
+	/** @brief ãƒˆãƒ©ãƒƒã‚¯è¿½åŠ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’æç”»ã€‚*/
 	//static void DrawAddTrackMenu();
 
-	/** @brief V‚µ‚¢ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğì¬B*/
+	/** @brief æ–°ã—ã„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’ä½œæˆã€‚*/
 	//static void NewAnimationClip();
 
-	/** @brief ƒtƒ@ƒCƒ‹‚©‚çƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğ“Ç‚İ‚İB*/
+	/** @brief ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’èª­ã¿è¾¼ã¿ã€‚*/
 	//static void LoadAnimationClipFromFile();
 
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğ•Û‘¶B*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’ä¿å­˜ã€‚*/
 	//static void SaveAnimationClip();
 
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğ•Ê–¼‚Å•Û‘¶B*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’åˆ¥åã§ä¿å­˜ã€‚*/
 	//static void SaveAnimationClipAs();
 
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğ glTF Œ`®‚ÅƒGƒNƒXƒ|[ƒgB*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’ glTF å½¢å¼ã§ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã€‚*/
 	//static void ExportAnimationClipToGLTF();
 
-	/** @brief ‘I‘ğ’†‚Ìƒgƒ‰ƒbƒN‚ğíœB*/
+	/** @brief é¸æŠä¸­ã®ãƒˆãƒ©ãƒƒã‚¯ã‚’å‰Šé™¤ã€‚*/
 	//static void DeleteSelectedTrack();
 
-	/** @brief ‘I‘ğ’†‚ÌƒL[ƒtƒŒ[ƒ€‚ğíœB*/
+	/** @brief é¸æŠä¸­ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å‰Šé™¤ã€‚*/
 	//static void DeleteSelectedKeyframe();
 
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶‚ğ§ŒäB*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿã‚’åˆ¶å¾¡ã€‚*/
 	//static void ControlAnimationPlayback();
 
-	/** @brief ‘I‘ğ’†‚ÌƒL[ƒtƒŒ[ƒ€‚Ì‘I‘ğ‚ğ‰ğœB*/
+	/** @brief é¸æŠä¸­ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®é¸æŠã‚’è§£é™¤ã€‚*/
 	static void UnselectKey();
 
-	/** @brief ‘I‘ğ’†‚ÌƒL[ƒtƒŒ[ƒ€‚ğíœB*/
+	/** @brief é¸æŠä¸­ã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å‰Šé™¤ã€‚*/
 	static void DeleteSelectedKey();
 
 
@@ -158,7 +158,7 @@ private:
 	static inline float currentTime = 0.0f;
 	static inline float length = 3.0f;
 
-	static inline TimelineView timelineView;// –¢g—p
+	static inline TimelineView timelineView;// æœªä½¿ç”¨
 	
 	static inline DragState dragState;
 

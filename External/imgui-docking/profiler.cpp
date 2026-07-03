@@ -27,7 +27,7 @@ static inline int PositiveModulo(int x, int m) { return (x % m) < 0 ? (x % m) + 
 
 void Profiler::Initialize(bool* _isPaused, void (*_setPause)(bool), int maxThreads)
 {
-    MaxThreads = maxThreads; // ���s���ɐݒ�\�ȃX���b�h��
+    MaxThreads = maxThreads; // 実行時に設定可能なスレッド数
     m_isPausedPtr = _isPaused;
     m_setPause = _setPause;
     m_timeDuration = 120.0f;
@@ -37,14 +37,14 @@ void Profiler::Initialize(bool* _isPaused, void (*_setPause)(bool), int maxThrea
     m_frameSelectionStart = 2;
     m_frameSelectionEnd = 0;
 
-    m_threads.clear(); // �Â��X���b�h�f�[�^���N���A
-    m_threads.resize(MaxThreads); // �X���b�h���Ɋ�Â��ă��T�C�Y
+    m_threads.clear(); // 古いスレッドデータをクリア
+    m_threads.resize(MaxThreads); // スレッド数に基づいてリサイズ
 
     for (int i = 0; i < MaxThreads; ++i)
     {
         auto& thread = m_threads[i];
         thread.name = nullptr;
-        thread.initialized = (i == 0); // �ŏ��̃X���b�h�̂ݏ������ς�
+        thread.initialized = (i == 0); // 最初のスレッドのみ初期化済み
         thread.callStackDepth = 0;
         thread.sectionsCount = 0;
         thread.sectionIndex = 0;

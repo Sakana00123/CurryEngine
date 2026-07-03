@@ -61,7 +61,7 @@ public:
 		return shaderResourceView;
 	}
 
-	/** @brief 深度テクスチャを取得します。*/
+	/** @brief 豺ｱ蠎ｦ繝�繧ｯ繧ｹ繝√Ε繧貞叙蠕励＠縺ｾ縺吶�*/
 	RawTexture2D* GetDepthTexture();
 
 public:

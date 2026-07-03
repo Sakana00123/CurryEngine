@@ -120,10 +120,10 @@ void GltfModelRenderer::LoadModel(ID3D11Device* device, const std::string& fileP
         return;
 	}
 	
-	// ƒŠƒ\[ƒX‚Ìì¬‚ÆƒAƒbƒvƒ[ƒh
+	// ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆã¨ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
     CreateAndUploadResources(device);
 
-    // AABB‚ÌŒvZ
+    // AABBã®è¨ˆç®—
     boundingBox = CalculateAABB();
 }
 
@@ -131,9 +131,9 @@ void GltfModelRenderer::SetModelAsset(std::shared_ptr<ModelAsset> asset)
 {
     m_asset = asset;
 	auto device = Graphics::GetDevice();
-    // ƒŠƒ\[ƒX‚Ìì¬‚ÆƒAƒbƒvƒ[ƒh
+    // ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆã¨ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
     CreateAndUploadResources(device);
-    // AABB‚ÌŒvZ
+    // AABBã®è¨ˆç®—
     boundingBox = CalculateAABB();
 }
 
@@ -186,10 +186,10 @@ void GltfModelRenderer::Animate(size_t animationIndex, float time, std::vector<N
         interpolationFactor = (time - timelines.at(keyframeIndex + 0)) / (timelines.at(keyframeIndex + 1) - timelines.at(keyframeIndex + 0));
         return keyframeIndex;
         };
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ª‘¶İ‚µ‚Ä‚¢‚éê‡‚Ì‚İˆ—
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå­˜åœ¨ã—ã¦ã„ã‚‹å ´åˆã®ã¿å‡¦ç†
     if (animations.size() > 0)
     {
-        //’Ç‰Á
+        //è¿½åŠ 
         float blendRate = 1.0f;
         if (isBlendStart && time < animationBlendTime) {
             blendRate = time / animationBlendTime;
@@ -198,13 +198,13 @@ void GltfModelRenderer::Animate(size_t animationIndex, float time, std::vector<N
 
         const Animation& animation{ animations.at(animationIndex) };
 
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŠeƒ`ƒƒƒlƒ‹‚ğˆ—
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å„ãƒãƒ£ãƒãƒ«ã‚’å‡¦ç†
         for (vector<Animation::Channel>::const_reference channel : animation.channels)
         {
             const Animation::Sampler& sampler{ animation.samplers.at(channel.sampler) };
             const vector<float>& timeline{ animation.timelines.at(sampler.input) };
 
-            // ƒL[ƒtƒŒ[ƒ€‚ª‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+            // ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ãŒãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
             if (timeline.size() == 0)
             {
                 continue;
@@ -215,7 +215,7 @@ void GltfModelRenderer::Animate(size_t animationIndex, float time, std::vector<N
 
             float rate = blendRate < 1.f ? blendRate : interpolationFactor;
 
-            // ‘ÎÛ‚ÌƒvƒƒpƒeƒBiƒXƒP[ƒ‹E‰ñ“]EˆÊ’uj‚É‰‚¶‚Ä•âŠÔ‚Æ“K—p‚ğs‚¤
+            // å¯¾è±¡ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ï¼ˆã‚¹ã‚±ãƒ¼ãƒ«ãƒ»å›è»¢ãƒ»ä½ç½®ï¼‰ã«å¿œã˜ã¦è£œé–“ã¨é©ç”¨ã‚’è¡Œã†
             if (channel.targetPath == "scale")
             {
                 const vector<XMFLOAT3>& scales{ animation.scales.at(sampler.output) };
@@ -223,7 +223,7 @@ void GltfModelRenderer::Animate(size_t animationIndex, float time, std::vector<N
                 XMVECTOR S0 = XMLoadFloat3((blendRate < 1.f) ? &animatedNodes.at(channel.targetNode).scale : &scales.at(keyframeIndex + 0));
                 XMVECTOR S1 = XMLoadFloat3(&scales.at(keyframeIndex + 1));
 
-                // üŒ`•âŠÔ‚ÅƒXƒP[ƒ‹‚ğ‹‚ß‚Äƒm[ƒh‚ÉŠi”[
+                // ç·šå½¢è£œé–“ã§ã‚¹ã‚±ãƒ¼ãƒ«ã‚’æ±‚ã‚ã¦ãƒãƒ¼ãƒ‰ã«æ ¼ç´
                 XMStoreFloat3(&animatedNodes.at(channel.targetNode).scale,
                     XMVectorLerp(S0, S1, rate));
             }
@@ -234,7 +234,7 @@ void GltfModelRenderer::Animate(size_t animationIndex, float time, std::vector<N
                 XMVECTOR R0 = XMLoadFloat4((blendRate < 1.f) ? &animatedNodes.at(channel.targetNode).rotation : &rotations.at(keyframeIndex + 0));
                 XMVECTOR R1 = XMLoadFloat4(&rotations.at(keyframeIndex + 1));
 
-                // ‹…–ÊüŒ`•âŠÔiSlerpj‚Å‰ñ“]‚ğ•âŠÔ‚µA³‹K‰»‚µ‚Ä“K—p
+                // çƒé¢ç·šå½¢è£œé–“ï¼ˆSlerpï¼‰ã§å›è»¢ã‚’è£œé–“ã—ã€æ­£è¦åŒ–ã—ã¦é©ç”¨
                 XMStoreFloat4(&animatedNodes.at(channel.targetNode).rotation,
                     XMQuaternionNormalize(XMQuaternionSlerp(R0, R1, rate)));
             }
@@ -245,7 +245,7 @@ void GltfModelRenderer::Animate(size_t animationIndex, float time, std::vector<N
                 XMVECTOR T0 = XMLoadFloat3((blendRate < 1.f) ? &animatedNodes.at(channel.targetNode).translation : &translations.at(keyframeIndex + 0));
                 XMVECTOR T1 = XMLoadFloat3(&translations.at(keyframeIndex + 1));
 
-                // üŒ`•âŠÔ‚ÅˆÊ’u‚ğ‹‚ß‚Äƒm[ƒh‚ÉŠi”[
+                // ç·šå½¢è£œé–“ã§ä½ç½®ã‚’æ±‚ã‚ã¦ãƒãƒ¼ãƒ‰ã«æ ¼ç´
                 XMStoreFloat3(&animatedNodes.at(channel.targetNode).translation,
                     XMVectorLerp(T0, T1, rate));
             }
@@ -256,7 +256,7 @@ void GltfModelRenderer::Animate(size_t animationIndex, float time, std::vector<N
 
             }
         }
-        // ƒAƒjƒ[ƒVƒ‡ƒ“Œã‚Éƒm[ƒh‚Ìƒ[ƒ‹ƒh•ÏŠ·‚ğXV
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã«ãƒãƒ¼ãƒ‰ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ã‚’æ›´æ–°
         m_asset->CumulateTransforms(animatedNodes);
     }
 }
@@ -332,40 +332,40 @@ void GltfModelRenderer::Update(float deltaTime)
 	auto& nodes = m_asset->nodes;
 	auto& animations = m_asset->animations;
 
-    if (animations.size() <= animationIndex) return;//ƒAƒjƒ[ƒVƒ‡ƒ“‚ª–³‚©‚Á‚½‚çƒXƒ‹[
+    if (animations.size() <= animationIndex) return;//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒç„¡ã‹ã£ãŸã‚‰ã‚¹ãƒ«ãƒ¼
 
-	if (!IsAnimationEnable()) return;//ƒAƒjƒ[ƒVƒ‡ƒ“‚ª–³Œø‚È‚çƒXƒ‹[
+	if (!IsAnimationEnable()) return;//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒç„¡åŠ¹ãªã‚‰ã‚¹ãƒ«ãƒ¼
 
-	// ƒm[ƒh‚ª‘¶İ‚µ‚Ä‚¢‚éê‡‚Ì‚İˆ—
+	// ãƒãƒ¼ãƒ‰ãŒå­˜åœ¨ã—ã¦ã„ã‚‹å ´åˆã®ã¿å‡¦ç†
     if (nodes.size() > 0)
     {
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXV
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°
         Animate(animationIndex, time += (deltaTime * timeRate), nodes);
 
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŠÔ‚ğæ“¾
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ™‚é–“ã‚’å–å¾—
 		float animationDuration = animations.at(animationIndex).duration;
 
-		// ƒAƒjƒ[ƒVƒ‡ƒ“ƒCƒxƒ“ƒg‚Ìˆ—
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆã®å‡¦ç†
         for (AnimationEvent::Event& event : animationEvent.events)
         {
-			// ƒCƒxƒ“ƒg‚ª‚Ü‚¾”­‰Î‚µ‚Ä‚¢‚È‚¢ê‡
+			// ã‚¤ãƒ™ãƒ³ãƒˆãŒã¾ã ç™ºç«ã—ã¦ã„ãªã„å ´åˆ
             if (!event.isCalled)
             {
-                // ƒCƒxƒ“ƒg”­‰ÎŠÔ‚É’B‚µ‚½‚ç
+                // ã‚¤ãƒ™ãƒ³ãƒˆç™ºç«æ™‚é–“ã«é”ã—ãŸã‚‰
                 if (time >= event.time)
                 {
-                    // ƒCƒxƒ“ƒgƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ño‚·
+                    // ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’å‘¼ã³å‡ºã™
                     if (event.func)
                     {
                         event.func();
                     }
-                    // ƒCƒxƒ“ƒg”­‰ÎÏ‚İ‚É‚·‚é
+                    // ã‚¤ãƒ™ãƒ³ãƒˆç™ºç«æ¸ˆã¿ã«ã™ã‚‹
                     event.isCalled = true;
                 }
 			}
 		}
 
-        //ƒAƒjƒ[ƒVƒ‡ƒ“‚ªÅŒã‚É“’B‚µ‚½‚ç
+        //ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒæœ€å¾Œã«åˆ°é”ã—ãŸã‚‰
         if (animationDuration < time)
         {
             if (loop) {
@@ -422,7 +422,7 @@ void GltfModelRenderer::Update(float deltaTime)
 
 void GltfModelRenderer::Render(RenderContext* rtx)
 {
-	// VertexƒVƒF[ƒ_[‚ÆPixelƒVƒF[ƒ_[‚ª‘¶İ‚µ‚È‚¢ê‡‚Íˆ—‚ğ”²‚¯‚é
+	// Vertexã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¨Pixelã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯å‡¦ç†ã‚’æŠœã‘ã‚‹
     if (vertexShader == nullptr || pixelShader == nullptr)
     {
         return;
@@ -472,7 +472,7 @@ void GltfModelRenderer::Render(RenderContext* rtx)
             primitiveData.material = batchMesh.material;
             primitiveData.hasTangent = batchMesh.has("TANGENT");
             primitiveData.skin = -1;
-            // TODO: ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌİŒv‚ª•Ï‚í‚Á‚½‚ç•Ï‚¦‚é
+            // TODO: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¨­è¨ˆãŒå¤‰ã‚ã£ãŸã‚‰å¤‰ãˆã‚‹
             primitiveData.world = GetOwner()->transform->GetWorld();
 
 
@@ -550,7 +550,7 @@ void GltfModelRenderer::Render(RenderContext* rtx)
                     
 
                     DirectX::XMFLOAT4X4 worldMatrix = GetOwner()->transform->GetWorld();
-                    // TODO: ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌİŒv‚ª•Ï‚í‚Á‚½‚ç•Ï‚¦‚é
+                    // TODO: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¨­è¨ˆãŒå¤‰ã‚ã£ãŸã‚‰å¤‰ãˆã‚‹
                     DirectX::XMStoreFloat4x4(&primitiveData.world, DirectX::XMLoadFloat4x4(&node.globalTransform) * DirectX::XMLoadFloat4x4(&worldMatrix));
                     immediateContext->UpdateSubresource(primitiveCbuffer.Get(), 0, 0, &primitiveData, 0, 0);
                     immediateContext->VSSetConstantBuffers(0, 1, primitiveCbuffer.GetAddressOf());
@@ -636,7 +636,7 @@ void GltfModelRenderer::CastShadow(RenderContext* rtx)
             primitiveData.material = batchMesh.material;
             primitiveData.hasTangent = batchMesh.has("TANGENT");
             primitiveData.skin = -1;
-            // TODO: ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌİŒv‚ª•Ï‚í‚Á‚½‚ç•Ï‚¦‚é
+            // TODO: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¨­è¨ˆãŒå¤‰ã‚ã£ãŸã‚‰å¤‰ãˆã‚‹
             primitiveData.world = GetOwner()->transform->GetWorld();
             immediateContext->UpdateSubresource(primitiveCbuffer.Get(), 0, 0, &primitiveData, 0, 0);
             immediateContext->VSSetConstantBuffers(0, 1, primitiveCbuffer.GetAddressOf());
@@ -688,7 +688,7 @@ void GltfModelRenderer::CastShadow(RenderContext* rtx)
                     
                     DirectX::XMFLOAT4X4 worldMatrix = GetOwner()->transform->GetWorld();
                     
-                    // TODO: ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌİŒv‚ª•Ï‚í‚Á‚½‚ç•Ï‚¦‚é
+                    // TODO: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¨­è¨ˆãŒå¤‰ã‚ã£ãŸã‚‰å¤‰ãˆã‚‹
                     DirectX::XMStoreFloat4x4(&primitiveData.world, DirectX::XMLoadFloat4x4(&node.globalTransform) * DirectX::XMLoadFloat4x4(&worldMatrix));
                     immediateContext->UpdateSubresource(primitiveCbuffer.Get(), 0, 0, &primitiveData, 0, 0);
                     immediateContext->VSSetConstantBuffers(0, 1, primitiveCbuffer.GetAddressOf());
@@ -715,7 +715,7 @@ void GltfModelRenderer::CastShadow(RenderContext* rtx)
 	    }
     }
 
-    //g‚Á‚½ƒVƒF[ƒ_[‚ğƒŠƒZƒbƒg
+    //ä½¿ã£ãŸã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆ
     immediateContext->PSSetShader(NULL, NULL, 0);
     immediateContext->VSSetShader(NULL, NULL, 0);
     immediateContext->GSSetShader(NULL, NULL, 0);
@@ -726,11 +726,11 @@ void GltfModelRenderer::DrawProperty(const PropertyDrawContext& context)
 {
 	auto& animations = m_asset->animations;
 
-	// Ã“Iƒoƒbƒ`ƒ“ƒO—pƒtƒ‰ƒOƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+	// é™çš„ãƒãƒƒãƒãƒ³ã‚°ç”¨ãƒ•ãƒ©ã‚°ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 	ImGui::Checkbox("StaticBatching", &editorStaticBatchingFlag);
-	// “Ç‚İ‚Şƒ‚ƒfƒ‹‚ÌƒpƒX
+	// èª­ã¿è¾¼ã‚€ãƒ¢ãƒ‡ãƒ«ã®ãƒ‘ã‚¹
     ImGui::Text("FilePath: %s", filePath.c_str());
-	// ƒtƒ@ƒCƒ‹‘I‘ğƒ{ƒ^ƒ“
+	// ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒœã‚¿ãƒ³
     ImGui::SameLine();
     if (ImGui::Button("...")) {
 		char filepath[260] = {};
@@ -770,7 +770,7 @@ void GltfModelRenderer::DrawProperty(const PropertyDrawContext& context)
         i++;
     }
 
-    // Šî’êƒNƒ‰ƒX‚ÌŒÄ‚Ño‚µ
+    // åŸºåº•ã‚¯ãƒ©ã‚¹ã®å‘¼ã³å‡ºã—
     Renderer::DrawProperty(context);
 
 
@@ -790,6 +790,6 @@ void GltfModelRenderer::Deserialize(const json& jsonData)
     Renderer::Deserialize(jsonData);
     filePath = jsonData.value("filePath", filePath);
     bool staticBatching = jsonData.value("staticBatching", false);
-	// ƒ‚ƒfƒ‹‚ÌÄ“Ç‚İ‚İ
+	// ãƒ¢ãƒ‡ãƒ«ã®å†èª­ã¿è¾¼ã¿
     LoadModel(Graphics::GetDevice(), filePath, staticBatching);
 }

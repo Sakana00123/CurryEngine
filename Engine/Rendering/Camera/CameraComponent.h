@@ -7,60 +7,60 @@ using namespace CurryEngine::PropertyAttributes;
 
 /**
  * @file
- * @brief ƒV[ƒ“‚Ìƒrƒ…[/ƒvƒƒWƒFƒNƒVƒ‡ƒ“‚ğ’ñ‹Ÿ‚·‚éƒJƒƒ‰ƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details ‹–ìŠpEƒAƒXƒyƒNƒg”äE‹ß‰“ƒNƒŠƒbƒv–Ê‚©‚çƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğ¶¬‚µA
- *          `Transform` ‚Æ‘O•ûŒü/ã•ûŒüƒxƒNƒgƒ‹‚©‚çƒrƒ…[s—ñ‚ğ¶¬‚µ‚Ü‚·B
+ * @brief ã‚·ãƒ¼ãƒ³ã®ãƒ“ãƒ¥ãƒ¼/ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ã‚’æä¾›ã™ã‚‹ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details è¦–é‡è§’ãƒ»ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ãƒ»è¿‘é ã‚¯ãƒªãƒƒãƒ—é¢ã‹ã‚‰ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’ç”Ÿæˆã—ã€
+ *          `Transform` ã¨å‰æ–¹å‘/ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‹ã‚‰ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
  */
 class CameraComponent : public Component
 {
 	C_REFLECT(CameraComponent)
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	CameraComponent() = default;
 	/**
-	 * @brief ƒfƒXƒgƒ‰ƒNƒ^B
+	 * @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
 	 */
 	~CameraComponent() override = default;
 
-	/** @brief ‰Šú‰»ˆ—B•K—v‚ÈQÆ‚Ìæ“¾‚È‚Ç‚ğs‚¢‚Ü‚·B*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ã€‚å¿…è¦ãªå‚ç…§ã®å–å¾—ãªã©ã‚’è¡Œã„ã¾ã™ã€‚*/
 	void Initialize() override;
 
 #ifdef USE_IMGUI
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^—p‚ÌƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
-	/** @brief —LŒø‰»‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief æœ‰åŠ¹åŒ–æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnEnable() override;
 
-	/** @brief –³Œø‰»‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ç„¡åŠ¹åŒ–æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnDisable() override;
 
 	/**
-	 * @brief ƒXƒNƒŠ[ƒ“À•W‚ğƒ[ƒ‹ƒh‹óŠÔ‚ÌƒŒƒC‚É•ÏŠ·‚µ‚Ü‚·B
-	 * @param screenPos ƒXƒNƒŠ[ƒ“À•WiƒsƒNƒZƒ‹’PˆÊjB¶ã‚ª(0,0)‚ÅA‰E‰º‚ª(‰æ–Ê•, ‰æ–Ê‚‚³)B
-	 * @param outOrigin ƒŒƒC‚ÌŒ´“_iƒ[ƒ‹ƒh‹óŠÔjB
-	 * @param outDirection ƒŒƒC‚Ì•ûŒüiƒ[ƒ‹ƒh‹óŠÔA³‹K‰»‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ªŠú‘Ò‚³‚ê‚éjB
+	 * @brief ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã®ãƒ¬ã‚¤ã«å¤‰æ›ã—ã¾ã™ã€‚
+	 * @param screenPos ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼ˆãƒ”ã‚¯ã‚»ãƒ«å˜ä½ï¼‰ã€‚å·¦ä¸ŠãŒ(0,0)ã§ã€å³ä¸‹ãŒ(ç”»é¢å¹…, ç”»é¢é«˜ã•)ã€‚
+	 * @param outOrigin ãƒ¬ã‚¤ã®åŸç‚¹ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ï¼‰ã€‚
+	 * @param outDirection ãƒ¬ã‚¤ã®æ–¹å‘ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã€æ­£è¦åŒ–ã•ã‚Œã¦ã„ã‚‹ã“ã¨ãŒæœŸå¾…ã•ã‚Œã‚‹ï¼‰ã€‚
 	 */
 	void ScreenPointToRay(const Vector2& screenPos, Vector3& outOrigin, Vector3& outDirection) const;
 
 	/**
-	 * @brief ƒJƒƒ‰‚ÌƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ğæ“¾‚µ‚Ü‚·B
-	 * @details ƒGƒfƒBƒ^‚Å‚Ì‘I‘ğ‚È‚Ç‚Ég—p‚³‚ê‚Ü‚·B’Êí‚ÍƒJƒƒ‰ˆÊ’u‚ğ’†S‚Æ‚µ‚½¬‚³‚Èƒ{ƒbƒNƒX‚É‚È‚è‚Ü‚·B
-	 * @return ƒJƒƒ‰‚ÌƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒXB
+	 * @brief ã‚«ãƒ¡ãƒ©ã®ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @details ã‚¨ãƒ‡ã‚£ã‚¿ã§ã®é¸æŠãªã©ã«ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚é€šå¸¸ã¯ã‚«ãƒ¡ãƒ©ä½ç½®ã‚’ä¸­å¿ƒã¨ã—ãŸå°ã•ãªãƒœãƒƒã‚¯ã‚¹ã«ãªã‚Šã¾ã™ã€‚
+	 * @return ã‚«ãƒ¡ãƒ©ã®ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã€‚
 	 */
 	Math::BoundingBox GetBoundingBox() const;
 
 	/**
-	 * @brief ƒrƒ…[s—ñ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒrƒ…[s—ñB
+	 * @brief ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã€‚
 	 */
 	XMMATRIX GetViewMatrix() const;
 
 	/**
-	 * @brief ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñB
+	 * @brief ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã€‚
 	 */
 	XMMATRIX GetProjectionMatrix() const;
 
@@ -84,19 +84,19 @@ public:
 	bool IsMainCamera() const { return isMainCamera; }
 
 private:
-	/** @brief ‹–ìŠpi“xjB*/
+	/** @brief è¦–é‡è§’ï¼ˆåº¦ï¼‰ã€‚*/
 	C_PROPERTY(Range(1.0f, 120.0f), Tooltip("fov"))
 	float fieldOfView = 60.0f;
-	/** @brief ƒAƒXƒyƒNƒg”äi•/‚‚³jB*/
+	/** @brief ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆå¹…/é«˜ã•ï¼‰ã€‚*/
 	C_PROPERTY(ReadOnly)
 	float aspect = 1280.0f / 720.0f;
-	/** @brief ‹ßƒNƒŠƒbƒv–Ê‹——£B*/
+	/** @brief è¿‘ã‚¯ãƒªãƒƒãƒ—é¢è·é›¢ã€‚*/
 	C_PROPERTY(Speed(0.01f), Range(0.01f, 10.0f))
 	float nearClip = 0.1f;
-	/** @brief ‰“ƒNƒŠƒbƒv–Ê‹——£B*/
+	/** @brief é ã‚¯ãƒªãƒƒãƒ—é¢è·é›¢ã€‚*/
 	C_PROPERTY(Speed(1.0f), Range(100.0f, 10000.0f))
 	float farClip = 1000.0f;
-	/** @brief ƒƒCƒ“ƒJƒƒ‰‚©‚Ç‚¤‚©B*/
+	/** @brief ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã‹ã©ã†ã‹ã€‚*/
 	C_PROPERTY(HideInInspector)
 	bool isMainCamera = false;
 };

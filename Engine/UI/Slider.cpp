@@ -43,7 +43,7 @@ void Slider::DrawProperty(const PropertyDrawContext& context)
 				direction = static_cast<Direction>(i);
 			}
 
-			//“¯‚¶ƒAƒCƒeƒ€‚ª‘I‚Î‚ê‚Ä‚¢‚½‚çƒtƒH[ƒJƒX‚ğ—^‚¦‚é
+			//åŒã˜ã‚¢ã‚¤ãƒ†ãƒ ãŒé¸ã°ã‚Œã¦ã„ãŸã‚‰ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ä¸ãˆã‚‹
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
 			}
@@ -164,7 +164,7 @@ void Slider::UpdateSliderValue(const XMFLOAT2& mousePos)
 void Slider::UpdateVisuals(float normalized)
 {
 	normalizedValue = normalized;
-	// Handle ‚Ì Anchor ‚ğXV
+	// Handle ã® Anchor ã‚’æ›´æ–°
 	if (handleRect && handleRect->GetParent()) {
 		Vector2 anchor = { 0.5f,0.5f };
 		switch (direction) {
@@ -184,7 +184,7 @@ void Slider::UpdateVisuals(float normalized)
 		handleRect->SetAnchorMin(anchor);
 		handleRect->SetAnchorMax(anchor);
 	}
-	// Fill ‚Ì Anchor ‚ğXV
+	// Fill ã® Anchor ã‚’æ›´æ–°
 	RectTransform* fillContainerRect = fillRect ?
 		dynamic_cast<RectTransform*>(fillRect->gameObject->parent->transform) :
 		nullptr;

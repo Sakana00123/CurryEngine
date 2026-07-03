@@ -10,7 +10,7 @@ bool RaycastResult::IsValid() const
 		return false;
 	}
 	
-	// ƒqƒbƒg‚µ‚½GraphicƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‘¶İ‚·‚é‚©Šm”F
+	// ãƒ’ãƒƒãƒˆã—ãŸGraphicã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèª
 	if (Scene* scene = SceneManager::GetLoadingSceneOrCurrentScene()) {
 		if (scene->FindComponentById<Graphic>(hitGraphicId) == nullptr) {
 			return false;
@@ -21,7 +21,7 @@ bool RaycastResult::IsValid() const
 
 GameObject* RaycastResult::GetHitGameObject() const
 {
-	// –³Œø‚ÈŒ‹‰Ê‚Ìê‡‚Í nullptr ‚ğ•Ô‚·
+	// ç„¡åŠ¹ãªçµæœã®å ´åˆã¯ nullptr ã‚’è¿”ã™
 	if (!IsValid()) {
 		return nullptr;
 	}
@@ -30,12 +30,12 @@ GameObject* RaycastResult::GetHitGameObject() const
 
 std::shared_ptr<Graphic> RaycastResult::GetHitGraphic() const
 {
-	// –³Œø‚ÈŒ‹‰Ê‚Ìê‡‚Í nullptr ‚ğ•Ô‚·
+	// ç„¡åŠ¹ãªçµæœã®å ´åˆã¯ nullptr ã‚’è¿”ã™
 	if (!IsValid() || !hitGraphicId.IsValid()) {
 		return nullptr;
 	}
 
-	// ƒqƒbƒg‚µ‚½GameObject‚ªŠ‘®‚·‚éƒV[ƒ“‚©‚çGraphicƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾
+	// ãƒ’ãƒƒãƒˆã—ãŸGameObjectãŒæ‰€å±ã™ã‚‹ã‚·ãƒ¼ãƒ³ã‹ã‚‰Graphicã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—
 	if (Scene* scene = gameObject->GetScene()) {
 		return scene->FindComponentPtrById<Graphic>(hitGraphicId);
 	}

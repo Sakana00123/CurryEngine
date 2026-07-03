@@ -48,7 +48,7 @@ inline static std::string GetDisplayText(const ObjectId& id, const std::string& 
 	{
 		displayText = GetComponentNameById(id);
 	}
-	displayText += "(" + refTypeName + ")"; // QÆæ‚ÌŒ^–¼‚ğ•\¦‚É’Ç‰Á
+	displayText += "(" + refTypeName + ")"; // å‚ç…§å…ˆã®å‹åã‚’è¡¨ç¤ºã«è¿½åŠ 
 	return displayText;
 }
 
@@ -61,50 +61,50 @@ namespace CurryEngine
 		ObjectId value = std::any_cast<ObjectId>(prop.getter(context.Primary()));
 		bool mixed = PropertyDrawHelper::HasMixedValues<ObjectId>(context, prop);
 		auto referenceAttr = prop.GetAttribute("ObjectReference");
-		// Reference ‘®«‚Ìˆø”‚ÍQÆæ‚ÌŒ^–¼ (—á: "Transform", "GameObejct") ‚ğ‘z’è
-		std::string refTypeName = referenceAttr && !referenceAttr->args.empty() ? referenceAttr->args[0] : "UnknownType"; // QÆæ‚ÌŒ^–¼‚ğæ“¾B‘®«‚ª‚È‚¢ê‡‚âˆø”‚ª‹ó‚Ìê‡‚Í "UnknownType" ‚Æ‚·‚é
-		if (!referenceAttr || refTypeName == "UnknownType") // ObjectReference ‘®«‚ª‚È‚¢ê‡‚ÍŒx‚ğ•\¦‚µ‚Ä•`‰æ‚ğƒXƒLƒbƒv
+		// Reference å±æ€§ã®å¼•æ•°ã¯å‚ç…§å…ˆã®å‹å (ä¾‹: "Transform", "GameObejct") ã‚’æƒ³å®š
+		std::string refTypeName = referenceAttr && !referenceAttr->args.empty() ? referenceAttr->args[0] : "UnknownType"; // å‚ç…§å…ˆã®å‹åã‚’å–å¾—ã€‚å±æ€§ãŒãªã„å ´åˆã‚„å¼•æ•°ãŒç©ºã®å ´åˆã¯ "UnknownType" ã¨ã™ã‚‹
+		if (!referenceAttr || refTypeName == "UnknownType") // ObjectReference å±æ€§ãŒãªã„å ´åˆã¯è­¦å‘Šã‚’è¡¨ç¤ºã—ã¦æç”»ã‚’ã‚¹ã‚­ãƒƒãƒ—
 		{
 			LOG_WARNING("ObjectId property '" + prop.name + "' is missing 'ObjectReference' attribute or has invalid reference type. Please add [ObjectReference(\"TypeName\")] attribute to specify the reference type.");
 			return;
 		}
 
-		bool referenceChanged = false; // QÆ‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+		bool referenceChanged = false; // å‚ç…§ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 
 
 		PropertyDrawHelper::BeginPropertyLabel(prop);
 
-		if (auto referenceAttr = prop.GetAttribute("ObjectReference")) // ObjectReference ‘®«‚ª‚ ‚éê‡‚Ì‚İƒhƒƒbƒv‚ğó‚¯“ü‚ê‚é
+		if (auto referenceAttr = prop.GetAttribute("ObjectReference")) // ObjectReference å±æ€§ãŒã‚ã‚‹å ´åˆã®ã¿ãƒ‰ãƒ­ãƒƒãƒ—ã‚’å—ã‘å…¥ã‚Œã‚‹
 		{
 			std::string displayText = GetDisplayText(value, refTypeName);
-			displayText += "##" + prop.name; // “¯‚¶–¼‘O‚ÌƒvƒƒpƒeƒB‚ª•¡”‚ ‚éê‡‚É¯•Ê‚Å‚«‚é‚æ‚¤‚É ID ‚ğ’Ç‰Á
-			ImGui::Button(displayText.c_str()); // ƒhƒƒbƒvƒ^[ƒQƒbƒg‚Æ‚µ‚Ä‹@”\‚·‚éƒ{ƒ^ƒ“‚ğ•`‰æ
+			displayText += "##" + prop.name; // åŒã˜åå‰ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒè¤‡æ•°ã‚ã‚‹å ´åˆã«è­˜åˆ¥ã§ãã‚‹ã‚ˆã†ã« ID ã‚’è¿½åŠ 
+			ImGui::Button(displayText.c_str()); // ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦æ©Ÿèƒ½ã™ã‚‹ãƒœã‚¿ãƒ³ã‚’æç”»
 
-			if (ImGui::BeginDragDropTarget()) // ƒhƒƒbƒv‘€ì‚Ìó‚¯“ü‚ê‚ğŠJn
+			if (ImGui::BeginDragDropTarget()) // ãƒ‰ãƒ­ãƒƒãƒ—æ“ä½œã®å—ã‘å…¥ã‚Œã‚’é–‹å§‹
 			{
-				// ƒhƒƒbƒv‚³‚ê‚½ƒyƒCƒ[ƒh‚Ìƒ^ƒCƒv‚ğ’è‹`i—á: "ReferenceFieldName"jB‚±‚±‚Å‚Í referenceAttr ‚Ìˆø”‚©‚çQÆæ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŒ^–¼‚ğæ“¾‚µ‚Äg—p‚·‚é‚±‚Æ‚ğ‘z’è
+				// ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚¿ã‚¤ãƒ—ã‚’å®šç¾©ï¼ˆä¾‹: "ReferenceFieldName"ï¼‰ã€‚ã“ã“ã§ã¯ referenceAttr ã®å¼•æ•°ã‹ã‚‰å‚ç…§å…ˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å‹åã‚’å–å¾—ã—ã¦ä½¿ç”¨ã™ã‚‹ã“ã¨ã‚’æƒ³å®š
 				{
-					const char* payloadType = (refTypeName).c_str(); // ƒhƒƒbƒv‰Â”\‚ÈƒyƒCƒ[ƒh‚Ìƒ^ƒCƒv‚ğ’è‹`i—á: "ReferenceFieldName"j
+					const char* payloadType = (refTypeName).c_str(); // ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ãªãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚¿ã‚¤ãƒ—ã‚’å®šç¾©ï¼ˆä¾‹: "ReferenceFieldName"ï¼‰
 
-					// QÆæ‚ÌŒ^‚ª GameObject ‚Å‚È‚¢ê‡iComponentŒ^j‚ÍAGameObject ‚ÌƒyƒCƒ[ƒh‚àó‚¯“ü‚ê‚é‚æ‚¤‚É‚·‚éB‚±‚ê‚É‚æ‚èAƒ†[ƒU[‚Í GameObject ‚ğƒhƒƒbƒv‚µ‚ÄA‚»‚Ì GameObject ‚Éw’è‚³‚ê‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‚ ‚ê‚Î©“®“I‚É‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğQÆ‚·‚é‚±‚Æ‚ª‚Å‚«‚é‚æ‚¤‚É‚È‚éB
-					if (refTypeName != "GameObject") // QÆæ‚ÌŒ^‚ª GameObject ‚Å‚È‚¢ê‡‚ÍAGameObject‚ÌƒyƒCƒ[ƒh‚àó‚¯“ü‚ê‚é
+					// å‚ç…§å…ˆã®å‹ãŒ GameObject ã§ãªã„å ´åˆï¼ˆComponentå‹ï¼‰ã¯ã€GameObject ã®ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‚‚å—ã‘å…¥ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚ã“ã‚Œã«ã‚ˆã‚Šã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯ GameObject ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã—ã¦ã€ãã® GameObject ã«æŒ‡å®šã•ã‚ŒãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒã‚ã‚Œã°è‡ªå‹•çš„ã«ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å‚ç…§ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã‚ˆã†ã«ãªã‚‹ã€‚
+					if (refTypeName != "GameObject") // å‚ç…§å…ˆã®å‹ãŒ GameObject ã§ãªã„å ´åˆã¯ã€GameObjectã®ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‚‚å—ã‘å…¥ã‚Œã‚‹
 					{
 						// -----------------------------------------------------------
-						// Hierarchy‚©‚ç GameObject ‚ğƒhƒƒbƒv‚µ‚½ê‡A‚»‚Ì GameObject ‚Éw’è‚³‚ê‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‚ ‚ê‚Î©“®“I‚É‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğQÆ‚·‚é‚æ‚¤‚É‚·‚é
+						// Hierarchyã‹ã‚‰ GameObject ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸå ´åˆã€ãã® GameObject ã«æŒ‡å®šã•ã‚ŒãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒã‚ã‚Œã°è‡ªå‹•çš„ã«ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å‚ç…§ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹
 						// -----------------------------------------------------------
-						// TODO: ƒXƒpƒQƒbƒeƒBƒR[ƒh‚É‚È‚Á‚Ä‚¢‚é‚Ì‚ÅAƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‚µ‚Ä®—‚·‚é‚±‚ÆB“Á‚ÉAƒhƒƒbƒv‚³‚ê‚½ GameObject ‚©‚çw’è‚³‚ê‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’T‚·ˆ—‚ÍA•Ê‚ÌŠÖ”‚ÉØ‚èo‚·‚È‚Ç‚µ‚Ä•ª‚©‚è‚â‚·‚­‚·‚é‚±‚ÆB
-						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) // "GameObject" ƒ^ƒO‚ÌƒyƒCƒ[ƒh‚ğó‚¯“ü‚ê‚é
+						// TODO: ã‚¹ãƒ‘ã‚²ãƒƒãƒ†ã‚£ã‚³ãƒ¼ãƒ‰ã«ãªã£ã¦ã„ã‚‹ã®ã§ã€ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°ã—ã¦æ•´ç†ã™ã‚‹ã“ã¨ã€‚ç‰¹ã«ã€ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸ GameObject ã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æ¢ã™å‡¦ç†ã¯ã€åˆ¥ã®é–¢æ•°ã«åˆ‡ã‚Šå‡ºã™ãªã©ã—ã¦åˆ†ã‹ã‚Šã‚„ã™ãã™ã‚‹ã“ã¨ã€‚
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) // "GameObject" ã‚¿ã‚°ã®ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‚’å—ã‘å…¥ã‚Œã‚‹
 						{
-							if (payload->DataSize == sizeof(ObjectId)) // ƒyƒCƒ[ƒh‚ÌƒTƒCƒY‚ª ObjectId ‚Æ“¯‚¶‚Å‚ ‚é‚±‚Æ‚ğŠm”F
+							if (payload->DataSize == sizeof(ObjectId)) // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚ºãŒ ObjectId ã¨åŒã˜ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
 							{
-								ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ƒyƒCƒ[ƒh‚©‚ç ObjectId ‚ğæ“¾
-								// ƒhƒƒbƒv‚³‚ê‚½ GameObject ‚Éw’è‚³‚ê‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‚ ‚ê‚Î‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì ObjectId ‚ğæ“¾
+								ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‹ã‚‰ ObjectId ã‚’å–å¾—
+								// ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸ GameObject ã«æŒ‡å®šã•ã‚ŒãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒã‚ã‚Œã°ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® ObjectId ã‚’å–å¾—
 								if (auto* droppedObj = ObjectManager::Find(droppedId))
 								{
 									if (auto refComponent = droppedObj->GetComponentByTypeName(refTypeName))
 									{
-										value = refComponent->GetId(); // ƒhƒƒbƒv‚³‚ê‚½ GameObject ‚Ìw’è‚³‚ê‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì ObjectId ‚ğg—p
-										referenceChanged = true; // QÆ‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ‹L˜^
+										value = refComponent->GetId(); // ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸ GameObject ã®æŒ‡å®šã•ã‚ŒãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® ObjectId ã‚’ä½¿ç”¨
+										referenceChanged = true; // å‚ç…§ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
 									}
 									else
 									{
@@ -119,32 +119,32 @@ namespace CurryEngine
 						}
 					}
 					// -----------------------------------------------------------
-					// å‚ÉAInspector‚©‚ç QÆæ‚ÌŒ^‚Æ“¯‚¶Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒhƒƒbƒv‚µ‚½ê‡A‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğQÆ‚·‚é‚æ‚¤‚É‚·‚é
+					// ä¸»ã«ã€Inspectorã‹ã‚‰ å‚ç…§å…ˆã®å‹ã¨åŒã˜å‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã—ãŸå ´åˆã€ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å‚ç…§ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹
 					// -----------------------------------------------------------
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(payloadType)) // "ObjectReference" ƒ^ƒO‚ÌƒyƒCƒ[ƒh‚ğó‚¯“ü‚ê‚é
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(payloadType)) // "ObjectReference" ã‚¿ã‚°ã®ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‚’å—ã‘å…¥ã‚Œã‚‹
 					{
-						if (payload->DataSize == sizeof(ObjectId)) // ƒyƒCƒ[ƒh‚ÌƒTƒCƒY‚ª ObjectId ‚Æ“¯‚¶‚Å‚ ‚é‚±‚Æ‚ğŠm”F
+						if (payload->DataSize == sizeof(ObjectId)) // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚ºãŒ ObjectId ã¨åŒã˜ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
 						{
-							ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ƒyƒCƒ[ƒh‚©‚ç ObjectId ‚ğæ“¾
-							value = droppedId; // ƒtƒB[ƒ‹ƒh‚Éƒhƒƒbƒv‚³‚ê‚½ ObjectId ‚ğİ’è
-							referenceChanged = true; // QÆ‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ‹L˜^
+							ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‹ã‚‰ ObjectId ã‚’å–å¾—
+							value = droppedId; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸ ObjectId ã‚’è¨­å®š
+							referenceChanged = true; // å‚ç…§ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
 						}
 					}
 				}
-				ImGui::EndDragDropTarget(); // ƒhƒƒbƒv‘€ì‚Ìó‚¯“ü‚ê‚ğI—¹
+				ImGui::EndDragDropTarget(); // ãƒ‰ãƒ­ãƒƒãƒ—æ“ä½œã®å—ã‘å…¥ã‚Œã‚’çµ‚äº†
 			}
-			if (!prop.GetAttribute("ReadOnly")) // ReadOnly ‘®«‚ª‚È‚¢ê‡‚ÍA•ÒW—p‚Ì’Ç‰Á UI ‚ğ•\¦
+			if (!prop.GetAttribute("ReadOnly")) // ReadOnly å±æ€§ãŒãªã„å ´åˆã¯ã€ç·¨é›†ç”¨ã®è¿½åŠ  UI ã‚’è¡¨ç¤º
 			{
-				// Xƒ{ƒ^ƒ“‚ÅQÆæ‚ğƒNƒŠƒA‚Å‚«‚é‚æ‚¤‚É‚·‚é
+				// Xãƒœã‚¿ãƒ³ã§å‚ç…§å…ˆã‚’ã‚¯ãƒªã‚¢ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 				ImGui::SameLine();
 				if (ImGui::Button(("X##clear" + std::string(prop.name)).c_str()))
 				{
 					ObjectId oldValue = value;
-					value = ObjectId::Invalid(); // QÆ‚ğƒNƒŠƒA
-					referenceChanged = (oldValue != value); // QÆ‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ‹L˜^
+					value = ObjectId::Invalid(); // å‚ç…§ã‚’ã‚¯ãƒªã‚¢
+					referenceChanged = (oldValue != value); // å‚ç…§ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
 				}
 
-				// ... ƒ{ƒ^ƒ“‚ÅQÆæ‚ğ‘I‘ğ‚Å‚«‚é‚æ‚¤‚É‚·‚é
+				// ... ãƒœã‚¿ãƒ³ã§å‚ç…§å…ˆã‚’é¸æŠã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 				ImGui::SameLine();
 				if (ImGui::Button(("...##select" + std::string(prop.name)).c_str()))
 				{
@@ -152,67 +152,67 @@ namespace CurryEngine
 					ImGui::OpenPopup(("Select Object##" + prop.name).c_str(), popupFlags);
 				}
 
-				// ƒ|ƒbƒvƒAƒbƒv‚ªŠJ‚¢‚Ä‚¢‚éê‡‚Ì‚İAƒIƒuƒWƒFƒNƒg‘I‘ğ—p‚Ì UI ‚ğ•\¦
+				// ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãŒé–‹ã„ã¦ã„ã‚‹å ´åˆã®ã¿ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé¸æŠç”¨ã® UI ã‚’è¡¨ç¤º
 				else if (ImGui::IsPopupOpen(("Select Object##" + prop.name).c_str()))
 				{
 					Scene* currentScene = SceneManager::GetLoadingSceneOrCurrentScene();
-					if (currentScene) // ƒ|ƒbƒvƒAƒbƒv‚ğŠJ‚­ƒtƒ‰ƒO‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚éê‡‚Ì‚İƒ|ƒbƒvƒAƒbƒv‚ğ•\¦
+					if (currentScene) // ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‹ããƒ•ãƒ©ã‚°ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’è¡¨ç¤º
 					{
 						const auto& allObjects = currentScene->GetObjectManager()->GetAll();
 						if (ImGui::BeginPopup(("Select Object##" + prop.name).c_str()))
 						{
 							if (refTypeName == "GameObject")
 							{
-								// ‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ğ‘I‘ğˆ‚É‚·‚é
+								// ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é¸æŠè‚¢ã«ã™ã‚‹
 								for (const auto& obj : allObjects)
 								{
-									bool isSelected = (value == obj->id); // Œ»İ‚Ì’l‚ÆƒIƒuƒWƒFƒNƒg‚Ì ID ‚ª“™‚µ‚¢‚©‚Ç‚¤‚©
+									bool isSelected = (value == obj->id); // ç¾åœ¨ã®å€¤ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ãŒç­‰ã—ã„ã‹ã©ã†ã‹
 									ImGuiSelectableFlags flags = 0;
 									if (ImGui::Selectable(obj->name.c_str(), isSelected, flags))
 									{
 										//!
-										value = obj->id; // ƒtƒB[ƒ‹ƒh‚É‘I‘ğ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Ì ID ‚ğİ’è
-										referenceChanged = true; // QÆ‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ‹L˜^
-										ImGui::CloseCurrentPopup(); // ‘I‘ğŒã‚Éƒ|ƒbƒvƒAƒbƒv‚ğ•Â‚¶‚é
+										value = obj->id; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«é¸æŠã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ã‚’è¨­å®š
+										referenceChanged = true; // å‚ç…§ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+										ImGui::CloseCurrentPopup(); // é¸æŠå¾Œã«ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‰ã˜ã‚‹
 									}
 								}
 							}
 							else
 							{
-								// referenceAttr ‚Ìˆø” refTypeName ‚ğg‚Á‚ÄA“Á’è‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚¾‚¯‚ğ‘I‘ğˆ‚É‚·‚é
+								// referenceAttr ã®å¼•æ•° refTypeName ã‚’ä½¿ã£ã¦ã€ç‰¹å®šã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã ã‘ã‚’é¸æŠè‚¢ã«ã™ã‚‹
 								for (const auto& obj : allObjects)
 								{
-									// ƒIƒuƒWƒFƒNƒg‚ª refTypeName ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+									// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ refTypeName ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 									if (auto refComponent = obj->GetComponentByTypeName(refTypeName))
 									{
-										// Header‚Æ‚µ‚ÄAowener‚Ì–¼‘O‚ğ•\¦‚·‚é
+										// Headerã¨ã—ã¦ã€owenerã®åå‰ã‚’è¡¨ç¤ºã™ã‚‹
 										ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_DefaultOpen;
 										if (obj->GetComponentsByTypeName(refTypeName).size() == 1)
 										{
-											nodeFlags |= ImGuiTreeNodeFlags_Leaf; // ƒIƒuƒWƒFƒNƒg‚ª refTypeName ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ1‚Â‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚ÍAHeader‚ğLeaf‚É‚·‚é
-											if (value == refComponent->id) // Œ»İ‚Ì’l‚ÆƒIƒuƒWƒFƒNƒg‚Ì ID ‚ª“™‚µ‚¢ê‡‚ÍAHeader‚ğ‘I‘ğó‘Ô‚É‚·‚é
+											nodeFlags |= ImGuiTreeNodeFlags_Leaf; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ refTypeName ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’1ã¤ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ã€Headerã‚’Leafã«ã™ã‚‹
+											if (value == refComponent->id) // ç¾åœ¨ã®å€¤ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ãŒç­‰ã—ã„å ´åˆã¯ã€Headerã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 											{
 												nodeFlags |= ImGuiTreeNodeFlags_Selected;
 											}
 										}
 										if (ImGui::TreeNodeEx((obj->GetName() + "##" + std::to_string(obj->id.Value())).c_str(), nodeFlags))
 										{
-											if (nodeFlags & ImGuiTreeNodeFlags_Leaf) // ƒIƒuƒWƒFƒNƒg‚ª refTypeName ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ1‚Â‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚ÍA‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’¼Ú‘I‘ğ‚·‚é
+											if (nodeFlags & ImGuiTreeNodeFlags_Leaf) // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ refTypeName ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’1ã¤ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ã€ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç›´æ¥é¸æŠã™ã‚‹
 											{
-												if (ImGui::IsItemActivated()) // Header‚ªƒAƒNƒeƒBƒu‚É‚È‚Á‚½ê‡iƒNƒŠƒbƒN‚³‚ê‚½ê‡j
+												if (ImGui::IsItemActivated()) // HeaderãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã£ãŸå ´åˆï¼ˆã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸå ´åˆï¼‰
 												{
-													value = refComponent->id; // ƒtƒB[ƒ‹ƒh‚É‘I‘ğ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚Ì ID ‚ğİ’è
-													referenceChanged = true; // QÆ‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ‹L˜^
-													ImGui::CloseCurrentPopup(); // ‘I‘ğŒã‚Éƒ|ƒbƒvƒAƒbƒv‚ğ•Â‚¶‚é
+													value = refComponent->id; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«é¸æŠã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ã‚’è¨­å®š
+													referenceChanged = true; // å‚ç…§ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+													ImGui::CloseCurrentPopup(); // é¸æŠå¾Œã«ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‰ã˜ã‚‹
 												}
 											}
 											else
 											{
-												// ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O‚Ì‰º‚ÉA‚»‚ÌƒIƒuƒWƒFƒNƒg‚ª‚Â refTypeName ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚·‚×‚Ä•\¦‚·‚é
+												// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã®ä¸‹ã«ã€ãã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæŒã¤ refTypeName ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã™ã¹ã¦è¡¨ç¤ºã™ã‚‹
 												auto components = obj->GetComponentsByTypeName(refTypeName);
 												for (const auto& comp : components)
 												{
-													bool isSelected = (value == comp->id); // Œ»İ‚Ì’l‚ÆƒIƒuƒWƒFƒNƒg‚Ì ID ‚ª“™‚µ‚¢‚©‚Ç‚¤‚©
+													bool isSelected = (value == comp->id); // ç¾åœ¨ã®å€¤ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ãŒç­‰ã—ã„ã‹ã©ã†ã‹
 													ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
 													if (isSelected)
 													{
@@ -220,9 +220,9 @@ namespace CurryEngine
 													}
 													if (ImGui::TreeNodeEx(comp->GetTypeName().c_str(), flags))
 													{
-														value = comp->id; // ƒtƒB[ƒ‹ƒh‚É‘I‘ğ‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì ID ‚ğİ’è
-														referenceChanged = true; // QÆ‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ‹L˜^
-														ImGui::CloseCurrentPopup(); // ‘I‘ğŒã‚Éƒ|ƒbƒvƒAƒbƒv‚ğ•Â‚¶‚é
+														value = comp->id; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«é¸æŠã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® ID ã‚’è¨­å®š
+														referenceChanged = true; // å‚ç…§ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+														ImGui::CloseCurrentPopup(); // é¸æŠå¾Œã«ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‰ã˜ã‚‹
 													}
 												}
 											}
@@ -237,17 +237,17 @@ namespace CurryEngine
 			}
 		}
 
-		if (referenceChanged) // QÆ‚ª•ÏX‚³‚ê‚½ê‡‚Ì‚İAƒvƒƒpƒeƒB‚Ì’l‚ğXV‚·‚é
+		if (referenceChanged) // å‚ç…§ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã®ã¿ã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’æ›´æ–°ã™ã‚‹
 		{
-			// •ÏX‚³‚ê‚½’l‚ğ‚·‚×‚Ä‚Ì‘I‘ğ’†‚ÌƒIƒuƒWƒFƒNƒg‚É“K—p
+			// å¤‰æ›´ã•ã‚ŒãŸå€¤ã‚’ã™ã¹ã¦ã®é¸æŠä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«é©ç”¨
 			PropertyDrawHelper::ApplyToAll(context, prop, value);
 
-			// •ÏX‚³‚ê‚½‚±‚Æ‚ğ‹L˜^
+			// å¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
 			PropertyDrawHelper::CommitEdit<ObjectId>(prop, context, m_state, value,
-				[refTypeName](const ObjectId& id) { return GetDisplayText(id, refTypeName); }, // toStr: ObjectId ‚ğ•\¦—p‚Ì•¶š—ñ‚É•ÏŠ·‚·‚éŠÖ”
-				[](const ObjectId& a, const ObjectId& b) { return a == b; }, // equals: 2‚Â‚Ì ObjectId ‚ª“™‚µ‚¢‚©‚Ç‚¤‚©‚ğ”äŠr‚·‚éŠÖ”
-				[]() { return false; }, // prevCheck: ‘O‚Ì’l‚ğ•Û‘¶‚·‚é‚©‚Ç‚¤‚©‚ğ”»’f‚·‚éŠÖ”
-				[]() { return true; }  // commitCheck: •ÏX‚ğƒRƒ~ƒbƒg‚·‚é‚©‚Ç‚¤‚©‚ğ”»’f‚·‚éŠÖ”i‚±‚±‚Å‚Íí‚ÉƒRƒ~ƒbƒg‚·‚éj
+				[refTypeName](const ObjectId& id) { return GetDisplayText(id, refTypeName); }, // toStr: ObjectId ã‚’è¡¨ç¤ºç”¨ã®æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹é–¢æ•°
+				[](const ObjectId& a, const ObjectId& b) { return a == b; }, // equals: 2ã¤ã® ObjectId ãŒç­‰ã—ã„ã‹ã©ã†ã‹ã‚’æ¯”è¼ƒã™ã‚‹é–¢æ•°
+				[]() { return false; }, // prevCheck: å‰ã®å€¤ã‚’ä¿å­˜ã™ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹é–¢æ•°
+				[]() { return true; }  // commitCheck: å¤‰æ›´ã‚’ã‚³ãƒŸãƒƒãƒˆã™ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹é–¢æ•°ï¼ˆã“ã“ã§ã¯å¸¸ã«ã‚³ãƒŸãƒƒãƒˆã™ã‚‹ï¼‰
 			);
 		}
 

@@ -8,10 +8,10 @@
 
 void Collider::OnEnable()
 {
-	// ‚»‚ê‚¼‚ê‚ÌƒRƒ‰ƒCƒ_[‚Ì Register() “à‚Å Physics::CreateShape ‚ğŒÄ‚Ño‚µ‚Ä‚¢‚é‚½‚ßA‚±‚±‚Å‚ÍƒRƒ‰ƒCƒ_[‚ğ—LŒø‚É‚·‚é‚¾‚¯‚Å\•ªB
+	// ãã‚Œãã‚Œã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã® Register() å†…ã§ Physics::CreateShape ã‚’å‘¼ã³å‡ºã—ã¦ã„ã‚‹ãŸã‚ã€ã“ã“ã§ã¯ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã ã‘ã§ååˆ†ã€‚
 	if (m_shapeHandle != INVALID_SHAPE_HANDLE)
 	{
-		// •¨—ƒGƒ“ƒWƒ“‚ÉƒRƒ‰ƒCƒ_[‚ğ—LŒø‰»‚·‚é‚æ‚¤w¦
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹ã‚ˆã†æŒ‡ç¤º
 		ColliderData colliderData{};
 		colliderData.materialHandle = m_materialHandle;
 		colliderData.isTrigger = isTrigger;
@@ -25,46 +25,46 @@ void Collider::OnDisable()
 {
 	//Physics::RemoveShape(m_actorHandle, m_shapeHandle);
 
-	// Physics ‚ÌƒRƒ‰ƒCƒ_[íœ‚Í OnDestroy ‚Ås‚¤BOnDisable ‚Í’P‚Éƒtƒ‰ƒO‚ğƒZƒbƒg‚·‚é‚¾‚¯B(–³Œø‚É‚·‚é‚Æ‚«‚ÍcolliderData‚Í–³‹‚³‚ê‚é‚½‚ßAƒZƒbƒg‚·‚é•K—v‚ª‚È‚¢)
+	// Physics ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼å‰Šé™¤ã¯ OnDestroy ã§è¡Œã†ã€‚OnDisable ã¯å˜ã«ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã ã‘ã€‚(ç„¡åŠ¹ã«ã™ã‚‹ã¨ãã¯colliderDataã¯ç„¡è¦–ã•ã‚Œã‚‹ãŸã‚ã€ã‚»ãƒƒãƒˆã™ã‚‹å¿…è¦ãŒãªã„)
 	Physics::SetShapeEnable(m_shapeHandle, false, {});
 }
 
 void Collider::OnDestroy()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çƒRƒ‰ƒCƒ_[‚ğíœ
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å‰Šé™¤
 	if (m_shapeHandle != INVALID_SHAPE_HANDLE)
 	{
 		Physics::RemoveShape(m_shapeHandle);
-		m_shapeHandle = INVALID_SHAPE_HANDLE; // ƒnƒ“ƒhƒ‹‚ğ–³Œø‰»
+		m_shapeHandle = INVALID_SHAPE_HANDLE; // ãƒãƒ³ãƒ‰ãƒ«ã‚’ç„¡åŠ¹åŒ–
 	}
 }
 
 void Collider::Finalize()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çƒRƒ‰ƒCƒ_[‚ğíœ
-	Physics::UnregisterPendingCollider(this); // “o˜^•Û—¯ƒŠƒXƒg‚©‚çíœ
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å‰Šé™¤
+	Physics::UnregisterPendingCollider(this); // ç™»éŒ²ä¿ç•™ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
 	if (m_shapeHandle != INVALID_SHAPE_HANDLE)
 	{
 		Physics::RemoveShape(m_shapeHandle);
-		m_shapeHandle = INVALID_SHAPE_HANDLE; // ƒnƒ“ƒhƒ‹‚ğ–³Œø‰»
+		m_shapeHandle = INVALID_SHAPE_HANDLE; // ãƒãƒ³ãƒ‰ãƒ«ã‚’ç„¡åŠ¹åŒ–
 	}
 }
 
 void Collider::OnTransformChanged()
 {
-	// ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğƒtƒ‰ƒO‚Å‹L˜^BÀÛ‚Ì“¯Šú‚Í FixedUpdate ‚Ås‚¤B
+	// ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’ãƒ•ãƒ©ã‚°ã§è¨˜éŒ²ã€‚å®Ÿéš›ã®åŒæœŸã¯ FixedUpdate ã§è¡Œã†ã€‚
 	m_needSync = true;
 }
 
 void Collider::Awake()
 {
-	// Rigidbody ‚ğ‚Âê‡‚Í Rigidbody ‚Ì Awake ‚Å Actor ‚Æ‚µ‚Ä“o˜^‚³‚ê‚é‚½‚ßACollider ‚Í‚±‚±‚Å‚Í‰½‚à‚µ‚È‚¢B
+	// Rigidbody ã‚’æŒã¤å ´åˆã¯ Rigidbody ã® Awake ã§ Actor ã¨ã—ã¦ç™»éŒ²ã•ã‚Œã‚‹ãŸã‚ã€Collider ã¯ã“ã“ã§ã¯ä½•ã‚‚ã—ãªã„ã€‚
 	Physics::RegisterPendingCollider(this);
 }
 
 void Collider::Start()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉŠY“–‚Ìƒ}ƒeƒŠƒAƒ‹‚ª‘¶İ‚·‚é‚©Šm”F‚µA‘¶İ‚µ‚È‚¢ê‡‚ÍƒfƒtƒHƒ‹ƒgƒ}ƒeƒŠƒAƒ‹‚ÉƒtƒH[ƒ‹ƒoƒbƒN‚·‚é
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«è©²å½“ã®ãƒãƒ†ãƒªã‚¢ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèªã—ã€å­˜åœ¨ã—ãªã„å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ†ãƒªã‚¢ãƒ«ã«ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ã™ã‚‹
 	if (!Physics::GetMaterial(m_materialHandle))
 	{
 		Console::LogWarning("MaterialHandle " + std::to_string(m_materialHandle) + " not found. Falling back to default material.");
@@ -79,21 +79,21 @@ void Collider::Initialize()
 
 void Collider::FixedUpdate(float fixedDeltaTime)
 {
-	// ƒRƒ‰ƒCƒ_[‚ª•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚³‚ê‚Ä‚¢‚ÄAƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ì•ÏX‚ª‚ ‚Á‚½ê‡‚É“¯Šú‚ğs‚¤
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ãŒç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã•ã‚Œã¦ã„ã¦ã€ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®å¤‰æ›´ãŒã‚ã£ãŸå ´åˆã«åŒæœŸã‚’è¡Œã†
 	if (m_shapeHandle != INVALID_SHAPE_HANDLE)
 	{
 		if (m_needSync)
 		{
-			// ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ì•ÏX‚ğ•¨—ƒGƒ“ƒWƒ“‚É“¯Šú
+			// ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®å¤‰æ›´ã‚’ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŒæœŸ
 			SyncWithPhysics();
-			m_needSync = false; // “¯ŠúŒã‚Éƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+			m_needSync = false; // åŒæœŸå¾Œã«ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 		}
 
-		// ƒŒƒCƒ„[‚Ì•ÏX‚ª‚ ‚Á‚½ê‡‚à•¨—ƒGƒ“ƒWƒ“‚É“¯Šú(¡‚ÍƒŒƒCƒ„[‚Ì•ÏXƒtƒ‰ƒO‚ª‚È‚¢‚½‚ßAí‚É“¯Šú‚·‚é‚æ‚¤‚É‚µ‚Ä‚¢‚é)
+		// ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¤‰æ›´ãŒã‚ã£ãŸå ´åˆã‚‚ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŒæœŸ(ä»Šã¯ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¤‰æ›´ãƒ•ãƒ©ã‚°ãŒãªã„ãŸã‚ã€å¸¸ã«åŒæœŸã™ã‚‹ã‚ˆã†ã«ã—ã¦ã„ã‚‹)
 		{
-			// ƒŒƒCƒ„[‚ÆƒŒƒCƒ„[ƒ}ƒXƒN‚ğæ“¾
+			// ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’å–å¾—
 			Layer layer = GetOwner()->GetLayer();
-			LayerMask layerMask = Physics::GetCollisionMask(layer); // •¨—ƒGƒ“ƒWƒ“‚©‚çƒŒƒCƒ„[‚É‘Î‰‚·‚éƒŒƒCƒ„[ƒ}ƒXƒN‚ğæ“¾(Œã‚Éoverride‚ğ’Ç‰Á‚µ‚ÄAƒRƒ‰ƒCƒ_[‚²‚Æ‚ÉŒÂ•Ê‚ÌƒŒƒCƒ„[ƒ}ƒXƒN‚ğİ’è‚Å‚«‚é‚æ‚¤‚É‚·‚é‚©‚à)
+			LayerMask layerMask = Physics::GetCollisionMask(layer); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å¯¾å¿œã™ã‚‹ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’å–å¾—(å¾Œã«overrideã‚’è¿½åŠ ã—ã¦ã€ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã”ã¨ã«å€‹åˆ¥ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’è¨­å®šã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹ã‚‚)
 
 			Physics::UpdateFilterData(m_shapeHandle, layer, layerMask);
 		}
@@ -102,15 +102,15 @@ void Collider::FixedUpdate(float fixedDeltaTime)
 
 void Collider::LateUpdate(float deltaTime)
 {
-	// ƒTƒCƒY‚ÆƒIƒtƒZƒbƒg‚ğƒƒbƒVƒ…‚ÌƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚©‚ç©“®İ’è
+	// ã‚µã‚¤ã‚ºã¨ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã‹ã‚‰è‡ªå‹•è¨­å®š
 	if (autoFit)
 	{
 		if (Renderer* renderer = GetOwner()->GetComponent<Renderer>())
 		{
 			if (renderer->IsEnabled())
 			{
-				Math::BoundingBox box = renderer->CalculateAABB(); // ”O‚Ì‚½‚ßÄŒvZ
-				// ƒRƒ‰ƒCƒ_[‚ÌƒTƒCƒY‚ÆƒIƒtƒZƒbƒg‚ğƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÉƒtƒBƒbƒg‚³‚¹‚é
+				Math::BoundingBox box = renderer->CalculateAABB(); // å¿µã®ãŸã‚å†è¨ˆç®—
+				// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ã‚µã‚¤ã‚ºã¨ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã«ãƒ•ã‚£ãƒƒãƒˆã•ã›ã‚‹
 				FitToBoundingBox(box.Center(), box.Size());
 			}
 		}
@@ -119,9 +119,9 @@ void Collider::LateUpdate(float deltaTime)
 
 void Collider::BeginFrame()
 {
-	//// ‘O‰ñ‚ÌÕ“ËŒ‹‰Ê‚ğ•Û‘¶
+	//// å‰å›ã®è¡çªçµæœã‚’ä¿å­˜
 	//previousCollisions = currentCollisions;
-	//currentCollisions.clear(); // ¡‰ñ‚ÌÕ“ËŒ‹‰Ê‚Í‹ó‚Ån‚ß‚é
+	//currentCollisions.clear(); // ä»Šå›ã®è¡çªçµæœã¯ç©ºã§å§‹ã‚ã‚‹
 }
 
 void Collider::ReportCollision(Collider* other, const CollisionInfo& info)
@@ -135,7 +135,7 @@ void Collider::EndFrame()
 
 XMFLOAT4X4 Collider::CalculateColliderWorldTransform(const Vector3& localPos, const Vector3& localScale) const
 {
-	// ƒ[ƒ‹ƒhs—ñ‚ğŒvZ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¨ˆç®—
 	XMFLOAT3 position = GetTransform()->GetWorldPosition();
 	XMFLOAT4 rotation = GetTransform()->GetWorldRotation();
 	XMMATRIX LT{ XMMatrixTranslation(position.x, position.y, position.z) };
@@ -158,7 +158,7 @@ bool Collider::IsTrigger()
 void Collider::SetTrigger(bool trigger)
 {
 	isTrigger = trigger;
-	// •¨—ƒGƒ“ƒWƒ“‚ÉƒgƒŠƒK[İ’è‚ğ”½‰f
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ãƒˆãƒªã‚¬ãƒ¼è¨­å®šã‚’åæ˜ 
 	if (m_shapeHandle != INVALID_SHAPE_HANDLE) {
 		Physics::SetTrigger(m_shapeHandle, isTrigger);
 	}
@@ -182,7 +182,7 @@ float Collider::GetContactOffset() const
 void Collider::SetContactOffset(float offset)
 {
 	contactOffset = offset;
-	// •¨—ƒGƒ“ƒWƒ“‚ÉÚGƒIƒtƒZƒbƒg‚ğ”½‰f
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’åæ˜ 
 	if (m_shapeHandle != INVALID_SHAPE_HANDLE) {
 		Physics::SetContactOffset(m_shapeHandle, contactOffset);
 	}
@@ -190,9 +190,9 @@ void Collider::SetContactOffset(float offset)
 
 void Collider::SetMaterial(MaterialHandle materialHandle)
 {
-	// ƒ}ƒeƒŠƒAƒ‹ƒnƒ“ƒhƒ‹‚ğ•Û‘¶
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜
 	m_materialHandle = materialHandle;
-	// •¨—ƒGƒ“ƒWƒ“‚Éƒ}ƒeƒŠƒAƒ‹‚ğİ’è
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®š
 	if (m_shapeHandle != INVALID_SHAPE_HANDLE) {
 		Physics::SetMaterial(m_shapeHandle, m_materialHandle);
 	}
@@ -200,7 +200,7 @@ void Collider::SetMaterial(MaterialHandle materialHandle)
 
 void Collider::SetMaterialData(const PhysicsMaterialData& data)
 {
-	// •¨—ƒ}ƒeƒŠƒAƒ‹‚Ì“Á«‚ğ•¨—ƒGƒ“ƒWƒ“‚Éİ’è
+	// ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç‰¹æ€§ã‚’ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«è¨­å®š
 	if (m_materialHandle != INVALID_MATERIAL_HANDLE) {
 		Physics::SetMaterialData(m_materialHandle, data);
 	}
@@ -208,7 +208,7 @@ void Collider::SetMaterialData(const PhysicsMaterialData& data)
 
 PhysicsMaterialData Collider::GetMaterialData() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚ç•¨—ƒ}ƒeƒŠƒAƒ‹‚Ì“Á«‚ğæ“¾
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç‰¹æ€§ã‚’å–å¾—
 	PhysicsMaterialData data;
 	if (m_materialHandle != INVALID_MATERIAL_HANDLE) {
 		Physics::GetMaterialData(m_materialHandle, data);
@@ -241,14 +241,14 @@ void Collider::DrawProperty(const PropertyDrawContext& context)
 	////ImGui::Checkbox("autoFit", &autoFit);
 	//propertyChanged = false;
 	//IMGUI_PROPERTY_BOOL("Auto Fit To Mesh", autoFit, propertyChanged);
-	//// ÚGƒIƒtƒZƒbƒg‚Ì•ÒW
+	//// æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã®ç·¨é›†
 	//IMGUI_PROPERTY_FLOAT("Contact Offset", contactOffset, propertyChanged);
 	//if (propertyChanged)
 	//{
 	//	SetContactOffset(contactOffset);
 	//}
 	
-	// •¨—ƒGƒ“ƒWƒ“‚ÉŠY“–‚Ìƒ}ƒeƒŠƒAƒ‹‚ª‘¶İ‚·‚é‚©Šm”F‚µA‘¶İ‚µ‚È‚¢ê‡‚ÍƒfƒtƒHƒ‹ƒgƒ}ƒeƒŠƒAƒ‹‚ÉƒtƒH[ƒ‹ƒoƒbƒN‚·‚é
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«è©²å½“ã®ãƒãƒ†ãƒªã‚¢ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèªã—ã€å­˜åœ¨ã—ãªã„å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ†ãƒªã‚¢ãƒ«ã«ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ã™ã‚‹
 	if (!Physics::GetMaterial(m_materialHandle))
 	{
 		Console::LogWarning("MaterialHandle " + std::to_string(m_materialHandle) + " not found. Falling back to default material.");
@@ -256,12 +256,12 @@ void Collider::DrawProperty(const PropertyDrawContext& context)
 	}
 
 	IMGUI_PROPERTY_BEGIN();
-	// ƒ}ƒeƒŠƒAƒ‹‚Ì•ÒW
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç·¨é›†
 	{
-		// ƒ}ƒeƒŠƒAƒ‹ƒnƒ“ƒhƒ‹‚Ì•ÒW
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã®ç·¨é›†
 		std::vector<const char*> materialNames;
 		std::vector<MaterialHandle> materialHandles;
-		// •¨—ƒGƒ“ƒWƒ“‚©‚ç‚·‚×‚Ä‚Ìƒ}ƒeƒŠƒAƒ‹–¼‚Æƒnƒ“ƒhƒ‹‚ğæ“¾
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ã™ã¹ã¦ã®ãƒãƒ†ãƒªã‚¢ãƒ«åã¨ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 		Physics::GetAllMaterialNamesAndHandles(materialNames, materialHandles);
 		int currentIndex = 0;
 		for (size_t i = 0; i < materialHandles.size(); ++i)
@@ -272,14 +272,14 @@ void Collider::DrawProperty(const PropertyDrawContext& context)
 				break;
 			}
 		}
-		// ƒ}ƒeƒŠƒAƒ‹‚ÌƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ğ•\¦
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ã®ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
 		IMGUI_PROPERTY("Material");
 		if (ImGui::Combo("##Material", &currentIndex, materialNames.data(), static_cast<int>(materialNames.size())))
 		{
 			MaterialHandle oldHandle = m_materialHandle;
 			MaterialHandle newHandle = materialHandles[currentIndex];
 			IMGUI_PROPERTY_COMMAND_CUSTOM_SIMPLE("Material", newHandle, oldHandle, [this](const MaterialHandle& handle) {
-				SetMaterial(handle);// ƒ}ƒeƒŠƒAƒ‹‚ğXV
+				SetMaterial(handle);// ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’æ›´æ–°
 				});
 		}
 	}

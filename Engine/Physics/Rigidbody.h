@@ -8,39 +8,39 @@
 C_ENUM()
 enum class ForceMode
 {
-	Force,          // Њp‘±“I‚И—НЃiЋї—К‚Й‰e‹ї‚і‚к‚йЃj
-	Impulse,        // ЏuЉФ“I‚ИЏХЊ‚ЃiЋї—К‚Й‰e‹ї‚і‚к‚йЃj
-	VelocityChange, // Ћї—К‚ЙЉЦЊW‚И‚­‘¦ЌА‚Й‘¬“x‚р•П‰»‚і‚№‚й
-	Acceleration    // Ћї—К‚ЙЉЦЊW‚И‚­Њp‘±“I‚И‰Б‘¬“x‚р—^‚¦‚й
+	Force,          // з¶™з¶љзљ„гЃЄеЉ›пј€иіЄй‡ЏгЃ«еЅ±йџїгЃ•г‚Њг‚‹пј‰
+	Impulse,        // зћ¬й–“зљ„гЃЄиЎќж’ѓпј€иіЄй‡ЏгЃ«еЅ±йџїгЃ•г‚Њг‚‹пј‰
+	VelocityChange, // иіЄй‡ЏгЃ«й–ўдї‚гЃЄгЃЏеЌіеє§гЃ«йЂџеє¦г‚’е¤‰еЊ–гЃ•гЃ›г‚‹
+	Acceleration    // иіЄй‡ЏгЃ«й–ўдї‚гЃЄгЃЏз¶™з¶љзљ„гЃЄеЉ йЂџеє¦г‚’дёЋгЃ€г‚‹
 };
 C_REGISTER_TYPE(ForceMode)
 
 C_ENUM()
 enum class RigidbodyInterpolation
 {
-	None,       // •вЉФ‚И‚µ
-	Interpolate, // ‘OѓtѓЊЃ[ѓЂ‚ЖЊ»ЌЭѓtѓЊЃ[ѓЂ‚МЉФ‚Е•вЉФ
-	Extrapolate  // Њ»ЌЭѓtѓЊЃ[ѓЂ‚ЖЋџѓtѓЊЃ[ѓЂ‚МЉФ‚Е•вЉФ
+	None,       // иЈњй–“гЃЄгЃ—
+	Interpolate, // е‰Ќгѓ•гѓ¬гѓјгѓ гЃЁзЏѕењЁгѓ•гѓ¬гѓјгѓ гЃ®й–“гЃ§иЈњй–“
+	Extrapolate  // зЏѕењЁгѓ•гѓ¬гѓјгѓ гЃЁж¬Ўгѓ•гѓ¬гѓјгѓ гЃ®й–“гЃ§иЈњй–“
 };
 C_REGISTER_TYPE(RigidbodyInterpolation)
 
 C_ENUM()
 enum class RigidbodyCollisionDetectionMode
 {
-	Discrete,   // —ЈЋU“I‚ИЏХ“ЛЊџЏoЃiЌ‚‘¬‚ѕ‚ЄЌ‚‘¬€Ъ“®ѓIѓuѓWѓFѓNѓg‚М‚·‚и”І‚Ї‚Є”­ђ¶‚·‚й‰В”\ђ«‚ ‚иЃj
-	Continuous, // A‘±“I‚ИЏХ“ЛЊџЏoЃiЌ‚‘¬€Ъ“®ѓIѓuѓWѓFѓNѓg‚М‚·‚и”І‚Ї‚р–hЋ~Ѓj
-	ContinuousDynamic, // “®“IѓIѓuѓWѓFѓNѓg“ЇЋm‚МA‘±“I‚ИЏХ“ЛЊџЏo
-	ContinuousSpeculative // —\‘Є“I‚ИA‘±ЏХ“ЛЊџЏoЃiЌ‚‘¬€Ъ“®ѓIѓuѓWѓFѓNѓg‚М‚·‚и”І‚Ї‚р‚і‚з‚ЙЊёЏ­‚і‚№‚йЃj
+	Discrete,   // й›ўж•Јзљ„гЃЄиЎќзЄЃж¤ње‡єпј€й«йЂџгЃ гЃЊй«йЂџз§»е‹•г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®гЃ™г‚ЉжЉњгЃ‘гЃЊз™єз”џгЃ™г‚‹еЏЇиѓЅжЂ§гЃ‚г‚Љпј‰
+	Continuous, // йЂЈз¶љзљ„гЃЄиЎќзЄЃж¤ње‡єпј€й«йЂџз§»е‹•г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®гЃ™г‚ЉжЉњгЃ‘г‚’йІж­ўпј‰
+	ContinuousDynamic, // е‹•зљ„г‚Єгѓ–г‚ёг‚§г‚Їгѓ€еђЊеЈ«гЃ®йЂЈз¶љзљ„гЃЄиЎќзЄЃж¤ње‡є
+	ContinuousSpeculative // дє€жё¬зљ„гЃЄйЂЈз¶љиЎќзЄЃж¤ње‡єпј€й«йЂџз§»е‹•г‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ®гЃ™г‚ЉжЉњгЃ‘г‚’гЃ•г‚‰гЃ«жё›е°‘гЃ•гЃ›г‚‹пј‰
 };
 C_REGISTER_TYPE(RigidbodyCollisionDetectionMode)
 
 C_ENUM()
 enum class RigidbodySleepMode
 {
-	NeverSleep, // Џн‚ЙѓAѓNѓeѓBѓu
-	StartAwake, // ѓVЃ[ѓ“ЉJЋnЋћ‚НѓAѓNѓeѓBѓuЃAЏрЊЏ‚р–ћ‚Ѕ‚·‚ЖѓXѓЉЃ[ѓv
-	StartSleep, // ѓVЃ[ѓ“ЉJЋnЋћ‚НѓXѓЉЃ[ѓvЃAЏрЊЏ‚р–ћ‚Ѕ‚·‚ЖѓAѓNѓeѓBѓu
-	CustomSleepTimeout // ѓJѓXѓ^ѓЂ‚МѓXѓЉЃ[ѓvѓ^ѓCѓЂѓAѓEѓg‚рЋg—p
+	NeverSleep, // еёёгЃ«г‚ўг‚Їгѓ†г‚Јгѓ–
+	StartAwake, // г‚·гѓјгѓій–‹е§‹ж™‚гЃЇг‚ўг‚Їгѓ†г‚Јгѓ–гЂЃжќЎд»¶г‚’жєЂгЃџгЃ™гЃЁг‚№гѓЄгѓјгѓ—
+	StartSleep, // г‚·гѓјгѓій–‹е§‹ж™‚гЃЇг‚№гѓЄгѓјгѓ—гЂЃжќЎд»¶г‚’жєЂгЃџгЃ™гЃЁг‚ўг‚Їгѓ†г‚Јгѓ–
+	CustomSleepTimeout // г‚«г‚№г‚їгѓ гЃ®г‚№гѓЄгѓјгѓ—г‚їг‚¤гѓ г‚ўг‚¦гѓ€г‚’дЅїз”Ё
 };
 C_REGISTER_TYPE(RigidbodySleepMode)
 
@@ -71,281 +71,281 @@ public:
 	
 	
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetMass"), CurryEngine::PropertyAttributes::Setter("SetMass"), CurryEngine::PropertyAttributes::Speed(1.0f))
-	float mass = 1.0f; // Ћї—К
+	float mass = 1.0f; // иіЄй‡Џ
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("IsKinematic"), CurryEngine::PropertyAttributes::Setter("SetKinematic"))
-	bool isKinematic = false; // ѓLѓlѓ}ѓeѓBѓbѓN‚©‚З‚¤‚©Ѓi•Ё—ќѓGѓ“ѓWѓ“‚М—Н‚рЋу‚Ї‚И‚ўЃj
+	bool isKinematic = false; // г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃ‹гЃ©гЃ†гЃ‹пј€з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ®еЉ›г‚’еЏ—гЃ‘гЃЄгЃ„пј‰
 	C_PROPERTY(CurryEngine::PropertyAttributes::Setter("SetUseGravity"))
-	bool useGravity = true; // Џd—Н‚М‰e‹ї‚рЋу‚Ї‚й‚©‚З‚¤‚©
+	bool useGravity = true; // й‡ЌеЉ›гЃ®еЅ±йџїг‚’еЏ—гЃ‘г‚‹гЃ‹гЃ©гЃ†гЃ‹
 	C_PROPERTY(CurryEngine::PropertyAttributes::Setter("SetUseCCD"))
-	bool useCCD = false; // A‘±“I‚ИЏХ“ЛЊџЏo‚рЋg—p‚·‚й‚©‚З‚¤‚©
+	bool useCCD = false; // йЂЈз¶љзљ„гЃЄиЎќзЄЃж¤ње‡єг‚’дЅїз”ЁгЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹
 	
-	//bool useDefaultPhysicsMaterial = true; // ѓfѓtѓHѓ‹ѓg‚М•Ё—ќѓ}ѓeѓЉѓAѓ‹‚рЋg—p‚·‚й‚©‚З‚¤‚©
+	//bool useDefaultPhysicsMaterial = true; // гѓ‡гѓ•г‚©гѓ«гѓ€гЃ®з‰©зђ†гѓћгѓ†гѓЄг‚ўгѓ«г‚’дЅїз”ЁгЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector, CurryEngine::PropertyAttributes::Getter("GetConstraints"), CurryEngine::PropertyAttributes::Setter("SetConstraints"))
-	RigidbodyConstraints constraints = RigidbodyConstraints::None; // €Ъ“®‚в‰с“]‚Мђ§–с
+	RigidbodyConstraints constraints = RigidbodyConstraints::None; // з§»е‹•г‚„е›ћи»ўгЃ®е€¶зґ„
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetSleepThreshold"), CurryEngine::PropertyAttributes::Setter("SetSleepThreshold"), CurryEngine::PropertyAttributes::Speed(0.001f), CurryEngine::PropertyAttributes::Format("%.6f"))
-	float sleepThreshold = 0.005f; // ѓXѓЉЃ[ѓvЏу‘Ф‚Й‚И‚й‘¬“x‚Ми‡’l
+	float sleepThreshold = 0.005f; // г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ«гЃЄг‚‹йЂџеє¦гЃ®й–ѕеЂ¤
 
 
 	//const Vector3 gravity = { 0.0f, -9.8f, 0.0f };
 	const Vector3 gravity = { 0.0f, -360.0f, 0.0f };
 public:
-	// --- •Ё—ќѓGѓ“ѓWѓ“‚Й‘О‚·‚й‘ЂЌм ---
+	// --- з‰©зђ†г‚Ёгѓіг‚ёгѓігЃ«еЇѕгЃ™г‚‹ж“ЌдЅњ ---
 
-	// ‚±‚к‚з‚МЉЦђ”‚НЃA•Ё—ќѓGѓ“ѓWѓ“‚Й‘О‚µ‚Д—Н‚в‘¬“x‚р’јђЪ‘ЂЌм‚·‚й‚Ѕ‚Я‚МѓCѓ“ѓ^Ѓ[ѓtѓFЃ[ѓX‚Е‚·ЃB
+	// гЃ“г‚Њг‚‰гЃ®й–ўж•°гЃЇгЂЃз‰©зђ†г‚Ёгѓіг‚ёгѓігЃ«еЇѕгЃ—гЃ¦еЉ›г‚„йЂџеє¦г‚’з›ґжЋҐж“ЌдЅњгЃ™г‚‹гЃџг‚ЃгЃ®г‚¤гѓіг‚їгѓјгѓ•г‚§гѓјг‚№гЃ§гЃ™гЂ‚
 
 	/**
-	 * @brief Ќ„‘М‚Й—Н‚р‰Б‚¦‚Ь‚·ЃB
-	 * @param force ‰Б‚¦‚й—Н‚МѓxѓNѓgѓ‹ЃB
-	 * @param mode —Н‚М‰Б‚¦•ы‚рЋw’и‚·‚йForceModeЃBѓfѓtѓHѓ‹ѓg‚НForce‚ЕЃAЊp‘±“I‚И—Н‚р‰Б‚¦‚йѓ‚Ѓ[ѓh‚Е‚·ЃB
+	 * @brief е‰›дЅ“гЃ«еЉ›г‚’еЉ гЃ€гЃѕгЃ™гЂ‚
+	 * @param force еЉ гЃ€г‚‹еЉ›гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
+	 * @param mode еЉ›гЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹ForceModeгЂ‚гѓ‡гѓ•г‚©гѓ«гѓ€гЃЇForceгЃ§гЂЃз¶™з¶љзљ„гЃЄеЉ›г‚’еЉ гЃ€г‚‹гѓўгѓјгѓ‰гЃ§гЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void AddForce(Vector3 force, ForceMode mode);
 
 	/**
-	 * @brief Ќ„‘М‚М“Б’и‚М€К’u‚Й—Н‚р‰Б‚¦‚Ь‚·ЃB
-	 * @param force ‰Б‚¦‚й—Н‚МѓxѓNѓgѓ‹ЃB
-	 * @param position —Н‚р‰Б‚¦‚й€К’u‚МѓЏЃ[ѓ‹ѓhЌА•WЃB
-	 * @param mode —Н‚М‰Б‚¦•ы‚рЋw’и‚·‚йForceModeЃBѓfѓtѓHѓ‹ѓg‚НForce‚ЕЃAЊp‘±“I‚И—Н‚р‰Б‚¦‚йѓ‚Ѓ[ѓh‚Е‚·ЃB
+	 * @brief е‰›дЅ“гЃ®з‰№е®љгЃ®дЅЌзЅ®гЃ«еЉ›г‚’еЉ гЃ€гЃѕгЃ™гЂ‚
+	 * @param force еЉ гЃ€г‚‹еЉ›гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
+	 * @param position еЉ›г‚’еЉ гЃ€г‚‹дЅЌзЅ®гЃ®гѓЇгѓјгѓ«гѓ‰еє§жЁ™гЂ‚
+	 * @param mode еЉ›гЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹ForceModeгЂ‚гѓ‡гѓ•г‚©гѓ«гѓ€гЃЇForceгЃ§гЂЃз¶™з¶љзљ„гЃЄеЉ›г‚’еЉ гЃ€г‚‹гѓўгѓјгѓ‰гЃ§гЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void AddForceAtPosition(Vector3 force, Vector3 position, ForceMode mode);
 
 	/**
-	 * @brief Ќ„‘М‚Йѓgѓ‹ѓN‚р‰Б‚¦‚Ь‚·ЃB
-	 * @param torque ‰Б‚¦‚йѓgѓ‹ѓN‚МѓxѓNѓgѓ‹ЃB
-	 * @param mode ѓgѓ‹ѓN‚М‰Б‚¦•ы‚рЋw’и‚·‚йForceModeЃBѓfѓtѓHѓ‹ѓg‚НForce‚ЕЃAЊp‘±“I‚Иѓgѓ‹ѓN‚р‰Б‚¦‚йѓ‚Ѓ[ѓh‚Е‚·ЃB
+	 * @brief е‰›дЅ“гЃ«гѓ€гѓ«г‚Їг‚’еЉ гЃ€гЃѕгЃ™гЂ‚
+	 * @param torque еЉ гЃ€г‚‹гѓ€гѓ«г‚ЇгЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
+	 * @param mode гѓ€гѓ«г‚ЇгЃ®еЉ гЃ€ж–№г‚’жЊ‡е®љгЃ™г‚‹ForceModeгЂ‚гѓ‡гѓ•г‚©гѓ«гѓ€гЃЇForceгЃ§гЂЃз¶™з¶љзљ„гЃЄгѓ€гѓ«г‚Їг‚’еЉ гЃ€г‚‹гѓўгѓјгѓ‰гЃ§гЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void AddTorque(Vector3 torque, ForceMode mode);
 
 	/**
-	 * @brief Ќ„‘М‚М‘¬“x‚р’јђЪђЭ’и‚µ‚Ь‚·ЃB
-	 * @param velocity ђЭ’и‚·‚й‘¬“x‚МѓxѓNѓgѓ‹ЃB
+	 * @brief е‰›дЅ“гЃ®йЂџеє¦г‚’з›ґжЋҐиЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param velocity иЁ­е®љгЃ™г‚‹йЂџеє¦гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
 	 */
 	C_FUNCTION()
 	void SetVelocity(Vector3 velocity);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚М‘¬“x‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭ‚М‘¬“x‚МѓxѓNѓgѓ‹ЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®йЂџеє¦г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁгЃ®йЂџеє¦гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
 	 */
 	C_FUNCTION()
 	Vector3 GetVelocity() const;
 
 	/**
-	 * @brief Ќ„‘М‚МЉp‘¬“x‚р’јђЪђЭ’и‚µ‚Ь‚·ЃB
-	 * @param angularVelocity ђЭ’и‚·‚йЉp‘¬“x‚МѓxѓNѓgѓ‹ЃB
+	 * @brief е‰›дЅ“гЃ®и§’йЂџеє¦г‚’з›ґжЋҐиЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param angularVelocity иЁ­е®љгЃ™г‚‹и§’йЂџеє¦гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
 	 */
 	C_FUNCTION()
 	void SetAngularVelocity(Vector3 angularVelocity);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МЉp‘¬“x‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭ‚МЉp‘¬“x‚МѓxѓNѓgѓ‹ЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®и§’йЂџеє¦г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁгЃ®и§’йЂџеє¦гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
 	 */
 	C_FUNCTION()
 	Vector3 GetAngularVelocity() const;
 
 	/**
-	 * @brief Ќ„‘М‚МЋї—К‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param mass ђЭ’и‚·‚йЋї—К‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®иіЄй‡Џг‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param mass иЁ­е®љгЃ™г‚‹иіЄй‡ЏгЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	void SetMass(float mass);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МЋї—К‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭ‚МЋї—К‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®иіЄй‡Џг‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁгЃ®иіЄй‡ЏгЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	float GetMass() const;
 
 	/**
-	 * @brief Ќ„‘М‚МЉµђ«ѓeѓ“ѓ\ѓ‹‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param inertiaTensor ђЭ’и‚·‚йЉµђ«ѓeѓ“ѓ\ѓ‹‚МѓxѓNѓgѓ‹ЃB’КЏн‚НЉeЋІ‚Й‘О‚·‚йЉµђ«ѓ‚Ѓ[ѓЃѓ“ѓg‚р•\‚µ‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃ®ж…ЈжЂ§гѓ†гѓіг‚Ѕгѓ«г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param inertiaTensor иЁ­е®љгЃ™г‚‹ж…ЈжЂ§гѓ†гѓіг‚Ѕгѓ«гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚йЂљеёёгЃЇеђ„и»ёгЃ«еЇѕгЃ™г‚‹ж…ЈжЂ§гѓўгѓјгѓЎгѓігѓ€г‚’иЎЁгЃ—гЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetInertiaTensor(const Vector3& inertiaTensor);
 
 	/**
-	 * @brief ѓLѓlѓ}ѓeѓBѓbѓNђЭ’и‚рЌs‚ў‚Ь‚·ЃBѓLѓlѓ}ѓeѓBѓbѓN‚ИѓIѓuѓWѓFѓNѓg‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚ёЃA’јђЪ€К’u‚в‰с“]‚рђЭ’и‚Е‚«‚Ь‚·ЃB
-	 * @param isKinematic ѓLѓlѓ}ѓeѓBѓbѓN‚Й‚·‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НѓLѓlѓ}ѓeѓBѓbѓNЃAfalse‚МЏкЌ‡‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚й‚ж‚¤‚Й‚И‚и‚Ь‚·ЃB
+	 * @brief г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇиЁ­е®љг‚’иЎЊгЃ„гЃѕгЃ™гЂ‚г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃЄг‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘гЃљгЂЃз›ґжЋҐдЅЌзЅ®г‚„е›ћи»ўг‚’иЁ­е®љгЃ§гЃЌгЃѕгЃ™гЂ‚
+	 * @param isKinematic г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃ«гЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇг‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЂЃfalseгЃ®е ґеђ€гЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘г‚‹г‚€гЃ†гЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetKinematic(bool isKinematic);
 
 	/**
-	 * @brief Ќ„‘М‚ЄѓLѓlѓ}ѓeѓBѓbѓN‚©‚З‚¤‚©‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return true‚МЏкЌ‡‚НѓLѓlѓ}ѓeѓBѓbѓNЃAfalse‚МЏкЌ‡‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚й‚ж‚¤‚Й‚И‚и‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃЊг‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃ‹гЃ©гЃ†гЃ‹г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return trueгЃ®е ґеђ€гЃЇг‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЂЃfalseгЃ®е ґеђ€гЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘г‚‹г‚€гЃ†гЃ«гЃЄг‚ЉгЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	bool IsKinematic() const;
 
 	/**
-	 * @brief Ќ„‘М‚М€К’u‚р’јђЪђЭ’и‚µ‚Ь‚·ЃiѓLѓlѓ}ѓeѓBѓbѓN‚ИѓIѓuѓWѓFѓNѓg‚Й‘О‚µ‚ДЃjЃB
-	 * @param pos ђЭ’и‚·‚й€К’u‚МѓxѓNѓgѓ‹ЃB
-	 * @param rot ђЭ’и‚·‚й‰с“]‚МѓNѓHЃ[ѓ^ѓjѓIѓ“ЃB
+	 * @brief е‰›дЅ“гЃ®дЅЌзЅ®г‚’з›ґжЋҐиЁ­е®љгЃ—гЃѕгЃ™пј€г‚­гѓЌгѓћгѓ†г‚Јгѓѓг‚ЇгЃЄг‚Єгѓ–г‚ёг‚§г‚Їгѓ€гЃ«еЇѕгЃ—гЃ¦пј‰гЂ‚
+	 * @param pos иЁ­е®љгЃ™г‚‹дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
+	 * @param rot иЁ­е®љгЃ™г‚‹е›ћи»ўгЃ®г‚Їг‚©гѓјг‚їгѓ‹г‚ЄгѓігЂ‚
 	 */
 	C_FUNCTION()
 	void SetKinematicTarget(const Vector3& pos, const Quaternion& rot);
 
 	/**
-	 * @brief Ќ„‘М‚МѓOѓЌЃ[ѓoѓ‹ѓ|Ѓ[ѓY‚р’јђЪђЭ’и‚µ‚Ь‚·ЃB
-	 * @param pos ђЭ’и‚·‚йѓOѓЌЃ[ѓoѓ‹€К’u‚МѓxѓNѓgѓ‹ЃB
-	 * @param rot ђЭ’и‚·‚йѓOѓЌЃ[ѓoѓ‹‰с“]‚МѓNѓHЃ[ѓ^ѓjѓIѓ“ЃB
+	 * @brief е‰›дЅ“гЃ®г‚°гѓ­гѓјгѓђгѓ«гѓќгѓјг‚єг‚’з›ґжЋҐиЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param pos иЁ­е®љгЃ™г‚‹г‚°гѓ­гѓјгѓђгѓ«дЅЌзЅ®гЃ®гѓ™г‚Їгѓ€гѓ«гЂ‚
+	 * @param rot иЁ­е®љгЃ™г‚‹г‚°гѓ­гѓјгѓђгѓ«е›ћи»ўгЃ®г‚Їг‚©гѓјг‚їгѓ‹г‚ЄгѓігЂ‚
 	 */
 	void SetGlobalPose(const Vector3& pos, const Quaternion& rot);
 
 	/**
-	 * @brief Ќ„‘М‚МѓOѓЌЃ[ѓoѓ‹ѓ|Ѓ[ѓY‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @param outPos ѓOѓЌЃ[ѓoѓ‹€К’u‚рЉi”[‚·‚й‚Ѕ‚Я‚МVector3ЋQЏЖЃB
-	 * @param outRot ѓOѓЌЃ[ѓoѓ‹‰с“]‚рЉi”[‚·‚й‚Ѕ‚Я‚МQuaternionЋQЏЖЃB
+	 * @brief е‰›дЅ“гЃ®г‚°гѓ­гѓјгѓђгѓ«гѓќгѓјг‚єг‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @param outPos г‚°гѓ­гѓјгѓђгѓ«дЅЌзЅ®г‚’ж јзґЌгЃ™г‚‹гЃџг‚ЃгЃ®Vector3еЏ‚з…§гЂ‚
+	 * @param outRot г‚°гѓ­гѓјгѓђгѓ«е›ћи»ўг‚’ж јзґЌгЃ™г‚‹гЃџг‚ЃгЃ®QuaternionеЏ‚з…§гЂ‚
 	 */
 	void GetGlobalPose(Vector3& outPos, Quaternion& outRot);
 
 	/**
-	 * @brief Ќ„‘М‚рѓAѓNѓeѓBѓu‚ИЏу‘Ф‚Й‚µ‚Ь‚·ЃBѓAѓNѓeѓBѓu‚ИЌ„‘М‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚ЇЃA“®Ќм‚µ‚Ь‚·ЃB
+	 * @brief е‰›дЅ“г‚’г‚ўг‚Їгѓ†г‚Јгѓ–гЃЄзЉ¶ж…‹гЃ«гЃ—гЃѕгЃ™гЂ‚г‚ўг‚Їгѓ†г‚Јгѓ–гЃЄе‰›дЅ“гЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘гЂЃе‹•дЅњгЃ—гЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void WakeUp();
 
 	/**
-	 * @brief Ќ„‘М‚рѓXѓЉЃ[ѓvЏу‘Ф‚Й‚µ‚Ь‚·ЃBѓXѓЉЃ[ѓvЏу‘Ф‚МЌ„‘М‚Н•Ё—ќѓVѓ~ѓ…ѓЊЃ[ѓVѓ‡ѓ“‚М‰e‹ї‚рЋу‚Ї‚ёЃAЊvЋZѓRѓXѓg‚рЌнЊё‚Е‚«‚Ь‚·ЃB
+	 * @brief е‰›дЅ“г‚’г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ«гЃ—гЃѕгЃ™гЂ‚г‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ®е‰›дЅ“гЃЇз‰©зђ†г‚·гѓџгѓҐгѓ¬гѓјг‚·гѓ§гѓігЃ®еЅ±йџїг‚’еЏ—гЃ‘гЃљгЂЃиЁ€з®—г‚іг‚№гѓ€г‚’е‰Љжё›гЃ§гЃЌгЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void PutToSleep();
 
 	/**
-	 * @brief Ќ„‘М‚ЄѓXѓЉЃ[ѓvЏу‘Ф‚©‚З‚¤‚©‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return true‚МЏкЌ‡‚НѓXѓЉЃ[ѓvЏу‘ФЃAfalse‚МЏкЌ‡‚НѓAѓNѓeѓBѓu‚ИЏу‘Ф‚Е‚·ЃB
+	 * @brief е‰›дЅ“гЃЊг‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЃ‹гЃ©гЃ†гЃ‹г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return trueгЃ®е ґеђ€гЃЇг‚№гѓЄгѓјгѓ—зЉ¶ж…‹гЂЃfalseгЃ®е ґеђ€гЃЇг‚ўг‚Їгѓ†г‚Јгѓ–гЃЄзЉ¶ж…‹гЃ§гЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	bool IsSleeping() const;
 
 	/**
-	 * @brief Ќ„‘М‚МЏd—Н‚М‰e‹ї‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param useGravity Џd—Н‚М‰e‹ї‚рЋу‚Ї‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НЏd—Н‚М‰e‹ї‚рЋу‚ЇЃAfalse‚МЏкЌ‡‚НЏd—Н‚М‰e‹ї‚рЋу‚Ї‚Ь‚№‚сЃB
+	 * @brief е‰›дЅ“гЃ®й‡ЌеЉ›гЃ®еЅ±йџїг‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param useGravity й‡ЌеЉ›гЃ®еЅ±йџїг‚’еЏ—гЃ‘г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇй‡ЌеЉ›гЃ®еЅ±йџїг‚’еЏ—гЃ‘гЂЃfalseгЃ®е ґеђ€гЃЇй‡ЌеЉ›гЃ®еЅ±йџїг‚’еЏ—гЃ‘гЃѕгЃ›г‚“гЂ‚
 	 */
 	C_FUNCTION()
 	void SetUseGravity(bool useGravity);
 
 	/**
-	 * @brief Ќ„‘М‚МA‘±“I‚ИЏХ“ЛЊџЏo‚МЋg—p‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param useCCD A‘±“I‚ИЏХ“ЛЊџЏo‚рЋg—p‚·‚й‚©‚З‚¤‚©‚Мѓtѓ‰ѓOЃBtrue‚МЏкЌ‡‚НA‘±“I‚ИЏХ“ЛЊџЏo‚рЋg—p‚µЃAfalse‚МЏкЌ‡‚НЋg—p‚µ‚Ь‚№‚сЃB
+	 * @brief е‰›дЅ“гЃ®йЂЈз¶љзљ„гЃЄиЎќзЄЃж¤ње‡єгЃ®дЅїз”Ёг‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param useCCD йЂЈз¶љзљ„гЃЄиЎќзЄЃж¤ње‡єг‚’дЅїз”ЁгЃ™г‚‹гЃ‹гЃ©гЃ†гЃ‹гЃ®гѓ•гѓ©г‚°гЂ‚trueгЃ®е ґеђ€гЃЇйЂЈз¶љзљ„гЃЄиЎќзЄЃж¤ње‡єг‚’дЅїз”ЁгЃ—гЂЃfalseгЃ®е ґеђ€гЃЇдЅїз”ЁгЃ—гЃѕгЃ›г‚“гЂ‚
 	 */
 	C_FUNCTION()
 	void SetUseCCD(bool useCCD);
 
 	/**
-	 * @brief Ќ„‘М‚М€Ъ“®‚в‰с“]‚Мђ§–с‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param constraints ђЭ’и‚·‚йRigidbodyConstraints‚М’lЃB•Ўђ”‚Мђ§–с‚р‘g‚ЭЌ‡‚н‚№‚й‚±‚Ж‚Є‚Е‚«‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃ®з§»е‹•г‚„е›ћи»ўгЃ®е€¶зґ„г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param constraints иЁ­е®љгЃ™г‚‹RigidbodyConstraintsгЃ®еЂ¤гЂ‚и¤‡ж•°гЃ®е€¶зґ„г‚’зµ„гЃїеђ€г‚ЏгЃ›г‚‹гЃ“гЃЁгЃЊгЃ§гЃЌгЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetConstraints(RigidbodyConstraints constraints);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚М€Ъ“®‚в‰с“]‚Мђ§–с‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭђЭ’и‚і‚к‚Д‚ў‚йRigidbodyConstraints‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®з§»е‹•г‚„е›ћи»ўгЃ®е€¶зґ„г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹RigidbodyConstraintsгЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	RigidbodyConstraints GetConstraints() const;
 
 	/**
-	 * @brief Ќ„‘М‚МђьЊ`ЊёђЉ‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param damping ђЭ’и‚·‚йђьЊ`ЊёђЉ‚М’lЃB’КЏн‚Н0€ИЏг‚М’l‚рЋw’и‚µ‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃ®з·љеЅўжё›иЎ°г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param damping иЁ­е®љгЃ™г‚‹з·љеЅўжё›иЎ°гЃ®еЂ¤гЂ‚йЂљеёёгЃЇ0д»ҐдёЉгЃ®еЂ¤г‚’жЊ‡е®љгЃ—гЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetLinearDamping(float damping);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МђьЊ`ЊёђЉ‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭђЭ’и‚і‚к‚Д‚ў‚йђьЊ`ЊёђЉ‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®з·љеЅўжё›иЎ°г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹з·љеЅўжё›иЎ°гЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	float GetLinearDamping() const;
 
 	/**
-	 * @brief Ќ„‘М‚МђьЊ`’пЌR‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param linearDrag ђЭ’и‚·‚йђьЊ`’пЌR‚М’lЃB’КЏн‚Н0€ИЏг‚М’l‚рЋw’и‚µ‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃ®з·љеЅўжЉµжЉ—г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param linearDrag иЁ­е®љгЃ™г‚‹з·љеЅўжЉµжЉ—гЃ®еЂ¤гЂ‚йЂљеёёгЃЇ0д»ҐдёЉгЃ®еЂ¤г‚’жЊ‡е®љгЃ—гЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetLinearDrag(float linearDrag);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МђьЊ`’пЌR‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭђЭ’и‚і‚к‚Д‚ў‚йђьЊ`’пЌR‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®з·љеЅўжЉµжЉ—г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹з·љеЅўжЉµжЉ—гЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	float GetLinearDrag() const;
 
 	/**
-	 * @brief Ќ„‘М‚МЌЕ‘еђьЊ`‘¬“x‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param maxLinearVelocity ђЭ’и‚·‚йЌЕ‘еђьЊ`‘¬“x‚М’lЃB’КЏн‚Н0€ИЏг‚М’l‚рЋw’и‚µ‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃ®жњЂе¤§з·љеЅўйЂџеє¦г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param maxLinearVelocity иЁ­е®љгЃ™г‚‹жњЂе¤§з·љеЅўйЂџеє¦гЃ®еЂ¤гЂ‚йЂљеёёгЃЇ0д»ҐдёЉгЃ®еЂ¤г‚’жЊ‡е®љгЃ—гЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetMaxLinearVelocity(float maxLinearVelocity);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МЌЕ‘еђьЊ`‘¬“x‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭђЭ’и‚і‚к‚Д‚ў‚йЌЕ‘еђьЊ`‘¬“x‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®жњЂе¤§з·љеЅўйЂџеє¦г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹жњЂе¤§з·љеЅўйЂџеє¦гЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	float GetMaxLinearVelocity() const;
 
 	/**
-	 * @brief Ќ„‘М‚МЉpЊёђЉ‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param damping ђЭ’и‚·‚йЉpЊёђЉ‚М’lЃB’КЏн‚Н0€ИЏг‚М’l‚рЋw’и‚µ‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃ®и§’жё›иЎ°г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param damping иЁ­е®љгЃ™г‚‹и§’жё›иЎ°гЃ®еЂ¤гЂ‚йЂљеёёгЃЇ0д»ҐдёЉгЃ®еЂ¤г‚’жЊ‡е®љгЃ—гЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetAngularDamping(float damping);
 	
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МЉpЊёђЉ‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭђЭ’и‚і‚к‚Д‚ў‚йЉpЊёђЉ‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®и§’жё›иЎ°г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹и§’жё›иЎ°гЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	float GetAngularDamping() const;
 
 	/**
-	 * @brief Ќ„‘М‚МЉp’пЌR‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param angularDrag ђЭ’и‚·‚йЉp’пЌR‚М’lЃB’КЏн‚Н0€ИЏг‚М’l‚рЋw’и‚µ‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃ®и§’жЉµжЉ—г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param angularDrag иЁ­е®љгЃ™г‚‹и§’жЉµжЉ—гЃ®еЂ¤гЂ‚йЂљеёёгЃЇ0д»ҐдёЉгЃ®еЂ¤г‚’жЊ‡е®љгЃ—гЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetAngularDrag(float angularDrag);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МЉp’пЌR‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭђЭ’и‚і‚к‚Д‚ў‚йЉp’пЌR‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®и§’жЉµжЉ—г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹и§’жЉµжЉ—гЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	float GetAngularDrag() const;
 
 	/**
-	 * @brief Ќ„‘М‚МЌЕ‘еЉp‘¬“x‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param maxAngularVelocity ђЭ’и‚·‚йЌЕ‘еЉp‘¬“x‚М’lЃB’КЏн‚Н0€ИЏг‚М’l‚рЋw’и‚µ‚Ь‚·ЃB
+	 * @brief е‰›дЅ“гЃ®жњЂе¤§и§’йЂџеє¦г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param maxAngularVelocity иЁ­е®љгЃ™г‚‹жњЂе¤§и§’йЂџеє¦гЃ®еЂ¤гЂ‚йЂљеёёгЃЇ0д»ҐдёЉгЃ®еЂ¤г‚’жЊ‡е®љгЃ—гЃѕгЃ™гЂ‚
 	 */
 	C_FUNCTION()
 	void SetMaxAngularVelocity(float maxAngularVelocity);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МЌЕ‘еЉp‘¬“x‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭђЭ’и‚і‚к‚Д‚ў‚йЌЕ‘еЉp‘¬“x‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®жњЂе¤§и§’йЂџеє¦г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹жњЂе¤§и§’йЂџеє¦гЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	float GetMaxAngularVelocity() const;
 
 	/**
-	 * @brief Ќ„‘М‚МѓXѓЉЃ[ѓvи‡’l‚рђЭ’и‚µ‚Ь‚·ЃB
-	 * @param sleepThreshold ђЭ’и‚·‚йѓXѓЉЃ[ѓvи‡’l‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®г‚№гѓЄгѓјгѓ—й–ѕеЂ¤г‚’иЁ­е®љгЃ—гЃѕгЃ™гЂ‚
+	 * @param sleepThreshold иЁ­е®љгЃ™г‚‹г‚№гѓЄгѓјгѓ—й–ѕеЂ¤гЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	void SetSleepThreshold(float sleepThreshold);
 
 	/**
-	 * @brief Ќ„‘М‚МЊ»ЌЭ‚МѓXѓЉЃ[ѓvи‡’l‚рЋж“ѕ‚µ‚Ь‚·ЃB
-	 * @return Њ»ЌЭђЭ’и‚і‚к‚Д‚ў‚йѓXѓЉЃ[ѓvи‡’l‚М’lЃB
+	 * @brief е‰›дЅ“гЃ®зЏѕењЁгЃ®г‚№гѓЄгѓјгѓ—й–ѕеЂ¤г‚’еЏ–еѕ—гЃ—гЃѕгЃ™гЂ‚
+	 * @return зЏѕењЁиЁ­е®љгЃ•г‚ЊгЃ¦гЃ„г‚‹г‚№гѓЄгѓјгѓ—й–ѕеЂ¤гЃ®еЂ¤гЂ‚
 	 */
 	C_FUNCTION()
 	float GetSleepThreshold() const;

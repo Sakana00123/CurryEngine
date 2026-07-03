@@ -19,7 +19,7 @@ void Canvas::Initialize()
 
 void Canvas::Update(float elapsedTime)
 {
-	// ’x‰„íœ‚Ìˆ—
+	// é…å»¶å‰Šé™¤ã®å‡¦ç†
 	if (!erases.empty()) {
 		graphics.erase(std::remove_if(graphics.begin(), graphics.end(),
 			[&](const auto& graphic) {
@@ -29,7 +29,7 @@ void Canvas::Update(float elapsedTime)
 		erases.clear();
 	}
 
-	// ˆÊ’uŒÅ’èi‰æ–Ê‘S‘Ì‚ÉƒtƒBƒbƒgj
+	// ä½ç½®å›ºå®šï¼ˆç”»é¢å…¨ä½“ã«ãƒ•ã‚£ãƒƒãƒˆï¼‰
 	Vector2 screenSize{ 1920, 1080 };
 	if (RectTransform* rt = GetRectTransform()) {
 		rt->SetSize(screenSize);
@@ -44,16 +44,16 @@ std::vector<Graphic*> Canvas::GetGraphics() const {
 #if 0
 	return this->graphics;
 #else
-	std::vector<std::pair<Graphic*, int>> graphicWithZ; // Graphic ‚Æ‚»‚Ì•`‰æ‡‚ğƒyƒA‚Å•Û
+	std::vector<std::pair<Graphic*, int>> graphicWithZ; // Graphic ã¨ãã®æç”»é †ã‚’ãƒšã‚¢ã§ä¿æŒ
 	int parentZ = 0;
 	std::function<void(GameObject*)> findGraphic = [&](GameObject* object) {
 		auto* rect = object->GetComponent<RectTransform>();
 		if (!rect) {
 			return;
 		}
-		// e‚Ìƒ\[ƒeƒBƒ“ƒOƒI[ƒ_[ + ©g‚Ìƒ[ƒJƒ‹ƒ\[ƒeƒBƒ“ƒOƒI[ƒ_[‚Å•`‰æ‡‚ğŒˆ’è
+		// è¦ªã®ã‚½ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ã‚ªãƒ¼ãƒ€ãƒ¼ + è‡ªèº«ã®ãƒ­ãƒ¼ã‚«ãƒ«ã‚½ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ã‚ªãƒ¼ãƒ€ãƒ¼ã§æç”»é †ã‚’æ±ºå®š
 		int myZ = parentZ + rect->localSortingOrder;
-		parentZ = myZ; // q‚Ì’Tõ‚É”õ‚¦‚ÄXV
+		parentZ = myZ; // å­ã®æ¢ç´¢ã«å‚™ãˆã¦æ›´æ–°
 
 		if (Graphic* graphic = object->GetComponent<Graphic>())
 		{
@@ -66,10 +66,10 @@ std::vector<Graphic*> Canvas::GetGraphics() const {
 		};
 	findGraphic(gameObject);
 
-	// •`‰æ‡‚Åƒ\[ƒg‚µ‚Ä Graphic* ‚ÌƒŠƒXƒg‚ğì¬
+	// æç”»é †ã§ã‚½ãƒ¼ãƒˆã—ã¦ Graphic* ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
 	std::vector<Graphic*> graphics;
 	std::stable_sort(graphicWithZ.begin(), graphicWithZ.end(), [](const auto& a, const auto& b) {
-		return a.second < b.second; // •`‰æ‡‚Åƒ\[ƒg
+		return a.second < b.second; // æç”»é †ã§ã‚½ãƒ¼ãƒˆ
 		});
 	for (const auto& pair : graphicWithZ) {
 		graphics.push_back(pair.first);
@@ -81,7 +81,7 @@ std::vector<Graphic*> Canvas::GetGraphics() const {
 #ifdef USE_IMGUI
 void Canvas::DrawProperty(const PropertyDrawContext& context)
 {
-	Component::DrawProperty(context); // ©“®¶¬‚³‚ê‚½ƒvƒƒpƒeƒB•`‰æ‚ğŒÄ‚Ño‚·
+	Component::DrawProperty(context); // è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚’å‘¼ã³å‡ºã™
 	ImGui::Text("GraphicsCount:%d", static_cast<int>(GetGraphics().size()));
 }
 #endif // USE_IMGUI

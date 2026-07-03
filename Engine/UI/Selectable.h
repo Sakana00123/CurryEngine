@@ -7,14 +7,14 @@
 
 /**
  * @file
- * @brief ‘I‘ğ‰Â”\‚È UI —v‘f‚ÌŠî’êƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgi‰Ÿ‰º/‰ğ•ú/i“ü/‘Şoj‚¨‚æ‚Ñ‘I‘ğ/”ñ‘I‘ğA
- *          ²“ü—Í‚É‚æ‚éˆÚ“®‚ğó‚¯æ‚èAƒrƒWƒ…ƒAƒ‹ó‘ÔiF‚È‚Çj‚ğXV‚µ‚Ü‚·B
+ * @brief é¸æŠå¯èƒ½ãª UI è¦ç´ ã®åŸºåº•ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆï¼ˆæŠ¼ä¸‹/è§£æ”¾/é€²å…¥/é€€å‡ºï¼‰ãŠã‚ˆã³é¸æŠ/éé¸æŠã€
+ *          è»¸å…¥åŠ›ã«ã‚ˆã‚‹ç§»å‹•ã‚’å—ã‘å–ã‚Šã€ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«çŠ¶æ…‹ï¼ˆè‰²ãªã©ï¼‰ã‚’æ›´æ–°ã—ã¾ã™ã€‚
  */
 
 /**
- * @brief ‘I‘ğ‰Â”\‚È UI —v‘f‚ÌŠî’êƒNƒ‰ƒXB
- * @details `UIComponent` ‚ÆŠeíƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰‚ğÀ‘•‚µ‚Ü‚·B
+ * @brief é¸æŠå¯èƒ½ãª UI è¦ç´ ã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details `UIComponent` ã¨å„ç¨®ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©ã‚’å®Ÿè£…ã—ã¾ã™ã€‚
  */
 class Selectable : public UIComponent, public IPointerDownHandler, public IPointerUpHandler, 
 	public IPointerEnterHandler, public IPointerExitHandler,
@@ -24,98 +24,98 @@ class Selectable : public UIComponent, public IPointerDownHandler, public IPoint
 	C_REFLECT(Selectable)
 public:
 	/**
-	 * @brief —×ÚƒiƒrƒQ[ƒVƒ‡ƒ“æB
-	 * @details ƒL[‘€ì‚É‚æ‚éˆÚ“®æ‚ğw’è‚µ‚Ü‚·B
+	 * @brief éš£æ¥ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³å…ˆã€‚
+	 * @details ã‚­ãƒ¼æ“ä½œã«ã‚ˆã‚‹ç§»å‹•å…ˆã‚’æŒ‡å®šã—ã¾ã™ã€‚
 	 */
 	struct Navigation {
-		Selectable* up = nullptr;   //!< ã•ûŒü‚Ì‘JˆÚæ
-		Selectable* down = nullptr; //!< ‰º•ûŒü‚Ì‘JˆÚæ
-		Selectable* left = nullptr; //!< ¶•ûŒü‚Ì‘JˆÚæ
-		Selectable* right = nullptr;//!< ‰E•ûŒü‚Ì‘JˆÚæ
+		Selectable* up = nullptr;   //!< ä¸Šæ–¹å‘ã®é·ç§»å…ˆ
+		Selectable* down = nullptr; //!< ä¸‹æ–¹å‘ã®é·ç§»å…ˆ
+		Selectable* left = nullptr; //!< å·¦æ–¹å‘ã®é·ç§»å…ˆ
+		Selectable* right = nullptr;//!< å³æ–¹å‘ã®é·ç§»å…ˆ
 	};
-	/** @brief ƒiƒrƒQ[ƒVƒ‡ƒ“İ’èB*/
+	/** @brief ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³è¨­å®šã€‚*/
 	Navigation navigation{};
 protected:
 	friend class UIAnimationController;
-	/** @brief ƒNƒŠƒbƒN‰Â”\‚©B*/
+	/** @brief ã‚¯ãƒªãƒƒã‚¯å¯èƒ½ã‹ã€‚*/
 	C_PROPERTY()
 	bool interactable = true;
-	/** @brief ƒzƒo[’†‚©B*/
+	/** @brief ãƒ›ãƒãƒ¼ä¸­ã‹ã€‚*/
 	bool isHovered = false;
-	/** @brief ‰Ÿ‰º’†‚©B*/
+	/** @brief æŠ¼ä¸‹ä¸­ã‹ã€‚*/
 	bool isPressed = false;
-	/** @brief ‘I‘ğ’†‚©B*/
+	/** @brief é¸æŠä¸­ã‹ã€‚*/
 	bool isSelected = false;
 public:
 	//bool isDragAccept = false;
 	//bool isDragging = false;
 	//XMFLOAT2 lastMousePos;
 public:
-	/** @brief •\¦‚Ég—p‚·‚é‰æ‘œƒRƒ“ƒ|[ƒlƒ“ƒgB*/
+	/** @brief è¡¨ç¤ºã«ä½¿ç”¨ã™ã‚‹ç”»åƒã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚*/
 	//Image* image = nullptr;
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("Image"))
-	ObjectId imageReference = ObjectId::Invalid(); // ‰æ‘œƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌQÆIDiƒVƒŠƒAƒ‰ƒCƒY—pj
-	/** @brief Šù’èFB*/
+	ObjectId imageReference = ObjectId::Invalid(); // ç”»åƒã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å‚ç…§IDï¼ˆã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºç”¨ï¼‰
+	/** @brief æ—¢å®šè‰²ã€‚*/
 	C_PROPERTY()
 	Color defaultColor{ 1,1,1,1 };
-	/** @brief ‘I‘ğ‚ÌFB*/
+	/** @brief é¸æŠæ™‚ã®è‰²ã€‚*/
 	C_PROPERTY()
 	Color selectedColor{ 1.2f, 1.2f, 1.2f, 1.5f };
-	/** @brief ƒzƒo[‚ÌFB*/
+	/** @brief ãƒ›ãƒãƒ¼æ™‚ã®è‰²ã€‚*/
 	C_PROPERTY()
 	Color hoveringColor{ 0.75f, 0.75f, 0.75f, 1.0f };
-	/** @brief ‰Ÿ‰º‚ÌFB*/
+	/** @brief æŠ¼ä¸‹æ™‚ã®è‰²ã€‚*/
 	C_PROPERTY()
 	Color pressingColor{ 0.5f, 0.5f, 0.5f, 1.0f };
 
-	/** @brief –³Œø‚ÌFB*/
+	/** @brief ç„¡åŠ¹æ™‚ã®è‰²ã€‚*/
 	C_PROPERTY()
 	Color disabledColor{ 0.4f, 0.4f, 0.4f, 1.0f };
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	Selectable() = default;
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	virtual ~Selectable() override = default;
 
-	/** @brief ƒ|ƒCƒ“ƒ^‰Ÿ‰ºƒCƒxƒ“ƒgB*/
+	/** @brief ãƒã‚¤ãƒ³ã‚¿æŠ¼ä¸‹ã‚¤ãƒ™ãƒ³ãƒˆã€‚*/
 	virtual void OnPointerDown(PointerEventData* eventData) override;
-	/** @brief ƒ|ƒCƒ“ƒ^‰ğ•úƒCƒxƒ“ƒgB*/
+	/** @brief ãƒã‚¤ãƒ³ã‚¿è§£æ”¾ã‚¤ãƒ™ãƒ³ãƒˆã€‚*/
 	virtual void OnPointerUp(PointerEventData* eventData) override;
-	/** @brief ƒ|ƒCƒ“ƒ^i“üƒCƒxƒ“ƒgB*/
+	/** @brief ãƒã‚¤ãƒ³ã‚¿é€²å…¥ã‚¤ãƒ™ãƒ³ãƒˆã€‚*/
 	virtual void OnPointerEnter(PointerEventData* eventData) override;
-	/** @brief ƒ|ƒCƒ“ƒ^‘ŞoƒCƒxƒ“ƒgB*/
+	/** @brief ãƒã‚¤ãƒ³ã‚¿é€€å‡ºã‚¤ãƒ™ãƒ³ãƒˆã€‚*/
 	virtual void OnPointerExit(PointerEventData* eventData) override;
-	/** @brief ‘I‘ğƒCƒxƒ“ƒgB*/
+	/** @brief é¸æŠã‚¤ãƒ™ãƒ³ãƒˆã€‚*/
 	virtual void OnSelect(BaseEventData* eventData) override;
-	/** @brief ‘I‘ğ‰ğœƒCƒxƒ“ƒgB*/
+	/** @brief é¸æŠè§£é™¤ã‚¤ãƒ™ãƒ³ãƒˆã€‚*/
 	virtual void OnDeselect(BaseEventData* eventData) override;
-	/** @brief ²“ü—Í‚É‚æ‚éˆÚ“®ƒCƒxƒ“ƒgB*/
+	/** @brief è»¸å…¥åŠ›ã«ã‚ˆã‚‹ç§»å‹•ã‚¤ãƒ™ãƒ³ãƒˆã€‚*/
 	virtual void OnMove(AxisEventData* eventData) override;
 
 	/**
-	 * @brief Œ»İƒzƒo[’†‚©‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief ç¾åœ¨ãƒ›ãƒãƒ¼ä¸­ã‹ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	bool IsHovering() const;
 
 private:
 
 	/**
-	 * @brief Œ»İó‘Ô‚É‰‚¶‚Ä `image->color` ‚ğXV‚µ‚Ü‚·B
-	 * @details —Dæ“x: –³Œø > ‰Ÿ‰º > ƒzƒo[ > ‘I‘ğ > Šù’è
+	 * @brief ç¾åœ¨çŠ¶æ…‹ã«å¿œã˜ã¦ `image->color` ã‚’æ›´æ–°ã—ã¾ã™ã€‚
+	 * @details å„ªå…ˆåº¦: ç„¡åŠ¹ > æŠ¼ä¸‹ > ãƒ›ãƒãƒ¼ > é¸æŠ > æ—¢å®š
 	 */
 	void UpdateVisual();
 
 public:
-	/** @brief Œ»İƒCƒ“ƒ^ƒ‰ƒNƒeƒBƒu‚©B*/
+	/** @brief ç¾åœ¨ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒ†ã‚£ãƒ–ã‹ã€‚*/
 	bool IsInteractable() const;
-	/** @brief ƒCƒ“ƒ^ƒ‰ƒNƒeƒBƒuó‘Ô‚ğİ’èB*/
+	/** @brief ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’è¨­å®šã€‚*/
 	void SetInteractable(bool value);
-	/** @brief ‰æ‘œƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾B*/
+	/** @brief ç”»åƒã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã€‚*/
 	Image* GetImage() const;
 
 protected:
 #ifdef USE_IMGUI
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^—pƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	virtual void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 

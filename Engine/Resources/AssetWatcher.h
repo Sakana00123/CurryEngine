@@ -10,44 +10,44 @@ namespace CurryEngine
 	{
 	public:
 		/**
-		 * @brief w’è‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠ‚ğŠÄ‹‚µAƒAƒZƒbƒg‚Ì•ÏX‚ğŒŸo‚·‚éŠÖ”B
-		 * @param watchDir ŠÄ‹‚·‚éƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒXB
+		 * @brief æŒ‡å®šã•ã‚ŒãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ç›£è¦–ã—ã€ã‚¢ã‚»ãƒƒãƒˆã®å¤‰æ›´ã‚’æ¤œå‡ºã™ã‚‹é–¢æ•°ã€‚
+		 * @param watchDir ç›£è¦–ã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã€‚
 		 */
 		void Start(const std::filesystem::path& watchDir);
 
 		/**
-		 * @brief ŠÄ‹‚ğ’â~‚·‚éŠÖ”B
+		 * @brief ç›£è¦–ã‚’åœæ­¢ã™ã‚‹é–¢æ•°ã€‚
 		 */
 		void Stop();
 
 	private:
 		/**
-		 * @brief ŠÄ‹ƒXƒŒƒbƒh‚ğÀs‚·‚éŠÖ”B
+		 * @brief ç›£è¦–ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹é–¢æ•°ã€‚
 		 */
 		void WatchLoop();
 
 		/**
-		 * @brief ƒtƒ@ƒCƒ‹‚Ì•ÏXƒCƒxƒ“ƒg‚ğˆ—‚·‚éŠÖ”B
-		 * @param action ƒtƒ@ƒCƒ‹‚Ì•ÏXƒAƒNƒVƒ‡ƒ“iì¬AíœA•ÏX‚È‚ÇjB
-		 * @param path •ÏX‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ÌƒpƒXB
+		 * @brief ãƒ•ã‚¡ã‚¤ãƒ«ã®å¤‰æ›´ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†ã™ã‚‹é–¢æ•°ã€‚
+		 * @param action ãƒ•ã‚¡ã‚¤ãƒ«ã®å¤‰æ›´ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ï¼ˆä½œæˆã€å‰Šé™¤ã€å¤‰æ›´ãªã©ï¼‰ã€‚
+		 * @param path å¤‰æ›´ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã€‚
 		 */
 		void OnFileAction(DWORD action, const std::filesystem::path& path);
 
 		/**
-		 * @brief ŠÄ‹‘ÎÛ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒXB
+		 * @brief ç›£è¦–å¯¾è±¡ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã€‚
 		 */
 		std::filesystem::path m_watchDir;
 		/**
-		 * @brief ŠÄ‹ƒXƒŒƒbƒhB
+		 * @brief ç›£è¦–ã‚¹ãƒ¬ãƒƒãƒ‰ã€‚
 		 */
 		std::thread m_watchThread;
 		/**
-		 * @brief ŠÄ‹ƒXƒŒƒbƒh‚Ìó‘Ô‚ğ¦‚·ƒtƒ‰ƒOB
+		 * @brief ç›£è¦–ã‚¹ãƒ¬ãƒƒãƒ‰ã®çŠ¶æ…‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã€‚
 		 */
 		std::atomic<bool> m_running = false;
 
 		/**
-		 * @brief ƒŠƒl[ƒ€‚ª•Û—¯‚³‚ê‚Ä‚¢‚éê‡‚Ì‹ŒƒpƒXB
+		 * @brief ãƒªãƒãƒ¼ãƒ ãŒä¿ç•™ã•ã‚Œã¦ã„ã‚‹å ´åˆã®æ—§ãƒ‘ã‚¹ã€‚
 		 */
 		std::optional<std::filesystem::path> m_pendingRenameOldPath;
 	};

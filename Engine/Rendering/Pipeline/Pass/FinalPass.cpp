@@ -5,10 +5,10 @@
 
 void FinalPass::Initialize()
 {
-	// FinalPass‚Ì‰Šú‰»ˆ—
+	// FinalPassã®åˆæœŸåŒ–å‡¦ç†
 	auto device = Graphics::GetDevice();
 	HRESULT hr{ S_OK };
-	// ÅI‡¬—p‚ÌƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚ğì¬
+	// æœ€çµ‚åˆæˆç”¨ã®ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ä½œæˆ
 	std::string dir = EnginePaths::ShadersDataDir;
 	hr = CreatePixelShaderFromCSO(device, (dir + "FinalPassPS.cso").c_str(), finalPassPs.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
@@ -18,22 +18,22 @@ void FinalPass::Execute(RenderContext* rtx, Scene* scene)
 {
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
-	// ÅI•`‰æ‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒAƒNƒeƒBƒu‰»
+	// æœ€çµ‚æç”»ã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–
 	rtx->SetDefaultRenderTarget();
 
-	// ƒVƒƒƒhƒEƒ}ƒbƒv‚ğ‡¬‚µ‚½ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğæ“¾
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’åˆæˆã—ãŸãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å–å¾—
 	auto renderTarget = static_cast<RenderTexture*>(rtx->GetSharedResource("PostProcessPass_RenderTexture"));
 
 
 #ifndef _DEBUG
-	// ÅI•`‰æ(Releaseƒrƒ‹ƒh—p‚Ì‘S‰æ–Ê•`‰æƒR[ƒhBDebugƒrƒ‹ƒh‚Å‚ÍAImGui‚Å•\¦‚·‚é‚½‚ßA‘S‰æ–Ê•`‰æ‚Ís‚í‚È‚¢)
-	// ƒVƒƒƒhƒEƒ}ƒbƒv‚ğ‡¬‚µ‚½ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚Æ‚µ‚Äg—p‚µ‚ÄÅI•`‰æ
+	// æœ€çµ‚æç”»(Releaseãƒ“ãƒ«ãƒ‰ç”¨ã®å…¨ç”»é¢æç”»ã‚³ãƒ¼ãƒ‰ã€‚Debugãƒ“ãƒ«ãƒ‰ã§ã¯ã€ImGuiã§è¡¨ç¤ºã™ã‚‹ãŸã‚ã€å…¨ç”»é¢æç”»ã¯è¡Œã‚ãªã„)
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’åˆæˆã—ãŸãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã¨ã—ã¦ä½¿ç”¨ã—ã¦æœ€çµ‚æç”»
 	ID3D11ShaderResourceView* shaderResourceViews[] = {
 		renderTarget->GetColorBuffer()
 	};
 	Graphics::fullScreenQuad->Draw(immediateContext, shaderResourceViews, 0, _countof(shaderResourceViews), finalPassPs.Get());
 #else
-	// Debugƒrƒ‹ƒh‚Å‚ÍAImGui‚Å•\¦‚·‚é‚½‚ßA‘S‰æ–Ê•`‰æ‚Ís‚í‚È‚¢
+	// Debugãƒ“ãƒ«ãƒ‰ã§ã¯ã€ImGuiã§è¡¨ç¤ºã™ã‚‹ãŸã‚ã€å…¨ç”»é¢æç”»ã¯è¡Œã‚ãªã„
 
 	rtx->SetSharedResource("FinalPass_RenderTexture", renderTarget);
 

@@ -18,24 +18,24 @@ bool ProjectSettings::Load(const std::string& exeDir)
 	s_data.author = data.value("author", "Author Name");
 	s_data.description = data.value("description", "Project Description");
 
-	// ƒfƒtƒHƒ‹ƒgƒpƒX‚ğ\’zBâ‘ÎƒpƒX‚Åw’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAexe ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğŠî€‚É‚µ‚½‘Š‘ÎƒpƒX‚ğg—p‚·‚éB
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ‘ã‚¹ã‚’æ§‹ç¯‰ã€‚çµ¶å¯¾ãƒ‘ã‚¹ã§æŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã€exe ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’åŸºæº–ã«ã—ãŸç›¸å¯¾ãƒ‘ã‚¹ã‚’ä½¿ç”¨ã™ã‚‹ã€‚
 	//std::string defaultScriptProjectPath = exeDir + "/../../UserScripts/Assembly-CSharp.csproj";
 	//std::string defaultScriptOutputPath = exeDir + "/../../x64/Debug/Assembly-CSharp.dll";
 	//std::string defaultScriptWatchDirectory = exeDir + "/../../UserScripts";
 
-	// ƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğæ“¾
-	// TODO: ƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğ©“®“I‚ÉŒŸo‚·‚é‚©AƒvƒƒWƒFƒNƒgİ’è‚Åw’è‚Å‚«‚é‚æ‚¤‚É‚·‚é
+	// ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å–å¾—
+	// TODO: ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’è‡ªå‹•çš„ã«æ¤œå‡ºã™ã‚‹ã‹ã€ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆè¨­å®šã§æŒ‡å®šã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 	std::filesystem::path solutionDir = data.value("solutionDir", std::filesystem::path(exeDir).parent_path().parent_path());
 
-	// ƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğŠî€‚É‚µ‚½â‘ÎƒpƒX
+	// ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’åŸºæº–ã«ã—ãŸçµ¶å¯¾ãƒ‘ã‚¹
 	std::filesystem::path defaultScriptProjectPath = solutionDir / "UserScripts/Assembly-CSharp.csproj";
 	std::filesystem::path defaultScriptOutputPath = solutionDir / "x64/Debug/Assembly-CSharp.dll";
 	std::filesystem::path defaultScriptWatchDirectory = solutionDir / "UserScripts/";
-	// JSON‚©‚çƒpƒX‚ğæ“¾Bâ‘ÎƒpƒX‚Åw’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAexe ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğŠî€‚É‚µ‚½â‘ÎƒpƒX‚ğg—p‚·‚éB
+	// JSONã‹ã‚‰ãƒ‘ã‚¹ã‚’å–å¾—ã€‚çµ¶å¯¾ãƒ‘ã‚¹ã§æŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã€exe ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’åŸºæº–ã«ã—ãŸçµ¶å¯¾ãƒ‘ã‚¹ã‚’ä½¿ç”¨ã™ã‚‹ã€‚
 	std::filesystem::path scriptProjectPath = data.value("scriptProjectPath", defaultScriptProjectPath.string());
 	std::filesystem::path scriptOutputPath = data.value("scriptOutputPath", defaultScriptOutputPath.string());
 	std::filesystem::path scriptWatchDirectory = data.value("scriptWatchDirectory", defaultScriptWatchDirectory.string());
-	// ƒpƒX‚ğ³‹K‰»‚µ‚Ä•Û‘¶
+	// ãƒ‘ã‚¹ã‚’æ­£è¦åŒ–ã—ã¦ä¿å­˜
 	s_data.scriptProjectPath = scriptProjectPath.lexically_normal().string();
 	s_data.scriptOutputPath = scriptOutputPath.lexically_normal().string();
 	s_data.scriptWatchDirectory = scriptWatchDirectory.lexically_normal().string();

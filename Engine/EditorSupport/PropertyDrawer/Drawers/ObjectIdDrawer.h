@@ -6,7 +6,7 @@
 namespace CurryEngine
 {
 	/**
-	 * @brief ObjectId Œ^‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB
+	 * @brief ObjectId å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
 	 */
 	class ObjectIdDrawer : public IPropertyDrawer
 	{

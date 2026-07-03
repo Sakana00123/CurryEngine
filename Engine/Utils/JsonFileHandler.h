@@ -10,7 +10,7 @@ enum class JsonIOFormat
 {
 	Text,
 	Binary,
-	Auto // ƒtƒ@ƒCƒ‹‚ÌŠg’£q‚ÉŠî‚Ã‚¢‚Ä©“®“I‚ÉƒtƒH[ƒ}ƒbƒg‚ğ”»’f‚·‚éi—á: .bin‚È‚çBinaryA‚»‚êˆÈŠO‚ÍTextj
+	Auto // ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã«åŸºã¥ã„ã¦è‡ªå‹•çš„ã«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’åˆ¤æ–­ã™ã‚‹ï¼ˆä¾‹: .binãªã‚‰Binaryã€ãã‚Œä»¥å¤–ã¯Textï¼‰
 };
 
 enum class JsonIOError
@@ -38,10 +38,10 @@ public:
 
 		std::ios_base::openmode mode = std::ios::out;
 
-		// ƒtƒH[ƒ}ƒbƒg‚ªAuto‚Ìê‡Aƒtƒ@ƒCƒ‹‚ÌŠg’£q‚ÉŠî‚Ã‚¢‚ÄƒtƒH[ƒ}ƒbƒg‚ğ”»’f‚·‚é
+		// ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãŒAutoã®å ´åˆã€ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã«åŸºã¥ã„ã¦ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’åˆ¤æ–­ã™ã‚‹
 		if (format == JsonIOFormat::Auto) { 
 			std::filesystem::path path(filePath);
-			// Šg’£q‚ª.bin‚È‚çƒoƒCƒiƒŠƒtƒH[ƒ}ƒbƒgA‚»‚êˆÈŠO‚ÍƒeƒLƒXƒgƒtƒH[ƒ}ƒbƒg‚Æ‚·‚é
+			// æ‹¡å¼µå­ãŒ.binãªã‚‰ãƒã‚¤ãƒŠãƒªãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã€ãã‚Œä»¥å¤–ã¯ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¨ã™ã‚‹
 			if (path.extension() == ".bin") {
 				format = JsonIOFormat::Binary;
 			}
@@ -54,14 +54,14 @@ public:
 			mode |= std::ios::binary;
 		}
 
-		// ƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚È‚¢ê‡‚Íì¬‚·‚é
+		// ãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ä½œæˆã™ã‚‹
 		std::filesystem::path path(filePath);
 		std::filesystem::path directory = path.parent_path();
 		if (!directory.empty() && !std::filesystem::exists(directory)) {
 			std::filesystem::create_directories(directory);
 		}
 
-		// ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+		// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 		std::ofstream file(filePath, mode);
 		if (file) {
 			if (format == JsonIOFormat::Binary) {
@@ -74,34 +74,34 @@ public:
 			}
 			file.close();
 
-			// ƒtƒ@ƒCƒ‹‘®«‚Ìİ’è
+			// ãƒ•ã‚¡ã‚¤ãƒ«å±æ€§ã®è¨­å®š
 			SetFileAttributesA(filePath.c_str(), static_cast<DWORD>(attribute));
 
-			// ƒAƒZƒbƒgƒuƒ‰ƒEƒU‚ÌƒŠƒtƒŒƒbƒVƒ…
+			// ã‚¢ã‚»ãƒƒãƒˆãƒ–ãƒ©ã‚¦ã‚¶ã®ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
 			AssetBrowser::Refresh();
 		}
 	}
 
 	static bool LoadJsonFromFile(json& j, const std::string& filePath, JsonIOFormat format = JsonIOFormat::Auto) {
 		
-		//_ASSERT_EXPR(std::filesystem::exists(std::filesystem::path(filePath)), "ƒtƒ@ƒCƒ‹‚ğŠJ‚¯‚Ü‚¹‚ñ‚Å‚µ‚½: " + filePath);
+		//_ASSERT_EXPR(std::filesystem::exists(std::filesystem::path(filePath)), "ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ: " + filePath);
 		
-		//ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚©‚Á‚½‚çAV‹Kì¬
+		//ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã‹ã£ãŸã‚‰ã€æ–°è¦ä½œæˆ
 		if (!std::filesystem::exists(std::filesystem::path(filePath))) {
 			std::ofstream ofs(filePath);
 			if (ofs) {
-				j = json::object();  // ‹ó‚ÌƒIƒuƒWƒFƒNƒg {} ‚Å‰Šú‰»
-				SaveJsonToFile(j, filePath, format); // V‹Kì¬‚µ‚½ƒtƒ@ƒCƒ‹‚É•Û‘¶
+				j = json::object();  // ç©ºã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ {} ã§åˆæœŸåŒ–
+				SaveJsonToFile(j, filePath, format); // æ–°è¦ä½œæˆã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
 				return true;
 			}
 		}
 
 		std::ios_base::openmode mode = std::ios::in;
 
-		// ƒtƒH[ƒ}ƒbƒg‚ªAuto‚Ìê‡Aƒtƒ@ƒCƒ‹‚ÌŠg’£q‚ÉŠî‚Ã‚¢‚ÄƒtƒH[ƒ}ƒbƒg‚ğ”»’f‚·‚é
+		// ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãŒAutoã®å ´åˆã€ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã«åŸºã¥ã„ã¦ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’åˆ¤æ–­ã™ã‚‹
 		if (format == JsonIOFormat::Auto) {
 			std::filesystem::path path(filePath);
-			// Šg’£q‚ª.bin‚È‚çƒoƒCƒiƒŠƒtƒH[ƒ}ƒbƒgA‚»‚êˆÈŠO‚ÍƒeƒLƒXƒgƒtƒH[ƒ}ƒbƒg‚Æ‚·‚é
+			// æ‹¡å¼µå­ãŒ.binãªã‚‰ãƒã‚¤ãƒŠãƒªãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã€ãã‚Œä»¥å¤–ã¯ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¨ã™ã‚‹
 			if (path.extension() == ".bin") {
 				format = JsonIOFormat::Binary;
 			}

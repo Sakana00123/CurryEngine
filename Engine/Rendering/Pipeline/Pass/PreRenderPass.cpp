@@ -8,7 +8,7 @@
 void PreRenderPass::Initialize()
 {
 	m_preRenderTexture.Create(Graphics::GetDevice(), 1920, 1080);
-	RegisterResizableRenderTexture(&m_preRenderTexture); // ƒŠƒTƒCƒY‚ª•K—v‚ÈƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Æ‚µ‚Ä“o˜^(¦‚±‚ê‚ðŒÄ‚Ño‚³‚È‚¢‚ÆAƒEƒBƒ“ƒhƒEƒTƒCƒY•ÏXŽž‚ÉƒŠƒTƒCƒY‚³‚ê‚È‚¢‚Ì‚Å’ˆÓ)
+	RegisterResizableRenderTexture(&m_preRenderTexture); // ãƒªã‚µã‚¤ã‚ºãŒå¿…è¦ãªãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦ç™»éŒ²(â€»ã“ã‚Œã‚’å‘¼ã³å‡ºã•ãªã„ã¨ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¤‰æ›´æ™‚ã«ãƒªã‚µã‚¤ã‚ºã•ã‚Œãªã„ã®ã§æ³¨æ„)
 }
 
 void PreRenderPass::Finalize()
@@ -21,16 +21,16 @@ void PreRenderPass::Execute(RenderContext* rtx, Scene* scene)
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 	
-	// ƒTƒ“ƒvƒ‰[ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg‚ðƒoƒCƒ“ƒh‚·‚é
+	// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 	renderState->BindSamplerStates(immediateContext);
 
-	// ƒŒƒ“ƒ_ƒŠƒ“ƒO‘O‚Ì‰æ–ÊƒNƒŠƒA
+	// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°å‰ã®ç”»é¢ã‚¯ãƒªã‚¢
 	Graphics::Clear(0.2f, 0.2f, 0.2f, 1.0f);
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðÝ’è‚µ‚ÄƒNƒŠƒA
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®šã—ã¦ã‚¯ãƒªã‚¢
 	rtx->SetRenderTarget(m_preRenderTexture);
 	rtx->ClearCurrentRenderTarget(Color::Black);
 
-	// ƒŒƒ“ƒ_[ƒeƒNƒXƒ`ƒƒ‚ð‹¤—LƒŠƒ\[ƒX‚Æ‚µ‚ÄRenderContext‚ÉÝ’è
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã¨ã—ã¦RenderContextã«è¨­å®š
 	rtx->SetSharedResource("PreRenderTexture", &m_preRenderTexture);
 }

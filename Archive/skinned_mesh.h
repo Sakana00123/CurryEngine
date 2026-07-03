@@ -248,7 +248,7 @@ public:
 	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate = false, float samplingRate = 0);
 	virtual ~SkinnedMesh() = default;
 
-	//アニメーション追加読み込み
+	//繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ霑ｽ蜉隱ｭ縺ｿ霎ｼ縺ｿ
 	bool AppendAnimations(const char* animationFilename, float samplingRate);
 
 	void BlendAnimations(const Animation::KeyFrame* keyframes[2], float factor,

@@ -11,7 +11,7 @@ namespace CurryEngine
 #ifdef USE_IMGUI
 			const char* label = prop.name.c_str();
 			const char* tooltip = nullptr;
-			if (auto* tooltipAttr = prop.GetAttribute("Tooltip")) // Tooltip ‘®«‚ª‚ ‚ê‚ÎAˆø”‚©‚çƒc[ƒ‹ƒ`ƒbƒv‚ðŽæ“¾
+			if (auto* tooltipAttr = prop.GetAttribute("Tooltip")) // Tooltip å±žæ€§ãŒã‚ã‚Œã°ã€å¼•æ•°ã‹ã‚‰ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’å–å¾—
 			{
 				if (!tooltipAttr->args.empty())
 				{

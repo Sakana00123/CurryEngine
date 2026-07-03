@@ -8,16 +8,16 @@ public:
 	Resource() = default;
     virtual ~Resource() = default;
 
-    // ƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh
+    // ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰
     virtual bool LoadFromFile(const std::string& path) = 0;
 
-    // ƒŠƒ[ƒh—piƒzƒbƒgƒŠƒ[ƒh‘Î‰j
+    // ãƒªãƒ­ãƒ¼ãƒ‰ç”¨ï¼ˆãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰å¯¾å¿œï¼‰
     virtual bool Reload() { return LoadFromFile(_path); }
 
-    // ƒŠƒ\[ƒX‚ÌƒpƒXæ“¾
+    // ãƒªã‚½ãƒ¼ã‚¹ã®ãƒ‘ã‚¹å–å¾—
     const std::string& GetPath() const { return _path; }
 
-    // QÆƒJƒEƒ“ƒg
+    // å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆ
     void AddRef() { ++_refCount; }
     void ReleaseRef() { --_refCount; }
     int RefCount() const { return _refCount; }

@@ -14,7 +14,7 @@
 
 class Scene;
 
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒVƒŠƒAƒ‰ƒCƒYƒo[ƒWƒ‡ƒ“ŠÇ——p—ñ‹“Œ^
+// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºãƒãƒ¼ã‚¸ãƒ§ãƒ³ç®¡ç†ç”¨åˆ—æŒ™å‹
 namespace CurryEngine
 {
     enum class GameObjectSerializeVersion
@@ -28,53 +28,53 @@ namespace CurryEngine
 
 /**
  * @file
- * @brief ƒV[ƒ“ã‚É‘¶İ‚·‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠÇ—ƒNƒ‰ƒXB
- * @details ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’Ç‰Á/æ“¾/íœAeqŠÖŒW‚Ì\’zAƒ‰ƒCƒtƒTƒCƒNƒ‹‚Ì“`”À
- *         iUpdate/Draw/Render ‚È‚Çj‚ğ’S“–‚µ‚Ü‚·B
+ * @brief ã‚·ãƒ¼ãƒ³ä¸Šã«å­˜åœ¨ã™ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç®¡ç†ã‚¯ãƒ©ã‚¹ã€‚
+ * @details ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¿½åŠ /å–å¾—/å‰Šé™¤ã€è¦ªå­é–¢ä¿‚ã®æ§‹ç¯‰ã€ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«ã®ä¼æ¬
+ *         ï¼ˆUpdate/Draw/Render ãªã©ï¼‰ã‚’æ‹…å½“ã—ã¾ã™ã€‚
  */
 
 /**
- * @brief ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg–{‘ÌB
- * @details •¡”‚Ì `Component` ‚ğ•Û‚µAŠeíƒCƒxƒ“ƒg‚â•`‰æ‚ğˆêŠ‡ŠÇ—‚µ‚Ü‚·B
+ * @brief ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæœ¬ä½“ã€‚
+ * @details è¤‡æ•°ã® `Component` ã‚’ä¿æŒã—ã€å„ç¨®ã‚¤ãƒ™ãƒ³ãƒˆã‚„æç”»ã‚’ä¸€æ‹¬ç®¡ç†ã—ã¾ã™ã€‚
  */
 class GameObject : public Object// : public std::enable_shared_from_this<GameObject>
 {
 	C_REFLECT(GameObject)
 public:
-    /** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+    /** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
     GameObject() = default;
-    /** @brief ƒfƒXƒgƒ‰ƒNƒ^BƒRƒ“ƒ|[ƒlƒ“ƒg“™‚ÌŒãn––‚ğs‚¢‚Ü‚·B*/
+    /** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆç­‰ã®å¾Œå§‹æœ«ã‚’è¡Œã„ã¾ã™ã€‚*/
     virtual ~GameObject();
-    /** @brief ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+    /** @brief ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
     GameObject(const GameObject&) = default;
 
     /**
-     * @brief ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µA–¼Ì‚ğİ’è‚µ‚Ü‚·B
-     * @param name Šó–]‚·‚é–¼‘OB
+     * @brief ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã€åç§°ã‚’è¨­å®šã—ã¾ã™ã€‚
+     * @param name å¸Œæœ›ã™ã‚‹åå‰ã€‚
      */
     void Create(const std::string& name);
 
-    /** @brief –¼Ì‚ğİ’è‚µ‚Ü‚·B*/
+    /** @brief åç§°ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	void SetName(const std::string& newName) override;
 
     /**
-     * @brief ˆêˆÓ‚È–¼‘O‚ğ¶¬‚µ‚Ü‚·B
-     * @param name ƒx[ƒX–¼B
-     * @return ˆêˆÓ‰»‚³‚ê‚½–¼‘OB
+     * @brief ä¸€æ„ãªåå‰ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+     * @param name ãƒ™ãƒ¼ã‚¹åã€‚
+     * @return ä¸€æ„åŒ–ã•ã‚ŒãŸåå‰ã€‚
      */
     std::string MakeUniqueName(const std::string& name);
 
     /**
-    * @brief w’è‚µ‚½Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’Ç‰Á‚µ‚Ü‚·B
-    * @tparam T ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŒ^B
-    * @return ’Ç‰Á‚³‚ê‚½ T ‚Ìƒ|ƒCƒ“ƒ^B
-    * @details Awake/Initialize ‚Ü‚ÅŒÄ‚Ño‚³‚ê‚Ü‚·B`SetEnable(true)` ‚àÀs‚µ‚Ü‚·B
+    * @brief æŒ‡å®šã—ãŸå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿½åŠ ã—ã¾ã™ã€‚
+    * @tparam T ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å‹ã€‚
+    * @return è¿½åŠ ã•ã‚ŒãŸ T ã®ãƒã‚¤ãƒ³ã‚¿ã€‚
+    * @details Awake/Initialize ã¾ã§å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚`SetEnable(true)` ã‚‚å®Ÿè¡Œã—ã¾ã™ã€‚
     */
     template<class T>
     T* AddComponent() {
         std::string className = typeid(T).name();
         className = className.substr(className.find_last_of(" ") + 1, className.length());
-		if (!ComponentFactory::Exists(className)) { // ’Ç‰Á‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©Šm”F
+		if (!ComponentFactory::Exists(className)) { // è¿½åŠ ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
             _ASSERT_EXPR_A(false, ("Component type not registered: " + className).c_str());
 		}
 		std::shared_ptr<Component> component = ComponentFactory::Create(className);
@@ -86,9 +86,9 @@ public:
     }
 
     /**
-     * @brief w’èŒ^‚ÌÅ‰‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ü‚·B
-     * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-     * @return Œ©‚Â‚©‚Á‚½ `T*`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+     * @brief æŒ‡å®šå‹ã®æœ€åˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚
+     * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+     * @return è¦‹ã¤ã‹ã£ãŸ `T*`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
      */
     template<class T>
     T* GetComponent() {
@@ -104,9 +104,9 @@ public:
     }
 
     /**
-     * @brief w’èŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‘¶İ‚·‚é‚©‚ğŠm”F‚µ‚Ü‚·B
-     * @param typeName Šm”F‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŒ^–¼B
-     * @return ‘¶İ‚·‚éê‡‚Í `true`A‚»‚¤‚Å‚È‚¢ê‡‚Í `false`B
+     * @brief æŒ‡å®šå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒå­˜åœ¨ã™ã‚‹ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚
+     * @param typeName ç¢ºèªã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å‹åã€‚
+     * @return å­˜åœ¨ã™ã‚‹å ´åˆã¯ `true`ã€ãã†ã§ãªã„å ´åˆã¯ `false`ã€‚
 	 */
     bool HasComponent(const std::string& typeName) {
         for (auto& component : _components) {
@@ -118,9 +118,9 @@ public:
 	}
 
     /**
-     * @brief w’èŒ^‚ÌÅ‰‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ü‚·B
-     * @param typeName æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŒ^–¼B
-	 * @return Œ©‚Â‚©‚Á‚½ `std::shared_ptr<Component>`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+     * @brief æŒ‡å®šå‹ã®æœ€åˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚
+     * @param typeName å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å‹åã€‚
+	 * @return è¦‹ã¤ã‹ã£ãŸ `std::shared_ptr<Component>`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
      */
     std::shared_ptr<Component> GetComponentByTypeName(const std::string& typeName) {
         for (auto& component : _components) {
@@ -132,9 +132,9 @@ public:
 	}
 
     /**
-     * @brief w’èŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚·‚×‚Äæ“¾‚µ‚Ü‚·B
-     * @param typeName æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŒ^–¼B
-     * @return Œ©‚Â‚©‚Á‚½ `std::shared_ptr<Component>` ‚Ì”z—ñB‘¶İ‚µ‚È‚¢ê‡‚Í‹ó‚Ì”z—ñB
+     * @brief æŒ‡å®šå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã™ã¹ã¦å–å¾—ã—ã¾ã™ã€‚
+     * @param typeName å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å‹åã€‚
+     * @return è¦‹ã¤ã‹ã£ãŸ `std::shared_ptr<Component>` ã®é…åˆ—ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ç©ºã®é…åˆ—ã€‚
 	 */
 	std::vector<std::shared_ptr<Component>> GetComponentsByTypeName(const std::string& typeName) {
         std::vector<std::shared_ptr<Component>> components;
@@ -147,9 +147,9 @@ public:
 	}
 
     /**
-     * @brief w’èŒ^‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^‚ğæ“¾‚µ‚Ü‚·B
-     * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-     * @return Œ©‚Â‚©‚Á‚½ `std::shared_ptr<T>`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+     * @brief æŒ‡å®šå‹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—ã—ã¾ã™ã€‚
+     * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+     * @return è¦‹ã¤ã‹ã£ãŸ `std::shared_ptr<T>`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
      */
     template<class T>
     std::shared_ptr<T> GetComponentShared() {
@@ -162,9 +162,9 @@ public:
     }
 
     /**
-     * @brief w’èŒ^‚Ì‘SƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ü‚·B
-     * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-     * @return Œ©‚Â‚©‚Á‚½ `T*` ‚Ì”z—ñB
+     * @brief æŒ‡å®šå‹ã®å…¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚
+     * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+     * @return è¦‹ã¤ã‹ã£ãŸ `T*` ã®é…åˆ—ã€‚
      */
     template<class T>
     std::vector<T*> GetComponents() {
@@ -178,9 +178,9 @@ public:
     }
 
     /**
-     * @brief ƒ‹[ƒge‚ÌƒIƒuƒWƒFƒNƒg‚©‚çw’èŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ü‚·B
-     * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-     * @return Œ©‚Â‚©‚Á‚½ `T*`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+     * @brief ãƒ«ãƒ¼ãƒˆè¦ªã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰æŒ‡å®šå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚
+     * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+     * @return è¦‹ã¤ã‹ã£ãŸ `T*`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
      */
     template<class T>
     T* GetComponentInParent() {
@@ -198,9 +198,9 @@ public:
     }
 
     /**
-     * @brief ©g‚¨‚æ‚Ñ’¼‰º‚Ìq‚©‚çw’èŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ü‚·B
-     * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-     * @return Œ©‚Â‚©‚Á‚½ `T*`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+     * @brief è‡ªèº«ãŠã‚ˆã³ç›´ä¸‹ã®å­ã‹ã‚‰æŒ‡å®šå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚
+     * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+     * @return è¦‹ã¤ã‹ã£ãŸ `T*`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
      */
     template<class T>
     T* GetComponentInChildren() {
@@ -216,9 +216,9 @@ public:
     }
 
     /**
-     * @brief ©g‚¨‚æ‚Ñ‚·‚×‚Ä‚Ìq‘·‚©‚çw’èŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚·‚×‚Äæ“¾‚µ‚Ü‚·B
-     * @tparam T æ“¾‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
-     * @return Œ©‚Â‚©‚Á‚½ `T*` ‚Ì”z—ñB
+     * @brief è‡ªèº«ãŠã‚ˆã³ã™ã¹ã¦ã®å­å­«ã‹ã‚‰æŒ‡å®šå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã™ã¹ã¦å–å¾—ã—ã¾ã™ã€‚
+     * @tparam T å–å¾—ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
+     * @return è¦‹ã¤ã‹ã£ãŸ `T*` ã®é…åˆ—ã€‚
 	 */
 	template<class T>
     std::vector<T*> GetComponentsInChildren() {
@@ -226,7 +226,7 @@ public:
         if (T* component = this->GetComponent<T>()) {
             components.push_back(component);
         }
-		// Ä‹A“I‚Éq‚ğ‚½‚Ç‚é
+		// å†å¸°çš„ã«å­ã‚’ãŸã©ã‚‹
 		std::function<void(GameObject*)> fetchChildren;
         fetchChildren = [&](GameObject* object) {
             for (GameObject* child : object->children) {
@@ -240,16 +240,16 @@ public:
 	}
 
     /**
-     * @brief ‘SƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ü‚·B
-     * @return “à•”‚Å•Û‚µ‚Ä‚¢‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì”z—ñi‹¤—Lƒ|ƒCƒ“ƒ^jB
+     * @brief å…¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚
+     * @return å†…éƒ¨ã§ä¿æŒã—ã¦ã„ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®é…åˆ—ï¼ˆå…±æœ‰ãƒã‚¤ãƒ³ã‚¿ï¼‰ã€‚
      */
     std::vector<std::shared_ptr<Component>> GetAllComponents() {
         return _components;
     }
 
     /**
-     * @brief w’èŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğíœƒLƒ…[‚É“o˜^‚µ‚Ü‚·B
-     * @tparam T íœ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
+     * @brief æŒ‡å®šå‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å‰Šé™¤ã‚­ãƒ¥ãƒ¼ã«ç™»éŒ²ã—ã¾ã™ã€‚
+     * @tparam T å‰Šé™¤ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
      */
     template<class T>
     void RemoveComponent() {
@@ -265,141 +265,141 @@ public:
         }
     }
 
-    /** @brief eƒIƒuƒWƒFƒNƒgİ’èB*/
+    /** @brief è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè¨­å®šã€‚*/
     void SetParent(GameObject* newParent);
 
-	/** @brief Œ^–¼‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief å‹åã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	std::string GetTypeName() const override { return "GameObject"; }
 
 private:
     friend class ObjectManager;
     friend class Canvas;
 
-    /** @brief ƒtƒŒ[ƒ€ŠJnˆ—ió‘ÔƒŠƒZƒbƒgjB*/
+    /** @brief ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹å‡¦ç†ï¼ˆçŠ¶æ…‹ãƒªã‚»ãƒƒãƒˆï¼‰ã€‚*/
     void BeginFrame();
-    /** @brief ƒtƒŒ[ƒ€I—¹ˆ—B*/
+    /** @brief ãƒ•ãƒ¬ãƒ¼ãƒ çµ‚äº†å‡¦ç†ã€‚*/
     void EndFrame();
 
-    /** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì Update ŠÖ”‚ğŒÄ‚Ño‚·B*/
+    /** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® Update é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã€‚*/
     void Update(float deltaTime);
-	/** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì Update Œã‚Ìˆ—‚ğŒÄ‚Ño‚·B*/
+	/** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® Update å¾Œã®å‡¦ç†ã‚’å‘¼ã³å‡ºã™ã€‚*/
 	void LateUpdate(float deltaTime);
-	/** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì FixedUpdate ŠÖ”‚ğŒÄ‚Ño‚·B*/
+	/** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® FixedUpdate é–¢æ•°ã‚’å‘¼ã³å‡ºã™ã€‚*/
 	void FixedUpdate(float fixedDeltaTime);
 
-    /** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì 3D •`‰æˆ—i‘Oˆ—jB*/
+    /** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® 3D æç”»å‡¦ç†ï¼ˆå‰å‡¦ç†ï¼‰ã€‚*/
     void BeginRendering(RenderContext* rtx);
-    /** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì 3D •`‰æˆ—i–{ˆ—jB*/
+    /** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® 3D æç”»å‡¦ç†ï¼ˆæœ¬å‡¦ç†ï¼‰ã€‚*/
     void Render(RenderContext* rtx);
-    /** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì 3D •`‰æˆ—iŒãˆ—jB*/
+    /** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® 3D æç”»å‡¦ç†ï¼ˆå¾Œå‡¦ç†ï¼‰ã€‚*/
     void EndRendering(RenderContext* rtx);
 
-    /** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì 2D •`‰æ‘Oˆ—B*/
+    /** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® 2D æç”»å‰å‡¦ç†ã€‚*/
     void Begin(RenderContext* rtx);
-    /** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì 2D •`‰æˆ—B*/
+    /** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® 2D æç”»å‡¦ç†ã€‚*/
     void Draw(RenderContext* rtx);
-    /** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì 2D •`‰æŒãˆ—B*/
+    /** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® 2D æç”»å¾Œå‡¦ç†ã€‚*/
     void End(RenderContext* rtx);
 
-	/** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì”jŠüƒR[ƒ‹ƒoƒbƒN‚ğŒÄ‚Ño‚·B*/
+	/** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ç ´æ£„ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‘¼ã³å‡ºã™ã€‚*/
 	void OnDestroy();
 
 public:
 
-	/** @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğGameObject‚ÉƒAƒ^ƒbƒ`‚µ‚Ü‚·BeqŠÖŒW‚ğ\’z‚µ‚Ü‚·B*/
+	/** @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’GameObjectã«ã‚¢ã‚¿ãƒƒãƒã—ã¾ã™ã€‚è¦ªå­é–¢ä¿‚ã‚’æ§‹ç¯‰ã—ã¾ã™ã€‚*/
     void AttachComponent(const std::string& name, std::shared_ptr<Component>& component, bool generateId = true);
 
-	/** @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒZƒbƒgƒAƒbƒv‚ğs‚¢‚Ü‚·BInitialize ‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã‚’è¡Œã„ã¾ã™ã€‚Initialize ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	void InitializeComponent(std::shared_ptr<Component>& component);
 
-	/** @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŠJnˆ—‚ğs‚¢‚Ü‚·BAwake ‚ğŒÄ‚Ño‚µ‚Ü‚·B*/
+	/** @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®é–‹å§‹å‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚Awake ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚*/
 	void AwakeComponents();
 
 public:
 
-    /** @brief ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒvƒƒpƒeƒB•`‰æB*/
+    /** @brief ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
     void DrawProperty();
 
-	/** @brief ©g‚Æ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒVƒŠƒAƒ‰ƒCƒY‚ğs‚¤B*/
+	/** @brief è‡ªèº«ã¨ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã‚’è¡Œã†ã€‚*/
 	json Serialize() const override;
 
-	/** @brief ©g‚Æ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY‚ğs‚¤B*/
+	/** @brief è‡ªèº«ã¨ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã‚’è¡Œã†ã€‚*/
 	void Deserialize(const json& j) override;
 
-	/** @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY‚ğs‚¢‚Ü‚·B*/
+	/** @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã‚’è¡Œã„ã¾ã™ã€‚*/
 	void DeserializeComponents(const json& j, const std::unordered_map<ObjectId, ObjectId>& idMap);
 
 public:
 
-    /** @brief —LŒø‚©iƒAƒNƒeƒBƒuj‚ğ•Ô‚µ‚Ü‚·B*/
+    /** @brief æœ‰åŠ¹ã‹ï¼ˆã‚¢ã‚¯ãƒ†ã‚£ãƒ–ï¼‰ã‚’è¿”ã—ã¾ã™ã€‚*/
 	C_FUNCTION()
     bool IsActive() const;
 
     /**
-     * @brief —LŒø/–³Œø‚ğİ’è‚µ‚Ü‚·B
-     * @param set `true` ‚Å—LŒøA`false` ‚Å–³ŒøB
+     * @brief æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®šã—ã¾ã™ã€‚
+     * @param set `true` ã§æœ‰åŠ¹ã€`false` ã§ç„¡åŠ¹ã€‚
      */
 	C_FUNCTION()
     void SetActive(bool set);
 
-	/** @brief ©g‚ª—LŒø‚©‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief è‡ªèº«ãŒæœ‰åŠ¹ã‹ã‚’è¿”ã—ã¾ã™ã€‚*/
 	bool IsActiveSelf() const;
 
-	/** @brief ŠK‘wã‚ÅƒAƒNƒeƒBƒu‚©‚ğXV‚µ‚Ü‚·B*/
+	/** @brief éšå±¤ä¸Šã§ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‹ã‚’æ›´æ–°ã—ã¾ã™ã€‚*/
 	void RefreshActiveInHierarchy();
 
-	/** @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒAƒNƒeƒBƒuó‘Ô‚ğXV‚µ‚Ü‚·B*/
+	/** @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’æ›´æ–°ã—ã¾ã™ã€‚*/
     void RefreshComponentActive(Component* component);
 
     /**
-     * @brief ©g‚ğ”jŠü‚µ‚Ü‚·B’x‰„ƒIƒvƒVƒ‡ƒ“•t‚«B
-     * @param delay ”jŠü—\’è‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğÀÛ‚Éíœ‚·‚é‚Ü‚Å‚Ì’x‰„ŠÔi•bjBƒfƒtƒHƒ‹ƒg‚Í 0 •bB
+     * @brief è‡ªèº«ã‚’ç ´æ£„ã—ã¾ã™ã€‚é…å»¶ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä»˜ãã€‚
+     * @param delay ç ´æ£„äºˆå®šã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å®Ÿéš›ã«å‰Šé™¤ã™ã‚‹ã¾ã§ã®é…å»¶æ™‚é–“ï¼ˆç§’ï¼‰ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ 0 ç§’ã€‚
 	 */
 	void Destroy(float delay = 0.0f);
 
     /**
-     * @brief w’è‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ”jŠü‚µ‚Ü‚·B
-     * @param component ”jŠü‘ÎÛB
+     * @brief æŒ‡å®šã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç ´æ£„ã—ã¾ã™ã€‚
+     * @param component ç ´æ£„å¯¾è±¡ã€‚
      */
     void Destroy(Component* component);
 
 public:
-	/** @brief ©g‚Ì•ÏŠ·‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief è‡ªèº«ã®å¤‰æ›ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	Transform* GetTransform() const { return transform; }
 
-	/** @brief eƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğæ“¾‚µ‚Ü‚·B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr` ‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief è¦ªã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr` ã‚’è¿”ã—ã¾ã™ã€‚*/
 	GameObject* GetParent() const { return parent; }
 
-	/** @brief qƒQ[ƒ€ƒIƒuƒWƒFƒNƒgˆê——‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief å­ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä¸€è¦§ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	std::vector<GameObject*> GetChildren() const { return children; }
 
-	/** @brief Š‘®ƒV[ƒ“‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief æ‰€å±ã‚·ãƒ¼ãƒ³ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	Scene* GetScene() const { return scene; }
 
-	/** @brief eƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì ID ‚ğæ“¾‚µ‚Ü‚·B‘¶İ‚µ‚È‚¢ê‡‚Í `ObjectId::Invalid()` ‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief è¦ªã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® ID ã‚’å–å¾—ã—ã¾ã™ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `ObjectId::Invalid()` ã‚’è¿”ã—ã¾ã™ã€‚*/
 	ObjectId GetParentId() const { return parentId; }
 
-	/** @brief Š‘®ƒŒƒCƒ„[‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief æ‰€å±ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	C_FUNCTION()
 	int GetLayer() const { return layer; }
 
-	/** @brief Š‘®ƒŒƒCƒ„[‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief æ‰€å±ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	C_FUNCTION()
     void SetLayer(int layer);
 
-    /** @brief ©g‚Ì•ÏŠ·B*/
+    /** @brief è‡ªèº«ã®å¤‰æ›ã€‚*/
     Transform* transform = nullptr;
 
-    /** @brief eƒQ[ƒ€ƒIƒuƒWƒFƒNƒgB¡Œã”p~—\’èB*/
+    /** @brief è¦ªã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚ä»Šå¾Œå»ƒæ­¢äºˆå®šã€‚*/
     GameObject* parent = nullptr;
 
-	/** @brief eƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì IDBGameObject*‚Ìparent‚Í¡Œã”p~—\’èB*/
+	/** @brief è¦ªã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® IDã€‚GameObject*ã®parentã¯ä»Šå¾Œå»ƒæ­¢äºˆå®šã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::ReadOnly, CurryEngine::PropertyAttributes::NonSerialized)
 	ObjectId parentId = ObjectId::Invalid();
 
     
 
-    /** @brief qƒQ[ƒ€ƒIƒuƒWƒFƒNƒgˆê——B*/
+    /** @brief å­ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä¸€è¦§ã€‚*/
     std::vector<GameObject*> children;
 
 
@@ -407,30 +407,30 @@ public:
 private:
     friend class SceneMigrator;
 	friend class GameObjectFactory;
-    /** @brief Š‘®ƒV[ƒ“B*/
+    /** @brief æ‰€å±ã‚·ãƒ¼ãƒ³ã€‚*/
 	Scene* scene = nullptr;
 	
-    /** @brief Š‘®ƒŒƒCƒ„[B•`‰æ‡‚âÕ“Ë”»’è‚È‚Ç‚Åg—p‚³‚ê‚é‚±‚Æ‚ğ‘z’èB*/
+    /** @brief æ‰€å±ãƒ¬ã‚¤ãƒ¤ãƒ¼ã€‚æç”»é †ã‚„è¡çªåˆ¤å®šãªã©ã§ä½¿ç”¨ã•ã‚Œã‚‹ã“ã¨ã‚’æƒ³å®šã€‚*/
     int layer = 0;
 
-    /** @brief Š—L‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgˆê——B*/
+    /** @brief æ‰€æœ‰ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆä¸€è¦§ã€‚*/
     std::vector<std::shared_ptr<Component>> _components;
-    /** @brief íœ—\’è‚ÌƒRƒ“ƒ|[ƒlƒ“ƒgˆê——B*/
+    /** @brief å‰Šé™¤äºˆå®šã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆä¸€è¦§ã€‚*/
     std::vector<std::shared_ptr<Component>> removes;
-    /** @brief Create Ï‚İ‚©B*/
+    /** @brief Create æ¸ˆã¿ã‹ã€‚*/
     bool isCreated = false;
-	/** @brief e‚ª‚Ü‚¾İ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ì•Û—¯e IDB*/
+	/** @brief è¦ªãŒã¾ã è¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã®ä¿ç•™è¦ª IDã€‚*/
 	ObjectId pendingParentID = ObjectId::Invalid();
-	/** @brief ©g‚ÌƒAƒNƒeƒBƒuƒtƒ‰ƒOB*/
+	/** @brief è‡ªèº«ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ•ãƒ©ã‚°ã€‚*/
     C_PROPERTY()
 	bool activeSelf = true;
-	/** @brief ŠK‘wã‚ÅƒAƒNƒeƒBƒu‚©B*/
+	/** @brief éšå±¤ä¸Šã§ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‹ã€‚*/
 	bool activeInHierarchy = true;
 
     C_PROPERTY()
-	bool isDefaultOpenOnHierarchy = true; // ƒfƒtƒHƒ‹ƒg‚ÅƒqƒGƒ‰ƒ‹ƒL[ã‚ÅŠJ‚¢‚Ä‚¢‚é‚©
+	bool isDefaultOpenOnHierarchy = true; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ãƒ¼ä¸Šã§é–‹ã„ã¦ã„ã‚‹ã‹
 
 private:
-	int version = 0; // ƒVƒŠƒAƒ‰ƒCƒYƒo[ƒWƒ‡ƒ“
-	float destroyDelay = 0.0f; // ”jŠü—\’è‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğÀÛ‚Éíœ‚·‚é‚Ü‚Å‚Ì’x‰„ŠÔi•bj
+	int version = 0; // ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºãƒãƒ¼ã‚¸ãƒ§ãƒ³
+	float destroyDelay = 0.0f; // ç ´æ£„äºˆå®šã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å®Ÿéš›ã«å‰Šé™¤ã™ã‚‹ã¾ã§ã®é…å»¶æ™‚é–“ï¼ˆç§’ï¼‰
 };

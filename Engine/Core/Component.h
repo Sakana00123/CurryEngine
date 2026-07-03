@@ -17,9 +17,9 @@
 
 /**
  * @file
- * @brief ‘S‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì‹¤’ÊŠî’êƒNƒ‰ƒXB
- * @details ƒ‰ƒCƒtƒTƒCƒNƒ‹iAwake/Initialize/Update/Render/Draw/Finalize ‚È‚Çj‚Æ
- *          —LŒø/–³ŒøØ‘ÖAŠ‘® `GameObject` ‚ÌQÆAƒCƒ“ƒXƒyƒNƒ^•\¦§Œä‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief å…¨ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å…±é€šåŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«ï¼ˆAwake/Initialize/Update/Render/Draw/Finalize ãªã©ï¼‰ã¨
+ *          æœ‰åŠ¹/ç„¡åŠ¹åˆ‡æ›¿ã€æ‰€å± `GameObject` ã®å‚ç…§ã€ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿è¡¨ç¤ºåˆ¶å¾¡ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class GameObject;
 
@@ -28,143 +28,143 @@ class Transform;
 class Scene;
 
 /**
- * @brief ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚É•t‚·‚éU‚é•‘‚¢‚ÌŠî’êƒNƒ‰ƒXB
- * @details Šeíƒ‰ƒCƒtƒTƒCƒNƒ‹‰¼‘zŠÖ”‚ğ’è‹`‚µA”h¶ƒNƒ‰ƒX‚Å•K—v‚Èˆ—‚ğÀ‘•‚µ‚Ü‚·B
+ * @brief ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ä»˜éšã™ã‚‹æŒ¯ã‚‹èˆã„ã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details å„ç¨®ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«ä»®æƒ³é–¢æ•°ã‚’å®šç¾©ã—ã€æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§å¿…è¦ãªå‡¦ç†ã‚’å®Ÿè£…ã—ã¾ã™ã€‚
  */
 class Component : public Object
 {
 	C_REFLECT(Component)
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	Component() = default;
 	/**
-	 * @brief ƒfƒXƒgƒ‰ƒNƒ^B
-	 * @details I—¹ˆ—‚Æ‚µ‚Ä `OnDestroy()` ‚ğŒÄ‚Ño‚µ‚Ü‚·B
+	 * @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	 * @details çµ‚äº†å‡¦ç†ã¨ã—ã¦ `OnDestroy()` ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚
 	 */
 	virtual ~Component() { OnDestroy(); SetEnabled(false); }
 public:
-	/** @brief ‚±‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŠ‘®‚·‚é `GameObject`B*/
+	/** @brief ã“ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒæ‰€å±ã™ã‚‹ `GameObject`ã€‚*/
 	GameObject* gameObject = nullptr;
 
-	/** @brief Š—LÒ `GameObject` ‚ğæ“¾B*/
+	/** @brief æ‰€æœ‰è€… `GameObject` ã‚’å–å¾—ã€‚*/
 	GameObject* GetOwner() const
 	{
-		// `gameObject` ‚ª—LŒø‚Èó‘Ô‚Å‚ ‚ê‚Î•Ô‚·B–³Œø‚Èó‘Ôi—á: ”jŠü‚³‚ê‚½j‚È‚ç `nullptr` ‚ğ•Ô‚·B
+		// `gameObject` ãŒæœ‰åŠ¹ãªçŠ¶æ…‹ã§ã‚ã‚Œã°è¿”ã™ã€‚ç„¡åŠ¹ãªçŠ¶æ…‹ï¼ˆä¾‹: ç ´æ£„ã•ã‚ŒãŸï¼‰ãªã‚‰ `nullptr` ã‚’è¿”ã™ã€‚
 		return gameObject;
 	}
 
-	/** @brief Š‘® `GameObject` ‚Ì `Transform` ‚ğæ“¾B*/
+	/** @brief æ‰€å± `GameObject` ã® `Transform` ã‚’å–å¾—ã€‚*/
 	Transform* GetTransform() const;
 
-	/** @brief Š‘® `GameObject` ‚ÌŠ‘®‚·‚é `Scene` ‚ğæ“¾B*/
+	/** @brief æ‰€å± `GameObject` ã®æ‰€å±ã™ã‚‹ `Scene` ã‚’å–å¾—ã€‚*/
 	Scene* GetScene() const;
 
 	/**
-	 * @brief —LŒø/–³Œø‚ğİ’è‚µ‚Ü‚·B
-	 * @param set `true` ‚Å—LŒøA`false` ‚Å–³ŒøB
+	 * @brief æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param set `true` ã§æœ‰åŠ¹ã€`false` ã§ç„¡åŠ¹ã€‚
 	 */
 	void SetEnabled(bool set);
 	/**
-	 * @brief Œ»İ—LŒø‚©‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief ç¾åœ¨æœ‰åŠ¹ã‹ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	bool IsEnabled() const;
 
 	/**
-	 * @brief ©g‚Ì—LŒøó‘Ô‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief è‡ªèº«ã®æœ‰åŠ¹çŠ¶æ…‹ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	bool IsEnabledSelf() const;
 
-	/** @brief ‘®«ƒtƒ‰ƒO‚ğæ“¾BComponentAttributes –¼‘O‹óŠÔ‚Ìenum‚Æ‘Î‰B*/
+	/** @brief å±æ€§ãƒ•ãƒ©ã‚°ã‚’å–å¾—ã€‚ComponentAttributes åå‰ç©ºé–“ã®enumã¨å¯¾å¿œã€‚*/
 	uint8_t GetAttributeFlags() const { return attributeFlags; }
 
 	/**
-	 * @brief ‚±‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ”jŠü‚µ‚Ü‚·B
+	 * @brief ã“ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç ´æ£„ã—ã¾ã™ã€‚
 	 */
 	void Destroy();
 
 	/**
-	 * @brief w’è‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ”jŠü‚µ‚Ü‚·B
-	 * @param obj ”jŠü‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB
+	 * @brief æŒ‡å®šã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç ´æ£„ã—ã¾ã™ã€‚
+	 * @param obj ç ´æ£„ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
 	 */
 	static void Destroy(GameObject* obj);
 
-	// Prefab ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‰»(ƒtƒ@ƒCƒ‹ƒpƒX”Å)
+	// Prefab ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–(ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ç‰ˆ)
 	static GameObject* Instantiate(const std::string& prefabPath, Transform* parent = nullptr, const Vector3& position = Vector3::Zero, const Quaternion& rotation = Quaternion::Identity);
 	static GameObject* Instantiate(const std::string& prefabPath, const Vector3& position = Vector3::Zero, const Quaternion& rotation = Quaternion::Identity);
-	// Prefab ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‰»(ƒIƒuƒWƒFƒNƒg”Å)
+	// Prefab ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–(ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç‰ˆ)
 	static GameObject* Instantiate(GameObject* prefab, Transform* parent = nullptr, const Vector3& position = Vector3::Zero, const Quaternion& rotation = Quaternion::Identity);
 	static GameObject* Instantiate(GameObject* prefab, const Vector3& position = Vector3::Zero, const Quaternion& rotation = Quaternion::Identity);
 
 protected:
 	friend class GameObject;
 
-	/** @brief ƒtƒŒ[ƒ€ŠJnˆ—ió‘ÔƒŠƒZƒbƒgjB*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹å‡¦ç†ï¼ˆçŠ¶æ…‹ãƒªã‚»ãƒƒãƒˆï¼‰ã€‚*/
 	virtual void BeginFrame() {};
-	/** @brief ƒtƒŒ[ƒ€I—¹ˆ—B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ çµ‚äº†å‡¦ç†ã€‚*/
 	virtual void EndFrame() {};
 
-	/** @brief ‰Šú‰»ˆ—i¶¬’¼Œã‚Éˆê“x‚¾‚¯jB*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ï¼ˆç”Ÿæˆç›´å¾Œã«ä¸€åº¦ã ã‘ï¼‰ã€‚*/
 	virtual void Initialize() {};
-	/** @brief ŠJn‘Oˆ—B‘S‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì `Initialize()` Œã‚Éˆê“x‚¾‚¯ŒÄ‚Ño‚³‚ê‚Ü‚·B*/
+	/** @brief é–‹å§‹å‰å‡¦ç†ã€‚å…¨ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã® `Initialize()` å¾Œã«ä¸€åº¦ã ã‘å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚*/
 	virtual void Awake() {};
-	/** @brief ŠJnˆ—BƒV[ƒ“ŠJn‚Éˆê“x‚¾‚¯ŒÄ‚Ño‚³‚ê‚Ü‚·B*/
+	/** @brief é–‹å§‹å‡¦ç†ã€‚ã‚·ãƒ¼ãƒ³é–‹å§‹æ™‚ã«ä¸€åº¦ã ã‘å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚*/
 	virtual void Start() {};
 	/**
-	 * @brief XVˆ—B
-	 * @param deltaTime ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bjB
+	 * @brief æ›´æ–°å‡¦ç†ã€‚
+	 * @param deltaTime å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	virtual void Update(float deltaTime) {};
 	/**
-	 * @brief XVˆ—‚ÌŒãˆ—B`Update()` ‚ÌŒã‚ÉŒÄ‚Ño‚³‚ê‚Ü‚·B
-	 * @param deltaTime ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bjB
+	 * @brief æ›´æ–°å‡¦ç†ã®å¾Œå‡¦ç†ã€‚`Update()` ã®å¾Œã«å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚
+	 * @param deltaTime å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	virtual void LateUpdate(float deltaTime) {};
 	/**
-	 * @brief ŒÅ’èXVˆ—B
-	 * @param fixedDeltaTime ŒÅ’èXV‚ÌŒo‰ßŠÔi•bjB
+	 * @brief å›ºå®šæ›´æ–°å‡¦ç†ã€‚
+	 * @param fixedDeltaTime å›ºå®šæ›´æ–°ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	virtual void FixedUpdate(float fixedDeltaTime) {};
-	/** @brief 3D •`‰æ‚Ì‘Oˆ—B*/
+	/** @brief 3D æç”»ã®å‰å‡¦ç†ã€‚*/
 	virtual void BeginRendering(RenderContext* rtx) {};
-	/** @brief 3D •`‰æˆ—B*/
+	/** @brief 3D æç”»å‡¦ç†ã€‚*/
 	virtual void Render(RenderContext* rtx) {};
-	/** @brief 3D •`‰æ‚ÌŒãˆ—B*/
+	/** @brief 3D æç”»ã®å¾Œå‡¦ç†ã€‚*/
 	virtual void EndRendering(RenderContext* rtx) {};
-	/** @brief 2D •`‰æ‚Ì‘Oˆ—B*/
+	/** @brief 2D æç”»ã®å‰å‡¦ç†ã€‚*/
 	virtual void Begin(RenderContext* rtx) {};
-	/** @brief 2D •`‰æˆ—B*/
+	/** @brief 2D æç”»å‡¦ç†ã€‚*/
 	virtual void Draw(RenderContext* rtx) {};
-	/** @brief 2D •`‰æ‚ÌŒãˆ—B*/
+	/** @brief 2D æç”»ã®å¾Œå‡¦ç†ã€‚*/
 	virtual void End(RenderContext* rtx) {};
 
-	/** @brief —LŒø‰»‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief æœ‰åŠ¹åŒ–æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	virtual void OnEnable() {};
-	/** @brief –³Œø‰»‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ç„¡åŠ¹åŒ–æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	virtual void OnDisable() {};
-	/** @brief ”jŠü’¼‘O‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ç ´æ£„ç›´å‰ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	virtual void OnDestroy() {};
-	/** @brief I—¹ˆ—BGameObject”jŠü‘O‚ÉŒÄ‚Ño‚³‚ê‚Ü‚·B*/
+	/** @brief çµ‚äº†å‡¦ç†ã€‚GameObjectç ´æ£„å‰ã«å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚*/
 	virtual void Finalize() {};
 
 	friend class Transform;
 	friend class GameObjectFactory;
-	/** @brief Š‘® `GameObject` ‚Ì `Transform` ‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief æ‰€å± `GameObject` ã® `Transform` ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	virtual void OnTransformChanged() {};
 	
-	// TODO: Š—LÒ `GameObject` ‚ğ’¼ÚQÆ‚·‚é‚Ì‚Å‚Í‚È‚­AIDƒx[ƒX‚É•ÏX‚·‚éB‚±‚ê‚É‚æ‚èAŠ—LÒ‚ª”jŠü‚³‚ê‚½ê‡‚ÌˆÀ‘S«‚ªŒüã‚µ‚Ü‚·B
-	/** @brief Š—LÒ `GameObject` ‚ğİ’èiƒGƒ“ƒWƒ““à•”—pjB*/
+	// TODO: æ‰€æœ‰è€… `GameObject` ã‚’ç›´æ¥å‚ç…§ã™ã‚‹ã®ã§ã¯ãªãã€IDãƒ™ãƒ¼ã‚¹ã«å¤‰æ›´ã™ã‚‹ã€‚ã“ã‚Œã«ã‚ˆã‚Šã€æ‰€æœ‰è€…ãŒç ´æ£„ã•ã‚ŒãŸå ´åˆã®å®‰å…¨æ€§ãŒå‘ä¸Šã—ã¾ã™ã€‚
+	/** @brief æ‰€æœ‰è€… `GameObject` ã‚’è¨­å®šï¼ˆã‚¨ãƒ³ã‚¸ãƒ³å†…éƒ¨ç”¨ï¼‰ã€‚*/
 	void SetOwner(GameObject* gameObject) { this->gameObject = gameObject; }
 
 public:
-	/** @brief ‚±‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ğæ“¾‚µ‚Ü‚·B•`‰æ‚âÕ“Ë”»’è‚È‚Ç‚Åg—p‚³‚ê‚Ü‚·B*/
+	/** @brief ã“ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’å–å¾—ã—ã¾ã™ã€‚æç”»ã‚„è¡çªåˆ¤å®šãªã©ã§ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚*/
 	virtual Math::BoundingBox GetBoundingBox() const { return Math::BoundingBox({}, {}); }
 
 #ifdef USE_IMGUI
-	/** @brief ƒfƒoƒbƒO GUI ‚Ì•`‰æiƒCƒ“ƒXƒyƒNƒ^‚È‚ÇjB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚° GUI ã®æç”»ï¼ˆã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãªã©ï¼‰ã€‚*/
 	virtual void DrawProperty(const struct PropertyDrawContext& ctx);
 #endif // USE_IMGUI
 
-	/** @brief Š—LÒ `GameObject` ‚ÌˆêˆÓ¯•Êq‚ğİ’èiƒGƒ“ƒWƒ““à•”—pjB*/
+	/** @brief æ‰€æœ‰è€… `GameObject` ã®ä¸€æ„è­˜åˆ¥å­ã‚’è¨­å®šï¼ˆã‚¨ãƒ³ã‚¸ãƒ³å†…éƒ¨ç”¨ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetOwnerId(ObjectId ownerId) { this->ownerId = ownerId; }
 
@@ -179,30 +179,30 @@ public:
 	
 private:
 	friend class ComponentFactory;
-	/** @brief ‘®«ƒtƒ‰ƒO‚ğİ’èBComponentAttributes –¼‘O‹óŠÔ‚Ìenum‚Æ‘Î‰B*/
+	/** @brief å±æ€§ãƒ•ãƒ©ã‚°ã‚’è¨­å®šã€‚ComponentAttributes åå‰ç©ºé–“ã®enumã¨å¯¾å¿œã€‚*/
 	void SetAttributeFlags(uint8_t flags) { attributeFlags = flags; }
 
 protected:
-	/** @brief ©g‚Ì—LŒøó‘ÔB*/
+	/** @brief è‡ªèº«ã®æœ‰åŠ¹çŠ¶æ…‹ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
 	bool enabledSelf = true;
 
-	/** @brief Œ»İ‚Ì—LŒøó‘ÔB*/
+	/** @brief ç¾åœ¨ã®æœ‰åŠ¹çŠ¶æ…‹ã€‚*/
 	bool enabledInGame = false;
 public:
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^‚©‚ç‚±‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg©‘Ì‚ğ‰B‚·‚©B*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã‹ã‚‰ã“ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆè‡ªä½“ã‚’éš ã™ã‹ã€‚*/
 	bool hideInspector = false;
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^‚ÅƒvƒƒpƒeƒB€–Ú‚ğ‰B‚·‚©B*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£é …ç›®ã‚’éš ã™ã‹ã€‚*/
 	bool hideInspectorProperty = false;
 private:
-	/** @brief Š‘® `GameObject` ‚ÌˆêˆÓ¯•ÊqB*/
+	/** @brief æ‰€å± `GameObject` ã®ä¸€æ„è­˜åˆ¥å­ã€‚*/
 	ObjectId ownerId = ObjectId::Invalid();
 
-	/** @brief ‘®«ƒtƒ‰ƒOBComponentAttributes –¼‘O‹óŠÔ‚Ìenum‚Æ‘Î‰B*/
+	/** @brief å±æ€§ãƒ•ãƒ©ã‚°ã€‚ComponentAttributes åå‰ç©ºé–“ã®enumã¨å¯¾å¿œã€‚*/
 	uint8_t attributeFlags = 0U;
 
 	friend class GameObject;
-	bool m_initialized = false; // Initialize() ‚ªŒÄ‚Ño‚³‚ê‚½‚©‚Ç‚¤‚©
-	bool m_awaked = false; // Awake() ‚ªŒÄ‚Ño‚³‚ê‚½‚©‚Ç‚¤‚©
-	bool m_started = false; // Start() ‚ªŒÄ‚Ño‚³‚ê‚½‚©‚Ç‚¤‚©
+	bool m_initialized = false; // Initialize() ãŒå‘¼ã³å‡ºã•ã‚ŒãŸã‹ã©ã†ã‹
+	bool m_awaked = false; // Awake() ãŒå‘¼ã³å‡ºã•ã‚ŒãŸã‹ã©ã†ã‹
+	bool m_started = false; // Start() ãŒå‘¼ã³å‡ºã•ã‚ŒãŸã‹ã©ã†ã‹
 };

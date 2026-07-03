@@ -68,7 +68,7 @@ bool EffectEditor::IsPreviewFocused()
 
 void EffectEditor::Initialize()
 {
-	// ‰Šú‰»ˆ—‚ª•K—v‚È‚ç‚±‚±‚É’Ç‰Á
+	// åˆæœŸåŒ–å‡¦ç†ãŒå¿…è¦ãªã‚‰ã“ã“ã«è¿½åŠ 
 }
 
 void EffectEditor::DrawGUI(RenderContext* context)
@@ -83,9 +83,9 @@ void EffectEditor::DrawGUI(RenderContext* context)
 	{
 		ImGui::Begin("Effect Editor", &isOpen);
 
-		// ƒ[ƒhEƒZ[ƒuE“K—pEƒNƒŠƒAƒ{ƒ^ƒ“
+		// ãƒ­ãƒ¼ãƒ‰ãƒ»ã‚»ãƒ¼ãƒ–ãƒ»é©ç”¨ãƒ»ã‚¯ãƒªã‚¢ãƒœã‚¿ãƒ³
 		{
-			// ƒ[ƒhEƒZ[ƒuƒ{ƒ^ƒ“
+			// ãƒ­ãƒ¼ãƒ‰ãƒ»ã‚»ãƒ¼ãƒ–ãƒœã‚¿ãƒ³
 			if (ImGui::Button("Load"))
 			{ 
 				if (EffectHandle handle = EffectManager::LoadEffectDataWithDialog(); handle > -1)
@@ -96,7 +96,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			ImGui::SameLine();
 			if (ImGui::Button("Save")) { EffectManager::SaveEffectDataWithDialog(currentEffectHandle); }
 			ImGui::SameLine(0, 30.0f);
-			// ƒNƒŠƒAƒ{ƒ^ƒ“
+			// ã‚¯ãƒªã‚¢ãƒœã‚¿ãƒ³
 			if (ImGui::Button("Clear")) { EffectManager::ClearAll(); }
 
 		}
@@ -105,60 +105,60 @@ void EffectEditor::DrawGUI(RenderContext* context)
 		//ImGui::TableSetupColumn("EffectPreviewWindow", ImGuiTableColumnFlags_WidthStretch);
 		//ImGui::TableSetupColumn("Effect Data List", ImGuiTableColumnFlags_WidthFixed, 200.0f);
 
-		//// ¶‘¤‚ÌƒJƒ‰ƒ€
+		//// å·¦å´ã®ã‚«ãƒ©ãƒ 
 		//ImGui::TableNextRow();
 		//ImGui::TableSetColumnIndex(0);
 		
-		// ƒGƒtƒFƒNƒgƒvƒŒƒrƒ…[ƒEƒBƒ“ƒhƒE
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
 		if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
 		{
-			static constexpr float aspectRatio = 9.0f / 16.0f; // 16:9‚ÌƒAƒXƒyƒNƒg”ä
-			static constexpr float windowWidth = 400.0f; // ƒEƒBƒ“ƒhƒE‚Ì•‚ğŒÅ’è
-			static constexpr float windowHeight = windowWidth * aspectRatio; // ‚‚³‚ğƒAƒXƒyƒNƒg”ä‚ÉŠî‚Ã‚¢‚ÄŒvZ
+			static constexpr float aspectRatio = 9.0f / 16.0f; // 16:9ã®ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
+			static constexpr float windowWidth = 400.0f; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å¹…ã‚’å›ºå®š
+			static constexpr float windowHeight = windowWidth * aspectRatio; // é«˜ã•ã‚’ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã«åŸºã¥ã„ã¦è¨ˆç®—
 			ImVec2 windowSize(windowWidth, windowHeight);
 			ImGui::Image(previewImage->GetSRV(), windowSize);
 
-			// ƒvƒŒƒrƒ…[ƒEƒBƒ“ƒhƒE‚ªƒtƒH[ƒJƒX‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+			// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 			isPreviewFocused = ImGui::IsItemHovered();
 		}
 
-		// ‰E‘¤‚ÌƒJƒ‰ƒ€
+		// å³å´ã®ã‚«ãƒ©ãƒ 
 		//ImGui::TableSetColumnIndex(1);
 
-		// ƒGƒtƒFƒNƒgƒf[ƒ^ƒŠƒXƒg
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆ
 		if (ImGui::CollapsingHeader("Effect Data List", ImGuiTreeNodeFlags_Leaf))
 		{
-			ImGui::Dummy(ImVec2(0.0f, 3.0f)); // ­‚µƒXƒy[ƒX‚ğ‹ó‚¯‚é
+			ImGui::Dummy(ImVec2(0.0f, 3.0f)); // å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 
 			//for (size_t emitterIndex = 0; emitterIndex < EffectManager::effectData.size(); ++emitterIndex)
 			for (auto& [emitterIndex, effect] : EffectManager::effectData)
 			{
-				// ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+				// ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 				ImGui::PushID(static_cast<int>(emitterIndex));
 
-				ImGui::Dummy(ImVec2(0.0f, 2.0f)); // ­‚µƒXƒy[ƒX‚ğ‹ó‚¯‚é
+				ImGui::Dummy(ImVec2(0.0f, 2.0f)); // å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 
-				// ƒNƒŠƒbƒNó‘Ôƒtƒ‰ƒO
+				// ã‚¯ãƒªãƒƒã‚¯çŠ¶æ…‹ãƒ•ãƒ©ã‚°
 				bool isClicked = false;
 
-				// ƒZƒŒƒNƒ^ƒuƒ‹‚ÅƒGƒtƒFƒNƒg–¼‚ğ•\¦
+				// ã‚»ãƒ¬ã‚¯ã‚¿ãƒ–ãƒ«ã§ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåã‚’è¡¨ç¤º
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
 				ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
 				ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
 				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 
-				ImGui::Dummy(ImVec2(2.0f, 0.0f)); // ­‚µƒXƒy[ƒX‚ğ‹ó‚¯‚é
+				ImGui::Dummy(ImVec2(2.0f, 0.0f)); // å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 				ImGui::SameLine();
 				isClicked |= ImGui::Selectable(effect.name.c_str(), currentEffectHandle == emitterIndex);
 				ImGui::PopStyleColor(4);
 
-				// ƒNƒŠƒbƒN‚µ‚½‚çŒ»İ‚ÌƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹‚ğXV
+				// ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰ç¾åœ¨ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«ã‚’æ›´æ–°
 				if (isClicked)
 				{
 					currentEffectHandle = static_cast<EffectHandle>(emitterIndex);
 				}
 #if 1
-				// ‰EƒNƒŠƒbƒN‚Åíœƒƒjƒ…[•\¦
+				// å³ã‚¯ãƒªãƒƒã‚¯ã§å‰Šé™¤ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤º
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
 				{
 					ImGui::OpenPopup("EffectDataContextMenu");
@@ -169,19 +169,19 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					if (ImGui::MenuItem("Delete"))
 					{
 						EffectManager::effectData.erase(EffectManager::effectData.begin() + emitterIndex);
-						// Œ»İ‚ÌƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹‚ªíœ‚³‚ê‚½ê‡A–³Œø‚É‚·‚é
+						// ç¾åœ¨ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«ãŒå‰Šé™¤ã•ã‚ŒãŸå ´åˆã€ç„¡åŠ¹ã«ã™ã‚‹
 						if (currentEffectHandle == static_cast<EffectHandle>(emitterIndex))
 						{
 							currentEffectHandle = -1;
 						}
 						ImGui::EndPopup();
 						ImGui::PopID();
-						break; // ƒ‹[ƒv‚ğ”²‚¯‚ÄÄ•`‰æ
+						break; // ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã¦å†æç”»
 					}
 #endif // 0
 					if (ImGui::MenuItem("Copy"))
 					{
-						// ƒGƒtƒFƒNƒgƒf[ƒ^‚ğƒRƒs[i•¡»j
+						// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ï¼ˆè¤‡è£½ï¼‰
 						EffectManager::CopyEffectData(static_cast<EffectHandle>(emitterIndex));
 					}
 					ImGui::EndPopup();
@@ -190,17 +190,17 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				ImGui::PopID();
 			}
 
-			ImGui::Dummy(ImVec2(0.0f, 5.0f)); // ­‚µƒXƒy[ƒX‚ğ‹ó‚¯‚é
+			ImGui::Dummy(ImVec2(0.0f, 5.0f)); // å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 
-			// V‚µ‚¢ƒGƒtƒFƒNƒgƒf[ƒ^’Ç‰Áƒ{ƒ^ƒ“
+			// æ–°ã—ã„ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿è¿½åŠ ãƒœã‚¿ãƒ³
 			if (ImGui::Button("Add New Effect Data"))
 			{
 				currentEffectHandle = EffectManager::CreateEffectData();
-				// ’Ç‰Á‚µ‚½ƒGƒtƒFƒNƒgƒf[ƒ^‚Ì–¼‘O‚ğİ’è
+				// è¿½åŠ ã—ãŸã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã®åå‰ã‚’è¨­å®š
 				EffectManager::effectData[currentEffectHandle].name = "Effect " + std::to_string(currentEffectHandle);
 			}
 			ImGui::SameLine();
-			// ‘SƒGƒtƒFƒNƒgƒf[ƒ^ƒNƒŠƒAƒ{ƒ^ƒ“
+			// å…¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢ãƒœã‚¿ãƒ³
 			if (ImGui::Button("Clear All Effect Data"))
 			{
 				EffectManager::ClearEffectData();
@@ -208,14 +208,14 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			}
 		}
 
-		ImGui::Dummy(ImVec2(0.0f, 5.0f)); // ­‚µƒXƒy[ƒX‚ğ‹ó‚¯‚é
+		ImGui::Dummy(ImVec2(0.0f, 5.0f)); // å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 
 		ImGui::Separator();
-		ImGui::Dummy(ImVec2(0.0f, 5.0f)); // ­‚µƒXƒy[ƒX‚ğ‹ó‚¯‚é
+		ImGui::Dummy(ImVec2(0.0f, 5.0f)); // å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 
-		// ƒGƒ~ƒbƒ^ƒGƒfƒBƒ^
+		// ã‚¨ãƒŸãƒƒã‚¿ã‚¨ãƒ‡ã‚£ã‚¿
 		{
-			// Œ»İ‚ÌƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹‚ª—LŒø‚©ƒ`ƒFƒbƒN
+			// ç¾åœ¨ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«ãŒæœ‰åŠ¹ã‹ãƒã‚§ãƒƒã‚¯
 			if (currentEffectHandle < 0 || currentEffectHandle >= EffectManager::effectData.size())
 			{
 				ImGui::Text("No Emitter Data Selected.");
@@ -223,10 +223,10 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				ImGui::End();
 				return;
 			}
-			// ƒGƒ~ƒbƒ^ƒf[ƒ^ƒŠƒXƒg‚ÌQÆ
+			// ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã®å‚ç…§
 			auto& emitterDataList = EffectManager::effectData.at(currentEffectHandle).emitters;
 
-			// ƒGƒtƒFƒNƒg–¼•ÒW
+			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåç·¨é›†
 			char effectNameBuffer[256]{};
 			if (!ImGui::IsItemEdited())
 			{
@@ -237,13 +237,13 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			{
 				EffectManager::effectData.at(currentEffectHandle).name = effectNameBuffer;
 			}
-			// ƒGƒtƒFƒNƒgÄ¶ƒ{ƒ^ƒ“
+			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿãƒœã‚¿ãƒ³
 			if (ImGui::Button("Play"))
 			{
 				EffectManager::Play(currentEffectHandle);
 			}
 			ImGui::SameLine();
-			// ƒGƒtƒFƒNƒg’â~ƒ{ƒ^ƒ“
+			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåœæ­¢ãƒœã‚¿ãƒ³
 			if (ImGui::Button("Stop"))
 			{
 				EffectManager::Stop(currentEffectHandle);
@@ -251,10 +251,10 @@ void EffectEditor::DrawGUI(RenderContext* context)
 
 			ImGui::BeginChild("EmitterDataList", ImVec2(0, -35.0f));
 
-			// ŠeƒGƒ~ƒbƒ^ƒf[ƒ^•\¦
+			// å„ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿è¡¨ç¤º
 			for (size_t i = 0; i < emitterDataList.size(); ++i)
 			{
-				// ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+				// ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 				ImGui::PushID(static_cast<int>(i));
 
 				auto& emitterData = emitterDataList[i];
@@ -281,12 +281,12 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					// loop
 					DrawCheckbox("Loop", emitterData.emitData.loop);
 
-					// ƒeƒNƒXƒ`ƒƒƒpƒX‚Ìƒoƒbƒtƒ@
+					// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹ã®ãƒãƒƒãƒ•ã‚¡
 					char texturePathBuffer[256]{};
-					// ƒeƒNƒXƒ`ƒƒƒpƒX‚ÌQÆƒ{ƒ^ƒ“
+					// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹ã®å‚ç…§ãƒœã‚¿ãƒ³
 					if (ImGui::Button("Browse"))
 					{
-						// ƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO‚ğŠJ‚­
+						// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‹ã
 						const char* filter = "Image Files\0*.png;*.jpg;*.jpeg;*.bmp;*.tga\0All Files\0*.*\0";
 						DialogResult result = Dialog::OpenFileName(texturePathBuffer, sizeof(texturePathBuffer), filter, "Select Texture", NULL, false);
 						if (result == DialogResult::OK)
@@ -295,7 +295,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						}
 					}
 					ImGui::SameLine();
-					// ƒeƒNƒXƒ`ƒƒƒpƒX‚Ì“ü—Í—“
+					// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹ã®å…¥åŠ›æ¬„
 					if (!ImGui::IsItemEdited())
 					{
 						strncpy_s(texturePathBuffer, emitterData.visualData.texturePath.c_str(), sizeof(texturePathBuffer));
@@ -307,7 +307,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					}
 					ImGui::DragInt2("Texture Split", reinterpret_cast<int*>(&emitterData.visualData.textureSplitCount.x), 1, 1, 100);
 
-					// ƒrƒWƒ…ƒAƒ‹İ’è
+					// ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«è¨­å®š
 					{
 						const char* renderingModeItems[] = { "Billboard", "StretchedBillboard", "FixedRotation", "ScreenSpace" };
 						int renderingModeIndex = static_cast<int>(emitterData.visualData.renderingMode);
@@ -337,7 +337,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					DrawInt("Max Particles", emitterData.emitData.maxParticles, 1, 1, 100000);
 					emitterData.emitData.maxParticles = (std::max)(1, emitterData.emitData.maxParticles);
 
-					// ƒGƒ~ƒbƒgİ’è
+					// ã‚¨ãƒŸãƒƒãƒˆè¨­å®š
 					if (ImGui::TreeNode("Emit Settings"))
 					{
 						DrawRangeInt("Emit Count", emitterData.emitData.emitCount, 1, 1, emitterData.emitData.maxParticles);
@@ -345,7 +345,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						DrawRangeFloat("Emit Interval", emitterData.emitData.emitInterval, 0.1f, 0.0f, 100.0f);
 						DrawVector3("Position", emitterData.emitData.positionOffset, 0.1f);
 
-						// TODO: ƒC[ƒWƒ“ƒOŒn‚Ìƒpƒ‰ƒ[ƒ^‚ÌUIC³‚·‚é‚Æ‚«‚Í‚±‚±‚¢‚¶‚é
+						// TODO: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ç³»ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®UIä¿®æ­£ã™ã‚‹ã¨ãã¯ã“ã“ã„ã˜ã‚‹
 						if (ImGui::TreeNodeEx("Rotation", ImGuiTreeNodeFlags_DefaultOpen))
 						{
 
@@ -364,7 +364,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						//ImGui::Checkbox("Loop", &emitterData.emitData.loop);
 						ImGui::TreePop();
 					}
-					// Œ`óƒGƒ~ƒbƒ^İ’è
+					// å½¢çŠ¶ã‚¨ãƒŸãƒƒã‚¿è¨­å®š
 					if (ImGui::TreeNode("Shape Emitter Settings"))
 					{
 						const char* shapeTypeItems[] = { "Point", "Ring", "Sphere", "Cylinder" };
@@ -391,20 +391,20 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						};
 						DrawCombo("Direction Mode", directionModeIndex, directionModeItems, IM_ARRAYSIZE(directionModeItems), directionModeSetter);
 
-						// ƒpƒ‰ƒ[ƒ^•\¦ƒ}ƒXƒN’è‹`
+						// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¡¨ç¤ºãƒã‚¹ã‚¯å®šç¾©
 						static constexpr uint32_t None = 0;
 						static constexpr uint32_t DirectionAxis = 1 << 0;
 						static constexpr uint32_t Speed = 1 << 1;
 						static constexpr uint32_t Radius = 1 << 2;
 						static constexpr uint32_t Height = 1 << 3;
-						// Œ`óƒ^ƒCƒv‚²‚Æ‚Ìƒpƒ‰ƒ[ƒ^•\¦ƒ}ƒXƒN
+						// å½¢çŠ¶ã‚¿ã‚¤ãƒ—ã”ã¨ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¡¨ç¤ºãƒã‚¹ã‚¯
 						static constexpr uint32_t shapeParamMask[] = {
 							/*ShapeType::Point*/ None,
 							/*ShapeType::Ring*/ Radius,
 							/*ShapeType::Sphere*/ Radius,
 							/*ShapeType::Cylinder*/ (Radius | Height),
 						};
-						// •ûŒüƒ‚[ƒh‚²‚Æ‚Ìƒpƒ‰ƒ[ƒ^•\¦ƒ}ƒXƒN
+						// æ–¹å‘ãƒ¢ãƒ¼ãƒ‰ã”ã¨ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¡¨ç¤ºãƒã‚¹ã‚¯
 						static constexpr uint32_t directionParamMask[] = {
 							/*DirectionMode::Default*/ None,
 							/*DirectionMode::Axis*/ DirectionAxis | Speed,
@@ -413,13 +413,13 @@ void EffectEditor::DrawGUI(RenderContext* context)
 							/*DirectionMode::Inward*/ Speed,
 							/*DirectionMode::Normal*/ Speed,
 						};
-						// Œ»İ‚ÌƒGƒ~ƒbƒ^İ’è‚ÉŠî‚Ã‚­•\¦ƒtƒ‰ƒO
+						// ç¾åœ¨ã®ã‚¨ãƒŸãƒƒã‚¿è¨­å®šã«åŸºã¥ãè¡¨ç¤ºãƒ•ãƒ©ã‚°
 						uint32_t parameterFlags = shapeParamMask[static_cast<uint32_t>(emitterData.shapeData.shape)] |
 							directionParamMask[static_cast<uint32_t>(emitterData.shapeData.directionMode)];
 
 						if (parameterFlags & Speed)
 						{
-							// TODO: ƒC[ƒWƒ“ƒOŒn‚Ìƒpƒ‰ƒ[ƒ^‚ÌUIC³‚·‚é‚Æ‚«‚Í‚±‚±‚¢‚¶‚é
+							// TODO: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ç³»ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®UIä¿®æ­£ã™ã‚‹ã¨ãã¯ã“ã“ã„ã˜ã‚‹
 							if (ImGui::TreeNodeEx("Speed", ImGuiTreeNodeFlags_DefaultOpen))
 							{
 								DrawRangeFloat("Start Speed", emitterData.shapeData.speed, 0.1f, 0.0f, 100.0f);
@@ -451,7 +451,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						ImGui::TreePop();
 					}
 
-					// “®ìİ’è
+					// å‹•ä½œè¨­å®š
 					if (ImGui::TreeNode("Motion Settings"))
 					{
 						DrawRangeVector3("Velocity", emitterData.motionData.velocity, 0.1f);
@@ -461,10 +461,10 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						ImGui::TreePop();
 					}
 
-					// ƒrƒWƒ…ƒAƒ‹İ’è
+					// ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«è¨­å®š
 					if (ImGui::TreeNode("Visual Settings"))
 					{
-						// TODO: ƒC[ƒWƒ“ƒOŒn‚Ìƒpƒ‰ƒ[ƒ^‚ÌUIC³‚·‚é‚Æ‚«‚Í‚±‚±‚¢‚¶‚é
+						// TODO: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ç³»ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®UIä¿®æ­£ã™ã‚‹ã¨ãã¯ã“ã“ã„ã˜ã‚‹
 						if (ImGui::TreeNodeEx("Size", ImGuiTreeNodeFlags_DefaultOpen))
 						{
 							DrawRangeVector2("Start Size", emitterData.visualData.startSize, 0.1f);
@@ -481,8 +481,8 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						}
 
 						
-						// F‚Ìİ’è•û–@‚ğØ‚è‘Ö‚¦‚é‚½‚ß‚Ìƒtƒ‰ƒOi0: ŠJn/I—¹FA1: ƒOƒ‰ƒf[ƒVƒ‡ƒ“j
-						// TODO: UI‚ÅØ‚è‘Ö‚¦‚ç‚ê‚é‚æ‚¤‚É‚·‚é
+						// è‰²ã®è¨­å®šæ–¹æ³•ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ï¼ˆ0: é–‹å§‹/çµ‚äº†è‰²ã€1: ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰
+						// TODO: UIã§åˆ‡ã‚Šæ›¿ãˆã‚‰ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹
 						DrawCheckbox("Use Gradient", emitterData.visualData.useGradient);
 
 						if (!emitterData.visualData.useGradient)
@@ -508,7 +508,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						ImGui::TreePop();
 					}
 
-					// ƒGƒ~ƒbƒ^íœƒ{ƒ^ƒ“
+					// ã‚¨ãƒŸãƒƒã‚¿å‰Šé™¤ãƒœã‚¿ãƒ³
 					if (ImGui::Button("Remove"))
 					{
 						emitterDataList.erase(emitterDataList.begin() + i);
@@ -547,7 +547,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 bool EffectEditor::DrawRangeInt(const char* label, ::Range<int>& range, int speed, int min, int max)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	
 	IMGUI_PROPERTY(label);
 
@@ -558,7 +558,7 @@ bool EffectEditor::DrawRangeInt(const char* label, ::Range<int>& range, int spee
 	ImGui::PushItemWidth(70);
 
 	changed |= ImGui::DragInt("##Min", &range.min, static_cast<float>(speed), min, range.max, "Min:%d");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevMin = range.min;
 		prevMax = range.max;
@@ -566,7 +566,7 @@ bool EffectEditor::DrawRangeInt(const char* label, ::Range<int>& range, int spee
 	edited |= ImGui::IsItemDeactivatedAfterEdit();
 	ImGui::SameLine();
 	changed |= ImGui::DragInt("##Max", &range.max, static_cast<float>(speed), range.min, max, "Max:%d");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevMin = range.min;
 		prevMax = range.max;
@@ -577,7 +577,7 @@ bool EffectEditor::DrawRangeInt(const char* label, ::Range<int>& range, int spee
 
 	if (edited)
 	{
-		// ®‡«ƒ`ƒFƒbƒN
+		// æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯
 		if (range.min > range.max)
 		{
 			if (range.min != prevMin)
@@ -595,7 +595,7 @@ bool EffectEditor::DrawRangeInt(const char* label, ::Range<int>& range, int spee
 		Range<int> oldValue = { prevMin, prevMax };
 		Range<int> newValue = { newMin, newMax };
 		
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
 
@@ -616,7 +616,7 @@ bool EffectEditor::DrawRangeUInt(const char* label, ::Range<unsigned int>& range
 	ImGui::PushItemWidth(70);
 
 	changed |= ImGui::DragScalar("##Min", ImGuiDataType_U32, &range.min, static_cast<float>(speed), &min, &range.max, "Min:%u");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevMin = range.min;
 		prevMax = range.max;
@@ -624,7 +624,7 @@ bool EffectEditor::DrawRangeUInt(const char* label, ::Range<unsigned int>& range
 	edited |= ImGui::IsItemDeactivatedAfterEdit();
 	ImGui::SameLine();
 	changed |= ImGui::DragScalar("##Max", ImGuiDataType_U32, &range.max, static_cast<float>(speed), &range.min, &max, "Max:%u");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevMin = range.min;
 		prevMax = range.max;
@@ -634,10 +634,10 @@ bool EffectEditor::DrawRangeUInt(const char* label, ::Range<unsigned int>& range
 	ImGui::PopItemWidth();
 	ImGui::PopID();
 
-	// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+	// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 	if (edited)
 	{
-		// ®‡«ƒ`ƒFƒbƒN
+		// æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯
 		if (range.min > range.max)
 		{
 			if (range.min != prevMin)
@@ -654,7 +654,7 @@ bool EffectEditor::DrawRangeUInt(const char* label, ::Range<unsigned int>& range
 		Range<unsigned int> oldValue = { prevMin, prevMax };
 		Range<unsigned int> newValue = { newMin, newMax };
 		auto setter = [&, label](const Range<unsigned int>& value) { range = value; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
 
@@ -680,7 +680,7 @@ bool EffectEditor::DrawRangeFloat(const char* label, ::Range<float>& range, floa
 #endif // 0
 
 	changed |= ImGui::DragFloat("##Min", &range.min, speed, min, range.max, "Min:%.3f");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevMin = range.min;
 		prevMax = range.max;
@@ -688,7 +688,7 @@ bool EffectEditor::DrawRangeFloat(const char* label, ::Range<float>& range, floa
 	edited |= ImGui::IsItemDeactivatedAfterEdit();
 	ImGui::SameLine();
 	changed |= ImGui::DragFloat("##Max", &range.max, speed, range.min, max, "Max:%.3f");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevMin = range.min;
 		prevMax = range.max;
@@ -701,7 +701,7 @@ bool EffectEditor::DrawRangeFloat(const char* label, ::Range<float>& range, floa
 	if (edited)
 	{
 #if 1
-		// ®‡«ƒ`ƒFƒbƒN
+		// æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯
 		if (range.min > range.max)
 		{
 			if (range.min != prevMin)
@@ -711,15 +711,15 @@ bool EffectEditor::DrawRangeFloat(const char* label, ::Range<float>& range, floa
 			changed = true;
 		}
 
-		// Clamp•s—v”»’è
+		// Clampä¸è¦åˆ¤å®š
 		float epsilon = 1e-6f;
 		if (fabsf(min) < epsilon && fabsf(max) < epsilon)
 		{
-			//return changed; // Clamp•s—v
+			//return changed; // Clampä¸è¦
 		}
 		else
 		{
-			// ”ÍˆÍ§ŒÀ
+			// ç¯„å›²åˆ¶é™
 			range.min = std::clamp(range.min, min, max);
 			range.max = std::clamp(range.max, min, max);
 		}
@@ -733,7 +733,7 @@ bool EffectEditor::DrawRangeFloat(const char* label, ::Range<float>& range, floa
 		Range<float> newValue = { newMin, newMax };
 		auto setter = [&, label](const Range<float>& value) { range = value; };
 
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
 
@@ -745,7 +745,7 @@ bool EffectEditor::DrawRangeVector2(const char* label, ::Range<Vector2>& range, 
 {
 	bool changed = false;
 	bool edited = false;
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 
 	static Vector2 prevMin = range.min;
 	static Vector2 prevMax = range.max;
@@ -754,23 +754,23 @@ bool EffectEditor::DrawRangeVector2(const char* label, ::Range<Vector2>& range, 
 	{
 		IMGUI_PROPERTY_BEGIN();
 		ImGui::PushItemWidth(140);
-		// MinƒxƒNƒgƒ‹•ÒW
+		// Minãƒ™ã‚¯ãƒˆãƒ«ç·¨é›†
 		//ImGui::Text("Min");
 		//ImGui::SameLine();
 		IMGUI_PROPERTY("Min");
 		changed |= ImGui::DragFloat2("##Min", reinterpret_cast<float*>(&range.min), speed, min, max, "%.3f");
-		if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+		if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 		{
 			prevMin = range.min;
 			prevMax = range.max;
 		}
 		edited |= ImGui::IsItemDeactivatedAfterEdit();
-		// MaxƒxƒNƒgƒ‹•ÒW
+		// Maxãƒ™ã‚¯ãƒˆãƒ«ç·¨é›†
 		//ImGui::Text("Max");
 		//ImGui::SameLine();
 		IMGUI_PROPERTY("Max");
 		changed |= ImGui::DragFloat2("##Max", reinterpret_cast<float*>(&range.max), speed, min, max, "%.3f");
-		if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+		if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 		{
 			prevMin = range.min;
 			prevMax = range.max;
@@ -785,7 +785,7 @@ bool EffectEditor::DrawRangeVector2(const char* label, ::Range<Vector2>& range, 
 	ImGui::PopID();
 
 #if 0
-	// ®‡«ƒ`ƒFƒbƒNF²‚²‚Æ
+	// æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯ï¼šè»¸ã”ã¨
 	for (int i = 0; i < 2; ++i)
 	{
 		float* minPtr = (&range.min.x) + i;
@@ -803,7 +803,7 @@ bool EffectEditor::DrawRangeVector2(const char* label, ::Range<Vector2>& range, 
 
 		float epsilon = 1e-6f;
 		if (fabsf(min) < epsilon && fabsf(max) < epsilon)
-			continue; // Clamp•s—v
+			continue; // Clampä¸è¦
 
 		// Clamp
 		*minPtr = std::clamp(*minPtr, min, max);
@@ -820,7 +820,7 @@ bool EffectEditor::DrawRangeVector2(const char* label, ::Range<Vector2>& range, 
 		Range<Vector2> oldValue = { prevMin, prevMax };
 		Range<Vector2> newValue = { newMin, newMax };
 		auto setter = [&, label](const Range<Vector2>& value) { range = value; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
 	
@@ -832,7 +832,7 @@ bool EffectEditor::DrawRangeVector3(const char* label, ::Range<Vector3>& range, 
 	
 	bool changed = false;
 	bool edited = false;
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	
 	static Vector3 prevMin = range.min;
 	static Vector3 prevMax = range.max;
@@ -841,23 +841,23 @@ bool EffectEditor::DrawRangeVector3(const char* label, ::Range<Vector3>& range, 
 	{
 		IMGUI_PROPERTY_BEGIN();
 		ImGui::PushItemWidth(210);
-		// MinƒxƒNƒgƒ‹•ÒW
+		// Minãƒ™ã‚¯ãƒˆãƒ«ç·¨é›†
 		//ImGui::Text("Min");
 		//ImGui::SameLine();
 		IMGUI_PROPERTY("Min");
 		changed |= ImGui::DragFloat3("##Min", reinterpret_cast<float*>(&range.min), speed, min, max, "%.3f");
-		if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+		if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 		{
 			prevMin = range.min;
 			prevMax = range.max;
 		}
 		edited |= ImGui::IsItemDeactivatedAfterEdit();
-		// MaxƒxƒNƒgƒ‹•ÒW
+		// Maxãƒ™ã‚¯ãƒˆãƒ«ç·¨é›†
 		//ImGui::Text("Max");
 		//ImGui::SameLine();
 		IMGUI_PROPERTY("Max");
 		changed |= ImGui::DragFloat3("##Max", reinterpret_cast<float*>(&range.max), speed, min, max, "%.3f");
-		if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+		if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 		{
 			prevMin = range.min;
 			prevMax = range.max;
@@ -871,7 +871,7 @@ bool EffectEditor::DrawRangeVector3(const char* label, ::Range<Vector3>& range, 
 	ImGui::PopID();
 
 #if 0
-	// ®‡«ƒ`ƒFƒbƒNF²‚²‚Æ
+	// æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯ï¼šè»¸ã”ã¨
 	for (int i = 0; i < 3; ++i)
 	{
 		float* minPtr = (&range.min.x) + i;
@@ -889,7 +889,7 @@ bool EffectEditor::DrawRangeVector3(const char* label, ::Range<Vector3>& range, 
 
 		float epsilon = 1e-6f;
 		if (fabsf(min) < epsilon && fabsf(max) < epsilon)
-			continue; // Clamp•s—v
+			continue; // Clampä¸è¦
 
 		// Clamp
 		*minPtr = std::clamp(*minPtr, min, max);
@@ -906,7 +906,7 @@ bool EffectEditor::DrawRangeVector3(const char* label, ::Range<Vector3>& range, 
 		Range<Vector3> oldValue = { prevMin, prevMax };
 		Range<Vector3> newValue = { newMin, newMax };
 		auto setter = [&, label](const Range<Vector3>& value) { range = value; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
 
@@ -917,7 +917,7 @@ bool EffectEditor::DrawRangeColor(const char* label, ::Range<Color>& range)
 {
 	bool changed = false;
 	bool edited = false;
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 
 	static Color prevMin = range.min;
 	static Color prevMax = range.max;
@@ -926,23 +926,23 @@ bool EffectEditor::DrawRangeColor(const char* label, ::Range<Color>& range)
 	{
 		IMGUI_PROPERTY_BEGIN();
 		ImGui::PushItemWidth(200);
-		// MinƒJƒ‰[•ÒW
+		// Minã‚«ãƒ©ãƒ¼ç·¨é›†
 		//ImGui::Text("Min");
 		//ImGui::SameLine();
 		IMGUI_PROPERTY("Min");
 		changed |= ImGui::ColorEdit4("##Min", &range.min.r);
-		if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+		if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 		{
 			prevMin = range.min;
 			prevMax = range.max;
 		}
 		edited |= ImGui::IsItemDeactivatedAfterEdit();
-		// MaxƒJƒ‰[•ÒW
+		// Maxã‚«ãƒ©ãƒ¼ç·¨é›†
 		//ImGui::Text("Max");
 		//ImGui::SameLine();
 		IMGUI_PROPERTY("Max");
 		changed |= ImGui::ColorEdit4("##Max", &range.max.r);
-		if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+		if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 		{
 			prevMin = range.min;
 			prevMax = range.max;
@@ -966,7 +966,7 @@ bool EffectEditor::DrawRangeColor(const char* label, ::Range<Color>& range)
 		
 		auto setter = [&, label](const Range<Color>& value) { range = value; };
 
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
 
@@ -977,7 +977,7 @@ bool EffectEditor::DrawRangeColor(const char* label, ::Range<Color>& range)
 bool EffectEditor::DrawInt(const char* label, int& value, int speed, int min, int max)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	bool changed = false;
 	ImGui::PushItemWidth(200);
 	static int prevValue = value;
@@ -985,7 +985,7 @@ bool EffectEditor::DrawInt(const char* label, int& value, int speed, int min, in
 	//ImGui::SameLine();
 	IMGUI_PROPERTY(label);
 	changed |= ImGui::DragInt("##Value", &value, static_cast<float>(speed), min, max);
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevValue = value;
 	}
@@ -997,7 +997,7 @@ bool EffectEditor::DrawInt(const char* label, int& value, int speed, int min, in
 		std::string oldValueStr = std::to_string(prevValue);
 		std::string newValueStr = std::to_string(newValue);
 		auto setter = [&, label](int v) { value = v; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, prevValue, newValueStr, oldValueStr, setter);
 	}
 	IMGUI_PROPERTY_END();
@@ -1007,7 +1007,7 @@ bool EffectEditor::DrawInt(const char* label, int& value, int speed, int min, in
 bool EffectEditor::DrawUInt(const char* label, unsigned int& value, unsigned int speed, unsigned int min, unsigned int max)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	bool changed = false;
 	ImGui::PushItemWidth(200);
 	static uint32_t prevValue = value;
@@ -1015,7 +1015,7 @@ bool EffectEditor::DrawUInt(const char* label, unsigned int& value, unsigned int
 	//ImGui::SameLine();
 	IMGUI_PROPERTY(label);
 	changed |= ImGui::DragScalar("##Value", ImGuiDataType_U32, &value, static_cast<float>(speed), &min, &max);
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevValue = value;
 	}
@@ -1027,7 +1027,7 @@ bool EffectEditor::DrawUInt(const char* label, unsigned int& value, unsigned int
 		std::string oldValueStr = std::to_string(prevValue);
 		std::string newValueStr = std::to_string(newValue);
 		auto setter = [&, label](uint32_t v) { value = v; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, prevValue, newValueStr, oldValueStr, setter);
 	}
 	IMGUI_PROPERTY_END();
@@ -1037,7 +1037,7 @@ bool EffectEditor::DrawUInt(const char* label, unsigned int& value, unsigned int
 bool EffectEditor::DrawFloat(const char* label, float& value, float speed, float min, float max)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	bool changed = false;
 	ImGui::PushItemWidth(200);
 
@@ -1047,7 +1047,7 @@ bool EffectEditor::DrawFloat(const char* label, float& value, float speed, float
 	//ImGui::SameLine();
 	IMGUI_PROPERTY(label);
 	changed |= ImGui::DragFloat("##Value", &value, speed, min, max, "%.3f");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevValue = value;
 	}
@@ -1060,7 +1060,7 @@ bool EffectEditor::DrawFloat(const char* label, float& value, float speed, float
 		std::string oldValueStr = std::to_string(prevValue);
 		std::string newValueStr = std::to_string(newValue);
 		auto setter = [&, label](float v) { value = v; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, prevValue, newValueStr, oldValueStr, setter);
 	}
 
@@ -1071,7 +1071,7 @@ bool EffectEditor::DrawFloat(const char* label, float& value, float speed, float
 bool EffectEditor::DrawVector2(const char* label, Vector2& value, float speed, float min, float max)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	bool changed = false;
 	ImGui::PushItemWidth(200);
 	static Vector2 prevValue = value;
@@ -1079,7 +1079,7 @@ bool EffectEditor::DrawVector2(const char* label, Vector2& value, float speed, f
 	//ImGui::SameLine();
 	IMGUI_PROPERTY(label);
 	changed |= ImGui::DragFloat2("##Value", reinterpret_cast<float*>(&value), speed, min, max, "%.3f");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevValue = value;
 	}
@@ -1091,7 +1091,7 @@ bool EffectEditor::DrawVector2(const char* label, Vector2& value, float speed, f
 		std::string oldValueStr = "(" + std::to_string(prevValue.x) + "," + std::to_string(prevValue.y) + ")";
 		std::string newValueStr = "(" + std::to_string(newValue.x) + "," + std::to_string(newValue.y) + ")";
 		auto setter = [&, label](const Vector2& v) { value = v; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, prevValue, newValueStr, oldValueStr, setter);
 	}
 	IMGUI_PROPERTY_END();
@@ -1102,7 +1102,7 @@ bool EffectEditor::DrawVector2(const char* label, Vector2& value, float speed, f
 bool EffectEditor::DrawVector3(const char* label, Vector3& value, float speed, float min, float max)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	bool changed = false;
 	ImGui::PushItemWidth(210);
 
@@ -1112,7 +1112,7 @@ bool EffectEditor::DrawVector3(const char* label, Vector3& value, float speed, f
 	//ImGui::SameLine();
 	IMGUI_PROPERTY(label);
 	changed |= ImGui::DragFloat3("##Value", reinterpret_cast<float*>(&value), speed, min, max, "%.3f");
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevValue = value;
 	}
@@ -1125,7 +1125,7 @@ bool EffectEditor::DrawVector3(const char* label, Vector3& value, float speed, f
 		std::string oldValueStr = "(" + std::to_string(prevValue.x) + "," + std::to_string(prevValue.y) + "," + std::to_string(prevValue.z) + ")";
 		std::string newValueStr = "(" + std::to_string(newValue.x) + "," + std::to_string(newValue.y) + "," + std::to_string(newValue.z) + ")";
 		auto setter = [&, label](const Vector3& v) { value = v; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, prevValue, newValueStr, oldValueStr, setter);
 	}
 
@@ -1136,14 +1136,14 @@ bool EffectEditor::DrawVector3(const char* label, Vector3& value, float speed, f
 bool EffectEditor::DrawColor(const char* label, Color& value)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	bool changed = false;
 	static Color prevValue = value;
 	//ImGui::Text("%s", label);
 	//ImGui::SameLine();
 	IMGUI_PROPERTY(label);
 	changed |= ImGui::ColorEdit4("##Value", &value.r);
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevValue = value;
 	}
@@ -1156,7 +1156,7 @@ bool EffectEditor::DrawColor(const char* label, Color& value)
 		Color oldValueClamped = Color(std::clamp(prevValue.r, 0.0f, 1.0f), std::clamp(prevValue.g, 0.0f, 1.0f), std::clamp(prevValue.b, 0.0f, 1.0f), std::clamp(prevValue.a, 0.0f, 1.0f));
 		Color newValueClamped = Color(std::clamp(newValue.r, 0.0f, 1.0f), std::clamp(newValue.g, 0.0f, 1.0f), std::clamp(newValue.b, 0.0f, 1.0f), std::clamp(newValue.a, 0.0f, 1.0f));
 		auto setter = [&, label](const Color& v) { value = v; };
-		// •ÏX‘OŒã‚Ì’l‚ğƒNƒ‰ƒ“ƒv‚µ‚ÄƒRƒ}ƒ“ƒh“o˜^
+		// å¤‰æ›´å‰å¾Œã®å€¤ã‚’ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValueClamped, oldValueClamped, newValueStr, oldValueStr, setter);
 	}
 	IMGUI_PROPERTY_END();
@@ -1166,12 +1166,12 @@ bool EffectEditor::DrawColor(const char* label, Color& value)
 bool EffectEditor::DrawCheckbox(const char* label, bool& value)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	bool changed = false;
 	static bool prevValue = value;
 	IMGUI_PROPERTY(label);
 	changed |= ImGui::Checkbox("##Checkbox", &value);
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevValue = value;
 	}
@@ -1182,7 +1182,7 @@ bool EffectEditor::DrawCheckbox(const char* label, bool& value)
 		std::string oldValueStr = prevValue ? "True" : "False";
 		std::string newValueStr = value ? "True" : "False";
 		auto setter = [&, label](bool v) { value = v; };
-		// ƒRƒ}ƒ“ƒh“o˜^
+		// ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, prevValue, newValueStr, oldValueStr, setter);
 	}
 	IMGUI_PROPERTY_END();
@@ -1192,12 +1192,12 @@ bool EffectEditor::DrawCheckbox(const char* label, bool& value)
 bool EffectEditor::DrawCombo(const char* label, int& currentIndex, const char* const items[], int itemCount, std::function<void(int)> setter)
 {
 	IMGUI_PROPERTY_BEGIN();
-	ImGui::PushID(label); // ˆêˆÓ‚ÌID‚ğƒvƒbƒVƒ…
+	ImGui::PushID(label); // ä¸€æ„ã®IDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 	bool changed = false;
 	static int prevIndex = currentIndex;
 	IMGUI_PROPERTY(label);
 	changed |= ImGui::Combo("##Combo", &currentIndex, items, itemCount);
-	if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+	if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 	{
 		prevIndex = currentIndex;
 	}
@@ -1207,7 +1207,7 @@ bool EffectEditor::DrawCombo(const char* label, int& currentIndex, const char* c
 		int newIndex = currentIndex;
 		std::string oldValueStr = items[prevIndex];
 		std::string newValueStr = items[newIndex];
-		// ƒRƒ}ƒ“ƒh“o˜^
+		// ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newIndex, prevIndex, newValueStr, oldValueStr, setter);
 	}
 	IMGUI_PROPERTY_END();
@@ -1216,7 +1216,7 @@ bool EffectEditor::DrawCombo(const char* label, int& currentIndex, const char* c
 
 bool EffectEditor::DrawGradient(uint32_t gradientId, ImGradientHDRState* state, ImGradientHDRTemporaryState* tempState)
 {
-	// ƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒGƒfƒBƒ^‚Ì•`‰æ
+	// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒ‡ã‚£ã‚¿ã®æç”»
 	bool isMarkerShown = true;
 	ImGradientHDR(gradientId, *state, *tempState, isMarkerShown);
 
@@ -1230,14 +1230,14 @@ bool EffectEditor::DrawGradient(uint32_t gradientId, ImGradientHDRState* state, 
 		auto selectedColorMarker = state->GetColorMarker(tempState->selectedIndex);
 		if (selectedColorMarker)
 		{
-			// Color•ÒW
+			// Colorç·¨é›†
 			{
 				IMGUI_PROPERTY_BEGIN();
 				bool changed = false;
 				static std::array<float, 3> prevColor = { 1,1,1 };
 				IMGUI_PROPERTY("Color");
 				changed |= ImGui::ColorEdit3("##Color", selectedColorMarker->Color.data(), ImGuiColorEditFlags_Float);
-				if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+				if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 				{
 					prevColor = selectedColorMarker->Color;
 				}
@@ -1252,13 +1252,13 @@ bool EffectEditor::DrawGradient(uint32_t gradientId, ImGradientHDRState* state, 
 							selectedColorMarker->Color = color;
 
 						};
-					// ƒRƒ}ƒ“ƒh“o˜^
+					// ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²
 					IMGUI_PROPERTY_COMMAND_CUSTOM("Color", newColor, prevColor, newValueStr, oldValueStr, setter);
 				}
 				IMGUI_PROPERTY_END();
 			}
 
-			// Intensity•ÒW
+			// Intensityç·¨é›†
 			DrawFloat("Intensity", selectedColorMarker->Intensity, 0.1f, 0.0f, 100.0f);
 		}
 	}
@@ -1268,7 +1268,7 @@ bool EffectEditor::DrawGradient(uint32_t gradientId, ImGradientHDRState* state, 
 		auto selectedAlphaMarker = state->GetAlphaMarker(tempState->selectedIndex);
 		if (selectedAlphaMarker)
 		{
-			// Alpha•ÒW
+			// Alphaç·¨é›†
 			DrawFloat("Alpha", selectedAlphaMarker->Alpha, 0.1f, 0.0f, 1.0f);
 		}
 	}
@@ -1280,14 +1280,14 @@ bool EffectEditor::DrawGradient(uint32_t gradientId, ImGradientHDRState* state, 
 			if (tempState->selectedMarkerType == ImGradientHDRMarkerType::Color)
 			{
 				state->RemoveColorMarker(tempState->selectedIndex);
-				tempState->selectedMarkerType = ImGradientHDRMarkerType::Unknown; // ‘I‘ğó‘Ô‚ğƒŠƒZƒbƒg
-				tempState->selectedIndex = -1; // ƒRƒ}ƒ“ƒh“o˜^‚Í•s—viíœŒã‚Í‘¶İ‚µ‚È‚¢ƒCƒ“ƒfƒbƒNƒX‚É‚È‚é‚½‚ßj
+				tempState->selectedMarkerType = ImGradientHDRMarkerType::Unknown; // é¸æŠçŠ¶æ…‹ã‚’ãƒªã‚»ãƒƒãƒˆ
+				tempState->selectedIndex = -1; // ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²ã¯ä¸è¦ï¼ˆå‰Šé™¤å¾Œã¯å­˜åœ¨ã—ãªã„ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«ãªã‚‹ãŸã‚ï¼‰
 			}
 			else if (tempState->selectedMarkerType == ImGradientHDRMarkerType::Alpha)
 			{
 				state->RemoveAlphaMarker(tempState->selectedIndex);
-				tempState->selectedMarkerType = ImGradientHDRMarkerType::Unknown; // ‘I‘ğó‘Ô‚ğƒŠƒZƒbƒg
-				tempState->selectedIndex = -1; // ƒRƒ}ƒ“ƒh“o˜^‚Í•s—viíœŒã‚Í‘¶İ‚µ‚È‚¢ƒCƒ“ƒfƒbƒNƒX‚É‚È‚é‚½‚ßj
+				tempState->selectedMarkerType = ImGradientHDRMarkerType::Unknown; // é¸æŠçŠ¶æ…‹ã‚’ãƒªã‚»ãƒƒãƒˆ
+				tempState->selectedIndex = -1; // ã‚³ãƒãƒ³ãƒ‰ç™»éŒ²ã¯ä¸è¦ï¼ˆå‰Šé™¤å¾Œã¯å­˜åœ¨ã—ãªã„ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«ãªã‚‹ãŸã‚ï¼‰
 			}
 		}
 	}

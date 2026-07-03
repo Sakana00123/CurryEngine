@@ -6,7 +6,7 @@ struct Vector3;
 namespace CurryEngine
 {
 	/**
-	 * @brief int Œ^‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB
+	 * @brief int å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
 	 */
 	class Vector3Drawer : public IPropertyDrawer
 	{

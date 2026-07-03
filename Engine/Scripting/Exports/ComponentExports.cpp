@@ -5,9 +5,9 @@
 #include "Engine/Scenes/SceneManager.h"
 #include "Engine/Scenes/Scene.h"
 
-// Component ƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ğƒXƒNƒŠƒvƒg‚©‚çŒÄ‚Ño‚¹‚é‚æ‚¤‚É‚·‚é‚½‚ß‚ÌƒGƒNƒXƒ|[ƒgŠÖ”
+// Component ã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‹ã‚‰å‘¼ã³å‡ºã›ã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã®ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆé–¢æ•°
 
-// -------- Component ‚ÌƒvƒƒpƒeƒBƒAƒNƒZƒXŠÖ” ---------
+// -------- Component ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•° ---------
 
 // --------- Enable ---------
 
@@ -19,11 +19,11 @@ ENGINE_API int Component_GetEnable(uint64_t objectId)
 		{
 			if (comp && comp->id.Value() == objectId)
 			{
-				return comp->IsEnabled() ? 1 : 0; // —LŒø‚È‚ç 1A–³Œø‚È‚ç 0 ‚ğ•Ô‚·
+				return comp->IsEnabled() ? 1 : 0; // æœ‰åŠ¹ãªã‚‰ 1ã€ç„¡åŠ¹ãªã‚‰ 0 ã‚’è¿”ã™
 			}
 		}
 	}
-	return 0; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 }
 
 ENGINE_API void Component_SetEnable(uint64_t objectId, int enable)
@@ -34,7 +34,7 @@ ENGINE_API void Component_SetEnable(uint64_t objectId, int enable)
 		{
 			if (comp && comp->id.Value() == objectId)
 			{
-				comp->SetEnabled(enable != 0); // 0 ˆÈŠO‚Í—LŒø‚Æ‚İ‚È‚·
+				comp->SetEnabled(enable != 0); // 0 ä»¥å¤–ã¯æœ‰åŠ¹ã¨ã¿ãªã™
 				return;
 			}
 		}
@@ -44,7 +44,7 @@ ENGINE_API void Component_SetEnable(uint64_t objectId, int enable)
 ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
 {
 	Scene* currentScene = SceneManager::GetLoadingSceneOrCurrentScene();
-	if (!currentScene) return 0; // ƒV[ƒ“‚ª‘¶İ‚µ‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+	if (!currentScene) return 0; // ã‚·ãƒ¼ãƒ³ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 	auto& cache = currentScene->objectManager->GetComponentCacheMap();
 	if (cache.find(ObjectId::FromValue(objectId)) != cache.end())
 	{
@@ -52,10 +52,10 @@ ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
 		if (comp.lock())
 		{
 			GameObject* owner = comp.lock()->GetOwner();
-			return owner ? owner->GetId().Value() : 0; // Š—LÒ‚ª‘¶İ‚·‚ê‚Î‚»‚ÌID‚ğ•Ô‚µA‘¶İ‚µ‚È‚¯‚ê‚Î0‚ğ•Ô‚·
+			return owner ? owner->GetId().Value() : 0; // æ‰€æœ‰è€…ãŒå­˜åœ¨ã™ã‚Œã°ãã®IDã‚’è¿”ã—ã€å­˜åœ¨ã—ãªã‘ã‚Œã°0ã‚’è¿”ã™
 		}
 	}
-	return 0; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 }
 
 //ENGINE_API uint64_t Component_InstantiateFromId(uint64_t objectId, uint64_t parentId, Vector3 position, Quaternion rotation)
@@ -67,6 +67,6 @@ ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
 //		GameObject* instance = Component::Instantiate(prefab, parent ? parent->transform : nullptr, position, rotation);
 //		return instance ? instance->GetId().Value() : 0;
 //	}
-//	return 0; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+//	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 //
 //}

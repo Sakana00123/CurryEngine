@@ -5,219 +5,219 @@
 
 /**
  * @file
- * @brief ƒI[ƒfƒBƒIƒ\[ƒXiƒRƒ“ƒ|[ƒlƒ“ƒgjB
- * @details XAudio2 ‚ğ—p‚¢‚Ä‰¹º‚ÌÄ¶/’â~/‰¹—Ê/ƒ‹[ƒvİ’è‚È‚Ç‚ğs‚¢‚Ü‚·B
- *          ƒtƒ@ƒCƒ‹ƒpƒX‚©‚ç `Audio::AudioBuffer` ‚ğæ“¾‚µ‚ÄÄ¶‚µ‚Ü‚·B
+ * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚½ãƒ¼ã‚¹ï¼ˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆï¼‰ã€‚
+ * @details XAudio2 ã‚’ç”¨ã„ã¦éŸ³å£°ã®å†ç”Ÿ/åœæ­¢/éŸ³é‡/ãƒ«ãƒ¼ãƒ—è¨­å®šãªã©ã‚’è¡Œã„ã¾ã™ã€‚
+ *          ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‹ã‚‰ `Audio::AudioBuffer` ã‚’å–å¾—ã—ã¦å†ç”Ÿã—ã¾ã™ã€‚
  */
 
 /**
- * @brief ƒV[ƒ“ã‚É”z’u‚µ‚Ä‰¹º‚ğÄ¶‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB
+ * @brief ã‚·ãƒ¼ãƒ³ä¸Šã«é…ç½®ã—ã¦éŸ³å£°ã‚’å†ç”Ÿã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
  */
 class AudioSource : public Component
 {
 	C_REFLECT(AudioSource)
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	AudioSource() = default;
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	virtual ~AudioSource() override;
 
 	/**
-	 * @brief ŠJnˆ—B
+	 * @brief é–‹å§‹å‡¦ç†ã€‚
 	 */
 	void Start() override;
 
 	/**
-	 * @brief ƒtƒŒ[ƒ€XVB
-	 * @param deltaTime Œo‰ßŠÔi•bjB
+	 * @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void Update(float deltaTime) override;
 
 	/**
-	 * @brief ƒ\[ƒXi‰¹ºƒtƒ@ƒCƒ‹j‚ğİ’è‚µ‚Ü‚·B
-	 * @param filePath ƒtƒ@ƒCƒ‹ƒpƒXB
+	 * @brief ã‚½ãƒ¼ã‚¹ï¼ˆéŸ³å£°ãƒ•ã‚¡ã‚¤ãƒ«ï¼‰ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param filePath ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
 	 */
 	void SetSource(const std::wstring& filePath);
 
 	/**
-	 * @brief Ä¶‚ğŠJn‚µ‚Ü‚·B
+	 * @brief å†ç”Ÿã‚’é–‹å§‹ã—ã¾ã™ã€‚
 	 */
 	C_FUNCTION()
 	void Play();
 	/**
-	 * @brief Ä¶‚ğ’â~‚µ‚Ü‚·B
-	 * @param playTails ƒeƒCƒ‹ic‹¿“™j‚ğÄ¶‚µ‚Ä‚©‚ç’â~‚·‚é‚©B
+	 * @brief å†ç”Ÿã‚’åœæ­¢ã—ã¾ã™ã€‚
+	 * @param playTails ãƒ†ã‚¤ãƒ«ï¼ˆæ®‹éŸ¿ç­‰ï¼‰ã‚’å†ç”Ÿã—ã¦ã‹ã‚‰åœæ­¢ã™ã‚‹ã‹ã€‚
 	 */
 	C_FUNCTION()
 	void Stop(bool playTails = true);
 
 	/**
-	 * @brief Ä¶‚ğˆê’â~‚µ‚Ü‚·B
+	 * @brief å†ç”Ÿã‚’ä¸€æ™‚åœæ­¢ã—ã¾ã™ã€‚
 	 */
 	C_FUNCTION()
 	void Pause();
 
 	/**
-	 * @brief Ä¶‚ğÄŠJ‚µ‚Ü‚·B
+	 * @brief å†ç”Ÿã‚’å†é–‹ã—ã¾ã™ã€‚
 	 */
 	C_FUNCTION()
 	void Resume();
 
 	/**
-	 * @brief ‰¹—Ê‚ğİ’è‚µ‚Ü‚·B
-	 * @param volume ‰¹—Êi0-1 –ÚˆÀjB
+	 * @brief éŸ³é‡ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param volume éŸ³é‡ï¼ˆ0-1 ç›®å®‰ï¼‰ã€‚
 	 */
 	C_FUNCTION()
 	void SetVolume(float volume);
 
 	/**
-	 * @brief Œ»İ‚Ì‰¹—Ê‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ‰¹—Êi0-1 –ÚˆÀjB
+	 * @brief ç¾åœ¨ã®éŸ³é‡ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return éŸ³é‡ï¼ˆ0-1 ç›®å®‰ï¼‰ã€‚
 	 */
 	C_FUNCTION()
 	float GetVolume();
 
 	/**
-	 * @brief Ä¶’†‚©‚ğ•Ô‚µ‚Ü‚·B
-	 * @return `true` ‚ÅÄ¶’†A`false` ‚Å’â~’†B
+	 * @brief å†ç”Ÿä¸­ã‹ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return `true` ã§å†ç”Ÿä¸­ã€`false` ã§åœæ­¢ä¸­ã€‚
 	 */
 	C_FUNCTION()
 	bool IsPlaying();
 
 	/**
-	 * @brief 3D‰¹Œ¹‚Æ‚µ‚Äˆµ‚¤‚©‚ğİ’è‚µ‚Ü‚·B
-	 * @param use3D `true` ‚Å 3D‰¹Œ¹A`false` ‚Å’Êí‚Ì2D‰¹Œ¹B
-	 * @details 3D‰¹Œ¹‚Æ‚µ‚Äˆµ‚¤ê‡‚Í `AudioListener` ƒRƒ“ƒ|[ƒlƒ“ƒg‚ª•K—v‚Å‚·B
+	 * @brief 3DéŸ³æºã¨ã—ã¦æ‰±ã†ã‹ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param use3D `true` ã§ 3DéŸ³æºã€`false` ã§é€šå¸¸ã®2DéŸ³æºã€‚
+	 * @details 3DéŸ³æºã¨ã—ã¦æ‰±ã†å ´åˆã¯ `AudioListener` ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒå¿…è¦ã§ã™ã€‚
 	 */
 	void SetUse3DAudio(bool use3D);
 
 	/**
-	 * @brief 3D‰¹Œ¹‚Æ‚µ‚Äˆµ‚¤‚©‚ğæ“¾‚µ‚Ü‚·B
-	 * @return `true` ‚Å 3D‰¹Œ¹A`false` ‚Å’Êí‚Ì2D‰¹Œ¹B
+	 * @brief 3DéŸ³æºã¨ã—ã¦æ‰±ã†ã‹ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return `true` ã§ 3DéŸ³æºã€`false` ã§é€šå¸¸ã®2DéŸ³æºã€‚
 	 */
 	bool GetUse3DAudio() const;
 
 	/**
-	 * @brief ƒpƒ“‚ğİ’è‚µ‚Ü‚·B
-	 * @param pan ƒpƒ“i-1.0 ¶A0 ’†‰›A1.0 ‰EjB
+	 * @brief ãƒ‘ãƒ³ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param pan ãƒ‘ãƒ³ï¼ˆ-1.0 å·¦ã€0 ä¸­å¤®ã€1.0 å³ï¼‰ã€‚
 	 */
 	C_FUNCTION()
 	void SetPan(float pan);
 
 	/**
-	 * @brief Œ»İ‚Ìƒpƒ“‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒpƒ“i-1.0 ¶A0 ’†‰›A1.0 ‰EjB
+	 * @brief ç¾åœ¨ã®ãƒ‘ãƒ³ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒ‘ãƒ³ï¼ˆ-1.0 å·¦ã€0 ä¸­å¤®ã€1.0 å³ï¼‰ã€‚
 	 */
 	C_FUNCTION()
 	float GetPan() const { return m_Pan; }
 
 	/**
-	 * @brief ƒ‹[ƒvÄ¶‚Ì—L–³‚ğİ’è‚µ‚Ü‚·B
-	 * @param loop `true` ‚Åƒ‹[ƒvÄ¶A`false` ‚Åˆê‰ñÄ¶B
+	 * @brief ãƒ«ãƒ¼ãƒ—å†ç”Ÿã®æœ‰ç„¡ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param loop `true` ã§ãƒ«ãƒ¼ãƒ—å†ç”Ÿã€`false` ã§ä¸€å›å†ç”Ÿã€‚
 	 */
 	C_FUNCTION()
 	void SetLoop(bool loop) { this->loop = loop; }
 
 	/**
-	 * @brief ƒ‹[ƒvÄ¶‚Ì—L–³‚ğæ“¾‚µ‚Ü‚·B
-	 * @return `true` ‚Åƒ‹[ƒvÄ¶A`false` ‚Åˆê‰ñÄ¶B
+	 * @brief ãƒ«ãƒ¼ãƒ—å†ç”Ÿã®æœ‰ç„¡ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return `true` ã§ãƒ«ãƒ¼ãƒ—å†ç”Ÿã€`false` ã§ä¸€å›å†ç”Ÿã€‚
 	 */
 	C_FUNCTION()
 	bool IsLoop() const { return loop; }
 
 	/**
-	 * @brief ƒ‹[ƒvÄ¶‚Ì”ÍˆÍ‚ğİ’è‚µ‚Ü‚·B
-	 * @param begin ƒ‹[ƒvŠJnˆÊ’ui•bjB
-	 * @param length ƒ‹[ƒv’·ibegin ‚©‚ç‚Ì’·‚³jB
+	 * @brief ãƒ«ãƒ¼ãƒ—å†ç”Ÿã®ç¯„å›²ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param begin ãƒ«ãƒ¼ãƒ—é–‹å§‹ä½ç½®ï¼ˆç§’ï¼‰ã€‚
+	 * @param length ãƒ«ãƒ¼ãƒ—é•·ï¼ˆbegin ã‹ã‚‰ã®é•·ã•ï¼‰ã€‚
 	 */
 	C_FUNCTION()
 	void SetLoopOption(float begin, float length);
 
 	/**
-	 * @brief Ä¶ŠÔ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Ä¶ŠÔi•bjB
+	 * @brief å†ç”Ÿæ™‚é–“ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return å†ç”Ÿæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	float GetPlaybackTime() const;
 
 	/**
-	 * @brief Ä¶‚Ìƒfƒ‹ƒ^ŠÔ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Ä¶ƒfƒ‹ƒ^ŠÔi•bjB
+	 * @brief å†ç”Ÿã®ãƒ‡ãƒ«ã‚¿æ™‚é–“ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return å†ç”Ÿãƒ‡ãƒ«ã‚¿æ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	float GetPlaybackDeltaTime();
 
 	/**
-	 * @brief ƒLƒ…[‚Éc‚Á‚Ä‚¢‚éƒoƒbƒtƒ@”‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒoƒbƒtƒ@ƒLƒ…[”iÄ¶’†‚È‚ç 0 ‚æ‚è‘å‚«‚¢jB
+	 * @brief ã‚­ãƒ¥ãƒ¼ã«æ®‹ã£ã¦ã„ã‚‹ãƒãƒƒãƒ•ã‚¡æ•°ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒãƒƒãƒ•ã‚¡ã‚­ãƒ¥ãƒ¼æ•°ï¼ˆå†ç”Ÿä¸­ãªã‚‰ 0 ã‚ˆã‚Šå¤§ãã„ï¼‰ã€‚
 	 */
 	uint32_t GetBufferQueueCount();
 
 	/**
-	 * @brief ƒI[ƒfƒBƒI‚Ì‘Ä¶ŠÔ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Ä¶ŠÔi•bjB
+	 * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã®ç·å†ç”Ÿæ™‚é–“ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return å†ç”Ÿæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	float GetTotalDuration() const;
 
 	/**
-	 * @brief ƒI[ƒfƒBƒIƒAƒiƒ‰ƒCƒU‚Ì‰ğÍŒ‹‰Ê‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ‰ğÍŒ‹‰ÊB
+	 * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã®è§£æçµæœã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return è§£æçµæœã€‚
 	 */
 	[[nodiscard]] const AudioAnalyzerResult& GetAudioAnalyzerResult() const;
 	
 	/**
-	 * @brief ƒI[ƒfƒBƒIƒAƒiƒ‰ƒCƒU‚ÌŠî–{‰ğÍŒ‹‰Ê‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Šî–{‰ğÍŒ‹‰ÊB
+	 * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã®åŸºæœ¬è§£æçµæœã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return åŸºæœ¬è§£æçµæœã€‚
 	 */
 	[[nodiscard]] const AudioAnalyzer::Result& GetAudioAnalyzerBasicResult() const;
 
 #ifdef USE_IMGUI
 	/**
-	 * @brief ƒCƒ“ƒXƒyƒNƒ^—p‚ÌƒvƒƒpƒeƒB•\¦B
+	 * @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£è¡¨ç¤ºã€‚
 	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 	/**
-	 * @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒVƒŠƒAƒ‰ƒCƒYB
-	 * @return ƒVƒŠƒAƒ‰ƒCƒYŒ‹‰Ê‚Ì JSON ƒIƒuƒWƒFƒNƒgB
+	 * @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚
+	 * @return ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºçµæœã® JSON ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
 	 */
 	json Serialize() const override;
 
 	/**
-	 * @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒfƒVƒŠƒAƒ‰ƒCƒYB
-	 * @param j ƒfƒVƒŠƒAƒ‰ƒCƒYŒ³‚Ì JSON ƒIƒuƒWƒFƒNƒgB
+	 * @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚
+	 * @param j ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå…ƒã® JSON ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
 	 */
 	void Deserialize(const json& j) override;
 
 private:
-	/** @brief İ’è’†‚Ìƒtƒ@ƒCƒ‹ƒpƒXB*/
+	/** @brief è¨­å®šä¸­ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚*/
 	std::wstring filePath;
-	/** @brief ƒTƒEƒ“ƒhí•ÊiBGM/SEjB*/
+	/** @brief ã‚µã‚¦ãƒ³ãƒ‰ç¨®åˆ¥ï¼ˆBGM/SEï¼‰ã€‚*/
 	SoundType type;
-	/** @brief ©“®Ä¶İ’èB*/
+	/** @brief è‡ªå‹•å†ç”Ÿè¨­å®šã€‚*/
 	bool playOnStart = false;
-	/** @brief ƒ‹[ƒvİ’èB*/
+	/** @brief ãƒ«ãƒ¼ãƒ—è¨­å®šã€‚*/
 	bool loop = false;
-	/** @brief 3D ‰¹Œ¹‚Æ‚µ‚Äˆµ‚¤‚©B*/
+	/** @brief 3D éŸ³æºã¨ã—ã¦æ‰±ã†ã‹ã€‚*/
 	bool use3DAudio = false;
-	/** @brief ‰¹—Êi0-1 –ÚˆÀjB*/
+	/** @brief éŸ³é‡ï¼ˆ0-1 ç›®å®‰ï¼‰ã€‚*/
 	float volume = 1.0f;
-	/** @brief ƒpƒ“i-1.0 ¶A0 ’†‰›A1.0 ‰EjB*/
+	/** @brief ãƒ‘ãƒ³ï¼ˆ-1.0 å·¦ã€0 ä¸­å¤®ã€1.0 å³ï¼‰ã€‚*/
 	float m_Pan = 0.0f;
 	
-	/** @brief Ä¶‘ÎÛ‚ÌƒI[ƒfƒBƒIƒoƒbƒtƒ@B*/
+	/** @brief å†ç”Ÿå¯¾è±¡ã®ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒƒãƒ•ã‚¡ã€‚*/
 	std::shared_ptr<Audio::AudioBuffer> m_SptrBuffer;
 	friend class C3DAudio;
-	/** @brief XAudio2 ‚Ìƒ\[ƒXƒ{ƒCƒXB*/
+	/** @brief XAudio2 ã®ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ã€‚*/
 	IXAudio2SourceVoice* sourceVoice;
 
-	/** @brief ƒI[ƒfƒBƒIƒAƒiƒ‰ƒCƒUB*/
+	/** @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã€‚*/
 	std::unique_ptr<AudioAnalyzer> m_AudioAnalyzer;
 
-	/** @brief ƒ}ƒXƒ^[‰¹—ÊB*/
+	/** @brief ãƒã‚¹ã‚¿ãƒ¼éŸ³é‡ã€‚*/
 	static inline float masterVolume = 1.0f;
-	/** @brief BGM ‰¹—ÊB*/
+	/** @brief BGM éŸ³é‡ã€‚*/
 	static inline float bgmVolume = 1.0f;
-	/** @brief SE ‰¹—ÊB*/
+	/** @brief SE éŸ³é‡ã€‚*/
 	static inline float seVolume = 1.0f;
 
 private:

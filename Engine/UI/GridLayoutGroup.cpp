@@ -3,36 +3,36 @@
 #include "Engine/Core/GameObject.h"
 #include "Engine/Scenes/Scene.h"
 
-// �����ꂩ�̃}�N�����g�p���ăR���|�[�l���g��o�^���܂��B�K�v�ɉ����đ������w��ł��܂��B
+// いずれかのマクロを使用してコンポーネントを登録します。必要に応じて属性も指定できます。
 //REGISTER_COMPONENT(GridLayoutGroup, "UserScripts")
 REGISTER_COMPONENT_WITH_ATTRIBUTES(GridLayoutGroup, "UI", ComponentAttributes::ExecuteInEditMode, {})
 
 
 void GridLayoutGroup::Start()
 {
-	// �R���|�[�l���g���J�n���ꂽ�Ƃ��̏����������Ɏ������܂��B
+	// コンポーネントが開始されたときの処理をここに実装します。
 }
 
 void GridLayoutGroup::Update(float deltaTime)
 {
-	// ���t���[���̍X�V�����������Ɏ������܂��B
+	// 毎フレームの更新処理をここに実装します。
 	UpdateLayout();
 }
 
 void GridLayoutGroup::UpdateLayout()
 {
-	// �q�v�f�̈ʒu���v�Z���Ĕz�u���鏈���������Ɏ������܂��B
-	// �Ⴆ�΁A�q�v�f���O���b�h��ɔz�u����ꍇ�̗���ȉ��Ɏ����܂��B
+	// 子要素の位置を計算して配置する処理をここに実装します。
+	// 例えば、子要素をグリッド状に配置する場合の例を以下に示します。
 	auto rectTransform = GetRectTransform();
 	if (!rectTransform) return;
 	auto childRects = GetChildRects();
 	if (childRects.empty()) return;
 
-	// �Z���̃T�C�Y�ƃX�y�[�V���O���l�����āA�q�v�f�̈ʒu���v�Z���܂��B
+	// セルのサイズとスペーシングを考慮して、子要素の位置を計算します。
 	int columns = static_cast<int>((rectTransform->GetWorldSize().x - paddingLeft - paddingRight + spacing) / (cellSize.x + spacing));
 	int row = 0, column = 0;
 	
-	// �q�v�f���O���b�h��ɔz�u(���ォ��E����)���܂��B
+	// 子要素をグリッド状に配置(左上から右下へ)します。
 	for (size_t i = 0; i < childRects.size(); ++i)
 	{
 		auto& childRect = childRects[i];

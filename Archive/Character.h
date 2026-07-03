@@ -61,11 +61,11 @@ public:
 			XMFLOAT3 pos = gameObject->transform->WorldPosition();
 			XMVECTOR Pos = XMLoadFloat3(&pos);
 
-			// …•½•ûŒü‚ÌŒvŽZ
+			// æ°´å¹³æ–¹å‘ã®è¨ˆç®—
 			// position = start + Vxz * directionXZ * elapsedTime;
 			DirectX::XMVECTOR Horizontal = DirectX::XMVectorAdd(Pos, DirectX::XMVectorScale(DirectX::XMLoadFloat3(&directionXZ), Vxz * elapsedTime));
 
-			// ‚’¼•ûŒü‚ÌŒvŽZ
+			// åž‚ç›´æ–¹å‘ã®è¨ˆç®—
 			// position = start + Vy * t - 1/2 * g * t^2;
 			float verticalY = pos.y + Vy * elapsedTime /*- 0.5f * gravity * elapsedTime * elapsedTime*/;
 
@@ -106,7 +106,7 @@ public:
 		if (allowInterrupt || !isMoving) {
 			targetPos = target;
 			isMoving = true;
-			//AudioSource‚ðŽ‚Á‚Ä‚¢‚½‚çÄ¶‚·‚éB
+			//AudioSourceã‚’æŒã£ã¦ã„ãŸã‚‰å†ç”Ÿã™ã‚‹ã€‚
 			if (AudioSource* source = gameObject->GetComponent<AudioSource>()) {
 				source->Play();
 			}
@@ -122,7 +122,7 @@ public:
 			length *= 0.5f;
 			handler.Clear();
 			handler.AddEasing(type, 0.f, 1.f, length);
-			//AudioSource‚ðŽ‚Á‚Ä‚¢‚½‚çÄ¶‚·‚éB
+			//AudioSourceã‚’æŒã£ã¦ã„ãŸã‚‰å†ç”Ÿã™ã‚‹ã€‚
 			if (AudioSource* source = gameObject->GetComponent<AudioSource>()) {
 				source->Play();
 			}
@@ -160,12 +160,12 @@ public:
 		DirectX::XMVECTOR ToTargetDir = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&target), DirectX::XMLoadFloat3(&start)));
 		DirectX::XMVECTOR DirectionXZ = DirectX::XMVectorSet(DirectX::XMVectorGetX(ToTargetDir), 0.0f, DirectX::XMVectorGetZ(ToTargetDir), 0.0f);
 		DirectX::XMStoreFloat3(&directionXZ, DirectionXZ);
-		//íœƒ^ƒCƒ}[‚ðƒZƒbƒg
+		//å‰Šé™¤ã‚¿ã‚¤ãƒžãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 		destroyTimer = destroyTime;
 
 		gameObject->GetComponent<BoxCollider>()->SetEnable(false);
 
-		//SEÄ¶
+		//SEå†ç”Ÿ
 		if (GameObject* soundObj = ObjectManager::Find("BlowAwaySound")) {
 			soundObj->GetComponent<AudioSource>()->Play();
 		}
@@ -176,7 +176,7 @@ public:
 
 	virtual void SetColor(const Color& color) { this->color = color; }
 
-	//ƒpƒ‰ƒ[ƒ^‚ÍA³‹K‰»‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢B
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯ã€æ­£è¦åŒ–ã—ãªã‘ã‚Œã°ãªã‚‰ãªã„ã€‚
 	void SetDirection(const Vector3& dir) { direction = dir; }
 	void SetDirection(XMFLOAT3& target, bool flatMove = true) {
 		XMFLOAT3 position = gameObject->transform->WorldPosition();

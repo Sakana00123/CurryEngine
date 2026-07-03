@@ -4,42 +4,42 @@
 #include <algorithm>
 #include "Engine/Rendering/Pipeline/Graphics.h"
 
-// ‚¢‚¸‚ê‚©‚Ìƒ}ƒNƒ‚ğg—p‚µ‚ÄƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ“o˜^‚µ‚Ü‚·B•K—v‚É‰‚¶‚Ä‘®«‚àw’è‚Å‚«‚Ü‚·B
+// ã„ãšã‚Œã‹ã®ãƒã‚¯ãƒ­ã‚’ä½¿ç”¨ã—ã¦ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç™»éŒ²ã—ã¾ã™ã€‚å¿…è¦ã«å¿œã˜ã¦å±æ€§ã‚‚æŒ‡å®šã§ãã¾ã™ã€‚
 //REGISTER_COMPONENT(CanvasScaler, "UserScripts")
 REGISTER_COMPONENT_WITH_ATTRIBUTES(CanvasScaler, "UI", ComponentAttributes::ExecuteInEditMode | ComponentAttributes::DisallowMultiple | ComponentAttributes::RequiredComponent, { "Canvas" })
 
 
 void CanvasScaler::Start()
 {
-	// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŠJn‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
-	priority = -100; // CanvasScaler‚Í—Dæ“x‚ğ’á‚­‚µ‚ÄA‘¼‚ÌUIƒRƒ“ƒ|[ƒlƒ“ƒg‚æ‚èæ‚ÉXV‚³‚ê‚é‚æ‚¤‚É‚µ‚Ü‚·B
+	// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒé–‹å§‹ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
+	priority = -100; // CanvasScalerã¯å„ªå…ˆåº¦ã‚’ä½ãã—ã¦ã€ä»–ã®UIã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚ˆã‚Šå…ˆã«æ›´æ–°ã•ã‚Œã‚‹ã‚ˆã†ã«ã—ã¾ã™ã€‚
 }
 
 void CanvasScaler::Update(float deltaTime)
 {
-	// –ˆƒtƒŒ[ƒ€‚ÌXVˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ›´æ–°å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 
-	// ‰ğ‘œ“xæ“¾
+	// è§£åƒåº¦å–å¾—
 	D3D11_VIEWPORT viewport;
 	UINT num{ 1 };
 	Graphics::GetDeviceContext()->RSGetViewports(&num, &viewport);
 	int sw = (int)viewport.Width;
 	int sh = (int)viewport.Height;
 
-	// •Ï‰»‚ª‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+	// å¤‰åŒ–ãŒãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 	if (sw == m_lastW && sh == m_lastH) return;
 	m_lastW = sw;
 	m_lastH = sh;
 
-	// ƒXƒP[ƒ‹ƒ‚[ƒh‚ªConstantPixelSize‚È‚çŒÅ’è‚ÌƒXƒP[ƒ‹‚ğƒZƒbƒg‚µ‚Äˆ—‚ğI—¹
+	// ã‚¹ã‚±ãƒ¼ãƒ«ãƒ¢ãƒ¼ãƒ‰ãŒConstantPixelSizeãªã‚‰å›ºå®šã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ã‚»ãƒƒãƒˆã—ã¦å‡¦ç†ã‚’çµ‚äº†
 	if (scaleMode == ScaleMode::ConstantPixelSize)
 	{
 		scaleFactor = constantScaleFactor;
 		return;
 	}
 
-	// Scale With Screen Size - log2ƒuƒŒƒ“ƒh(Unity‚Æ“¯•û®)
-	// üŒ`ƒuƒŒƒ“ƒh‚¾‚Æ”{—¦‚ÌŠ´Šo“I’†ŠÔ‚ªƒYƒŒ‚é‚½‚ßlog‹óŠÔ‚Å•âŠÔ‚·‚é
+	// Scale With Screen Size - log2ãƒ–ãƒ¬ãƒ³ãƒ‰(Unityã¨åŒæ–¹å¼)
+	// ç·šå½¢ãƒ–ãƒ¬ãƒ³ãƒ‰ã ã¨å€ç‡ã®æ„Ÿè¦šçš„ä¸­é–“ãŒã‚ºãƒ¬ã‚‹ãŸã‚logç©ºé–“ã§è£œé–“ã™ã‚‹
 	float logW = std::log2(sw / referenceWidth);
 	float logH = std::log2(sh / referenceHeight);
 	float logScale = std::lerp(logW, logH, matchWidthOrHeight);

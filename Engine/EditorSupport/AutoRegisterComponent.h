@@ -3,15 +3,15 @@
 
 /**
  * @file
- * @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì©“®“o˜^ƒwƒ‹ƒp[B
- * @details `ComponentFactory` ‚ÖƒNƒ‰ƒX‚ğ“o˜^‚·‚é‚½‚ß‚Ìƒeƒ“ƒvƒŒ[ƒg/ƒ}ƒNƒ‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
- *          ¶¬ŠÖ”‚âƒJƒeƒSƒŠAŠg’£‘®«AˆË‘¶—vŒ‚ğ‚Ü‚Æ‚ß‚Äw’è‚Å‚«‚Ü‚·B
+ * @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è‡ªå‹•ç™»éŒ²ãƒ˜ãƒ«ãƒ‘ãƒ¼ã€‚
+ * @details `ComponentFactory` ã¸ã‚¯ãƒ©ã‚¹ã‚’ç™»éŒ²ã™ã‚‹ãŸã‚ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ/ãƒã‚¯ãƒ­ã‚’æä¾›ã—ã¾ã™ã€‚
+ *          ç”Ÿæˆé–¢æ•°ã‚„ã‚«ãƒ†ã‚´ãƒªã€æ‹¡å¼µå±æ€§ã€ä¾å­˜è¦ä»¶ã‚’ã¾ã¨ã‚ã¦æŒ‡å®šã§ãã¾ã™ã€‚
  */
 
 #if 0
 /**
- * @brief ƒeƒ“ƒvƒŒ[ƒg”Å‚Ì©“®“o˜^i”ñ„§AQÆ—pjB
- * @tparam T “o˜^‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgŒ^B
+ * @brief ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆç‰ˆã®è‡ªå‹•ç™»éŒ²ï¼ˆéæ¨å¥¨ã€å‚ç…§ç”¨ï¼‰ã€‚
+ * @tparam T ç™»éŒ²ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå‹ã€‚
  */
 template<typename T>
 class AutoRegisterComponent : public Component {
@@ -20,7 +20,7 @@ protected:
 };
 
 /**
- * @brief ƒNƒ‰ƒX `T` ‚ğƒtƒ@ƒNƒgƒŠ‚É“o˜^‚µ‚Ü‚·B
+ * @brief ã‚¯ãƒ©ã‚¹ `T` ã‚’ãƒ•ã‚¡ã‚¯ãƒˆãƒªã«ç™»éŒ²ã—ã¾ã™ã€‚
  */
 template<typename T>
 bool AutoRegisterComponent<T>::registered =
@@ -35,12 +35,12 @@ bool AutoRegisterComponent<T>::registered =
 #else
 
 /**
- * @brief ‘®«‚â—vŒ•t‚«‚ÅƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ“o˜^‚·‚éƒ}ƒNƒB
- * @param CLASS “o˜^‘ÎÛ‚ÌƒNƒ‰ƒX–¼B
- * @param CATEGORY ƒJƒeƒSƒŠ–¼iƒGƒfƒBƒ^‚È‚Ç‚Ì•ª—Ş—pjB
- * @param ATTRS ’Ç‰Á‘®«i`std::vector<AttributeBase*>` ‘Š“–‚ğ‘z’èjB
- * @param REQS ˆË‘¶—vŒi`std::vector<Requirement>` “™‚ğ‘z’èjB
- * @details Ã“IƒŒƒWƒXƒgƒ‰‚ğ¶¬‚µA‹N“®‚É `ComponentFactory::Register` ‚ğŒÄ‚Ño‚µ‚Ü‚·B
+ * @brief å±æ€§ã‚„è¦ä»¶ä»˜ãã§ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç™»éŒ²ã™ã‚‹ãƒã‚¯ãƒ­ã€‚
+ * @param CLASS ç™»éŒ²å¯¾è±¡ã®ã‚¯ãƒ©ã‚¹åã€‚
+ * @param CATEGORY ã‚«ãƒ†ã‚´ãƒªåï¼ˆã‚¨ãƒ‡ã‚£ã‚¿ãªã©ã®åˆ†é¡ç”¨ï¼‰ã€‚
+ * @param ATTRS è¿½åŠ å±æ€§ï¼ˆ`std::vector<AttributeBase*>` ç›¸å½“ã‚’æƒ³å®šï¼‰ã€‚
+ * @param REQS ä¾å­˜è¦ä»¶ï¼ˆ`std::vector<Requirement>` ç­‰ã‚’æƒ³å®šï¼‰ã€‚
+ * @details é™çš„ãƒ¬ã‚¸ã‚¹ãƒˆãƒ©ã‚’ç”Ÿæˆã—ã€èµ·å‹•æ™‚ã« `ComponentFactory::Register` ã‚’å‘¼ã³å‡ºã—ã¾ã™ã€‚
  */
 #define REGISTER_COMPONENT_WITH_ATTRIBUTES(CLASS, CATEGORY, ATTRS, REQS) \
 struct CLASS##Registrator { \
@@ -59,10 +59,10 @@ struct CLASS##Registrator { \
 static inline CLASS##Registrator global_##CLASS##_registrator;
 
 /**
- * @brief ƒVƒ“ƒvƒ‹‚ÈƒRƒ“ƒ|[ƒlƒ“ƒg“o˜^ƒ}ƒNƒB
- * @param CLASS “o˜^‘ÎÛ‚ÌƒNƒ‰ƒX–¼B
- * @param CATEGORY ƒJƒeƒSƒŠ–¼B
- * @details ¶¬ŠÖ”‚Ì‚İ‚ğ“o˜^‚µ‚Ü‚·B‘®«‚â—vŒ‚ª•s—v‚Èê‡‚Ég—p‚µ‚Ü‚·B
+ * @brief ã‚·ãƒ³ãƒ—ãƒ«ãªã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆç™»éŒ²ãƒã‚¯ãƒ­ã€‚
+ * @param CLASS ç™»éŒ²å¯¾è±¡ã®ã‚¯ãƒ©ã‚¹åã€‚
+ * @param CATEGORY ã‚«ãƒ†ã‚´ãƒªåã€‚
+ * @details ç”Ÿæˆé–¢æ•°ã®ã¿ã‚’ç™»éŒ²ã—ã¾ã™ã€‚å±æ€§ã‚„è¦ä»¶ãŒä¸è¦ãªå ´åˆã«ä½¿ç”¨ã—ã¾ã™ã€‚
  */
 #define REGISTER_COMPONENT(CLASS, CATEGORY) \
 static bool _registered_##CLASS = [](){ \
@@ -71,9 +71,9 @@ static bool _registered_##CLASS = [](){ \
 }();
 
 ///**
-// * @brief ƒXƒNƒŠƒvƒgƒRƒ“ƒ|[ƒlƒ“ƒgê—p‚Ì“o˜^ƒ}ƒNƒB
-// * @param CLASS “o˜^‘ÎÛ‚ÌƒNƒ‰ƒX–¼B
-// * @details ƒJƒeƒSƒŠ‚ğ "Scripts" ‚ÉŒÅ’è‚µ‚Ä“o˜^‚µ‚Ü‚·B
+// * @brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå°‚ç”¨ã®ç™»éŒ²ãƒã‚¯ãƒ­ã€‚
+// * @param CLASS ç™»éŒ²å¯¾è±¡ã®ã‚¯ãƒ©ã‚¹åã€‚
+// * @details ã‚«ãƒ†ã‚´ãƒªã‚’ "Scripts" ã«å›ºå®šã—ã¦ç™»éŒ²ã—ã¾ã™ã€‚
 // */
 //#define REGISTER_SCRIPT_COMPONENT(CLASS) \
 //static bool _registered_##CLASS = [](){ \

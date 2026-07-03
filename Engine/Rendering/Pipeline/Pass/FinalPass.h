@@ -5,13 +5,13 @@
 class FinalPass : public RenderPass
 {
 public:
-	// FinalPass‚Ì‰Šú‰»ˆ—
+	// FinalPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
-	// FinalPass‚ÌÀ‘•
+	// FinalPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 private:
-	// ÅI‡¬—p‚ÌƒŠƒ\[ƒXi—á: ƒVƒF[ƒ_[‚È‚Çj‚ğ‚±‚±‚É’Ç‰Á
+	// æœ€çµ‚åˆæˆç”¨ã®ãƒªã‚½ãƒ¼ã‚¹ï¼ˆä¾‹: ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãªã©ï¼‰ã‚’ã“ã“ã«è¿½åŠ 
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> finalPassPs;
 
 };

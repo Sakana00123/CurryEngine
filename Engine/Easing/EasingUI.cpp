@@ -91,7 +91,7 @@ void EasingAnchoredPosition::DrawProperty(const PropertyDrawContext& context)
 	}
 
 	
-	// ImGui::Curve —p‚ÌƒRƒ“ƒgƒ[ƒ‹ƒ|ƒCƒ“ƒg
+	// ImGui::Curve ç”¨ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒã‚¤ãƒ³ãƒˆ
 	static int selectedPoint = -1;
 	static ImVec2 points[4] = { ImVec2(0.0f, 0.0f), ImVec2(0.33f, 0.33f), ImVec2(0.66f, 0.66f), ImVec2(1.0f, 1.0f) };
 

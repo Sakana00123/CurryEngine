@@ -31,9 +31,9 @@ inline static void DrawLayerComboBox(const EditorSelection* selection)
 	auto layers = LayerManager::Get().GetLayerNames();
 	std::vector<std::string> layerNames;
 	for (int i = 0; i < layers.size(); ++i) {
-		//‹ó‚ÌƒŒƒCƒ„[‚Í•\¦‚µ‚È‚¢
+		//ç©ºã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯è¡¨ç¤ºã—ãªã„
 		if (layers[i].empty()) break;
-		//ƒŒƒCƒ„[”Ô†‚ÆƒŒƒCƒ„[–¼‚ğ•\¦
+		//ãƒ¬ã‚¤ãƒ¤ãƒ¼ç•ªå·ã¨ãƒ¬ã‚¤ãƒ¤ãƒ¼åã‚’è¡¨ç¤º
 		std::string layerName = "Layer" + std::to_string(i) + ": " + layers[i];
 		layerNames.push_back(layerName);
 	}
@@ -46,7 +46,7 @@ inline static void DrawLayerComboBox(const EditorSelection* selection)
         }
 	}
 
-	//ƒŒƒCƒ„[‚Ìƒhƒƒbƒvƒ_ƒEƒ“
+	//ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³
 	ImGui::Text("Layer");
 	ImGui::SameLine();
 	const char* preview = mixedLayer ? "---" : layers[currentLayer].c_str();
@@ -65,11 +65,11 @@ inline static void DrawLayerComboBox(const EditorSelection* selection)
 				ImGui::SetItemDefaultFocus();
 			}
 		}
-		//ƒŒƒCƒ„[‚ÌŠÇ—‰æ–Ê‚É‘JˆÚ‚·‚é‘I‘ğˆ
+		//ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç®¡ç†ç”»é¢ã«é·ç§»ã™ã‚‹é¸æŠè‚¢
 		ImGui::Separator();
 		if (ImGui::Selectable("Add Layer..."))
 		{
-			//ƒŒƒCƒ„[ŠÇ—‰æ–Ê‚É‘JˆÚ
+			//ãƒ¬ã‚¤ãƒ¤ãƒ¼ç®¡ç†ç”»é¢ã«é·ç§»
 			LayerManager::Get().OpenLayerSettingsGUI();
 		}
 	    ImGui::EndCombo();
@@ -93,8 +93,8 @@ inline static void DrawActiveCheckbox(const EditorSelection* selection)
         return;
 	}
 
-	//bool isActive = inspectorNode->IsActiveSelf(); // ƒ[ƒJƒ‹‚Ì—LŒøó‘Ô
-	bool isActive = selection->GetPrimary()->IsActiveSelf(); // å‘I‘ğ‚Ìƒ[ƒJƒ‹‚Ì—LŒøó‘Ô‚ğŠî€‚É‚·‚é
+	//bool isActive = inspectorNode->IsActiveSelf(); // ãƒ­ãƒ¼ã‚«ãƒ«ã®æœ‰åŠ¹çŠ¶æ…‹
+	bool isActive = selection->GetPrimary()->IsActiveSelf(); // ä¸»é¸æŠã®ãƒ­ãƒ¼ã‚«ãƒ«ã®æœ‰åŠ¹çŠ¶æ…‹ã‚’åŸºæº–ã«ã™ã‚‹
 	bool mixedActive = false;
     for (const auto& obj : selection->GetAll()) {
         if (obj->IsActiveSelf() != isActive) {
@@ -104,21 +104,21 @@ inline static void DrawActiveCheckbox(const EditorSelection* selection)
 	}
 	bool edited = false;
     if (mixedActive) {
-        //•¡”‘I‘ğ‚Å—LŒøó‘Ô‚ª¬İ‚µ‚Ä‚¢‚éê‡‚ÍAƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğOó‘Ô‚É‚·‚é
-		int state = isActive ? 1 : 0; // å‘I‘ğ‚Ìó‘Ô‚ğŠî€‚É‚·‚é
+        //è¤‡æ•°é¸æŠã§æœ‰åŠ¹çŠ¶æ…‹ãŒæ··åœ¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã‚’ä¸‰çŠ¶æ…‹ã«ã™ã‚‹
+		int state = isActive ? 1 : 0; // ä¸»é¸æŠã®çŠ¶æ…‹ã‚’åŸºæº–ã«ã™ã‚‹
         if (ImGui::CheckboxFlags("##Active", &state, -1))
         {
-			isActive = !isActive; // ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒNƒŠƒbƒN‚³‚ê‚½‚çAå‘I‘ğ‚Ìó‘Ô‚ğ”½“]‚³‚¹‚é
+			isActive = !isActive; // ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚‰ã€ä¸»é¸æŠã®çŠ¶æ…‹ã‚’åè»¢ã•ã›ã‚‹
 			edited = true;
         }
     }
     else {
-        //’Pˆê‘I‘ğ‚Ü‚½‚Í•¡”‘I‘ğ‚Å—LŒøó‘Ô‚ªˆê’v‚µ‚Ä‚¢‚éê‡‚ÍA’Êí‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+        //å˜ä¸€é¸æŠã¾ãŸã¯è¤‡æ•°é¸æŠã§æœ‰åŠ¹çŠ¶æ…‹ãŒä¸€è‡´ã—ã¦ã„ã‚‹å ´åˆã¯ã€é€šå¸¸ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
         edited = ImGui::Checkbox("##Active", &isActive);
 	}
 
 	if (edited) {
-		//inspectorNode->SetActive(isActive); // ƒOƒ[ƒoƒ‹‚Ì—LŒøó‘Ô‚ğXV
+		//inspectorNode->SetActive(isActive); // ã‚°ãƒ­ãƒ¼ãƒãƒ«ã®æœ‰åŠ¹çŠ¶æ…‹ã‚’æ›´æ–°
         for (const auto& obj : selection->GetAll()) {
             obj->SetActive(isActive);
 		}
@@ -193,27 +193,27 @@ inline static void DrawAddComponentButton(GameObject* inspectorNode, std::functi
         static char searchBuffer[64] = "";
         ImGui::InputText("##search", searchBuffer, IM_ARRAYSIZE(searchBuffer));
 
-        // ŒŸõ•¶š—ñ
+        // æ¤œç´¢æ–‡å­—åˆ—
         std::string filter = searchBuffer;
         std::transform(filter.begin(), filter.end(), filter.begin(), ::tolower);
 
-        // ƒJƒeƒSƒŠ‚²‚Æ‚É•\¦
+        // ã‚«ãƒ†ã‚´ãƒªã”ã¨ã«è¡¨ç¤º
         std::unordered_map<std::string, std::vector<std::string>> categorized;
         for (auto& [name, entry] : ComponentFactory::GetAll()) {
             if (entry.attributes & ComponentAttributes::HideInAddComponentMenu) {
-                continue; // Add Component ƒƒjƒ…[‚É•\¦‚µ‚È‚¢‘®«‚ª‚ ‚éê‡‚ÍƒXƒLƒbƒv
+                continue; // Add Component ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã—ãªã„å±æ€§ãŒã‚ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
             }
             categorized[entry.category].push_back(name);
         }
 
-        // ƒJƒeƒSƒŠ‚²‚Æ‚É•\¦
+        // ã‚«ãƒ†ã‚´ãƒªã”ã¨ã«è¡¨ç¤º
         for (auto& [category, names] : categorized)
         {
-            // ƒJƒeƒSƒŠ–¼‚ğ¬•¶š‚É•ÏŠ·‚µ‚ÄƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
+            // ã‚«ãƒ†ã‚´ãƒªåã‚’å°æ–‡å­—ã«å¤‰æ›ã—ã¦ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
             std::string lowerCategory = category;
             std::transform(lowerCategory.begin(), lowerCategory.end(), lowerCategory.begin(), ::tolower);
 
-            // ƒJƒeƒSƒŠ–¼‚ªƒtƒBƒ‹ƒ^‚Éˆê’v‚·‚é‚©AƒJƒeƒSƒŠ“à‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg–¼‚ªƒtƒBƒ‹ƒ^‚Éˆê’v‚·‚é‚©‚ğƒ`ƒFƒbƒN
+            // ã‚«ãƒ†ã‚´ãƒªåãŒãƒ•ã‚£ãƒ«ã‚¿ã«ä¸€è‡´ã™ã‚‹ã‹ã€ã‚«ãƒ†ã‚´ãƒªå†…ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåãŒãƒ•ã‚£ãƒ«ã‚¿ã«ä¸€è‡´ã™ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯
             bool showCategory = false;
             bool categoryMatches = filter.empty() || lowerCategory.find(filter) != std::string::npos;
             if (filter.empty() || categoryMatches) {
@@ -224,13 +224,13 @@ inline static void DrawAddComponentButton(GameObject* inspectorNode, std::functi
                 for (auto& name : names)
                 {
                     if (name == "ScriptComponent") {
-                        continue; // ƒXƒNƒŠƒvƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚ÍŒã‚Å•Ê“r•\¦
+                        continue; // ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯å¾Œã§åˆ¥é€”è¡¨ç¤º
                     }
-                    // ¬•¶š•ÏŠ·‚µ‚ÄƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
+                    // å°æ–‡å­—å¤‰æ›ã—ã¦ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
                     std::string lowerName = name;
                     std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
 
-                    // ƒtƒBƒ‹ƒ^‚Éˆê’v‚·‚é–¼‘O‚ª‚ ‚ê‚ÎƒJƒeƒSƒŠ‚ğ•\¦
+                    // ãƒ•ã‚£ãƒ«ã‚¿ã«ä¸€è‡´ã™ã‚‹åå‰ãŒã‚ã‚Œã°ã‚«ãƒ†ã‚´ãƒªã‚’è¡¨ç¤º
                     if (lowerName.find(filter) != std::string::npos) {
                         showCategory = true;
                         break;
@@ -238,32 +238,32 @@ inline static void DrawAddComponentButton(GameObject* inspectorNode, std::functi
                 }
             }
 
-            // ƒtƒBƒ‹ƒ^‚Éˆê’v‚µ‚È‚¢ƒJƒeƒSƒŠ‚ÍƒXƒLƒbƒv
+            // ãƒ•ã‚£ãƒ«ã‚¿ã«ä¸€è‡´ã—ãªã„ã‚«ãƒ†ã‚´ãƒªã¯ã‚¹ã‚­ãƒƒãƒ—
             if (!showCategory) continue;
 
-            // ƒJƒeƒSƒŠ•\¦
+            // ã‚«ãƒ†ã‚´ãƒªè¡¨ç¤º
             if (ImGui::TreeNodeEx(category.c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
                 for (auto& name : names) {
                     std::string lowerName = name;
                     std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
 
-                    // ƒtƒBƒ‹ƒ^‚Éˆê’v‚·‚é–¼‘O‚ª‚È‚¯‚ê‚ÎƒXƒLƒbƒviƒJƒeƒSƒŠ‚ªˆê’v‚µ‚Ä‚¢‚éê‡‚Í•\¦j
+                    // ãƒ•ã‚£ãƒ«ã‚¿ã«ä¸€è‡´ã™ã‚‹åå‰ãŒãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—ï¼ˆã‚«ãƒ†ã‚´ãƒªãŒä¸€è‡´ã—ã¦ã„ã‚‹å ´åˆã¯è¡¨ç¤ºï¼‰
                     if (!filter.empty() && lowerName.find(filter) == std::string::npos && !categoryMatches) {
-                        continue; // ƒtƒBƒ‹ƒ^‚Éˆê’v‚µ‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+                        continue; // ãƒ•ã‚£ãƒ«ã‚¿ã«ä¸€è‡´ã—ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                     }
 
                     if (ImGui::Selectable(name.c_str())) {
-                        // ‘I‘ğ‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚·‚×‚Ä‚Ì‘I‘ğ’†‚ÌƒIƒuƒWƒFƒNƒg‚É’Ç‰Á
+                        // é¸æŠã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã™ã¹ã¦ã®é¸æŠä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¿½åŠ 
                         applyToSelectedObjects([name](GameObject* obj)
                             {
                                 auto component = ComponentFactory::Create(name);
                                 obj->AttachComponent(name, component);
-                                component->SetEnabled(true); // ’Ç‰Á‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Í—LŒø‚É‚·‚é
+                                component->SetEnabled(true); // è¿½åŠ ã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯æœ‰åŠ¹ã«ã™ã‚‹
                                 obj->InitializeComponent(component);
                                 if (obj->GetScene() && obj->GetScene()->IsStarted())
                                 {
-                                    obj->AwakeComponents(); // ƒV[ƒ“‚ª‚·‚Å‚ÉŠJn‚³‚ê‚Ä‚¢‚éê‡‚ÍAwake‚àŒÄ‚Ño‚·
-                                    obj->RefreshActiveInHierarchy(); // ƒAƒNƒeƒBƒuó‘Ô‚ğXV‚µ‚ÄAƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌOnEnable/OnDisable‚ğ³‚µ‚­ŒÄ‚Ño‚·
+                                    obj->AwakeComponents(); // ã‚·ãƒ¼ãƒ³ãŒã™ã§ã«é–‹å§‹ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯Awakeã‚‚å‘¼ã³å‡ºã™
+                                    obj->RefreshActiveInHierarchy(); // ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’æ›´æ–°ã—ã¦ã€ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®OnEnable/OnDisableã‚’æ­£ã—ãå‘¼ã³å‡ºã™
                                 }
                             });
 
@@ -274,7 +274,7 @@ inline static void DrawAddComponentButton(GameObject* inspectorNode, std::functi
             }
         }
 
-        // ƒXƒNƒŠƒvƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚à•\¦
+        // ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚‚è¡¨ç¤º
         if (ImGui::TreeNodeEx("Scripts", ImGuiTreeNodeFlags_DefaultOpen))
         {
             for (const auto& scriptName : ScriptSystem::GetRegisteredScriptNames())
@@ -293,12 +293,12 @@ inline static void DrawAddComponentButton(GameObject* inspectorNode, std::functi
                             if (auto scriptComp = std::dynamic_pointer_cast<ScriptComponent>(component)) {
                                 scriptComp->scriptName = scriptName;
                                 obj->AttachComponent("ScriptComponent", component);
-                                component->SetEnabled(true); // ’Ç‰Á‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Í—LŒø‚É‚·‚é
+                                component->SetEnabled(true); // è¿½åŠ ã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯æœ‰åŠ¹ã«ã™ã‚‹
                                 obj->InitializeComponent(component);
                                 if (obj->GetScene() && obj->GetScene()->IsStarted())
                                 {
-                                    obj->AwakeComponents(); // ƒV[ƒ“‚ª‚·‚Å‚ÉŠJn‚³‚ê‚Ä‚¢‚éê‡‚ÍAwake‚àŒÄ‚Ño‚·
-                                    obj->RefreshActiveInHierarchy(); // ƒAƒNƒeƒBƒuó‘Ô‚ğXV‚µ‚ÄAƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌOnEnable/OnDisable‚ğ³‚µ‚­ŒÄ‚Ño‚·
+                                    obj->AwakeComponents(); // ã‚·ãƒ¼ãƒ³ãŒã™ã§ã«é–‹å§‹ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯Awakeã‚‚å‘¼ã³å‡ºã™
+                                    obj->RefreshActiveInHierarchy(); // ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’æ›´æ–°ã—ã¦ã€ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®OnEnable/OnDisableã‚’æ­£ã—ãå‘¼ã³å‡ºã™
                                 }
                             }
                         });
@@ -317,14 +317,14 @@ inline static void DrawDropTarget(ImVec2 cursorPos, GameObject* inspectorNode, s
     if (ImGui::GetDragDropPayload() && std::strcmp(ImGui::GetDragDropPayload()->DataType, "ASSET_PATH") == 0)
     {
         float scrollY = ImGui::GetScrollY();
-        ImVec2 offset(0, scrollY); // ƒXƒNƒ[ƒ‹ƒIƒtƒZƒbƒg‚ğl—¶
-        ImGui::SetCursorPos(cursorPos + offset); // ƒhƒƒbƒvƒ^[ƒQƒbƒg‚ÌˆÊ’u‚ğ’²®
-        ImVec2 contentRegion = ImGui::GetContentRegionAvail(); // —˜—p‰Â”\‚È•‚ğæ“¾
+        ImVec2 offset(0, scrollY); // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è€ƒæ…®
+        ImGui::SetCursorPos(cursorPos + offset); // ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä½ç½®ã‚’èª¿æ•´
+        ImVec2 contentRegion = ImGui::GetContentRegionAvail(); // åˆ©ç”¨å¯èƒ½ãªå¹…ã‚’å–å¾—
         ImVec2 size = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
 
-        ImGui::InvisibleButton("##drop_target", size); // —˜—p‰Â”\‚È—Ìˆæ‘S‘Ì‚ğƒhƒƒbƒvƒ^[ƒQƒbƒg‚É‚·‚é
+        ImGui::InvisibleButton("##drop_target", size); // åˆ©ç”¨å¯èƒ½ãªé ˜åŸŸå…¨ä½“ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã™ã‚‹
 
-        // ƒhƒƒbƒv‚³‚ê‚½‚Æ‚«‚Ìˆ—
+        // ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã¨ãã®å‡¦ç†
         if (ImGui::BeginDragDropTarget()) {
             if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH")) {
                 const char* p = static_cast<const char*>(payload->Data);
@@ -340,7 +340,7 @@ inline static void DrawDropTarget(ImVec2 cursorPos, GameObject* inspectorNode, s
                             if (auto scriptComp = std::dynamic_pointer_cast<ScriptComponent>(component)) {
                                 scriptComp->scriptName = scriptName;
                                 obj->AttachComponent("ScriptComponent", component);
-                                component->SetEnabled(true); // ’Ç‰Á‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Í—LŒø‚É‚·‚é
+                                component->SetEnabled(true); // è¿½åŠ ã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯æœ‰åŠ¹ã«ã™ã‚‹
                                 obj->InitializeComponent(component);
                             }
                         });
@@ -359,14 +359,14 @@ inline static void DrawInspectorHeader(EditorSelection* selection, ObjectManager
 {
     if (selection && !selection->IsEmpty())
     {
-        //InspectorƒƒbƒN
+        //Inspectorãƒ­ãƒƒã‚¯
         DrawInspectorLockCheckbox(objectManager);
         ImGui::SameLine();
-        // layer‚ğ•ÏX‚·‚éƒhƒƒbƒvƒ_ƒEƒ“
+        // layerã‚’å¤‰æ›´ã™ã‚‹ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³
         DrawLayerComboBox(selection);
-        //ƒIƒuƒWƒFƒNƒg‚Ì—LŒøó‘Ô‚ğØ‚è‘Ö‚¦‚éƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+        //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ‰åŠ¹çŠ¶æ…‹ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
         DrawActiveCheckbox(selection);
-        //–¼‘O‚ğ•ÏX‚·‚éƒeƒLƒXƒgƒ{ƒbƒNƒX
+        //åå‰ã‚’å¤‰æ›´ã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹
         DrawNameInput(selection);
     }
 }
@@ -378,7 +378,7 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
     ProfileScopedSection_3(0, (primaryObject->name + " DrawProperty").c_str(), ImGuiControl::Profiler::Color::Green);
 
     ImGui::BeginChild("##Components", ImVec2(0, 0), true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysUseWindowPadding);
-    ImVec2 cursorPos = ImGui::GetCursorPos(); // Œ»İ‚ÌƒJ[ƒ\ƒ‹ˆÊ’u‚ğ•Û‘¶
+    ImVec2 cursorPos = ImGui::GetCursorPos(); // ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’ä¿å­˜
 
     auto scene = primaryObject ? primaryObject->GetScene() : nullptr;
     auto objectManager = scene ? scene->GetObjectManager() : nullptr;
@@ -386,8 +386,8 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
         ImGui::EndChild();
         return;
 	}
-    bool hasSameTypeAll = true; // ‚·‚×‚Ä‚Ì‘I‘ğ’†‚ÌƒIƒuƒWƒFƒNƒg‚ª“¯‚¶ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Á‚Ä‚¢‚é‚©
-	std::vector<std::weak_ptr<Component>> componentsToDraw; // •`‰æ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒŠƒXƒg
+    bool hasSameTypeAll = true; // ã™ã¹ã¦ã®é¸æŠä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåŒã˜ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã£ã¦ã„ã‚‹ã‹
+	std::vector<std::weak_ptr<Component>> componentsToDraw; // æç”»ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒªã‚¹ãƒˆ
     auto applyToSelectedObjects = [selection](std::function<void(GameObject*)> action)
         {
             if (selection)
@@ -404,25 +404,25 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
     {
         std::vector<std::shared_ptr<GameObject>> selections = selection->GetAll();
 
-        // “¯‚¶ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Â‘I‘ğ’†‚ÌƒIƒuƒWƒFƒNƒg‚ğ’T‚·
+        // åŒã˜ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã¤é¸æŠä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¢ã™
 		for (auto& primaryComp : primaryObject->GetAllComponents())
         {
-			bool hasSameType = true; // å‘I‘ğ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Æ“¯‚¶Œ^‚ğ‚Â‚©
+			bool hasSameType = true; // ä¸»é¸æŠã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¨åŒã˜å‹ã‚’æŒã¤ã‹
             for (const auto& selectedObj : selections)
             {
-                if (selectedObj == primaryObject) continue; // å‘I‘ğ‚ÍƒXƒLƒbƒv
+                if (selectedObj == primaryObject) continue; // ä¸»é¸æŠã¯ã‚¹ã‚­ãƒƒãƒ—
                 if (!selectedObj->GetComponentByTypeName(primaryComp->GetTypeName())) {
-					hasSameType = false; // å‘I‘ğ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Æ“¯‚¶Œ^‚ğ‚Á‚Ä‚¢‚È‚¢ƒIƒuƒWƒFƒNƒg‚ª‚ ‚é
-                    hasSameTypeAll = false; // 1‚Â‚Å‚à“¯‚¶ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Á‚Ä‚¢‚È‚¢ƒIƒuƒWƒFƒNƒg‚ª‚ ‚ê‚Îƒtƒ‰ƒO‚ğ‰º‚°‚é
+					hasSameType = false; // ä¸»é¸æŠã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¨åŒã˜å‹ã‚’æŒã£ã¦ã„ãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚‹
+                    hasSameTypeAll = false; // 1ã¤ã§ã‚‚åŒã˜ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã£ã¦ã„ãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚Œã°ãƒ•ãƒ©ã‚°ã‚’ä¸‹ã’ã‚‹
                     break;
                 }
             }
             if (hasSameType) {
-                componentsToDraw.push_back(primaryComp); // å‘I‘ğ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Æ“¯‚¶Œ^‚ğ‚ÂƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ•`‰æƒŠƒXƒg‚É’Ç‰Á
+                componentsToDraw.push_back(primaryComp); // ä¸»é¸æŠã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¨åŒã˜å‹ã‚’æŒã¤ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æç”»ãƒªã‚¹ãƒˆã«è¿½åŠ 
             }
         }
     }
-    // ƒRƒ“ƒ|[ƒlƒ“ƒg‚²‚Æ‚É•\¦
+    // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã”ã¨ã«è¡¨ç¤º
     for (auto& primaryCompWeak : componentsToDraw) {
         if (auto primaryComp = primaryCompWeak.lock()) {
             if (primaryComp->hideInspector) continue;
@@ -431,19 +431,19 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
             ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.75f, 0.75f, 0.75f, 0.75f));
             ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.5f, 0.5f, 0.5f, 0.5f));
 
-            // ID‚ğƒvƒbƒVƒ…‚µ‚ÄTreeNodeEx‚Æƒ|ƒbƒvƒAƒbƒv‚ğ‹æ•Ê
+            // IDã‚’ãƒ—ãƒƒã‚·ãƒ¥ã—ã¦TreeNodeExã¨ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’åŒºåˆ¥
             ImGui::PushID(primaryComp.get());
 
-            // —LŒø/–³Œøƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+            // æœ‰åŠ¹/ç„¡åŠ¹ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
             bool enable = primaryComp->IsEnabledSelf();
             if (ImGui::Checkbox("##enabled", &enable)) {
                 primaryComp->SetEnabled(enable);
             }
-            ImGui::SameLine(); // ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Ì‰E‚ÉTreeNode‚ğ•À‚×‚é
+            ImGui::SameLine(); // ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®å³ã«TreeNodeã‚’ä¸¦ã¹ã‚‹
 
-            // ƒRƒ“ƒ|[ƒlƒ“ƒg–¼‚Ìƒ‰ƒxƒ‹
+            // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåã®ãƒ©ãƒ™ãƒ«
             std::string treeLabel = primaryComp->GetName();
-            // ƒXƒNƒŠƒvƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìê‡AƒXƒNƒŠƒvƒg–¼‚à•\¦
+            // ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å ´åˆã€ã‚¹ã‚¯ãƒªãƒ—ãƒˆåã‚‚è¡¨ç¤º
             if (treeLabel == "ScriptComponent")
             {
                 if (auto scriptComp = std::dynamic_pointer_cast<ScriptComponent>(primaryComp))
@@ -451,17 +451,17 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
                     treeLabel = scriptComp->GetTypeName() + " (" + treeLabel + ")";
                 }
             }
-            // ƒRƒ“ƒ|[ƒlƒ“ƒg–¼•\¦
+            // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåè¡¨ç¤º
             bool open = ImGui::TreeNodeEx(treeLabel.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
 
-            // ƒhƒ‰ƒbƒOƒhƒƒbƒv‚ÌŠJn
+            // ãƒ‰ãƒ©ãƒƒã‚°ãƒ‰ãƒ­ãƒƒãƒ—ã®é–‹å§‹
             if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
                 ImGui::SetDragDropPayload((primaryComp->GetTypeName()).c_str(), &primaryComp->id, sizeof(ObjectId*));
                 ImGui::Text("%s", primaryComp->GetTypeName().c_str());
                 ImGui::EndDragDropSource();
             }
 
-            // ‰EƒNƒŠƒbƒNƒƒjƒ…[
+            // å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼
             if (ImGui::BeginPopupContextItem("component_context_menu", ImGuiPopupFlags_MouseButtonRight)) {
                 if (ImGui::MenuItem("Remove")) {
                     applyToSelectedObjects([primaryComp](GameObject* obj)
@@ -481,18 +481,18 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
                     if (selection)
                     {
                         std::vector<std::shared_ptr<GameObject>> selections = selection->GetAll();
-                        std::vector<Object*> sameTypeComps{ primaryComp.get() }; // å‘I‘ğ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğÅ‰‚É’Ç‰Á
+                        std::vector<Object*> sameTypeComps{ primaryComp.get() }; // ä¸»é¸æŠã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æœ€åˆã«è¿½åŠ 
 
-                        // “¯‚¶ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Â‘I‘ğ’†‚ÌƒIƒuƒWƒFƒNƒg‚ğ’T‚·
-                        bool hasSameType = true; // ‚·‚×‚Ä‚Ì‘I‘ğ’†‚ÌƒIƒuƒWƒFƒNƒg‚ª“¯‚¶ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Á‚Ä‚¢‚é‚©
+                        // åŒã˜ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã¤é¸æŠä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¢ã™
+                        bool hasSameType = true; // ã™ã¹ã¦ã®é¸æŠä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåŒã˜ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã£ã¦ã„ã‚‹ã‹
                         for (const auto& selectedObj : selections)
                         {
-                            if (selectedObj == primaryObject) continue; // å‘I‘ğ‚ÍƒXƒLƒbƒv
+                            if (selectedObj == primaryObject) continue; // ä¸»é¸æŠã¯ã‚¹ã‚­ãƒƒãƒ—
                             if (auto comp = selectedObj->GetComponentByTypeName(primaryComp->GetTypeName())) {
                                 sameTypeComps.push_back(comp.get());
                             }
                             else {
-                                hasSameType = false; // 1‚Â‚Å‚à“¯‚¶ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Á‚Ä‚¢‚È‚¢ƒIƒuƒWƒFƒNƒg‚ª‚ ‚ê‚Îƒtƒ‰ƒO‚ğ‰º‚°‚é
+                                hasSameType = false; // 1ã¤ã§ã‚‚åŒã˜ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã£ã¦ã„ãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚Œã°ãƒ•ãƒ©ã‚°ã‚’ä¸‹ã’ã‚‹
                                 break;
                             }
                         }
@@ -526,8 +526,8 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
         DrawAddComponentButton(primaryObject.get(), applyToSelectedObjects);
     }
 
-    // ƒhƒ‰ƒbƒOƒhƒƒbƒv‚Ìó‚¯“ü‚ê(ƒCƒ“ƒXƒyƒNƒ^‘S‘Ì)
-    // ƒCƒ“ƒXƒyƒNƒ^‘S‘Ì‚ğƒhƒƒbƒvƒ^[ƒQƒbƒg‚É‚·‚é‚½‚ß‚ÉAƒEƒBƒ“ƒhƒE‚ğ•¢‚¤“§–¾‚Èƒhƒƒbƒvƒ^[ƒQƒbƒg‚ğì¬
+    // ãƒ‰ãƒ©ãƒƒã‚°ãƒ‰ãƒ­ãƒƒãƒ—ã®å—ã‘å…¥ã‚Œ(ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿å…¨ä½“)
+    // ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿å…¨ä½“ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã™ã‚‹ãŸã‚ã«ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¦†ã†é€æ˜ãªãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ä½œæˆ
     DrawDropTarget(cursorPos, primaryObject.get(), applyToSelectedObjects);
 
     ImGui::EndChild();

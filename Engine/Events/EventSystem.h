@@ -11,7 +11,7 @@ class GraphicRaycaster;
 class GameObject;
 struct RaycastResult;
 
-// ƒCƒxƒ“ƒgID‚ÌŒ^’è‹`
+// ã‚¤ãƒ™ãƒ³ãƒˆIDã®å‹å®šç¾©
 using EventId = uint32_t;
 
 class EventSystem
@@ -44,21 +44,21 @@ public:
 
 	static void RegisterGraphicRaycaster(std::shared_ptr<GraphicRaycaster> raycaster)
 	{
-		// d•¡“o˜^‚ğ–h~
+		// é‡è¤‡ç™»éŒ²ã‚’é˜²æ­¢
 		if (raycaster == nullptr) {
-			return; // –³Œø‚ÈƒŒƒCƒLƒƒƒXƒ^[‚Í“o˜^‚µ‚È‚¢
+			return; // ç„¡åŠ¹ãªãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã¯ç™»éŒ²ã—ãªã„
 		}
 		for (auto& existingRaycaster : GetCurrent()->raycasters) {
 			if (existingRaycaster.lock() == raycaster) {
-				return; // Šù‚É“o˜^‚³‚ê‚Ä‚¢‚éê‡‚Í‰½‚à‚µ‚È‚¢
+				return; // æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ä½•ã‚‚ã—ãªã„
 			}
 		}
-		// “o˜^
+		// ç™»éŒ²
 		GetCurrent()->raycasters.emplace_back(raycaster);
 	}
 	static void UnregisterGraphicRaycaster(std::shared_ptr<GraphicRaycaster> raycaster)
 	{
-		// ”jŠüƒŠƒXƒg‚É’Ç‰Á
+		// ç ´æ£„ãƒªã‚¹ãƒˆã«è¿½åŠ 
 		GetCurrent()->erases.emplace_back(raycaster);
 	}
 
@@ -70,10 +70,10 @@ public:
 	}
 
 public:
-	// ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰‚ÌŒ^’è‹`
+	// ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©ã®å‹å®šç¾©
 	using Handler = std::function<void()>;
 
-	// ƒCƒxƒ“ƒg“o˜^A”­s
+	// ã‚¤ãƒ™ãƒ³ãƒˆç™»éŒ²ã€ç™ºè¡Œ
 	static EventId Register(Handler handler);
 	static void Invoke(EventId id);
 

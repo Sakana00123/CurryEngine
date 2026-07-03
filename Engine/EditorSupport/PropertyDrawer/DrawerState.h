@@ -5,21 +5,21 @@
 namespace CurryEngine
 {
 	/**
-	 * @brief PropertyDrawer �̊e�C���X�^���X�����O�t���[���l��ۑ����邽�߂̍\���́B
+	 * @brief PropertyDrawer の各インスタンスが持つ前フレーム値を保存するための構造体。
 	 */
 	template<typename T>
 	struct DrawerState
 	{
-		std::unordered_map<std::string, T> previousValues; // �v���p�e�B�����L�[�Ƃ��āA�O�t���[���̒l��ۑ�����}�b�v
+		std::unordered_map<std::string, T> previousValues; // プロパティ名をキーとして、前フレームの値を保存するマップ
 
 		/**
-		 * @brief �w�肵���v���p�e�B�̑O�t���[���l���擾����֐��B
-		 * @param propName �擾����v���p�e�B�̖��O�B
-		 * @return �O�t���[���̒l�B�v���p�e�B�����݂��Ȃ��ꍇ�� T �̃f�t�H���g�l��Ԃ��B
+		 * @brief 指定したプロパティの前フレーム値を取得する関数。
+		 * @param propName 取得するプロパティの名前。
+		 * @return 前フレームの値。プロパティが存在しない場合は T のデフォルト値を返す。
 		 */
 		T& Prev(const std::string& propName)
 		{
-			return previousValues[propName]; // ���݂��Ȃ��L�[�ɃA�N�Z�X�����ꍇ�̓f�t�H���g�l�������I�ɐ��������
+			return previousValues[propName]; // 存在しないキーにアクセスした場合はデフォルト値が自動的に生成される
 		}
 	};
 }

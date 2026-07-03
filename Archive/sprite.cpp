@@ -9,7 +9,7 @@ Sprite::Sprite(ID3D11Device* device)
 {
     HRESULT hr{ S_OK };
 
-    //’¸“_î•ñ‚ÌƒZƒbƒg
+    //é ‚ç‚¹æƒ…å ±ã®ã‚»ãƒƒãƒˆ
     //Vertex vertices[]
     //{
     //	{ { -1,  1, 0 }, { 1, 1, 1, 1 } },
@@ -25,7 +25,7 @@ Sprite::Sprite(ID3D11Device* device)
         { {  1, -1, 0 }, { 1, 1, 1, 1 } },
     };
 
-    //’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
     D3D11_BUFFER_DESC buffer_desc{};
     buffer_desc.ByteWidth = sizeof(vertices);
     buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -40,7 +40,7 @@ Sprite::Sprite(ID3D11Device* device)
     hr = device->CreateBuffer(&buffer_desc, &subresource_data, vertex_buffer.ReleaseAndGetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-    //“ü—ÍƒŒƒCƒAƒEƒgƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
     D3D11_INPUT_ELEMENT_DESC input_element_desc[]
     {
         {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
@@ -50,12 +50,12 @@ Sprite::Sprite(ID3D11Device* device)
         {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
         D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
-    //’¸“_ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	std::string dir = EnginePaths::ShadersDataDir;
     hr = CreateVertexShaderFromCSO(device, (dir + "sprite_vs.cso").c_str(), vertex_shader.GetAddressOf(), input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-    //ƒsƒNƒZƒ‹ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
     hr = CreatePixelShaderFromCSO(device, (dir + "debug_ps.cso").c_str(), pixel_shader.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 }
@@ -64,7 +64,7 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* filename)
 {
     HRESULT hr{ S_OK };
 
-    //’¸“_î•ñ‚ÌƒZƒbƒg
+    //é ‚ç‚¹æƒ…å ±ã®ã‚»ãƒƒãƒˆ
     Vertex vertices[]
     {
         { { -1.0f,  1.0f, 0 }, { 1, 1, 1, 1 }, { 0, 0 } },
@@ -73,7 +73,7 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* filename)
         { {  1.0f, -1.0f, 0 }, { 1, 1, 1, 1 }, { 1, 1 } },
     };
 
-    //’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
     D3D11_BUFFER_DESC buffer_desc{};
     buffer_desc.ByteWidth = sizeof(vertices);
     buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -88,11 +88,11 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* filename)
     hr = device->CreateBuffer(&buffer_desc, &subresource_data, vertex_buffer.ReleaseAndGetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-    //‰æ‘œƒtƒ@ƒCƒ‹‚Ìƒ[ƒh‚ÆƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ­ãƒ¼ãƒ‰ã¨ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
     hr = LoadTextureFromFile(device, filename, shader_resource_view.GetAddressOf(), &texture2d_desc);
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-    //“ü—ÍƒŒƒCƒAƒEƒgƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
     D3D11_INPUT_ELEMENT_DESC input_element_desc[]
     {
         {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
@@ -102,12 +102,12 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* filename)
         {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
         D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
-    //’¸“_ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
     std::string dir = EnginePaths::ShadersDataDir;
     hr = CreateVertexShaderFromCSO(device, (dir + "sprite_vs.cso").c_str(), vertex_shader.GetAddressOf(), input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-    //ƒsƒNƒZƒ‹ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+    //ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
     hr = CreatePixelShaderFromCSO(device, (dir + "sprite_ps.cso").c_str(), pixel_shader.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 }
@@ -136,12 +136,12 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
     float sw, float sh
 )
 {
-    //ƒXƒNƒŠ[ƒ“‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
+    //ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹
     D3D11_VIEWPORT viewport{};
     UINT num_viewports{ 1 };
     immediate_context->RSGetViewports(&num_viewports, &viewport);
 
-    //ˆø”‚©‚ç‹éŒ`‚ÌŠe’¸“_‚ÌˆÊ’uiƒXƒNƒŠ[ƒ“À•WŒnj‚ğŒvZ‚·‚é
+    //å¼•æ•°ã‹ã‚‰çŸ©å½¢ã®å„é ‚ç‚¹ã®ä½ç½®ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ï¼‰ã‚’è¨ˆç®—ã™ã‚‹
     // left-top
     float x0{ dx };
     float y0{ dy };
@@ -155,7 +155,7 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
     float x3{ dx + dw };
     float y3{ dy + dh };
 
-    //Ø‚èæ‚èˆÊ’u
+    //åˆ‡ã‚Šå–ã‚Šä½ç½®
     //left-top
     float tx0{ sx };
     float ty0{ sy };
@@ -169,17 +169,17 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
     float tx3{ sx + sw };
     float ty3{ sy + sh };
 
-    //‰ñ“]‚Ì’†S‚ğ‹éŒ`‚Ì’†S“_‚É‚µ‚½ê‡
+    //å›è»¢ã®ä¸­å¿ƒã‚’çŸ©å½¢ã®ä¸­å¿ƒç‚¹ã«ã—ãŸå ´åˆ
     float cx = dx + dw * 0.5f;
     float cy = dy + dh * 0.5f;
 
-    //‰ñ“]ˆ—
+    //å›è»¢å‡¦ç†
     Rotate(x0, y0, cx, cy, angle);
     Rotate(x1, y1, cx, cy, angle);
     Rotate(x2, y2, cx, cy, angle);
     Rotate(x3, y3, cx, cy, angle);
 
-    //ƒXƒNƒŠ[ƒ“À•WŒn‚©‚çNDC‚Ö‚ÌÀ•W•ÏŠ·‚ğs‚¤
+    //ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã‹ã‚‰NDCã¸ã®åº§æ¨™å¤‰æ›ã‚’è¡Œã†
     x0 = 2.0f * x0 / viewport.Width - 1.0f;
     y0 = 1.0f - 2.0f * y0 / viewport.Height;
     x1 = 2.0f * x1 / viewport.Width - 1.0f;
@@ -189,7 +189,7 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
     x3 = 2.0f * x3 / viewport.Width - 1.0f;
     y3 = 1.0f - 2.0f * y3 / viewport.Height;
 
-    //ŒvZŒ‹‰Ê‚Å’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚ğXV‚·‚é
+    //è¨ˆç®—çµæœã§é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ›´æ–°ã™ã‚‹
     HRESULT hr{ S_OK };
     D3D11_MAPPED_SUBRESOURCE mapped_subresource{};
     hr = immediate_context->Map(vertex_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_subresource);
@@ -212,26 +212,26 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
     immediate_context->Unmap(vertex_buffer.Get(), 0);
 
     if (shader_resource_view.Get() != nullptr) {
-        //ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚ÌƒoƒCƒ“ƒh
+        //ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ãƒ‰
         immediate_context->PSSetShaderResources(0, 1, shader_resource_view.GetAddressOf());
     }
 
-    //’¸“_ƒoƒbƒtƒ@‚ÌƒoƒCƒ“ƒh
+    //é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒã‚¤ãƒ³ãƒ‰
     UINT stride{ sizeof(Vertex) };
     UINT offset{ 0 };
     immediate_context->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
 
-    //ƒvƒŠƒ~ƒeƒBƒuƒ^ƒCƒv‚¨‚æ‚Ñƒf[ƒ^‚Ì‡˜‚ÉŠÖ‚·‚éî•ñ‚ÌƒoƒCƒ“ƒh
+    //ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã‚¿ã‚¤ãƒ—ãŠã‚ˆã³ãƒ‡ãƒ¼ã‚¿ã®é †åºã«é–¢ã™ã‚‹æƒ…å ±ã®ãƒã‚¤ãƒ³ãƒ‰
     immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-    //“ü—ÍƒŒƒCƒAƒEƒgƒIƒuƒWƒFƒNƒg‚ÌƒoƒCƒ“ƒh
+    //å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ãƒ‰
     immediate_context->IASetInputLayout(input_layout.Get());
 
-    //ƒVƒF[ƒ_[‚ÌƒoƒCƒ“ƒh
+    //ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒã‚¤ãƒ³ãƒ‰
     immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
     immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
 
-    //ƒvƒŠƒ~ƒeƒBƒu‚Ì•`‰æ
+    //ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®æç”»
     immediate_context->Draw(4, 0);
 }
 
@@ -245,22 +245,22 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
     float scaleX, float scaleY,
     float pivotX, float pivotY)
 {
-    // ƒXƒNƒŠ[ƒ“‚ÌƒTƒCƒY‚ğæ“¾
+    // ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
     D3D11_VIEWPORT viewport{};
     UINT num_viewports{ 1 };
     immediate_context->RSGetViewports(&num_viewports, &viewport);
 
-    // –³Œø‚ÈƒXƒP[ƒŠƒ“ƒO‚È‚ç•`‰æ‚µ‚È‚¢
+    // ç„¡åŠ¹ãªã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ãªã‚‰æç”»ã—ãªã„
     if (scaleX == 0.0f || scaleY == 0.0f) return;
 
-    // sw, sh ‚ª•‰‚È‚çAƒeƒNƒXƒ`ƒƒ‘S‘Ì‚ğg‚¤iFLT_MIN‚Ì‘ã‘Öj
+    // sw, sh ãŒè² ãªã‚‰ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£å…¨ä½“ã‚’ä½¿ã†ï¼ˆFLT_MINã®ä»£æ›¿ï¼‰
     if (sw < 0.0f && sh < 0.0f)
     {
         sw = static_cast<float>(texture2d_desc.Width);
         sh = static_cast<float>(texture2d_desc.Height);
     }
 
-    // ƒsƒ{ƒbƒgl—¶‚µ‚½’¸“_À•W
+    // ãƒ”ãƒœãƒƒãƒˆè€ƒæ…®ã—ãŸé ‚ç‚¹åº§æ¨™
     float x0 = dx - pivotX * dw * scaleX;
     float y0 = dy - pivotY * dh * scaleY;
     float x1 = x0 + dw * scaleX;
@@ -270,7 +270,7 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
     float x3 = x0 + dw * scaleX;
     float y3 = y0 + dh * scaleY;
 
-    // UVÀ•W‚ÌŒvZiƒsƒNƒZƒ‹ ¨ ƒeƒNƒXƒ`ƒƒÀ•WŒnj
+    // UVåº§æ¨™ã®è¨ˆç®—ï¼ˆãƒ”ã‚¯ã‚»ãƒ« â†’ ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™ç³»ï¼‰
     float texW = static_cast<float>(texture2d_desc.Width);
     float texH = static_cast<float>(texture2d_desc.Height);
 
@@ -283,24 +283,24 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
     float tx3 = sx + sw;
     float ty3 = sy + sh;
 
-    // ‰ñ“]’†S‚Í•`‰æˆÊ’u(dx, dy)
+    // å›è»¢ä¸­å¿ƒã¯æç”»ä½ç½®(dx, dy)
     float cx = dx;
     float cy = dy;
 
-    // ‰ñ“]ˆ—iRotateŠÖ”‚ªƒ‰ƒWƒAƒ“‘z’è‚Æ‚·‚éj
+    // å›è»¢å‡¦ç†ï¼ˆRotateé–¢æ•°ãŒãƒ©ã‚¸ã‚¢ãƒ³æƒ³å®šã¨ã™ã‚‹ï¼‰
     Rotate(x0, y0, cx, cy, angle);
     Rotate(x1, y1, cx, cy, angle);
     Rotate(x2, y2, cx, cy, angle);
     Rotate(x3, y3, cx, cy, angle);
 
-    // ƒXƒNƒŠ[ƒ“À•WŒn ¨ NDCÀ•WŒn
+    // ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³» â†’ NDCåº§æ¨™ç³»
     auto toNDC = [&](float& x, float& y) {
         x = 2.0f * x / viewport.Width - 1.0f;
         y = 1.0f - 2.0f * y / viewport.Height;
         };
     toNDC(x0, y0); toNDC(x1, y1); toNDC(x2, y2); toNDC(x3, y3);
 
-    // ’¸“_ƒoƒbƒtƒ@XV
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡æ›´æ–°
     D3D11_MAPPED_SUBRESOURCE mapped{};
     HRESULT hr = immediate_context->Map(vertex_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
     if (SUCCEEDED(hr))
@@ -323,10 +323,10 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
         immediate_context->Unmap(vertex_buffer.Get(), 0);
     }
 
-    // ƒeƒNƒXƒ`ƒƒ‚ª–³‚¢ê‡‚Í•`‰æ‚µ‚È‚¢
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒç„¡ã„å ´åˆã¯æç”»ã—ãªã„
     if (!shader_resource_view) return;
 
-    // ƒŠƒ\[ƒXEƒpƒCƒvƒ‰ƒCƒ“İ’è
+    // ãƒªã‚½ãƒ¼ã‚¹ãƒ»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³è¨­å®š
     immediate_context->PSSetShaderResources(0, 1, shader_resource_view.GetAddressOf());
 
     UINT stride = sizeof(Vertex);
@@ -351,12 +351,12 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
 	float sw, float sh
 )
 {
-	//ƒXƒNƒŠ[ƒ“‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹
 	D3D11_VIEWPORT viewport{};
 	UINT num_viewports{ 1 };
 	immediate_context->RSGetViewports(&num_viewports, &viewport);
 
-	//ˆø”‚©‚ç‹éŒ`‚ÌŠe’¸“_‚ÌˆÊ’uiƒXƒNƒŠ[ƒ“À•WŒnj‚ğŒvZ‚·‚é
+	//å¼•æ•°ã‹ã‚‰çŸ©å½¢ã®å„é ‚ç‚¹ã®ä½ç½®ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ï¼‰ã‚’è¨ˆç®—ã™ã‚‹
 	// left-top
 	float x0{ dx - dw * pivot.x };
 	float y0{ dy - dh * pivot.y };
@@ -370,7 +370,7 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
 	float x3{ dx + dw * (1.f - pivot.x) };
 	float y3{ dy + dh * (1.f - pivot.y) };
 
-	//Ø‚èæ‚èˆÊ’u
+	//åˆ‡ã‚Šå–ã‚Šä½ç½®
 	//left-top
 	float tx0{ sx };
 	float ty0{ sy };
@@ -384,7 +384,7 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
 	float tx3{ sx + sw };
 	float ty3{ sy + sh };
 
-	//ƒXƒNƒŠ[ƒ“À•WŒn‚©‚çNDC‚Ö‚ÌÀ•W•ÏŠ·‚ğs‚¤
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã‹ã‚‰NDCã¸ã®åº§æ¨™å¤‰æ›ã‚’è¡Œã†
 	x0 = 2.0f * x0 / viewport.Width - 1.0f;
 	y0 = 1.0f - 2.0f * y0 / viewport.Height;
 	x1 = 2.0f * x1 / viewport.Width - 1.0f;
@@ -394,7 +394,7 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
 	x3 = 2.0f * x3 / viewport.Width - 1.0f;
 	y3 = 1.0f - 2.0f * y3 / viewport.Height;
 
-	//ŒvZŒ‹‰Ê‚Å’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚ğXV‚·‚é
+	//è¨ˆç®—çµæœã§é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ›´æ–°ã™ã‚‹
 	HRESULT hr{ S_OK };
 	D3D11_MAPPED_SUBRESOURCE mapped_subresource{};
 	hr = immediate_context->Map(vertex_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_subresource);
@@ -417,26 +417,26 @@ void Sprite::Render(ID3D11DeviceContext* immediate_context,
 	immediate_context->Unmap(vertex_buffer.Get(), 0);
 
 	if (shader_resource_view.Get() != nullptr) {
-		//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚ÌƒoƒCƒ“ƒh
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ãƒ‰
 		immediate_context->PSSetShaderResources(0, 1, shader_resource_view.GetAddressOf());
 	}
 
-	//’¸“_ƒoƒbƒtƒ@‚ÌƒoƒCƒ“ƒh
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒã‚¤ãƒ³ãƒ‰
 	UINT stride{ sizeof(Vertex) };
 	UINT offset{ 0 };
 	immediate_context->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
 
-	//ƒvƒŠƒ~ƒeƒBƒuƒ^ƒCƒv‚¨‚æ‚Ñƒf[ƒ^‚Ì‡˜‚ÉŠÖ‚·‚éî•ñ‚ÌƒoƒCƒ“ƒh
+	//ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã‚¿ã‚¤ãƒ—ãŠã‚ˆã³ãƒ‡ãƒ¼ã‚¿ã®é †åºã«é–¢ã™ã‚‹æƒ…å ±ã®ãƒã‚¤ãƒ³ãƒ‰
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	//“ü—ÍƒŒƒCƒAƒEƒgƒIƒuƒWƒFƒNƒg‚ÌƒoƒCƒ“ƒh
+	//å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ãƒ‰
 	immediate_context->IASetInputLayout(input_layout.Get());
 
-	//ƒVƒF[ƒ_[‚ÌƒoƒCƒ“ƒh
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒã‚¤ãƒ³ãƒ‰
 	immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
 	immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
 
-	//ƒvƒŠƒ~ƒeƒBƒu‚Ì•`‰æ
+	//ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®æç”»
 	immediate_context->Draw(4, 0);
 }
 

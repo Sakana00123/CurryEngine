@@ -11,47 +11,47 @@
 #include <imgui.h>
 #endif // USE_IMGUI
 
-// 16ƒoƒCƒgƒAƒ‰ƒCƒ“ƒƒ“ƒg‚ÉƒTƒCƒY‚ğ’²®
+// 16ãƒã‚¤ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆã«ã‚µã‚¤ã‚ºã‚’èª¿æ•´
 size_t Align16(size_t size)
 {
-	// 16‚Ì”{”‚ÉØ‚èã‚°
+	// 16ã®å€æ•°ã«åˆ‡ã‚Šä¸Šã’
 	return (size + 15) & ~15;
 }
 
 void Material::SetShader(ID3D11Device* device, std::shared_ptr<Shader> shader)
 {
-	// ƒVƒF[ƒ_ƒXƒe[ƒW•Ê‚ÌƒVƒF[ƒ_Ši”[”z—ñ‚Éİ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ã‚¹ãƒ†ãƒ¼ã‚¸åˆ¥ã®ã‚·ã‚§ãƒ¼ãƒ€æ ¼ç´é…åˆ—ã«è¨­å®š
 	ShaderBinding& binding = m_ShaderBindings[static_cast<size_t>(shader->GetType())];
 
-	// ƒVƒF[ƒ_‚ğİ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ã‚’è¨­å®š
 	binding.shader = shader;
 
-	// Shader‚ÌƒI[ƒi[‚ğİ’è
+	// Shaderã®ã‚ªãƒ¼ãƒŠãƒ¼ã‚’è¨­å®š
 	shader->SetOwner(this);
 
-	// ƒVƒF[ƒ_‚ÌƒŠƒtƒŒƒNƒVƒ‡ƒ“î•ñ‚ğæ“¾
+	// ã‚·ã‚§ãƒ¼ãƒ€ã®ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’å–å¾—
 	const ShaderReflectionData& reflection = shader->GetReflectionData();
 
-	// ’è”ƒoƒbƒtƒ@‚Ìİ’è‚ğXV
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®è¨­å®šã‚’æ›´æ–°
 	UpdateCBufferBindings(device, binding, reflection);
 
-	// ƒeƒNƒXƒ`ƒƒ‚ÆƒTƒ“ƒvƒ‰‚Ìİ’è‚ğXV
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨ã‚µãƒ³ãƒ—ãƒ©ã®è¨­å®šã‚’æ›´æ–°
 	UpdateTextureAndSamplerBindings(device, binding, reflection);
 
-	// ƒVƒF[ƒ_‚ª•ÏX‚³‚ê‚½‚Ì‚Åƒtƒ‰ƒO‚ğƒNƒŠƒA
+	// ã‚·ã‚§ãƒ¼ãƒ€ãŒå¤‰æ›´ã•ã‚ŒãŸã®ã§ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
 	shader->SetDirty(false);
 }
 
 void Material::Reload(ID3D11Device* device)
 {
-	// ‘SƒVƒF[ƒ_ƒ^ƒCƒv‚É‚Â‚¢‚ÄÄ“Ç‚İ‚İ‚ğ‚İ‚é
+	// å…¨ã‚·ã‚§ãƒ¼ãƒ€ã‚¿ã‚¤ãƒ—ã«ã¤ã„ã¦å†èª­ã¿è¾¼ã¿ã‚’è©¦ã¿ã‚‹
 	for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 	{
-		// ƒVƒF[ƒ_‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+		// ã‚·ã‚§ãƒ¼ãƒ€ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 		if (!m_ShaderBindings[static_cast<size_t>(i)].shader) continue;
-		// •ÏX‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+		// å¤‰æ›´ã•ã‚Œã¦ã„ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 		if (!m_ShaderBindings[static_cast<size_t>(i)].shader->IsDirty()) continue;
-		// Ä“Ç‚İ‚İ
+		// å†èª­ã¿è¾¼ã¿
 		SetShader(device, m_ShaderBindings[static_cast<size_t>(i)].shader);
 	}
 }
@@ -63,16 +63,16 @@ std::shared_ptr<Shader> Material::GetShader(ShaderType type)
 
 void Material::SetTexture(const std::string& name, std::shared_ptr<Texture> texture)
 {
-	// ƒeƒNƒXƒ`ƒƒ‚ğİ’è
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¨­å®š
 	textures[name] = texture;
-	// •ÏXƒtƒ‰ƒO‚ğ—§‚Ä‚é
+	// å¤‰æ›´ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	m_IsTextureChanged = true;
 }
 
 void Material::SetValue(const std::string& name, void* value, size_t size)
 {
 	values[name] = std::vector<uint8_t>((uint8_t*)value, (uint8_t*)value + size);
-	// •ÏXƒtƒ‰ƒO‚ğ—§‚Ä‚é
+	// å¤‰æ›´ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	for (auto& [cbName, cbData] : cbuffers)
 	{
 		cbData.dirty = true;
@@ -91,63 +91,63 @@ void Material::Apply(RenderContext* rtx)
 {
 	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
 
-	//ƒVƒF[ƒ_ƒoƒCƒ“ƒh‚Æ’è”ƒoƒbƒtƒ@XV
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒã‚¤ãƒ³ãƒ‰ã¨å®šæ•°ãƒãƒƒãƒ•ã‚¡æ›´æ–°
 	for (auto& binding : m_ShaderBindings)
 	{
-		// ƒVƒF[ƒ_‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+		// ã‚·ã‚§ãƒ¼ãƒ€ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 		if (binding.shader)
 		{
-			// ƒVƒF[ƒ_‚ğƒoƒCƒ“ƒh
+			// ã‚·ã‚§ãƒ¼ãƒ€ã‚’ãƒã‚¤ãƒ³ãƒ‰
 			binding.shader->Bind(immediateContext);
 		}
 		else continue;
 
-		// ƒVƒF[ƒ_‚Ì‚İ“K—pƒ‚[ƒh‚Ìê‡‚Í‚±‚±‚ÅƒXƒLƒbƒv
+		// ã‚·ã‚§ãƒ¼ãƒ€ã®ã¿é©ç”¨ãƒ¢ãƒ¼ãƒ‰ã®å ´åˆã¯ã“ã“ã§ã‚¹ã‚­ãƒƒãƒ—
 		if (shaderOnly)
 		{
 			continue;
 		}
 
-		// ’è”ƒoƒbƒtƒ@XV
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡æ›´æ–°
 		for (auto& [cbName, cbData] : cbuffers)
 		{
-			// ƒVƒF[ƒ_‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+			// ã‚·ã‚§ãƒ¼ãƒ€ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 			if (!binding.shader) continue;
 
-			// ƒoƒCƒ“ƒh‚µ‚È‚¢İ’è‚ª‚³‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+			// ãƒã‚¤ãƒ³ãƒ‰ã—ãªã„è¨­å®šãŒã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 			if (std::find(m_CBufferNotBindNames.begin(), m_CBufferNotBindNames.end(), cbName) != m_CBufferNotBindNames.end())
 			{
 				continue;
 			}
 
-			//’è”ƒoƒbƒtƒ@ƒŒƒCƒAƒEƒg‚ğæ“¾
+			//å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’å–å¾—
 			const ShaderReflectionData::ConstantBufferLayout* layout = binding.shader->GetConstantBufferLayout(cbName);
-			// ‘¶İ‚µ‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+			// å­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 			if (!layout) continue;
 
-			// •ÏX‚³‚ê‚Ä‚¢‚ê‚Î GPU ‘¤‚ÉXV
+			// å¤‰æ›´ã•ã‚Œã¦ã„ã‚Œã° GPU å´ã«æ›´æ–°
 			//if (cbData.dirty)
 			{
-				// values ‚©‚ç’l‚ğƒRƒs[‚µ‚Ä CPU ‘¤ƒoƒbƒtƒ@‚ğXV
+				// values ã‹ã‚‰å€¤ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ CPU å´ãƒãƒƒãƒ•ã‚¡ã‚’æ›´æ–°
 				for (const auto& var : layout->variables)
 				{
 					auto it = values.find(var.name);
 					if (it != values.end())
 					{
-						// CPU ‘¤ƒoƒbƒtƒ@‚ÉƒRƒs[
+						// CPU å´ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼
 						memcpy(cbData.localData.data() + var.offset, it->second.data(), (std::min)(var.size, it->second.size()));
 					}
 				}
 
-				// GPU ‘¤‚Ì’è”ƒoƒbƒtƒ@‚ÉXV
+				// GPU å´ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«æ›´æ–°
 				immediateContext->UpdateSubresource(cbData.buffer.Get(), 0, nullptr, cbData.localData.data(), 0, 0);
 				cbData.dirty = false;
 			}
 
-			// ƒoƒCƒ“ƒhƒXƒƒbƒg
+			// ãƒã‚¤ãƒ³ãƒ‰ã‚¹ãƒ­ãƒƒãƒˆ
 			UINT slot = layout->slot;
 
-			// ƒVƒF[ƒ_ƒ^ƒCƒv‚É‰‚¶‚ÄƒoƒCƒ“ƒh
+			// ã‚·ã‚§ãƒ¼ãƒ€ã‚¿ã‚¤ãƒ—ã«å¿œã˜ã¦ãƒã‚¤ãƒ³ãƒ‰
 			switch (binding.shader->GetType())
 			{
 			case ShaderType::Pixel:		immediateContext->PSSetConstantBuffers(slot, 1, cbData.buffer.GetAddressOf()); break;
@@ -159,21 +159,21 @@ void Material::Apply(RenderContext* rtx)
 			}
 		}
 
-		// ƒeƒNƒXƒ`ƒƒƒoƒCƒ“ƒh
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒã‚¤ãƒ³ãƒ‰
 		for (auto& info : binding.shader->GetReflectionData().textureInfos)
 		{
-			// ƒeƒNƒXƒ`ƒƒ‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+			// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 			auto it = textures.find(info.name);
 			if (it == textures.end()) continue;
 			if (!it->second/*.lock()*/) continue;
-			// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ğæ“¾
+			// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—
 			ID3D11ShaderResourceView* srv = it->second/*.lock()*/->GetSRV(TextureSemantic::Default);
 			if (!srv) continue;
-			// ƒoƒCƒ“ƒhƒXƒƒbƒg
+			// ãƒã‚¤ãƒ³ãƒ‰ã‚¹ãƒ­ãƒƒãƒˆ
 			UINT slot = info.bindPoint;
-			// ƒoƒCƒ“ƒh”
+			// ãƒã‚¤ãƒ³ãƒ‰æ•°
 			UINT count = info.bindCount;
-			// ƒVƒF[ƒ_ƒ^ƒCƒv‚É‰‚¶‚ÄƒoƒCƒ“ƒh
+			// ã‚·ã‚§ãƒ¼ãƒ€ã‚¿ã‚¤ãƒ—ã«å¿œã˜ã¦ãƒã‚¤ãƒ³ãƒ‰
 			switch (binding.shader->GetType())
 			{
 				case ShaderType::Vertex:	immediateContext->VSSetShaderResources(slot, count, &srv); break;
@@ -187,7 +187,7 @@ void Material::Apply(RenderContext* rtx)
 
 	}
 
-	//ƒŒƒ“ƒ_[ƒXƒe[ƒgİ’è (‰Šú’l‚©‚ç•ÏX‚³‚ê‚Ä‚½‚çƒoƒCƒ“ƒh)
+	//ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š (åˆæœŸå€¤ã‹ã‚‰å¤‰æ›´ã•ã‚Œã¦ãŸã‚‰ãƒã‚¤ãƒ³ãƒ‰)
 	{
 		if (blendState != BlendState::EnumCount)
 		{
@@ -208,66 +208,66 @@ void Material::Apply(RenderContext* rtx)
 void Material::DrawProperty()
 {
 #ifdef USE_IMGUI
-	//ƒVƒF[ƒ_[‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	//if (!m_Shader) return;
 
-	ImGui::PushID(this); // Material ƒCƒ“ƒXƒ^ƒ“ƒX‚²‚Æ‚ÉˆêˆÓ‚Ì ID ‚ğŠm•Û
+	ImGui::PushID(this); // Material ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã”ã¨ã«ä¸€æ„ã® ID ã‚’ç¢ºä¿
 
-	//ImGui‚ÅƒvƒƒpƒeƒB•ÒW
+	//ImGuiã§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ç·¨é›†
 	if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
 	{
 		int id = 0;
 
-		// ƒVƒF[ƒ_[ƒXƒe[ƒW‚²‚Æ‚É•\¦
+		// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ã‚¸ã”ã¨ã«è¡¨ç¤º
 		for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 		{
-			ImGui::PushID(id++); // ƒVƒF[ƒ_[ƒXƒe[ƒW‚²‚Æ‚ÉˆêˆÓ‚Ì ID ‚ğŠm•Û
+			ImGui::PushID(id++); // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ã‚¸ã”ã¨ã«ä¸€æ„ã® ID ã‚’ç¢ºä¿
 
 			auto& shader = m_ShaderBindings[i].shader;
 
-			// ƒVƒF[ƒ_ƒZƒŒƒNƒ^[
+			// ã‚·ã‚§ãƒ¼ãƒ€ã‚»ãƒ¬ã‚¯ã‚¿ãƒ¼
 			DrawShaderSelector(Graphics::GetDevice(), i);
 
-			//ƒVƒF[ƒ_[‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 			if (!shader)
 			{
 				ImGui::PopID();
 				continue;
 			}
 
-			// ƒVƒF[ƒ_‚Ì‚İ“K—pƒ‚[ƒh‚Ìê‡‚ÍƒXƒLƒbƒv
+			// ã‚·ã‚§ãƒ¼ãƒ€ã®ã¿é©ç”¨ãƒ¢ãƒ¼ãƒ‰ã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 			if (shaderOnly)
 			{
 				ImGui::PopID();
 				continue;
 			}
 
-			//’è”ƒoƒbƒtƒ@‚²‚Æ‚É•\¦
+			//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã”ã¨ã«è¡¨ç¤º
 			DrawCBufferVariables(i);
 
 			ImGui::Separator();
 
-			// ƒeƒNƒXƒ`ƒƒƒXƒƒbƒg‚²‚Æ‚É•\¦
+			// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¹ãƒ­ãƒƒãƒˆã”ã¨ã«è¡¨ç¤º
 			DrawTextureSlots(i);
 
 			ImGui::Separator();
 
-			// ƒTƒ“ƒvƒ‰[ƒXƒƒbƒg‚²‚Æ‚É•\¦
+			// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ­ãƒƒãƒˆã”ã¨ã«è¡¨ç¤º
 			//DrawSamplerSlots(i);
 
 			ImGui::PopID();
 		}
 
-		// ƒŒƒ“ƒ_[ƒXƒe[ƒg
+		// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆ
 		ImGui::Separator();
 		ImGui::Text("Render State");
 
-		// ƒŒƒ“ƒ_[ƒXƒe[ƒg‚Ì–¼‘OƒŠƒXƒg
+		// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã®åå‰ãƒªã‚¹ãƒˆ
 		const char* blendStateNames[] = { "Opaque",	"Transparency",	"Additive",	"Subtraction", "Multiply", "Skip" };
 		const char* depthStencilStateNames[] = { "TestAndWrite", "WriteOnly", "TestOnly", "NoTestNoWrite", "Skip" };
 		const char* rasterizerStateNames[] = { "SolidCullNone", "SolidCullFront", "SolidCullBack", "WireCullNone", "WireCullBack", "UseScissorRects", "Skip" };
 
-		// BlendState, DepthStencilState, RasterizerState ‚ÌƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ğ•\¦
+		// BlendState, DepthStencilState, RasterizerState ã®ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
 		ImGui::Combo("Blend State", (int*)&blendState, blendStateNames, static_cast<int>(BlendState::EnumCount));
 		ImGui::Combo("DepthStencil State", (int*)&depthStencilState, depthStencilStateNames, static_cast<int>(DepthStencilState::EnumCount));
 		ImGui::Combo("Rasterizer State", (int*)&rasterizerState, rasterizerStateNames, static_cast<int>(RasterizerState::EnumCount));
@@ -284,28 +284,28 @@ void Material::DrawShaderSelector(ID3D11Device* device, size_t type)
 {
 #ifdef USE_IMGUI
 
-	// ƒVƒF[ƒ_[ƒXƒe[ƒW–¼‚ğæ“¾
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ã‚¸åã‚’å–å¾—
 	std::string typeNames[] = { "PS:", "VS:", "GS:", "HS:", "DS:", "CS:" };
 	std::string currentShaderName = "None";
 	
-	// ƒtƒ@ƒCƒ‹–¼‚©‚çƒVƒF[ƒ_[ƒ^[ƒQƒbƒg‚ğ„’è
+	// ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ¨å®š
 	std::filesystem::path path;
 	if (m_ShaderBindings[type].shader)
 	{
-		path = (m_ShaderBindings[type].shader->GetPath()); // ƒVƒF[ƒ_‚ÌƒpƒX(csoƒtƒ@ƒCƒ‹)
-		std::string stem = path.stem().string(); // ƒtƒ@ƒCƒ‹–¼iŠg’£q‚È‚µj
+		path = (m_ShaderBindings[type].shader->GetPath()); // ã‚·ã‚§ãƒ¼ãƒ€ã®ãƒ‘ã‚¹(csoãƒ•ã‚¡ã‚¤ãƒ«)
+		std::string stem = path.stem().string(); // ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆæ‹¡å¼µå­ãªã—ï¼‰
 		currentShaderName = stem;
 	}
 	
-	// ƒVƒF[ƒ_[‚ÌƒŠƒXƒg‚ğ•\¦
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒªã‚¹ãƒˆã‚’è¡¨ç¤º
 
 	if (path != std::filesystem::path())
 	{
 		if (ImGui::Button("Edit"))
 		{
-			std::filesystem::path shaderPath = "./Shader" / (path.filename().replace_extension(".hlsl")); // Œ³‚ÌƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ÌƒpƒX‚ğæ“¾
+			std::filesystem::path shaderPath = "./Shader" / (path.filename().replace_extension(".hlsl")); // å…ƒã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‚’å–å¾—
 
-			// ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ğŠù’è‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÅŠJ‚­
+			// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ—¢å®šã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã§é–‹ã
 			OpenFileWithDefaultApplication(shaderPath.wstring());
 		}
 
@@ -317,10 +317,10 @@ void Material::DrawShaderSelector(ID3D11Device* device, size_t type)
 	{
 		for (const std::filesystem::path& path : ResourceManager::GetShaderPaths())
 		{
-			std::string stem = path.stem().string(); // ƒtƒ@ƒCƒ‹–¼iŠg’£q‚È‚µj
-			std::string suffix = stem.substr(stem.size() - 2, 2); // ƒtƒ@ƒCƒ‹–¼‚Ì––”ö2•¶š‚ğæ“¾
-			std::transform(suffix.begin(), suffix.end(), suffix.begin(), ::tolower); // ¬•¶š‚É•ÏŠ·
-			// ƒVƒF[ƒ_[ƒ^ƒCƒv‚É‡‚í‚È‚¢‚à‚Ì‚ÍƒXƒLƒbƒv
+			std::string stem = path.stem().string(); // ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆæ‹¡å¼µå­ãªã—ï¼‰
+			std::string suffix = stem.substr(stem.size() - 2, 2); // ãƒ•ã‚¡ã‚¤ãƒ«åã®æœ«å°¾2æ–‡å­—ã‚’å–å¾—
+			std::transform(suffix.begin(), suffix.end(), suffix.begin(), ::tolower); // å°æ–‡å­—ã«å¤‰æ›
+			// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚¿ã‚¤ãƒ—ã«åˆã‚ãªã„ã‚‚ã®ã¯ã‚¹ã‚­ãƒƒãƒ—
 			if ((type == static_cast<size_t>(ShaderType::Pixel) && suffix != "ps") ||
 				(type == static_cast<size_t>(ShaderType::Vertex) && suffix != "vs") ||
 				(type == static_cast<size_t>(ShaderType::Geometry) && suffix != "gs") ||
@@ -331,13 +331,13 @@ void Material::DrawShaderSelector(ID3D11Device* device, size_t type)
 				continue;
 			}
 
-			// ˆêˆÓ‚Ì ID ‚ğŠm•Û
+			// ä¸€æ„ã® ID ã‚’ç¢ºä¿
 			ImGui::PushID(id++);
-			std::string name = stem; // Šg’£q‚ğœ‚¢‚½ƒtƒ@ƒCƒ‹–¼
-			// ‘I‘ğ‰Â”\‚ÈƒAƒCƒeƒ€‚Æ‚µ‚Ä•\¦
+			std::string name = stem; // æ‹¡å¼µå­ã‚’é™¤ã„ãŸãƒ•ã‚¡ã‚¤ãƒ«å
+			// é¸æŠå¯èƒ½ãªã‚¢ã‚¤ãƒ†ãƒ ã¨ã—ã¦è¡¨ç¤º
 			if (ImGui::Selectable(name.c_str(), false))
 			{
-				// ‘I‘ğ‚³‚ê‚½‚çƒVƒF[ƒ_‚ğƒ[ƒh‚µ‚Äİ’è
+				// é¸æŠã•ã‚ŒãŸã‚‰ã‚·ã‚§ãƒ¼ãƒ€ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã¦è¨­å®š
 				std::shared_ptr<Shader> shader;
 				switch (type)
 				{
@@ -374,13 +374,13 @@ void Material::DrawCBufferVariables(size_t shaderType)
 		bool isNotBind = std::find(m_CBufferNotBindNames.begin(), m_CBufferNotBindNames.end(), cbLayout.name) != m_CBufferNotBindNames.end();
 		if (isNotBind)
 		{
-			//ƒoƒCƒ“ƒh‚µ‚È‚¢İ’è‚ª‚³‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+			//ãƒã‚¤ãƒ³ãƒ‰ã—ãªã„è¨­å®šãŒã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 			//continue;
-			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f); // ‘S‘Ì‚Ì“§–¾“x‚ğ‰º‚°‚é
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f); // å…¨ä½“ã®é€æ˜åº¦ã‚’ä¸‹ã’ã‚‹
 		}
 		ImGui::PushID(id++);
 
-		//’è”ƒoƒbƒtƒ@–¼‚ğ•\¦
+		//å®šæ•°ãƒãƒƒãƒ•ã‚¡åã‚’è¡¨ç¤º
 		//ImGui::SeparatorText(cbLayout.name.c_str());
 		if (ImGui::TreeNodeEx("##CBuffer", isNotBind ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_DefaultOpen, cbLayout.name.c_str()))
 		{
@@ -390,7 +390,7 @@ void Material::DrawCBufferVariables(size_t shaderType)
 
 				std::string label = var.name;
 
-				//ƒoƒCƒ“ƒh‚µ‚È‚¢İ’è‚ª‚³‚ê‚Ä‚¢‚éê‡‚ÍAUI‚É‚»‚Ì|‚ğ•\¦‚µ‚Ä•ÒW•s‰Â‚É‚·‚é
+				//ãƒã‚¤ãƒ³ãƒ‰ã—ãªã„è¨­å®šãŒã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€UIã«ãã®æ—¨ã‚’è¡¨ç¤ºã—ã¦ç·¨é›†ä¸å¯ã«ã™ã‚‹
 				if (isNotBind)
 				{
 					label += " (Not Bound)";
@@ -403,7 +403,7 @@ void Material::DrawCBufferVariables(size_t shaderType)
 				GetValue(var.name, buffer.data(), var.size);
 
 				const char* floatFormat = "%.6f";
-				//Œ^î•ñ‚ÉŠî‚Ã‚¢‚Ä“KØ‚ÈUI‚ğ•\¦
+				//å‹æƒ…å ±ã«åŸºã¥ã„ã¦é©åˆ‡ãªUIã‚’è¡¨ç¤º
 				switch (var.typeDesc.Class)
 				{
 				case D3D_SVC_SCALAR:
@@ -447,10 +447,10 @@ void Material::DrawCBufferVariables(size_t shaderType)
 				{
 					if (var.typeDesc.Type == D3D_SVT_FLOAT && var.typeDesc.Rows == 4 && var.typeDesc.Columns == 4)
 					{
-						// 4x4s—ñê—p‚ÌUI
+						// 4x4è¡Œåˆ—å°‚ç”¨ã®UI
 						if (ImGui::TreeNodeEx("##Matrix", ImGuiTreeNodeFlags_DefaultOpen, "%s (Matrix)", var.name.c_str()))
 						{
-							// s—ñ‚Ís‚²‚Æ‚É4‚Â•\¦‚·‚é‚ÆŒ©‚â‚·‚¢
+							// è¡Œåˆ—ã¯è¡Œã”ã¨ã«4ã¤è¡¨ç¤ºã™ã‚‹ã¨è¦‹ã‚„ã™ã„
 							float* mat = (float*)buffer.data();
 							for (UINT r = 0; r < var.typeDesc.Rows; r++)
 							{
@@ -465,7 +465,7 @@ void Material::DrawCBufferVariables(size_t shaderType)
 				case D3D_SVC_STRUCT:
 				{
 					ImGui::Text("%s (Struct)", var.name.c_str());
-					//\‘¢‘Ì‚Ì’†g‚ğÄ‹A“I‚É•\¦‚·‚é‚É‚ÍAShaderVariable‚Éq•Ï”‚Ìî•ñ‚ğ‚½‚¹‚é•K—v‚ª‚ ‚é
+					//æ§‹é€ ä½“ã®ä¸­èº«ã‚’å†å¸°çš„ã«è¡¨ç¤ºã™ã‚‹ã«ã¯ã€ShaderVariableã«å­å¤‰æ•°ã®æƒ…å ±ã‚’æŒãŸã›ã‚‹å¿…è¦ãŒã‚ã‚‹
 					break;
 				}
 				default:
@@ -483,7 +483,7 @@ void Material::DrawCBufferVariables(size_t shaderType)
 
 		if (isNotBind)
 		{
-			ImGui::PopStyleVar(); // “§–¾“x‚ğŒ³‚É–ß‚·
+			ImGui::PopStyleVar(); // é€æ˜åº¦ã‚’å…ƒã«æˆ»ã™
 		}
 
 		ImGui::PopID();
@@ -499,35 +499,35 @@ void Material::DrawTextureSlots(size_t shaderType)
 	for (auto& [texName, textureShared] : textures)
 	{
 		ImGui::PushID(texName.c_str());
-		//ƒeƒNƒXƒ`ƒƒ–¼‚ğ•\¦
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£åã‚’è¡¨ç¤º
 		if (ImGui::TreeNodeEx("##Texture", ImGuiTreeNodeFlags_DefaultOpen, texName.c_str()))
 		{
 			auto texture = std::dynamic_pointer_cast<Texture2D>(textureShared);
 
-			//ƒeƒNƒXƒ`ƒƒ‚ÌƒvƒŒƒrƒ…[•\¦
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤º
 			if (texture)
 			{
 				if (texture->GetSRV(TextureSemantic::Default))
 				{
-					// ƒeƒNƒXƒ`ƒƒ‚Ì”z—ñƒTƒCƒY‚ª1‚È‚ç’Êí‚ÌƒvƒŒƒrƒ…[A•¡”‚È‚ç”z—ñƒeƒNƒXƒ`ƒƒ‚Æ‚µ‚Ä•\¦
+					// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é…åˆ—ã‚µã‚¤ã‚ºãŒ1ãªã‚‰é€šå¸¸ã®ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã€è¤‡æ•°ãªã‚‰é…åˆ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨ã—ã¦è¡¨ç¤º
 					if (texture->GetDesc().ArraySize == 1)
 					{
 						ImGui::Image(texture->GetSRV(TextureSemantic::Default), ImVec2(64, 64));
 					}
 					else
 					{
-						// ”z—ñƒeƒNƒXƒ`ƒƒ‚ÌƒvƒŒƒrƒ…[•\¦‚Ì‚½‚ß‚¾‚¯‚ÉSRV‚ğì¬‚·‚é‚Ì‚ÍƒRƒXƒg‚ª‚‚¢‚Ì‚ÅA‚±‚±‚Å‚Í’Pƒ‚ÉuArray Texturev‚Æ•\¦‚·‚é‚¾‚¯‚É‚·‚é
+						// é…åˆ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤ºã®ãŸã‚ã ã‘ã«SRVã‚’ä½œæˆã™ã‚‹ã®ã¯ã‚³ã‚¹ãƒˆãŒé«˜ã„ã®ã§ã€ã“ã“ã§ã¯å˜ç´”ã«ã€ŒArray Textureã€ã¨è¡¨ç¤ºã™ã‚‹ã ã‘ã«ã™ã‚‹
 						ImGui::Text("Array Texture (ArraySize: %d)", texture->GetDesc().ArraySize);
-						//ImGui::Image(texture->GetSRV(TextureSemantic::Default), ImVec2(64, 64)); // ”z—ñƒeƒNƒXƒ`ƒƒ‚Í‚»‚Ì‚Ü‚Ü•\¦‚·‚é‚Æo—ÍƒƒO‚ÉƒGƒ‰[‚ªo‚é‚Ì‚Åˆê’UƒRƒƒ“ƒgƒAƒEƒg
+						//ImGui::Image(texture->GetSRV(TextureSemantic::Default), ImVec2(64, 64)); // é…åˆ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¯ãã®ã¾ã¾è¡¨ç¤ºã™ã‚‹ã¨å‡ºåŠ›ãƒ­ã‚°ã«ã‚¨ãƒ©ãƒ¼ãŒå‡ºã‚‹ã®ã§ä¸€æ—¦ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
 
 #if 0
-						// ”z—ñƒeƒNƒXƒ`ƒƒ‚Í1–‡–Ú‚ğƒvƒŒƒrƒ…[•\¦
-								// Texture2DArray ‚Ì 0 ”Ô–Ú‚Ì—v‘f‚¾‚¯‚ğw‚· SRV ‚ğì¬
+						// é…åˆ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¯1æšç›®ã‚’ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤º
+								// Texture2DArray ã® 0 ç•ªç›®ã®è¦ç´ ã ã‘ã‚’æŒ‡ã™ SRV ã‚’ä½œæˆ
 						D3D11_TEXTURE2D_DESC textureDesc = texture->GetDesc();
 						ID3D11ShaderResourceView* srv = texture->GetSRV(TextureSemantic::Default);
 						D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 						srv->GetDesc(&srvDesc);
-						srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D; // Array ‚Å‚Í‚È‚­ 2D ‚Æ‚µ‚Ä’è‹`
+						srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D; // Array ã§ã¯ãªã 2D ã¨ã—ã¦å®šç¾©
 						srvDesc.Texture2D.MipLevels = 1;
 						srvDesc.Texture2D.MostDetailedMip = 0;
 
@@ -548,30 +548,30 @@ void Material::DrawTextureSlots(size_t shaderType)
 
 					}
 				}
-				else // ƒeƒNƒXƒ`ƒƒ‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íƒ_ƒ~[‚ğ•\¦
+				else // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãƒ€ãƒŸãƒ¼ã‚’è¡¨ç¤º
 				{
 					std::shared_ptr<AssetTexture> dummyTex = std::make_shared<AssetTexture>();
-					dummyTex->MakeDummy(Graphics::GetDevice(), 0xFFFF00FF, 16); // ƒ}ƒ[ƒ“ƒ^‚Ìƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ
+					dummyTex->MakeDummy(Graphics::GetDevice(), 0xFFFF00FF, 16); // ãƒã‚¼ãƒ³ã‚¿ã®ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£
 					SetTexture(texName, dummyTex);
 				}
 			}
-			//ƒeƒNƒXƒ`ƒƒ‚ÌƒpƒX•\¦
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ‘ã‚¹è¡¨ç¤º
 			if (auto assetTexture = std::dynamic_pointer_cast<AssetTexture>(texture))
 			{
 				std::string path = assetTexture->GetPath();
 				if (path.empty()) path = "None";
 				ImGui::TextWrapped("Path: %s", path.c_str());
 			}
-			//ƒeƒNƒXƒ`ƒƒ‚Ì•ÏXƒ{ƒ^ƒ“
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å¤‰æ›´ãƒœã‚¿ãƒ³
 			if (ImGui::Button("Change Texture"))
 			{
-				//ƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO‚ğŠJ‚¢‚ÄƒeƒNƒXƒ`ƒƒ‚ğ‘I‘ğ
+				//ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‹ã„ã¦ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’é¸æŠ
 				const char* filter = "*.png;*.jpg;*.jpeg;*.bmp;*.tga;*.dds";
 				
 				char filepath[260] = "";
 				if (Dialog::OpenFileName(filepath, sizeof(filepath), filter, "Select Texture") == DialogResult::OK)
 				{
-					//‘I‘ğ‚³‚ê‚½ƒeƒNƒXƒ`ƒƒ‚ğƒ[ƒh‚µ‚Äİ’è
+					//é¸æŠã•ã‚ŒãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã¦è¨­å®š
 					std::shared_ptr<AssetTexture> newTexture = ResourceManager::Load<AssetTexture>(filepath);
 					if (newTexture)
 					{
@@ -579,15 +579,15 @@ void Material::DrawTextureSlots(size_t shaderType)
 					}
 				}
 			}
-			//ƒeƒNƒXƒ`ƒƒ‚Ìíœƒ{ƒ^ƒ“
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å‰Šé™¤ãƒœã‚¿ãƒ³
 			if (texture)
 			{
 				ImGui::SameLine();
 				if (ImGui::Button("Clear Texture"))
 				{
-					//ƒeƒNƒXƒ`ƒƒ‚ğƒNƒŠƒA‚µ‚Äƒ_ƒ~[‚É–ß‚·
+					//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ã‚¯ãƒªã‚¢ã—ã¦ãƒ€ãƒŸãƒ¼ã«æˆ»ã™
 					std::shared_ptr<AssetTexture> dummyTex = std::make_shared<AssetTexture>();
-					dummyTex->MakeDummy(Graphics::GetDevice()); // ƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ
+					dummyTex->MakeDummy(Graphics::GetDevice()); // ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£
 					SetTexture(texName, dummyTex);
 				}
 			}
@@ -607,7 +607,7 @@ void Material::DrawSamplerSlots(size_t shaderType)
 	{
 		ImGui::PushID(samplerInfo.name.c_str());
 
-		// ƒTƒ“ƒvƒ‰[–¼‚ğ•\¦
+		// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼åã‚’è¡¨ç¤º
 		ImGui::Text("%s (Sampler)", samplerInfo.name.c_str());
 
 		ImGui::PopID();
@@ -618,18 +618,18 @@ void Material::DrawSamplerSlots(size_t shaderType)
 
 void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& binding, const ShaderReflectionData& reflection)
 {
-	//// Šù‘¶‚Ì’è”ƒoƒbƒtƒ@‚ğ”jŠü
+	//// æ—¢å­˜ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’ç ´æ£„
 	//cbuffers.clear();
 
-	// •K—v‚È’è”ƒoƒbƒtƒ@‚Ì”‚¾‚¯Šm•Û
+	// å¿…è¦ãªå®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ•°ã ã‘ç¢ºä¿
 	//cbuffers.reserve(reflection.constantBufferLayouts.size());
 
-	// Shader‚Ì’è”ƒoƒbƒtƒ@ƒŒƒCƒAƒEƒg‚ğæ“¾‚µAƒoƒbƒtƒ@‚ğì¬
+	// Shaderã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’å–å¾—ã—ã€ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆ
 	for (const ShaderReflectionData::ConstantBufferLayout& layout : reflection.constantBufferLayouts)
 	{
-		// 16ƒoƒCƒgƒAƒ‰ƒCƒ“ƒƒ“ƒg‚ÉƒTƒCƒY‚ğ’²®
+		// 16ãƒã‚¤ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆã«ã‚µã‚¤ã‚ºã‚’èª¿æ•´
 		size_t alignedSize = Align16(layout.size);
-		// ƒTƒCƒY‚ªƒAƒ‰ƒCƒ“ƒƒ“ƒg‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍŒx
+		// ã‚µã‚¤ã‚ºãŒã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆã•ã‚Œã¦ã„ãªã„å ´åˆã¯è­¦å‘Š
 		if (alignedSize != layout.size)
 		{
 			Console::LogWarning("Warning: CBuffer " + layout.name + " size " + std::to_string(layout.size) +
@@ -643,7 +643,7 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 		{
 			auto& cbData = cbuffers[layout.name];
 
-			// ’è”ƒoƒbƒtƒ@‚ğì¬
+			// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆ
 			D3D11_BUFFER_DESC bufferDesc{};
 			bufferDesc.ByteWidth = static_cast<UINT>(alignedSize);
 			bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -654,14 +654,14 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 			HRESULT hr = device->CreateBuffer(&bufferDesc, nullptr, cbData.buffer.ReleaseAndGetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-			// ƒ[ƒJƒ‹ƒoƒbƒtƒ@‚ğ‰Šú‰»
+			// ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–
 			cbData.localData.assign(alignedSize, NULL);
 
-			// ‰Šú’l‚ªƒVƒF[ƒ_‚É’è‹`‚³‚ê‚Ä‚¢‚éê‡‚Íƒ[ƒJƒ‹ƒoƒbƒtƒ@‚ÉƒRƒs[‚µ‚Ä‚¨‚­
+			// åˆæœŸå€¤ãŒã‚·ã‚§ãƒ¼ãƒ€ã«å®šç¾©ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ã—ã¦ãŠã
 			for (const ShaderReflectionData::ShaderVariable& var : layout.variables)
 			{
-				if (var.defaultValue == nullptr) continue; // ‰Šú’l‚ª’è‹`‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍƒXƒLƒbƒv
-				if (var.offset + var.size > layout.size) // ‰Šú’l‚ªƒoƒbƒtƒ@ƒTƒCƒY‚ğ’´‚¦‚Ä‚¢‚éê‡‚ÍŒx‚ğo‚µ‚ÄƒXƒLƒbƒv
+				if (var.defaultValue == nullptr) continue; // åˆæœŸå€¤ãŒå®šç¾©ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
+				if (var.offset + var.size > layout.size) // åˆæœŸå€¤ãŒãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã¯è­¦å‘Šã‚’å‡ºã—ã¦ã‚¹ã‚­ãƒƒãƒ—
 				{
 					Console::LogWarning("Warning: Default value of variable " + var.name + " in CBuffer " + layout.name +
 						" exceeds buffer size. Variable offset: " + std::to_string(var.offset) +
@@ -670,10 +670,10 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 					continue;
 				}
 				//memcpy(cbData.localData.data() + var.offset, var.defaultValue, var.size);
-				//m_isValuesDirty = true; // ‰Šú’l‚ğƒRƒs[‚µ‚½‚Ì‚Å GPU ‘¤‚ÉXV‚ª•K—v
-				SetValue(var.name, var.defaultValue, var.size); // SetValue ‚ğg‚Á‚Ä‰Šú’l‚ğİ’è
+				//m_isValuesDirty = true; // åˆæœŸå€¤ã‚’ã‚³ãƒ”ãƒ¼ã—ãŸã®ã§ GPU å´ã«æ›´æ–°ãŒå¿…è¦
+				SetValue(var.name, var.defaultValue, var.size); // SetValue ã‚’ä½¿ã£ã¦åˆæœŸå€¤ã‚’è¨­å®š
 			}
-			cbData.dirty = true; // GPU ‘¤‚Ì’è”ƒoƒbƒtƒ@‚ÉXV‚ª•K—v
+			cbData.dirty = true; // GPU å´ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«æ›´æ–°ãŒå¿…è¦
 		}
 
 	}
@@ -681,35 +681,35 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 
 void Material::UpdateTextureAndSamplerBindings(ID3D11Device* device, ShaderBinding& binding, const ShaderReflectionData& reflection)
 {
-	//// Šù‘¶‚ÌƒeƒNƒXƒ`ƒƒİ’è‚ğƒNƒŠƒA
+	//// æ—¢å­˜ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£è¨­å®šã‚’ã‚¯ãƒªã‚¢
 	//textures.clear();
-	//// •K—v‚ÈƒeƒNƒXƒ`ƒƒ”‚¾‚¯Šm•Û
+	//// å¿…è¦ãªãƒ†ã‚¯ã‚¹ãƒãƒ£æ•°ã ã‘ç¢ºä¿
 	//textures.reserve(reflection.textureInfos.size());
-	// Shader‚ÌƒeƒNƒXƒ`ƒƒƒoƒCƒ“ƒhî•ñ‚ğæ“¾‚µAƒeƒNƒXƒ`ƒƒƒXƒƒbƒg‚ğŠm•Û
+	// Shaderã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒã‚¤ãƒ³ãƒ‰æƒ…å ±ã‚’å–å¾—ã—ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¹ãƒ­ãƒƒãƒˆã‚’ç¢ºä¿
 	for (const ShaderReflectionData::TextureInfo& texInfo : reflection.textureInfos)
 	{
-		// ƒeƒNƒXƒ`ƒƒ•Ï”–¼‚ğƒL[‚Æ‚µ‚Ä“o˜^
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£å¤‰æ•°åã‚’ã‚­ãƒ¼ã¨ã—ã¦ç™»éŒ²
 		if (textures.find(texInfo.name) == textures.end())
 		{
 			std::shared_ptr<AssetTexture> defaultTex = std::make_shared<AssetTexture>();
-			defaultTex->MakeDummy(device); // ƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ‚ğ¶¬
+			defaultTex->MakeDummy(device); // ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ç”Ÿæˆ
 			textures[texInfo.name] = defaultTex;
 		}
 	}
 
 #if 0
-	// Šù‘¶‚ÌƒTƒ“ƒvƒ‰[İ’è‚ğƒNƒŠƒA
+	// æ—¢å­˜ã®ã‚µãƒ³ãƒ—ãƒ©ãƒ¼è¨­å®šã‚’ã‚¯ãƒªã‚¢
 	binding.samplers.clear();
-	// •K—v‚ÈƒTƒ“ƒvƒ‰[”‚¾‚¯Šm•Û
+	// å¿…è¦ãªã‚µãƒ³ãƒ—ãƒ©ãƒ¼æ•°ã ã‘ç¢ºä¿
 	binding.samplers.reserve(reflection.samplerInfos.size());
 
-	// ƒTƒ“ƒvƒ‰[‚ÍŒ»óUI‚Å‚Ì•ÒW‚Ì‚İ‚ÅAMaterial‘¤‚Å‚Ì•Û‚Í‚µ‚È‚¢
+	// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã¯ç¾çŠ¶UIã§ã®ç·¨é›†ã®ã¿ã§ã€Materialå´ã§ã®ä¿æŒã¯ã—ãªã„
 	for (const ShaderReflectionData::SamplerInfo& samplerInfo : reflection.samplerInfos)
 	{
-		// ƒTƒ“ƒvƒ‰[•Ï”–¼‚ğƒL[‚Æ‚µ‚Ä“o˜^
+		// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼å¤‰æ•°åã‚’ã‚­ãƒ¼ã¨ã—ã¦ç™»éŒ²
 		if (binding.samplers.find(samplerInfo.name) == binding.samplers.end())
 		{
-			// ƒfƒtƒHƒ‹ƒg‚ÍWrap, MinMagMipLinear
+			// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯Wrap, MinMagMipLinear
 			binding.samplers[samplerInfo.name] = SamplerState::LinearWrap;
 		}
 	}
@@ -719,7 +719,7 @@ void Material::UpdateTextureAndSamplerBindings(ID3D11Device* device, ShaderBindi
 json Material::Serialize() const
 {
 	json j;
-	// ƒVƒF[ƒ_[ƒpƒX‚Ì•Û‘¶
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ‘ã‚¹ã®ä¿å­˜
 	for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 	{
 		auto& shader = m_ShaderBindings[i].shader;
@@ -728,7 +728,7 @@ json Material::Serialize() const
 			j["shaders"][std::to_string(i)] = shader->GetPath();
 		}
 	}
-	// ƒeƒNƒXƒ`ƒƒ‚Ì•Û‘¶
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ä¿å­˜
 	//for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 	{
 		//auto& textures = m_ShaderBindings[i].textures;
@@ -742,17 +742,17 @@ json Material::Serialize() const
 			texIndex++;
 		}
 	}
-	// ’è”ƒoƒbƒtƒ@‚Ì’l‚Ì•Û‘¶
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®å€¤ã®ä¿å­˜
 	for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 	{
 		//auto& cbuffers = m_ShaderBindings[i].cbuffers;
-		if (m_ShaderBindings[i].shader == nullptr) continue; // ƒVƒF[ƒ_‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+		if (m_ShaderBindings[i].shader == nullptr) continue; // ã‚·ã‚§ãƒ¼ãƒ€ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		
 		for (const auto& [cbName, cbData] : cbuffers)
 		{
 			if (std::find(m_CBufferNotBindNames.begin(), m_CBufferNotBindNames.end(), cbName) != m_CBufferNotBindNames.end())
 			{
-				// ƒoƒCƒ“ƒh‚µ‚È‚¢İ’è‚ª‚³‚ê‚Ä‚¢‚éê‡‚Í•Û‘¶‚µ‚È‚¢
+				// ãƒã‚¤ãƒ³ãƒ‰ã—ãªã„è¨­å®šãŒã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ä¿å­˜ã—ãªã„
 				continue;
 			}
 			const ShaderReflectionData::ConstantBufferLayout* layout = m_ShaderBindings[i].shader->GetConstantBufferLayout(cbName);
@@ -762,8 +762,8 @@ json Material::Serialize() const
 				continue;
 			}
 			
-			// ’è”ƒoƒbƒtƒ@‚Ìƒ[ƒJƒ‹ƒf[ƒ^‚ğ•Û‘¶‚µ‚Ä‚µ‚Ü‚¤‚ÆƒTƒCƒY‚ª‘å‚«‚­‚È‚è‚·‚¬‚Ä‚µ‚Ü‚¤‚Ì‚Å
-			//@ShaderVariable‚ÌŒ^î•ñ‚ğ‚à‚Æ‚ÉA•Û‘¶‚·‚é’l‚ğ•K—vÅ’áŒÀ‚Éi‚é
+			// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã—ã¦ã—ã¾ã†ã¨ã‚µã‚¤ã‚ºãŒå¤§ãããªã‚Šã™ãã¦ã—ã¾ã†ã®ã§
+			//ã€€ShaderVariableã®å‹æƒ…å ±ã‚’ã‚‚ã¨ã«ã€ä¿å­˜ã™ã‚‹å€¤ã‚’å¿…è¦æœ€ä½é™ã«çµã‚‹
 			for (const ShaderReflectionData::ShaderVariable& var : layout->variables)
 			{
 				switch (var.typeDesc.Class)
@@ -825,7 +825,7 @@ json Material::Serialize() const
 				}
 				case D3D_SVC_STRUCT:
 				{
-					//\‘¢‘Ì‚Ì’†g‚ğ•Û‘¶‚·‚é‚É‚ÍAShaderVariable‚Éq•Ï”‚Ìî•ñ‚ğ‚½‚¹‚é•K—v‚ª‚ ‚é
+					//æ§‹é€ ä½“ã®ä¸­èº«ã‚’ä¿å­˜ã™ã‚‹ã«ã¯ã€ShaderVariableã«å­å¤‰æ•°ã®æƒ…å ±ã‚’æŒãŸã›ã‚‹å¿…è¦ãŒã‚ã‚‹
 					Console::LogWarning("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because struct type is not supported for serialization.");
 					break;
 				}
@@ -838,7 +838,7 @@ json Material::Serialize() const
 	}
 
 
-	// ƒŒƒ“ƒ_[ƒXƒe[ƒg‚Ì•Û‘¶
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã®ä¿å­˜
 	j["blendState"] = static_cast<int>(blendState);
 	j["depthStencilState"] = static_cast<int>(depthStencilState);
 	j["rasterizerState"] = static_cast<int>(rasterizerState);
@@ -847,7 +847,7 @@ json Material::Serialize() const
 
 bool Material::Deserialize(const json& j)
 {
-	// ƒVƒF[ƒ_[ƒpƒX‚Ì“Ç‚İ‚İ
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ‘ã‚¹ã®èª­ã¿è¾¼ã¿
 	for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 	{
 		std::string key = std::to_string(i);
@@ -855,7 +855,7 @@ bool Material::Deserialize(const json& j)
 		{
 			std::string shaderPath = j["shaders"][key];
 			std::filesystem::path path = shaderPath;
-			std::string stem = path.stem().string(); // Šg’£q‚ğœ‚¢‚½ƒtƒ@ƒCƒ‹–¼
+			std::string stem = path.stem().string(); // æ‹¡å¼µå­ã‚’é™¤ã„ãŸãƒ•ã‚¡ã‚¤ãƒ«å
 			std::shared_ptr<Shader> shader;
 			switch (i)
 			{
@@ -874,7 +874,7 @@ bool Material::Deserialize(const json& j)
 			}
 		}
 	}
-	// ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿
 	for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 	{
 		std::string key = std::to_string(i);
@@ -891,7 +891,7 @@ bool Material::Deserialize(const json& j)
 				else
 				{
 					texture = std::make_shared<AssetTexture>();
-					texture->MakeDummy(Graphics::GetDevice()); // ƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ
+					texture->MakeDummy(Graphics::GetDevice()); // ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£
 				}
 				if (texture)
 				{
@@ -900,7 +900,7 @@ bool Material::Deserialize(const json& j)
 			}
 		}
 	}
-	// ’è”ƒoƒbƒtƒ@‚Ì’l‚Ì“Ç‚İ‚İ
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®å€¤ã®èª­ã¿è¾¼ã¿
 	for (size_t i = 0; i < static_cast<size_t>(ShaderType::EnumCount); ++i)
 	{
 		std::string key = std::to_string(i);
@@ -933,7 +933,7 @@ bool Material::Deserialize(const json& j)
 	}
 	
 	
-	// ƒŒƒ“ƒ_[ƒXƒe[ƒg‚Ì“Ç‚İ‚İ
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã®èª­ã¿è¾¼ã¿
 	if (j.contains("blendState"))
 	{
 		blendState = static_cast<BlendState>(j["blendState"].get<int>());

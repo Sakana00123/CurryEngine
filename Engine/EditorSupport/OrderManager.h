@@ -8,26 +8,26 @@ namespace CurryEngine
 	class OrderManager
 	{
 	public:
-		static constexpr int STEP = 1000; // �����̃X�e�b�v�l
-		static constexpr int MIN_GAP = 1; // �����̍ŏ��M���b�v�l
+		static constexpr int STEP = 1000; // 順序のステップ値
+		static constexpr int MIN_GAP = 1; // 順序の最小ギャップ値
 
 		/// <summary>
-		/// �V�����I�u�W�F�N�g�̗D�揇�ʂ��v�Z���܂��B�O�̗D�揇�ʂƎ��̗D�揇�ʂ̒��Ԃ��v�Z���A�����̃M���b�v���\���łȂ��ꍇ�� -1 ��Ԃ��܂��B
+		/// 新しいオブジェクトの優先順位を計算します。前の優先順位と次の優先順位の中間を計算し、順序のギャップが十分でない場合は -1 を返します。
 		/// </summary>
-		/// <param name="prevPriority">�O�̃I�u�W�F�N�g�̗D�揇�ʁB���̒l�̏ꍇ�́A�O�̃I�u�W�F�N�g�����݂��Ȃ����Ƃ������܂��B</param>
-		/// <param name="nextPriority">���̃I�u�W�F�N�g�̗D�揇�ʁB���̒l�̏ꍇ�́A���̃I�u�W�F�N�g�����݂��Ȃ����Ƃ������܂��B</param>
-		/// <returns>�V�����I�u�W�F�N�g�̗D�揇�ʁB�����̃M���b�v������������ꍇ�� -1 ��Ԃ��܂��B</returns>
+		/// <param name="prevPriority">前のオブジェクトの優先順位。負の値の場合は、前のオブジェクトが存在しないことを示します。</param>
+		/// <param name="nextPriority">次のオブジェクトの優先順位。負の値の場合は、次のオブジェクトが存在しないことを示します。</param>
+		/// <returns>新しいオブジェクトの優先順位。順序のギャップが小さすぎる場合は -1 を返します。</returns>
 		static int CalcInsertPriority(int prevPriority, int nextPriority);
 
 		/// <summary>
-		/// �I�u�W�F�N�g�̗D�揇�ʂɊ�Â��ă��X�g���\�[�g���܂��B����ɂ��A�D�揇�ʂ̏������������ۂ���܂��B
+		/// オブジェクトの優先順位に基づいてリストをソートします。これにより、優先順位の順序が正しく保たれます。
 		/// </summary>
-		/// <typeparam name="T">�I�u�W�F�N�g�̌^�BObject �N���X���p�����Ă���K�v������܂��B</typeparam>
-		/// <param name="objects">�\�[�g����I�u�W�F�N�g�̃��X�g�B</param>
+		/// <typeparam name="T">オブジェクトの型。Object クラスを継承している必要があります。</typeparam>
+		/// <param name="objects">ソートするオブジェクトのリスト。</param>
 		template<typename T>
 		static void Sort(std::vector<std::shared_ptr<T>>& objects)
 		{
-			// �D�揇�ʂɊ�Â��ăI�u�W�F�N�g������\�[�g
+			// 優先順位に基づいてオブジェクトを安定ソート
 			std::stable_sort(objects.begin(), objects.end(),
 				[](const std::shared_ptr<T>& a, const std::shared_ptr<T>& b) {
 					return a->GetPriority() < b->GetPriority();
@@ -35,14 +35,14 @@ namespace CurryEngine
 		}
 
 		/// <summary>
-		/// �I�u�W�F�N�g�̗D�揇�ʂ��Ċ��蓖�Ă��܂��B����ɂ��A�D�揇�ʂ̃M���b�v����������A�V�����I�u�W�F�N�g�̑}�����e�ՂɂȂ�܂��B
+		/// オブジェクトの優先順位を再割り当てします。これにより、優先順位のギャップが解消され、新しいオブジェクトの挿入が容易になります。
 		/// </summary>
-		/// <typeparam name="T">�I�u�W�F�N�g�̌^�BObject �N���X���p�����Ă���K�v������܂��B</typeparam>
-		/// <param name="objects">�D�揇�ʂ��Ċ��蓖�Ă���I�u�W�F�N�g�̃��X�g�B</param>
+		/// <typeparam name="T">オブジェクトの型。Object クラスを継承している必要があります。</typeparam>
+		/// <param name="objects">優先順位を再割り当てするオブジェクトのリスト。</param>
 		template<typename T>
 		static void Renumber(std::vector<std::shared_ptr<T>>& objects)
 		{
-			// �I�u�W�F�N�g�̗D�揇�ʂ��Ċ��蓖��
+			// オブジェクトの優先順位を再割り当て
 			for (size_t i = 0; i < objects.size(); ++i) {
 				if (objects[i]) {
 					objects[i]->SetPriority(static_cast<int>(i) * STEP);
@@ -51,31 +51,31 @@ namespace CurryEngine
 		}
 
 		/// <summary>
-		/// �I�u�W�F�N�g���w�肵���ʒu�Ɉړ����A�D�揇�ʂ�K�؂ɍX�V���܂��B�ړ��O�ƈړ���̈ʒu�Ɋ�Â��ĐV�����D�揇�ʂ��v�Z���A�K�v�ɉ����ă��X�g���\�[�g���܂��B
+		/// オブジェクトを指定した位置に移動し、優先順位を適切に更新します。移動前と移動後の位置に基づいて新しい優先順位を計算し、必要に応じてリストをソートします。
 		/// </summary>
-		/// <typeparam name="T">�I�u�W�F�N�g�̌^�BObject �N���X���p�����Ă���K�v������܂��B</typeparam>
-		/// <param name="objects">�ړ�����I�u�W�F�N�g�̃��X�g�B</param>
-		/// <param name="fromIndex">�ړ����̃C���f�b�N�X�B</param>
-		/// <param name="toIndex">�ړ���̃C���f�b�N�X�B</param>
-		/// <returns>�ړ���̃I�u�W�F�N�g�̐V�����D�揇�ʁB�ړ��O�Ɠ����ʒu�̏ꍇ�́A���̗D�揇�ʂ�Ԃ��܂��B</returns>
+		/// <typeparam name="T">オブジェクトの型。Object クラスを継承している必要があります。</typeparam>
+		/// <param name="objects">移動するオブジェクトのリスト。</param>
+		/// <param name="fromIndex">移動元のインデックス。</param>
+		/// <param name="toIndex">移動先のインデックス。</param>
+		/// <returns>移動後のオブジェクトの新しい優先順位。移動前と同じ位置の場合は、元の優先順位を返します。</returns>
 		template<typename T>
 		static int MoveObject(std::vector<std::shared_ptr<T>>& objects, size_t fromIndex, size_t toIndex)
 		{
 			if (fromIndex == toIndex) {
-				return objects[fromIndex]->GetPriority(); // �ړ��O�Ɠ����ʒu�̏ꍇ�͗D�揇�ʂ�ύX���Ȃ�
+				return objects[fromIndex]->GetPriority(); // 移動前と同じ位置の場合は優先順位を変更しない
 			}
 
-			// fromIndex �������� priority ���X�g�����
+			// fromIndex を除いた priority リストを作る
 			std::vector<int> priorities;
-			priorities.reserve(objects.size() - 1); // fromIndex ���������߁A�T�C�Y�� objects.size() - 1
+			priorities.reserve(objects.size() - 1); // fromIndex を除くため、サイズは objects.size() - 1
 			for (size_t i = 0; i < objects.size(); ++i) {
 				if (i != fromIndex && objects[i]) {
 					priorities.push_back(objects[i]->GetPriority());
 				}
 			}
 
-			// toIndex �� ��������̃��X�g��̑}���ʒu �ɕ␳����
-			// fromIndex �����Ɉړ�����ꍇ�́AtoIndex �� fromIndex ����������̃��X�g��ł� 1 �����
+			// toIndex を 除いた後のリスト上の挿入位置 に補正する
+			// fromIndex より後ろに移動する場合は、toIndex は fromIndex を除いた後のリスト上では 1 つずれる
 			size_t insertIndex = (fromIndex < toIndex) ? toIndex - 1 : toIndex;
 
 			int prevPriority = (insertIndex > 0)
@@ -83,17 +83,17 @@ namespace CurryEngine
 			int nextPriority = (insertIndex < priorities.size())
 				? priorities[insertIndex] : -1;
 
-			// ���Ԓl���v�Z
+			// 中間値を計算
 			int newPriority = CalcInsertPriority(prevPriority, nextPriority);
 
 			if (newPriority == -1) {
-				// �M���b�v������������ꍇ�́A�D�揇�ʂ��Ċ��蓖�Ă��Ă���ēx�v�Z
+				// ギャップが小さすぎる場合は、優先順位を再割り当てしてから再度計算
 				Renumber(objects);
-				return MoveObject(objects, fromIndex, toIndex); // 1�񂾂��ċA�I�ɌĂяo���ĐV�����D�揇�ʂ��v�Z
+				return MoveObject(objects, fromIndex, toIndex); // 1回だけ再帰的に呼び出して新しい優先順位を計算
 			}
 
 			objects[fromIndex]->SetPriority(newPriority);
-			Sort(objects); // �D�揇�ʂɊ�Â��ă��X�g���\�[�g
+			Sort(objects); // 優先順位に基づいてリストをソート
 			return newPriority;
 		}
 

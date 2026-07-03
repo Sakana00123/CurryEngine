@@ -6,7 +6,7 @@
 
 void ShadowApplyPass::Initialize()
 {
-	// ƒVƒƒƒhƒEƒ}ƒbƒv“K—pƒpƒX‚Ì‰Šú‰»‚âƒŠƒ\[ƒX‚Ì€”õ‚ğs‚¤
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—é©ç”¨ãƒ‘ã‚¹ã®åˆæœŸåŒ–ã‚„ãƒªã‚½ãƒ¼ã‚¹ã®æº–å‚™ã‚’è¡Œã†
 	auto device = Graphics::GetDevice();
 	//HRESULT hr{ S_OK };
 	//hr = CreatePixelShaderFromCSO(device, "./Data/Shaders/CascadedShadowPS.cso", cascadedShadowPs.GetAddressOf());
@@ -16,35 +16,35 @@ void ShadowApplyPass::Initialize()
 	m_cascadedShadowMaterial->SetShader(device, ResourceManager::GetShader<PixelShader>("CascadedShadowPS"));
 	std::vector<std::string> notBindCBufferNames = { "SCENE_CONSTANT_BUFFER", "LIGHT_CONSTANT_BUFFER", /*"PARAMETRIC_CONSTANT_BUFFER", */"CASCADED_CONSTANTS"};
 	m_cascadedShadowMaterial->SetNotBindCBuffer(notBindCBufferNames);
-	// ‰Šú’lİ’è
+	// åˆæœŸå€¤è¨­å®š
 	m_cascadedShadowMaterial->SetValue("colorizeCascadedLayer", false);
 	m_cascadedShadowMaterial->SetValue("shadowDepthBias", 0.000021f);
 
 	m_shadowRenderTexture.Create(device, 1920, 1080);
-	RegisterResizableRenderTexture(&m_shadowRenderTexture); // ƒŠƒTƒCƒY‚ª•K—v‚ÈƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Æ‚µ‚Ä“o˜^(¦‚±‚ê‚ğŒÄ‚Ño‚³‚È‚¢‚ÆAƒEƒBƒ“ƒhƒEƒTƒCƒY•ÏX‚ÉƒŠƒTƒCƒY‚³‚ê‚È‚¢‚Ì‚Å’ˆÓ)
+	RegisterResizableRenderTexture(&m_shadowRenderTexture); // ãƒªã‚µã‚¤ã‚ºãŒå¿…è¦ãªãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦ç™»éŒ²(â€»ã“ã‚Œã‚’å‘¼ã³å‡ºã•ãªã„ã¨ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¤‰æ›´æ™‚ã«ãƒªã‚µã‚¤ã‚ºã•ã‚Œãªã„ã®ã§æ³¨æ„)
 }
 
 void ShadowApplyPass::Finalize()
 {
-	// ƒVƒƒƒhƒEƒ}ƒbƒv“K—pƒpƒX‚ÌƒŠƒ\[ƒX‚Ì‰ğ•ú‚âƒNƒŠ[ƒ“ƒAƒbƒv‚ğs‚¤
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—é©ç”¨ãƒ‘ã‚¹ã®ãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾ã‚„ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—ã‚’è¡Œã†
 	//cascadedShadowPs.Reset();
 	m_shadowRenderTexture.Release();
 }
 
 void ShadowApplyPass::Execute(RenderContext* rtx, Scene* scene)
 {
-	// ƒVƒƒƒhƒEƒ}ƒbƒv“K—pƒpƒX‚ÌÀsƒR[ƒh‚ğ‹Lq‚·‚é
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—é©ç”¨ãƒ‘ã‚¹ã®å®Ÿè¡Œã‚³ãƒ¼ãƒ‰ã‚’è¨˜è¿°ã™ã‚‹
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 
-	// ƒVƒƒƒhƒEƒ}ƒbƒv‚ğ‡¬‚·‚é‚½‚ß‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒAƒNƒeƒBƒu‰»
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’åˆæˆã™ã‚‹ãŸã‚ã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–
 	rtx->SetRenderTarget(m_shadowRenderTexture);
 	rtx->ClearCurrentRenderTarget(Color::Black);
 
-	// ƒVƒƒƒhƒEƒ}ƒbƒv‚ğ‡¬‚·‚é‚½‚ß‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğ‹¤—LƒŠƒ\[ƒX‚Æ‚µ‚ÄRenderContext‚Éİ’è
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’åˆæˆã™ã‚‹ãŸã‚ã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã¨ã—ã¦RenderContextã«è¨­å®š
 	rtx->SetSharedResource("ShadowApplyPass_RenderTexture", &m_shadowRenderTexture);
 	
-	// ƒvƒƒtƒ@ƒCƒ‰[‚ÉƒZƒNƒVƒ‡ƒ“‚ğ’Ç‰Á
+	// ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ©ãƒ¼ã«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ 
 	ProfileScopedSection_2(0, "ShadowApplyPass::Execute", ImGuiControl::Profiler::Red);
 	
 #if 0
@@ -55,7 +55,7 @@ void ShadowApplyPass::Execute(RenderContext* rtx, Scene* scene)
 		static_cast<ID3D11ShaderResourceView*>(rtx->GetSharedResource("ShadowMapPass_DepthMap")),
 	};
 
-	// ƒVƒƒƒhƒE‚ğ‡¬‚µ‚½‚à‚Ì‚ğ•`‰æ
+	// ã‚·ãƒ£ãƒ‰ã‚¦ã‚’åˆæˆã—ãŸã‚‚ã®ã‚’æç”»
 	rtx->DrawFullScreenQuad(shaderResourceViews, 0, 3, cascadedShadowPs.Get());
 #else
 	RawTexture2D* pColorMapTexture = static_cast<RawTexture2D*>(rtx->GetSharedResource("OpaquePass_ColorTexture"));
@@ -74,14 +74,14 @@ void ShadowApplyPass::Execute(RenderContext* rtx, Scene* scene)
 
 //void ShadowApplyPass::Resize(UINT width, UINT height)
 //{
-//	// ƒVƒƒƒhƒEƒ}ƒbƒv“K—pƒpƒX‚ÌƒŠƒTƒCƒYˆ—‚ğ‹Lq‚·‚é
+//	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—é©ç”¨ãƒ‘ã‚¹ã®ãƒªã‚µã‚¤ã‚ºå‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹
 //	m_shadowRenderTexture.Resize(Graphics::GetDevice(), width, height);
 //}
 
 void ShadowApplyPass::DrawProperty()
 {
 #ifdef USE_IMGUI
-	// ƒVƒƒƒhƒEƒ}ƒbƒv“K—pƒpƒX‚ÌƒvƒƒpƒeƒB•`‰æƒR[ƒh‚ğ‹Lq‚·‚é
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—é©ç”¨ãƒ‘ã‚¹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚³ãƒ¼ãƒ‰ã‚’è¨˜è¿°ã™ã‚‹
 	ImGui::SeparatorText("ShadowApplyPass Properties");
 
 	m_cascadedShadowMaterial->DrawProperty();

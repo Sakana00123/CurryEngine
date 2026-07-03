@@ -11,7 +11,7 @@ void UIAnimationController::Update(float elapsedTime)
 {
 	RectTransform* rect = GetRectTransform();
 	if (Selectable* selectable = gameObject->GetComponent<Selectable>()) {
-		//�X�e�[�g�̍X�V
+		//ステートの更新
 		if (!selectable->IsInteractable()) {
 			SetState(State::Disabled);
 		}
@@ -31,10 +31,10 @@ void UIAnimationController::Update(float elapsedTime)
 
 		if (transitionProgress >= 1.0f || handler.GetSequenceCount() == 0) return;
 
-		//�n���h���X�V
+		//ハンドラ更新
 		handler.Update(transitionProgress, elapsedTime);
 
-		//���W�̍X�V
+		//座標の更新
 		if (transitions[static_cast<size_t>(currentState)].enableTranslate)
 		{
 			XMVECTOR FromPosition = XMLoadFloat2(&fromPosition);
@@ -44,7 +44,7 @@ void UIAnimationController::Update(float elapsedTime)
 			rect->SetAnchoredPosition(pos);
 		}
 
-		//�T�C�Y�̍X�V
+		//サイズの更新
 		if (transitions[static_cast<size_t>(currentState)].enableSizing)
 		{
 			XMVECTOR FromSize = XMLoadFloat2(&fromSize);

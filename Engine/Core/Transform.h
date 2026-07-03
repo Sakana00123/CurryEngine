@@ -11,69 +11,69 @@ using namespace DirectX;
 
 /**
  * @file
- * @brief 3D/2D ‹óŠÔ‚Å‚ÌˆÊ’uE‰ñ“]EƒXƒP[ƒ‹‚ğŠÇ—‚·‚éƒgƒ‰ƒ“ƒXƒtƒH[ƒ€B
- * @details ƒ[ƒJƒ‹/ƒ[ƒ‹ƒhs—ñ‚ÌXVAƒNƒH[ƒ^ƒjƒIƒ“/ƒIƒCƒ‰[Šp‚Ì‘ŠŒİ•ÏŠ·A
- *          ‘O/‰E/ã•ûŒüƒxƒNƒgƒ‹‚Ìæ“¾Aƒ[ƒ‹ƒh‘¤‚ÌˆÊ’u/‰ñ“]/ƒXƒP[ƒ‹İ’è‚È‚Ç‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief 3D/2D ç©ºé–“ã§ã®ä½ç½®ãƒ»å›è»¢ãƒ»ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ç®¡ç†ã™ã‚‹ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã€‚
+ * @details ãƒ­ãƒ¼ã‚«ãƒ«/ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ›´æ–°ã€ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³/ã‚ªã‚¤ãƒ©ãƒ¼è§’ã®ç›¸äº’å¤‰æ›ã€
+ *          å‰/å³/ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®å–å¾—ã€ãƒ¯ãƒ¼ãƒ«ãƒ‰å´ã®ä½ç½®/å›è»¢/ã‚¹ã‚±ãƒ¼ãƒ«è¨­å®šãªã©ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 
-//À•WŒn‚Æ²‚Ìİ’è
+//åº§æ¨™ç³»ã¨è»¸ã®è¨­å®š
 /**
- * @brief À•WŒni¶‰EèŒnAUp ²j‚ğ•\‚·—ñ‹“‘ÌB
+ * @brief åº§æ¨™ç³»ï¼ˆå·¦å³æ‰‹ç³»ã€Up è»¸ï¼‰ã‚’è¡¨ã™åˆ—æŒ™ä½“ã€‚
  */
 C_ENUM()
 enum class CoordinateSystem
 {
-	LeftHand_YUp,//¶èÀ•WŒnAY²ã
-	LeftHand_ZUp,//¶èÀ•WŒnAZ²ã
-	RightHand_YUp,//‰EèÀ•WŒnAY²ã
-	RightHand_ZUp,//‰EèÀ•WŒnAZ²ã
+	LeftHand_YUp,//å·¦æ‰‹åº§æ¨™ç³»ã€Yè»¸ä¸Š
+	LeftHand_ZUp,//å·¦æ‰‹åº§æ¨™ç³»ã€Zè»¸ä¸Š
+	RightHand_YUp,//å³æ‰‹åº§æ¨™ç³»ã€Yè»¸ä¸Š
+	RightHand_ZUp,//å³æ‰‹åº§æ¨™ç³»ã€Zè»¸ä¸Š
 };
 C_REGISTER_TYPE(CoordinateSystem);
 
-//TransformƒRƒ“ƒ|[ƒlƒ“ƒg
+//Transformã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 /**
- * @brief ˆÊ’uE‰ñ“]EƒXƒP[ƒ‹‚Æƒ[ƒJƒ‹/ƒ[ƒ‹ƒhs—ñ‚ğŠÇ—‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details ƒNƒH[ƒ^ƒjƒIƒ“/ƒIƒCƒ‰[Šp‚Ì‘ŠŒİ•ÏŠ·AŠeíƒxƒNƒgƒ‹æ“¾Aƒ[ƒ‹ƒh‘¤‚Ìİ’èŠÖ”‚ğ”õ‚¦‚Ü‚·B
+ * @brief ä½ç½®ãƒ»å›è»¢ãƒ»ã‚¹ã‚±ãƒ¼ãƒ«ã¨ãƒ­ãƒ¼ã‚«ãƒ«/ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ç®¡ç†ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³/ã‚ªã‚¤ãƒ©ãƒ¼è§’ã®ç›¸äº’å¤‰æ›ã€å„ç¨®ãƒ™ã‚¯ãƒˆãƒ«å–å¾—ã€ãƒ¯ãƒ¼ãƒ«ãƒ‰å´ã®è¨­å®šé–¢æ•°ã‚’å‚™ãˆã¾ã™ã€‚
  */
 class Transform : public Component
 {
 	C_REFLECT(Transform)
 public:
-	/** @brief ƒ[ƒJƒ‹À•W‚ÌˆÊ’uB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã®ä½ç½®ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetPosition"), CurryEngine::PropertyAttributes::Setter("SetPosition"))
 	Vector3 position;
-	/** @brief ƒ[ƒJƒ‹‰ñ“]iƒNƒH[ƒ^ƒjƒIƒ“jB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ï¼ˆã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ï¼‰ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetRotation"), CurryEngine::PropertyAttributes::Setter("SetRotation"), CurryEngine::PropertyAttributes::CustomDrawer("Quaternion_Euler"))
 	Quaternion rotation;
-	/** @brief ƒ[ƒJƒ‹ƒXƒP[ƒ‹B*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetScale"), CurryEngine::PropertyAttributes::Setter("SetScale"))
 	Vector3 scale;
 
-	/** @brief ƒ[ƒJƒ‹‰ñ“]iƒIƒCƒ‰[ŠpA“xjB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ï¼ˆã‚ªã‚¤ãƒ©ãƒ¼è§’ã€åº¦ï¼‰ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::ReadOnly)
 	Vector3 m_eulerAngles;
 
-	/** @brief À•WŒn‚Ìİ’èB*/
+	/** @brief åº§æ¨™ç³»ã®è¨­å®šã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Range(0, 3), CurryEngine::PropertyAttributes::HideInInspector)
 	CoordinateSystem coordinateSystem = CoordinateSystem::LeftHand_YUp;
 protected:
-	bool m_eulerDirty = true; // ƒIƒCƒ‰[Šp‚ªƒ[ƒJƒ‹‰ñ“]‚Æ“¯Šú‚µ‚Ä‚¢‚é‚©
+	bool m_eulerDirty = true; // ã‚ªã‚¤ãƒ©ãƒ¼è§’ãŒãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã¨åŒæœŸã—ã¦ã„ã‚‹ã‹
 	XMFLOAT4X4 local;
 	XMFLOAT4X4 world;
-	bool needsUpdate;//Uodate‚ªŒÄ‚Ño‚³‚ê‚Ä‚©‚ç’l‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©
-	bool changedThisFrame;// ‚±‚ÌƒtƒŒ[ƒ€‚Å’l‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©
+	bool needsUpdate;//UodateãŒå‘¼ã³å‡ºã•ã‚Œã¦ã‹ã‚‰å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹
+	bool changedThisFrame;// ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹
 	Vector3 worldPosition;
 	Quaternion worldRotation;
 	Vector3 worldScale;
 private:
 #ifdef USE_IMGUI
-	bool enableScaleLink = false; // ƒXƒP[ƒ‹‚ÌƒŠƒ“ƒN‚ğ—LŒø‚É‚·‚é‚©Btrue ‚Ìê‡AƒGƒfƒBƒ^ã‚Å•ÒW‚·‚é‚Æ‚«AX/Y/Z ‚·‚×‚Ä‚ÌƒXƒP[ƒ‹‚ğ“¯‚É•ÏX‚µ‚Ü‚·B
-	Vector3 lastValidScale = Vector3(1, 1, 1);// ÅŒã‚É•Û‘¶‚³‚ê‚½—LŒø‚ÈƒXƒP[ƒ‹‚Ì’l(0‚ğŠÜ‚Ü‚È‚¢)BƒXƒP[ƒ‹‚ÌƒŠƒ“ƒN‚ª—LŒø‚Èê‡A‚±‚ê‚ğŠî€‚ÉƒXƒP[ƒ‹‚ğ•ÏX‚µ‚Ü‚·B
+	bool enableScaleLink = false; // ã‚¹ã‚±ãƒ¼ãƒ«ã®ãƒªãƒ³ã‚¯ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã€‚true ã®å ´åˆã€ã‚¨ãƒ‡ã‚£ã‚¿ä¸Šã§ç·¨é›†ã™ã‚‹ã¨ãã€X/Y/Z ã™ã¹ã¦ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’åŒæ™‚ã«å¤‰æ›´ã—ã¾ã™ã€‚
+	Vector3 lastValidScale = Vector3(1, 1, 1);// æœ€å¾Œã«ä¿å­˜ã•ã‚ŒãŸæœ‰åŠ¹ãªã‚¹ã‚±ãƒ¼ãƒ«ã®å€¤(0ã‚’å«ã¾ãªã„)ã€‚ã‚¹ã‚±ãƒ¼ãƒ«ã®ãƒªãƒ³ã‚¯ãŒæœ‰åŠ¹ãªå ´åˆã€ã“ã‚Œã‚’åŸºæº–ã«ã‚¹ã‚±ãƒ¼ãƒ«ã‚’å¤‰æ›´ã—ã¾ã™ã€‚
 #endif // _DEBUG
 public:
 	/**
-	 * @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B‰Šú’l‚ğİ’è‚µ‚Ü‚·B
-	 * @details ƒ[ƒJƒ‹/ƒ[ƒ‹ƒhs—ñ‚ğ’PˆÊs—ñAƒXƒP[ƒ‹‚ğ 1AÀ•WŒn‚ğ LeftHand_YUp ‚Éİ’è‚µ‚Ü‚·B
+	 * @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚åˆæœŸå€¤ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @details ãƒ­ãƒ¼ã‚«ãƒ«/ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’å˜ä½è¡Œåˆ—ã€ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ 1ã€åº§æ¨™ç³»ã‚’ LeftHand_YUp ã«è¨­å®šã—ã¾ã™ã€‚
 	 */
 	Transform() :
 		position(0, 0, 0),
@@ -90,125 +90,125 @@ public:
 	{}
 	virtual ~Transform() override = default;
 
-	/** @brief I—¹ˆ—‚Æ‚µ‚ÄŒÄ‚Ño‚³‚ê‚Ü‚·B*/
+	/** @brief çµ‚äº†å‡¦ç†ã¨ã—ã¦å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚*/
 	void OnDestroy() override;
 
-	/** @brief Å‰‚Ì‰Šú‰»ˆ—‚Æ‚µ‚ÄŒÄ‚Ño‚³‚ê‚Ü‚·B*/
+	/** @brief æœ€åˆã®åˆæœŸåŒ–å‡¦ç†ã¨ã—ã¦å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚*/
 	void Awake() override;
 
-	/** @brief `XMVECTOR` ‚ğƒNƒH[ƒ^ƒjƒIƒ“‚É•ÏŠ·B*/
+	/** @brief `XMVECTOR` ã‚’ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã«å¤‰æ›ã€‚*/
 	static Quaternion XMVectorToQuaternion(const XMVECTOR& vector);
-	/** @brief ”CˆÓ²‰ñ‚è‚Ì‰ñ“]‚ğ•\‚·ƒNƒH[ƒ^ƒjƒIƒ“‚ğ¶¬B*/
+	/** @brief ä»»æ„è»¸å›ã‚Šã®å›è»¢ã‚’è¡¨ã™ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ç”Ÿæˆã€‚*/
 	static Quaternion QuaternionRotationAxis(const XMFLOAT3& axis, float angle);
-	/** @brief ƒNƒH[ƒ^ƒjƒIƒ“‚ğw’è²‚Ì‰ñ“]Šp‚É•ÏŠ·B*/
+	/** @brief ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’æŒ‡å®šè»¸ã®å›è»¢è§’ã«å¤‰æ›ã€‚*/
 	static float QuaternionToAxisAngle(const XMFLOAT3& axis, const Quaternion& q);
-	/** @brief ƒNƒH[ƒ^ƒjƒIƒ“‚ğ `XMVECTOR` ‚É•ÏŠ·B*/
+	/** @brief ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ `XMVECTOR` ã«å¤‰æ›ã€‚*/
 	static XMVECTOR QuaternionToXMVector(const Quaternion& q);
-	/** @brief ƒNƒH[ƒ^ƒjƒIƒ““¯m‚ÌæZB*/
+	/** @brief ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³åŒå£«ã®ä¹—ç®—ã€‚*/
 	static Quaternion QuaternionMultiply(const Quaternion& q1, const Quaternion& q2);
-	/** @brief ƒxƒNƒgƒ‹‚Ì LookAt ‚ğ•\‚·ƒNƒH[ƒ^ƒjƒIƒ“‚ğŒvZB*/
+	/** @brief ãƒ™ã‚¯ãƒˆãƒ«ã® LookAt ã‚’è¡¨ã™ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’è¨ˆç®—ã€‚*/
 	static XMVECTOR QuaternionLookAt(const XMVECTOR& Original, const XMVECTOR& Target);
 	
-	/** @brief ¡‰ñ‚ÌƒtƒŒ[ƒ€‚Å’l‚ª•ÏX‚³‚ê‚½‚©‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief ä»Šå›ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’è¿”ã—ã¾ã™ã€‚*/
 	bool IsChangedThisFrame() const;
 
-	/** @brief ƒ[ƒJƒ‹ˆÊ’u‚ğæ“¾B*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã‚’å–å¾—ã€‚*/
 	C_FUNCTION()
 	Vector3 GetPosition();
-	/** @brief ƒ[ƒJƒ‹‰ñ“]iƒNƒH[ƒ^ƒjƒIƒ“j‚ğæ“¾B*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ï¼ˆã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ï¼‰ã‚’å–å¾—ã€‚*/
 	C_FUNCTION()
 	Quaternion GetRotation();
-	/** @brief ƒ[ƒJƒ‹‰ñ“]iƒIƒCƒ‰[Špj‚ğæ“¾B*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ï¼ˆã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼‰ã‚’å–å¾—ã€‚*/
 	C_FUNCTION()
 	Vector3 GetEulerAngles();
-	/** @brief ƒ[ƒJƒ‹ƒXƒP[ƒ‹‚ğæ“¾B*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã‚’å–å¾—ã€‚*/
 	C_FUNCTION()
 	Vector3 GetScale();
 
-	/** @brief ƒ[ƒJƒ‹ˆÊ’u‚ğİ’èB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã‚’è¨­å®šã€‚*/
 	C_FUNCTION()
 	void SetPosition(const Vector3& position);
-	/** @brief ƒ[ƒJƒ‹ˆÊ’u‚É‰ÁZiˆÚ“®jB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã«åŠ ç®—ï¼ˆç§»å‹•ï¼‰ã€‚*/
 	void Translate(const Vector3& translate);
-	/** @brief ƒ[ƒJƒ‹‰ñ“]iƒNƒH[ƒ^ƒjƒIƒ“j‚ğİ’èB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ï¼ˆã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ï¼‰ã‚’è¨­å®šã€‚*/
 	C_FUNCTION()
 	void SetRotation(const Quaternion& rotation);
-	/** @brief ƒ[ƒJƒ‹‰ñ“]iƒIƒCƒ‰[Špj‚ğİ’èB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ï¼ˆã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼‰ã‚’è¨­å®šã€‚*/
 	C_FUNCTION()
 	void SetRotation(const Vector3& eulerAngles);
-	/** @brief ƒ[ƒJƒ‹‰ñ“]‚ÉæZiƒNƒH[ƒ^ƒjƒIƒ“jB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã«ä¹—ç®—ï¼ˆã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ï¼‰ã€‚*/
 	C_FUNCTION()
 	void Rotate(const Quaternion& rotate);
-	/** @brief ƒ[ƒJƒ‹‰ñ“]‚É‰ÁZiƒIƒCƒ‰[ŠpjB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã«åŠ ç®—ï¼ˆã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼‰ã€‚*/
 	C_FUNCTION()
 	void Rotate(const Vector3& eulerAngles);
 
-	/** @brief ƒ[ƒJƒ‹ƒXƒP[ƒ‹‚ğİ’èB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã‚’è¨­å®šã€‚*/
 	C_FUNCTION()
 	void SetScale(const Vector3& scale);
-	/** @brief ƒ[ƒJƒ‹ƒXƒP[ƒ‹‚ğ“™”{‚Åİ’èB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ç­‰å€ã§è¨­å®šã€‚*/
 	C_FUNCTION()
 	void SetScale(float scale);
-	/** @brief ƒ[ƒJƒ‹ƒXƒP[ƒ‹‚ğæZB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ä¹—ç®—ã€‚*/
 	C_FUNCTION()
 	void Scaling(const Vector3& scaling);
-	/** @brief ƒ[ƒJƒ‹ƒXƒP[ƒ‹‚ğ“™”{‚ÅæZB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ç­‰å€ã§ä¹—ç®—ã€‚*/
 	C_FUNCTION()
 	void Scaling(float scaling);
 
-	/** @brief •ÏXƒtƒ‰ƒO‚ğ—§‚ÄAÄŒvZ‚ğ—v‹‚µ‚Ü‚·B*/
+	/** @brief å¤‰æ›´ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã€å†è¨ˆç®—ã‚’è¦æ±‚ã—ã¾ã™ã€‚*/
 	void MarkNeedsUpdate();
 
-	/** @brief ƒtƒŒ[ƒ€XV‚És—ñ‚ğXV‚µ‚Ü‚·B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°æ™‚ã«è¡Œåˆ—ã‚’æ›´æ–°ã—ã¾ã™ã€‚*/
 	void Update(float deltaTime) override;
 
-	/** @brief ƒtƒŒ[ƒ€XVŒã‚É•ÏXƒtƒ‰ƒO‚ğƒŠƒZƒbƒg‚µ‚½‚èA•ÏX‚ª‚ ‚Á‚½ê‡A•ÏX‚ğ’Ê’m‚µ‚Ü‚·B*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°å¾Œã«å¤‰æ›´ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆã—ãŸã‚Šã€å¤‰æ›´ãŒã‚ã£ãŸå ´åˆã€å¤‰æ›´ã‚’é€šçŸ¥ã—ã¾ã™ã€‚*/
 	void LateUpdate(float deltaTime) override;
 
-	/** @brief •ÏX‚ª‚ ‚ê‚Îƒ[ƒJƒ‹/ƒ[ƒ‹ƒhs—ñ‚ğXV‚µ‚Ü‚·B*/
+	/** @brief å¤‰æ›´ãŒã‚ã‚Œã°ãƒ­ãƒ¼ã‚«ãƒ«/ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’æ›´æ–°ã—ã¾ã™ã€‚*/
 	void UpdateTransform();
 
-	/** @brief ƒ[ƒJƒ‹s—ñ‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«è¡Œåˆ—ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	const XMFLOAT4X4& GetLocal();
 
-	/** @brief ƒ[ƒ‹ƒhs—ñ‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	const XMFLOAT4X4& GetWorld();
 
-	/** @brief ƒ[ƒ‹ƒhˆÊ’u‚ğæ“¾B*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰ä½ç½®ã‚’å–å¾—ã€‚*/
 	const Vector3& GetWorldPosition();
-	/** @brief ƒ[ƒ‹ƒh‰ñ“]iƒNƒH[ƒ^ƒjƒIƒ“j‚ğæ“¾B*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰å›è»¢ï¼ˆã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ï¼‰ã‚’å–å¾—ã€‚*/
 	const Quaternion& GetWorldRotation();
-	/** @brief ƒ[ƒ‹ƒhƒXƒP[ƒ‹‚ğæ“¾B*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã‚’å–å¾—ã€‚*/
 	const Vector3& GetWorldScale();
 
-	/** @brief ‘O•ûŒüƒxƒNƒgƒ‹iƒ[ƒ‹ƒhj‚ğæ“¾B*/
+	/** @brief å‰æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ï¼‰ã‚’å–å¾—ã€‚*/
 	Vector3 GetForward();
 
-	/** @brief ‰E•ûŒüƒxƒNƒgƒ‹iƒ[ƒ‹ƒhj‚ğæ“¾B*/
+	/** @brief å³æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ï¼‰ã‚’å–å¾—ã€‚*/
 	Vector3 GetRight();
 
-	/** @brief ã•ûŒüƒxƒNƒgƒ‹iƒ[ƒ‹ƒhj‚ğæ“¾B*/
+	/** @brief ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ï¼‰ã‚’å–å¾—ã€‚*/
 	Vector3 GetUp();
 	
-	/** @brief ƒ[ƒ‹ƒhˆÊ’u‚ğİ’èB*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰ä½ç½®ã‚’è¨­å®šã€‚*/
 	void SetWorldPosition(const Vector3& worldPos);
-	/** @brief ƒ[ƒ‹ƒhƒXƒP[ƒ‹‚ğİ’èB*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã‚’è¨­å®šã€‚*/
 	void SetWorldScale(const Vector3& worldScale);
-	/** @brief ƒ[ƒ‹ƒhƒXƒP[ƒ‹‚ğ“™”{‚Åİ’èB*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ç­‰å€ã§è¨­å®šã€‚*/
 	void SetWorldScale(float worldScale);
 
-	/** @brief ƒ[ƒ‹ƒh‰ñ“]iƒNƒH[ƒ^ƒjƒIƒ“j‚ğİ’èB*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰å›è»¢ï¼ˆã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ï¼‰ã‚’è¨­å®šã€‚*/
 	void SetWorldRotation(const Quaternion& worldRotation);
-	/** @brief ƒ[ƒ‹ƒh‰ñ“]iƒIƒCƒ‰[Špj‚ğİ’èB*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰å›è»¢ï¼ˆã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼‰ã‚’è¨­å®šã€‚*/
 	void SetWorldRotation(const Vector3& worldEuler);
 
 #ifdef USE_IMGUI
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^—pƒvƒƒpƒeƒB•\¦B*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£è¡¨ç¤ºã€‚*/
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
-	/** @brief ƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	json Serialize() const override;
-	/** @brief ƒfƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	void Deserialize(const json& j) override;
 };

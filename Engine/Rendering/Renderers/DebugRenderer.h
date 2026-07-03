@@ -8,58 +8,58 @@ struct RenderContext;
 class DebugRenderer
 {
 public:
-	/** @brief ƒfƒoƒbƒO•`‰æ‚Ì‰Šú‰»ˆ—B*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°æç”»ã®åˆæœŸåŒ–å‡¦ç†ã€‚*/
 	static void Initialize();
-	/** @brief ƒfƒoƒbƒO•`‰æ‚ÌI—¹ˆ—B*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°æç”»ã®çµ‚äº†å‡¦ç†ã€‚*/
 	static void Finalize();
-	/** @brief ƒfƒoƒbƒO•`‰æ‚ÌÀsB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°æç”»ã®å®Ÿè¡Œã€‚*/
 	static void DrawAll(RenderContext* rtx, D3D11_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	/**
-	 * @brief ’¸“_‚ğ’Ç‰Á‚µ‚Ü‚·B
-	 * @param position ’¸“_‚ÌˆÊ’uB
-	 * @param color ’¸“_‚ÌFB
+	 * @brief é ‚ç‚¹ã‚’è¿½åŠ ã—ã¾ã™ã€‚
+	 * @param position é ‚ç‚¹ã®ä½ç½®ã€‚
+	 * @param color é ‚ç‚¹ã®è‰²ã€‚
 	 */
 	static void AddVertex(const Vector3& position, const Color& color);
 
 	/**
-	 * @brief ü•ª‚ğ•`‰æ‚µ‚Ü‚·B
-	 * @param start n“_B
-	 * @param end I“_B
-	 * @param color FB
+	 * @brief ç·šåˆ†ã‚’æç”»ã—ã¾ã™ã€‚
+	 * @param start å§‹ç‚¹ã€‚
+	 * @param end çµ‚ç‚¹ã€‚
+	 * @param color è‰²ã€‚
 	 */
 	static void DrawLine(const Vector3& start, const Vector3& end, const Color& color);
 	
 	/**
-	 * @brief ƒOƒŠƒbƒh‚ğ•`‰æ‚µ‚Ü‚·B
-	 * @param center ƒOƒŠƒbƒh‚Ì’†SˆÊ’uB
-	 * @param size ƒOƒŠƒbƒh‚Ì‘S‘ÌƒTƒCƒYB(—á: 10‚È‚ç10mx10m‚ÌƒOƒŠƒbƒh‚ÅA’†S‚©‚ç’[‚Ü‚Å‚Ì‹——£‚ª5m‚É‚È‚è‚Ü‚·)
-	 * @param divisions ƒOƒŠƒbƒh‚Ì•ªŠ„”i—á: 10‚È‚ç10x10‚ÌƒOƒŠƒbƒhjB
-	 * @param color FB
+	 * @brief ã‚°ãƒªãƒƒãƒ‰ã‚’æç”»ã—ã¾ã™ã€‚
+	 * @param center ã‚°ãƒªãƒƒãƒ‰ã®ä¸­å¿ƒä½ç½®ã€‚
+	 * @param size ã‚°ãƒªãƒƒãƒ‰ã®å…¨ä½“ã‚µã‚¤ã‚ºã€‚(ä¾‹: 10ãªã‚‰10mx10mã®ã‚°ãƒªãƒƒãƒ‰ã§ã€ä¸­å¿ƒã‹ã‚‰ç«¯ã¾ã§ã®è·é›¢ãŒ5mã«ãªã‚Šã¾ã™)
+	 * @param divisions ã‚°ãƒªãƒƒãƒ‰ã®åˆ†å‰²æ•°ï¼ˆä¾‹: 10ãªã‚‰10x10ã®ã‚°ãƒªãƒƒãƒ‰ï¼‰ã€‚
+	 * @param color è‰²ã€‚
 	 */
 	static void DrawGrid(const Vector3& center, float size, int divisions, const Color& color);
 
 private:
-	// “à•”‚Åg—p‚·‚éƒŠƒ\[ƒX‚âó‘Ô‚ğ‚±‚±‚É’Ç‰Á
-	//static const uint32_t VertexCapacity = 3 * 1024; // •`‰æ‚·‚é’¸“_‚ÌÅ‘å”
-	static const uint32_t VertexCapacity = 3 * 32768; // •`‰æ‚·‚é’¸“_‚ÌÅ‘å”
+	// å†…éƒ¨ã§ä½¿ç”¨ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚„çŠ¶æ…‹ã‚’ã“ã“ã«è¿½åŠ 
+	//static const uint32_t VertexCapacity = 3 * 1024; // æç”»ã™ã‚‹é ‚ç‚¹ã®æœ€å¤§æ•°
+	static const uint32_t VertexCapacity = 3 * 32768; // æç”»ã™ã‚‹é ‚ç‚¹ã®æœ€å¤§æ•°
 
 	struct Vertex
 	{
-		Vector3 position; // ’¸“_‚ÌˆÊ’u
-		Color color;      // ’¸“_‚ÌF
+		Vector3 position; // é ‚ç‚¹ã®ä½ç½®
+		Color color;      // é ‚ç‚¹ã®è‰²
 	};
 
 	struct ConstantBufferData
 	{
-		DirectX::XMFLOAT4X4 viewProjection; // ƒrƒ…[Ë‰es—ñ
+		DirectX::XMFLOAT4X4 viewProjection; // ãƒ“ãƒ¥ãƒ¼å°„å½±è¡Œåˆ—
 	};
 
-	static inline std::vector<Vertex> vertices; // •`‰æ‚·‚é’¸“_‚ÌƒŠƒXƒg
+	static inline std::vector<Vertex> vertices; // æç”»ã™ã‚‹é ‚ç‚¹ã®ãƒªã‚¹ãƒˆ
 
-	static inline Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer; // ’¸“_ƒoƒbƒtƒ@
-	static inline Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout; // “ü—ÍƒŒƒCƒAƒEƒg
-	static inline Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader; // ’¸“_ƒVƒF[ƒ_[
-	static inline Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader; // ƒsƒNƒZƒ‹ƒVƒF[ƒ_[
-	static inline Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer; // ’è”ƒoƒbƒtƒ@
+	static inline Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer; // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+	static inline Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout; // å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
+	static inline Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader; // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+	static inline Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader; // ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+	static inline Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer; // å®šæ•°ãƒãƒƒãƒ•ã‚¡
 };

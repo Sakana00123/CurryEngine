@@ -7,27 +7,27 @@
 
 void OpenFileWithDefaultApplication(const std::wstring& filePath)
 {
-	// ShellExecuteŠÖ”‚ğg—p‚µ‚ÄAw’è‚µ‚½ƒtƒ@ƒCƒ‹‚ğŠÖ˜A•t‚¯‚ç‚ê‚½ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÅŠJ‚­
+	// ShellExecuteé–¢æ•°ã‚’ä½¿ç”¨ã—ã¦ã€æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã§é–‹ã
 	HINSTANCE result = ShellExecuteW(
-		NULL,               // eƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹iNULL‚Ìê‡‚ÍƒfƒXƒNƒgƒbƒvj
-		L"open",           // Às‚·‚é‘€ìi"open"‚Íƒtƒ@ƒCƒ‹‚ğŠJ‚­j
-		filePath.c_str(),  // ŠJ‚­ƒtƒ@ƒCƒ‹‚ÌƒpƒX
-		NULL,              // ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”i•s—v‚Èê‡‚ÍNULLj
-		NULL,              // ì‹ÆƒfƒBƒŒƒNƒgƒŠi•s—v‚Èê‡‚ÍNULLj
-		SW_SHOWNORMAL      // ƒEƒBƒ“ƒhƒE‚Ì•\¦•û–@
+		NULL,               // è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ï¼ˆNULLã®å ´åˆã¯ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ï¼‰
+		L"open",           // å®Ÿè¡Œã™ã‚‹æ“ä½œï¼ˆ"open"ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãï¼‰
+		filePath.c_str(),  // é–‹ããƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹
+		NULL,              // ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°ï¼ˆä¸è¦ãªå ´åˆã¯NULLï¼‰
+		NULL,              // ä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼ˆä¸è¦ãªå ´åˆã¯NULLï¼‰
+		SW_SHOWNORMAL      // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤ºæ–¹æ³•
 	);
-	// ƒGƒ‰[ƒ`ƒFƒbƒN
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	if ((INT_PTR)result <= 32) {
-		// ƒGƒ‰[ˆ—i•K—v‚É‰‚¶‚ÄƒƒOo—Í‚âƒƒbƒZ[ƒWƒ{ƒbƒNƒX•\¦‚È‚Ç‚ğs‚¤j
+		// ã‚¨ãƒ©ãƒ¼å‡¦ç†ï¼ˆå¿…è¦ã«å¿œã˜ã¦ãƒ­ã‚°å‡ºåŠ›ã‚„ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒœãƒƒã‚¯ã‚¹è¡¨ç¤ºãªã©ã‚’è¡Œã†ï¼‰
 		wchar_t msg[256];
-		swprintf_s(msg, L"ƒtƒ@ƒCƒ‹‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½BƒGƒ‰[ƒR[ƒh: %lld\nƒpƒX: %s", (INT_PTR)result, filePath.c_str());
-		MessageBoxW(NULL, msg, L"ƒGƒ‰[", MB_OK | MB_ICONERROR);
+		swprintf_s(msg, L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰: %lld\nãƒ‘ã‚¹: %s", (INT_PTR)result, filePath.c_str());
+		MessageBoxW(NULL, msg, L"ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONERROR);
 	}
 }
 
 bool RunHiddenAndWait(const std::wstring& exePath, const std::wstring& args, const std::wstring& currentDirectory, DWORD& outExitCode, DWORD timeoutMs)
 {
-    // ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Í CreateProcess ‚É“n‚·‚Æ‚«‘‚«Š·‚¦‚ç‚ê‚é‰Â”\«‚ª‚ ‚é‚Ì‚Å‰Â•Ïƒoƒbƒtƒ@‚É‚·‚é
+    // ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã¯ CreateProcess ã«æ¸¡ã™ã¨ãæ›¸ãæ›ãˆã‚‰ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§å¯å¤‰ãƒãƒƒãƒ•ã‚¡ã«ã™ã‚‹
     std::wstring commandLine = L"\"" + exePath + L"\"";
     if (!args.empty()) {
         commandLine += L" " + args;
@@ -39,18 +39,18 @@ bool RunHiddenAndWait(const std::wstring& exePath, const std::wstring& args, con
     PROCESS_INFORMATION pi;
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
-    // ƒEƒBƒ“ƒhƒE•\¦w’è‚ğg‚¤
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦è¡¨ç¤ºæŒ‡å®šã‚’ä½¿ã†
     si.dwFlags = STARTF_USESHOWWINDOW;
-    si.wShowWindow = SW_HIDE; // ”ñ•\¦
+    si.wShowWindow = SW_HIDE; // éè¡¨ç¤º
 
     ZeroMemory(&pi, sizeof(pi));
 
-    // CREATE_NO_WINDOW ‚ğ•t‚¯‚é‚ÆƒRƒ“ƒ\[ƒ‹‚Í¶¬‚³‚ê‚È‚¢iƒRƒ“ƒ\[ƒ‹ƒAƒvƒŠŒü‚¯j
+    // CREATE_NO_WINDOW ã‚’ä»˜ã‘ã‚‹ã¨ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã¯ç”Ÿæˆã•ã‚Œãªã„ï¼ˆã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¢ãƒ—ãƒªå‘ã‘ï¼‰
     DWORD creationFlags = CREATE_NO_WINDOW;
 
     BOOL ok = CreateProcessW(
-        nullptr,                    // lpApplicationNameinullptr‚É‚·‚é‚ÆƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚©‚ç exe ‚ğ’T‚·j
-        cmdBuf.data(),              // lpCommandLineimutable wchar_t* ‚ª•K—vj
+        nullptr,                    // lpApplicationNameï¼ˆnullptrã«ã™ã‚‹ã¨ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‹ã‚‰ exe ã‚’æ¢ã™ï¼‰
+        cmdBuf.data(),              // lpCommandLineï¼ˆmutable wchar_t* ãŒå¿…è¦ï¼‰
         nullptr, nullptr,           // lpProcessAttributes, lpThreadAttributes
         FALSE,                      // bInheritHandles
         creationFlags,              // dwCreationFlags
@@ -65,15 +65,15 @@ bool RunHiddenAndWait(const std::wstring& exePath, const std::wstring& args, con
         return false;
     }
 
-    // ƒvƒƒZƒXI—¹‚ğ‘Ò‚Â
+    // ãƒ—ãƒ­ã‚»ã‚¹çµ‚äº†ã‚’å¾…ã¤
     DWORD wait = WaitForSingleObject(pi.hProcess, timeoutMs);
     if (wait == WAIT_OBJECT_0) {
         if (!GetExitCodeProcess(pi.hProcess, &outExitCode)) {
-            outExitCode = STILL_ACTIVE; // æ“¾¸”s‚ÌƒtƒH[ƒ‹ƒoƒbƒN
+            outExitCode = STILL_ACTIVE; // å–å¾—å¤±æ•—æ™‚ã®ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯
         }
     }
     else {
-        // ƒ^ƒCƒ€ƒAƒEƒg‚È‚Ç
+        // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆãªã©
         outExitCode = STILL_ACTIVE;
     }
 
@@ -85,19 +85,19 @@ bool RunHiddenAndWait(const std::wstring& exePath, const std::wstring& args, con
 
 std::wstring GetDevenvPath(const std::wstring& preferredVersion = L"")
 {
-    // vswhere.exe‚ÍVS Installer‚Æˆê‚É•K‚¸ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚é
+    // vswhere.exeã¯VS Installerã¨ä¸€ç·’ã«å¿…ãšã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã‚‹
     const std::wstring vswhere =
         L"C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe";
 
     if (!std::filesystem::exists(vswhere)) return L"";
 
     // vswhere -version [16,17) -property installationPath
-    // preferredVersion‚ª‹ó‚È‚çÅVAw’è‚ª‚ ‚ê‚Î‚»‚Ìƒo[ƒWƒ‡ƒ“
+    // preferredVersionãŒç©ºãªã‚‰æœ€æ–°ã€æŒ‡å®šãŒã‚ã‚Œã°ãã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³
     std::wstring args = L" -latest -property installationPath";
     if (!preferredVersion.empty())
         args = L" -version \"" + preferredVersion + L"\" -property installationPath";
 
-    // ƒpƒCƒv‚Åo—Í‚ğæ“¾
+    // ãƒ‘ã‚¤ãƒ—ã§å‡ºåŠ›ã‚’å–å¾—
     std::wstring cmd = L"\"" + vswhere + L"\"" + args;
 
     SECURITY_ATTRIBUTES sa = { sizeof(sa), nullptr, TRUE };
@@ -127,13 +127,13 @@ std::wstring GetDevenvPath(const std::wstring& preferredVersion = L"")
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
 
-    // o—Í‚ğ“Ç‚İæ‚è
+    // å‡ºåŠ›ã‚’èª­ã¿å–ã‚Š
     char buf[MAX_PATH] = {};
     DWORD read = 0;
     ReadFile(hRead, buf, sizeof(buf) - 1, &read, nullptr);
     CloseHandle(hRead);
 
-    // ‰üsœ‹‚µ‚Ädevenv.exe‚ÌƒpƒX‚ğ‘g‚İ—§‚Ä
+    // æ”¹è¡Œé™¤å»ã—ã¦devenv.exeã®ãƒ‘ã‚¹ã‚’çµ„ã¿ç«‹ã¦
     std::string installPath(buf, read);
     while (!installPath.empty() && (installPath.back() == '\n' || installPath.back() == '\r'))
         installPath.pop_back();
@@ -147,39 +147,39 @@ std::wstring GetDevenvPath(const std::wstring& preferredVersion = L"")
 
 bool OpenFileInVisualStudio(const std::wstring& slnPath, const std::wstring& filePath, int lineNumber)
 {
-    // GetDevenvPath‚Ì–ß‚è’l‚©‚çƒNƒH[ƒg‚ğœ‹
+    // GetDevenvPathã®æˆ»ã‚Šå€¤ã‹ã‚‰ã‚¯ã‚©ãƒ¼ãƒˆã‚’é™¤å»
     auto stripQuotes = [](std::wstring s) -> std::wstring {
         s.erase(std::remove(s.begin(), s.end(), L'"'), s.end());
         return s;
         };
 
-    // Visual Studio ‚Ì devenv.exe ‚ğ’T‚·
+    // Visual Studio ã® devenv.exe ã‚’æ¢ã™
 
-    // [17,18] = VS2022‚Ì‚İ
+    // [17,18] = VS2022ã®ã¿
     std::wstring devenv = stripQuotes(GetDevenvPath(L"[17,18)"));
 
-    // ‹ó‚É‚·‚ê‚ÎÅV”ÅiŒ»İ‚Ì‹““®‚Æ“¯‚¶j
+    // ç©ºã«ã™ã‚Œã°æœ€æ–°ç‰ˆï¼ˆç¾åœ¨ã®æŒ™å‹•ã¨åŒã˜ï¼‰
     //std::wstring devenv = stripQuotes(GetDevenvPath());
 
     if (devenv.empty())
     {
-        MessageBoxW(NULL, L"Visual Studio‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B", L"ƒGƒ‰[", MB_OK | MB_ICONERROR);
+        MessageBoxW(NULL, L"Visual StudioãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚", L"ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONERROR);
         return false;
     }
 
-    // ‘Š‘ÎƒpƒX‚ğâ‘ÎƒpƒX‚É•ÏŠ·
+    // ç›¸å¯¾ãƒ‘ã‚¹ã‚’çµ¶å¯¾ãƒ‘ã‚¹ã«å¤‰æ›
     wchar_t absSlnPath[MAX_PATH];
     wchar_t absFilePath[MAX_PATH];
     _wfullpath(absSlnPath, slnPath.c_str(), MAX_PATH);
     _wfullpath(absFilePath, filePath.c_str(), MAX_PATH);
 
-    // ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‘g‚İ—§‚Ä
+    // ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³çµ„ã¿ç«‹ã¦
     std::wstring cmdLine =
-        L"\"" + devenv + L"\" " + // devenv.exe ‚ÌƒpƒX
-        L"\"" + absSlnPath + L"\" " + // ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ÌƒpƒX
-		L"/Edit \"" + absFilePath + L"\""; // ŠJ‚­ƒtƒ@ƒCƒ‹‚ÌƒpƒX
+        L"\"" + devenv + L"\" " + // devenv.exe ã®ãƒ‘ã‚¹
+        L"\"" + absSlnPath + L"\" " + // ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹
+		L"/Edit \"" + absFilePath + L"\""; // é–‹ããƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹
 
-    // CreateProcessW‚Í‘‚«Š·‚¦‰Â”\ƒoƒbƒtƒ@‚ª•K—v
+    // CreateProcessWã¯æ›¸ãæ›ãˆå¯èƒ½ãƒãƒƒãƒ•ã‚¡ãŒå¿…è¦
     std::vector<wchar_t> cmdBuf(cmdLine.begin(), cmdLine.end());
     cmdBuf.push_back(L'\0');
 
@@ -189,7 +189,7 @@ bool OpenFileInVisualStudio(const std::wstring& slnPath, const std::wstring& fil
 
     BOOL ok = CreateProcessW(
         nullptr,
-        cmdBuf.data(),  // © vector<wchar_t>‚Ìdata()
+        cmdBuf.data(),  // â† vector<wchar_t>ã®data()
         nullptr, nullptr,
         FALSE,
         DETACHED_PROCESS,
@@ -206,8 +206,8 @@ bool OpenFileInVisualStudio(const std::wstring& slnPath, const std::wstring& fil
     {
         DWORD err = GetLastError();
         wchar_t msg[512];
-        swprintf_s(msg, L"CreateProcessW¸”s\nƒGƒ‰[ƒR[ƒh: %lu\nƒRƒ}ƒ“ƒh: %s", err, cmdBuf.data());
-        MessageBoxW(NULL, msg, L"ƒGƒ‰[", MB_OK | MB_ICONERROR);
+        swprintf_s(msg, L"CreateProcessWå¤±æ•—\nã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰: %lu\nã‚³ãƒãƒ³ãƒ‰: %s", err, cmdBuf.data());
+        MessageBoxW(NULL, msg, L"ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONERROR);
     }
 
     return ok != FALSE;

@@ -9,55 +9,55 @@ public:
 	ScriptComponent() = default;
 	virtual ~ScriptComponent() override { OnScriptUnload(); }
 
-	/** @brief —LŒø‰»ˆ—‚ÌŒÄ‚Ño‚µB*/
+	/** @brief æœ‰åŠ¹åŒ–å‡¦ç†ã®å‘¼ã³å‡ºã—ã€‚*/
 	void OnEnable() override;
 
-	/** @brief –³Œø‰»ˆ—‚ÌŒÄ‚Ño‚µB*/
+	/** @brief ç„¡åŠ¹åŒ–å‡¦ç†ã®å‘¼ã³å‡ºã—ã€‚*/
 	void OnDisable() override;
 
-	/** @brief Õ“ËƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief è¡çªã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnCollisionEnter(const CollisionInfo& info) override;
-	/** @brief Õ“ËƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief è¡çªã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnCollisionStay(const CollisionInfo& info) override;
-	/** @brief Õ“ËƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief è¡çªã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnCollisionExit(const CollisionInfo& info) override;
-	/** @brief ƒgƒŠƒK[ƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ãƒˆãƒªã‚¬ãƒ¼ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnTriggerEnter(const TriggerInfo& info) override;
-	/** @brief ƒgƒŠƒK[ƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ãƒˆãƒªã‚¬ãƒ¼ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnTriggerStay(const TriggerInfo& info) override;
-	/** @brief ƒgƒŠƒK[ƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ãƒˆãƒªã‚¬ãƒ¼ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnTriggerExit(const TriggerInfo& info) override;
 
 
 	/**
-	 * @brief ‰Šú‰»ˆ—‚ÌŒÄ‚Ño‚µB
+	 * @brief åˆæœŸåŒ–å‡¦ç†ã®å‘¼ã³å‡ºã—ã€‚
 	 */
 	void Initialize() override;
 
 	/**
-	 * @brief ŠJnˆ—‚ÌŒÄ‚Ño‚µB
+	 * @brief é–‹å§‹å‡¦ç†ã®å‘¼ã³å‡ºã—ã€‚
 	 */
 	void Start() override;
 
 	/**
-	 * @brief ƒtƒŒ[ƒ€XVˆ—B
-	 * @param deltaTime Œo‰ßŠÔi•bjB
-	 * @details `Update()` ‚ÌŒÄ‚Ño‚µBƒXƒNƒŠƒvƒg‚ªƒAƒ^ƒbƒ`‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚ªƒV[ƒ“‚É‘¶İ‚·‚éŒÀ‚èA–ˆƒtƒŒ[ƒ€ŒÄ‚Ño‚³‚ê‚éB
+	 * @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°å‡¦ç†ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
+	 * @details `Update()` ã®å‘¼ã³å‡ºã—ã€‚ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒã‚¢ã‚¿ãƒƒãƒã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚·ãƒ¼ãƒ³ã«å­˜åœ¨ã™ã‚‹é™ã‚Šã€æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚
 	 */
 	void Update(float deltaTime) override;
 
 #ifdef USE_IMGUI
-	/** @brief ƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
-	/** @brief ƒVƒŠƒAƒ‰ƒCƒYˆ—B*/
+	/** @brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå‡¦ç†ã€‚*/
 	json Serialize() const override;
 	
-	/** @brief ƒfƒVƒŠƒAƒ‰ƒCƒYˆ—B*/
+	/** @brief ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå‡¦ç†ã€‚*/
 	void Deserialize(const json& j) override;
 
-	/** @brief Œ^–¼‚Ìæ“¾B*/
+	/** @brief å‹åã®å–å¾—ã€‚*/
 	std::string GetTypeName() const override { return scriptName; }
 
 public:
@@ -76,16 +76,16 @@ public:
 
 private:
 	friend class GameObject;
-	// ƒXƒNƒŠƒvƒg–¼
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆå
 	C_PROPERTY()
 	std::string scriptName = "";
 
-	// C# GCHandle - ScriptBridge ‚ªŠÇ—‚·‚éƒ|ƒCƒ“ƒ^
+	// C# GCHandle - ScriptBridge ãŒç®¡ç†ã™ã‚‹ãƒã‚¤ãƒ³ã‚¿
 	void* m_gcHandle = nullptr;
 
-	// C# ƒXƒNƒŠƒvƒg‚ÌƒtƒB[ƒ‹ƒh’l‚ğˆê•Û‚·‚é Json ƒIƒuƒWƒFƒNƒg
+	// C# ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å€¤ã‚’ä¸€æ™‚ä¿æŒã™ã‚‹ Json ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	json m_pendingFields;
 
-	//bool m_isStartCalled = false; // Start ‚ªŒÄ‚Ño‚³‚ê‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-	std::unordered_map<std::string, json> m_fieldValues; // ƒtƒB[ƒ‹ƒh–¼‚Æ’l‚Ìƒ}ƒbƒv
+	//bool m_isStartCalled = false; // Start ãŒå‘¼ã³å‡ºã•ã‚ŒãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+	std::unordered_map<std::string, json> m_fieldValues; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åã¨å€¤ã®ãƒãƒƒãƒ—
 };

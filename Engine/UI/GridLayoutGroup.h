@@ -10,17 +10,17 @@ public:
 
 public:
 
-	//Component �̃��C�t�T�C�N���C�x���g��K�v�ɉ����ăI�[�o�[���C�h���Ď������܂��B
+	//Component のライフサイクルイベントを必要に応じてオーバーライドして実装します。
 	void Start() override;
 	void Update(float deltaTime) override;
 
 
-	// �z�u���X�V����֐��B�q�v�f�̈ʒu���v�Z���Ĕz�u���܂��B
+	// 配置を更新する関数。子要素の位置を計算して配置します。
 	void UpdateLayout() override;
 
 private:
 
 	C_PROPERTY()
-	Vector2 cellSize = { 100.0f, 100.0f }; // �Z���̃T�C�Y
+	Vector2 cellSize = { 100.0f, 100.0f }; // セルのサイズ
 
 };

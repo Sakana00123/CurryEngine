@@ -4,11 +4,11 @@
 
 void RenderTexture::Create(ID3D11Device* device, UINT width, UINT height, bool withDepthStencil)
 {
-	// ˆø”‚ÌŒŸ¸
+	// å¼•æ•°ã®æ¤œæŸ»
 	_ASSERT_EXPR(device != nullptr, L"ID3D11Device is null.");
 	_ASSERT_EXPR(width > 0 && height > 0, L"Invalid render target size.");
 
-	// ƒrƒ…[ƒ|[ƒg‚Ìİ’è
+	// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®è¨­å®š
 	m_viewport.TopLeftX = 0.0f;
 	m_viewport.TopLeftY = 0.0f;
 	m_viewport.Width = static_cast<FLOAT>(width);
@@ -16,10 +16,10 @@ void RenderTexture::Create(ID3D11Device* device, UINT width, UINT height, bool w
 	m_viewport.MinDepth = 0.0f;
 	m_viewport.MaxDepth = 1.0f;
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg—p‚ÌƒeƒNƒXƒ`ƒƒ‚Æƒrƒ…[‚Ìì¬
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆç”¨ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	HRESULT hr{ S_OK };
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> renderTexture;
-	// ƒeƒNƒXƒ`ƒƒ‚Ìì¬
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ä½œæˆ
 	D3D11_TEXTURE2D_DESC textureDesc{};
 	textureDesc.Width = width;
 	textureDesc.Height = height;
@@ -32,14 +32,14 @@ void RenderTexture::Create(ID3D11Device* device, UINT width, UINT height, bool w
 	hr = device->CreateTexture2D(&textureDesc, nullptr, renderTexture.GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚Ìì¬
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = textureDesc.Format;
 	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	hr = device->CreateRenderTargetView(renderTexture.Get(), &rtvDesc, m_rtv.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚Ìì¬
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = textureDesc.Format;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
@@ -47,13 +47,13 @@ void RenderTexture::Create(ID3D11Device* device, UINT width, UINT height, bool w
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> colorBuffer;
 	hr = device->CreateShaderResourceView(renderTexture.Get(), &srvDesc, colorBuffer.GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-	// RawTexture2D ‚Ìì¬
+	// RawTexture2D ã®ä½œæˆ
 	m_colorTexture = std::make_unique<RawTexture2D>(colorBuffer.Get(), textureDesc);
 
-	// [“xƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@‚Ìì¬
+	// æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	if (withDepthStencil)
 	{
-		// [“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìì¬
+		// æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		D3D11_TEXTURE2D_DESC depthDesc{};
 		depthDesc.Width = width;
 		depthDesc.Height = height;
@@ -70,7 +70,7 @@ void RenderTexture::Create(ID3D11Device* device, UINT width, UINT height, bool w
 		hr = device->CreateTexture2D(&depthDesc, nullptr, depthTexture.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
-		dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // ’ˆÓ: [“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚ÌƒtƒH[ƒ}ƒbƒg‚ÍAƒeƒNƒXƒ`ƒƒ‚ÌƒtƒH[ƒ}ƒbƒg‚ÆŒİŠ·«‚ª•K—v
+		dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // æ³¨æ„: æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¯ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¨äº’æ›æ€§ãŒå¿…è¦
 		dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		dsvDesc.Flags = 0;
 		hr = device->CreateDepthStencilView(depthTexture.Get(), &dsvDesc, m_dsv.ReleaseAndGetAddressOf());
@@ -82,7 +82,7 @@ void RenderTexture::Create(ID3D11Device* device, UINT width, UINT height, bool w
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> depthBuffer;
 		hr = device->CreateShaderResourceView(depthTexture.Get(), &depthSrvDesc, depthBuffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-		// RawTexture2D ‚Ìì¬
+		// RawTexture2D ã®ä½œæˆ
 		m_depthTexture = std::make_unique<RawTexture2D>(depthBuffer.Get(), depthDesc);
 	}
 }

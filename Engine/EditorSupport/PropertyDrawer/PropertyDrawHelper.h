@@ -13,40 +13,40 @@ namespace CurryEngine
 	namespace PropertyDrawHelper
 	{
 		/**
-		 * @brief �����I������Ă���I�u�W�F�N�g�̃v���p�e�B�l�����݂��Ă��邩�ǂ����𔻒肷�郆�[�e�B���e�B�֐��B
-		 * @tparam T ���肷��v���p�e�B�̌^�B�v���p�e�B�� getter ���Ԃ��^�ƈ�v�����Ă��������B
-		 * @param context �v���p�e�B�`��̃R���e�L�X�g�B�����I������Ă���I�u�W�F�N�g�̃��X�g���܂܂�܂��B
-		 * @param prop ���肷��v���p�e�B�̃��^���Bgetter ���g�p���ăv���p�e�B�l���擾���܂��B
-		 * @return �����I������Ă���I�u�W�F�N�g�̃v���p�e�B�l�����݂��Ă���ꍇ�� true�A���ׂē����l�̏ꍇ�� false ��Ԃ��܂��B
+		 * @brief 複数選択されているオブジェクトのプロパティ値が混在しているかどうかを判定するユーティリティ関数。
+		 * @tparam T 判定するプロパティの型。プロパティの getter が返す型と一致させてください。
+		 * @param context プロパティ描画のコンテキスト。複数選択されているオブジェクトのリストが含まれます。
+		 * @param prop 判定するプロパティのメタ情報。getter を使用してプロパティ値を取得します。
+		 * @return 複数選択されているオブジェクトのプロパティ値が混在している場合は true、すべて同じ値の場合は false を返します。
 		 */
 		template<typename T>
 		bool HasMixedValues(const PropertyDrawContext& context, const PropertyInfo& prop)
 		{
-			if (context.IsEmpty()) return false; // �Ώۂ��Ȃ��ꍇ�͍��݂Ȃ��Ƃ݂Ȃ�
+			if (context.IsEmpty()) return false; // 対象がない場合は混在なしとみなす
 			T firstValue = std::any_cast<T>(prop.getter(context.Primary()));
 			for (size_t i = 1; i < context.targets.size(); i++)
 			{
 				if (std::any_cast<T>(prop.getter(context.targets[i])) != firstValue)
 				{
-					return true; // �^���Ⴄ���A�l���Ⴄ�ꍇ�͍��݂��Ă���Ƃ݂Ȃ�
+					return true; // 型が違うか、値が違う場合は混在しているとみなす
 				}
 			}
-			return false; // ���ׂē����l�̏ꍇ�͍��݂Ȃ�
+			return false; // すべて同じ値の場合は混在なし
 		}
 
 		/**
-		 * @brief �����I������Ă���I�u�W�F�N�g�̃v���p�e�B�l�̓���̃R���|�[�l���g�����݂��Ă��邩�ǂ����𔻒肷�郆�[�e�B���e�B�֐��B
-		 * @tparam T ���肷��v���p�e�B�̌^�B�v���p�e�B�� getter ���Ԃ��^�ƈ�v�����Ă��������B
-		 * @param context �v���p�e�B�`��̃R���e�L�X�g�B�����I������Ă���I�u�W�F�N�g�̃��X�g���܂܂�܂��B
-		 * @param prop ���肷��v���p�e�B�̃��^���Bgetter ���g�p���ăv���p�e�B�l���擾���܂��B
-		 * @param componentCount ���肷��R���|�[�l���g�̐��B�Ⴆ�� Vector3 �̏ꍇ�� 3�AQuaternion �̏ꍇ�� 4 �ȂǁB
-		 * @param componentComparator �R���|�[�l���g�̓�����r�֐��B������ (�l1, �l2, �R���|�[�l���g�C���f�b�N�X) �ŁA�߂�l�� bool �ł��Btrue �̏ꍇ�͓����R���|�[�l���g�Ƃ݂Ȃ��Afalse �̏ꍇ�͈قȂ�R���|�[�l���g�Ƃ݂Ȃ��܂��B
-		 * @return �����I������Ă���I�u�W�F�N�g�̃v���p�e�B�l�̓���̃R���|�[�l���g�����݂��Ă���ꍇ�́A���݂��Ă���R���|�[�l���g�̃r�b�g�t���O��Ԃ��܂��B���݂��Ă��Ȃ��ꍇ�� 0 ��Ԃ��܂��B
+		 * @brief 複数選択されているオブジェクトのプロパティ値の特定のコンポーネントが混在しているかどうかを判定するユーティリティ関数。
+		 * @tparam T 判定するプロパティの型。プロパティの getter が返す型と一致させてください。
+		 * @param context プロパティ描画のコンテキスト。複数選択されているオブジェクトのリストが含まれます。
+		 * @param prop 判定するプロパティのメタ情報。getter を使用してプロパティ値を取得します。
+		 * @param componentCount 判定するコンポーネントの数。例えば Vector3 の場合は 3、Quaternion の場合は 4 など。
+		 * @param componentComparator コンポーネントの等価比較関数。引数は (値1, 値2, コンポーネントインデックス) で、戻り値は bool です。true の場合は同じコンポーネントとみなし、false の場合は異なるコンポーネントとみなします。
+		 * @return 複数選択されているオブジェクトのプロパティ値の特定のコンポーネントが混在している場合は、混在しているコンポーネントのビットフラグを返します。混在していない場合は 0 を返します。
 		 */
 		template<typename T>
 		int MixedValueComponentFlag(const PropertyDrawContext& context, const PropertyInfo& prop, int componentCount, std::function<bool(const T&, const T&, int)> componentComparator)
 		{
-			if (context.IsEmpty()) return 0; // �Ώۂ��Ȃ��ꍇ�͍��݂Ȃ��Ƃ݂Ȃ�
+			if (context.IsEmpty()) return 0; // 対象がない場合は混在なしとみなす
 			T firstValue = std::any_cast<T>(prop.getter(context.Primary()));
 			int mixedFlag = 0;
 			for (size_t i = 1; i < context.targets.size(); i++)
@@ -56,7 +56,7 @@ namespace CurryEngine
 				{
 					if (!componentComparator(firstValue, currentValue, j))
 					{
-						mixedFlag |= 1 << j; // ���݂��Ă���R���|�[�l���g�̃r�b�g�𗧂Ă�
+						mixedFlag |= 1 << j; // 混在しているコンポーネントのビットを立てる
 					}
 				}
 			}
@@ -64,11 +64,11 @@ namespace CurryEngine
 		}
 		
 		/**
-		 * @brief �����I������Ă���I�u�W�F�N�g�̃v���p�e�B�l���ꊇ�Őݒ肷�郆�[�e�B���e�B�֐��B
-		 * @tparam T �ݒ肷��v���p�e�B�̌^�B�v���p�e�B�� setter ���󂯎��^�ƈ�v�����Ă��������B
-		 * @param context �v���p�e�B�`��̃R���e�L�X�g�B�����I������Ă���I�u�W�F�N�g�̃��X�g���܂܂�܂��B
-		 * @param prop �ݒ肷��v���p�e�B�̃��^���Bsetter ���g�p���ăv���p�e�B�l��ݒ肵�܂��B
-		 * @param value �ݒ肷��l�B���ׂĂ̑ΏۃI�u�W�F�N�g�ɂ��̒l���ݒ肳��܂��B
+		 * @brief 複数選択されているオブジェクトのプロパティ値を一括で設定するユーティリティ関数。
+		 * @tparam T 設定するプロパティの型。プロパティの setter が受け取る型と一致させてください。
+		 * @param context プロパティ描画のコンテキスト。複数選択されているオブジェクトのリストが含まれます。
+		 * @param prop 設定するプロパティのメタ情報。setter を使用してプロパティ値を設定します。
+		 * @param value 設定する値。すべての対象オブジェクトにこの値が設定されます。
 		 */
 		template<typename T>
 		void ApplyToAll(const PropertyDrawContext& context, const PropertyInfo& prop, const T& value)
@@ -80,29 +80,29 @@ namespace CurryEngine
 		}
 
 		/**
-		 * @brief �v���p�e�B�̃��x����`�悷�郆�[�e�B���e�B�֐��B�v���p�e�B�̖��O�� Tooltip �������g�p���āAImGui �̃��x����`�悵�܂��B
+		 * @brief プロパティのラベルを描画するユーティリティ関数。プロパティの名前と Tooltip 属性を使用して、ImGui のラベルを描画します。
 		 */
 		void BeginPropertyLabel(const PropertyInfo& prop);
 
 
-		// --- �R�}���h���s���[�e�B���e�B ---
+		// --- コマンド発行ユーティリティ ---
 		struct SetValueCommandDesc
 		{
-			PropertyInfo prop; // �ύX����v���p�e�B�̃��^���
-			PropertyDrawContext ctx; // �v���p�e�B�`��̃R���e�L�X�g
+			PropertyInfo prop; // 変更するプロパティのメタ情報
+			PropertyDrawContext ctx; // プロパティ描画のコンテキスト
 		};
 
 		/**
-		 * @brief �v���p�e�B�̕ҏW���m�肷�郆�[�e�B���e�B�֐��B�v���p�e�B�̑O��l�ƌ��ݒl���r���āA�ύX���������ꍇ�ɃR�}���h�𔭍s���܂��B
-		 * @tparam T �ҏW����v���p�e�B�̌^�B�v���p�e�B�� getter/setter ���g�p����^�ƈ�v�����Ă��������B
-		 * @param prop �ҏW����v���p�e�B�̃��^���Bgetter/setter ���g�p���ăv���p�e�B�l���擾/�ݒ肵�܂��B
-		 * @param ctx �v���p�e�B�`��̃R���e�L�X�g�B�����I������Ă���I�u�W�F�N�g�̃��X�g���܂܂�܂��B
-		 * @param state �h�����[�̏�ԊǗ��I�u�W�F�N�g�B�O��l��ۑ����邽�߂Ɏg�p���܂��B
-		 * @param currentValue ���݂̃v���p�e�B�l�BImGui �̕ҏW�E�B�W�F�b�g����擾�����l��n���Ă��������B
-		 * @param toStr Undo���O�p�����񉻊֐��B�ύX�O��̒l�𕶎��񉻂��� Undo ���O�ɋL�^�������ꍇ�́A���̊֐���n���Ă��������B�����̓v���p�e�B�l�ŁA�߂�l�͕�����ł��B
-		 * @param equals �l�̓�����r�֐��B�v���p�e�B�l�̌^�ɂ���ẮA�P���ȓ�����r���K�؂łȂ��ꍇ������܂��i��: ���������_����N�H�[�^�j�I���j�B���̏ꍇ�́A���̊֐���n���āA�l�̓�������K�؂ɔ��f���Ă��������B������ (���ݒl, �O��l) �ŁA�߂�l�� bool �ł��B
-		 * @param prevCheck �O��l�̕ۑ������֐��B�O��l��ۑ�����^�C�~���O���J�X�^�}�C�Y�������ꍇ�́A���̊֐���n���Ă��������B�߂�l�� true �̏ꍇ�ɑO��l��ۑ����܂��B�f�t�H���g�ł� ImGui::IsItemActivated() ���g�p���܂��B
-		 * @param commitCheck �R�}���h���s�����֐��B�R�}���h�𔭍s����^�C�~���O���J�X�^�}�C�Y�������ꍇ�́A���̊֐���n���Ă��������B�߂�l�� true �̏ꍇ�ɃR�}���h�𔭍s���܂��B�f�t�H���g�ł� ImGui::IsItemDeactivatedAfterEdit() ���g�p���܂��B
+		 * @brief プロパティの編集を確定するユーティリティ関数。プロパティの前回値と現在値を比較して、変更があった場合にコマンドを発行します。
+		 * @tparam T 編集するプロパティの型。プロパティの getter/setter が使用する型と一致させてください。
+		 * @param prop 編集するプロパティのメタ情報。getter/setter を使用してプロパティ値を取得/設定します。
+		 * @param ctx プロパティ描画のコンテキスト。複数選択されているオブジェクトのリストが含まれます。
+		 * @param state ドロワーの状態管理オブジェクト。前回値を保存するために使用します。
+		 * @param currentValue 現在のプロパティ値。ImGui の編集ウィジェットから取得した値を渡してください。
+		 * @param toStr Undoログ用文字列化関数。変更前後の値を文字列化して Undo ログに記録したい場合は、この関数を渡してください。引数はプロパティ値で、戻り値は文字列です。
+		 * @param equals 値の等価比較関数。プロパティ値の型によっては、単純な等価比較が適切でない場合があります（例: 浮動小数点数やクォータニオン）。その場合は、この関数を渡して、値の等価性を適切に判断してください。引数は (現在値, 前回値) で、戻り値は bool です。
+		 * @param prevCheck 前回値の保存条件関数。前回値を保存するタイミングをカスタマイズしたい場合は、この関数を渡してください。戻り値が true の場合に前回値を保存します。デフォルトでは ImGui::IsItemActivated() を使用します。
+		 * @param commitCheck コマンド発行条件関数。コマンドを発行するタイミングをカスタマイズしたい場合は、この関数を渡してください。戻り値が true の場合にコマンドを発行します。デフォルトでは ImGui::IsItemDeactivatedAfterEdit() を使用します。
 		 */
 		template<typename T>
 		void CommitEdit(
@@ -131,7 +131,7 @@ namespace CurryEngine
 				bool same = equals ? equals(currentValue, prev) : (currentValue == prev);
 				if (!same)
 				{
-					// Undo/Redo �R�}���h���s
+					// Undo/Redo コマンド発行
 					std::string newStr = toStr ? toStr(currentValue) : "";
 					std::string oldStr = toStr ? toStr(prev) : "";
 					{
@@ -142,7 +142,7 @@ namespace CurryEngine
 							std::make_shared<SetValueCommand<std::pair<SetValueCommandDesc, T>>>(
 								description,
 								[](const std::pair<SetValueCommandDesc, T>& data) {
-									// Execute: �V�����l���Z�b�g
+									// Execute: 新しい値をセット
 									const auto& [desc, newValue] = data;
 									PropertyDrawHelper::ApplyToAll<T>(desc.ctx, desc.prop, newValue);
 								},

@@ -3,9 +3,9 @@
 
 /**
  * @file
- * @brief ƒfƒoƒbƒO—p“r‚Ì©—R‹“_ƒJƒƒ‰B
- * @details “ü—Í‚É‰‚¶‚ÄˆÚ“®E‰ñ“]‚Å‚«‚é‰¼‘zƒJƒƒ‰‚Å‚·B‘¬“x‚â‰ñ“]‘¬“xA
- *          X ²‚Ì‹Â˜ëŠpƒNƒ‰ƒ“ƒv‚ğ‚¿AƒvƒƒpƒeƒB‚©‚ç’²®‚Å‚«‚Ü‚·B
+ * @brief ãƒ‡ãƒãƒƒã‚°ç”¨é€”ã®è‡ªç”±è¦–ç‚¹ã‚«ãƒ¡ãƒ©ã€‚
+ * @details å…¥åŠ›ã«å¿œã˜ã¦ç§»å‹•ãƒ»å›è»¢ã§ãã‚‹ä»®æƒ³ã‚«ãƒ¡ãƒ©ã§ã™ã€‚é€Ÿåº¦ã‚„å›è»¢é€Ÿåº¦ã€
+ *          X è»¸ã®ä»°ä¿¯è§’ã‚¯ãƒ©ãƒ³ãƒ—ã‚’æŒã¡ã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‹ã‚‰èª¿æ•´ã§ãã¾ã™ã€‚
  */
 class EditorCamera
 {
@@ -13,96 +13,96 @@ private:
 	Vector3 position;
 	Quaternion rotation = { 0,0,0,1 };
 
-	/** @brief ƒ^[ƒQƒbƒg‚©‚ç‚Ì‹——£B*/
+	/** @brief ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‹ã‚‰ã®è·é›¢ã€‚*/
 	float distance = 10.0f;
-	/** @brief Å¬‹——£B*/
+	/** @brief æœ€å°è·é›¢ã€‚*/
 	float minDistance = 0.1f;
-	/** @brief Å‘å‹——£B*/
+	/** @brief æœ€å¤§è·é›¢ã€‚*/
 	float maxDistance = 1000.f;
-	/** @brief •½sˆÚ“®‚Ì‘¬“xiƒ†ƒjƒbƒg/•bjB*/
+	/** @brief å¹³è¡Œç§»å‹•ã®é€Ÿåº¦ï¼ˆãƒ¦ãƒ‹ãƒƒãƒˆ/ç§’ï¼‰ã€‚*/
 	float speed = 3.0f;
-	/** @brief ‰ñ“]‘¬“xi“x/•bjB*/
+	/** @brief å›è»¢é€Ÿåº¦ï¼ˆåº¦/ç§’ï¼‰ã€‚*/
 	float rotateSpeed = 30.0f;
-	/** @brief X ²‚ÌÅ‘åŠpi“xjB*/
+	/** @brief X è»¸ã®æœ€å¤§è§’ï¼ˆåº¦ï¼‰ã€‚*/
 	float maxAngleX = 70.0f;
-	/** @brief X ²‚ÌÅ¬Špi“xjB*/
+	/** @brief X è»¸ã®æœ€å°è§’ï¼ˆåº¦ï¼‰ã€‚*/
 	float minAngleX = -70.0f;
 
-	/** @brief ‹–ìŠpi“xjB*/
+	/** @brief è¦–é‡è§’ï¼ˆåº¦ï¼‰ã€‚*/
 	float fieldOfView = 60.0f;
-	/** @brief ƒAƒXƒyƒNƒg”äi•/‚‚³jB*/
+	/** @brief ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆå¹…/é«˜ã•ï¼‰ã€‚*/
 	float aspect = 1280.0f / 720.0f;
-	/** @brief ‹ßƒNƒŠƒbƒv–ÊB*/
+	/** @brief è¿‘ã‚¯ãƒªãƒƒãƒ—é¢ã€‚*/
 	float nearZ = 0.1f;
-	/** @brief ‰“ƒNƒŠƒbƒv–ÊB*/
+	/** @brief é ã‚¯ãƒªãƒƒãƒ—é¢ã€‚*/
 	float farZ = 1000.0f;
 
-	int moveKey = VK_RBUTTON; // ˆÚ“®‚ÌƒgƒŠƒK[ƒL[ i‰Eƒ{ƒ^ƒ“j
-	int rotateKey = VK_RBUTTON; // ‰ñ“]‚ÌƒgƒŠƒK[ƒL[i‰Eƒ{ƒ^ƒ“j
-	int panKey = VK_MBUTTON; // •½sˆÚ“®‚ÌƒgƒŠƒK[ƒL[i’†ƒ{ƒ^ƒ“j
-	bool isMoving = false; // ƒJƒƒ‰‚ªˆÚ“®’†‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-	std::function<bool()> updateFlagFunction; // XVƒtƒ‰ƒO‚ğæ“¾‚·‚éŠÖ”B‘ÎÛ‚ÌƒEƒBƒ“ƒhƒE‚ªƒtƒH[ƒJƒX‚³‚ê‚Ä‚¢‚éê‡‚É true ‚ğ•Ô‚·‚æ‚¤‚Éİ’è‚·‚éB
+	int moveKey = VK_RBUTTON; // ç§»å‹•ã®ãƒˆãƒªã‚¬ãƒ¼ã‚­ãƒ¼ ï¼ˆå³ãƒœã‚¿ãƒ³ï¼‰
+	int rotateKey = VK_RBUTTON; // å›è»¢ã®ãƒˆãƒªã‚¬ãƒ¼ã‚­ãƒ¼ï¼ˆå³ãƒœã‚¿ãƒ³ï¼‰
+	int panKey = VK_MBUTTON; // å¹³è¡Œç§»å‹•ã®ãƒˆãƒªã‚¬ãƒ¼ã‚­ãƒ¼ï¼ˆä¸­ãƒœã‚¿ãƒ³ï¼‰
+	bool isMoving = false; // ã‚«ãƒ¡ãƒ©ãŒç§»å‹•ä¸­ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+	std::function<bool()> updateFlagFunction; // æ›´æ–°ãƒ•ãƒ©ã‚°ã‚’å–å¾—ã™ã‚‹é–¢æ•°ã€‚å¯¾è±¡ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚Œã¦ã„ã‚‹å ´åˆã« true ã‚’è¿”ã™ã‚ˆã†ã«è¨­å®šã™ã‚‹ã€‚
 public:
-	/** @brief ‰Šú‰»ˆ—B“ü—Í‚Æ“à•”ó‘Ô‚ğƒZƒbƒgƒAƒbƒv‚µ‚Ü‚·B*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ã€‚å…¥åŠ›ã¨å†…éƒ¨çŠ¶æ…‹ã‚’ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã—ã¾ã™ã€‚*/
 	void Initialize();
 
 	/**
-	 * @brief –ˆƒtƒŒ[ƒ€XVB
-	 * @param elapsedTime Œo‰ßŠÔi•bjB
-	 * @details “ü—Í‚É‚æ‚éˆÚ“®/‰ñ“]‚ÆŠp“xƒNƒ‰ƒ“ƒv‚ğ“K—p‚µ‚Ü‚·B
+	 * @brief æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚
+	 * @param elapsedTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
+	 * @details å…¥åŠ›ã«ã‚ˆã‚‹ç§»å‹•/å›è»¢ã¨è§’åº¦ã‚¯ãƒ©ãƒ³ãƒ—ã‚’é©ç”¨ã—ã¾ã™ã€‚
 	 */
 	void Update(float elapsedTime);
 
 	/**
-	 * @brief ƒJƒƒ‰‚Ì’‹“_ˆÊ’u‚ğİ’è‚µ‚Ü‚·B
-	 * @param pos ’‹“_ˆÊ’uB
+	 * @brief ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ä½ç½®ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param pos æ³¨è¦–ç‚¹ä½ç½®ã€‚
 	 */
 	void SetPosition(const Vector3& pos) { position = pos; }
 
 	/**
-	 * @brief ƒJƒƒ‰ˆÊ’u‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒJƒƒ‰ˆÊ’uB
+	 * @brief ã‚«ãƒ¡ãƒ©ä½ç½®ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ã‚«ãƒ¡ãƒ©ä½ç½®ã€‚
 	 */
 	Vector3 GetPosition() const { return position; }
 
 	void SetUpdateFlagFunction(std::function<bool()> func) { updateFlagFunction = func; }
 
 	/**
-	 * @brief ƒrƒ…[s—ñ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒrƒ…[s—ñB
+	 * @brief ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã€‚
 	 */
 	XMMATRIX GetViewMatrix();
 
 	/**
-	 * @brief Ë‰es—ñ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Ë‰es—ñB
+	 * @brief å°„å½±è¡Œåˆ—ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return å°„å½±è¡Œåˆ—ã€‚
 	 */
 	XMMATRIX GetProjectionMatrix();
 
 	/**
-	 * @brief ƒXƒNƒŠ[ƒ“À•W‚ğƒ[ƒ‹ƒh‹óŠÔ‚ÌƒŒƒC‚É•ÏŠ·‚µ‚Ü‚·B
-	 * @param screenPos ƒXƒNƒŠ[ƒ“À•WiƒsƒNƒZƒ‹’PˆÊjB¶ã‚ª (0,0)B
-	 * @param outOrigin ƒŒƒC‚ÌŒ´“_iƒJƒƒ‰ˆÊ’ujB
-	 * @param outDirection ƒŒƒC‚Ì•ûŒüi³‹K‰»‚³‚ê‚½ƒxƒNƒgƒ‹jB
+	 * @brief ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã®ãƒ¬ã‚¤ã«å¤‰æ›ã—ã¾ã™ã€‚
+	 * @param screenPos ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼ˆãƒ”ã‚¯ã‚»ãƒ«å˜ä½ï¼‰ã€‚å·¦ä¸ŠãŒ (0,0)ã€‚
+	 * @param outOrigin ãƒ¬ã‚¤ã®åŸç‚¹ï¼ˆã‚«ãƒ¡ãƒ©ä½ç½®ï¼‰ã€‚
+	 * @param outDirection ãƒ¬ã‚¤ã®æ–¹å‘ï¼ˆæ­£è¦åŒ–ã•ã‚ŒãŸãƒ™ã‚¯ãƒˆãƒ«ï¼‰ã€‚
 	 */
 	void ScreenPointToRay(const Vector2& screenPos, Vector3& outOrigin, Vector3& outDirection);
 
 
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^—pƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	void DrawProperty();
 
 	/**
-	 * @brief ‹——£‚ÌƒNƒ‰ƒ“ƒv”ÍˆÍ‚ğİ’è‚µ‚Ü‚·B
-	 * @param min Å¬‹——£B
-	 * @param max Å‘å‹——£B
+	 * @brief è·é›¢ã®ã‚¯ãƒ©ãƒ³ãƒ—ç¯„å›²ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param min æœ€å°è·é›¢ã€‚
+	 * @param max æœ€å¤§è·é›¢ã€‚
 	 */
 	void SetClampDistance(float min, float max) { minDistance = min, maxDistance = max; }
 
 
-	/** @brief ƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	json Serialize() const;
 
-	/** @brief ƒfƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	void Deserialize(const json& j);
 
 };

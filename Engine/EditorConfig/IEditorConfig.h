@@ -4,18 +4,18 @@ using json = nlohmann::json;
 
 /**
  * @file
- * @brief �G�f�B�^�̐ݒ�C���^�[�t�F�[�X�B
- * @details �G�f�B�^�̊e��ݒ���Ǘ����邽�߂̃C���^�[�t�F�[�X�N���X�ł��B
- *          �f�t�H���g�ݒ�ւ̃��Z�b�g�A�V���A���C�Y/�f�V���A���C�Y�@�\��񋟂��܂��B
+ * @brief エディタの設定インターフェース。
+ * @details エディタの各種設定を管理するためのインターフェースクラスです。
+ *          デフォルト設定へのリセット、シリアライズ/デシリアライズ機能を提供します。
  */
 struct IEditorConfig
 {
-	/* @brief �f�t�H���g�ݒ�Ƀ��Z�b�g���܂��B*/
+	/* @brief デフォルト設定にリセットします。*/
 	virtual void ResetToDefault() = 0;
 
-	/** @brief �ݒ��ۑ����܂��B*/
+	/** @brief 設定を保存します。*/
 	virtual json Serialize() const = 0;
 
-	/** @brief �ݒ��ǂݍ��݂܂��B*/
+	/** @brief 設定を読み込みます。*/
 	virtual void Deserialize(const json& j) = 0;
 };

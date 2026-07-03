@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <fstream>
 
-// TODO: MeshCollider‚Ì‚½‚ß‚Ì³‚µ‚¢ƒf[ƒ^‚ğì‚é‚½‚ß‚É’Ç‰Á‚µ‚½ˆ—‚Ì‚¹‚¢‚ÅAƒXƒLƒjƒ“ƒO‚·‚é‚Æ‚«‚É•Ï‚È‚±‚Æ‚É‚È‚Á‚Ä‚½‚Ì‚ÅA’¼‚·‚±‚ÆB
+// TODO: MeshColliderã®ãŸã‚ã®æ­£ã—ã„ãƒ‡ãƒ¼ã‚¿ã‚’ä½œã‚‹ãŸã‚ã«è¿½åŠ ã—ãŸå‡¦ç†ã®ã›ã„ã§ã€ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ã™ã‚‹ã¨ãã«å¤‰ãªã“ã¨ã«ãªã£ã¦ãŸã®ã§ã€ç›´ã™ã“ã¨ã€‚
 //#define TEST_CONVERT
 
 namespace CurryEngine
@@ -42,7 +42,7 @@ namespace CurryEngine
 			auto& images = asset.images;
 			auto& skins = asset.skins;
 			auto& animations = asset.animations;
-            // ƒLƒƒƒbƒVƒ…ƒtƒ@ƒCƒ‹‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ğ“Ç‚İ‚Ş
+            // ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’èª­ã¿è¾¼ã‚€
             std::filesystem::path cerealFilePath(filePath);
             cerealFilePath.replace_extension(staticBatching ? "batchCereal" : "cereal");
             if (std::filesystem::exists(cerealFilePath.c_str())) {
@@ -134,7 +134,7 @@ namespace CurryEngine
 
 		void GltfImporter::FetchNodes(const tinygltf::Model& gltfModel, ModelAsset& asset)
 		{
-			// GLTF ƒm[ƒh‚Ìî•ñ‚ğ ModelAsset ‚Ìƒm[ƒh\‘¢‚É•ÏŠ·‚µ‚ÄŠi”[‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+			// GLTF ãƒãƒ¼ãƒ‰ã®æƒ…å ±ã‚’ ModelAsset ã®ãƒãƒ¼ãƒ‰æ§‹é€ ã«å¤‰æ›ã—ã¦æ ¼ç´ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
             auto& nodes = asset.nodes;
             for (const tinygltf::Node& gltfNode : gltfModel.nodes) {
                 Node& node = nodes.emplace_back();
@@ -181,14 +181,14 @@ namespace CurryEngine
                 }
 
 #ifdef TEST_CONVERT
-                // TODO: ‚½‚Ü‚½‚Üãè‚­‚¢‚Á‚Ä‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅA¡Œã–â‘è‚ªo‚Ä‚«‚½‚ç‚±‚±‚ğŒ©’¼‚·‚±‚Æ
-                node.translation.z = -node.translation.z; // glTF‚Ì‰EèŒn‚ğ¶èŒn‚É•ÏŠ·
-                node.rotation.x = -node.rotation.x; // glTF‚Ì‰EèŒn‚ğ¶èŒn‚É•ÏŠ·
-                node.rotation.y = -node.rotation.y; // glTF‚Ì‰EèŒn‚ğ¶èŒn‚É•ÏŠ·  
+                // TODO: ãŸã¾ãŸã¾ä¸Šæ‰‹ãã„ã£ã¦ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ã€ä»Šå¾Œå•é¡ŒãŒå‡ºã¦ããŸã‚‰ã“ã“ã‚’è¦‹ç›´ã™ã“ã¨
+                node.translation.z = -node.translation.z; // glTFã®å³æ‰‹ç³»ã‚’å·¦æ‰‹ç³»ã«å¤‰æ›
+                node.rotation.x = -node.rotation.x; // glTFã®å³æ‰‹ç³»ã‚’å·¦æ‰‹ç³»ã«å¤‰æ›
+                node.rotation.y = -node.rotation.y; // glTFã®å³æ‰‹ç³»ã‚’å·¦æ‰‹ç³»ã«å¤‰æ›  
 #endif // TEST_CONVERT
             }
 
-			// ƒm[ƒh‚ÌŠK‘w\‘¢‚ğl—¶‚µ‚ÄAƒOƒ[ƒoƒ‹•ÏŠ·s—ñ‚ğŒvZ‚·‚éB
+			// ãƒãƒ¼ãƒ‰ã®éšå±¤æ§‹é€ ã‚’è€ƒæ…®ã—ã¦ã€ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ›è¡Œåˆ—ã‚’è¨ˆç®—ã™ã‚‹ã€‚
 			asset.CumulateTransforms(nodes);
 		}
 
@@ -278,7 +278,7 @@ namespace CurryEngine
 
         void GltfImporter::FetchMeshes(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset)
         {
-            // GLTF ƒƒbƒVƒ…‚Ìî•ñ‚ğ ModelAsset ‚ÌƒƒbƒVƒ…\‘¢‚É•ÏŠ·‚µ‚ÄŠi”[‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+            // GLTF ãƒ¡ãƒƒã‚·ãƒ¥ã®æƒ…å ±ã‚’ ModelAsset ã®ãƒ¡ãƒƒã‚·ãƒ¥æ§‹é€ ã«å¤‰æ›ã—ã¦æ ¼ç´ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 			auto& meshes = asset.meshes;
             for (const tinygltf::Mesh& gltfMesh : gltfModel.meshes) {
                 Mesh& mesh = meshes.emplace_back();
@@ -417,15 +417,15 @@ namespace CurryEngine
                     }
 
 #ifdef TEST_CONVERT
-                    // TODO: ‚½‚Ü‚½‚Üãè‚­‚¢‚Á‚Ä‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅA¡Œã–â‘è‚ªo‚Ä‚«‚½‚ç‚±‚±‚ğŒ©’¼‚·‚±‚Æ
+                    // TODO: ãŸã¾ãŸã¾ä¸Šæ‰‹ãã„ã£ã¦ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ã€ä»Šå¾Œå•é¡ŒãŒå‡ºã¦ããŸã‚‰ã“ã“ã‚’è¦‹ç›´ã™ã“ã¨
                     for (Mesh::Vertex& vertex : primitive.cachedVertices) {
-                        // ¶èŒn(Y-Up, Z-Forward)‚É•ÏŠ·
+                        // å·¦æ‰‹ç³»(Y-Up, Z-Forward)ã«å¤‰æ›
                         vertex.position.z = -vertex.position.z;
-                        vertex.normal.z = -vertex.normal.z;   // normal.y ‚Å‚Í‚È‚­ z ‚ğ”½“]
-                        vertex.tangent.z = -vertex.tangent.z; // ƒ^ƒ“ƒWƒFƒ“ƒg‚Ì z ‚à”½“]
+                        vertex.normal.z = -vertex.normal.z;   // normal.y ã§ã¯ãªã z ã‚’åè»¢
+                        vertex.tangent.z = -vertex.tangent.z; // ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆã® z ã‚‚åè»¢
                     }
 
-                    // y’Ç‰ÁzZ²”½“]‚É‚æ‚è–Ê‚Ì— •\‚ª‹t“]‚·‚é‚½‚ßAƒCƒ“ƒfƒbƒNƒX‚ÌŠª‚«‡(CCW -> CW)‚ğ‹t‚É‚·‚é
+                    // ã€è¿½åŠ ã€‘Zè»¸åè»¢ã«ã‚ˆã‚Šé¢ã®è£è¡¨ãŒé€†è»¢ã™ã‚‹ãŸã‚ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®å·»ãé †(CCW -> CW)ã‚’é€†ã«ã™ã‚‹
                     if (primitive.indexBufferView.sizeInBytes > 0)
                     {
                         if (primitive.indexBufferView.format == DXGI_FORMAT_R32_UINT) {
@@ -459,7 +459,7 @@ namespace CurryEngine
 #ifdef SUPPORT_BATCHING
         void GltfImporter::FetchBatchMeshes(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset)
         {
-            // GLTF ƒoƒbƒ`ƒƒbƒVƒ…‚Ìî•ñ‚ğ ModelAsset ‚Ìƒoƒbƒ`ƒƒbƒVƒ…\‘¢‚É•ÏŠ·‚µ‚ÄŠi”[‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+            // GLTF ãƒãƒƒãƒãƒ¡ãƒƒã‚·ãƒ¥ã®æƒ…å ±ã‚’ ModelAsset ã®ãƒãƒƒãƒãƒ¡ãƒƒã‚·ãƒ¥æ§‹é€ ã«å¤‰æ›ã—ã¦æ ¼ç´ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
             auto& batchMeshes = asset.batchMeshes;
             auto& nodes = asset.nodes;
             const auto& scenes = asset.scenes;
@@ -570,16 +570,16 @@ namespace CurryEngine
                             cachedVertex.tangent.w = sigma;
 
 #ifdef TEST_CONVERT
-                            // TODO: ‚½‚Ü‚½‚Üãè‚­‚¢‚Á‚Ä‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅA¡Œã–â‘è‚ªo‚Ä‚«‚½‚ç‚±‚±‚ğŒ©’¼‚·‚±‚Æ
-                                        // ¶èŒn(Y-Up, Z-Forward)‚É•ÏŠ·
+                            // TODO: ãŸã¾ãŸã¾ä¸Šæ‰‹ãã„ã£ã¦ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ã€ä»Šå¾Œå•é¡ŒãŒå‡ºã¦ããŸã‚‰ã“ã“ã‚’è¦‹ç›´ã™ã“ã¨
+                                        // å·¦æ‰‹ç³»(Y-Up, Z-Forward)ã«å¤‰æ›
                             cachedVertex.position.z = -cachedVertex.position.z;
-                            cachedVertex.normal.z = -cachedVertex.normal.z;   // normal.y ‚Å‚Í‚È‚­ z ‚ğ”½“]
-                            cachedVertex.tangent.z = -cachedVertex.tangent.z; // ƒ^ƒ“ƒWƒFƒ“ƒg‚à”½“]  
+                            cachedVertex.normal.z = -cachedVertex.normal.z;   // normal.y ã§ã¯ãªã z ã‚’åè»¢
+                            cachedVertex.tangent.z = -cachedVertex.tangent.z; // ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆã‚‚åè»¢  
 #endif // TEST_CONVERT
                         }
 
 #ifdef TEST_CONVERT
-                        // y’Ç‰ÁzƒCƒ“ƒfƒbƒNƒX‚ÌŠª‚«‡‚ğ‹t‚É‚·‚é
+                        // ã€è¿½åŠ ã€‘ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®å·»ãé †ã‚’é€†ã«ã™ã‚‹
                         std::vector<UINT>& cachedIndices = batchMesh.cachedIndices;
                         for (size_t i = 0; i < cachedIndices.size(); i += 3) {
                             std::swap(cachedIndices[i], cachedIndices[i + 2]);
@@ -602,7 +602,7 @@ namespace CurryEngine
 
         void GltfImporter::FetchMaterials(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset)
         {
-            // GLTF ƒ}ƒeƒŠƒAƒ‹‚Ìî•ñ‚ğ ModelAsset ‚Ìƒ}ƒeƒŠƒAƒ‹\‘¢‚É•ÏŠ·‚µ‚ÄŠi”[‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+            // GLTF ãƒãƒ†ãƒªã‚¢ãƒ«ã®æƒ…å ±ã‚’ ModelAsset ã®ãƒãƒ†ãƒªã‚¢ãƒ«æ§‹é€ ã«å¤‰æ›ã—ã¦æ ¼ç´ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 			auto& materials = asset.materials;
             for (const tinygltf::Material& gltfMaterial : gltfModel.materials) {
                 std::vector<Material>::reference material = materials.emplace_back();
@@ -643,7 +643,7 @@ namespace CurryEngine
 
         void GltfImporter::FetchTextures(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset)
         {
-            // GLTF ƒeƒNƒXƒ`ƒƒ‚Ìî•ñ‚ğ ModelAsset ‚ÌƒeƒNƒXƒ`ƒƒ\‘¢‚É•ÏŠ·‚µ‚ÄŠi”[‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+            // GLTF ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æƒ…å ±ã‚’ ModelAsset ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£æ§‹é€ ã«å¤‰æ›ã—ã¦æ ¼ç´ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 			auto& textures = asset.textures;
 			auto& images = asset.images;
             for (const tinygltf::Texture& gltfTexture : gltfModel.textures) {
@@ -675,7 +675,7 @@ namespace CurryEngine
 
         void GltfImporter::FetchSkins(const tinygltf::Model& gltfModel, ModelAsset& asset)
         {
-			// GLTF ƒXƒLƒ“‚Ìî•ñ‚ğ ModelAsset ‚ÌƒXƒLƒ“\‘¢‚É•ÏŠ·‚µ‚ÄŠi”[‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+			// GLTF ã‚¹ã‚­ãƒ³ã®æƒ…å ±ã‚’ ModelAsset ã®ã‚¹ã‚­ãƒ³æ§‹é€ ã«å¤‰æ›ã—ã¦æ ¼ç´ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 			auto& skins = asset.skins;
             for (const tinygltf::Skin& transmissionSkin : gltfModel.skins) {
                 Skin& skin = skins.emplace_back();
@@ -692,7 +692,7 @@ namespace CurryEngine
 
         void GltfImporter::FetchAnimations(const tinygltf::Model& gltfModel, ModelAsset& asset)
         {
-            // GLTF ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìî•ñ‚ğ ModelAsset ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“\‘¢‚É•ÏŠ·‚µ‚ÄŠi”[‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+            // GLTF ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æƒ…å ±ã‚’ ModelAsset ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ§‹é€ ã«å¤‰æ›ã—ã¦æ ¼ç´ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 			auto& animations = asset.animations;
             for (const tinygltf::Animation& gltfAnimation : gltfModel.animations) {
                 Animation& animation = animations.emplace_back();

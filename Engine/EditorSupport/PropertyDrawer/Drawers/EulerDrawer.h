@@ -7,17 +7,17 @@
 namespace CurryEngine
 {
 	/**
-	 * @brief Euler Œ^‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB
+	 * @brief Euler å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
 	 */
 	class EulerDrawer : public IPropertyDrawer
 	{
 	public:
 		void Draw(const PropertyInfo& prop, const PropertyDrawContext& context) override;
 	private:
-		DrawerState<Vector3>    m_eulerState;           // •\¦—pƒIƒCƒ‰[Šp
-		DrawerState<Quaternion> m_externalChangeState;  // ŠO•”•ÏXŒŸo—p
-		DrawerState<Vector3>    m_eulerOnActivated;     // •ÒWŠJn‚ÌƒIƒCƒ‰[ŠpiUndo —pj
-		DrawerState<bool>       m_isEditing;            // ƒhƒ‰ƒbƒO•ÒW’†ƒtƒ‰ƒO
-		DrawerState<bool>       m_isEditingPending;     // ƒhƒ‰ƒbƒO•ÒW’†ƒtƒ‰ƒO‚Ì•Û—¯iIsItemActivated ‚Æ IsItemDeactivatedAfterEdit ‚Ìƒ^ƒCƒ~ƒ“ƒO‚ª‚¸‚ê‚Ä‚¢‚é‚½‚ßj
+		DrawerState<Vector3>    m_eulerState;           // è¡¨ç¤ºç”¨ã‚ªã‚¤ãƒ©ãƒ¼è§’
+		DrawerState<Quaternion> m_externalChangeState;  // å¤–éƒ¨å¤‰æ›´æ¤œå‡ºç”¨
+		DrawerState<Vector3>    m_eulerOnActivated;     // ç·¨é›†é–‹å§‹æ™‚ã®ã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼ˆUndo ç”¨ï¼‰
+		DrawerState<bool>       m_isEditing;            // ãƒ‰ãƒ©ãƒƒã‚°ç·¨é›†ä¸­ãƒ•ãƒ©ã‚°
+		DrawerState<bool>       m_isEditingPending;     // ãƒ‰ãƒ©ãƒƒã‚°ç·¨é›†ä¸­ãƒ•ãƒ©ã‚°ã®ä¿ç•™ï¼ˆIsItemActivated ã¨ IsItemDeactivatedAfterEdit ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ãŒãšã‚Œã¦ã„ã‚‹ãŸã‚ï¼‰
 	};
 }

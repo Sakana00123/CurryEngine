@@ -7,7 +7,7 @@ namespace CurryEngine::Resources
 {
 	bool AssetMaterial::LoadFromFile(const std::string& path)
 	{
-		// ƒ}ƒeƒŠƒAƒ‹‚ğƒ[ƒh
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
 		if (std::filesystem::path(path).extension() != ".mat")
 		{
 			LOG_ERROR("Invalid material file extension: " + path);
@@ -20,13 +20,13 @@ namespace CurryEngine::Resources
 			return false;
 		}
 
-		// Jsonƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
+		// Jsonãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 		json m_JsonData;
 		if (!JsonFileHandler::LoadJsonFromFile(m_JsonData, path))
 		{
 			return false;
 		}
-		// Jsonƒf[ƒ^‚©‚çMaterial‚ğ•œŒ³
+		// Jsonãƒ‡ãƒ¼ã‚¿ã‹ã‚‰Materialã‚’å¾©å…ƒ
 		if (!m_material.Deserialize(m_JsonData))
 		{
 			return false;
@@ -36,11 +36,11 @@ namespace CurryEngine::Resources
 	}
 	bool AssetMaterial::SaveToFile(const std::string& path)
 	{
-		// ƒ}ƒeƒŠƒAƒ‹‚ğJson‚É•ÏŠ·
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’Jsonã«å¤‰æ›
 		json m_JsonData;
 		m_JsonData = m_material.Serialize();
 
-		// Jsonƒtƒ@ƒCƒ‹‚É•Û‘¶
+		// Jsonãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
 		JsonFileHandler::SaveJsonToFile(m_JsonData, path);
 		return true;
 	}

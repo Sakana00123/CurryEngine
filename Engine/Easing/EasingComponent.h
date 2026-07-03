@@ -5,74 +5,74 @@
 
 /**
  * @file
- * @brief ƒC[ƒWƒ“ƒO‚ğg‚Á‚Ä”CˆÓƒvƒƒpƒeƒB‚ğŠÔ“I‚É•âŠÔ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details `EasingHandler` ‚Æ `PropertyAccessor` ‚ğ‘g‚İ‡‚í‚¹A”CˆÓ‚Ì float ƒvƒƒpƒeƒB‚ğ
- *          ’¼—ñƒV[ƒPƒ“ƒX‚Å•âŠÔ‚Å‚«‚Ü‚·BƒCƒ“ƒXƒyƒNƒ^•`‰æ‚â”ñƒXƒP[ƒ‹ŠÔ‚Ìg—pØ‘Ö‚É‚à‘Î‰B
+ * @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚’ä½¿ã£ã¦ä»»æ„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æ™‚é–“çš„ã«è£œé–“ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details `EasingHandler` ã¨ `PropertyAccessor` ã‚’çµ„ã¿åˆã‚ã›ã€ä»»æ„ã® float ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’
+ *          ç›´åˆ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã§è£œé–“ã§ãã¾ã™ã€‚ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿æç”»ã‚„éã‚¹ã‚±ãƒ¼ãƒ«æ™‚é–“ã®ä½¿ç”¨åˆ‡æ›¿ã«ã‚‚å¯¾å¿œã€‚
  */
 
 template<typename T>
 struct PropertyAccessor
 {
-	/** @brief ’l‚Ìæ“¾ŠÖ”B*/
-	std::function<T()> getter;      // ’l‚ğ“Ç‚Ş
-	/** @brief ’l‚Ìİ’èŠÖ”B*/
-	std::function<void(T)> setter;  // ’l‚ğ‘‚«‚Ş
+	/** @brief å€¤ã®å–å¾—é–¢æ•°ã€‚*/
+	std::function<T()> getter;      // å€¤ã‚’èª­ã‚€
+	/** @brief å€¤ã®è¨­å®šé–¢æ•°ã€‚*/
+	std::function<void(T)> setter;  // å€¤ã‚’æ›¸ãè¾¼ã‚€
 };
 
 /**
- * @brief ƒC[ƒWƒ“ƒO§ŒäƒRƒ“ƒ|[ƒlƒ“ƒgB
+ * @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°åˆ¶å¾¡ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
  */
 class EasingComponent : public Component
 {
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	EasingComponent() = default;
 
 	/**
-	 * @brief ƒC[ƒWƒ“ƒOƒnƒ“ƒhƒ‰‚ğŠJn‚µ‚Ü‚·B
-	 * @param handler Às‚·‚é `EasingHandler`B
-	 * @param accessor ‘ÎÛƒvƒƒpƒeƒB‚ÌƒQƒbƒ^[/ƒZƒbƒ^[B
+	 * @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒãƒ³ãƒ‰ãƒ©ã‚’é–‹å§‹ã—ã¾ã™ã€‚
+	 * @param handler å®Ÿè¡Œã™ã‚‹ `EasingHandler`ã€‚
+	 * @param accessor å¯¾è±¡ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚²ãƒƒã‚¿ãƒ¼/ã‚»ãƒƒã‚¿ãƒ¼ã€‚
 	 */
 	void StartHandler(const EasingHandler& handler, PropertyAccessor<float> accessor) {
 		handlers.push_back(std::make_pair(accessor, handler));
 	}
 
-	/** @brief ‘S‚Ä‚Ìƒnƒ“ƒhƒ‰‚ğƒNƒŠƒA‚µ‚Ü‚·B*/
+	/** @brief å…¨ã¦ã®ãƒãƒ³ãƒ‰ãƒ©ã‚’ã‚¯ãƒªã‚¢ã—ã¾ã™ã€‚*/
 	void Clear()
 	{
 		handlers.clear();
 	}
 
-	/** @brief ‘S‚Ä‚Ìƒnƒ“ƒhƒ‰‚ªŠ®—¹‚µ‚½‚©‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief å…¨ã¦ã®ãƒãƒ³ãƒ‰ãƒ©ãŒå®Œäº†ã—ãŸã‹ã‚’è¿”ã—ã¾ã™ã€‚*/
 	bool IsAllCompleted() const
 	{
 		return handlers.empty();
 	}
 
 	/**
-	 * @brief –ˆƒtƒŒ[ƒ€XVB
-	 * @param deltaTime Œo‰ßŠÔi•bjB
+	 * @brief æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void Update(float deltaTime) override;
 
 #ifdef USE_IMGUI
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^—p‚ÌƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 protected:
-	/** @brief ƒfƒoƒbƒO/GUI —p‚ÌƒC[ƒWƒ“ƒO—v‘fi“à•”ŠÇ—jB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°/GUI ç”¨ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°è¦ç´ ï¼ˆå†…éƒ¨ç®¡ç†ï¼‰ã€‚*/
 	std::vector<std::pair<int, EasingHandler::EaseItem>> easeItems;
 
-	/** @brief Às’†ƒnƒ“ƒhƒ‰‚ÌW‡iƒvƒƒpƒeƒBƒAƒNƒZƒT‚ÆƒyƒAjB*/
+	/** @brief å®Ÿè¡Œä¸­ãƒãƒ³ãƒ‰ãƒ©ã®é›†åˆï¼ˆãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚¢ã‚¯ã‚»ã‚µã¨ãƒšã‚¢ï¼‰ã€‚*/
 	std::vector<std::pair<PropertyAccessor<float>, EasingHandler>> handlers;
 
-	/** @brief ”ñƒXƒP[ƒ‹ŠÔ‚ğg—p‚·‚é‚©B*/
+	/** @brief éã‚¹ã‚±ãƒ¼ãƒ«æ™‚é–“ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã€‚*/
 	bool useUnscaledTime = true;
 
 public:
-	/** @brief ”ñƒXƒP[ƒ‹ŠÔ‚ğg—p‚·‚é‚©‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief éã‚¹ã‚±ãƒ¼ãƒ«æ™‚é–“ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã‚’è¿”ã—ã¾ã™ã€‚*/
 	bool UsesUnscaledTime() const { return useUnscaledTime; }
-	/** @brief ƒeƒXƒg—pƒvƒƒpƒeƒBB*/
+	/** @brief ãƒ†ã‚¹ãƒˆç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã€‚*/
 	std::string test = "guruhuji";
 };

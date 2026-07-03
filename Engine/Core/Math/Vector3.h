@@ -4,8 +4,8 @@
 using namespace DirectX;
 
 /**
- * @brief 3 ŸŒ³ƒxƒNƒgƒ‹‚ÌŒy—Ê\‘¢‘ÌB
- * @details ‘ã•\“I‚ÈŒü‚«‚Ì’è”‚âA`XMFLOAT3` ‚Æ‚Ì‘ŠŒİ•ÏŠ·AŠî–{‰‰Zq‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief 3 æ¬¡å…ƒãƒ™ã‚¯ãƒˆãƒ«ã®è»½é‡æ§‹é€ ä½“ã€‚
+ * @details ä»£è¡¨çš„ãªå‘ãã®å®šæ•°ã‚„ã€`XMFLOAT3` ã¨ã®ç›¸äº’å¤‰æ›ã€åŸºæœ¬æ¼”ç®—å­ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 struct Vector3
 {
@@ -17,7 +17,7 @@ struct Vector3
 	static constexpr DirectX::XMFLOAT3 back{ 0,0,-1 };
 	static constexpr DirectX::XMFLOAT3 zero{ 0,0,0 };
 
-	/** @brief 2 ‚Â‚Ì XMFLOAT3 ‚ª“™‚µ‚¢‚©‚ğ”äŠr‚µ‚Ü‚·B*/
+	/** @brief 2 ã¤ã® XMFLOAT3 ãŒç­‰ã—ã„ã‹ã‚’æ¯”è¼ƒã—ã¾ã™ã€‚*/
 	static bool Equal(const XMFLOAT3& v0, const XMFLOAT3& v1) { return (v0.x == v1.x && v0.y == v1.y && v0.z == v1.z); }
 
 #if 1
@@ -62,34 +62,34 @@ struct Vector3
 	static const Vector3 Back;
 	static const Vector3 Zero;
 #endif
-	/** @brief ƒxƒNƒgƒ‹‚Ì’·‚³‚ğ•Ô‚·B*/
+	/** @brief ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã‚’è¿”ã™ã€‚*/
 	float Length() const;
-	/** @brief ƒxƒNƒgƒ‹‚Ì’·‚³‚Ì“ñæ‚ğ•Ô‚·B*/
+	/** @brief ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã®äºŒä¹—ã‚’è¿”ã™ã€‚*/
 	float LengthSq() const;
-	/** @brief ³‹K‰»‚µ‚½ƒxƒNƒgƒ‹‚ğ•Ô‚·B*/
+	/** @brief æ­£è¦åŒ–ã—ãŸãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™ã€‚*/
 	Vector3 Normalize() const;
-	/** @brief “àÏ‚ğŒvZ‚·‚éB*/
+	/** @brief å†…ç©ã‚’è¨ˆç®—ã™ã‚‹ã€‚*/
 	float Dot(const Vector3& v) const;
-	/** @brief ŠOÏ‚ğŒvZ‚·‚éB*/
+	/** @brief å¤–ç©ã‚’è¨ˆç®—ã™ã‚‹ã€‚*/
 	Vector3 Cross(const Vector3& v) const;
-	/** @brief 2 ‚Â‚ÌƒxƒNƒgƒ‹‚Ì“àÏ‚ğŒvZ‚·‚éB*/
+	/** @brief 2 ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©ã‚’è¨ˆç®—ã™ã‚‹ã€‚*/
 	static float Dot(const Vector3& v1, const Vector3& v2);
-	/** @brief 2 ‚Â‚ÌƒxƒNƒgƒ‹‚ÌŠOÏ‚ğŒvZ‚·‚éB*/
+	/** @brief 2 ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®å¤–ç©ã‚’è¨ˆç®—ã™ã‚‹ã€‚*/
 	static Vector3 Cross(const Vector3& v1, const Vector3& v2);
-	/** @brief ƒxƒNƒgƒ‹‚ğ³‹K‰»‚·‚éB*/
+	/** @brief ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–ã™ã‚‹ã€‚*/
 	static Vector3 Normalize(const Vector3& v);
-	/** @brief ƒxƒNƒgƒ‹‚ÌŠe¬•ª‚Ìâ‘Î’l‚ğ•Ô‚·B*/
+	/** @brief ãƒ™ã‚¯ãƒˆãƒ«ã®å„æˆåˆ†ã®çµ¶å¯¾å€¤ã‚’è¿”ã™ã€‚*/
 	static Vector3 Abs(const Vector3& v);
-	/** @brief 2 ‚Â‚ÌƒxƒNƒgƒ‹‚ÌŠe¬•ª‚ÌÅ¬’l‚ğ•Ô‚·B*/
+	/** @brief 2 ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®å„æˆåˆ†ã®æœ€å°å€¤ã‚’è¿”ã™ã€‚*/
 	static Vector3 Min(const Vector3& v1, const Vector3& v2);
-	/** @brief 2 ‚Â‚ÌƒxƒNƒgƒ‹‚ÌŠe¬•ª‚ÌÅ‘å’l‚ğ•Ô‚·B*/
+	/** @brief 2 ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®å„æˆåˆ†ã®æœ€å¤§å€¤ã‚’è¿”ã™ã€‚*/
 	static Vector3 Max(const Vector3& v1, const Vector3& v2);
-	/** @brief ƒxƒNƒgƒ‹‚ğ min ‚Æ max ‚Ì”ÍˆÍ“à‚ÉƒNƒ‰ƒ“ƒv‚·‚éB*/
+	/** @brief ãƒ™ã‚¯ãƒˆãƒ«ã‚’ min ã¨ max ã®ç¯„å›²å†…ã«ã‚¯ãƒ©ãƒ³ãƒ—ã™ã‚‹ã€‚*/
 	static Vector3 Clamp(const Vector3& v, const Vector3& min, const Vector3& max);
-	/** @brief 2 ‚Â‚ÌƒxƒNƒgƒ‹‚ÌüŒ`•âŠÔ‚ğŒvZ‚·‚éB*/
+	/** @brief 2 ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®ç·šå½¢è£œé–“ã‚’è¨ˆç®—ã™ã‚‹ã€‚*/
 	static Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
-	/** @brief 2 ‚Â‚ÌƒxƒNƒgƒ‹‚Ì‹——£‚ğŒvZ‚·‚éB*/
+	/** @brief 2 ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®è·é›¢ã‚’è¨ˆç®—ã™ã‚‹ã€‚*/
 	static float Distance(const Vector3& v1, const Vector3& v2);
-	/** @brief 2 ‚Â‚ÌƒxƒNƒgƒ‹‚ª‚Ù‚Ú“™‚µ‚¢‚©‚ğ”äŠr‚·‚éBepsilon ‚Í‹–—e‚³‚ê‚éŒë·‚Ì”ÍˆÍ‚ğw’è‚µ‚Ü‚·B*/
+	/** @brief 2 ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ãŒã»ã¼ç­‰ã—ã„ã‹ã‚’æ¯”è¼ƒã™ã‚‹ã€‚epsilon ã¯è¨±å®¹ã•ã‚Œã‚‹èª¤å·®ã®ç¯„å›²ã‚’æŒ‡å®šã—ã¾ã™ã€‚*/
 	static bool NearEqual(const Vector3& v0, const Vector3& v1, float epsilon = 1e-5f);
 };

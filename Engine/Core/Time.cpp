@@ -3,12 +3,12 @@
 
 Time::Time()
 {
-	// ‚¸“xƒ^ƒCƒ}[‚Ìü”g”‚ğæ“¾
+	// é«˜ç²¾åº¦ã‚¿ã‚¤ãƒãƒ¼ã®å‘¨æ³¢æ•°ã‚’å–å¾—
 	LONGLONG countsPerSec = 0;
 	QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&countsPerSec));
 	secondsPerCount = 1.0 / static_cast<double>(countsPerSec);
 
-	// Œ»İ‚ÌƒJƒEƒ“ƒg‚ğæ“¾
+	// ç¾åœ¨ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’å–å¾—
 	QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&thisTime));
 	baseTime = thisTime;
 	lastTime = thisTime;

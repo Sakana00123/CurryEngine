@@ -7,54 +7,54 @@ class GameObjectFactory
 {
 public:
 	/**
-	 * @brief ’Êí‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B
-	 * @param name ƒIƒuƒWƒFƒNƒg–¼B
-	 * @return ¶¬‚³‚ê‚½ `GameObject*`B
+	 * @brief é€šå¸¸ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * @param name ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã€‚
+	 * @return ç”Ÿæˆã•ã‚ŒãŸ `GameObject*`ã€‚
 	 */
 	static GameObject* Create(Scene* scene, const std::string& name);
-	/** @brief UI —pƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B(À•W‚¾‚¯‚Ìê‡)*/
+	/** @brief UI ç”¨ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚(åº§æ¨™ã ã‘ã®å ´åˆ)*/
 	static GameObject* CreateUIObject(Scene* scene, const std::string& name, GameObject* canvas);
-	/** @brief UI —pƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief UI ç”¨ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateUI(Scene* scene, const std::string& name, GameObject* canvas);
-	/** @brief ƒLƒƒƒ“ƒoƒX‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚­ãƒ£ãƒ³ãƒã‚¹ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateCanvas(Scene* scene, const std::string& name);
-	/** @brief ƒLƒƒƒ“ƒoƒXˆø”‚ğ‰ğŒˆ‚µA—LŒø‚Èƒ|ƒCƒ“ƒ^‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief ã‚­ãƒ£ãƒ³ãƒã‚¹å¼•æ•°ã‚’è§£æ±ºã—ã€æœ‰åŠ¹ãªãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã—ã¾ã™ã€‚*/
 	static GameObject* ResolveCanvasObject(Scene* scene, GameObject* canvas);
-	/** @brief ‰æ‘œ UI ‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ç”»åƒ UI ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateImage(Scene* scene, const std::string& name, GameObject* canvas = nullptr, const wchar_t* sourceImage = nullptr);
-	/** @brief ƒ{ƒ^ƒ“ UI ‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ãƒœã‚¿ãƒ³ UI ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateButton(Scene* scene, const std::string& name, GameObject* canvas = nullptr, const wchar_t* sourceImage = nullptr);
-	/** @brief ƒgƒOƒ‹ UI ‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ãƒˆã‚°ãƒ« UI ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateToggle(Scene* scene, const std::string& name, GameObject* canvas = nullptr, const wchar_t* background = L"./Data/Default/UISprite.png", const wchar_t* check = L"./Data/Default/check.png");
-	/** @brief ƒXƒ‰ƒCƒ_[ UI ‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ UI ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateSlider(Scene* scene, const std::string& name, GameObject* canvas = nullptr, float min = 0.f, float max = 1.f, float defaultValue = 0.f,
 		Slider::Direction direction = Slider::Direction::LeftToRight, const wchar_t* handleImage = L"./Data/Default/UISprite.png", const wchar_t* backGroundImage = L"./Data/Default/Background.png");
-	/** @brief ƒeƒLƒXƒg UI ‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ãƒ†ã‚­ã‚¹ãƒˆ UI ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateText(Scene* scene, const std::string& name, GameObject* canvas = nullptr, const std::wstring& text = L"Text", const std::string& fontFilePath = "./Assets/Fonts/madoufmg.fnt",
 		const char* customPsName = nullptr, const char* customVsName = nullptr, size_t maxElements = 256);
-	/** @brief “ü—ÍƒtƒB[ƒ‹ƒh UI ‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ UI ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateInputField(Scene* scene, const std::string& name, GameObject* canvas = nullptr, const std::string& fontFilePath = "./Assets/Fonts/madoufmg.fnt", const wchar_t* backGroundImage = L"./Data/Default/waku.png",
 		const char* customPsName = nullptr, const char* customVsName = nullptr, size_t maxElements = 256);
-	/** @brief ƒXƒNƒ[ƒ‹ƒrƒ…[ UI ‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ“ãƒ¥ãƒ¼ UI ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateScrollView(Scene* scene, const std::string& name, GameObject* canvas = nullptr);
-	/** @brief UI ƒCƒxƒ“ƒgƒVƒXƒeƒ€‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief UI ã‚¤ãƒ™ãƒ³ãƒˆã‚·ã‚¹ãƒ†ãƒ ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateEventSystem(Scene* scene, const std::string& name);
-	/** @brief —§•û‘Ì‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ç«‹æ–¹ä½“ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateCube(Scene* scene, const std::string& name);
-	/** @brief ‰~’Œ‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief å††æŸ±ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateCylinder(Scene* scene, const std::string& name, int segment = 20);
-	/** @brief ‹…‘Ì‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief çƒä½“ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateSphere(Scene* scene, const std::string& name, int segment = 20);
-	/** @brief ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚İ¶¬‚µ‚Ü‚·B*/
+	/** @brief ãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã¿ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateModel(Scene* scene, const std::string& name, const std::string& filePath, bool staticBatching = false);
-	/** @brief ƒI[ƒfƒBƒIƒ\[ƒX‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚½ãƒ¼ã‚¹ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateAudioSource(Scene* scene, const std::string& name, const wchar_t* filePath = L"Data/Sounds/Demo.wav");
-	/** @brief ƒJƒƒ‰‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚«ãƒ¡ãƒ©ã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateCamera(Scene* scene, const std::string& name);
-	/** @brief ƒfƒBƒŒƒNƒVƒ‡ƒiƒ‹ƒ‰ƒCƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒ«ãƒ©ã‚¤ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateDirectionalLight(Scene* scene, const std::string& name);
-	/** @brief ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreatePointLight(Scene* scene, const std::string& name);
-	/** @brief ƒXƒ|ƒbƒgƒ‰ƒCƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	static GameObject* CreateSpotLight(Scene* scene, const std::string& name);
 };

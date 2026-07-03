@@ -4,242 +4,242 @@
 
 /**
  * @file
- * @brief UI —p‚Ì 2D •ÏŠ·‚ğˆµ‚¤ `Transform` ”h¶ƒNƒ‰ƒXB
- * @details ƒAƒ“ƒJ[Aƒsƒ{ƒbƒgAƒIƒtƒZƒbƒg‚ğ—p‚¢‚½ƒŒƒCƒAƒEƒgŒvZ‚ÆA
- *          ‰æ–ÊÀ•WENDC À•W‚Ì‘ŠŒİ•ÏŠ·A“–‚½‚è”»’èi‹éŒ`/‰ñ“]‹éŒ`j‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief UI ç”¨ã® 2D å¤‰æ›ã‚’æ‰±ã† `Transform` æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã€‚
+ * @details ã‚¢ãƒ³ã‚«ãƒ¼ã€ãƒ”ãƒœãƒƒãƒˆã€ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ç”¨ã„ãŸãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨ˆç®—ã¨ã€
+ *          ç”»é¢åº§æ¨™ãƒ»NDC åº§æ¨™ã®ç›¸äº’å¤‰æ›ã€å½“ãŸã‚Šåˆ¤å®šï¼ˆçŸ©å½¢/å›è»¢çŸ©å½¢ï¼‰ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 
 class RectTransform : public Transform
 {
 	C_REFLECT(RectTransform)
 public:
-	/** @brief ƒAƒ“ƒJ[Šî€‚ÌÀ•WiƒXƒNƒŠ[ƒ“À•WŒnjB*/
+	/** @brief ã‚¢ãƒ³ã‚«ãƒ¼åŸºæº–ã®åº§æ¨™ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ï¼‰ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetAnchoredPosition"), CurryEngine::PropertyAttributes::Setter("SetAnchoredPosition"), CurryEngine::PropertyAttributes::Speed(1.0f))
 	Vector2 anchoredPosition{ 0,0 };
 	//DirectX::Vector2 sizeDelta{};
 
-	/** @brief ƒ[ƒ‹ƒhÀ•W‚Ìƒsƒ{ƒbƒgˆÊ’uB*/
-	Vector2 worldPos{};//pivotˆÊ’u
-	/** @brief ƒ[ƒ‹ƒhÀ•WŒn‚Å‚ÌƒTƒCƒYB*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã®ãƒ”ãƒœãƒƒãƒˆä½ç½®ã€‚*/
+	Vector2 worldPos{};//pivotä½ç½®
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã§ã®ã‚µã‚¤ã‚ºã€‚*/
 	Vector2 worldSize{};
 	
-	/** @brief ‰ñ“]Œã‚Ìl‹÷iƒXƒNƒŠ[ƒ“À•WjB*/
+	/** @brief å›è»¢å¾Œã®å››éš…ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼‰ã€‚*/
 	Vector2 topLeft{};
 	Vector2 topRight{};
 	Vector2 bottomLeft{};
 	Vector2 bottomRight{};
-	/** @brief ‰ñ“]‘Oi²‰ñ‚è–¢‰ñ“]j‚Ìl‹÷iƒXƒNƒŠ[ƒ“À•WjB*/
+	/** @brief å›è»¢å‰ï¼ˆè»¸å›ã‚Šæœªå›è»¢ï¼‰ã®å››éš…ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼‰ã€‚*/
 	Vector2 unrotatedTopLeft{};
 	Vector2 unrotatedTopRight{};
 	Vector2 unrotatedBottomLeft{};
 	Vector2 unrotatedBottomRight{};
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^•\¦‚ÌŠJ•Âó‘ÔiImGui —pjB*/
-	bool isOpen = false;//ImGui—p
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿è¡¨ç¤ºã®é–‹é–‰çŠ¶æ…‹ï¼ˆImGui ç”¨ï¼‰ã€‚*/
+	bool isOpen = false;//ImGuiç”¨
 
-	/** @brief ƒAƒ“ƒJ[‚©‚ç‚Ì¶‰ºƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹jB*/
-	Vector2 offsetMin = { 0.f, 0.f };// anchorMin‚©‚ç‚ÌƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹j
-	/** @brief ƒAƒ“ƒJ[‚©‚ç‚Ì‰EãƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹jB*/
-	Vector2 offsetMax = { 0.f, 0.f };// anchorMax‚©‚ç‚ÌƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹j
+	/** @brief ã‚¢ãƒ³ã‚«ãƒ¼ã‹ã‚‰ã®å·¦ä¸‹ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
+	Vector2 offsetMin = { 0.f, 0.f };// anchorMinã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
+	/** @brief ã‚¢ãƒ³ã‚«ãƒ¼ã‹ã‚‰ã®å³ä¸Šã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
+	Vector2 offsetMax = { 0.f, 0.f };// anchorMaxã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
 
-	/** @brief ƒ[ƒ‹ƒh‹óŠÔ‚Å‚Ì‰ñ“]Špiƒ‰ƒWƒAƒ“jB*/
+	/** @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã§ã®å›è»¢è§’ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰ã€‚*/
 	float worldAngle = 0.0f;
 public:
-	/** @brief ƒ[ƒJƒ‹‰ñ“]Špiƒ‰ƒWƒAƒ“jB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢è§’ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetAngle"), CurryEngine::PropertyAttributes::Setter("SetAngle"), CurryEngine::PropertyAttributes::Speed(1.0f))
 	float angle = 0.0f;
-	/** @brief ƒ[ƒJƒ‹ƒTƒCƒYiƒsƒNƒZƒ‹jB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ã‚µã‚¤ã‚ºï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetWorldSize"), CurryEngine::PropertyAttributes::Setter("SetSize"), CurryEngine::PropertyAttributes::Speed(1.0f))
 	Vector2 size{};
-	/** @brief ƒsƒ{ƒbƒgi0-1A¶ã(0,0)A‰E‰º(1,1)jB*/
+	/** @brief ãƒ”ãƒœãƒƒãƒˆï¼ˆ0-1ã€å·¦ä¸Š(0,0)ã€å³ä¸‹(1,1)ï¼‰ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetPivot"), CurryEngine::PropertyAttributes::Setter("SetPivot"), CurryEngine::PropertyAttributes::Speed(0.1f))
 	Vector2 pivot = { 0.5f, 0.5f };
-	/** @brief Å¬ƒAƒ“ƒJ[i0-1Ae¶ã(0,0)A‰E‰º(1,1)jB*/
+	/** @brief æœ€å°ã‚¢ãƒ³ã‚«ãƒ¼ï¼ˆ0-1ã€è¦ªå·¦ä¸Š(0,0)ã€å³ä¸‹(1,1)ï¼‰ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
-	Vector2 anchorMin = { 0.5f, 0.5f };// 0`1ie‚Ì¶ã‚ª (0,0)A‰E‰º‚ª (1,1)j
-	/** @brief Å‘åƒAƒ“ƒJ[i`anchorMin==anchorMax` ‚È‚çŒÅ’èjB*/
+	Vector2 anchorMin = { 0.5f, 0.5f };// 0ã€œ1ï¼ˆè¦ªã®å·¦ä¸ŠãŒ (0,0)ã€å³ä¸‹ãŒ (1,1)ï¼‰
+	/** @brief æœ€å¤§ã‚¢ãƒ³ã‚«ãƒ¼ï¼ˆ`anchorMin==anchorMax` ãªã‚‰å›ºå®šï¼‰ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
-	Vector2 anchorMax = { 0.5f, 0.5f };// anchorMin == anchorMax ‚È‚çŒÅ’èˆÊ’u
-	/** @brief ƒ\[ƒeƒBƒ“ƒOƒI[ƒ_[B”’l‚ª‘å‚«‚¢‚Ù‚Ç‘O–Ê‚É•`‰æ‚³‚ê‚é‚±‚Æ‚ğ‘z’èB*/
+	Vector2 anchorMax = { 0.5f, 0.5f };// anchorMin == anchorMax ãªã‚‰å›ºå®šä½ç½®
+	/** @brief ã‚½ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ã‚ªãƒ¼ãƒ€ãƒ¼ã€‚æ•°å€¤ãŒå¤§ãã„ã»ã©å‰é¢ã«æç”»ã•ã‚Œã‚‹ã“ã¨ã‚’æƒ³å®šã€‚*/
 	C_PROPERTY()
-	int localSortingOrder = 0; // eqŠÖŒW‚ğl—¶‚µ‚È‚¢ƒ[ƒJƒ‹‚Èƒ\[ƒeƒBƒ“ƒOƒI[ƒ_[B•`‰æ‡‚Íe‚Ìƒ\[ƒeƒBƒ“ƒOƒI[ƒ_[ + localSortingOrder ‚ÅŒˆ’è‚³‚ê‚éB
+	int localSortingOrder = 0; // è¦ªå­é–¢ä¿‚ã‚’è€ƒæ…®ã—ãªã„ãƒ­ãƒ¼ã‚«ãƒ«ãªã‚½ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ã‚ªãƒ¼ãƒ€ãƒ¼ã€‚æç”»é †ã¯è¦ªã®ã‚½ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ã‚ªãƒ¼ãƒ€ãƒ¼ + localSortingOrder ã§æ±ºå®šã•ã‚Œã‚‹ã€‚
 public:
-	/** @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	RectTransform() : size({ 100,100 }) { position = { 0,0,0 }; }
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	virtual ~RectTransform() override = default;
 
-	/** @brief ‰Šú‰»ˆ—B*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ã€‚*/
 	void Start() override;
 
 	/**
-	 * @brief e‚Ì `RectTransform` ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return e‚Ì `RectTransform`B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr`B
+	 * @brief è¦ªã® `RectTransform` ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return è¦ªã® `RectTransform`ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr`ã€‚
 	 */
 	RectTransform* GetParent() const;
 
 	/**
-	 * @brief •ÏŠ·‚ÌXVˆ—B
-	 * @param elapsedTime Œo‰ßŠÔi•bjB
+	 * @brief å¤‰æ›ã®æ›´æ–°å‡¦ç†ã€‚
+	 * @param elapsedTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void Update(float elapsedTime) override;
 
 #ifdef USE_IMGUI
 	/**
-	 * @brief ƒCƒ“ƒXƒyƒNƒ^—pƒvƒƒpƒeƒB•`‰æB
+	 * @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚
 	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 	/**
-	 * @brief ƒAƒ“ƒJ[ƒvƒŠƒZƒbƒg UI ‚ğ•`‰æ‚µ‚Ü‚·B
-	 * @return ’l‚ª•ÏX‚³‚ê‚½ê‡‚Í `true`B
+	 * @brief ã‚¢ãƒ³ã‚«ãƒ¼ãƒ—ãƒªã‚»ãƒƒãƒˆ UI ã‚’æç”»ã—ã¾ã™ã€‚
+	 * @return å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ `true`ã€‚
 	 */
 	bool DrawAnchorPreset();
 
 	/**
-	 * @brief w’è“_‚ª‹éŒ`“ài‰ñ“]l—¶j‚É‚ ‚é‚©‚ğ”»’è‚µ‚Ü‚·B
-	 * @param point ƒXƒNƒŠ[ƒ“À•W‚Ì”»’è“_B
-	 * @return ‹éŒ`“à‚Å‚ ‚ê‚Î `true`B
+	 * @brief æŒ‡å®šç‚¹ãŒçŸ©å½¢å†…ï¼ˆå›è»¢è€ƒæ…®ï¼‰ã«ã‚ã‚‹ã‹ã‚’åˆ¤å®šã—ã¾ã™ã€‚
+	 * @param point ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã®åˆ¤å®šç‚¹ã€‚
+	 * @return çŸ©å½¢å†…ã§ã‚ã‚Œã° `true`ã€‚
 	 */
 	bool Contains(const Vector2& point);
 
 	/**
-	 * @brief ”CˆÓl•ÓŒ`“à”»’èB
-	 * @param p ”»’è“_B
-	 * @param a,b,c,d l•ÓŒ`‚Ì’¸“_iƒXƒNƒŠ[ƒ“À•WA‡˜‚ÍˆêŠÑ‚µ‚Ä‚¢‚é‚±‚ÆjB
-	 * @return “à•”‚É‚ ‚ê‚Î `true`B
+	 * @brief ä»»æ„å››è¾ºå½¢å†…åˆ¤å®šã€‚
+	 * @param p åˆ¤å®šç‚¹ã€‚
+	 * @param a,b,c,d å››è¾ºå½¢ã®é ‚ç‚¹ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€é †åºã¯ä¸€è²«ã—ã¦ã„ã‚‹ã“ã¨ï¼‰ã€‚
+	 * @return å†…éƒ¨ã«ã‚ã‚Œã° `true`ã€‚
 	 */
 	bool PointInQuad(Vector2 p, Vector2 a, Vector2 b, Vector2 c, Vector2 d);
 
-	/** @brief ¶ã‚ÌƒXƒNƒŠ[ƒ“À•WB*/
+	/** @brief å·¦ä¸Šã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€‚*/
 	Vector2 TopLeft() const { return topLeft; }
-	/** @brief ‰Eã‚ÌƒXƒNƒŠ[ƒ“À•WB*/
+	/** @brief å³ä¸Šã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€‚*/
 	Vector2 TopRight() const { return topRight; }
-	/** @brief ¶‰º‚ÌƒXƒNƒŠ[ƒ“À•WB*/
+	/** @brief å·¦ä¸‹ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€‚*/
 	Vector2 BottomLeft() const { return bottomLeft; }
-	/** @brief ‰E‰º‚ÌƒXƒNƒŠ[ƒ“À•WB*/
+	/** @brief å³ä¸‹ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€‚*/
 	Vector2 BottomRight() const { return bottomRight; }
 
-	/** @brief ‰ñ“]‘O‚Ì¶ãB*/
+	/** @brief å›è»¢å‰ã®å·¦ä¸Šã€‚*/
 	Vector2 UnrotatedTopLeft() const { return unrotatedTopLeft; }
-	/** @brief ‰ñ“]‘O‚Ì‰EãB*/
+	/** @brief å›è»¢å‰ã®å³ä¸Šã€‚*/
 	Vector2 UnrotatedTopRight() const { return unrotatedTopRight; }
-	/** @brief ‰ñ“]‘O‚Ì¶‰ºB*/
+	/** @brief å›è»¢å‰ã®å·¦ä¸‹ã€‚*/
 	Vector2 UnrotatedBottomLeft() const { return unrotatedBottomLeft; }
-	/** @brief ‰ñ“]‘O‚Ì‰E‰ºB*/
+	/** @brief å›è»¢å‰ã®å³ä¸‹ã€‚*/
 	Vector2 UnrotatedBottomRight() const { return unrotatedBottomRight; }
 
 	/**
-	 * @brief ©g‚ÌƒAƒ“ƒJ[ƒ|ƒWƒVƒ‡ƒ“‚ğ NDC ‚É•ÏŠ·‚µ‚Äæ“¾‚µ‚Ü‚·B
-	 * @return NDC À•W‚Ì 2D ƒxƒNƒgƒ‹B
+	 * @brief è‡ªèº«ã®ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’ NDC ã«å¤‰æ›ã—ã¦å–å¾—ã—ã¾ã™ã€‚
+	 * @return NDC åº§æ¨™ã® 2D ãƒ™ã‚¯ãƒˆãƒ«ã€‚
 	 */
 	Vector2 ToNDC() const;
 	/**
-	 * @brief ƒXƒNƒŠ[ƒ“À•W‚ğ NDC ‚É•ÏŠ·‚µ‚Ü‚·B
+	 * @brief ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ NDC ã«å¤‰æ›ã—ã¾ã™ã€‚
 	 */
 	static Vector2 ScreenToNDC(const Vector2& anchoredPosition);
 	/**
-	 * @brief NDC ‚ğƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·‚µ‚Ü‚·B
+	 * @brief NDC ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›ã—ã¾ã™ã€‚
 	 */
 	static Vector2 NDCToScreen(const Vector2& ndc);
 
 	/**
-	 * @brief ƒsƒ{ƒbƒg‚Ìƒ[ƒ‹ƒhÀ•W‚ğæ“¾‚µ‚Ü‚·B
+	 * @brief ãƒ”ãƒœãƒƒãƒˆã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—ã—ã¾ã™ã€‚
 	 */
 	Vector2 GetWorldPosition();
 	/**
-	 * @brief ƒAƒ“ƒJ[ƒ|ƒWƒVƒ‡ƒ“iƒXƒNƒŠ[ƒ“À•Wj‚ğæ“¾‚µ‚Ü‚·B
+	 * @brief ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¸ã‚·ãƒ§ãƒ³ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼‰ã‚’å–å¾—ã—ã¾ã™ã€‚
 	 */
 	C_FUNCTION()
 	Vector2 GetAnchoredPosition() const;
 
 	/**
-	 * @brief ƒ[ƒ‹ƒhÀ•WŒn‚Å‚ÌƒTƒCƒY‚ğæ“¾‚µ‚Ü‚·B
+	 * @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã§ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã—ã¾ã™ã€‚
 	 */
 	C_FUNCTION()
 	Vector2 GetWorldSize();
 
 	/**
-	 * @brief ƒ[ƒ‹ƒh‰ñ“]Špiƒ‰ƒWƒAƒ“j‚ğæ“¾‚µ‚Ü‚·B
+	 * @brief ãƒ¯ãƒ¼ãƒ«ãƒ‰å›è»¢è§’ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰ã‚’å–å¾—ã—ã¾ã™ã€‚
 	 */
 	C_FUNCTION()
 	float GetWorldAngle() const;
 
-	/** @brief Å‘åƒAƒ“ƒJ[‚ğİ’èB*/
+	/** @brief æœ€å¤§ã‚¢ãƒ³ã‚«ãƒ¼ã‚’è¨­å®šã€‚*/
 	void SetAnchorMax(const Vector2& max) { anchorMax = max; }
-	/** @brief Å¬ƒAƒ“ƒJ[‚ğİ’èB*/
+	/** @brief æœ€å°ã‚¢ãƒ³ã‚«ãƒ¼ã‚’è¨­å®šã€‚*/
 	void SetAnchorMin(const Vector2& min) { anchorMin = min; }
-	/** @brief ƒAƒ“ƒJ[ƒ|ƒWƒVƒ‡ƒ“‚ğİ’èiƒXƒNƒŠ[ƒ“À•WjB*/
+	/** @brief ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’è¨­å®šï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetAnchoredPosition(const Vector2& pos) { anchoredPosition = pos; }
 
 	/**
-	 * @brief w’è‚µ‚½ƒAƒ“ƒJ[Šî€ˆÊ’u‚Éƒsƒ{ƒbƒg‚ğ‡‚í‚¹‚Ä”z’u‚µ‚Ü‚·B
-	 * @param targetAnchor e‚ÌƒAƒ“ƒJ[ˆÊ’ui0-1A¶ã(0,0)A‰E‰º(1,1)jB
-	 * @param targetAnchoredPos e‚ÌƒAƒ“ƒJ[ƒ|ƒWƒVƒ‡ƒ“iƒXƒNƒŠ[ƒ“À•WjB
+	 * @brief æŒ‡å®šã—ãŸã‚¢ãƒ³ã‚«ãƒ¼åŸºæº–ä½ç½®ã«ãƒ”ãƒœãƒƒãƒˆã‚’åˆã‚ã›ã¦é…ç½®ã—ã¾ã™ã€‚
+	 * @param targetAnchor è¦ªã®ã‚¢ãƒ³ã‚«ãƒ¼ä½ç½®ï¼ˆ0-1ã€å·¦ä¸Š(0,0)ã€å³ä¸‹(1,1)ï¼‰ã€‚
+	 * @param targetAnchoredPos è¦ªã®ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¸ã‚·ãƒ§ãƒ³ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼‰ã€‚
 	 */
 	void SetAnchoredPositionByAnchor(const Vector2& targetAnchor, const Vector2& targetAnchoredPos);
 
-	/** @brief w’è‚µ‚½ `Transform` ‚ÌˆÊ’u‚Éƒsƒ{ƒbƒg‚ğ‡‚í‚¹‚Ä”z’u‚µ‚Ü‚·B
-	 *  @param transform ‘ÎÛ‚Ì `Transform`B
-	 *  @details Z À•W‚Í–³‹‚³‚ê‚Ü‚·B
+	/** @brief æŒ‡å®šã—ãŸ `Transform` ã®ä½ç½®ã«ãƒ”ãƒœãƒƒãƒˆã‚’åˆã‚ã›ã¦é…ç½®ã—ã¾ã™ã€‚
+	 *  @param transform å¯¾è±¡ã® `Transform`ã€‚
+	 *  @details Z åº§æ¨™ã¯ç„¡è¦–ã•ã‚Œã¾ã™ã€‚
 	 */
 	void SetAnchoredPositionByTransform(Transform* transform);
 
-	/** @brief ƒ[ƒJƒ‹‰ñ“]Šp‚ğİ’èi“xjB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢è§’ã‚’è¨­å®šï¼ˆåº¦ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetAngle(float angle) { this->angle = angle; }
 
-	/** @brief ƒ[ƒJƒ‹‰ñ“]Šp‚ğæ“¾i“xjB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢è§’ã‚’å–å¾—ï¼ˆåº¦ï¼‰ã€‚*/
 	C_FUNCTION()
 	float GetAngle() const { return angle; }
 
-	/** @brief ƒTƒCƒY‚ğİ’èiƒsƒNƒZƒ‹jB*/
+	/** @brief ã‚µã‚¤ã‚ºã‚’è¨­å®šï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetSize(const Vector2& size) { this->size = size; }
 
-	/** @brief ƒsƒ{ƒbƒg‚ğİ’èi0-1jB*/
+	/** @brief ãƒ”ãƒœãƒƒãƒˆã‚’è¨­å®šï¼ˆ0-1ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetPivot(const Vector2& pivot) { this->pivot = pivot; }
-	/** @brief ƒsƒ{ƒbƒg‚ğæ“¾B*/
+	/** @brief ãƒ”ãƒœãƒƒãƒˆã‚’å–å¾—ã€‚*/
 	C_FUNCTION()
 	Vector2 GetPivot() const { return pivot; }
 
 	//void SetSizeDelta(const Vector2& delta) { sizeDelta = delta; }
 	//Vector2 GetSizeDelta() const { return sizeDelta; }
 
-	/** @brief ¶ƒIƒtƒZƒbƒg‚ğİ’èiƒsƒNƒZƒ‹jB*/
+	/** @brief å·¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®šï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetLeft(float left) { offsetMin.x = left; }
-	/** @brief ‰EƒIƒtƒZƒbƒg‚ğİ’èiƒsƒNƒZƒ‹jB*/
+	/** @brief å³ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®šï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetRight(float right) { offsetMax.x = right; }
-	/** @brief ãƒIƒtƒZƒbƒg‚ğİ’èiƒsƒNƒZƒ‹jB*/
+	/** @brief ä¸Šã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®šï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetTop(float top) { offsetMin.y = top; }
-	/** @brief ‰ºƒIƒtƒZƒbƒg‚ğİ’èiƒsƒNƒZƒ‹jB*/
+	/** @brief ä¸‹ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®šï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	void SetBottom(float bottom) { offsetMax.y = bottom; }
 
-	/** @brief ¶ƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹jB*/
+	/** @brief å·¦ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	float GetLeft() const { return offsetMin.x; }
-	/** @brief ‰EƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹jB*/
+	/** @brief å³ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	float GetRight() const { return offsetMax.x; }
-	/** @brief ãƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹jB*/
+	/** @brief ä¸Šã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	float GetTop() const { return offsetMin.y; }
-	/** @brief ‰ºƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹jB*/
+	/** @brief ä¸‹ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰ã€‚*/
 	C_FUNCTION()
 	float GetBottom() const { return offsetMax.y; }
 
 private:
 	/**
-	 * @brief “_‚ğ’†S“_ü‚è‚É‰ñ“]‚µ‚Ü‚·B
-	 * @param point ‘ÎÛ“_i“üo—ÍjB
-	 * @param center ‰ñ“]‚Ì’†SB
-	 * @param angle ‰ñ“]Špi“xjB
+	 * @brief ç‚¹ã‚’ä¸­å¿ƒç‚¹å‘¨ã‚Šã«å›è»¢ã—ã¾ã™ã€‚
+	 * @param point å¯¾è±¡ç‚¹ï¼ˆå…¥å‡ºåŠ›ï¼‰ã€‚
+	 * @param center å›è»¢ã®ä¸­å¿ƒã€‚
+	 * @param angle å›è»¢è§’ï¼ˆåº¦ï¼‰ã€‚
 	 */
 	void Rotate(Vector2& point, Vector2 center, float angle);
 };

@@ -25,13 +25,13 @@ void SceneParametersEditor::DrawGUI()
 		ImGui::Text("UnScaledDeltaTime: %f", Time::UnscaledDeltaTime());
 		ImGui::DragFloat("timeScale", &Time::timeScale, 0.01f, 0.0f, 100.0f);
 
-		// シーン名表示
+		// 繧ｷ繝ｼ繝ｳ蜷崎｡ｨ遉ｺ
 		if (Scene* scene = SceneManager::GetCurrentScene())
 		{
 			ImGui::SeparatorText("EditorCamera");
 			scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->DrawProperty();
 			ImGui::SeparatorText(scene->name.c_str());
-			// シーンパラメータ表示
+			// 繧ｷ繝ｼ繝ｳ繝代Λ繝｡繝ｼ繧ｿ陦ｨ遉ｺ
 			scene->DrawGUI();
 		}
 		ImGui::End();

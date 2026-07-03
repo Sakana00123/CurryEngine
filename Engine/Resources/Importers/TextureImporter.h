@@ -6,22 +6,22 @@ namespace CurryEngine
 	namespace Resources
 	{
 		/**
-		 * @brief �e�N�X�`���C���|�[�^�[�B�e�N�X�`���t�@�C����ǂݍ��݁A`Texture` �A�Z�b�g�f�[�^�ɕϊ�����N���X�B
-		 * @details ���̃N���X�́A�e�N�X�`���t�@�C���i��: PNG, JPEG�j��ǂݍ��݁A`Texture` �N���X�̃C���X�^���X�ɕϊ����邽�߂̃C���|�[�^�[�ł��BDirectX 11 �̃e�N�X�`�����\�[�X���쐬���A�A�Z�b�g�f�[�^�Ƃ��ĊǗ����܂��B
+		 * @brief テクスチャインポーター。テクスチャファイルを読み込み、`Texture` アセットデータに変換するクラス。
+		 * @details このクラスは、テクスチャファイル（例: PNG, JPEG）を読み込み、`Texture` クラスのインスタンスに変換するためのインポーターです。DirectX 11 のテクスチャリソースを作成し、アセットデータとして管理します。
 		 */
 		class TextureImporter : public IImporter
 		{
 		public:
 			virtual ~TextureImporter() = default;
 			/**
-			 * @brief �e�N�X�`���t�@�C����ǂݍ��݁A`Texture` �A�Z�b�g�f�[�^�ɕϊ�����֐��B
-			 * @param meta �ǂݍ��ރe�N�X�`���̃��^�f�[�^�B
-			 * @return �ǂݍ��񂾃e�N�X�`���A�Z�b�g�f�[�^�̋��L�|�C���^�B�ǂݍ��݂Ɏ��s�����ꍇ��nullptr��Ԃ��܂��B
+			 * @brief テクスチャファイルを読み込み、`Texture` アセットデータに変換する関数。
+			 * @param meta 読み込むテクスチャのメタデータ。
+			 * @return 読み込んだテクスチャアセットデータの共有ポインタ。読み込みに失敗した場合はnullptrを返します。
 			 */
 			std::shared_ptr<Resource> Import(const AssetMeta& meta) override;
 			/**
-			 * @brief ���̃C���|�[�^�[���T�|�[�g����t�@�C���g���q�̃��X�g��Ԃ��֐��B
-			 * @return �T�|�[�g����t�@�C���g���q�̃��X�g�i��: {".png", ".jpg"}�j�B
+			 * @brief このインポーターがサポートするファイル拡張子のリストを返す関数。
+			 * @return サポートするファイル拡張子のリスト（例: {".png", ".jpg"}）。
 			 */
 			std::vector<std::string> GetSupportedExtensions() const override;
 

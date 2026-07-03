@@ -60,7 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -97,7 +97,7 @@ popd</Command>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>

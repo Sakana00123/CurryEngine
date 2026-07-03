@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Engine/Core/GameObject.h"
 
-// GameObject ƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ğƒXƒNƒŠƒvƒg‚©‚çŒÄ‚Ño‚¹‚é‚æ‚¤‚É‚·‚é‚½‚ß‚ÌƒGƒNƒXƒ|[ƒgŠÖ”
+// GameObject ã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‹ã‚‰å‘¼ã³å‡ºã›ã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã®ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆé–¢æ•°
 
 
-// -------- GameObject ‚ÌƒvƒƒpƒeƒBƒAƒNƒZƒXŠÖ” ---------
+// -------- GameObject ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•° ---------
 
 // --------- Name ---------
 
@@ -14,7 +14,7 @@ ENGINE_API const char* GameObject_GetName(uint64_t objectId)
 	{
 		return obj->name.c_str();
 	}
-	return ""; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í‹ó•¶š‚ğ•Ô‚·
+	return ""; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ç©ºæ–‡å­—ã‚’è¿”ã™
 }
 
 ENGINE_API void GameObject_SetName(uint64_t objectId, const char* name)
@@ -31,9 +31,9 @@ ENGINE_API int Entity_IsValid(uint64_t objectId)
 {
 	if (GameObject* obj = ObjectManager::Find(ObjectId::FromValue(objectId)))
 	{
-		return 1; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚Á‚½ê‡‚Í 1 ‚ğ•Ô‚·
+		return 1; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã¯ 1 ã‚’è¿”ã™
 	}
-	return 0; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 }
 
 // --------- HasComponent ---------
@@ -44,16 +44,16 @@ ENGINE_API int Entity_HasComponent(uint64_t objectId, const char* componentName)
 	{
 		for (const auto& comp : obj->GetAllComponents())
 		{
-			if (!comp) continue; // ƒRƒ“ƒ|[ƒlƒ“ƒg‚ª–³Œø‚Èê‡‚ÍƒXƒLƒbƒv
-			bool equal = strcmp(componentName, comp->name.c_str()) == 0; // –¼‘O‚ªˆê’v‚·‚é‚©‚ğ”äŠr
+			if (!comp) continue; // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒç„¡åŠ¹ãªå ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
+			bool equal = strcmp(componentName, comp->name.c_str()) == 0; // åå‰ãŒä¸€è‡´ã™ã‚‹ã‹ã‚’æ¯”è¼ƒ
 
 			if (equal)
 			{
-				return 1; // ƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚Á‚½ê‡‚Í 1 ‚ğ•Ô‚·
+				return 1; // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã¯ 1 ã‚’è¿”ã™
 			}
 		}
 	}
-	return 0; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 }
 
 
@@ -76,18 +76,18 @@ ENGINE_API int GameObject_GetComponentIds(uint64_t ownerId, const char* componen
 		std::vector<uint64_t> componentIds;
 		bool returnAll = componentName == nullptr;
 		if (componentName && componentName[0] == '\0') {
-			returnAll = true; // ‹ó•¶š‚à‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ•Ô‚·ğŒ‚Æ‚·‚é
+			returnAll = true; // ç©ºæ–‡å­—ã‚‚ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿”ã™æ¡ä»¶ã¨ã™ã‚‹
 		}
 		for (const auto& comp : obj->GetAllComponents())
 		{
-			if (!comp) continue; // ƒRƒ“ƒ|[ƒlƒ“ƒg‚ª–³Œø‚Èê‡‚ÍƒXƒLƒbƒv
+			if (!comp) continue; // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒç„¡åŠ¹ãªå ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 			if (returnAll) {
 				componentIds.push_back(comp->id.Value());
-				continue; // ‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ•Ô‚·ê‡‚ÍA–¼‘O‚Ì”äŠr‚ğƒXƒLƒbƒv‚µ‚ÄID‚ğ’Ç‰Á
+				continue; // ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿”ã™å ´åˆã¯ã€åå‰ã®æ¯”è¼ƒã‚’ã‚¹ã‚­ãƒƒãƒ—ã—ã¦IDã‚’è¿½åŠ 
 			}
 			std::string compName = comp->GetTypeName();
-			bool equal = strcmp(componentName, compName.c_str()) == 0; // –¼‘O‚ªˆê’v‚·‚é‚©‚ğ”äŠr
-			// componentName ‚ª null ‚Ü‚½‚Í‹ó•¶š‚Ìê‡‚Í‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒgID‚ğ•Ô‚·
+			bool equal = strcmp(componentName, compName.c_str()) == 0; // åå‰ãŒä¸€è‡´ã™ã‚‹ã‹ã‚’æ¯”è¼ƒ
+			// componentName ãŒ null ã¾ãŸã¯ç©ºæ–‡å­—ã®å ´åˆã¯ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆIDã‚’è¿”ã™
 			if (equal || returnAll)
 			{
 				componentIds.push_back(comp->id.Value());
@@ -98,9 +98,9 @@ ENGINE_API int GameObject_GetComponentIds(uint64_t ownerId, const char* componen
 		{
 			outBuffer[i] = componentIds[i];
 		}
-		return count; // Œ©‚Â‚©‚Á‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì”‚ğ•Ô‚·
+		return count; // è¦‹ã¤ã‹ã£ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®æ•°ã‚’è¿”ã™
 	}
-	return 0; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 }
 
 
@@ -123,7 +123,7 @@ ENGINE_API bool GameObject_IsActive(uint64_t objectId)
 	{
 		return obj->IsActive();
 	}
-	return false; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+	return false; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 }
 
 // --------- Layer ---------
@@ -137,18 +137,18 @@ ENGINE_API uint64_t GameObject_InstantiateFromId(uint64_t prefabId, uint64_t par
 	{
 		ObjectId objId = ObjectId::FromValue(prefabId);
 		GameObject* original = ObjectManager::Find(objId);
-		assert(original && "Original GameObject not found for instantiation."); // ƒfƒoƒbƒO—p‚ÌƒAƒT[ƒVƒ‡ƒ“
-		if (!original) return 0; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í 0 ‚ğ•Ô‚·
+		assert(original && "Original GameObject not found for instantiation."); // ãƒ‡ãƒãƒƒã‚°ç”¨ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³
+		if (!original) return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ 0 ã‚’è¿”ã™
 		ObjectId parentObjId = ObjectId::FromValue(parentId);
 		GameObject* parent = parentObjId.IsValid() ? ObjectManager::Find(ObjectId::FromValue(parentId)) : nullptr;
 		GameObject* instance = Component::Instantiate(original, parent ? parent->transform : nullptr, position, rotation);
-		assert(instance && "Failed to instantiate GameObject."); // ƒfƒoƒbƒO—p‚ÌƒAƒT[ƒVƒ‡ƒ“
+		assert(instance && "Failed to instantiate GameObject."); // ãƒ‡ãƒãƒƒã‚°ç”¨ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³
 		return instance ? instance->GetId().Value() : 0;
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
-		return 0; // JSON‚Ì‰ğÍ‚É¸”s‚µ‚½ê‡‚Í 0 ‚ğ•Ô‚·
+		return 0; // JSONã®è§£æã«å¤±æ•—ã—ãŸå ´åˆã¯ 0 ã‚’è¿”ã™
 	}
 }
 
@@ -164,6 +164,6 @@ ENGINE_API uint64_t GameObject_InstantiateFromResource(const char* resourcePath,
 	catch (const std::exception& e)
 	{
 		std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
-		return 0; // JSON‚Ì‰ğÍ‚É¸”s‚µ‚½ê‡‚Í 0 ‚ğ•Ô‚·
+		return 0; // JSONã®è§£æã«å¤±æ•—ã—ãŸå ´åˆã¯ 0 ã‚’è¿”ã™
 	}
 }

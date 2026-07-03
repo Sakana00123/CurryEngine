@@ -11,84 +11,84 @@ public:
 public:
 	struct LineData
 	{
-		bool useLine = false;	// ü‚ğg‚¤‚©‚Ç‚¤‚©
+		bool useLine = false;	// ç·šã‚’ä½¿ã†ã‹ã©ã†ã‹
 
-		// ü•ª\‘¢‘Ì
+		// ç·šåˆ†æ§‹é€ ä½“
 		struct Segment
 		{
-			Transform* start = nullptr; // ü‚ÌŠJnTransform
-			Transform* end = nullptr;   // ü‚ÌI—¹Transform
-			int segmentCount = 5;    // ü•ª‚Ì•ªŠ„”
+			Transform* start = nullptr; // ç·šã®é–‹å§‹Transform
+			Transform* end = nullptr;   // ç·šã®çµ‚äº†Transform
+			int segmentCount = 5;    // ç·šåˆ†ã®åˆ†å‰²æ•°
 		};
-		std::vector<Segment> segments; 	// ü•ªƒŠƒXƒg
+		std::vector<Segment> segments; 	// ç·šåˆ†ãƒªã‚¹ãƒˆ
 	};
 
-	// ’Ç‰Áİ’è\‘¢‘Ì
+	// è¿½åŠ è¨­å®šæ§‹é€ ä½“
 	struct AddSettings
 	{
-		LineData lineData;					//üî•ñ
-		std::function<void()> onPreEmit;		//ƒGƒtƒFƒNƒg”­¶‘OƒR[ƒ‹ƒoƒbƒN
+		LineData lineData;					//ç·šæƒ…å ±
+		std::function<void()> onPreEmit;		//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆç™ºç”Ÿå‰ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 	};
-	// ’Ç‰Áİ’èæ“¾
+	// è¿½åŠ è¨­å®šå–å¾—
 	const AddSettings& GetAddSettings() const { return settings; }
 
-	// ’Ç‰Áİ’èİ’è
+	// è¿½åŠ è¨­å®šè¨­å®š
 	void SetAddSettings(const AddSettings& settings) { this->settings = settings; }
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	void Awake() override;
 
-	// I—¹ˆ—
+	// çµ‚äº†å‡¦ç†
 	void OnDestroy() override;
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^“Ç‚İ‚İ
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 	C_FUNCTION()
 	void Load(const std::string& filePath);
 
-	// ƒGƒtƒFƒNƒgÄ¶
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
 	C_FUNCTION()
 	void Play();
 
-	// ƒGƒtƒFƒNƒg’â~
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåœæ­¢
 	C_FUNCTION()
 	void Stop();
 
-	// Ä¶’†‚©‚ğ•Ô‚·
+	// å†ç”Ÿä¸­ã‹ã‚’è¿”ã™
 	C_FUNCTION()
 	bool IsPlaying() const;
 
-	// ƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹æ“¾
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«å–å¾—
 	EffectHandle GetEffectHandle() const { return effectHandle; }
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^æ“¾
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿å–å¾—
 	EffectManager::EffectData& GetEffectData() const { return EffectManager::GetEffectData(effectHandle); }
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^İ’è
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿è¨­å®š
 	void SetEffectData(const EffectManager::EffectData& data);
 
-	// ƒtƒŒ[ƒ€XV
+	// ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update(float elapsedTime) override;
 
 #ifdef USE_IMGUI
-	// ƒfƒoƒbƒOGUI•`‰æ
+	// ãƒ‡ãƒãƒƒã‚°GUIæç”»
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json Serialize() const override;
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	void Deserialize(const json& j) override;
 
 private:
 	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"), CurryEngine::PropertyAttributes::DialogFilter("Particle Effect Files|*.json|All Files|*.*|"), CurryEngine::PropertyAttributes::Setter("Load"))
-	std::string filePath; // ƒGƒtƒFƒNƒgƒtƒ@ƒCƒ‹ƒpƒX
+	std::string filePath; // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 	C_PROPERTY()
-	bool playOnAwake = false;			// ©“®Ä¶ƒtƒ‰ƒO
+	bool playOnAwake = false;			// è‡ªå‹•å†ç”Ÿãƒ•ãƒ©ã‚°
 private:
-	EffectHandle effectHandle = -1; 	// ƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹
-	std::vector<int> instanceIDs;		// Ä¶ƒCƒ“ƒXƒ^ƒ“ƒXIDƒŠƒXƒgi•¡”Ä¶‚É‘Î‰‚·‚é‚½‚ßƒŠƒXƒg‚É‚·‚éj
-	bool isPlaying = false;				// Ä¶’†ƒtƒ‰ƒO
-	AddSettings settings; 				// ’Ç‰Áİ’è
+	EffectHandle effectHandle = -1; 	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«
+	std::vector<int> instanceIDs;		// å†ç”Ÿã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDãƒªã‚¹ãƒˆï¼ˆè¤‡æ•°å†ç”Ÿã«å¯¾å¿œã™ã‚‹ãŸã‚ãƒªã‚¹ãƒˆã«ã™ã‚‹ï¼‰
+	bool isPlaying = false;				// å†ç”Ÿä¸­ãƒ•ãƒ©ã‚°
+	AddSettings settings; 				// è¿½åŠ è¨­å®š
 };

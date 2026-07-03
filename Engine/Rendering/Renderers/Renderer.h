@@ -12,40 +12,40 @@ public:
 	Renderer() = default;
 	virtual ~Renderer() override = default;
 	
-	// •`‰æ‡˜‚ğİ’è
+	// æç”»é †åºã‚’è¨­å®š
 	//void SetRenderOrder(int order) { renderOrder = order; }
 	//int GetRenderOrder() const { return renderOrder; }
 
 	Math::BoundingBox GetAABB() const { return boundingBox; }
 
 	/**
-	 * @brief AABB‚ğŒvZ‚µ‚Ä•Ô‚·
-	 * @return AABB (ƒ[ƒ‹ƒhÀ•WŒn)
-	 * @details Œp³æ‚ÅƒI[ƒo[ƒ‰ƒCƒh‚µ‚ÄŒvZˆ—‚ğÀ‘•‚·‚é‚±‚Æ
+	 * @brief AABBã‚’è¨ˆç®—ã—ã¦è¿”ã™
+	 * @return AABB (ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»)
+	 * @details ç¶™æ‰¿å…ˆã§ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¦è¨ˆç®—å‡¦ç†ã‚’å®Ÿè£…ã™ã‚‹ã“ã¨
 	 */
 	virtual Math::BoundingBox CalculateAABB() const { return boundingBox; }
 
 #ifdef USE_IMGUI
-	// ƒfƒoƒbƒO GUI ‚Ì•`‰æ
+	// ãƒ‡ãƒãƒƒã‚° GUI ã®æç”»
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json Serialize() const override;
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	void Deserialize(const json& j) override;
 
 public:
 	/* 
-	 * @brief ƒ}ƒeƒŠƒAƒ‹
-	 * @details ƒ}ƒeƒŠƒAƒ‹‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í•`‰æ‚³‚ê‚Ü‚¹‚ñB
-	 * @note Œp³æ‚Å `Render()` “à‚Åƒ}ƒeƒŠƒAƒ‹‚Ì `Apply()` ‚ğŒÄ‚Ño‚·‚±‚ÆB
+	 * @brief ãƒãƒ†ãƒªã‚¢ãƒ«
+	 * @details ãƒãƒ†ãƒªã‚¢ãƒ«ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯æç”»ã•ã‚Œã¾ã›ã‚“ã€‚
+	 * @note ç¶™æ‰¿å…ˆã§ `Render()` å†…ã§ãƒãƒ†ãƒªã‚¢ãƒ«ã® `Apply()` ã‚’å‘¼ã³å‡ºã™ã“ã¨ã€‚
 	 */
-	std::shared_ptr<Material> material; // ƒ}ƒeƒŠƒAƒ‹
-	Math::BoundingBox boundingBox; // AABBiƒ[ƒ‹ƒhÀ•WŒnj
+	std::shared_ptr<Material> material; // ãƒãƒ†ãƒªã‚¢ãƒ«
+	Math::BoundingBox boundingBox; // AABBï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ï¼‰
 private:
-	//int renderOrder = 0; // •`‰æ‡˜
+	//int renderOrder = 0; // æç”»é †åº
 
 };

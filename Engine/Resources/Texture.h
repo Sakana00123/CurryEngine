@@ -17,112 +17,112 @@ using namespace std;
 
 /**
  * @file
- * @brief ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ/¶¬/QÆ‚ğˆµ‚¤ƒ†[ƒeƒBƒŠƒeƒB‚Æ `Texture` ‘Œ¹ƒNƒ‰ƒXB
- * @details WIC/DDS ƒ[ƒ_‚ğ—p‚¢‚½ƒtƒ@ƒCƒ‹“Ç‚İ‚İAƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ¶¬A‰ğ•úˆ—A
- *          ‚¨‚æ‚Ñ `ID3D11ShaderResourceView` ‚Ìæ“¾ƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿/ç”Ÿæˆ/å‚ç…§ã‚’æ‰±ã†ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã¨ `Texture` è³‡æºã‚¯ãƒ©ã‚¹ã€‚
+ * @details WIC/DDS ãƒ­ãƒ¼ãƒ€ã‚’ç”¨ã„ãŸãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ã€ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ç”Ÿæˆã€è§£æ”¾å‡¦ç†ã€
+ *          ãŠã‚ˆã³ `ID3D11ShaderResourceView` ã®å–å¾—ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 
 /**
- * @brief “Ç‚İ‚İÏ‚İ SRV ‚ÌŠÈˆÕƒLƒƒƒbƒVƒ…B
- * @details “¯ˆêƒtƒ@ƒCƒ‹ƒpƒX‚É‘Î‚µ‚Ä SRV ‚ğÄ—˜—p‚·‚é–Ú“I‚Ìƒ}ƒbƒv‚Å‚·B
+ * @brief èª­ã¿è¾¼ã¿æ¸ˆã¿ SRV ã®ç°¡æ˜“ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã€‚
+ * @details åŒä¸€ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã«å¯¾ã—ã¦ SRV ã‚’å†åˆ©ç”¨ã™ã‚‹ç›®çš„ã®ãƒãƒƒãƒ—ã§ã™ã€‚
  */
 static map<wstring, ComPtr<ID3D11ShaderResourceView>> resources;
 
 /**
- * @brief ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ‚Ü‚·B
- * @param device D3D11 ƒfƒoƒCƒXB
- * @param filename ƒtƒ@ƒCƒ‹ƒpƒXiUTF-16jB
- * @param shader_resource_view ¶¬‚³‚ê‚½ SRV ‚Ìo—ÍæB
- * @param texture2d_desc “Ç‚İ‚ñ‚¾ƒeƒNƒXƒ`ƒƒ‚Ì‹Lqqio—ÍjB
- * @return ¬Œ÷ S_OKA¸”s‚Í DirectX ‚ÌƒGƒ‰[ƒR[ƒhB
+ * @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã¾ã™ã€‚
+ * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
+ * @param filename ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ï¼ˆUTF-16ï¼‰ã€‚
+ * @param shader_resource_view ç”Ÿæˆã•ã‚ŒãŸ SRV ã®å‡ºåŠ›å…ˆã€‚
+ * @param texture2d_desc èª­ã¿è¾¼ã‚“ã ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®è¨˜è¿°å­ï¼ˆå‡ºåŠ›ï¼‰ã€‚
+ * @return æˆåŠŸæ™‚ S_OKã€å¤±æ•—æ™‚ã¯ DirectX ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã€‚
  */
 HRESULT LoadTextureFromFile(ID3D11Device* device, const wchar_t* filename,
 	ID3D11ShaderResourceView** shader_resource_view, D3D11_TEXTURE2D_DESC* texture2d_desc);
 
 /**
- * @brief ‚·‚×‚Ä‚ÌƒeƒNƒXƒ`ƒƒiƒLƒƒƒbƒVƒ…j‚ğ‰ğ•ú‚µ‚Ü‚·B
+ * @brief ã™ã¹ã¦ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ï¼ˆã‚­ãƒ£ãƒƒã‚·ãƒ¥ï¼‰ã‚’è§£æ”¾ã—ã¾ã™ã€‚
  */
 void ReleaseAllTextures();
 
 /**
- * @brief w’èF‚Ìƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ‚ğ¶¬‚µ‚Ü‚·B
- * @param device D3D11 ƒfƒoƒCƒXB
- * @param shader_resource_view ¶¬‚³‚ê‚½ SRV ‚Ìo—ÍæB
- * @param value RGBA ‚ğ 0xAABBGGRR Œ`®‚Åw’èB
- * @param dimension ³•ûƒeƒNƒXƒ`ƒƒ‚Ìˆê•Ó‚ÌƒsƒNƒZƒ‹”B
- * @return ¬Œ÷ S_OKA¸”s‚Í DirectX ‚ÌƒGƒ‰[ƒR[ƒhB
+ * @brief æŒ‡å®šè‰²ã®ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+ * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
+ * @param shader_resource_view ç”Ÿæˆã•ã‚ŒãŸ SRV ã®å‡ºåŠ›å…ˆã€‚
+ * @param value RGBA ã‚’ 0xAABBGGRR å½¢å¼ã§æŒ‡å®šã€‚
+ * @param dimension æ­£æ–¹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ä¸€è¾ºã®ãƒ”ã‚¯ã‚»ãƒ«æ•°ã€‚
+ * @return æˆåŠŸæ™‚ S_OKã€å¤±æ•—æ™‚ã¯ DirectX ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã€‚
  */
 HRESULT MakeDummyTexture(ID3D11Device* device, ID3D11ShaderResourceView** shader_resource_view,
 	DWORD value/*0xAABBGGRR*/, UINT dimension);
 
 /**
- * @brief ƒƒ‚ƒŠã‚Ì‰æ‘œ‚©‚çƒeƒNƒXƒ`ƒƒ‚ğ¶¬‚µ‚Ü‚·B
- * @param device D3D11 ƒfƒoƒCƒXB
- * @param data ‰æ‘œƒf[ƒ^æ“ªƒ|ƒCƒ“ƒ^B
- * @param size ƒoƒCƒgƒTƒCƒYB
- * @param shaderResourceView ¶¬‚³‚ê‚½ SRV ‚Ìo—ÍæB
- * @return ¬Œ÷ S_OKA¸”s‚Í DirectX ‚ÌƒGƒ‰[ƒR[ƒhB
+ * @brief ãƒ¡ãƒ¢ãƒªä¸Šã®ç”»åƒã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+ * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
+ * @param data ç”»åƒãƒ‡ãƒ¼ã‚¿å…ˆé ­ãƒã‚¤ãƒ³ã‚¿ã€‚
+ * @param size ãƒã‚¤ãƒˆã‚µã‚¤ã‚ºã€‚
+ * @param shaderResourceView ç”Ÿæˆã•ã‚ŒãŸ SRV ã®å‡ºåŠ›å…ˆã€‚
+ * @return æˆåŠŸæ™‚ S_OKã€å¤±æ•—æ™‚ã¯ DirectX ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã€‚
  */
 HRESULT LoadTextureFromMemory(ID3D11Device* device, const void* data, size_t size, ID3D11ShaderResourceView** shaderResourceView);
 
 
 /**
- * @brief GPUƒŠƒ\[ƒX‚ÌŠî’êƒNƒ‰ƒXB
- * @details GPUƒŠƒ\[ƒX‚Ì‹¤’ÊƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’è‹`‚µ‚Ü‚·B«—ˆ“I‚ÉAƒeƒNƒXƒ`ƒƒˆÈŠO‚Ì‘Œ¹‚à‚±‚±‚©‚ç”h¶‚³‚¹‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+ * @brief GPUãƒªã‚½ãƒ¼ã‚¹ã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details GPUãƒªã‚½ãƒ¼ã‚¹ã®å…±é€šã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚’å®šç¾©ã—ã¾ã™ã€‚å°†æ¥çš„ã«ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ä»¥å¤–ã®è³‡æºã‚‚ã“ã“ã‹ã‚‰æ´¾ç”Ÿã•ã›ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
  */
 class GpuResource
 {
 public:
 	virtual ~GpuResource() = default;
-	// GPUƒŠƒ\[ƒX‚Ì‰ğ•ú
+	// GPUãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾
 	//virtual void Release() = 0;
 };
 
-// ƒeƒNƒXƒ`ƒƒ‚ÌƒZƒ}ƒ“ƒeƒBƒNƒXi—p“rj‚ğ•\‚·—ñ‹“Œ^
+// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ï¼ˆç”¨é€”ï¼‰ã‚’è¡¨ã™åˆ—æŒ™å‹
 enum class TextureSemantic
 {
-	Default,    // ’Êí‚ÌƒJƒ‰[AƒƒCƒ“‰æ‘œ
-	Depth,      // [“x (ShadowMap, Z-Buffer)
-	Normal,     // –@ü (G-Buffer, NormalMap)
-	Position,   // À•W (G-Buffer)
-	Velocity,   // ƒ‚[ƒVƒ‡ƒ“ƒxƒNƒgƒ‹
-	Metallic,   // ƒƒ^ƒŠƒbƒN
-	Roughness,  // ƒ‰ƒtƒlƒX
+	Default,    // é€šå¸¸ã®ã‚«ãƒ©ãƒ¼ã€ãƒ¡ã‚¤ãƒ³ç”»åƒ
+	Depth,      // æ·±åº¦ (ShadowMap, Z-Buffer)
+	Normal,     // æ³•ç·š (G-Buffer, NormalMap)
+	Position,   // åº§æ¨™ (G-Buffer)
+	Velocity,   // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãƒ™ã‚¯ãƒˆãƒ«
+	Metallic,   // ãƒ¡ã‚¿ãƒªãƒƒã‚¯
+	Roughness,  // ãƒ©ãƒ•ãƒã‚¹
 	AmbientOcclusion, // AO
-	Custom      // ƒ†[ƒU[’è‹`
+	Custom      // ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©
 };
 
-// ƒeƒNƒXƒ`ƒƒ‚ÌŸŒ³‚ğ•\‚·—ñ‹“Œ^
+// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æ¬¡å…ƒã‚’è¡¨ã™åˆ—æŒ™å‹
 enum class TextureDimension
 {
 	Unknown,
-	Texture1D, // 1D ƒeƒNƒXƒ`ƒƒ (ƒ‰ƒCƒ“ƒeƒNƒXƒ`ƒƒAƒf[ƒ^ƒoƒbƒtƒ@)
-	Texture2D, // 2D ƒeƒNƒXƒ`ƒƒ (ˆê”Ê“I‚ÈƒeƒNƒXƒ`ƒƒAƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgA[“xƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@)
-	Texture3D, // 3D ƒeƒNƒXƒ`ƒƒ (ƒ{ƒŠƒ…[ƒ€ƒeƒNƒXƒ`ƒƒA3D ƒf[ƒ^)
-	TextureCube, // ƒLƒ…[ƒuƒ}ƒbƒv (ŠÂ‹«ƒ}ƒbƒsƒ“ƒOAƒXƒJƒCƒ{ƒbƒNƒX)
-	Texture2DArray, // 2DƒeƒNƒXƒ`ƒƒ”z—ñ (ƒJƒXƒP[ƒhƒVƒƒƒhƒEAƒCƒ“ƒXƒ^ƒ“ƒVƒ“ƒO‚È‚Ç)
-	TextureCubeArray, // ƒLƒ…[ƒuƒ}ƒbƒv”z—ñ
-	// ‚»‚Ì‘¼‚Ì“Áê‚ÈŸŒ³ƒ^ƒCƒv‚ğ’Ç‰Á‰Â”\
+	Texture1D, // 1D ãƒ†ã‚¯ã‚¹ãƒãƒ£ (ãƒ©ã‚¤ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€ãƒ‡ãƒ¼ã‚¿ãƒãƒƒãƒ•ã‚¡)
+	Texture2D, // 2D ãƒ†ã‚¯ã‚¹ãƒãƒ£ (ä¸€èˆ¬çš„ãªãƒ†ã‚¯ã‚¹ãƒãƒ£ã€ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã€æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡)
+	Texture3D, // 3D ãƒ†ã‚¯ã‚¹ãƒãƒ£ (ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€3D ãƒ‡ãƒ¼ã‚¿)
+	TextureCube, // ã‚­ãƒ¥ãƒ¼ãƒ–ãƒãƒƒãƒ— (ç’°å¢ƒãƒãƒƒãƒ”ãƒ³ã‚°ã€ã‚¹ã‚«ã‚¤ãƒœãƒƒã‚¯ã‚¹)
+	Texture2DArray, // 2Dãƒ†ã‚¯ã‚¹ãƒãƒ£é…åˆ— (ã‚«ã‚¹ã‚±ãƒ¼ãƒ‰ã‚·ãƒ£ãƒ‰ã‚¦ã€ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚·ãƒ³ã‚°ãªã©)
+	TextureCubeArray, // ã‚­ãƒ¥ãƒ¼ãƒ–ãƒãƒƒãƒ—é…åˆ—
+	// ãã®ä»–ã®ç‰¹æ®Šãªæ¬¡å…ƒã‚¿ã‚¤ãƒ—ã‚’è¿½åŠ å¯èƒ½
 };
 
 //enum class TextureFilterMode
 //{
-//	Point = 0, // •âŠÔ‚È‚µ (ƒhƒbƒgŠGAƒf[ƒ^ƒoƒbƒtƒ@)
-//	Bilinear, // üŒ`•âŠÔ (ˆê”Ê“I‚ÈƒeƒNƒXƒ`ƒƒ)
-//	Anisotropic // ˆÙ•û«ƒtƒBƒ‹ƒ^ƒŠƒ“ƒO (Î‚ß‚©‚ç‚ÌƒeƒNƒXƒ`ƒƒ•\¦‚É—LŒø)
+//	Point = 0, // è£œé–“ãªã— (ãƒ‰ãƒƒãƒˆçµµã€ãƒ‡ãƒ¼ã‚¿ãƒãƒƒãƒ•ã‚¡)
+//	Bilinear, // ç·šå½¢è£œé–“ (ä¸€èˆ¬çš„ãªãƒ†ã‚¯ã‚¹ãƒãƒ£)
+//	Anisotropic // ç•°æ–¹æ€§ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚° (æ–œã‚ã‹ã‚‰ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£è¡¨ç¤ºã«æœ‰åŠ¹)
 //};
 //
 //enum class TextureWrapMode
 //{
-//	Repeat = 0, // ŒJ‚è•Ô‚µ (ƒfƒtƒHƒ‹ƒg)
-//	Clamp,      // ƒNƒ‰ƒ“ƒv (’[‚ÌF‚ğL‚Î‚·)
-//	Mirror,     // ”½“]ŒJ‚è•Ô‚µ (ƒ~ƒ‰[ƒŠƒ“ƒO)
-//	Border      // ƒ{[ƒ_[ (w’èF‚Å‹«ŠE‚ğ“h‚è‚Â‚Ô‚·)
+//	Repeat = 0, // ç¹°ã‚Šè¿”ã— (ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ)
+//	Clamp,      // ã‚¯ãƒ©ãƒ³ãƒ— (ç«¯ã®è‰²ã‚’ä¼¸ã°ã™)
+//	Mirror,     // åè»¢ç¹°ã‚Šè¿”ã— (ãƒŸãƒ©ãƒ¼ãƒªãƒ³ã‚°)
+//	Border      // ãƒœãƒ¼ãƒ€ãƒ¼ (æŒ‡å®šè‰²ã§å¢ƒç•Œã‚’å¡—ã‚Šã¤ã¶ã™)
 //};
 
 /**
- * @brief ƒeƒNƒXƒ`ƒƒ‚ÌƒCƒ“ƒ^ƒtƒF[ƒXƒNƒ‰ƒXB
- * @details GPUƒŠƒ\[ƒX‚Æ‚µ‚Ä‚ÌƒeƒNƒXƒ`ƒƒ‚Ì‹¤’ÊƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’è‹`‚µ‚Ü‚·B
+ * @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ã€‚
+ * @details GPUãƒªã‚½ãƒ¼ã‚¹ã¨ã—ã¦ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å…±é€šã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚’å®šç¾©ã—ã¾ã™ã€‚
  */
 class Texture : public GpuResource
 {
@@ -131,50 +131,50 @@ public:
 	virtual ~Texture() = default;
 	
 	/**
-	 * @brief ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ğæ“¾‚µ‚Ü‚·B
-	 * @param semantic ƒeƒNƒXƒ`ƒƒ‚ÌƒZƒ}ƒ“ƒeƒBƒNƒXi—p“rjBŒp³æ‚ÅAƒZƒ}ƒ“ƒeƒBƒNƒX‚É‰‚¶‚½ˆÙ‚È‚é SRV ‚ğ•Ô‚·‚±‚Æ‚ª‚Å‚«‚Ü‚·B
-	 * @return ƒeƒNƒXƒ`ƒƒ‚Ì SRVBƒZƒ}ƒ“ƒeƒBƒNƒX‚É‰‚¶‚½ SRV ‚ğ•Ô‚·‚±‚Æ‚ª‚Å‚«‚Ü‚·‚ªAŒ»ó‚Í’Pˆê‚Ì SRV ‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @param semantic ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ï¼ˆç”¨é€”ï¼‰ã€‚ç¶™æ‰¿å…ˆã§ã€ã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ã«å¿œã˜ãŸç•°ãªã‚‹ SRV ã‚’è¿”ã™ã“ã¨ãŒã§ãã¾ã™ã€‚
+	 * @return ãƒ†ã‚¯ã‚¹ãƒãƒ£ã® SRVã€‚ã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ã«å¿œã˜ãŸ SRV ã‚’è¿”ã™ã“ã¨ãŒã§ãã¾ã™ãŒã€ç¾çŠ¶ã¯å˜ä¸€ã® SRV ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	virtual ID3D11ShaderResourceView* GetSRV(TextureSemantic semantic) const = 0;
 
 	/**
-	 * @brief ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ÌƒAƒhƒŒƒX‚ğæ“¾‚µ‚Ü‚·iAPI ŒÄ‚Ño‚µ—pjB
-	 * @param semantic ƒeƒNƒXƒ`ƒƒ‚ÌƒZƒ}ƒ“ƒeƒBƒNƒXi—p“rjBŒp³æ‚ÅAƒZƒ}ƒ“ƒeƒBƒNƒX‚É‰‚¶‚½ˆÙ‚È‚é SRV ƒAƒhƒŒƒX‚ğ•Ô‚·‚±‚Æ‚ª‚Å‚«‚Ü‚·B
-	 * @return ƒeƒNƒXƒ`ƒƒ‚Ì SRV ‚ÌƒAƒhƒŒƒXBƒZƒ}ƒ“ƒeƒBƒNƒX‚É‰‚¶‚½ SRV ƒAƒhƒŒƒX‚ğ•Ô‚·‚±‚Æ‚ª‚Å‚«‚Ü‚·‚ªAŒ»ó‚Í’Pˆê‚Ì SRV ƒAƒhƒŒƒX‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã—ã¾ã™ï¼ˆAPI å‘¼ã³å‡ºã—ç”¨ï¼‰ã€‚
+	 * @param semantic ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ï¼ˆç”¨é€”ï¼‰ã€‚ç¶™æ‰¿å…ˆã§ã€ã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ã«å¿œã˜ãŸç•°ãªã‚‹ SRV ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ã“ã¨ãŒã§ãã¾ã™ã€‚
+	 * @return ãƒ†ã‚¯ã‚¹ãƒãƒ£ã® SRV ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚ã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ã«å¿œã˜ãŸ SRV ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ã“ã¨ãŒã§ãã¾ã™ãŒã€ç¾çŠ¶ã¯å˜ä¸€ã® SRV ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	virtual ID3D11ShaderResourceView** GetSRVAddress(TextureSemantic semantic) = 0;
 
 	/**
-	 * @brief ƒeƒNƒXƒ`ƒƒ‚ÌŸŒ³‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒeƒNƒXƒ`ƒƒ‚ÌŸŒ³BŒp³æ‚ÅAƒeƒNƒXƒ`ƒƒ‚Ìí—Ş‚É‰‚¶‚½ŸŒ³‚ğ•Ô‚·‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+	 * @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æ¬¡å…ƒã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æ¬¡å…ƒã€‚ç¶™æ‰¿å…ˆã§ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¨®é¡ã«å¿œã˜ãŸæ¬¡å…ƒã‚’è¿”ã™ã“ã¨ãŒã§ãã¾ã™ã€‚
 	 */
 	virtual TextureDimension GetDimension() const = 0;
 };
 
 /**
- * @brief 2D ƒeƒNƒXƒ`ƒƒ‚ÌƒCƒ“ƒ^ƒtƒF[ƒXƒNƒ‰ƒXB
- * @details `Texture` ‚ğŒp³‚µA2D ƒeƒNƒXƒ`ƒƒ“Á—L‚ÌƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’è‹`‚µ‚Ü‚·B
+ * @brief 2D ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ã€‚
+ * @details `Texture` ã‚’ç¶™æ‰¿ã—ã€2D ãƒ†ã‚¯ã‚¹ãƒãƒ£ç‰¹æœ‰ã®ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã‚’å®šç¾©ã—ã¾ã™ã€‚
  */
 class Texture2D : public Texture
 {
 public:
 	Texture2D() = default;
 	virtual ~Texture2D() = default;
-	/** @brief 2D ƒeƒNƒXƒ`ƒƒ‹Lqq‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief 2D ãƒ†ã‚¯ã‚¹ãƒãƒ£è¨˜è¿°å­ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	virtual const D3D11_TEXTURE2D_DESC& GetDesc() const = 0;
-	/** @brief ƒeƒNƒXƒ`ƒƒ‚ÌŸŒ³‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æ¬¡å…ƒã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	TextureDimension GetDimension() const override { return TextureDimension::Texture2D; }
 };
 
 /**
- * @brief ¶‚Ì SRV ‚Æ‹Lqq‚ğ‚Â 2D ƒeƒNƒXƒ`ƒƒƒNƒ‰ƒXB
- * @details ŠO•”‚Å¶¬‚³‚ê‚½ SRV ‚Æ‹Lqq‚ğ’¼Ú•Û‚µA’ñ‹Ÿ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX‚Å‚·B
- *          ƒtƒ@ƒCƒ‹‚©‚ç‚Ì“Ç‚İ‚İ‚âƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ¶¬‚Ís‚í‚¸A’Pƒ‚É SRV ‚Æ‹Lqq‚ğŠÇ—‚µ‚Ü‚·B
+ * @brief ç”Ÿã® SRV ã¨è¨˜è¿°å­ã‚’æŒã¤ 2D ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¯ãƒ©ã‚¹ã€‚
+ * @details å¤–éƒ¨ã§ç”Ÿæˆã•ã‚ŒãŸ SRV ã¨è¨˜è¿°å­ã‚’ç›´æ¥ä¿æŒã—ã€æä¾›ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
+ *          ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®èª­ã¿è¾¼ã¿ã‚„ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ç”Ÿæˆã¯è¡Œã‚ãšã€å˜ç´”ã« SRV ã¨è¨˜è¿°å­ã‚’ç®¡ç†ã—ã¾ã™ã€‚
  */
 class RawTexture2D : public Texture2D
 {
 public:
-	/** @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^BSRV ‚Æ‹Lqq‚ğ’¼Úó‚¯æ‚è‚Ü‚·B*/
+	/** @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚SRV ã¨è¨˜è¿°å­ã‚’ç›´æ¥å—ã‘å–ã‚Šã¾ã™ã€‚*/
 	RawTexture2D(ID3D11ShaderResourceView* srv, const D3D11_TEXTURE2D_DESC& desc)
 		: m_Srv(srv), m_Desc(desc) {
 	}
@@ -186,12 +186,12 @@ public:
 	}
 
 	RawTexture2D& operator=(const RawTexture2D&) = delete;
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^BSRV ‚Í ComPtr ‚ÅŠÇ—‚³‚ê‚Ä‚¢‚é‚½‚ßA©“®“I‚É‰ğ•ú‚³‚ê‚Ü‚·B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚SRV ã¯ ComPtr ã§ç®¡ç†ã•ã‚Œã¦ã„ã‚‹ãŸã‚ã€è‡ªå‹•çš„ã«è§£æ”¾ã•ã‚Œã¾ã™ã€‚*/
 	virtual ~RawTexture2D() = default;
 
-	/** @brief SRV ‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief SRV ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	ID3D11ShaderResourceView* GetSRV(TextureSemantic semantic = TextureSemantic::Default) const override { return m_Srv.Get(); }
-	/** @brief SRV ‚ÌƒAƒhƒŒƒX‚ğæ“¾‚µ‚Ü‚·iAPI ŒÄ‚Ño‚µ—pjB*/
+	/** @brief SRV ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã—ã¾ã™ï¼ˆAPI å‘¼ã³å‡ºã—ç”¨ï¼‰ã€‚*/
 	ID3D11ShaderResourceView** GetSRVAddress(TextureSemantic semantic = TextureSemantic::Default) override { return m_Srv.GetAddressOf(); }
 
 	const D3D11_TEXTURE2D_DESC& GetDesc() const override { return m_Desc; }
@@ -203,52 +203,52 @@ private:
 
 
 /**
- * @brief ƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚ñ‚¾ƒeƒNƒXƒ`ƒƒ‚ğ•\‚·ƒNƒ‰ƒXB
- * @details `Resource` ‚Æ `Texture` ‚ğŒp³‚µAƒtƒ@ƒCƒ‹ƒpƒX‚©‚ç‚Ì“Ç‚İ‚İAƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ¶¬A‰ğ•úˆ—A
- *          ‚¨‚æ‚Ñ SRV ‚Æ‹Lqq‚ÌŠÇ—‚ğs‚¢‚Ü‚·B
+ * @brief ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚“ã ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¡¨ã™ã‚¯ãƒ©ã‚¹ã€‚
+ * @details `Resource` ã¨ `Texture` ã‚’ç¶™æ‰¿ã—ã€ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‹ã‚‰ã®èª­ã¿è¾¼ã¿ã€ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ç”Ÿæˆã€è§£æ”¾å‡¦ç†ã€
+ *          ãŠã‚ˆã³ SRV ã¨è¨˜è¿°å­ã®ç®¡ç†ã‚’è¡Œã„ã¾ã™ã€‚
  */
 class AssetTexture : public Texture2D, public Resource
 {
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	AssetTexture() = default;
 
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B“à•” `Release()` ‚ğŒÄ‚Ñ‚Ü‚·B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚å†…éƒ¨ `Release()` ã‚’å‘¼ã³ã¾ã™ã€‚*/
 	virtual ~AssetTexture() noexcept override { Release(); }
 
-	/** @brief ƒpƒX‚©‚çƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚İ‚Ü‚·B*/
+	/** @brief ãƒ‘ã‚¹ã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã¿ã¾ã™ã€‚*/
 	bool LoadFromFile(const std::string& filePath) override;
-	/** @brief ƒƒCƒh•¶šƒpƒX”Å‚Ì“Ç‚İ‚İB*/
+	/** @brief ãƒ¯ã‚¤ãƒ‰æ–‡å­—ãƒ‘ã‚¹ç‰ˆã®èª­ã¿è¾¼ã¿ã€‚*/
 	bool Load(ID3D11Device* device, const std::wstring& filePath);
 
 	bool Load(ID3D11Device* device, const std::filesystem::path& filePath);
 
-	/** @brief SRV ‚Æ‹Lqq‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief SRV ã¨è¨˜è¿°å­ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	void SetSRV(ID3D11ShaderResourceView* srv, const D3D11_TEXTURE2D_DESC& desc) {
 		m_Srv = srv;
 		m_Desc = desc;
 	}
 
 	/**
-	 * @brief ƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ‚ğ¶¬‚µ‚Ü‚·B
-	 * @param device D3D11 ƒfƒoƒCƒXB
-	 * @param value RGBA ‚ğ 0xAABBGGRR Œ`®‚Åw’èB
-	 * @param dimension ³•ûƒeƒNƒXƒ`ƒƒ‚Ìˆê•Ó‚ÌƒsƒNƒZƒ‹”B
+	 * @brief ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
+	 * @param value RGBA ã‚’ 0xAABBGGRR å½¢å¼ã§æŒ‡å®šã€‚
+	 * @param dimension æ­£æ–¹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ä¸€è¾ºã®ãƒ”ã‚¯ã‚»ãƒ«æ•°ã€‚
 	 */
 	bool MakeDummy(ID3D11Device* device, DWORD value = 0xFFFFFFFF, UINT dimension = 16);
-	/** @brief SRV ‚Æ‹Lqq‚ğ‰ğ•ú‚µ‚Ü‚·B*/
+	/** @brief SRV ã¨è¨˜è¿°å­ã‚’è§£æ”¾ã—ã¾ã™ã€‚*/
 	void Release();
 
-	/** @brief SRV ‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief SRV ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	ID3D11ShaderResourceView* GetSRV(TextureSemantic semantic = TextureSemantic::Default) const override { return m_Srv.Get(); }
-	/** @brief SRV ‚ÌƒAƒhƒŒƒX‚ğæ“¾‚µ‚Ü‚·iAPI ŒÄ‚Ño‚µ—pjB*/
+	/** @brief SRV ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã—ã¾ã™ï¼ˆAPI å‘¼ã³å‡ºã—ç”¨ï¼‰ã€‚*/
 	ID3D11ShaderResourceView** GetSRVAddress(TextureSemantic semantic = TextureSemantic::Default) override { return m_Srv.GetAddressOf(); }
-	/** @brief 2D ƒeƒNƒXƒ`ƒƒ‹Lqq‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief 2D ãƒ†ã‚¯ã‚¹ãƒãƒ£è¨˜è¿°å­ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	const D3D11_TEXTURE2D_DESC& GetDesc() const override { return m_Desc; }
 
 private:
-	/** @brief ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã€‚*/
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Srv = nullptr;
-	/** @brief ƒeƒNƒXƒ`ƒƒ‹LqqB*/
+	/** @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£è¨˜è¿°å­ã€‚*/
 	D3D11_TEXTURE2D_DESC m_Desc{};
 };

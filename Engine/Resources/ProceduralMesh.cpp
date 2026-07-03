@@ -31,52 +31,52 @@ namespace ProceduralMesh
 	}
 
 
-	// ƒNƒƒbƒhilŠpŒ`jƒƒbƒVƒ…‚Ìì¬
+	// ã‚¯ãƒ¯ãƒƒãƒ‰ï¼ˆå››è§’å½¢ï¼‰ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	std::shared_ptr<Mesh> CreateQuad(float width, float height)
 	{
 		auto device = Graphics::GetDevice();
-		// ’¸“_ƒf[ƒ^‚Ìì¬
+		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 		struct Vertex {
-			float x, y, z; // ˆÊ’u
-			float u, v;    // UVÀ•W
+			float x, y, z; // ä½ç½®
+			float u, v;    // UVåº§æ¨™
 		};
 		std::vector<Vertex> vertices = {
-			{-width / 2, -height / 2, 0.0f, 0.0f, 1.0f}, // ¶‰º
-			{ width / 2, -height / 2, 0.0f, 1.0f, 1.0f}, // ‰E‰º
-			{ width / 2,  height / 2, 0.0f, 1.0f, 0.0f}, // ‰Eã
-			{-width / 2,  height / 2, 0.0f, 0.0f, 0.0f}  // ¶ã
+			{-width / 2, -height / 2, 0.0f, 0.0f, 1.0f}, // å·¦ä¸‹
+			{ width / 2, -height / 2, 0.0f, 1.0f, 1.0f}, // å³ä¸‹
+			{ width / 2,  height / 2, 0.0f, 1.0f, 0.0f}, // å³ä¸Š
+			{-width / 2,  height / 2, 0.0f, 0.0f, 0.0f}  // å·¦ä¸Š
 		};
-		// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ìì¬i2‚Â‚ÌOŠpŒ`‚ÅƒNƒƒbƒh‚ğ\¬j
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆï¼ˆ2ã¤ã®ä¸‰è§’å½¢ã§ã‚¯ãƒ¯ãƒƒãƒ‰ã‚’æ§‹æˆï¼‰
 		std::vector<uint32_t> indices = {
 			0, 1, 2,
 			2, 3, 0
 		};
-		// ƒƒbƒVƒ…‚Ìİ’è
+		// ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		auto mesh = std::make_shared<Mesh>();
 		mesh->vertexStride = sizeof(Vertex);
 		mesh->indexFormat = DXGI_FORMAT_R32_UINT;
 		
-		// ƒoƒbƒtƒ@‚Ìì¬
+		// ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 		CreateComBuffers(device, vertices.data(), vertices.size() * sizeof(Vertex), indices.data(), indices.size() * sizeof(uint32_t), mesh);
 
-		// ƒTƒuƒƒbƒVƒ…‚Ìİ’è
+		// ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		mesh->subMeshes.push_back({ static_cast<uint32_t>(indices.size()), 0, -1 });
 
-		// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌŒvZ
+		// ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®è¨ˆç®—
 		mesh->localBounds.Encapsulate({ -width / 2, -height / 2, 0.0f });
 		mesh->localBounds.Encapsulate({ width / 2, height / 2, 0.0f });
 
 		return mesh;
 	}
 
-	// ƒvƒŒ[ƒ“ƒƒbƒVƒ…‚Ìì¬
+	// ãƒ—ãƒ¬ãƒ¼ãƒ³ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	std::shared_ptr<Mesh> CreatePlane(float width, float height, uint32_t widthSegments, uint32_t heightSegments)
 	{
 		auto device = Graphics::GetDevice();
-		// ’¸“_ƒf[ƒ^‚Ìì¬
+		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 		struct Vertex {
-			float x, y, z; // ˆÊ’u
-			float u, v;    // UVÀ•W
+			float x, y, z; // ä½ç½®
+			float u, v;    // UVåº§æ¨™
 		};
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
@@ -84,7 +84,7 @@ namespace ProceduralMesh
 		uint32_t indexCount = widthSegments * heightSegments * 6;
 		vertices.reserve(vertexCount);
 		indices.reserve(indexCount);
-		// ’¸“_‚Ì¶¬
+		// é ‚ç‚¹ã®ç”Ÿæˆ
 		for (uint32_t y = 0; y <= heightSegments; y++)
 		{
 			for (uint32_t x = 0; x <= widthSegments; x++)
@@ -94,7 +94,7 @@ namespace ProceduralMesh
 				vertices.push_back({ u * width - width / 2, v * height - height / 2, 0.0f, u, v });
 			}
 		}
-		// ƒCƒ“ƒfƒbƒNƒX‚Ì¶¬
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ç”Ÿæˆ
 		for (uint32_t y = 0; y < heightSegments; y++)
 		{
 			for (uint32_t x = 0; x < widthSegments; x++)
@@ -112,25 +112,25 @@ namespace ProceduralMesh
 			}
 		}
 
-		// ƒƒbƒVƒ…‚Ìİ’è
+		// ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		auto mesh = std::make_shared<Mesh>();
 		mesh->vertexStride = sizeof(Vertex);
 		mesh->indexFormat = DXGI_FORMAT_R32_UINT;
 
-		// ƒoƒbƒtƒ@‚Ìì¬
+		// ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 		CreateComBuffers(device, vertices.data(), vertices.size() * sizeof(Vertex), indices.data(), indices.size() * sizeof(uint32_t), mesh);
 
-		// ƒTƒuƒƒbƒVƒ…‚Ìİ’è
+		// ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		mesh->subMeshes.push_back({ static_cast<uint32_t>(indices.size()), 0, -1 });
 
-		// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌŒvZ
+		// ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®è¨ˆç®—
 		mesh->localBounds.Encapsulate({ -width / 2, -height / 2, 0.0f });
 		mesh->localBounds.Encapsulate({ width / 2, height / 2, 0.0f });
 
 		return mesh;
 	}
 
-	// ƒLƒ…[ƒuƒƒbƒVƒ…‚Ìì¬
+	// ã‚­ãƒ¥ãƒ¼ãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	std::shared_ptr<Mesh> CreateCube(float width, float height, float depth)
 	{
 		struct Vertex
@@ -138,69 +138,69 @@ namespace ProceduralMesh
 			DirectX::XMFLOAT3 position;
 			DirectX::XMFLOAT3 normal;
 		};
-		// ’¸“_ƒf[ƒ^‚Ìì¬iŠe–Ê‚²‚Æ‚É4’¸“_A‡Œv24’¸“_j
+		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆï¼ˆå„é¢ã”ã¨ã«4é ‚ç‚¹ã€åˆè¨ˆ24é ‚ç‚¹ï¼‰
 		Vertex vertices[] = {
-			// ‘O–Ê
+			// å‰é¢
 			{{-width / 2, -height / 2, -depth / 2}, {0, 0, -1}},
 			{{ width / 2, -height / 2, -depth / 2}, {0, 0, -1}},
 			{{ width / 2,  height / 2, -depth / 2}, {0, 0, -1}},
 			{{-width / 2,  height / 2, -depth / 2}, {0, 0, -1}},
-			// ”w–Ê
+			// èƒŒé¢
 			{{-width / 2, -height / 2, depth / 2}, {0, 0, 1}},
 			{{ width / 2, -height / 2, depth / 2}, {0, 0, 1}},
 			{{ width / 2,  height / 2, depth / 2}, {0, 0, 1}},
 			{{-width / 2,  height / 2, depth / 2}, {0, 0, 1}},
-			// ¶–Ê
+			// å·¦é¢
 			{{-width / 2, -height / 2, depth / 2}, {-1, 0, 0}},
 			{{-width / 2, -height / 2, -depth / 2}, {-1, 0, 0}},
 			{{-width / 2, height / 2, -depth / 2}, {-1, 0, 0}},
 			{{-width / 2, height / 2, depth / 2}, {-1, 0, 0}},
-			// ‰E–Ê
+			// å³é¢
 			{{width / 2, -height / 2, -depth / 2}, {1, 0, 0}},
 			{{width / 2, -height / 2, depth / 2}, {1, 0, 0}},
 			{{width / 2, height / 2, depth / 2}, {1, 0, 0}},
 			{{width / 2, height / 2, -depth / 2}, {1, 0, 0}},
-			// ã–Ê
+			// ä¸Šé¢
 			{{-width / 2, height / 2, -depth / 2}, {0, 1, 0}},
 			{{width / 2, height / 2, -depth / 2}, {0, 1, 0}},
 			{{width / 2, height / 2, depth / 2}, {0, 1, 0}},
 			{{-width / 2, height / 2, depth / 2}, {0, 1, 0}},
-			// ‰º–Ê
+			// ä¸‹é¢
 			{{-width / 2, -height / 2, depth / 2}, {0, -1, 0}},
 			{{width / 2, -height / 2, depth / 2}, {0, -1, 0}},
 			{{width / 2, -height / 2, -depth / 2}, {0, -1, 0}},
 			{{-width / 2, -height / 2, -depth / 2}, {0, -1, 0}},
 		};
-		// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ìì¬iŠe–Ê‚²‚Æ‚É2‚Â‚ÌOŠpŒ`A‡Œv36ƒCƒ“ƒfƒbƒNƒXj
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆï¼ˆå„é¢ã”ã¨ã«2ã¤ã®ä¸‰è§’å½¢ã€åˆè¨ˆ36ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰
 		uint32_t indices[] = {
-			0, 1, 2, 2, 3, 0,       // ‘O–Ê
-			4, 5, 6, 6, 7, 4,       // ”w–Ê
-			8, 9, 10, 10, 11, 8,    // ¶–Ê
-			12, 13, 14, 14, 15, 12, // ‰E–Ê
-			16, 17, 18, 18, 19, 16, // ã–Ê
-			20, 21, 22, 22, 23, 20  // ‰º–Ê
+			0, 1, 2, 2, 3, 0,       // å‰é¢
+			4, 5, 6, 6, 7, 4,       // èƒŒé¢
+			8, 9, 10, 10, 11, 8,    // å·¦é¢
+			12, 13, 14, 14, 15, 12, // å³é¢
+			16, 17, 18, 18, 19, 16, // ä¸Šé¢
+			20, 21, 22, 22, 23, 20  // ä¸‹é¢
 		};
 
-		// ƒƒbƒVƒ…‚Ìİ’è
+		// ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		auto device = Graphics::GetDevice();
 		auto mesh = std::make_shared<Mesh>();
 
 		mesh->vertexStride = sizeof(Vertex);
 		mesh->indexFormat = DXGI_FORMAT_R32_UINT;
 
-		// ƒoƒbƒtƒ@‚Ìì¬
+		// ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 		CreateComBuffers(device, vertices, sizeof(vertices), indices, sizeof(indices), mesh);
 
-		// ƒTƒuƒƒbƒVƒ…‚Ìİ’è
+		// ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		mesh->subMeshes.push_back({ static_cast<uint32_t>(std::size(indices)), 0, -1 });
 
-		// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌŒvZ
+		// ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®è¨ˆç®—
 		mesh->localBounds.Encapsulate({ -width / 2, -height / 2, -depth / 2 });
 		mesh->localBounds.Encapsulate({ width / 2, height / 2, depth / 2 });
 		return mesh;
 	}
 
-	// ‹…ƒƒbƒVƒ…‚Ìì¬
+	// çƒãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	std::shared_ptr<Mesh> CreateSphere(float radius, uint32_t latitudeSegments, uint32_t longitudeSegments)
 	{
 		struct Vertex
@@ -250,25 +250,25 @@ namespace ProceduralMesh
 				}
 			}
 		}
-		// ƒƒbƒVƒ…‚Ìİ’è
+		// ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		auto device = Graphics::GetDevice();
 		auto mesh = std::make_shared<Mesh>();
 		mesh->vertexStride = sizeof(Vertex);
 		mesh->indexFormat = DXGI_FORMAT_R32_UINT;
 
-		// ƒoƒbƒtƒ@‚Ìì¬
+		// ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 		CreateComBuffers(device, vertices.data(), vertices.size() * sizeof(Vertex), indices.data(), indices.size() * sizeof(uint32_t), mesh);
 
-		// ƒTƒuƒƒbƒVƒ…‚Ìİ’è
+		// ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		mesh->subMeshes.push_back({ static_cast<uint32_t>(indices.size()), 0, -1 });
 
-		// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌŒvZ
+		// ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®è¨ˆç®—
 		mesh->localBounds.Encapsulate({ -radius, -radius, -radius });
 		mesh->localBounds.Encapsulate({ radius, radius, radius });
 		return mesh;
 	}
 
-	// ƒVƒŠƒ“ƒ_[ƒƒbƒVƒ…‚Ìì¬
+	// ã‚·ãƒªãƒ³ãƒ€ãƒ¼ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	std::shared_ptr<Mesh> CreateCylinder(float radius, float height, uint32_t radialSegments)
 	{
 		struct Vertex
@@ -278,12 +278,12 @@ namespace ProceduralMesh
 		};
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
-		uint32_t vertexCount = (radialSegments + 1) * 2 + 2; // ‰~üã‚Ì’¸“_ + ã–Ê’†S“_ + ‰º–Ê’†S“_
-		uint32_t indexCount = radialSegments * 12; // ‘¤–Ê‚ÌOŠpŒ` + ã–Ê‚ÌOŠpŒ` + ‰º–Ê‚ÌOŠpŒ`
+		uint32_t vertexCount = (radialSegments + 1) * 2 + 2; // å††å‘¨ä¸Šã®é ‚ç‚¹ + ä¸Šé¢ä¸­å¿ƒç‚¹ + ä¸‹é¢ä¸­å¿ƒç‚¹
+		uint32_t indexCount = radialSegments * 12; // å´é¢ã®ä¸‰è§’å½¢ + ä¸Šé¢ã®ä¸‰è§’å½¢ + ä¸‹é¢ã®ä¸‰è§’å½¢
 		vertices.reserve(vertexCount);
 		indices.reserve(indexCount);
 
-		// ’¸“_‚Ì¶¬
+		// é ‚ç‚¹ã®ç”Ÿæˆ
 		for (uint32_t i = 0; i <= radialSegments; i++)
 		{
 			float theta = i * 2 * XM_PI / radialSegments;
@@ -292,7 +292,7 @@ namespace ProceduralMesh
 			vertices.push_back({ {radius * cosTheta, -height / 2, radius * sinTheta}, {cosTheta, 0, sinTheta} });
 			vertices.push_back({ {radius * cosTheta, height / 2, radius * sinTheta}, {cosTheta, 0, sinTheta} });
 		}
-		// ƒCƒ“ƒfƒbƒNƒX‚Ì¶¬
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ç”Ÿæˆ
 		for (uint32_t i = 0; i < radialSegments; i++)
 		{
 			uint32_t i0 = i * 2;
@@ -306,53 +306,53 @@ namespace ProceduralMesh
 			indices.push_back(i2);
 			indices.push_back(i3);
 		}
-		// ã–Ê‚Æ‰º–Ê‚Ì’†S“_‚ğ’Ç‰Á
-		vertices.push_back({ {0, height / 2, 0}, {0, 1, 0} }); // ã–Ê’†S“_
-		vertices.push_back({ {0, -height / 2, 0}, {0, -1, 0} }); // ‰º–Ê’†S“_
+		// ä¸Šé¢ã¨ä¸‹é¢ã®ä¸­å¿ƒç‚¹ã‚’è¿½åŠ 
+		vertices.push_back({ {0, height / 2, 0}, {0, 1, 0} }); // ä¸Šé¢ä¸­å¿ƒç‚¹
+		vertices.push_back({ {0, -height / 2, 0}, {0, -1, 0} }); // ä¸‹é¢ä¸­å¿ƒç‚¹
 		uint32_t topCenterIndex = static_cast<uint32_t>(vertices.size() - 2);
 		uint32_t bottomCenterIndex = static_cast<uint32_t>(vertices.size() - 1);
-		// ã–Ê‚ÌƒCƒ“ƒfƒbƒNƒX¶¬
+		// ä¸Šé¢ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç”Ÿæˆ
 		for (uint32_t i = 0; i < radialSegments; i++)
 		{
-			uint32_t i0 = i * 2 + 1; // ã–Ê‚Ì’¸“_
-			uint32_t i1 = ((i + 1) % (radialSegments + 1)) * 2 + 1; // Ÿ‚Ìã–Ê‚Ì’¸“_
+			uint32_t i0 = i * 2 + 1; // ä¸Šé¢ã®é ‚ç‚¹
+			uint32_t i1 = ((i + 1) % (radialSegments + 1)) * 2 + 1; // æ¬¡ã®ä¸Šé¢ã®é ‚ç‚¹
 			indices.push_back(i0);
 			indices.push_back(i1);
 			indices.push_back(topCenterIndex);
 		}
-		// ‰º–Ê‚ÌƒCƒ“ƒfƒbƒNƒX¶¬
+		// ä¸‹é¢ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç”Ÿæˆ
 		for (uint32_t i = 0; i < radialSegments; i++)
 		{
-			uint32_t i0 = i * 2; // ‰º–Ê‚Ì’¸“_
-			uint32_t i1 = ((i + 1) % (radialSegments + 1)) * 2; // Ÿ‚Ì‰º–Ê‚Ì’¸“_
+			uint32_t i0 = i * 2; // ä¸‹é¢ã®é ‚ç‚¹
+			uint32_t i1 = ((i + 1) % (radialSegments + 1)) * 2; // æ¬¡ã®ä¸‹é¢ã®é ‚ç‚¹
 			indices.push_back(i1);
 			indices.push_back(i0);
 			indices.push_back(bottomCenterIndex);
 		}
 		
-		// ƒƒbƒVƒ…‚Ìİ’è
+		// ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		auto device = Graphics::GetDevice();
 		auto mesh = std::make_shared<Mesh>();
 		mesh->vertexStride = sizeof(Vertex);
 		mesh->indexFormat = DXGI_FORMAT_R32_UINT;
 
-		// ƒoƒbƒtƒ@‚Ìì¬
+		// ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 		CreateComBuffers(device, vertices.data(), vertices.size() * sizeof(Vertex), indices.data(), indices.size() * sizeof(uint32_t), mesh);
 
-		// ƒTƒuƒƒbƒVƒ…‚Ìİ’è
+		// ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		mesh->subMeshes.push_back({ static_cast<uint32_t>(indices.size()), 0, -1 });
 
-		// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌŒvZ
+		// ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®è¨ˆç®—
 		mesh->localBounds.Encapsulate({ -radius, -height / 2, -radius });
 		mesh->localBounds.Encapsulate({ radius, height / 2, radius });
 		return mesh;
 	}
 
-	// ƒJƒvƒZƒ‹ƒƒbƒVƒ…‚Ìì¬
+	// ã‚«ãƒ—ã‚»ãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	std::shared_ptr<Mesh> CreateCapsule(float radius, float height, uint32_t radialSegments, uint32_t heightSegments)
 	{
-		// ƒJƒvƒZƒ‹‚ÍƒVƒŠƒ“ƒ_[‚Æ”¼‹…‚ğ‘g‚İ‡‚í‚¹‚½Œ`ó‚Å‚·B‚±‚±‚Å‚ÍAƒVƒŠƒ“ƒ_[•”•ª‚ğ’†S‚É‚µ‚ÄAã‰º‚É”¼‹…‚ğ’Ç‰Á‚·‚éŒ`‚Å’¸“_‚ÆƒCƒ“ƒfƒbƒNƒX‚ğ¶¬‚µ‚Ü‚·B
-		// ’¸“_ƒf[ƒ^‚Ìì¬
+		// ã‚«ãƒ—ã‚»ãƒ«ã¯ã‚·ãƒªãƒ³ãƒ€ãƒ¼ã¨åŠçƒã‚’çµ„ã¿åˆã‚ã›ãŸå½¢çŠ¶ã§ã™ã€‚ã“ã“ã§ã¯ã€ã‚·ãƒªãƒ³ãƒ€ãƒ¼éƒ¨åˆ†ã‚’ä¸­å¿ƒã«ã—ã¦ã€ä¸Šä¸‹ã«åŠçƒã‚’è¿½åŠ ã™ã‚‹å½¢ã§é ‚ç‚¹ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 		struct Vertex
 		{
 			DirectX::XMFLOAT3 position;
@@ -360,14 +360,14 @@ namespace ProceduralMesh
 		};
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
-		uint32_t cylinderVertexCount = (radialSegments + 1) * 2; // ƒVƒŠƒ“ƒ_[•”•ª‚Ì’¸“_”
-		uint32_t hemisphereVertexCount = (heightSegments + 1) * (radialSegments + 1) * 2; // ã”¼‹…‚Æ‰º”¼‹…‚Ì’¸“_”
+		uint32_t cylinderVertexCount = (radialSegments + 1) * 2; // ã‚·ãƒªãƒ³ãƒ€ãƒ¼éƒ¨åˆ†ã®é ‚ç‚¹æ•°
+		uint32_t hemisphereVertexCount = (heightSegments + 1) * (radialSegments + 1) * 2; // ä¸ŠåŠçƒã¨ä¸‹åŠçƒã®é ‚ç‚¹æ•°
 		uint32_t vertexCount = cylinderVertexCount + hemisphereVertexCount;
-		uint32_t indexCount = radialSegments * 12 + heightSegments * radialSegments * 12; // ƒVƒŠƒ“ƒ_[•”•ª‚ÌƒCƒ“ƒfƒbƒNƒX” + ã”¼‹…‚Æ‰º”¼‹…‚ÌƒCƒ“ƒfƒbƒNƒX”
+		uint32_t indexCount = radialSegments * 12 + heightSegments * radialSegments * 12; // ã‚·ãƒªãƒ³ãƒ€ãƒ¼éƒ¨åˆ†ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•° + ä¸ŠåŠçƒã¨ä¸‹åŠçƒã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°
 		vertices.reserve(vertexCount);
 		indices.reserve(indexCount);
 
-		// ƒVƒŠƒ“ƒ_[•”•ª‚Ì’¸“_¶¬
+		// ã‚·ãƒªãƒ³ãƒ€ãƒ¼éƒ¨åˆ†ã®é ‚ç‚¹ç”Ÿæˆ
 		for (uint32_t i = 0; i <= radialSegments; i++)
 		{
 			float theta = i * 2 * XM_PI / radialSegments;
@@ -376,7 +376,7 @@ namespace ProceduralMesh
 			vertices.push_back({ {radius * cosTheta, -height / 2, radius * sinTheta}, {cosTheta, 0, sinTheta} });
 			vertices.push_back({ {radius * cosTheta, height / 2, radius * sinTheta}, {cosTheta, 0, sinTheta} });
 		}
-		// ƒVƒŠƒ“ƒ_[•”•ª‚ÌƒCƒ“ƒfƒbƒNƒX¶¬
+		// ã‚·ãƒªãƒ³ãƒ€ãƒ¼éƒ¨åˆ†ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç”Ÿæˆ
 		for (uint32_t i = 0; i < radialSegments; i++)
 		{
 			uint32_t i0 = i * 2;
@@ -390,7 +390,7 @@ namespace ProceduralMesh
 			indices.push_back(i2);
 			indices.push_back(i3);
 		}
-		// ã”¼‹…‚Ì’¸“_¶¬
+		// ä¸ŠåŠçƒã®é ‚ç‚¹ç”Ÿæˆ
 		for (uint32_t lat = 0; lat <= heightSegments; lat++)
 		{
 			float phi = lat * XM_PI / (2 * heightSegments);
@@ -407,7 +407,7 @@ namespace ProceduralMesh
 				vertices.push_back({ {radius * x, height / 2 + radius * y, radius * z}, {x, y, z} });
 			}
 		}
-		// ‰º”¼‹…‚Ì’¸“_¶¬
+		// ä¸‹åŠçƒã®é ‚ç‚¹ç”Ÿæˆ
 		for (uint32_t lat = 0; lat <= heightSegments; lat++)
 		{
 			float phi = lat * XM_PI / (2 * heightSegments);
@@ -424,7 +424,7 @@ namespace ProceduralMesh
 				vertices.push_back({ {radius * x, -height / 2 + radius * y, radius * z}, {x, y, z} });
 			}
 		}
-		// ã”¼‹…‚ÌƒCƒ“ƒfƒbƒNƒX¶¬
+		// ä¸ŠåŠçƒã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç”Ÿæˆ
 		for (uint32_t lat = 0; lat < heightSegments; lat++)
 		{
 			for (uint32_t lon = 0; lon < radialSegments; lon++)
@@ -443,8 +443,8 @@ namespace ProceduralMesh
 				indices.push_back(i3);
 			}
 		}
-		// ‰º”¼‹…‚ÌƒCƒ“ƒfƒbƒNƒX¶¬
-		uint32_t topHemisphereVertexCount = (heightSegments + 1) * (radialSegments + 1); // ã”¼‹…‚Ì‚İ‚Ì’¸“_”
+		// ä¸‹åŠçƒã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç”Ÿæˆ
+		uint32_t topHemisphereVertexCount = (heightSegments + 1) * (radialSegments + 1); // ä¸ŠåŠçƒã®ã¿ã®é ‚ç‚¹æ•°
 		for (uint32_t lat = 0; lat < heightSegments; lat++)
 		{
 			for (uint32_t lon = 0; lon < radialSegments; lon++)
@@ -464,19 +464,19 @@ namespace ProceduralMesh
 			}
 		}
 		
-		// ƒƒbƒVƒ…‚Ìİ’è
+		// ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		auto device = Graphics::GetDevice();
 		auto mesh = std::make_shared<Mesh>();
 		mesh->vertexStride = sizeof(Vertex);
 		mesh->indexFormat = DXGI_FORMAT_R32_UINT;
 
-		// ƒoƒbƒtƒ@‚Ìì¬
+		// ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 		CreateComBuffers(device, vertices.data(), vertices.size() * sizeof(Vertex), indices.data(), indices.size() * sizeof(uint32_t), mesh);
 
-		// ƒTƒuƒƒbƒVƒ…‚Ìİ’è
+		// ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š
 		mesh->subMeshes.push_back({ static_cast<uint32_t>(indices.size()), 0, -1 });
 
-		// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌŒvZ
+		// ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®è¨ˆç®—
 		mesh->localBounds.Encapsulate({ -radius, -height / 2, -radius });
 		mesh->localBounds.Encapsulate({ radius, height / 2, radius });
 		return mesh;

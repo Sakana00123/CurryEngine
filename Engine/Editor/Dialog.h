@@ -2,35 +2,35 @@
 
 #include <Windows.h>
 
-// ƒ_ƒCƒAƒƒOƒŠƒUƒ‹ƒg
+// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒªã‚¶ãƒ«ãƒˆ
 enum class DialogResult
 {
 	OK,
 	Cancel
 };
 
-// ƒ_ƒCƒAƒƒO
+// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 class Dialog
 {
 public:
-	// [ƒtƒ@ƒCƒ‹‚ğŠJ‚­]ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ğ•\¦
+	// [ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã]ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
 	static DialogResult OpenFileName(char* filepath, int size, const char* filter = nullptr, const char* title = nullptr, HWND hWnd = NULL, bool multiSelect = false);
 
-	// [ƒtƒ@ƒCƒ‹‚ğ•Û‘¶]ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ğ•\¦
+	// [ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜]ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
 	static DialogResult SaveFileName(char* filepath, int size, const char* filter = nullptr, const char* title = nullptr, const char* ext = nullptr, HWND hWnd = NULL);
 
-	// [ƒfƒBƒŒƒNƒgƒŠ‚ğ‘I‘ğ]ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ğ•\¦
+	// [ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é¸æŠ]ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
 	static DialogResult SelectDirectoryName(char* directoryPath, int size, const char* title = nullptr, HWND hWnd = NULL);
 };
 
-// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚ğ•\¦‚µA‘I‘ğ‚³‚ê‚½ƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Ô‚·i“à•”‚ÅDialogƒNƒ‰ƒX‚ğg—pj
+// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã€é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™ï¼ˆå†…éƒ¨ã§Dialogã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ï¼‰
 char* OpenFileDialog(const char* filter = nullptr, const char* title = nullptr, HWND hWnd = NULL, bool multiSelect = false);
 
-// ƒtƒ@ƒCƒ‹ƒZ[ƒuƒ_ƒCƒAƒƒO‚ğ•\¦‚µA‘I‘ğ‚³‚ê‚½ƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Ô‚·i“à•”‚ÅDialogƒNƒ‰ƒX‚ğg—pj
+// ãƒ•ã‚¡ã‚¤ãƒ«ã‚»ãƒ¼ãƒ–ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã€é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™ï¼ˆå†…éƒ¨ã§Dialogã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ï¼‰
 char* SaveFileDialog(const char* filter = nullptr, const char* title = nullptr, const char* ext = nullptr, HWND hWnd = NULL);
 
-// ƒtƒ@ƒCƒ‹‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦‚µA‘I‘ğ‚³‚ê‚½ƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Ô‚·i“à•”‚ÅDialogƒNƒ‰ƒX‚ğg—pj
+// ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã€é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™ï¼ˆå†…éƒ¨ã§Dialogã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ï¼‰
 char* SelectFileDialog(const char* title = nullptr, const char* filter = nullptr, HWND hWnd = NULL, bool multiSelect = false);
 
-// ƒfƒBƒŒƒNƒgƒŠ‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦‚µA‘I‘ğ‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠƒpƒX‚ğ•Ô‚·i“à•”‚ÅDialogƒNƒ‰ƒX‚ğg—pj
+// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªé¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã€é¸æŠã•ã‚ŒãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹ã‚’è¿”ã™ï¼ˆå†…éƒ¨ã§Dialogã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ï¼‰
 char* SelectDirectoryDialog(const char* title = nullptr, HWND hWnd = NULL);

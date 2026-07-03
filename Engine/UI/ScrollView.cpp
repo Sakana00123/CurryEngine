@@ -29,22 +29,22 @@ void ScrollView::Update(float deltaTime)
 	if (!contentRect)
 		return;
 
-	// ‚±‚±‚Ü‚Å‚Ìˆ—‚Å contentRect ‚ª—LŒø‚Èó‘Ô‚Å‚ ‚ê‚ÎAƒXƒNƒ[ƒ‹ˆ—‚ðs‚¢‚Ü‚·B
-	// ƒ}ƒEƒXƒzƒC[ƒ‹‚Ì“ü—Í‚ðŽæ“¾
+	// ã“ã“ã¾ã§ã®å‡¦ç†ã§ contentRect ãŒæœ‰åŠ¹ãªçŠ¶æ…‹ã§ã‚ã‚Œã°ã€ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«å‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
+	// ãƒžã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ã®å…¥åŠ›ã‚’å–å¾—
 	float scrollDelta = InputSystem::GetWheelDelta();
-	// ƒXƒNƒ[ƒ‹ƒIƒtƒZƒbƒg‚ðXV
+	// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’æ›´æ–°
 	m_scrollPosition.y += (-scrollDelta) * scrollSensitivity;
-	// content ‚ÌˆÊ’u‚ÉƒXƒNƒ[ƒ‹ƒIƒtƒZƒbƒg‚ð”½‰f‚³‚¹‚éˆ—‚ð‚±‚±‚ÉŽÀ‘•‚µ‚Ü‚·B
-	// —á‚¦‚ÎAcontent ‚Ì RectTransform ‚ðŽæ“¾‚µ‚ÄAƒAƒ“ƒJ[‚âƒsƒ{ƒbƒg‚ÉŠî‚Ã‚¢‚ÄˆÊ’u‚ð’²®‚·‚é‚±‚Æ‚ªl‚¦‚ç‚ê‚Ü‚·B
+	// content ã®ä½ç½®ã«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’åæ˜ ã•ã›ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
+	// ä¾‹ãˆã°ã€content ã® RectTransform ã‚’å–å¾—ã—ã¦ã€ã‚¢ãƒ³ã‚«ãƒ¼ã‚„ãƒ”ãƒœãƒƒãƒˆã«åŸºã¥ã„ã¦ä½ç½®ã‚’èª¿æ•´ã™ã‚‹ã“ã¨ãŒè€ƒãˆã‚‰ã‚Œã¾ã™ã€‚
 
-	// ƒXƒNƒ[ƒ‹ˆÊ’u‚Ì§ŒÀi—á: ãŒÀ‚ð 0A‰ºŒÀ‚ð content ‚Ì‚‚³ - viewport ‚Ì‚‚³ ‚Æ‚·‚éê‡j
-	float contentHeight = contentRect->GetWorldSize().y; // content ‚Ì‚‚³
-	float viewportHeight = GetRectTransform()->GetWorldSize().y; // ƒrƒ…[ƒ|[ƒg‚Ì‚‚³
-	// ƒXƒNƒ[ƒ‹ˆÊ’u‚ª‰ºŒÀ‚ð’´‚¦‚È‚¢‚æ‚¤‚É‚·‚éi—á: contentHeight - viewportHeight ˆÈ‰ºj
+	// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ä½ç½®ã®åˆ¶é™ï¼ˆä¾‹: ä¸Šé™ã‚’ 0ã€ä¸‹é™ã‚’ content ã®é«˜ã• - viewport ã®é«˜ã• ã¨ã™ã‚‹å ´åˆï¼‰
+	float contentHeight = contentRect->GetWorldSize().y; // content ã®é«˜ã•
+	float viewportHeight = GetRectTransform()->GetWorldSize().y; // ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®é«˜ã•
+	// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ä½ç½®ãŒä¸‹é™ã‚’è¶…ãˆãªã„ã‚ˆã†ã«ã™ã‚‹ï¼ˆä¾‹: contentHeight - viewportHeight ä»¥ä¸‹ï¼‰
 	float maxScrollY = (std::max)(0.f, contentHeight - viewportHeight);
 
-	m_scrollPosition.y = std::clamp(m_scrollPosition.y, -maxScrollY, 0.0f); // ƒXƒNƒ[ƒ‹ˆÊ’u‚ªãŒÀ‚ð’´‚¦‚È‚¢‚æ‚¤‚É‚·‚éi—á: 0 ˆÈãj
+	m_scrollPosition.y = std::clamp(m_scrollPosition.y, -maxScrollY, 0.0f); // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ä½ç½®ãŒä¸Šé™ã‚’è¶…ãˆãªã„ã‚ˆã†ã«ã™ã‚‹ï¼ˆä¾‹: 0 ä»¥ä¸Šï¼‰
 
-	// Content ‚É”½‰f
+	// Content ã«åæ˜ 
 	contentRect->SetAnchoredPosition(m_scrollPosition);
 }

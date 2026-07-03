@@ -11,7 +11,7 @@ namespace CurryEngine
 	{
 		void ImporterRegistry::Initialize()
 		{
-			// �K�v�ɉ����āA�����Ńf�t�H���g�̃C���|�[�^�[��o�^���邱�Ƃ��ł��܂��B
+			// 必要に応じて、ここでデフォルトのインポーターを登録することができます。
 			Register(AssetType::Texture, std::make_unique<TextureImporter>());
 			Register(AssetType::Model, std::make_unique<ModelImporter>());
 		}

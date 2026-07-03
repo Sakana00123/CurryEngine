@@ -31,18 +31,18 @@ public:
 	GeometricPrimitive(ID3D11Device* device);
 	virtual ~GeometricPrimitive() = default;
 
-	//—§•û‘Ì¶¬
+	//ç«‹æ–¹ä½“ç”Ÿæˆ
 	void CreateCube(ID3D11Device* device);
 
-	//‰~’Œ¶¬
+	//å††æŸ±ç”Ÿæˆ
 	void CreateCylinder(ID3D11Device* device, int segmentCount = 30);
 
 	/// <summary>
-	/// ‹…¶¬
+	/// çƒç”Ÿæˆ
 	/// </summary>
 	/// <param name="device"></param>
-	/// <param name="stackCount">‰¡ü‚Ì•ªŠ„”</param>
-	/// <param name="sliceCount">cü‚Ì•ªŠ„”</param>
+	/// <param name="stackCount">æ¨ªç·šã®åˆ†å‰²æ•°</param>
+	/// <param name="sliceCount">ç¸¦ç·šã®åˆ†å‰²æ•°</param>
 	void CreateSphere(ID3D11Device* device, int stackCount = 10, int sliceCount = 10);
 
 	void Render(ID3D11DeviceContext* immediate_context,

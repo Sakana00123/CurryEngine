@@ -11,12 +11,12 @@ struct EaseData
     float backValue = 1.70158f;//back
 };
 
-// ƒC[ƒWƒ“ƒOŠÖ”
+// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°é–¢æ•°
 struct Easing
 {
 private:
     template <class Ty = double>
-    static constexpr Ty Pai{ static_cast<Ty>(3.141592653589793) }; // ‰~ü—¦
+    static constexpr Ty Pai{ static_cast<Ty>(3.141592653589793) }; // å††å‘¨ç‡
 
     template<typename Ty>
     static constexpr Ty _0 = static_cast<Ty>(0);

@@ -6,24 +6,24 @@
 
 namespace fs = std::filesystem;
 
-// ƒhƒƒbƒvƒ^[ƒQƒbƒg‚É•K—v‚ÈƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğ‚Ü‚Æ‚ß‚½\‘¢‘Ì
+// ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å¿…è¦ãªã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’ã¾ã¨ã‚ãŸæ§‹é€ ä½“
 struct DropTargetCallbacks
 {
-	std::function<bool(const POINTL&)> isOverGrid; // ƒhƒƒbƒv’†‚ÌƒJ[ƒ\ƒ‹‚ªƒAƒZƒbƒgƒOƒŠƒbƒhã‚É‚ ‚é‚©
-	std::function<void(const std::vector<fs::path>&)> onDrop; // ƒhƒƒbƒv‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Ìˆ—
-	std::function<void(bool)> setHovering; // ƒhƒƒbƒvƒ^[ƒQƒbƒg‚ªƒzƒo[ó‘Ô‚©‚Ç‚¤‚©‚ğŠO•”‚É’Ê’m‚·‚éƒR[ƒ‹ƒoƒbƒNiˆø”‚Íƒzƒo[ó‘Ôj
-	std::function<void()> onDragEnter; // ƒhƒƒbƒv‚ªƒOƒŠƒbƒh‚É“ü‚Á‚½‚Æ‚«‚ÌƒR[ƒ‹ƒoƒbƒN
-	std::function<void()> onDragLeave; // ƒhƒƒbƒv‚ªƒOƒŠƒbƒhŠO‚É—£‚ê‚½‚Æ‚«‚ÌƒR[ƒ‹ƒoƒbƒN
+	std::function<bool(const POINTL&)> isOverGrid; // ãƒ‰ãƒ­ãƒƒãƒ—ä¸­ã®ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚¢ã‚»ãƒƒãƒˆã‚°ãƒªãƒƒãƒ‰ä¸Šã«ã‚ã‚‹ã‹
+	std::function<void(const std::vector<fs::path>&)> onDrop; // ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®å‡¦ç†
+	std::function<void(bool)> setHovering; // ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒãƒ›ãƒãƒ¼çŠ¶æ…‹ã‹ã©ã†ã‹ã‚’å¤–éƒ¨ã«é€šçŸ¥ã™ã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ï¼ˆå¼•æ•°ã¯ãƒ›ãƒãƒ¼çŠ¶æ…‹ï¼‰
+	std::function<void()> onDragEnter; // ãƒ‰ãƒ­ãƒƒãƒ—ãŒã‚°ãƒªãƒƒãƒ‰ã«å…¥ã£ãŸã¨ãã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
+	std::function<void()> onDragLeave; // ãƒ‰ãƒ­ãƒƒãƒ—ãŒã‚°ãƒªãƒƒãƒ‰å¤–ã«é›¢ã‚ŒãŸã¨ãã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 };
 
-// ƒhƒƒbƒvƒ^[ƒQƒbƒgƒNƒ‰ƒX
+// ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚¯ãƒ©ã‚¹
 class AssetBrowserDropTarget : public IDropTarget
 {
 public:
 	explicit AssetBrowserDropTarget(const DropTargetCallbacks& callbacks)
 		: refCount_(0), callbacks_(callbacks)	 {}
 
-	// IUnknownƒCƒ“ƒ^[ƒtƒF[ƒX‚ÌÀ‘•
+	// IUnknownã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã®å®Ÿè£…
 	ULONG STDMETHODCALLTYPE AddRef() override { return static_cast<ULONG>(InterlockedIncrement(&refCount_)); }
 	ULONG STDMETHODCALLTYPE Release() override
 	{
@@ -43,7 +43,7 @@ public:
 		return E_NOINTERFACE;
 	}
 
-	// IDropTargetƒCƒ“ƒ^[ƒtƒF[ƒX‚ÌÀ‘•
+	// IDropTargetã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã®å®Ÿè£…
 	HRESULT STDMETHODCALLTYPE DragEnter(
 		IDataObject* pDataObj, DWORD grfKeyState,
 		POINTL pt, DWORD* pdwEffect) override
@@ -80,7 +80,7 @@ public:
             return S_OK;
         }
 
-        // IDataObject ‚©‚çƒtƒ@ƒCƒ‹ƒpƒX‚ğæ‚èo‚·
+        // IDataObject ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’å–ã‚Šå‡ºã™
         FORMATETC fmt = { CF_HDROP, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
         STGMEDIUM stg = {};
         if (SUCCEEDED(pDataObj->GetData(&fmt, &stg)))
@@ -110,7 +110,7 @@ public:
 private:
     void updateHover(POINTL pt) const
     {
-        // ƒXƒNƒŠ[ƒ“À•W‚Í AssetBrowser ‘¤‚Ì assetGridScreenRect ‚Æ”äŠr
+        // ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã¯ AssetBrowser å´ã® assetGridScreenRect ã¨æ¯”è¼ƒ
         callbacks_.setHovering(callbacks_.isOverGrid(pt));
     }
 

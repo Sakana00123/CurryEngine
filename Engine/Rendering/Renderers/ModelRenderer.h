@@ -11,16 +11,16 @@ struct RenderContext;
 
 /**
  * @file ModelRenderer.h
- * @brief AssetModel ‚ğó‚¯æ‚èAƒm[ƒhƒcƒŠ[‚ğ‘–¸‚µ‚Ä•`‰æ‚·‚éƒŒƒ“ƒ_ƒ‰[B
+ * @brief AssetModel ã‚’å—ã‘å–ã‚Šã€ãƒãƒ¼ãƒ‰ãƒ„ãƒªãƒ¼ã‚’èµ°æŸ»ã—ã¦æç”»ã™ã‚‹ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã€‚
  *
- * ‹Œ ModelRenderer ‚©‚çˆÈ‰º‚ğ•ÏXF
- * - ModelAsset ¨ AssetModel
- * - “Æ©ƒoƒbƒtƒ@ƒv[ƒ‹QÆ ¨ MeshData ‚ª’¼Ú‚Â vertexBuffer / indexBuffer ‚ğg—p
- * - materialResourceView / textureResourceViews ‚Ì“Æ©ŠÇ— ¨ Material::Apply() ‚ÉˆÏ÷
- * - staticBatching ‚Í AssetModel::batchedMeshes ‚ª‘¶İ‚·‚é‚©‚Å”»’è
+ * æ—§ ModelRenderer ã‹ã‚‰ä»¥ä¸‹ã‚’å¤‰æ›´ï¼š
+ * - ModelAsset â†’ AssetModel
+ * - ç‹¬è‡ªãƒãƒƒãƒ•ã‚¡ãƒ—ãƒ¼ãƒ«å‚ç…§ â†’ MeshData ãŒç›´æ¥æŒã¤ vertexBuffer / indexBuffer ã‚’ä½¿ç”¨
+ * - materialResourceView / textureResourceViews ã®ç‹¬è‡ªç®¡ç† â†’ Material::Apply() ã«å§”è­²
+ * - staticBatching ã¯ AssetModel::batchedMeshes ãŒå­˜åœ¨ã™ã‚‹ã‹ã§åˆ¤å®š
  *
- * «—ˆ“I‚É‚Í MeshRendereriÃ“Ij‚Æ AnimatoriƒXƒPƒ‹ƒ^ƒ‹j‚É•ª—£—\’èB
- * Œ»ó‚ÍƒvƒŒƒrƒ…[—p‚Æ‚µ‚Ä—¼•û‚ğ‚±‚ÌƒNƒ‰ƒX‚Åˆ—‚·‚éB
+ * å°†æ¥çš„ã«ã¯ MeshRendererï¼ˆé™çš„ï¼‰ã¨ Animatorï¼ˆã‚¹ã‚±ãƒ«ã‚¿ãƒ«ï¼‰ã«åˆ†é›¢äºˆå®šã€‚
+ * ç¾çŠ¶ã¯ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ã¨ã—ã¦ä¸¡æ–¹ã‚’ã“ã®ã‚¯ãƒ©ã‚¹ã§å‡¦ç†ã™ã‚‹ã€‚
  */
 class ModelRenderer
 {
@@ -29,42 +29,42 @@ public:
     ~ModelRenderer() = default;
 
     /**
-     * @brief ƒAƒZƒbƒg‚ğƒZƒbƒg‚µAƒVƒF[ƒ_E’è”ƒoƒbƒtƒ@‚ğ‰Šú‰»‚·‚éB
-     * AssetModel::UploadToGPU() ‚ªÏ‚ñ‚Å‚¢‚È‚¢ê‡‚Í‚±‚±‚ÅŒÄ‚Ño‚·B
+     * @brief ã‚¢ã‚»ãƒƒãƒˆã‚’ã‚»ãƒƒãƒˆã—ã€ã‚·ã‚§ãƒ¼ãƒ€ãƒ»å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚
+     * AssetModel::UploadToGPU() ãŒæ¸ˆã‚“ã§ã„ãªã„å ´åˆã¯ã“ã“ã§å‘¼ã³å‡ºã™ã€‚
      */
     void SetModelAsset(std::shared_ptr<AssetModel> asset);
 
     void Update(float elapsedTime);
     void Draw(RenderContext* rtx);
 
-    // --- ƒAƒjƒ[ƒVƒ‡ƒ“§Œäi«—ˆ Animator ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉˆÚŠÇ—\’èj ---
-    float time = 0.0f;  //!< ƒAƒjƒ[ƒVƒ‡ƒ“Œo‰ßŠÔi•bj
-    float timeRate = 1.0f;  //!< Ä¶‘¬“x”{—¦
-    float animationBlendTime = 1.2f;//!< ƒuƒŒƒ“ƒhŠÔi•bj
-    int   animationIndex = 0;     //!< Ä¶‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX
-    bool  loop = true;  //!< ƒ‹[ƒvÄ¶
+    // --- ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ¶å¾¡ï¼ˆå°†æ¥ Animator ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ç§»ç®¡äºˆå®šï¼‰ ---
+    float time = 0.0f;  //!< ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµŒéæ™‚é–“ï¼ˆç§’ï¼‰
+    float timeRate = 1.0f;  //!< å†ç”Ÿé€Ÿåº¦å€ç‡
+    float animationBlendTime = 1.2f;//!< ãƒ–ãƒ¬ãƒ³ãƒ‰æ™‚é–“ï¼ˆç§’ï¼‰
+    int   animationIndex = 0;     //!< å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+    bool  loop = true;  //!< ãƒ«ãƒ¼ãƒ—å†ç”Ÿ
 
-    std::shared_ptr<AssetModel> m_asset;   //!< ƒ‚ƒfƒ‹ƒAƒZƒbƒg
-    std::shared_ptr<Material>   m_material;//!< •`‰æ‚Ég‚¤ƒ}ƒeƒŠƒAƒ‹iŠO•”‚©‚çã‘‚«‰Âj
+    std::shared_ptr<AssetModel> m_asset;   //!< ãƒ¢ãƒ‡ãƒ«ã‚¢ã‚»ãƒƒãƒˆ
+    std::shared_ptr<Material>   m_material;//!< æç”»ã«ä½¿ã†ãƒãƒ†ãƒªã‚¢ãƒ«ï¼ˆå¤–éƒ¨ã‹ã‚‰ä¸Šæ›¸ãå¯ï¼‰
 
 private:
-    // --- D3D11 ƒIƒuƒWƒFƒNƒg ---
+    // --- D3D11 ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ ---
 
-    // ’Êí•`‰æ—p
-    Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vsStatic;   //!< Ã“IƒƒbƒVƒ…—p VS
-    Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vsSkinned;  //!< ƒXƒLƒjƒ“ƒO—p VS
-    Microsoft::WRL::ComPtr<ID3D11InputLayout>  m_ilStatic;   //!< StaticVertex —p IL
-    Microsoft::WRL::ComPtr<ID3D11InputLayout>  m_ilSkinned;  //!< SkinnedVertex —p IL
+    // é€šå¸¸æç”»ç”¨
+    Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vsStatic;   //!< é™çš„ãƒ¡ãƒƒã‚·ãƒ¥ç”¨ VS
+    Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vsSkinned;  //!< ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ç”¨ VS
+    Microsoft::WRL::ComPtr<ID3D11InputLayout>  m_ilStatic;   //!< StaticVertex ç”¨ IL
+    Microsoft::WRL::ComPtr<ID3D11InputLayout>  m_ilSkinned;  //!< SkinnedVertex ç”¨ IL
 
-    // ƒJƒXƒP[ƒhƒVƒƒƒhƒEƒ}ƒbƒv—p
+    // ã‚«ã‚¹ã‚±ãƒ¼ãƒ‰ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ç”¨
     Microsoft::WRL::ComPtr<ID3D11VertexShader>   m_vsCsm;
     Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_gsCsm;
 
-    // --- ’è”ƒoƒbƒtƒ@ ---
+    // --- å®šæ•°ãƒãƒƒãƒ•ã‚¡ ---
 
     /**
-     * @brief ƒvƒŠƒ~ƒeƒBƒu‚²‚Æ‚Ì’è”ƒoƒbƒtƒ@iVS/PS ƒXƒƒbƒg 0jB
-     * ƒ[ƒ‹ƒhs—ñEƒ}ƒeƒŠƒAƒ‹ƒCƒ“ƒfƒbƒNƒXEƒXƒLƒ“ƒCƒ“ƒfƒbƒNƒX‚ğ“n‚·B
+     * @brief ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã”ã¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ï¼ˆVS/PS ã‚¹ãƒ­ãƒƒãƒˆ 0ï¼‰ã€‚
+     * ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ãƒ»ãƒãƒ†ãƒªã‚¢ãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ»ã‚¹ã‚­ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æ¸¡ã™ã€‚
      */
     struct PrimitiveConstants
     {
@@ -77,7 +77,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11Buffer> m_primitiveCB;
 
     /**
-     * @brief ƒXƒLƒjƒ“ƒO—pƒWƒ‡ƒCƒ“ƒgs—ñ‚Ì’è”ƒoƒbƒtƒ@iVS ƒXƒƒbƒg 6jB
+     * @brief ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ç”¨ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆè¡Œåˆ—ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ï¼ˆVS ã‚¹ãƒ­ãƒƒãƒˆ 6ï¼‰ã€‚
      */
     static constexpr size_t MAX_JOINTS = 512;
     struct PrimitiveJointConstants
@@ -86,29 +86,29 @@ private:
     };
     Microsoft::WRL::ComPtr<ID3D11Buffer> m_jointCB;
 
-    // --- ‰Šú‰» ---
+    // --- åˆæœŸåŒ– ---
     void CreateShaders(ID3D11Device* device);
     void CreateConstantBuffers(ID3D11Device* device);
     void EnsureDefaultMaterial(ID3D11Device* device);
 
-    // --- •`‰æƒTƒuƒ‹[ƒeƒBƒ“ ---
+    // --- æç”»ã‚µãƒ–ãƒ«ãƒ¼ãƒ†ã‚£ãƒ³ ---
 
-    /** @brief ƒm[ƒhƒcƒŠ[‚ğÄ‹A‘–¸‚µ‚ÄƒXƒLƒjƒ“ƒOƒƒbƒVƒ…^Ã“IƒƒbƒVƒ…‚ğ•`‰æ‚·‚éB*/
+    /** @brief ãƒãƒ¼ãƒ‰ãƒ„ãƒªãƒ¼ã‚’å†å¸°èµ°æŸ»ã—ã¦ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ãƒ¡ãƒƒã‚·ãƒ¥ï¼é™çš„ãƒ¡ãƒƒã‚·ãƒ¥ã‚’æç”»ã™ã‚‹ã€‚*/
     void DrawNodes(RenderContext* rtx, const DirectX::XMFLOAT4X4& worldMatrix);
 
-    /** @brief ’Pˆêƒm[ƒh‚ğ•`‰æ‚·‚éiDrawNodes ‚Ì“à•”Ä‹AŠÖ”jB*/
+    /** @brief å˜ä¸€ãƒãƒ¼ãƒ‰ã‚’æç”»ã™ã‚‹ï¼ˆDrawNodes ã®å†…éƒ¨å†å¸°é–¢æ•°ï¼‰ã€‚*/
     void DrawNode(
         RenderContext* rtx,
         int nodeIndex,
         const DirectX::XMFLOAT4X4& worldMatrix);
 
-    /** @brief staticBatching ‚ª—LŒø‚È‚Æ‚« batchedMeshes ‚ğ•`‰æ‚·‚éB*/
+    /** @brief staticBatching ãŒæœ‰åŠ¹ãªã¨ã batchedMeshes ã‚’æç”»ã™ã‚‹ã€‚*/
     void DrawBatched(RenderContext* rtx, const DirectX::XMFLOAT4X4& worldMatrix);
 
     /**
-     * @brief ƒƒbƒVƒ… 1 Œ•ª‚Ì’¸“_ƒoƒbƒtƒ@EƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒZƒbƒg‚µ‚Ä•`‰æ‚·‚éB
-     * @param mesh       •`‰æ‚·‚éƒƒbƒVƒ…B
-     * @param primData   XVÏ‚İ‚Ì PrimitiveConstantsB
+     * @brief ãƒ¡ãƒƒã‚·ãƒ¥ 1 ä»¶åˆ†ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ»ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚»ãƒƒãƒˆã—ã¦æç”»ã™ã‚‹ã€‚
+     * @param mesh       æç”»ã™ã‚‹ãƒ¡ãƒƒã‚·ãƒ¥ã€‚
+     * @param primData   æ›´æ–°æ¸ˆã¿ã® PrimitiveConstantsã€‚
      */
     void DrawMesh(
         RenderContext* rtx,
@@ -116,9 +116,9 @@ private:
         const PrimitiveConstants& primData);
 
     /**
-     * @brief ƒXƒLƒ“‚ÌƒWƒ‡ƒCƒ“ƒgs—ñ‚ğŒvZ‚µ‚Ä m_jointCB ‚ğXV‚·‚éB
-     * @param skinIndex  AssetModel::skins ‚Ö‚ÌƒCƒ“ƒfƒbƒNƒXB
-     * @param nodeIndex  ‚±‚ÌƒXƒLƒ“‚ğQÆ‚µ‚Ä‚¢‚éƒm[ƒh‚ÌƒCƒ“ƒfƒbƒNƒXi‹ts—ñ‚ÌŠî€jB
+     * @brief ã‚¹ã‚­ãƒ³ã®ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆè¡Œåˆ—ã‚’è¨ˆç®—ã—ã¦ m_jointCB ã‚’æ›´æ–°ã™ã‚‹ã€‚
+     * @param skinIndex  AssetModel::skins ã¸ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€‚
+     * @param nodeIndex  ã“ã®ã‚¹ã‚­ãƒ³ã‚’å‚ç…§ã—ã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆé€†è¡Œåˆ—ã®åŸºæº–ï¼‰ã€‚
      */
     void UpdateJointCB(RenderContext* rtx, int skinIndex, int nodeIndex);
 };

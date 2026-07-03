@@ -7,26 +7,26 @@ using json = nlohmann::json;
 
 constexpr int MAX_LAYERS = 32;
 
-using Layer = int;      // 0~31‚ÌƒŒƒCƒ„[ID
-using LayerMask = uint32_t; // ƒrƒbƒgƒtƒ‰ƒO
+using Layer = int;      // 0~31ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ID
+using LayerMask = uint32_t; // ãƒ“ãƒƒãƒˆãƒ•ãƒ©ã‚°
 
-// ƒŒƒCƒ„[ID -> ƒ}ƒXƒN‚É•ÏŠ·
+// ãƒ¬ã‚¤ãƒ¤ãƒ¼ID -> ãƒã‚¹ã‚¯ã«å¤‰æ›
 inline constexpr LayerMask ToMask(Layer layer) {
     return (1u << layer);
 }
 
-// ‚æ‚­g‚¤ƒ}ƒXƒN’è”
+// ã‚ˆãä½¿ã†ãƒã‚¹ã‚¯å®šæ•°
 namespace LayerMasks {
     constexpr LayerMask Everything = 0xFFFFFFFF;
     constexpr LayerMask Nothing = 0x00000000;
-	constexpr LayerMask Default = ToMask(0); // ƒfƒtƒHƒ‹ƒgƒŒƒCƒ„[
-	constexpr LayerMask TransparentFX = ToMask(1); // “§–¾FXƒŒƒCƒ„[
-	constexpr LayerMask IgnoreRaycast = ToMask(2); // Raycast‚ğ–³‹‚·‚éƒŒƒCƒ„[
-	constexpr LayerMask UI = ToMask(3); // UIƒŒƒCƒ„[
+	constexpr LayerMask Default = ToMask(0); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ¬ã‚¤ãƒ¤ãƒ¼
+	constexpr LayerMask TransparentFX = ToMask(1); // é€æ˜FXãƒ¬ã‚¤ãƒ¤ãƒ¼
+	constexpr LayerMask IgnoreRaycast = ToMask(2); // Raycastã‚’ç„¡è¦–ã™ã‚‹ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	constexpr LayerMask UI = ToMask(3); // UIãƒ¬ã‚¤ãƒ¤ãƒ¼
 }
 
 
-// ƒŒƒCƒ„[ŠÇ—ƒNƒ‰ƒX
+// ãƒ¬ã‚¤ãƒ¤ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹
 class LayerManager {
 public:
     static LayerManager& Get() {
@@ -34,50 +34,50 @@ public:
         return instance;
     }
 
-    // ƒŒƒCƒ„[–¼“o˜^
+    // ãƒ¬ã‚¤ãƒ¤ãƒ¼åç™»éŒ²
     void SetLayerName(Layer layer, const std::string& name);
 
-	// ƒŒƒCƒ„[ID‚©‚ç–¼‘O‚ğæ“¾
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼IDã‹ã‚‰åå‰ã‚’å–å¾—
     Layer GetLayerByName(const std::string& name) const;
 
-    // Õ“Ëƒ}ƒgƒŠƒNƒXİ’èi‘ÎÌ‚É©“®İ’èj
+    // è¡çªãƒãƒˆãƒªã‚¯ã‚¹è¨­å®šï¼ˆå¯¾ç§°ã«è‡ªå‹•è¨­å®šï¼‰
     void SetLayerCollision(Layer a, Layer b, bool enabled);
 
-    // ƒŒƒCƒ„[“¯m‚ªÕ“Ë‚·‚é‚©
+    // ãƒ¬ã‚¤ãƒ¤ãƒ¼åŒå£«ãŒè¡çªã™ã‚‹ã‹
 	bool GetLayerCollision(Layer a, Layer b) const;
 
-    // PhysX‚É“n‚·ƒtƒBƒ‹ƒ^[ƒ}ƒXƒNæ“¾
+    // PhysXã«æ¸¡ã™ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒã‚¹ã‚¯å–å¾—
     LayerMask GetCollisionMask(Layer layer) const;
 
-	// ƒŒƒCƒ„[–¼‚Ì”z—ñ‚ğæ“¾
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼åã®é…åˆ—ã‚’å–å¾—
 	std::array<std::string, MAX_LAYERS> GetLayerNames() const { return m_layerNames; }
 
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     json Serialize() const;
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     void Deserialize(const json& j);
 
-	// ƒŒƒCƒ„[İ’èGUI‚Ì•`‰æ
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šGUIã®æç”»
 	void DrawLayerSettingsGUI();
 
-	// ƒŒƒCƒ„[İ’èGUI‚ğŠJ‚­
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šGUIã‚’é–‹ã
 	void OpenLayerSettingsGUI() { m_isOpen = true; }
 
 private:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÍƒVƒ“ƒOƒ‹ƒgƒ“‚Ì‚½‚ßprivate
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã®ãŸã‚private
     LayerManager();
 
-	bool m_isOpen = false; // ƒŒƒCƒ„[İ’èGUI‚ªŠJ‚¢‚Ä‚¢‚é‚©
+	bool m_isOpen = false; // ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šGUIãŒé–‹ã„ã¦ã„ã‚‹ã‹
 
     std::array<std::string, MAX_LAYERS> m_layerNames;
 	LayerMask m_collisionMatrix[MAX_LAYERS];
-	Layer m_selectedLayer = -1; // GUI‚Å‘I‘ğ‚³‚ê‚Ä‚¢‚éƒŒƒCƒ„[‚ÌID
-	char m_renameBuffer[64] = { 0 }; // ƒŒƒCƒ„[–¼•ÏX—p‚Ìƒoƒbƒtƒ@
-	bool m_layerNameEditMode = false; // ƒŒƒCƒ„[–¼•ÒWƒ‚[ƒh‚©‚Ç‚¤‚©
-	bool m_layerNameEditModeJustStarted = false; // ƒŒƒCƒ„[–¼•ÒWƒ‚[ƒh‚ªŠJn‚³‚ê‚½‚Î‚©‚è‚©‚Ç‚¤‚©
-	Layer m_defaultLayer = 0; // ƒfƒtƒHƒ‹ƒgƒŒƒCƒ„[ID
-	Layer m_transparentFXLayer = 1; // “§–¾FXƒŒƒCƒ„[ID
-	Layer m_ignoreRaycastLayer = 2; // Raycast‚ğ–³‹‚·‚éƒŒƒCƒ„[ID
-	Layer m_uiLayer = 3; // UIƒŒƒCƒ„[ID
+	Layer m_selectedLayer = -1; // GUIã§é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ID
+	char m_renameBuffer[64] = { 0 }; // ãƒ¬ã‚¤ãƒ¤ãƒ¼åå¤‰æ›´ç”¨ã®ãƒãƒƒãƒ•ã‚¡
+	bool m_layerNameEditMode = false; // ãƒ¬ã‚¤ãƒ¤ãƒ¼åç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã‹ã©ã†ã‹
+	bool m_layerNameEditModeJustStarted = false; // ãƒ¬ã‚¤ãƒ¤ãƒ¼åç·¨é›†ãƒ¢ãƒ¼ãƒ‰ãŒé–‹å§‹ã•ã‚ŒãŸã°ã‹ã‚Šã‹ã©ã†ã‹
+	Layer m_defaultLayer = 0; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ¬ã‚¤ãƒ¤ãƒ¼ID
+	Layer m_transparentFXLayer = 1; // é€æ˜FXãƒ¬ã‚¤ãƒ¤ãƒ¼ID
+	Layer m_ignoreRaycastLayer = 2; // Raycastã‚’ç„¡è¦–ã™ã‚‹ãƒ¬ã‚¤ãƒ¤ãƒ¼ID
+	Layer m_uiLayer = 3; // UIãƒ¬ã‚¤ãƒ¤ãƒ¼ID
 };

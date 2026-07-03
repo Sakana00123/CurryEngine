@@ -4,97 +4,97 @@
 
 /**
  * @file
- * @brief ‰æ‘œiƒXƒvƒ‰ƒCƒgj‚ğ•`‰æ‚·‚é UI ƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details ƒeƒNƒXƒ`ƒƒ‚ÆƒVƒF[ƒ_‚ğ `Material` ‚ÅŠÇ—‚µA`RectTransform` ‚ÉŠî‚Ã‚­‹éŒ`‚Ö
- *          lŠpŒ`ƒ|ƒŠƒSƒ“‚Ì•`‰æ‚ğs‚¢‚Ü‚·Bƒ}ƒXƒN•`‰æiƒIƒvƒVƒ‡ƒ“j‚É‚à‘Î‰‚µ‚Ü‚·B
+ * @brief ç”»åƒï¼ˆã‚¹ãƒ—ãƒ©ã‚¤ãƒˆï¼‰ã‚’æç”»ã™ã‚‹ UI ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨ã‚·ã‚§ãƒ¼ãƒ€ã‚’ `Material` ã§ç®¡ç†ã—ã€`RectTransform` ã«åŸºã¥ãçŸ©å½¢ã¸
+ *          å››è§’å½¢ãƒãƒªã‚´ãƒ³ã®æç”»ã‚’è¡Œã„ã¾ã™ã€‚ãƒã‚¹ã‚¯æç”»ï¼ˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼‰ã«ã‚‚å¯¾å¿œã—ã¾ã™ã€‚
  */
 class Image : public Graphic
 {
 	C_REFLECT(Image)
 	/**
-	 * @brief ’¸“_ƒŒƒCƒAƒEƒgB
-	 * @details ƒXƒNƒŠ[ƒ“À•WŒn‚ÌˆÊ’uA’¸“_ƒJƒ‰[AƒeƒNƒXƒ`ƒƒÀ•W‚ğ•Û‚µ‚Ü‚·B
+	 * @brief é ‚ç‚¹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã€‚
+	 * @details ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã®ä½ç½®ã€é ‚ç‚¹ã‚«ãƒ©ãƒ¼ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™ã‚’ä¿æŒã—ã¾ã™ã€‚
 	 */
 	struct Vertex
 	{
-		DirectX::XMFLOAT4 position; //!< ˆÊ’uiNDC ‹óŠÔ‚É•ÏŠ·Ï‚İ‚ğ‹l‚ß‚Ü‚·j
-		DirectX::XMFLOAT4 color;    //!< ’¸“_ƒJƒ‰[
-		DirectX::XMFLOAT2 texcoord; //!< ƒeƒNƒXƒ`ƒƒÀ•Wi0-1j
+		DirectX::XMFLOAT4 position; //!< ä½ç½®ï¼ˆNDC ç©ºé–“ã«å¤‰æ›æ¸ˆã¿ã‚’è©°ã‚ã¾ã™ï¼‰
+		DirectX::XMFLOAT4 color;    //!< é ‚ç‚¹ã‚«ãƒ©ãƒ¼
+		DirectX::XMFLOAT2 texcoord; //!< ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™ï¼ˆ0-1ï¼‰
 	};
 public:
 
 	/**
-	 * @brief ‰æ‘œ•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ¶¬‚µ‚Ü‚·B
-	 * @details ’¸“_ƒoƒbƒtƒ@‚Ì‰Šú‰»Aƒ_ƒ~[/ÀƒeƒNƒXƒ`ƒƒ‚ÌƒZƒbƒgAŠeíƒVƒF[ƒ_/ƒ}ƒeƒŠƒAƒ‹İ’è‚ğs‚¢‚Ü‚·B
+	 * @brief ç”»åƒæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * @details é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–ã€ãƒ€ãƒŸãƒ¼/å®Ÿãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚»ãƒƒãƒˆã€å„ç¨®ã‚·ã‚§ãƒ¼ãƒ€/ãƒãƒ†ãƒªã‚¢ãƒ«è¨­å®šã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	Image();
 	~Image() override = default;
 
 	/**
-	 * @brief ‰æ‘œƒ\[ƒX‚ğİ’è‚µ‚Ü‚·B
-	 * @param source ‰æ‘œƒtƒ@ƒCƒ‹ƒpƒXiƒƒCƒh•¶š—ñjB`nullptr` ‚Åƒ_ƒ~[‰æ‘œB
-	 * @param reload ‚·‚Å‚É“¯‚¶ƒtƒ@ƒCƒ‹‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚éê‡‚Å‚àÄ“Ç‚İ‚İ‚·‚é‚©BƒfƒtƒHƒ‹ƒg‚Í `false`B
-	 * @details w’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚©‚çƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚İAƒ}ƒeƒŠƒAƒ‹‚Ì 0 ”ÔƒeƒNƒXƒ`ƒƒ‚ÖƒZƒbƒg‚µ‚Ü‚·B
-	 *          `nullptr` ‚Ìê‡‚Íƒ_ƒ~[‰æ‘œ‚ğƒZƒbƒg‚µ‚Ü‚·B
+	 * @brief ç”»åƒã‚½ãƒ¼ã‚¹ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param source ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ï¼ˆãƒ¯ã‚¤ãƒ‰æ–‡å­—åˆ—ï¼‰ã€‚`nullptr` ã§ãƒ€ãƒŸãƒ¼ç”»åƒã€‚
+	 * @param reload ã™ã§ã«åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹å ´åˆã§ã‚‚å†èª­ã¿è¾¼ã¿ã™ã‚‹ã‹ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ `false`ã€‚
+	 * @details æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã¿ã€ãƒãƒ†ãƒªã‚¢ãƒ«ã® 0 ç•ªãƒ†ã‚¯ã‚¹ãƒãƒ£ã¸ã‚»ãƒƒãƒˆã—ã¾ã™ã€‚
+	 *          `nullptr` ã®å ´åˆã¯ãƒ€ãƒŸãƒ¼ç”»åƒã‚’ã‚»ãƒƒãƒˆã—ã¾ã™ã€‚
 	 */
 	void SetSource(const wchar_t* source, bool reload = false);
 
 	/**
-	 * @brief ‰æ‘œƒ\[ƒX‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ‰æ‘œƒtƒ@ƒCƒ‹ƒpƒXBƒ_ƒ~[‰æ‘œ‚Ìê‡‚Í `nullptr`B
+	 * @brief ç”»åƒã‚½ãƒ¼ã‚¹ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚ãƒ€ãƒŸãƒ¼ç”»åƒã®å ´åˆã¯ `nullptr`ã€‚
 	 */
 	AssetTexture* GetTexture();
 
 	/**
-	 * @brief ‰Šú‰»B‹éŒ`ƒTƒCƒY‚ğƒeƒNƒXƒ`ƒƒƒTƒCƒY‚Ö‡‚í‚¹‚Ü‚·B
-	 * @details ƒ}ƒeƒŠƒAƒ‹‚Ì 0 ”ÔƒeƒNƒXƒ`ƒƒ‚Ì•E‚‚³‚ğQÆ‚µA`RectTransform` ‚ÌƒTƒCƒY‚ğİ’è‚µ‚Ü‚·B
+	 * @brief åˆæœŸåŒ–ã€‚çŸ©å½¢ã‚µã‚¤ã‚ºã‚’ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µã‚¤ã‚ºã¸åˆã‚ã›ã¾ã™ã€‚
+	 * @details ãƒãƒ†ãƒªã‚¢ãƒ«ã® 0 ç•ªãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å¹…ãƒ»é«˜ã•ã‚’å‚ç…§ã—ã€`RectTransform` ã®ã‚µã‚¤ã‚ºã‚’è¨­å®šã—ã¾ã™ã€‚
 	 */
 	void Initialize() override;
 
 	/**
-	 * @brief •`‰æˆ—B
-	 * @param rtx •`‰æƒRƒ“ƒeƒLƒXƒgB
-	 * @details `RectTransform` ‚©‚çZo‚µ‚½‹éŒ`‚ğ NDC ‚É•ÏŠ·‚µ‚Ä’¸“_ƒoƒbƒtƒ@‚Ö‘‚«–ß‚µA
-	 *          ƒ}ƒeƒŠƒAƒ‹‚ğ“K—p‚µ‚ÄlŠpŒ`ƒXƒgƒŠƒbƒv‚ğ•`‰æ‚µ‚Ü‚·Bƒ}ƒXƒN‚ª—LŒø‚Èê‡‚Í
-	 *          ƒ}ƒXƒN—pƒ}ƒeƒŠƒAƒ‹‚à“K—p‚µ‚Ü‚·B
+	 * @brief æç”»å‡¦ç†ã€‚
+	 * @param rtx æç”»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
+	 * @details `RectTransform` ã‹ã‚‰ç®—å‡ºã—ãŸçŸ©å½¢ã‚’ NDC ã«å¤‰æ›ã—ã¦é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¸æ›¸ãæˆ»ã—ã€
+	 *          ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’é©ç”¨ã—ã¦å››è§’å½¢ã‚¹ãƒˆãƒªãƒƒãƒ—ã‚’æç”»ã—ã¾ã™ã€‚ãƒã‚¹ã‚¯ãŒæœ‰åŠ¹ãªå ´åˆã¯
+	 *          ãƒã‚¹ã‚¯ç”¨ãƒãƒ†ãƒªã‚¢ãƒ«ã‚‚é©ç”¨ã—ã¾ã™ã€‚
 	 */
 	void Draw(RenderContext* rtx) override;
 
 #ifdef USE_IMGUI
 	/**
-	 * @brief ƒCƒ“ƒXƒyƒNƒ^iƒGƒfƒBƒ^j—p‚ÌƒvƒƒpƒeƒB•`‰æB
-	 * @details ‰æ‘œ‚Ì·‚µ‘Ö‚¦AFAUVAƒ}ƒXƒN‰æ‘œ‚âƒVƒF[ƒ_•ÒW‚È‚Ç‚ğs‚¢‚Ü‚·B
+	 * @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ï¼ˆã‚¨ãƒ‡ã‚£ã‚¿ï¼‰ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚
+	 * @details ç”»åƒã®å·®ã—æ›¿ãˆã€è‰²ã€UVã€ãƒã‚¹ã‚¯ç”»åƒã‚„ã‚·ã‚§ãƒ¼ãƒ€ç·¨é›†ãªã©ã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json Serialize() const override;
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	void Deserialize(const json& j) override;
 
-	/* F‚ğƒZƒbƒg‚µ‚Ü‚·B */
+	/* è‰²ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™ã€‚ */
 	void SetColor(const Color& color) { this->color = color; }
 	
-	/* F‚ğæ“¾‚µ‚Ü‚·B */
+	/* è‰²ã‚’å–å¾—ã—ã¾ã™ã€‚ */
 	Color GetColor() const { return color; }
 
-	/* UV‚ğƒZƒbƒg‚µ‚Ü‚·B */
+	/* UVã‚’ã‚»ãƒƒãƒˆã—ã¾ã™ã€‚ */
 	void SetUV(const Vector2& uv) { this->uv = uv; }
 
-	/* UV‚ğæ“¾‚µ‚Ü‚·B */
+	/* UVã‚’å–å¾—ã—ã¾ã™ã€‚ */
 	Vector2 GetUV() const { return (Vector2)uv; }
 
 
 public:
-	/** @brief æZƒJƒ‰[B*/
+	/** @brief ä¹—ç®—ã‚«ãƒ©ãƒ¼ã€‚*/
 	C_PROPERTY()
 	Color color{ 1,1,1,1 };
 public:
-	/** @brief Ø‚èo‚µ‹éŒ`i¶ãÀ•W‚ÆƒTƒCƒYjB*/
+	/** @brief åˆ‡ã‚Šå‡ºã—çŸ©å½¢ï¼ˆå·¦ä¸Šåº§æ¨™ã¨ã‚µã‚¤ã‚ºï¼‰ã€‚*/
 	float sx, sy, sw, sh;
-	/** @brief UV ƒIƒtƒZƒbƒgB*/
+	/** @brief UV ã‚ªãƒ•ã‚»ãƒƒãƒˆã€‚*/
 	C_PROPERTY()
 	XMFLOAT2 uv = { 0,0 };
 private:
@@ -104,18 +104,18 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;*/
 
-	/** @brief ƒx[ƒX‰æ‘œ—p‚Ìƒ}ƒeƒŠƒAƒ‹B*/
+	/** @brief ãƒ™ãƒ¼ã‚¹ç”»åƒç”¨ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã€‚*/
 	Material material;
-	/** @brief lŠpŒ`—p‚Ì’¸“_ƒoƒbƒtƒ@B*/
+	/** @brief å››è§’å½¢ç”¨ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã€‚*/
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 
-	/** @brief ƒ}ƒXƒN•`‰æ‚ğ—LŒø‰»‚·‚é‚©B*/
+	/** @brief ãƒã‚¹ã‚¯æç”»ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹ã‹ã€‚*/
 	C_PROPERTY()
 	bool enableMask = false;
 
 	/*Microsoft::WRL::ComPtr<ID3D11PixelShader> maskPixelShader;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> maskTexture;*/
 
-	/** @brief ƒ}ƒXƒN•`‰æ—p‚Ìƒ}ƒeƒŠƒAƒ‹iƒeƒNƒXƒ`ƒƒƒXƒƒbƒg 1 ‚ğg—pjB*/
+	/** @brief ãƒã‚¹ã‚¯æç”»ç”¨ã®ãƒãƒ†ãƒªã‚¢ãƒ«ï¼ˆãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¹ãƒ­ãƒƒãƒˆ 1 ã‚’ä½¿ç”¨ï¼‰ã€‚*/
 	Material maskMaterial;
 };

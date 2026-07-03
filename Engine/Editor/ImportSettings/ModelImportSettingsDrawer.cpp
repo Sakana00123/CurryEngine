@@ -23,11 +23,11 @@ namespace CurryEngine::Resources
 		auto model = std::dynamic_pointer_cast<AssetModel>(previewResource);
 		if (g_isDirty)
 		{
-			g_modelRenderer = ModelRenderer(); // ƒ‚ƒfƒ‹‚ªØ‚è‘Ö‚í‚Á‚½‚Æ‚«‚ÉŒÃ‚¢ƒ‚ƒfƒ‹‚ÌƒŠƒ\[ƒX‚ğ‰ğ•ú‚·‚é‚½‚ßA–ˆ‰ñV‚µ‚¢ƒCƒ“ƒXƒ^ƒ“ƒX‚ğì‚é
+			g_modelRenderer = ModelRenderer(); // ãƒ¢ãƒ‡ãƒ«ãŒåˆ‡ã‚Šæ›¿ã‚ã£ãŸã¨ãã«å¤ã„ãƒ¢ãƒ‡ãƒ«ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’è§£æ”¾ã™ã‚‹ãŸã‚ã€æ¯å›æ–°ã—ã„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œã‚‹
 			g_modelRenderer.SetModelAsset(model);
 			g_isDirty = false;
 		}
-		// ƒ‚ƒfƒ‹•`‰æ
+		// ãƒ¢ãƒ‡ãƒ«æç”»
 		if (model)
 		{
 			if (g_updateAnimation)
@@ -46,11 +46,11 @@ namespace CurryEngine::Resources
 
 		ImGui::Text("Model Preview: %s", model->GetPath().c_str());
 		
-		// ƒvƒŒƒrƒ…[•`‰æ
+		// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼æç”»
 		if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
 		{
-			// 16:9 ‚ÌƒAƒXƒyƒNƒg”ä‚ÅƒvƒŒƒrƒ…[‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒTƒCƒY‚ğŒvZ
-			float width = 720.0f; // ƒvƒŒƒrƒ…[‚Ì•‚ğŒÅ’è
+			// 16:9 ã®ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã§ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚µã‚¤ã‚ºã‚’è¨ˆç®—
+			float width = 720.0f; // ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã®å¹…ã‚’å›ºå®š
 			ImVec2 size = { width, width * 9.0f / 16.0f };
 			ImGui::Image(previewImage->GetSRV(), size);
 		}
@@ -67,10 +67,10 @@ namespace CurryEngine::Resources
 			: editingSettings.get<ModelImportSettings>();
 		bool changed = false;
 		/*changed |= */ImGui::InputFloat("Scale Factor", &settings.scaleFactor);
-		changed |= ImGui::IsItemDeactivatedAfterEdit(); // ƒXƒP[ƒ‹ŒW”‚Ì“ü—Í‚ªŠ®—¹‚µ‚½‚Æ‚«‚É•ÏX‚ğŒŸ’m‚·‚é
+		changed |= ImGui::IsItemDeactivatedAfterEdit(); // ã‚¹ã‚±ãƒ¼ãƒ«ä¿‚æ•°ã®å…¥åŠ›ãŒå®Œäº†ã—ãŸã¨ãã«å¤‰æ›´ã‚’æ¤œçŸ¥ã™ã‚‹
 		changed |= ImGui::Checkbox("Static Batching", &settings.staticBatching);
 
-		// assimp ‚ÌƒCƒ“ƒ|[ƒgƒtƒ‰ƒO‚Ìİ’è
+		// assimp ã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆãƒ•ãƒ©ã‚°ã®è¨­å®š
 		{
 			ImGui::Text("Realtime Presets:");
 			const char* presetNames[] = { "Custom", "Fast", "Quality", "MaxQuality" };
@@ -78,11 +78,11 @@ namespace CurryEngine::Resources
 			if (ImGui::Combo("Preset", &currentPreset, presetNames, IM_ARRAYSIZE(presetNames)))
 			{
 				settings.preset = static_cast<char>(currentPreset);
-				bool leftHanded = (settings.importFlags & aiProcess_ConvertToLeftHanded) != 0; // ¶èÀ•WŒnƒtƒ‰ƒO‚ğ•Û
+				bool leftHanded = (settings.importFlags & aiProcess_ConvertToLeftHanded) != 0; // å·¦æ‰‹åº§æ¨™ç³»ãƒ•ãƒ©ã‚°ã‚’ä¿æŒ
 				switch (settings.preset)
 				{
 				case 0: // Custom
-					// ƒJƒXƒ^ƒ€İ’è‚Ìê‡‚Í‰½‚à‚µ‚È‚¢
+					// ã‚«ã‚¹ã‚¿ãƒ è¨­å®šã®å ´åˆã¯ä½•ã‚‚ã—ãªã„
 					break;
 				case 1: // Fast
 					settings.importFlags = aiProcessPreset_TargetRealtime_Fast;
@@ -96,12 +96,12 @@ namespace CurryEngine::Resources
 				default:
 					break;
 				}
-				if (settings.preset > 0 && leftHanded) settings.importFlags |= aiProcess_ConvertToLeftHanded; // ¶èÀ•WŒnƒtƒ‰ƒO‚ğÄİ’è
-				changed = true; // ƒvƒŠƒZƒbƒg‚ª•ÏX‚³‚ê‚½ê‡‚Í•ÏXƒtƒ‰ƒO‚ğ—§‚Ä‚é
+				if (settings.preset > 0 && leftHanded) settings.importFlags |= aiProcess_ConvertToLeftHanded; // å·¦æ‰‹åº§æ¨™ç³»ãƒ•ãƒ©ã‚°ã‚’å†è¨­å®š
+				changed = true; // ãƒ—ãƒªã‚»ãƒƒãƒˆãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯å¤‰æ›´ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 			}
 
 			changed |= ImGui::CheckboxFlags("Convert LeftHanded", &settings.importFlags, aiProcess_ConvertToLeftHanded);
-			if (settings.preset == 0) // Custom ‚Ìê‡‚Ì‚İÚ×İ’è‚ğ•\¦
+			if (settings.preset == 0) // Custom ã®å ´åˆã®ã¿è©³ç´°è¨­å®šã‚’è¡¨ç¤º
 			{
 				changed |= ImGui::CheckboxFlags("Calculate Tangent Space", &settings.importFlags, aiProcess_CalcTangentSpace);
 				changed |= ImGui::CheckboxFlags("Join Identical Vertices", &settings.importFlags, aiProcess_JoinIdenticalVertices);
@@ -136,7 +136,7 @@ namespace CurryEngine::Resources
 
 		if (changed)
 		{
-			settings.scaleFactor = (std::max)(settings.scaleFactor, 0.0001f); // ƒXƒP[ƒ‹ŒW”‚ª0ˆÈ‰º‚É‚È‚ç‚È‚¢‚æ‚¤‚É§ŒÀ
+			settings.scaleFactor = (std::max)(settings.scaleFactor, 0.0001f); // ã‚¹ã‚±ãƒ¼ãƒ«ä¿‚æ•°ãŒ0ä»¥ä¸‹ã«ãªã‚‰ãªã„ã‚ˆã†ã«åˆ¶é™
 
 			editingSettings = settings;
 			isDirty = true;
@@ -148,21 +148,21 @@ namespace CurryEngine::Resources
 
 		ImGui::Text("Animations: %zu", g_modelRenderer.m_asset ? g_modelRenderer.m_asset->animations.size() : 0);
 
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìİ’è‚ğ•\¦
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®è¨­å®šã‚’è¡¨ç¤º
 		if (g_modelRenderer.m_asset && !g_modelRenderer.m_asset->animations.empty())
 		{
 			ImGui::Separator();
 			ImGui::Text("Animation Settings:");
 			int animationCount = static_cast<int>(g_modelRenderer.m_asset->animations.size());
-			const char* animationNames[100]{}; // Å‘å100ŒÂ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğƒTƒ|[ƒg
+			const char* animationNames[100]{}; // æœ€å¤§100å€‹ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚µãƒãƒ¼ãƒˆ
 			for (int i = 0; i < animationCount && i < 100; ++i)
 			{
 				animationNames[i] = reinterpret_cast<const char*>(g_modelRenderer.m_asset->animations[i].name.c_str());
 			}
-			// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ‘I‘ğ‚·‚éƒRƒ“ƒ{ƒ{ƒbƒNƒX
+			// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’é¸æŠã™ã‚‹ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹
 			if (ImGui::Combo("Animation", &g_modelRenderer.animationIndex, animationNames, animationCount))
 			{
-				g_modelRenderer.time = 0.0f; // ƒAƒjƒ[ƒVƒ‡ƒ“‚ğØ‚è‘Ö‚¦‚½‚çŠÔ‚ğƒŠƒZƒbƒg
+				g_modelRenderer.time = 0.0f; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆãŸã‚‰æ™‚é–“ã‚’ãƒªã‚»ãƒƒãƒˆ
 			}
 			const char* commandNames[] = { "Play", "Pause" };
 			ImGui::Checkbox(g_updateAnimation ? "Pause" : "Play", &g_updateAnimation);
@@ -178,7 +178,7 @@ namespace CurryEngine::Resources
 		if (g_modelRenderer.m_asset && showMaterialSettings)
 		{
 			ImGui::Separator();
-			// ƒ}ƒeƒŠƒAƒ‹‚Ìİ’è‚ğ•\¦
+			// ãƒãƒ†ãƒªã‚¢ãƒ«ã®è¨­å®šã‚’è¡¨ç¤º
 			for (size_t i = 0; i < g_modelRenderer.m_asset->materials.size(); ++i)
 			{
 				auto& material = g_modelRenderer.m_asset->materials[i];
@@ -194,7 +194,7 @@ namespace CurryEngine::Resources
 	}
 	nlohmann::json ModelImportSettingsDrawer::GetDefaultSettings() const
 	{
-		// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ì’l‚ª‚»‚Ì‚Ü‚ÜƒfƒtƒHƒ‹ƒgİ’è‚É‚È‚é‚æ‚¤‚É‚µ‚Ä‚¢‚é‚½‚ßA“Á‚É’l‚ğw’è‚¹‚¸‚É•Ô‚·
+		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã®å€¤ãŒãã®ã¾ã¾ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¨­å®šã«ãªã‚‹ã‚ˆã†ã«ã—ã¦ã„ã‚‹ãŸã‚ã€ç‰¹ã«å€¤ã‚’æŒ‡å®šã›ãšã«è¿”ã™
 		return ModelImportSettings{};
 	}
 }

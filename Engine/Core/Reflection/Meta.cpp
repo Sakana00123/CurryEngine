@@ -9,7 +9,7 @@ std::any MethodInfo::Invoke(void* instance, std::vector<std::any> args) const
 		return invoker(instance, args);
 	}
 	Console::LogError("Method does not return a value or invoker is not set.");
-	return std::any(); // –ß‚è’l‚È‚µivoidj‚â invoker ‚ª–¢İ’è‚Ìê‡‚Í‹ó‚Ì any ‚ğ•Ô‚·
+	return std::any(); // æˆ»ã‚Šå€¤ãªã—ï¼ˆvoidï¼‰ã‚„ invoker ãŒæœªè¨­å®šã®å ´åˆã¯ç©ºã® any ã‚’è¿”ã™
 }
 
 void MethodInfo::InvokeVoid(void* instance, std::vector<std::any> args) const
@@ -26,7 +26,7 @@ void MethodInfo::InvokeVoid(void* instance, std::vector<std::any> args) const
 
 const PropertyInfo* ClassMeta::FindProperty(const std::string& propName) const
 {
-	// ƒNƒ‰ƒX©g‚ÌƒvƒƒpƒeƒB‚ğŒŸõ
+	// ã‚¯ãƒ©ã‚¹è‡ªèº«ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æ¤œç´¢
 	for (const auto& prop : properties)
 	{
 		if (prop.name == propName)
@@ -34,7 +34,7 @@ const PropertyInfo* ClassMeta::FindProperty(const std::string& propName) const
 			return &prop;
 		}
 	}
-	// Šî’êƒNƒ‰ƒX‚ğÄ‹A“I‚ÉŒŸõ
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã‚’å†å¸°çš„ã«æ¤œç´¢
 	for (const auto& baseName : bases)
 	{
 		const ClassMeta* baseMeta = ReflectionRegistry::FindClass(baseName);
@@ -47,12 +47,12 @@ const PropertyInfo* ClassMeta::FindProperty(const std::string& propName) const
 			}
 		}
 	}
-	return nullptr; // Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡
+	return nullptr; // è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆ
 }
 
 const MethodInfo* ClassMeta::FindMethod(const std::string& methodName) const
 {
-	// ƒNƒ‰ƒX©g‚Ìƒƒ\ƒbƒh‚ğŒŸõ
+	// ã‚¯ãƒ©ã‚¹è‡ªèº«ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’æ¤œç´¢
 	for (const auto& method : methods)
 	{
 		if (method.name == methodName)
@@ -60,7 +60,7 @@ const MethodInfo* ClassMeta::FindMethod(const std::string& methodName) const
 			return &method;
 		}
 	}
-	// Šî’êƒNƒ‰ƒX‚ğÄ‹A“I‚ÉŒŸõ
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã‚’å†å¸°çš„ã«æ¤œç´¢
 	for (const auto& baseName : bases)
 	{
 		const ClassMeta* baseMeta = ReflectionRegistry::FindClass(baseName);
@@ -73,7 +73,7 @@ const MethodInfo* ClassMeta::FindMethod(const std::string& methodName) const
 			}
 		}
 	}
-	return nullptr; // Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡
+	return nullptr; // è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆ
 }
 
 void ReflectionRegistry::Register(const ClassMeta& meta)

@@ -4,15 +4,15 @@
 #include "Engine/Core/ObjectManager.h"
 
 
-// ObjectId ‚©‚ç GameObject ‚ğæ“¾‚·‚éƒ†[ƒeƒBƒŠƒeƒBŠÖ”
+// ObjectId ã‹ã‚‰ GameObject ã‚’å–å¾—ã™ã‚‹ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°
 static GameObject* FindObject(uint64_t objectId)
 {
 	return ObjectManager::Find(ObjectId::FromValue(objectId));
 }
 
-// Transform ƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ğƒXƒNƒŠƒvƒg‚©‚çŒÄ‚Ño‚¹‚é‚æ‚¤‚É‚·‚é‚½‚ß‚ÌƒGƒNƒXƒ|[ƒgŠÖ”
+// Transform ã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‹ã‚‰å‘¼ã³å‡ºã›ã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã®ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆé–¢æ•°
 
-// -------- Transform ‚ÌƒvƒƒpƒeƒBƒAƒNƒZƒXŠÖ” ---------
+// -------- Transform ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•° ---------
 
 // --------- Position ---------
 
@@ -25,7 +25,7 @@ ENGINE_API Vector3 Transform_GetLocalPosition(uint64_t objectId)
 			return transform->GetPosition();
 		}
 	}
-	return Vector3::Zero; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Íƒ[ƒƒxƒNƒgƒ‹‚ğ•Ô‚·
+	return Vector3::Zero; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
 }
 
 ENGINE_API void Transform_SetLocalPosition(uint64_t objectId, Vector3 position)
@@ -48,12 +48,12 @@ ENGINE_API Vector3 Transform_GetPosition(uint64_t objectId)
 			return transform->GetWorldPosition();
 		}
 	}
-	return Vector3::Zero; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Íƒ[ƒƒxƒNƒgƒ‹‚ğ•Ô‚·
+	return Vector3::Zero; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
 }
 
 ENGINE_API void Transform_SetPosition(uint64_t objectId, Vector3 position)
 {
-	static_assert(sizeof(Vector3) == (12), "Vector3 size missmatch! C# expects 12 bytes."); // Vector3 ‚Æ XMFLOAT3 ‚ÌƒTƒCƒY‚ª“¯‚¶‚Å‚ ‚é‚±‚Æ‚ğŠm”F
+	static_assert(sizeof(Vector3) == (12), "Vector3 size missmatch! C# expects 12 bytes."); // Vector3 ã¨ XMFLOAT3 ã®ã‚µã‚¤ã‚ºãŒåŒã˜ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
 
 	if (GameObject* obj = FindObject(objectId))
 	{
@@ -86,7 +86,7 @@ ENGINE_API Quaternion Transform_GetLocalRotation(uint64_t objectId)
 			return transform->GetRotation();
 		}
 	}
-	return Quaternion{ 0,0,0,1 }; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í’PˆÊƒNƒH[ƒ^ƒjƒIƒ“‚ğ•Ô‚·
+	return Quaternion{ 0,0,0,1 }; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯å˜ä½ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’è¿”ã™
 }
 
 ENGINE_API void Transform_SetLocalRotation(uint64_t objectId, Quaternion rotation)
@@ -109,7 +109,7 @@ ENGINE_API Quaternion Transform_GetRotation(uint64_t objectId)
 			return transform->GetWorldRotation();
 		}
 	}
-	return Quaternion{ 0,0,0,1 }; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í’PˆÊƒNƒH[ƒ^ƒjƒIƒ“‚ğ•Ô‚·
+	return Quaternion{ 0,0,0,1 }; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯å˜ä½ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’è¿”ã™
 }
 
 ENGINE_API void Transform_SetRotation(uint64_t objectId, Quaternion rotation)
@@ -140,21 +140,21 @@ ENGINE_API void Transform_RotateAround(uint64_t objectId, Vector3 point, Vector3
 	{
 		if (Transform* transform = obj->GetComponent<Transform>())
 		{
-			// ‰ñ“]²‚ğ³‹K‰»
+			// å›è»¢è»¸ã‚’æ­£è¦åŒ–
 			Vector3 normalizedAxis = axis.Normalize();
-			// ƒNƒH[ƒ^ƒjƒIƒ“‚ğ¶¬
+			// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ç”Ÿæˆ
 			Quaternion rotation = Transform::QuaternionRotationAxis(normalizedAxis, angle);
-			// ƒIƒuƒWƒFƒNƒg‚ÌŒ»İ‚ÌˆÊ’u‚ğæ“¾
+			// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¾åœ¨ã®ä½ç½®ã‚’å–å¾—
 			Vector3 currentPosition = transform->GetWorldPosition();
-			// ‰ñ“]’†S‚©‚çƒIƒuƒWƒFƒNƒg‚Ö‚ÌƒxƒNƒgƒ‹‚ğŒvZ
+			// å›è»¢ä¸­å¿ƒã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
 			Vector3 toObject = currentPosition - point;
-			// ‰ñ“]‚ğ“K—p
+			// å›è»¢ã‚’é©ç”¨
 			XMVECTOR rotatedVector = XMVector3Rotate(
-				XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&toObject)), Transform::QuaternionToXMVector(rotation)); // ƒxƒNƒgƒ‹‚ğ‰ñ“]‚³‚¹‚éB‚±‚ê‚Å‰ñ“]Œã‚ÌƒxƒNƒgƒ‹‚ª“¾‚ç‚ê‚éB
+				XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&toObject)), Transform::QuaternionToXMVector(rotation)); // ãƒ™ã‚¯ãƒˆãƒ«ã‚’å›è»¢ã•ã›ã‚‹ã€‚ã“ã‚Œã§å›è»¢å¾Œã®ãƒ™ã‚¯ãƒˆãƒ«ãŒå¾—ã‚‰ã‚Œã‚‹ã€‚
 			Vector3 newPosition;
-			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&newPosition), rotatedVector); // ‰ñ“]Œã‚ÌƒxƒNƒgƒ‹‚ğVector3‚É•ÏŠ·B‚±‚ê‚Å‰ñ“]Œã‚ÌˆÊ’u‚ª“¾‚ç‚ê‚éB
+			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&newPosition), rotatedVector); // å›è»¢å¾Œã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’Vector3ã«å¤‰æ›ã€‚ã“ã‚Œã§å›è»¢å¾Œã®ä½ç½®ãŒå¾—ã‚‰ã‚Œã‚‹ã€‚
 
-			// ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚Æ‰ñ“]‚ğXV
+			// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã¨å›è»¢ã‚’æ›´æ–°
 			transform->SetWorldPosition(newPosition);
 			transform->Rotate(rotation);
 		}
@@ -171,7 +171,7 @@ ENGINE_API Vector3 Transform_GetEulerAngles(uint64_t objectId)
 			return transform->GetEulerAngles();
 		}
 	}
-	return Vector3::Zero; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Íƒ[ƒƒxƒNƒgƒ‹‚ğ•Ô‚·
+	return Vector3::Zero; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
 }
 
 ENGINE_API void Transform_SetEulerAngles(uint64_t objectId, Vector3 eulerAngles)
@@ -197,7 +197,7 @@ ENGINE_API Vector3 Transform_GetLocalScale(uint64_t objectId)
 			return transform->GetScale();
 		}
 	}
-	return Vector3(1, 1, 1); // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍƒXƒP[ƒ‹1‚ğ•Ô‚·
+	return Vector3(1, 1, 1); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¹ã‚±ãƒ¼ãƒ«1ã‚’è¿”ã™
 }
 
 ENGINE_API void Transform_SetLocalScale(uint64_t objectId, Vector3 scale)
@@ -220,7 +220,7 @@ ENGINE_API Vector3 Transform_GetScale(uint64_t objectId)
 			return transform->GetWorldScale();
 		}
 	}
-	return Vector3(1, 1, 1); // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍƒXƒP[ƒ‹1‚ğ•Ô‚·
+	return Vector3(1, 1, 1); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¹ã‚±ãƒ¼ãƒ«1ã‚’è¿”ã™
 }
 
 ENGINE_API void Transform_SetScale(uint64_t objectId, Vector3 scale)
@@ -245,7 +245,7 @@ ENGINE_API void Transform_Scaling(uint64_t objectId, Vector3 scale)
 	}
 }
 
-// --------- eqŠÖŒW‚Ìƒƒ\ƒbƒh ---------
+// --------- è¦ªå­é–¢ä¿‚ã®ãƒ¡ã‚½ãƒƒãƒ‰ ---------
 
 ENGINE_API void Transform_SetParent(uint64_t objectId, uint64_t parentId)
 {
@@ -268,11 +268,11 @@ ENGINE_API uint64_t Transform_GetParent(uint64_t objectId)
 			return parent->id.Value();
 		}
 	}
-	return 0; // ƒIƒuƒWƒFƒNƒg‚âe‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„è¦ªãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 
-// --------- qƒIƒuƒWƒFƒNƒg‚Ìæ“¾ ---------
+// --------- å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–å¾— ---------
 
 ENGINE_API uint64_t Transform_GetChild(uint64_t objectId, int index)
 {
@@ -284,7 +284,7 @@ ENGINE_API uint64_t Transform_GetChild(uint64_t objectId, int index)
 			return children[index]->id.Value();
 		}
 	}
-	return 0; // ƒIƒuƒWƒFƒNƒg‚âq‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„å­ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 ENGINE_API int Transform_GetChildCount(uint64_t objectId)
@@ -293,19 +293,19 @@ ENGINE_API int Transform_GetChildCount(uint64_t objectId)
 	{
 		return static_cast<int>(obj->children.size());
 	}
-	return 0; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 
-// --------- ƒ‹[ƒgƒIƒuƒWƒFƒNƒg‚Ìæ“¾ ---------
+// --------- ãƒ«ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–å¾— ---------
 
 
-// --------- À•W•ÏŠ·‚Ìƒƒ\ƒbƒh ---------
+// --------- åº§æ¨™å¤‰æ›ã®ãƒ¡ã‚½ãƒƒãƒ‰ ---------
 
 
-// --------- s—ñ‚Ìæ“¾ ---------
+// --------- è¡Œåˆ—ã®å–å¾— ---------
 
-// --------- •ûŒüƒxƒNƒgƒ‹‚Ìæ“¾ ---------
+// --------- æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®å–å¾— ---------
 
 ENGINE_API Vector3 Transform_GetForward(uint64_t objectId)
 {
@@ -316,7 +316,7 @@ ENGINE_API Vector3 Transform_GetForward(uint64_t objectId)
 			return transform->GetForward();
 		}
 	}
-	return Vector3::Forward; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Íƒ[ƒ‹ƒh‚Ì‘O•û‚ğ•Ô‚·
+	return Vector3::Forward; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ãƒ¯ãƒ¼ãƒ«ãƒ‰ã®å‰æ–¹ã‚’è¿”ã™
 }
 
 ENGINE_API Vector3 Transform_GetUp(uint64_t objectId)
@@ -328,7 +328,7 @@ ENGINE_API Vector3 Transform_GetUp(uint64_t objectId)
 			return transform->GetUp();
 		}
 	}
-	return Vector3::Up; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Íƒ[ƒ‹ƒh‚Ìã•ûŒü‚ğ•Ô‚·
+	return Vector3::Up; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ãƒ¯ãƒ¼ãƒ«ãƒ‰ã®ä¸Šæ–¹å‘ã‚’è¿”ã™
 }
 
 ENGINE_API Vector3 Transform_GetRight(uint64_t objectId)
@@ -340,11 +340,11 @@ ENGINE_API Vector3 Transform_GetRight(uint64_t objectId)
 			return transform->GetRight();
 		}
 	}
-	return Vector3::Right; // ƒIƒuƒWƒFƒNƒg‚âƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Íƒ[ƒ‹ƒh‚Ì‰E•ûŒü‚ğ•Ô‚·
+	return Vector3::Right; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ãƒ¯ãƒ¼ãƒ«ãƒ‰ã®å³æ–¹å‘ã‚’è¿”ã™
 }
 
 
-// --------- ‚»‚Ì‘¼‚Ìƒƒ\ƒbƒh ---------
+// --------- ãã®ä»–ã®ãƒ¡ã‚½ãƒƒãƒ‰ ---------
 
 ENGINE_API void Transform_LookAt(uint64_t objectId, Vector3 target, Vector3 up)
 {

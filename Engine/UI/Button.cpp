@@ -12,7 +12,7 @@ void Button::Initialize()
 
 void Button::Update(float deltaTime)
 {
-	// customClickFunc ‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡AŒÄ‚Ño‚µ‚Ä true ‚ğ•Ô‚µ‚½ê‡‚ÉƒNƒŠƒbƒNˆ—‚ğÀs
+	// customClickFunc ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã€å‘¼ã³å‡ºã—ã¦ true ã‚’è¿”ã—ãŸå ´åˆã«ã‚¯ãƒªãƒƒã‚¯å‡¦ç†ã‚’å®Ÿè¡Œ
     if (customClickFunc)
     {
         if (customClickFunc())
@@ -40,7 +40,7 @@ void Button::UpdateInfo(EventInfo& info)
 		}
 	}
 
-	// ƒ^[ƒQƒbƒg‚ÆŠÖ”‚ª—LŒø‚©Šm”F
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨é–¢æ•°ãŒæœ‰åŠ¹ã‹ç¢ºèª
 	if (target)
 	{
 		if (const auto* method = target->GetClassMeta()->FindMethod(info.funcName))
@@ -74,7 +74,7 @@ void Button::UpdateInfo(EventInfo& info)
 
 void Button::OnClick()
 {
-	// ƒNƒŠƒbƒN‚ª—LŒø‚©Šm”F
+	// ã‚¯ãƒªãƒƒã‚¯ãŒæœ‰åŠ¹ã‹ç¢ºèª
 	bool canClick = true;
 	if (clickFlagFunc)
     {
@@ -82,13 +82,13 @@ void Button::OnClick()
 	}
 	if (canClick)
     {
-        // “o˜^‚³‚ê‚½ŠÖ”‚ğ‡‚ÉŒÄ‚Ño‚·
+        // ç™»éŒ²ã•ã‚ŒãŸé–¢æ•°ã‚’é †ã«å‘¼ã³å‡ºã™
         for (auto& func : onClickFunctions) {
             if (func) {
                 func();
             }
         }
-        // ƒCƒ“ƒXƒyƒNƒ^‚Åİ’è‚³‚ê‚½ƒCƒxƒ“ƒg‚ğ‡‚Éˆ—
+        // ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã§è¨­å®šã•ã‚ŒãŸã‚¤ãƒ™ãƒ³ãƒˆã‚’é †ã«å‡¦ç†
         for (auto& info : eventInfo) {
 			Object* target = nullptr;
             if (info.objReference.IsValid())
@@ -127,7 +127,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 
     ImGui::NewLine();
 
-    // ƒCƒxƒ“ƒg
+    // ã‚¤ãƒ™ãƒ³ãƒˆ
     {
         ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
         ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
@@ -140,11 +140,11 @@ void Button::DrawProperty(const PropertyDrawContext& context)
             for (size_t i = 0; i < eventInfo.size(); i++) {
 				auto& info = eventInfo[i];
                 ImGui::PushID(static_cast<int>(i));
-                // —v‘f‚ÌŠÔ‚É‹æØ‚èü‚ğ‚Â‚¯‚é
+                // è¦ç´ ã®é–“ã«åŒºåˆ‡ã‚Šç·šã‚’ã¤ã‘ã‚‹
                 if (i > 0) {
                     ImGui::Separator();
                 }
-                // ƒhƒƒbƒvæ
+                // ãƒ‰ãƒ­ãƒƒãƒ—å…ˆ
 				std::string label;
 				Object* target = nullptr;
 				GameObject* targetObj = nullptr;
@@ -175,12 +175,12 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 				ImGui::Button(label.c_str());
                 if (ImGui::BeginDragDropTarget()) {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) {
-						if (payload->DataSize == sizeof(ObjectId)) // ƒyƒCƒ[ƒh‚ÌƒTƒCƒY‚ª ObjectId ‚Æ“¯‚¶‚Å‚ ‚é‚±‚Æ‚ğŠm”F
+						if (payload->DataSize == sizeof(ObjectId)) // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚ºãŒ ObjectId ã¨åŒã˜ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
 						{
-							info.objReference = *reinterpret_cast<const ObjectId*>(payload->Data); // ƒyƒCƒ[ƒh‚©‚ç ObjectId ‚ğæ“¾
-							info.className = "GameObject"; // ƒNƒ‰ƒX–¼‚ğ GameObject ‚Éİ’è
-							info.funcName.clear();	// ƒNƒ‰ƒX‚ª•Ï‚í‚Á‚½‚Ì‚ÅŠÖ”–¼‚ğƒŠƒZƒbƒg
-							info.value.second.reset(); // ˆø”‚àƒŠƒZƒbƒg
+							info.objReference = *reinterpret_cast<const ObjectId*>(payload->Data); // ãƒšã‚¤ãƒ­ãƒ¼ãƒ‰ã‹ã‚‰ ObjectId ã‚’å–å¾—
+							info.className = "GameObject"; // ã‚¯ãƒ©ã‚¹åã‚’ GameObject ã«è¨­å®š
+							info.funcName.clear();	// ã‚¯ãƒ©ã‚¹ãŒå¤‰ã‚ã£ãŸã®ã§é–¢æ•°åã‚’ãƒªã‚»ãƒƒãƒˆ
+							info.value.second.reset(); // å¼•æ•°ã‚‚ãƒªã‚»ãƒƒãƒˆ
 						}
                     }
                     ImGui::EndDragDropTarget();
@@ -203,7 +203,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 
 
 
-				// ƒNƒ‰ƒX‚ÌŠÖ”ƒŠƒXƒg
+				// ã‚¯ãƒ©ã‚¹ã®é–¢æ•°ãƒªã‚¹ãƒˆ
 				std::vector<Object*> classes;
 				if (targetObj)
 				{
@@ -218,7 +218,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 					}
 				}
 
-				// ŠÖ”‚ÌƒRƒ“ƒ{ƒ{ƒbƒNƒX
+				// é–¢æ•°ã®ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹
 				if (ImGui::BeginCombo("##func", info.funcName.empty() ? "No Function" : info.funcName.c_str()))
 				{
 					if (ImGui::Selectable("No Function", info.funcName.empty()))
@@ -234,7 +234,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 
 					ImGui::Separator();
 
-					// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÆƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒNƒ‰ƒX‘I‘ğ‚ÆŠÖ”ƒŠƒXƒg‚ÌXV
+					// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚¯ãƒ©ã‚¹é¸æŠã¨é–¢æ•°ãƒªã‚¹ãƒˆã®æ›´æ–°
 					{
 						for (int j = 0; j < classes.size(); j++)
 						{
@@ -242,7 +242,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 							if (!pClass) continue;
 							if (ImGui::BeginMenu(pClass->GetTypeName().c_str()))
 							{
-								// ŠÖ”ƒŠƒXƒg
+								// é–¢æ•°ãƒªã‚¹ãƒˆ
 								std::vector<std::string> itemStrs = createFunctionList(pClass);
 
 								for (int k = 0; k < itemStrs.size(); k++)
@@ -269,7 +269,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 					}
                     ImGui::EndCombo();
                 }
-				// ˆø”‚Ì•\¦ (std::any‚©‚çŒ^î•ñ‚ğŒ³‚É“KØ‚ÈUI‚ğ•\¦‚·‚é)
+				// å¼•æ•°ã®è¡¨ç¤º (std::anyã‹ã‚‰å‹æƒ…å ±ã‚’å…ƒã«é©åˆ‡ãªUIã‚’è¡¨ç¤ºã™ã‚‹)
 				if (info.IsValid())
 				{
 					{
@@ -367,12 +367,12 @@ json Button::Serialize() const
 				infoJson["value"]["data"] = std::any_cast<bool>(valueAny);
 			}
 			else {
-				infoJson["value"]["data"] = nullptr; // ƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢Œ^‚Í null ‚Æ‚µ‚Ä•Û‘¶
+				infoJson["value"]["data"] = nullptr; // ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„å‹ã¯ null ã¨ã—ã¦ä¿å­˜
 			}
 		}
 		else
 		{
-			infoJson["value"] = nullptr; // ’l‚ª‚È‚¢ê‡‚Í null ‚Æ‚µ‚Ä•Û‘¶
+			infoJson["value"] = nullptr; // å€¤ãŒãªã„å ´åˆã¯ null ã¨ã—ã¦ä¿å­˜
 		}
 		eventInfoJson.push_back(infoJson);
 	}
@@ -410,12 +410,12 @@ void Button::Deserialize(const json& j)
 					info.value = { typeStr, infoJson["value"]["data"].get<bool>() };
 				}
 				else {
-					info.value = { typeStr, std::any() }; // ƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢Œ^‚Í‹ó‚Ì std::any ‚Æ‚µ‚Ä•Û‘¶
+					info.value = { typeStr, std::any() }; // ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„å‹ã¯ç©ºã® std::any ã¨ã—ã¦ä¿å­˜
 				}
 			}
 			else
 			{
-				info.value = { "", std::any() }; // ’l‚ª‚È‚¢ê‡‚Í‹ó‚Ì std::any ‚Æ‚µ‚Ä•Û‘¶
+				info.value = { "", std::any() }; // å€¤ãŒãªã„å ´åˆã¯ç©ºã® std::any ã¨ã—ã¦ä¿å­˜
 			}
 			eventInfo.push_back(info);
 		}

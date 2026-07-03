@@ -6,7 +6,7 @@ class OpaquePass : public RenderPass
 {
 public:
 
-	// OpaquePass‚ÌÀ‘•
+	// OpaquePassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 };
@@ -14,7 +14,7 @@ public:
 class PreviewPass : public RenderPass
 {
 public:
-	// PreviewPass‚ÌÀ‘•
+	// PreviewPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 };

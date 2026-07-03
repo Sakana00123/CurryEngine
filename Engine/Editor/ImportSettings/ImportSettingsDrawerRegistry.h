@@ -6,34 +6,34 @@
 namespace CurryEngine::Resources
 {
 	/**
-	 * @brief �C���|�[�g�ݒ�`��̃��W�X�g���N���X�B
-	 * @details ���̃N���X�́A����̃A�Z�b�g�^�C�v�ɑΉ�����C���|�[�g�ݒ�`��N���X��o�^���A�擾���邽�߂̋@�\��񋟂��܂��B
-	 *          ��̓I�ȃA�Z�b�g�^�C�v���Ƃɂ��̃��W�X�g���ɕ`��N���X��o�^���邱�ƂŁA�قȂ�A�Z�b�g�̃C���|�[�g�ݒ�`��𓝈�I�Ɉ������Ƃ��ł��܂��B
+	 * @brief インポート設定描画のレジストリクラス。
+	 * @details このクラスは、特定のアセットタイプに対応するインポート設定描画クラスを登録し、取得するための機能を提供します。
+	 *          具体的なアセットタイプごとにこのレジストリに描画クラスを登録することで、異なるアセットのインポート設定描画を統一的に扱うことができます。
 	 */
 	class ImportSettingsDrawerRegistry
 	{
 	public:
 		/**
-		 * @brief �C���|�[�g�ݒ�`��N���X�����������܂��B�K�v�ɉ����āA�����Ńf�t�H���g�̕`��N���X��o�^���܂��B
+		 * @brief インポート設定描画クラスを初期化します。必要に応じて、ここでデフォルトの描画クラスを登録します。
 		 */
 		static void Initialize();
 		/**
-		 * @brief �w�肳�ꂽ�A�Z�b�g�^�C�v�ɑΉ�����C���|�[�g�ݒ�`��N���X���擾���܂��B
-		 * @param assetType �擾����C���|�[�g�ݒ�`��N���X�̃A�Z�b�g�^�C�v
-		 * @return �Ή�����C���|�[�g�ݒ�`��N���X�̃|�C���^�A���݂��Ȃ��ꍇ��nullptr
+		 * @brief 指定されたアセットタイプに対応するインポート設定描画クラスを取得します。
+		 * @param assetType 取得するインポート設定描画クラスのアセットタイプ
+		 * @return 対応するインポート設定描画クラスのポインタ、存在しない場合はnullptr
 		 */
 		static IImportSettingsDrawer* Find(AssetType assetType);
 
 	private:
 		/**
-		 * @brief �C���|�[�g�ݒ�`��N���X��o�^���܂��B
-		 * @param assetType �o�^����A�Z�b�g�^�C�v
-		 * @param drawer �o�^����C���|�[�g�ݒ�`��N���X�̃��j�[�N�|�C���^
+		 * @brief インポート設定描画クラスを登録します。
+		 * @param assetType 登録するアセットタイプ
+		 * @param drawer 登録するインポート設定描画クラスのユニークポインタ
 		 */
 		static void Register(AssetType assetType, std::unique_ptr<IImportSettingsDrawer> drawer);
 		/**
-		 * @brief �C���|�[�g�ݒ�`��N���X�̃}�b�v���擾���܂��B
-		 * @return �A�Z�b�g�^�C�v�ƃC���|�[�g�ݒ�`��N���X�̋��L�|�C���^�̃}�b�v
+		 * @brief インポート設定描画クラスのマップを取得します。
+		 * @return アセットタイプとインポート設定描画クラスの共有ポインタのマップ
 		 */
 		static std::unordered_map<AssetType, std::unique_ptr<IImportSettingsDrawer>>& GetMap();
 	};

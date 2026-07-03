@@ -22,62 +22,62 @@ Scene::Scene() : canTransition(false)
 		editorCameras[i] = std::make_unique<EditorCamera>();
 		editorCameras[i]->Initialize();
 	}
-	editorCameras[EDITOR_CAMERA_SCENE_VIEW]->SetUpdateFlagFunction([]() { return CurryEngine::SceneViewWindow::Get().IsFocused(); }); // ƒV[ƒ“ƒrƒ…[ƒEƒBƒ“ƒhƒE‚ªƒtƒH[ƒJƒX‚³‚ê‚Ä‚¢‚éê‡‚ÉXV‚·‚é‚æ‚¤‚Éİ’è
-	editorCameras[EDITOR_CAMERA_PREVIEW]->SetUpdateFlagFunction([]() { return CurryEngine::Resources::ImportSettingsWindow::IsOpen(); }); // ƒCƒ“ƒ|[ƒgİ’èƒEƒBƒ“ƒhƒE‚ªŠJ‚¢‚Ä‚¢‚éê‡‚ÉXV‚·‚é‚æ‚¤‚Éİ’è
-	editorCameras[EDITOR_CAMERA_EFFECT_PREVIEW]->SetUpdateFlagFunction([]() { return EffectEditor::IsPreviewFocused(); }); // ƒCƒ“ƒ|[ƒgİ’èƒEƒBƒ“ƒhƒE‚ªŠJ‚¢‚Ä‚¢‚éê‡‚ÉXV‚·‚é‚æ‚¤‚Éİ’è
+	editorCameras[EDITOR_CAMERA_SCENE_VIEW]->SetUpdateFlagFunction([]() { return CurryEngine::SceneViewWindow::Get().IsFocused(); }); // ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚Œã¦ã„ã‚‹å ´åˆã«æ›´æ–°ã™ã‚‹ã‚ˆã†ã«è¨­å®š
+	editorCameras[EDITOR_CAMERA_PREVIEW]->SetUpdateFlagFunction([]() { return CurryEngine::Resources::ImportSettingsWindow::IsOpen(); }); // ã‚¤ãƒ³ãƒãƒ¼ãƒˆè¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‹ã„ã¦ã„ã‚‹å ´åˆã«æ›´æ–°ã™ã‚‹ã‚ˆã†ã«è¨­å®š
+	editorCameras[EDITOR_CAMERA_EFFECT_PREVIEW]->SetUpdateFlagFunction([]() { return EffectEditor::IsPreviewFocused(); }); // ã‚¤ãƒ³ãƒãƒ¼ãƒˆè¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‹ã„ã¦ã„ã‚‹å ´åˆã«æ›´æ–°ã™ã‚‹ã‚ˆã†ã«è¨­å®š
 }
 
 void Scene::Initialize()
 {
-	// ƒV[ƒ“ƒf[ƒ^‚Ì“Ç‚İ‚İ
+	// ã‚·ãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 	std::string stem = this->name;
 	json j;
 #ifdef _DEBUG
-	// ƒV[ƒ“ƒf[ƒ^‚Ì“Ç‚İ‚İ
+	// ã‚·ãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 	if (SceneManager::state == SceneManager::State::PlayToEdit)
 	{
-		// ƒvƒŒƒCƒ‚[ƒh‚©‚çƒGƒfƒBƒbƒgƒ‚[ƒh‚É–ß‚éê‡A•Û‘¶‚µ‚Ä‚¨‚¢‚½ƒf[ƒ^‚ğg—p
+		// ãƒ—ãƒ¬ã‚¤ãƒ¢ãƒ¼ãƒ‰ã‹ã‚‰ã‚¨ãƒ‡ã‚£ãƒƒãƒˆãƒ¢ãƒ¼ãƒ‰ã«æˆ»ã‚‹å ´åˆã€ä¿å­˜ã—ã¦ãŠã„ãŸãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨
 		j = SceneManager::previousData.sceneJson;
 	}
 	else if (SceneManager::state == SceneManager::State::EditToPlay)
 	{
-		// ƒV[ƒ“ƒtƒ@ƒCƒ‹ƒpƒX‚Ì\’z
+		// ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã®æ§‹ç¯‰
 		const std::string filePath = "./Assets/Scenes/" + stem + SceneManager::runtimeSuffix + ".scene";
-		// ’Êí‚ÌƒV[ƒ“ƒf[ƒ^“Ç‚İ‚İ
+		// é€šå¸¸ã®ã‚·ãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 		JsonFileHandler::LoadJsonFromFile(j, filePath);
 	}
 	else
 #else
 	const std::string filePathBin = "./Assets/Scenes/" + stem + ".bin";
 	if (std::filesystem::exists(std::filesystem::path(filePathBin))) {
-		// ƒV[ƒ“ƒtƒ@ƒCƒ‹ƒpƒX‚Ì\’z
-		// ƒoƒCƒiƒŠŒ`®‚ÌƒV[ƒ“ƒf[ƒ^“Ç‚İ‚İ
+		// ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã®æ§‹ç¯‰
+		// ãƒã‚¤ãƒŠãƒªå½¢å¼ã®ã‚·ãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 		JsonFileHandler::LoadJsonFromFile(j, filePathBin);
 	}
 	else
 #endif // _DEBUG
 	{
-		// ƒV[ƒ“ƒtƒ@ƒCƒ‹ƒpƒX‚Ì\’z
+		// ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã®æ§‹ç¯‰
 		const std::string filePath = "./Assets/Scenes/" + stem + ".scene";
-		// ’Êí‚ÌƒV[ƒ“ƒf[ƒ^“Ç‚İ‚İ
+		// é€šå¸¸ã®ã‚·ãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 		JsonFileHandler::LoadJsonFromFile(j, filePath);
 	}
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	this->Deserialize(j);
 
-	// ƒV[ƒ“‚Ìó‘Ô‘JˆÚˆ—
+	// ã‚·ãƒ¼ãƒ³ã®çŠ¶æ…‹é·ç§»å‡¦ç†
 	switch (SceneManager::state)
 	{
 	case SceneManager::State::PlayToEdit:
 	{
-		// ƒvƒŒƒCƒ‚[ƒh‚©‚çƒGƒfƒBƒbƒgƒ‚[ƒh‚É–ß‚éê‡Aó‘Ô‚ğƒGƒfƒBƒbƒg’†‚Éİ’è
+		// ãƒ—ãƒ¬ã‚¤ãƒ¢ãƒ¼ãƒ‰ã‹ã‚‰ã‚¨ãƒ‡ã‚£ãƒƒãƒˆãƒ¢ãƒ¼ãƒ‰ã«æˆ»ã‚‹å ´åˆã€çŠ¶æ…‹ã‚’ã‚¨ãƒ‡ã‚£ãƒƒãƒˆä¸­ã«è¨­å®š
 		SceneManager::state = SceneManager::State::Editing;
 		break;
 	}
 	case SceneManager::State::EditToPlay:
 	{
-		// ƒGƒfƒBƒbƒgƒ‚[ƒh‚©‚çƒvƒŒƒCƒ‚[ƒh‚ÉˆÚs‚·‚éê‡Aó‘Ô‚ğƒvƒŒƒC’†‚Éİ’è
+		// ã‚¨ãƒ‡ã‚£ãƒƒãƒˆãƒ¢ãƒ¼ãƒ‰ã‹ã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¢ãƒ¼ãƒ‰ã«ç§»è¡Œã™ã‚‹å ´åˆã€çŠ¶æ…‹ã‚’ãƒ—ãƒ¬ã‚¤ä¸­ã«è¨­å®š
 		SceneManager::state = SceneManager::State::Playing;
 		break;
 	}
@@ -86,19 +86,19 @@ void Scene::Initialize()
 
 void Scene::BeginFrame()
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌƒtƒŒ[ƒ€ŠJnˆ—
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹å‡¦ç†
 	objectManager->BeginFrame();
 }
 
 void Scene::EndFrame()
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌƒtƒŒ[ƒ€I—¹ˆ—
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ•ãƒ¬ãƒ¼ãƒ çµ‚äº†å‡¦ç†
 	objectManager->EndFrame();
 }
 
 void Scene::Start()
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌŠJnˆ—
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é–‹å§‹å‡¦ç†
 	if (isStarted == false)
 	{
 		isStarted = true;
@@ -108,26 +108,26 @@ void Scene::Start()
 
 void Scene::Update(float deltaTime)
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌXV‚Ì‘Oˆ—
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°ã®å‰å‡¦ç†
 	objectManager->PreUpdate(deltaTime);
 
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌXV
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°
 	objectManager->Update(deltaTime);
 
-	// ŒÅ’èXV‚Ìƒ^ƒCƒ}[‚ğXV
+	// å›ºå®šæ›´æ–°ã®ã‚¿ã‚¤ãƒãƒ¼ã‚’æ›´æ–°
 	m_fixedUpdateTimer += deltaTime;
 
-	//// ŒÅ’èXV‚ÌŒÄ‚Ño‚µ
+	//// å›ºå®šæ›´æ–°ã®å‘¼ã³å‡ºã—
 	//while (m_fixedUpdateTimer >= m_fixedUpdateInterval) {
-	//	FixedUpdate(m_fixedUpdateInterval); // ŒÅ’èXV‚ÌŒÄ‚Ño‚µ
+	//	FixedUpdate(m_fixedUpdateInterval); // å›ºå®šæ›´æ–°ã®å‘¼ã³å‡ºã—
 	//	m_fixedUpdateTimer -= m_fixedUpdateInterval;
 	//}
 	FixedUpdate(deltaTime);
 
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌXV‚ÌŒãˆ—
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°ã®å¾Œå‡¦ç†
 	LateUpdate(deltaTime);
 
-	// ƒGƒfƒBƒ^[ƒJƒƒ‰‚ÌXV
+	// ã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼ã‚«ãƒ¡ãƒ©ã®æ›´æ–°
 	for (int i = 0; i < _countof(editorCameras); ++i) {
 		if (editorCameras[i]) {
 			editorCameras[i]->Update(deltaTime);
@@ -137,37 +137,37 @@ void Scene::Update(float deltaTime)
 
 void Scene::LateUpdate(float deltaTime)
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌXV‚ÌŒãˆ—
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°ã®å¾Œå‡¦ç†
 	objectManager->LateUpdate(deltaTime);
 }
 
 void Scene::FixedUpdate(float fixedDeltaTime)
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌŒÅ’èXV
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å›ºå®šæ›´æ–°
 	objectManager->FixedUpdate(fixedDeltaTime);
 
 	if (!SceneManager::IsTransition())
 	{
-		// •¨—ƒGƒ“ƒWƒ“‚ÌŒÅ’èXV
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®å›ºå®šæ›´æ–°
 		Physics::FixedUpdate(fixedDeltaTime);
 	}
 }
 
 void Scene::Render(RenderContext* rtx)
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚Ì3D•`‰æ
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®3Dæç”»
 	objectManager->Render(rtx);
 }
 
 void Scene::Draw(RenderContext* rtx)
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚Ì2D•`‰æ
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®2Dæç”»
 	objectManager->Draw(rtx);
 }
 
 void Scene::Finalize()
 {
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ÌI—¹‰»ˆ—
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çµ‚äº†åŒ–å‡¦ç†
 	objectManager->Reset();
 	objectManager.reset();
 }
@@ -193,7 +193,7 @@ GameObject* Scene::FindGameObjectById(const ObjectId& id) const {
 			return obj.lock().get();
 		}
 	}
-	return nullptr; // Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·
+	return nullptr; // è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™
 }
 
 std::shared_ptr<GameObject> Scene::FindGameObjectPtrById(const ObjectId& id) const {
@@ -202,7 +202,7 @@ std::shared_ptr<GameObject> Scene::FindGameObjectPtrById(const ObjectId& id) con
 			return obj.lock();
 		}
 	}
-	return nullptr; // Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·
+	return nullptr; // è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™
 }
 
 void Scene::Serialize(json& j) const
@@ -210,13 +210,13 @@ void Scene::Serialize(json& j) const
 	j["name"] = name;
 	//j["canTransition"] = canTransition;
 	
-	// ƒGƒfƒBƒ^[ƒJƒƒ‰‚ÌƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼ã‚«ãƒ¡ãƒ©ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	j["editorCamera"] = GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->Serialize();
 
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ğƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	j["objects"] = objectManager->Serialize();
 
-	// Ÿ‚ÌƒCƒ“ƒXƒ^ƒ“ƒXID‚ğ•Û‘¶
+	// æ¬¡ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã‚’ä¿å­˜
 	//int nextId = GetCurrentInstanceID();
 	//Console::Log("Serializing scene: saving next instance ID " + std::to_string(nextId));
 	//j["nextInstanceId"] = nextId;
@@ -227,20 +227,20 @@ void Scene::Deserialize(const json& j) {
 	name = j.value("name", name);
 	//canTransition = j.value("canTransition", canTransition);
 
-	// Ÿ‚ÌƒCƒ“ƒXƒ^ƒ“ƒXID‚ğ•œŒ³
+	// æ¬¡ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã‚’å¾©å…ƒ
 	//if (j.contains("nextInstanceId")) {
 	//	int nextId = j["nextInstanceId"].get<int>();
 	//	Console::Log("Deserializing scene: resetting instance ID counter to " + std::to_string(nextId));
 	//	ResetInstanceID(nextId);
 	//}
 
-	// ƒGƒfƒBƒ^[ƒJƒƒ‰‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼ã‚«ãƒ¡ãƒ©ã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	if (j.contains("editorCamera"))
 	{
 		GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->Deserialize(j["editorCamera"]);
 	}
 
-	// ƒV[ƒ““à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ğƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒ¼ãƒ³å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	if (j.contains("objects")) {
 		objectManager->Deserialize(j["objects"]);
 	}

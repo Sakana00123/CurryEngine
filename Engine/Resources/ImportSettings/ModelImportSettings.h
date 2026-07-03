@@ -5,28 +5,28 @@
 namespace CurryEngine::Resources
 {
 	/**
-	 * @brief ���f���̃C���|�[�g�ݒ��\���\���́B���f���A�Z�b�g�̃C���|�[�g���Ɏg�p�����ݒ��ێ����܂��B
-	 * @details ���̍\���̂́A���f���A�Z�b�g�̃C���|�[�g�Ɋ֘A����ݒ���܂Ƃ߂ĊǗ����邽�߂̂��̂ł��B�Ⴆ�΁A�@����ڐ��̐����A�X�P�[�����O�ȂǁA���f���̕i����p�t�H�[�}���X�ɉe����^����ݒ���܂݂܂��B
+	 * @brief モデルのインポート設定を表す構造体。モデルアセットのインポート時に使用される設定を保持します。
+	 * @details この構造体は、モデルアセットのインポートに関連する設定をまとめて管理するためのものです。例えば、法線や接線の生成、スケーリングなど、モデルの品質やパフォーマンスに影響を与える設定を含みます。
 	 */
 	struct ModelImportSettings : public IImportSettings
 	{
-		float scaleFactor = 1.0f; ///< ���f���̃X�P�[�����O�W��
-		bool staticBatching = false; ///< ���f���̐ÓI�o�b�`���O��L���ɂ��邩�ǂ���
+		float scaleFactor = 1.0f; ///< モデルのスケーリング係数
+		bool staticBatching = false; ///< モデルの静的バッチングを有効にするかどうか
 
-		// assimp �̃C���|�[�g�t���O���܂Ƃ߂��r�b�g�t�B�[���h
+		// assimp のインポートフラグをまとめたビットフィールド
 		unsigned int importFlags =
 			aiProcess_Triangulate |
 			aiProcess_GenSmoothNormals |
 			aiProcess_CalcTangentSpace |
 			aiProcess_JoinIdenticalVertices |
-			aiProcess_LimitBoneWeights | // �{�[���e������ 4 �ɐ���
-			aiProcess_GlobalScale | // �O���[�o���X�P�[����K�p
-			aiProcess_ConvertToLeftHanded; // ������W�n�ɕϊ��iDirectX�p�j
+			aiProcess_LimitBoneWeights | // ボーン影響数を 4 に制限
+			aiProcess_GlobalScale | // グローバルスケールを適用
+			aiProcess_ConvertToLeftHanded; // 左手座標系に変換（DirectX用）
 
-		// assimp �̃v���Z�b�g��I�����邽�߂̕ϐ��i0: Custom, 1: Fast, 2: Quality, 3: MaxQuality�j
+		// assimp のプリセットを選択するための変数（0: Custom, 1: Fast, 2: Quality, 3: MaxQuality）
 		char preset = 1;
 
-		// nlohmann::json��NLOHMANN_DEFINE_TYPE�n�}�N����to_json/from_json����������
+		// nlohmann::jsonのNLOHMANN_DEFINE_TYPE系マクロでto_json/from_jsonを自動生成
 		friend void to_json(nlohmann::json& j, const ModelImportSettings& settings) {
 			j = nlohmann::json{
 				{"scaleFactor", settings.scaleFactor},

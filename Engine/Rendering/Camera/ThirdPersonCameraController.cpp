@@ -14,7 +14,7 @@ void ThirdPersonCameraController::Initialize()
 
 void ThirdPersonCameraController::Start()
 {
-	//// ’Ç]ƒ^[ƒQƒbƒgİ’è
+	//// è¿½å¾“ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè¨­å®š
 	//if (targetObjectId.IsValid())
 	//{
 	//	GameObject* targetObject = ObjectManager::Find(targetObjectId);
@@ -23,7 +23,7 @@ void ThirdPersonCameraController::Start()
 	//		targetTransform = targetObject->transform;
 	//	}
 	//}
-	//// ’‹ƒ^[ƒQƒbƒgİ’è
+	//// æ³¨è¦–ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè¨­å®š
 	//if (lookAtObjectId.IsValid())
 	//{
 	//	GameObject* lookAtObject = ObjectManager::Find(lookAtObjectId);
@@ -36,7 +36,7 @@ void ThirdPersonCameraController::Start()
 
 void ThirdPersonCameraController::Update(float deltaTime)
 {
-	// ‰ñ“]“ü—Í
+	// å›è»¢å…¥åŠ›
 	if (isEnableAxisInput)
 	{
 		float rx = InputSystem::GetAxis(Side::Right, Axis::X);
@@ -53,17 +53,17 @@ void ThirdPersonCameraController::Update(float deltaTime)
 		}
 	}
 
-	// ƒY[ƒ€“ü—Í
+	// ã‚ºãƒ¼ãƒ å…¥åŠ›
 	if (isEnableZoomInput)
 	{
 		bool enableInput = false;
 
 #ifdef USE_IMGUI
-		// ƒV[ƒ“ƒrƒ…[ã‚Å‚Ì‚İƒzƒC[ƒ‹‘€ì‚ğó‚¯•t‚¯‚é
+		// ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ä¸Šã§ã®ã¿ãƒ›ã‚¤ãƒ¼ãƒ«æ“ä½œã‚’å—ã‘ä»˜ã‘ã‚‹
 		float left, top, right, bottom;
 		Graphics::GetScreenRect(left, top, right, bottom);
 
-		// ƒ}ƒEƒX‚ªƒV[ƒ“ƒrƒ…[ã‚É‚ ‚é‚©
+		// ãƒã‚¦ã‚¹ãŒã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ä¸Šã«ã‚ã‚‹ã‹
 		if (ImGui::IsMouseHoveringRect(ImVec2(left, top), ImVec2(right, bottom), false))
 		{
 			enableInput = true;
@@ -72,7 +72,7 @@ void ThirdPersonCameraController::Update(float deltaTime)
 		enableInput = true;
 #endif // USE_IMGUI
 
-		// ƒY[ƒ€“ü—Í‚ª—LŒø‚Ìê‡
+		// ã‚ºãƒ¼ãƒ å…¥åŠ›ãŒæœ‰åŠ¹ã®å ´åˆ
 		if (enableInput)
 		{
 			float zoomInput = InputSystem::GetWheelDelta();
@@ -82,12 +82,12 @@ void ThirdPersonCameraController::Update(float deltaTime)
 		}
 	}
 
-	// ‹——£’²®ˆ—
+	// è·é›¢èª¿æ•´å‡¦ç†
 	{
-		// –Ú•W‹——£§ŒÀ
+		// ç›®æ¨™è·é›¢åˆ¶é™
 		targetDistance = std::clamp(targetDistance, minDistance, maxDistance);
 
-		// ƒXƒ€[ƒYƒY[ƒ€ˆ—
+		// ã‚¹ãƒ ãƒ¼ã‚ºã‚ºãƒ¼ãƒ å‡¦ç†
 		if (useSmoothZoom)
 		{
 			distance = std::lerp(distance, targetDistance, deltaTime * zoomSpeed);
@@ -97,17 +97,17 @@ void ThirdPersonCameraController::Update(float deltaTime)
 			distance = targetDistance;
 		}
 
-		// ‹——£§ŒÀ
+		// è·é›¢åˆ¶é™
 		distance = std::clamp(distance, minDistance, maxDistance);
 	}
 
-	// ’Ç]ˆ—
+	// è¿½å¾“å‡¦ç†
 	auto targetTransform = std::dynamic_pointer_cast<Transform>(ObjectManager::FindComponent(targetTransformId));
 	if (targetTransform)
 	{
 		XMFLOAT3 forward = GetOwner()->GetTransform()->GetForward();
 		XMVECTOR TargetPos = XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&targetTransform->GetWorldPosition())) - XMLoadFloat3(&forward) * distance;
-		// ˆÊ’uİ’è
+		// ä½ç½®è¨­å®š
 		if (useSmoothMovement)
 		{
 			XMFLOAT3 setPos;
@@ -122,7 +122,7 @@ void ThirdPersonCameraController::Update(float deltaTime)
 		}
 	}
 
-	// ’‹ˆ—
+	// æ³¨è¦–å‡¦ç†
 	auto lookAtTransform = std::dynamic_pointer_cast<Transform>(ObjectManager::FindComponent(lookAtTransformId));
 	if (lookAtTransform)
 	{
@@ -152,7 +152,7 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 			ImGui::Button("None(Transform)");
 		}
 
-		// ƒhƒ‰ƒbƒOƒAƒ“ƒhƒhƒƒbƒv‚Åƒ^[ƒQƒbƒgİ’è
+		// ãƒ‰ãƒ©ãƒƒã‚°ã‚¢ãƒ³ãƒ‰ãƒ‰ãƒ­ãƒƒãƒ—ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè¨­å®š
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) {
@@ -166,7 +166,7 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 		}
 
 		ImGui::SameLine();
-		// ƒNƒŠƒAƒ{ƒ^ƒ“
+		// ã‚¯ãƒªã‚¢ãƒœã‚¿ãƒ³
 		if (ImGui::Button("X")) {
 			targetTransform = nullptr;
 		}
@@ -178,7 +178,7 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 		ImGui::PushID("lookAtTarget");
 		ImGui::Text("lookAtTarget:");
 		ImGui::SameLine();
-		// ƒ^[ƒQƒbƒg•\¦
+		// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè¡¨ç¤º
 		if (lookAtTransform) {
 			ImGui::Button((lookAtTransform->GetOwner()->name + "(Transform)").c_str());
 		}
@@ -186,7 +186,7 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 			ImGui::Button("None(Transform)");
 		}
 
-		// ƒhƒ‰ƒbƒOƒAƒ“ƒhƒhƒƒbƒv‚Åƒ^[ƒQƒbƒgİ’è
+		// ãƒ‰ãƒ©ãƒƒã‚°ã‚¢ãƒ³ãƒ‰ãƒ‰ãƒ­ãƒƒãƒ—ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè¨­å®š
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) {
@@ -200,7 +200,7 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 		}
 
 		ImGui::SameLine();
-		// ƒNƒŠƒAƒ{ƒ^ƒ“
+		// ã‚¯ãƒªã‚¢ãƒœã‚¿ãƒ³
 		if (ImGui::Button("X")) {
 			lookAtTransform = nullptr;
 		}
@@ -208,8 +208,8 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 	}
 #endif // 0
 
-	// TODO: ‚¢‚ë‚ñ‚Èƒwƒ‹ƒp[ƒ}ƒNƒ‚ª‚²‚¿‚á‚²‚¿‚á‚µ‚Ä‚Ä¬—‚·‚é‚Ì‚ÅAƒwƒ‹ƒp[–¼‘O‹óŠÔ‚É‚Ü‚Æ‚ß‚é‚È‚Ç‚µ‚Ä®—‚·‚éB
-	// ‚»‚Ì‘¼ƒvƒƒpƒeƒB
+	// TODO: ã„ã‚ã‚“ãªãƒ˜ãƒ«ãƒ‘ãƒ¼ãƒã‚¯ãƒ­ãŒã”ã¡ã‚ƒã”ã¡ã‚ƒã—ã¦ã¦æ··ä¹±ã™ã‚‹ã®ã§ã€ãƒ˜ãƒ«ãƒ‘ãƒ¼åå‰ç©ºé–“ã«ã¾ã¨ã‚ã‚‹ãªã©ã—ã¦æ•´ç†ã™ã‚‹ã€‚
+	// ãã®ä»–ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 	Component::DrawProperty(context);
 	//ImGui::Checkbox("isEnableAxisInput", &isEnableAxisInput);
 	//ImGui::Checkbox("isEnableZoomInput", &isEnableZoomInput);
@@ -254,27 +254,27 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 
 
 	//C_COMPONENT_PROPERTY_HEADER();
-	//C_COMPONENT_PROPERTY_FIELD(cameraComponent, "Camera Component", "ƒJƒƒ‰ƒRƒ“ƒ|[ƒlƒ“ƒg");
-	//C_COMPONENT_PROPERTY_FIELD(targetTransform, "Target Transform", "’Ç]ƒ^[ƒQƒbƒg‚ÌTransform");
-	//C_COMPONENT_PROPERTY_FIELD(lookAtTransform, "LookAt Transform", "’‹ƒ^[ƒQƒbƒg‚ÌTransform");
-	//C_COMPONENT_PROPERTY_FIELD(isEnableAxisInput, "Enable Axis Input", "“ü—ÍiAxisj‚ğ—LŒø‰»‚·‚é‚©");
-	//C_COMPONENT_PROPERTY_FIELD(isEnableZoomInput, "Enable Zoom Input", "ƒY[ƒ€“ü—Í‚ğ—LŒø‰»‚·‚é‚©");
-	//C_COMPONENT_PROPERTY_FIELD(invertX, "Invert X", "X²”½“]");
-	//C_COMPONENT_PROPERTY_FIELD(invertY, "Invert Y", "Y²”½“]");
-	//C_COMPONENT_PROPERTY_FIELD(invertZoom, "Invert Zoom", "ƒY[ƒ€”½“]");
-	//C_COMPONENT_PROPERTY_FIELD(useSmoothMovement, "Use Smooth Movement", "ƒXƒ€[ƒYˆÚ“®‚ğg—p‚·‚é‚©");
-	//C_COMPONENT_PROPERTY_FIELD(useSmoothZoom, "Use Smooth Zoom", "ƒXƒ€[ƒYƒY[ƒ€‚ğg—p‚·‚é‚©");
-	//C_COMPONENT_PROPERTY_FIELD(rotationSpeed, "Rotation Speed", "‰ñ“]‘¬“x");
-	//C_COMPONENT_PROPERTY_FIELD(zoomAmount, "Zoom Amount", "ƒY[ƒ€—Ê");
-	//C_COMPONENT_PROPERTY_FIELD(zoomSpeed, "Zoom Speed", "ƒY[ƒ€‘¬“x(ƒXƒ€[ƒY)");
-	//C_COMPONENT_PROPERTY_FIELD(distance, "Distance", "ƒJƒƒ‰‹——£(Œ»İ’l)");
-	//C_COMPONENT_PROPERTY_FIELD(targetDistance, "Target Distance", "–Ú•W‹——£(ƒY[ƒ€æ)");
-	//C_COMPONENT_PROPERTY_FIELD(minDistance, "Min Distance", "Å¬‹——£");
-	//C_COMPONENT_PROPERTY_FIELD(maxDistance, "Max Distance", "Å‘å‹——£");
-	//C_COMPONENT_PROPERTY_FIELD(followSpeed, "Follow Speed", "’Ç]‘¬“x");
-	//C_COMPONENT_PROPERTY_FIELD(lookAtSpeed, "LookAt Speed", "’‹‘¬“x");
-	//C_COMPONENT_PROPERTY_FIELD(minAngleX, "Min Angle X", "X²Å¬Šp“x");
-	//C_COMPONENT_PROPERTY_FIELD(maxAngleX, "Max Angle X", "X²Å‘åŠp“x");
+	//C_COMPONENT_PROPERTY_FIELD(cameraComponent, "Camera Component", "ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ");
+	//C_COMPONENT_PROPERTY_FIELD(targetTransform, "Target Transform", "è¿½å¾“ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®Transform");
+	//C_COMPONENT_PROPERTY_FIELD(lookAtTransform, "LookAt Transform", "æ³¨è¦–ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®Transform");
+	//C_COMPONENT_PROPERTY_FIELD(isEnableAxisInput, "Enable Axis Input", "å…¥åŠ›ï¼ˆAxisï¼‰ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹ã‹");
+	//C_COMPONENT_PROPERTY_FIELD(isEnableZoomInput, "Enable Zoom Input", "ã‚ºãƒ¼ãƒ å…¥åŠ›ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹ã‹");
+	//C_COMPONENT_PROPERTY_FIELD(invertX, "Invert X", "Xè»¸åè»¢");
+	//C_COMPONENT_PROPERTY_FIELD(invertY, "Invert Y", "Yè»¸åè»¢");
+	//C_COMPONENT_PROPERTY_FIELD(invertZoom, "Invert Zoom", "ã‚ºãƒ¼ãƒ åè»¢");
+	//C_COMPONENT_PROPERTY_FIELD(useSmoothMovement, "Use Smooth Movement", "ã‚¹ãƒ ãƒ¼ã‚ºç§»å‹•ã‚’ä½¿ç”¨ã™ã‚‹ã‹");
+	//C_COMPONENT_PROPERTY_FIELD(useSmoothZoom, "Use Smooth Zoom", "ã‚¹ãƒ ãƒ¼ã‚ºã‚ºãƒ¼ãƒ ã‚’ä½¿ç”¨ã™ã‚‹ã‹");
+	//C_COMPONENT_PROPERTY_FIELD(rotationSpeed, "Rotation Speed", "å›è»¢é€Ÿåº¦");
+	//C_COMPONENT_PROPERTY_FIELD(zoomAmount, "Zoom Amount", "ã‚ºãƒ¼ãƒ é‡");
+	//C_COMPONENT_PROPERTY_FIELD(zoomSpeed, "Zoom Speed", "ã‚ºãƒ¼ãƒ é€Ÿåº¦(ã‚¹ãƒ ãƒ¼ã‚ºæ™‚)");
+	//C_COMPONENT_PROPERTY_FIELD(distance, "Distance", "ã‚«ãƒ¡ãƒ©è·é›¢(ç¾åœ¨å€¤)");
+	//C_COMPONENT_PROPERTY_FIELD(targetDistance, "Target Distance", "ç›®æ¨™è·é›¢(ã‚ºãƒ¼ãƒ å…ˆ)");
+	//C_COMPONENT_PROPERTY_FIELD(minDistance, "Min Distance", "æœ€å°è·é›¢");
+	//C_COMPONENT_PROPERTY_FIELD(maxDistance, "Max Distance", "æœ€å¤§è·é›¢");
+	//C_COMPONENT_PROPERTY_FIELD(followSpeed, "Follow Speed", "è¿½å¾“é€Ÿåº¦");
+	//C_COMPONENT_PROPERTY_FIELD(lookAtSpeed, "LookAt Speed", "æ³¨è¦–é€Ÿåº¦");
+	//C_COMPONENT_PROPERTY_FIELD(minAngleX, "Min Angle X", "Xè»¸æœ€å°è§’åº¦");
+	//C_COMPONENT_PROPERTY_FIELD(maxAngleX, "Max Angle X", "Xè»¸æœ€å¤§è§’åº¦");
 	//C_COMPONENT_PROPERTY_FOOTER();
 }
 #endif /// USE_IMGUI

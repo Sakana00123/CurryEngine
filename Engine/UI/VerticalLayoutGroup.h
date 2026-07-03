@@ -10,28 +10,28 @@ public:
 
 public:
 
-	//Component ‚Ìƒ‰ƒCƒtƒTƒCƒNƒ‹ƒCƒxƒ“ƒg‚ğ•K—v‚É‰‚¶‚ÄƒI[ƒo[ƒ‰ƒCƒh‚µ‚ÄÀ‘•‚µ‚Ü‚·B
+	//Component ã®ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«ã‚¤ãƒ™ãƒ³ãƒˆã‚’å¿…è¦ã«å¿œã˜ã¦ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¦å®Ÿè£…ã—ã¾ã™ã€‚
 	void Start() override;
 	void Update(float deltaTime) override;
 
 protected:
 
-	// ”z’u‚ğXV‚·‚éŠÖ”Bq—v‘f‚ÌˆÊ’u‚ğŒvZ‚µ‚Ä”z’u‚µ‚Ü‚·B
+	// é…ç½®ã‚’æ›´æ–°ã™ã‚‹é–¢æ•°ã€‚å­è¦ç´ ã®ä½ç½®ã‚’è¨ˆç®—ã—ã¦é…ç½®ã—ã¾ã™ã€‚
 	void UpdateLayout() override;
 
 
 private:
 
 	C_PROPERTY()
-	bool childForceExpandWidth = false; // q—v‘f‚Ì•‚ğ‹­§“I‚Ée‚Ì•‚É‡‚í‚¹‚é‚©‚Ç‚¤‚©
+	bool childForceExpandWidth = false; // å­è¦ç´ ã®å¹…ã‚’å¼·åˆ¶çš„ã«è¦ªã®å¹…ã«åˆã‚ã›ã‚‹ã‹ã©ã†ã‹
 
 	C_PROPERTY()
-	bool childForceExpandHeight = false; // q—v‘f‚Ì‚‚³‚ğ‹­§“I‚Ée‚Ì‚‚³‚É‡‚í‚¹‚é‚©‚Ç‚¤‚©
+	bool childForceExpandHeight = false; // å­è¦ç´ ã®é«˜ã•ã‚’å¼·åˆ¶çš„ã«è¦ªã®é«˜ã•ã«åˆã‚ã›ã‚‹ã‹ã©ã†ã‹
 
 	C_PROPERTY()
-	bool childControlWidth = true; // q—v‘f‚Ì•‚ğƒŒƒCƒAƒEƒgƒOƒ‹[ƒv‚ª§Œä‚·‚é‚©‚Ç‚¤‚©
+	bool childControlWidth = true; // å­è¦ç´ ã®å¹…ã‚’ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚°ãƒ«ãƒ¼ãƒ—ãŒåˆ¶å¾¡ã™ã‚‹ã‹ã©ã†ã‹
 
 	C_PROPERTY()
-	bool childControlHeight = true; // q—v‘f‚Ì‚‚³‚ğƒŒƒCƒAƒEƒgƒOƒ‹[ƒv‚ª§Œä‚·‚é‚©‚Ç‚¤‚©
+	bool childControlHeight = true; // å­è¦ç´ ã®é«˜ã•ã‚’ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚°ãƒ«ãƒ¼ãƒ—ãŒåˆ¶å¾¡ã™ã‚‹ã‹ã©ã†ã‹
 
 };

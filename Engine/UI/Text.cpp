@@ -12,11 +12,11 @@
 REGISTER_COMPONENT_WITH_ATTRIBUTES(Text, "UI",
     ComponentAttributes::DisallowMultiple | ComponentAttributes::ExecuteInEditMode, {});
 
-// identity ‚Ì’è‹`iéŒ¾‚Í .h ‘¤‚Ì static constj
+// identity ã®å®šç¾©ï¼ˆå®£è¨€ã¯ .h å´ã® static constï¼‰
 const Text::CharModifier Text::kIdentityModifier{};
 
 // =============================================================================
-//  Setup / ‰Šú‰»
+//  Setup / åˆæœŸåŒ–
 // =============================================================================
 
 void Text::Setup(const std::string& fontFilePath,
@@ -29,7 +29,7 @@ void Text::Setup(const std::string& fontFilePath,
 
 	if (fontDataCache.contains(fontFilePath))
     {
-        // ƒLƒƒƒbƒVƒ…‚©‚ç“Ç‚İ‚İ
+        // ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‹ã‚‰èª­ã¿è¾¼ã¿
         const FontData& cachedData = fontDataCache[fontFilePath];
         characters = cachedData.characters;
         faceName = cachedData.faceName;
@@ -41,12 +41,12 @@ void Text::Setup(const std::string& fontFilePath,
     }
 	else
     {
-        // --- .fnt ƒtƒ@ƒCƒ‹‚Ìƒp[ƒX ---
+        // --- .fnt ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ãƒ¼ã‚¹ ---
         std::ifstream file(fontFilePath);
         if (!file)
         {
             std::u8string u8FontFilePath(fontFilePath.begin(), fontFilePath.end());
-            LOG_WARNING(u8"ƒtƒHƒ“ƒgƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚Ü‚¹‚ñ‚Å‚µ‚½: " + u8FontFilePath);
+            LOG_WARNING(u8"ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ: " + u8FontFilePath);
             return;
         }
 
@@ -88,7 +88,7 @@ void Text::Setup(const std::string& fontFilePath,
             }
         }
 
-		// ƒLƒƒƒbƒVƒ…‚É•Û‘¶
+		// ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ä¿å­˜
         fontDataCache[fontFilePath] = FontData{
             characters,
             faceName,
@@ -102,7 +102,7 @@ void Text::Setup(const std::string& fontFilePath,
 
     SetCharacterLimit(characterLimit);
 
-    // --- ƒVƒF[ƒ_[ / “ü—ÍƒŒƒCƒAƒEƒg ---
+    // --- ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ / å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ ---
     HRESULT hr = S_OK;
 
     D3D11_INPUT_ELEMENT_DESC inputElementDesc[] =
@@ -151,7 +151,7 @@ void Text::SetupBuffer(size_t vertexCapacity)
 
 void Text::Initialize()
 {
-    // Deserialize ‚©‚çŒÄ‚Î‚ê‚é Setup ‚Å‰Šú‰»Ï‚İ
+    // Deserialize ã‹ã‚‰å‘¼ã°ã‚Œã‚‹ Setup ã§åˆæœŸåŒ–æ¸ˆã¿
 }
 
 // =============================================================================
@@ -177,12 +177,12 @@ void Text::ResetCharModifiers()
 
 void Text::ResizeModifiers()
 {
-    // k¬‚Í––”ö‚ğØ‚èÌ‚ÄAŠg’£‚Í identity ‚Å–„‚ß‚é
+    // ç¸®å°æ™‚ã¯æœ«å°¾ã‚’åˆ‡ã‚Šæ¨ã¦ã€æ‹¡å¼µæ™‚ã¯ identity ã§åŸ‹ã‚ã‚‹
     modifiers.resize(text.size(), CharModifier{});
 }
 
 // =============================================================================
-//  ƒvƒƒpƒeƒB setter
+//  ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ setter
 // =============================================================================
 
 void Text::SetText(const std::wstring& newText)
@@ -191,7 +191,7 @@ void Text::SetText(const std::wstring& newText)
     if (characterLimit > 0 && text.length() > static_cast<size_t>(characterLimit))
     {
         text = text.substr(0, characterLimit);
-        LOG_WARNING(u8"ƒeƒLƒXƒg‚Ì•¶š”‚ªãŒÀ‚ğ’´‚¦‚Ä‚¢‚Ü‚·BØ‚è‹l‚ß‚Ä•\¦‚µ‚Ü‚·B");
+        LOG_WARNING(u8"ãƒ†ã‚­ã‚¹ãƒˆã®æ–‡å­—æ•°ãŒä¸Šé™ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚åˆ‡ã‚Šè©°ã‚ã¦è¡¨ç¤ºã—ã¾ã™ã€‚");
     }
     ResizeModifiers();
 }
@@ -203,7 +203,7 @@ void Text::InsertText(size_t index, const std::wstring& insertText)
     if (characterLimit > 0 && text.length() > static_cast<size_t>(characterLimit))
     {
         text = text.substr(0, characterLimit);
-        LOG_WARNING(u8"ƒeƒLƒXƒg‚Ì•¶š”‚ªãŒÀ‚ğ’´‚¦‚Ä‚¢‚Ü‚·BØ‚è‹l‚ß‚Ä•\¦‚µ‚Ü‚·B");
+        LOG_WARNING(u8"ãƒ†ã‚­ã‚¹ãƒˆã®æ–‡å­—æ•°ãŒä¸Šé™ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚åˆ‡ã‚Šè©°ã‚ã¦è¡¨ç¤ºã—ã¾ã™ã€‚");
     }
     ResizeModifiers();
 }
@@ -221,7 +221,7 @@ void Text::SetCharacterLimit(int limit)
     if (characterLimit > 0 && text.length() > static_cast<size_t>(characterLimit))
     {
         text = text.substr(0, characterLimit);
-        LOG_WARNING(u8"ƒeƒLƒXƒg‚Ì•¶š”‚ªãŒÀ‚ğ’´‚¦‚Ä‚¢‚Ü‚·BØ‚è‹l‚ß‚Ä•\¦‚µ‚Ü‚·B");
+        LOG_WARNING(u8"ãƒ†ã‚­ã‚¹ãƒˆã®æ–‡å­—æ•°ãŒä¸Šé™ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚åˆ‡ã‚Šè©°ã‚ã¦è¡¨ç¤ºã—ã¾ã™ã€‚");
     }
 
     const size_t capacity = (limit > 0)
@@ -231,7 +231,7 @@ void Text::SetCharacterLimit(int limit)
 }
 
 // =============================================================================
-//  •`‰æ
+//  æç”»
 // =============================================================================
 
 void Text::Begin(RenderContext* /*rtx*/)
@@ -246,10 +246,10 @@ void Text::Draw(RenderContext* rtx)
     ID3D11DeviceContext* ctx = rtx->immediateContext;
     RectTransform* rect = GetRectTransform();
 
-    // ƒŒƒCƒAƒEƒgŒvZi+x‰E / +y‰º ƒXƒNƒŠ[ƒ“À•WŒnj
+    // ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨ˆç®—ï¼ˆ+xå³ / +yä¸‹ ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ï¼‰
     PerformLayout(rect->size.x);
 
-    // ƒOƒŠƒt‚ğ’¸“_ƒoƒbƒtƒ@‚Ö
+    // ã‚°ãƒªãƒ•ã‚’é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¸
     const Vector2 origin = rect->UnrotatedTopLeft();
 	const Vector2 ref = GetReferenceResolution();
     for (const auto& gl : layoutedGlyphs)
@@ -263,14 +263,14 @@ void Text::Draw(RenderContext* rtx)
             ctx);
     }
 
-    // ’¸“_ƒoƒbƒtƒ@‚ğ“]‘—
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’è»¢é€
     HRESULT hr = S_OK;
     D3D11_MAPPED_SUBRESOURCE mapped{};
     hr = ctx->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
     const size_t vertexCount = vertices.size();
-    _ASSERT_EXPR(vertexCount <= maxVertices, L"’¸“_”‚ªƒoƒbƒtƒ@‚ÌÅ‘å”‚ğ’´‚¦‚Ä‚¢‚Ü‚·B");
+    _ASSERT_EXPR(vertexCount <= maxVertices, L"é ‚ç‚¹æ•°ãŒãƒãƒƒãƒ•ã‚¡ã®æœ€å¤§æ•°ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚");
     if (mapped.pData)
     {
         memcpy_s(mapped.pData, maxVertices * sizeof(Vertex),
@@ -295,7 +295,7 @@ void Text::End(RenderContext* /*rtx*/)
 }
 
 // =============================================================================
-//  DrawCharacter \ 1•¶š•ª‚Ì’¸“_‚ğ¶¬
+//  DrawCharacter â€” 1æ–‡å­—åˆ†ã®é ‚ç‚¹ã‚’ç”Ÿæˆ
 // =============================================================================
 
 void Text::DrawCharacter(const Character& c, float x, float y,
@@ -305,28 +305,28 @@ void Text::DrawCharacter(const Character& c, float x, float y,
 {
     RectTransform* rect = GetRectTransform();
 
-    // ƒXƒP[ƒ‹iText ‘S‘Ì‚ÌƒtƒHƒ“ƒgƒXƒP[ƒ‹ ~ •¶š‚²‚Æ‚ÌƒXƒP[ƒ‹æ”j
+    // ã‚¹ã‚±ãƒ¼ãƒ«ï¼ˆText å…¨ä½“ã®ãƒ•ã‚©ãƒ³ãƒˆã‚¹ã‚±ãƒ¼ãƒ« Ã— æ–‡å­—ã”ã¨ã®ã‚¹ã‚±ãƒ¼ãƒ«ä¹—æ•°ï¼‰
     const float baseScale = fontSize / fntSize;
 	const float sx = baseScale * mod.scale.x;
 	const float sy = baseScale * mod.scale.y;
 
-    // ƒIƒtƒZƒbƒgExoffset/yoffset “K—pŒã‚ÌƒNƒƒbƒhƒTƒCƒYi+x‰E / +y‰ºj
+    // ã‚ªãƒ•ã‚»ãƒƒãƒˆãƒ»xoffset/yoffset é©ç”¨å¾Œã®ã‚¯ãƒ¯ãƒƒãƒ‰ã‚µã‚¤ã‚ºï¼ˆ+xå³ / +yä¸‹ï¼‰
 	const float dx = x + static_cast<float>(c.xoffset) * baseScale + mod.posOffset.x;
 	const float dy = y + static_cast<float>(c.yoffset) * baseScale + mod.posOffset.y;
     const float dw = static_cast<float>(c.width)  * sx;
     const float dh = static_cast<float>(c.height) * sy;
 
-    // •¶šƒNƒƒbƒh‚Ì’†Si•¶š‚²‚Æ‰ñ“]‚Ì²j
+    // æ–‡å­—ã‚¯ãƒ¯ãƒƒãƒ‰ã®ä¸­å¿ƒï¼ˆæ–‡å­—ã”ã¨å›è»¢ã®è»¸ï¼‰
     const float charCx = dx + dw * 0.5f;
     const float charCy = dy + dh * 0.5f;
 
-    // ’¸“_ (ƒXƒNƒŠ[ƒ“À•WA‰ñ“]‘O)
+    // é ‚ç‚¹ (ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€å›è»¢å‰)
     float x0 = dx,      y0 = dy;        // left-top
     float x1 = dx + dw, y1 = dy;        // right-top
     float x2 = dx,      y2 = dy + dh;   // left-bottom
     float x3 = dx + dw, y3 = dy + dh;   // right-bottom
 
-    // ‡@ •¶š‚²‚Æ‚Ì’Ç‰Á‰ñ“]i•¶šƒNƒƒbƒh’†SŠî€j
+    // â‘  æ–‡å­—ã”ã¨ã®è¿½åŠ å›è»¢ï¼ˆæ–‡å­—ã‚¯ãƒ¯ãƒƒãƒ‰ä¸­å¿ƒåŸºæº–ï¼‰
     if (mod.rotation != 0.0f)
     {
         Rotate(x0, y0, charCx, charCy, mod.rotation);
@@ -335,7 +335,7 @@ void Text::DrawCharacter(const Character& c, float x, float y,
         Rotate(x3, y3, charCx, charCy, mod.rotation);
     }
 
-    // ‡A RectTransform ‘S‘Ì‚Ì worldAngleiƒsƒ{ƒbƒg’†SŠî€j
+    // â‘¡ RectTransform å…¨ä½“ã® worldAngleï¼ˆãƒ”ãƒœãƒƒãƒˆä¸­å¿ƒåŸºæº–ï¼‰
     const float worldAngle = rect->GetWorldAngle();
     if (worldAngle != 0.0f)
     {
@@ -347,7 +347,7 @@ void Text::DrawCharacter(const Character& c, float x, float y,
         Rotate(x3, y3, pivotCx, pivotCy, worldAngle);
     }
 
-    // ƒXƒNƒŠ[ƒ“ ¨ NDCi+y‰º ‚ÌƒXƒNƒŠ[ƒ“À•WŒn‚ğ NDC +yã ‚É”½“]j
+    // ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ â†’ NDCï¼ˆ+yä¸‹ ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã‚’ NDC +yä¸Š ã«åè»¢ï¼‰
     /*UINT numVP = 1;
     D3D11_VIEWPORT vp{};
     ctx->RSGetViewports(&numVP, &vp);*/
@@ -365,7 +365,7 @@ void Text::DrawCharacter(const Character& c, float x, float y,
     const float u1 = static_cast<float>(c.x + c.width)  / texture2dDesc.Width;
     const float v1 = static_cast<float>(c.y + c.height) / texture2dDesc.Height;
 
-    // FiText::color ~ CharModifier::colorMulj
+    // è‰²ï¼ˆText::color Ã— CharModifier::colorMulï¼‰
     const DirectX::XMFLOAT4 finalColor = {
         color.r * mod.colorMul.r,
         color.g * mod.colorMul.g,
@@ -373,7 +373,7 @@ void Text::DrawCharacter(const Character& c, float x, float y,
         color.a * mod.colorMul.a,
     };
 
-    // 2ƒgƒ‰ƒCƒAƒ“ƒOƒ‹ (CW)
+    // 2ãƒˆãƒ©ã‚¤ã‚¢ãƒ³ã‚°ãƒ« (CW)
     vertices.push_back({ { x0, y0, 0 }, finalColor, { u0, v0 } });
     vertices.push_back({ { x1, y1, 0 }, finalColor, { u1, v0 } });
     vertices.push_back({ { x2, y2, 0 }, finalColor, { u0, v1 } });
@@ -382,7 +382,7 @@ void Text::DrawCharacter(const Character& c, float x, float y,
     vertices.push_back({ { x3, y3, 0 }, finalColor, { u1, v1 } });
 }
 
-// ƒXƒNƒŠ[ƒ“À•WŒn (+x‰E / +y‰º) ‚Ì2D‰ñ“]
+// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³» (+xå³ / +yä¸‹) ã®2Då›è»¢
 void Text::Rotate(float& x, float& y, float cx, float cy, float angleDeg)
 {
     x -= cx;
@@ -407,11 +407,11 @@ Vector2 Text::GetReferenceResolution() const
             return scaler->GetReferenceResolution();
         }
     }*/
-    return Vector2(1920, 1080); // ƒfƒtƒHƒ‹ƒg‚ÌŠî€‰ğ‘œ“x
+    return Vector2(1920, 1080); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®åŸºæº–è§£åƒåº¦
 }
 
 // =============================================================================
-//  ƒŒƒCƒAƒEƒg
+//  ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 // =============================================================================
 
 void Text::PerformLayout(float maxWidth)
@@ -426,9 +426,9 @@ void Text::PerformLayout(float maxWidth)
         ? SplitTextToLines()
         : SplitTextToLines(maxWidth);
 
-    // s‚²‚Æ‚ÉƒOƒŠƒtˆÊ’u‚ğŒˆ’è (À•WŒn: +x‰E / +y‰º, Œ´“_ = UnrotatedTopLeft)
+    // è¡Œã”ã¨ã«ã‚°ãƒªãƒ•ä½ç½®ã‚’æ±ºå®š (åº§æ¨™ç³»: +xå³ / +yä¸‹, åŸç‚¹ = UnrotatedTopLeft)
     float y = 0.0f;
-    size_t charIndex = 0; // text[] ã‚ÌƒCƒ“ƒfƒbƒNƒXi\n ‚ÍƒJƒEƒ“ƒg‚µ‚Äi‚ß‚éj
+    size_t charIndex = 0; // text[] ä¸Šã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆ\n ã¯ã‚«ã‚¦ãƒ³ãƒˆã—ã¦é€²ã‚ã‚‹ï¼‰
     for (const auto& line : lines)
     {
         const float lineWidth    = ComputeLineWidth(line);
@@ -443,13 +443,13 @@ void Text::PerformLayout(float maxWidth)
             x += static_cast<float>(glyph.xadvance) * (fontSize / fntSize);
             ++charIndex;
         }
-        // \n ‚Ì•ª‚ği‚ß‚éiÅIsˆÈŠOj
+        // \n ã®åˆ†ã‚’é€²ã‚ã‚‹ï¼ˆæœ€çµ‚è¡Œä»¥å¤–ï¼‰
         if (&line != &lines.back()) ++charIndex;
         y += ComputeLineHeight();
     }
     layoutHeight = y;
 
-    // Y •ûŒü‚Ì”z’uƒIƒtƒZƒbƒg‚ğ‘SƒOƒŠƒt‚É“K—p
+    // Y æ–¹å‘ã®é…ç½®ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’å…¨ã‚°ãƒªãƒ•ã«é©ç”¨
     const float offsetY = CalcAlignedY();
     if (offsetY != 0.0f)
     {
@@ -563,14 +563,14 @@ std::vector<std::wstring> Text::SplitTextToLines(float maxWidth)
 }
 
 // =============================================================================
-//  ƒJ[ƒ\ƒ‹ˆÊ’u
+//  ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®
 // =============================================================================
 
 void Text::GetCursorPos(size_t cursorPos, _Out_ float& x, _Out_ float& y)
 {
     const Vector2 origin = GetRectTransform()->UnrotatedTopLeft();
     
-	// ƒJ[ƒ\ƒ‹‚ª––”ö or ‹óƒeƒLƒXƒg‚Ìê‡‚ÍÅŒã‚ÌƒOƒŠƒt‚ÌˆÊ’u‚ğŠî€‚É‚·‚é
+	// ã‚«ãƒ¼ã‚½ãƒ«ãŒæœ«å°¾ or ç©ºãƒ†ã‚­ã‚¹ãƒˆã®å ´åˆã¯æœ€å¾Œã®ã‚°ãƒªãƒ•ã®ä½ç½®ã‚’åŸºæº–ã«ã™ã‚‹
     if (layoutedGlyphs.empty() || cursorPos == 0)
     {
 		x = origin.x;
@@ -590,7 +590,7 @@ void Text::GetCursorPos(size_t cursorPos, _Out_ float& x, _Out_ float& y)
     }
 }
 
-// ƒNƒŠƒbƒNˆÊ’u ¨ ƒJ[ƒ\ƒ‹ƒCƒ“ƒfƒbƒNƒX‹tˆø‚«
+// ã‚¯ãƒªãƒƒã‚¯ä½ç½® â†’ ã‚«ãƒ¼ã‚½ãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é€†å¼•ã
 size_t Text::GetCursorIndexFromPoint(float screenX, float screenY)
 {
     if (layoutedGlyphs.empty()) return 0;
@@ -600,8 +600,8 @@ size_t Text::GetCursorIndexFromPoint(float screenX, float screenY)
     const float localY = screenY - origin.y;
     const float lineH = ComputeLineHeight();
 
-    // ƒNƒŠƒbƒN‚³‚ê‚½s‚ğ“Á’è
-    // layoutedGlyphs ‚Ís‡‚É•À‚ñ‚Å‚¢‚é‚Ì‚ÅAY ‚ªÅ‚à‹ß‚¢s‚ğ’T‚·
+    // ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸè¡Œã‚’ç‰¹å®š
+    // layoutedGlyphs ã¯è¡Œé †ã«ä¸¦ã‚“ã§ã„ã‚‹ã®ã§ã€Y ãŒæœ€ã‚‚è¿‘ã„è¡Œã‚’æ¢ã™
     float bestLineDist = FLT_MAX;
     float targetLineY = 0.0f;
     for (const auto& gl : layoutedGlyphs)
@@ -614,7 +614,7 @@ size_t Text::GetCursorIndexFromPoint(float screenX, float screenY)
         }
     }
 
-    // ‚»‚Ìs‚ÌƒOƒŠƒt‚Ì‚¤‚¿AX ‚ªÅ‚à‹ß‚¢•¶š‹«ŠE‚ğ’T‚·
+    // ãã®è¡Œã®ã‚°ãƒªãƒ•ã®ã†ã¡ã€X ãŒæœ€ã‚‚è¿‘ã„æ–‡å­—å¢ƒç•Œã‚’æ¢ã™
     size_t bestIndex = 0;
     float  bestDist = FLT_MAX;
 
@@ -629,13 +629,13 @@ size_t Text::GetCursorIndexFromPoint(float screenX, float screenY)
 
         if (localX < mid)
         {
-            // •¶š‚Ì¶‘¤‚ğƒNƒŠƒbƒN ¨ ‚±‚ÌƒOƒŠƒt‚Ì‘O
+            // æ–‡å­—ã®å·¦å´ã‚’ã‚¯ãƒªãƒƒã‚¯ â†’ ã“ã®ã‚°ãƒªãƒ•ã®å‰
             float dist = std::abs(localX - glLeft);
             if (dist < bestDist) { bestDist = dist; bestIndex = gl.charIndex; }
         }
         else
         {
-            // •¶š‚Ì‰E‘¤‚ğƒNƒŠƒbƒN ¨ ‚±‚ÌƒOƒŠƒt‚ÌŒã
+            // æ–‡å­—ã®å³å´ã‚’ã‚¯ãƒªãƒƒã‚¯ â†’ ã“ã®ã‚°ãƒªãƒ•ã®å¾Œ
             float dist = std::abs(localX - glRight);
             if (dist < bestDist) { bestDist = dist; bestIndex = gl.charIndex + 1; }
         }
@@ -645,7 +645,7 @@ size_t Text::GetCursorIndexFromPoint(float screenX, float screenY)
 }
 
 // =============================================================================
-//  Inspector / ƒVƒŠƒAƒ‰ƒCƒY
+//  Inspector / ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 // =============================================================================
 
 #ifdef USE_IMGUI
@@ -680,7 +680,7 @@ void Text::DrawProperty(const PropertyDrawContext& context)
     {
         if (globalFlag)
         {
-			// ‘S‚Ä‚Ì Text ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ—ñ‹“‚µ‚Ä fontFilePath ‚ğ•ÏX
+			// å…¨ã¦ã® Text ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’åˆ—æŒ™ã—ã¦ fontFilePath ã‚’å¤‰æ›´
 			std::vector<Text*> allTexts = GetScene()->FindComponents<Text>();
             for (Text* textComp : allTexts)
             {
@@ -703,7 +703,7 @@ void Text::DrawProperty(const PropertyDrawContext& context)
     if (ImGui::IsItemDeactivatedAfterEdit())
         SetCharacterLimit(characterLimit);
 
-    // Alignment ƒRƒ“ƒ{
+    // Alignment ã‚³ãƒ³ãƒœ
     const char* currentLabel = kAlignmentStr[static_cast<int>(alignment)];
     IMGUI_PROPERTY("Alignment");
     if (ImGui::BeginCombo("##Alignment", currentLabel))
@@ -727,7 +727,7 @@ void Text::DrawProperty(const PropertyDrawContext& context)
         ImGui::EndCombo();
     }
 
-    // HorizontalOverflow ƒRƒ“ƒ{
+    // HorizontalOverflow ã‚³ãƒ³ãƒœ
     const char* currentOverflowLabel = kHorizontalOverflowStr[static_cast<int>(horizontalOverflow)];
     IMGUI_PROPERTY("HorizontalOverflow");
     if (ImGui::BeginCombo("##HorizontalOverflow", currentOverflowLabel))
@@ -758,7 +758,7 @@ void Text::DrawProperty(const PropertyDrawContext& context)
 
 	ImGui::Text("Character Modifiers:");
 
-    // Modifier‚ÌƒeƒXƒg
+    // Modifierã®ãƒ†ã‚¹ãƒˆ
 
 	static bool posOffsetEnable = false;
 	static bool scaleEnable = false;
@@ -769,13 +769,13 @@ void Text::DrawProperty(const PropertyDrawContext& context)
     ImGui::Checkbox("Rotation", &rotationEnable);
     ImGui::Checkbox("Color Multiply", &colorMulEnable);
 
-    // ‚·‚×‚Ä‚ÌƒeƒLƒXƒg‚ğƒEƒF[ƒu‚³‚¹‚é
+    // ã™ã¹ã¦ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚¦ã‚§ãƒ¼ãƒ–ã•ã›ã‚‹
 	static float waveTime = 0.0f;
     if (ImGui::Button("Apply Wave Modifier"))
     {
 		waveTime = 0.0f; // Reset wave time when button is pressed
 	}
-	// ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éŠÔAƒeƒLƒXƒg‚ğƒEƒF[ƒu‚³‚¹‚é
+	// ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹é–“ã€ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚¦ã‚§ãƒ¼ãƒ–ã•ã›ã‚‹
     if (ImGui::IsItemActive())
     {
         waveTime += ImGui::GetIO().DeltaTime; // Increment wave time
@@ -805,7 +805,7 @@ void Text::DrawProperty(const PropertyDrawContext& context)
     }
     else
     {
-        // ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚ÍA‚·‚×‚Ä‚Ìƒ‚ƒfƒBƒtƒ@ƒCƒA‚ğƒŠƒZƒbƒg
+        // ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãªã„ã¨ãã¯ã€ã™ã¹ã¦ã®ãƒ¢ãƒ‡ã‚£ãƒ•ã‚¡ã‚¤ã‚¢ã‚’ãƒªã‚»ãƒƒãƒˆ
         ResetCharModifiers();
 	}
 

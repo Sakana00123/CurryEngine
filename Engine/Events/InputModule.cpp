@@ -33,32 +33,32 @@ std::shared_ptr<PointerEventData> InputModule::GetEventData()
 void InputModule::Process(float deltaTime)
 {
     if (pointerEventData == nullptr || axisEventData == nullptr) {
-        return; // ƒf[ƒ^‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íˆ—‚µ‚È‚¢
+        return; // ãƒ‡ãƒ¼ã‚¿ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ãªã„å ´åˆã¯å‡¦ç†ã—ãªã„
 	}
 
-    //“ü—Íî•ñ‚ğXV
+    //å…¥åŠ›æƒ…å ±ã‚’æ›´æ–°
     pointerEventData->lastPosition.x = static_cast<float>(InputSystem::GetOldMousePositionX());
     pointerEventData->lastPosition.y = static_cast<float>(InputSystem::GetOldMousePositionY());
     InputSystem::GetMousePosition(&pointerEventData->position.x);
 
-    //ƒŒƒCƒLƒƒƒXƒgˆ—
+    //ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆå‡¦ç†
     RaycastResult result = pointerEventData->pointerCurrentRaycast = eventSystem->RaycastAll();
 
-    //ƒzƒo[‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ª•Ï‚í‚Á‚Ä‚½‚ç
+    //ãƒ›ãƒãƒ¼ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¤‰ã‚ã£ã¦ãŸã‚‰
     if (pointerEventData->GetPointerEnter() != result.GetHitGameObject()) {
-        //TODO: OnPointerExit‚ğ”­s
+        //TODO: OnPointerExitã‚’ç™ºè¡Œ
         ExecuteEvent<IPointerExitHandler>(pointerEventData->GetPointerEnter(), pointerEventData, &IPointerExitHandler::Execute);
 
         pointerEventData->SetPointerEnter(result.GetHitGameObject());
 
-        //TODO: OnPointerEnter‚ğ”­s
+        //TODO: OnPointerEnterã‚’ç™ºè¡Œ
         ExecuteEvent<IPointerEnterHandler>(pointerEventData->GetPointerEnter(), pointerEventData, &IPointerEnterHandler::Execute);
     }
-    //ƒ}ƒEƒX‚Ìó‘Ô‚²‚Æ‚Ìˆ—
+    //ãƒã‚¦ã‚¹ã®çŠ¶æ…‹ã”ã¨ã®å‡¦ç†
     {
         if (InputSystem::GetInputState("ok", InputStateMask::Trigger, DeviceFlags::MouseOnly)) {
             pointerEventData->pointerPressRaycast = result;
-            //‘I‘ğƒIƒuƒWƒFƒNƒg‚ª‘¶İ‚·‚é‚Æ‚«‚ÉƒCƒxƒ“ƒg
+            //é¸æŠã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã™ã‚‹ã¨ãã«ã‚¤ãƒ™ãƒ³ãƒˆ
             if (result.IsValid()) {
                 pointerEventData->SetPointerPress(result.GetHitGameObject());
                 //pointerEventData->pressPosition = result.GetHitGameObject()->GetComponent<RectTransform>()->GetWorldPosition();
@@ -67,7 +67,7 @@ void InputModule::Process(float deltaTime)
 
                 ExecuteEvent<IPointerDownHandler>(pointerEventData->GetPointerPress(), pointerEventData, &IPointerDownHandler::Execute);
             }
-            //‘I‘ğƒIƒuƒWƒFƒNƒg‚ª•Ï‚í‚Á‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg
+            //é¸æŠã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¤‰ã‚ã£ãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆ
             if (result.GetHitGameObject() != eventSystem->GetSelectedGameObject()) {
                 ExecuteEvent<IDeselectHandler>(eventSystem->GetSelectedGameObject(), pointerEventData, &IDeselectHandler::Execute);
                 ExecuteEvent<ISelectHandler>(result.GetHitGameObject(), pointerEventData, &ISelectHandler::Execute);
@@ -75,26 +75,26 @@ void InputModule::Process(float deltaTime)
             eventSystem->SetSelectedGameObject(result.GetHitGameObject());
         }
         else if (InputSystem::GetInputState("ok", InputStateMask::None, DeviceFlags::MouseOnly)) {
-            //ƒ}ƒEƒX‚ÌˆÚ“®—ÊXV
+            //ãƒã‚¦ã‚¹ã®ç§»å‹•é‡æ›´æ–°
             pointerEventData->delta.x = pointerEventData->position.x - pointerEventData->lastPosition.x;
             pointerEventData->delta.y = pointerEventData->position.y - pointerEventData->lastPosition.y;
 
-            //ƒhƒ‰ƒbƒOŠJn”»’è
+            //ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹åˆ¤å®š
             if (!pointerEventData->dragging) {
-                //‰Ÿ‚³‚ê‚Ä‚©‚ç‚ÌˆÚ“®—Ê
+                //æŠ¼ã•ã‚Œã¦ã‹ã‚‰ã®ç§»å‹•é‡
                 float moveX = pointerEventData->position.x - pointerEventData->pressPosition.x;
                 float moveY = pointerEventData->position.y - pointerEventData->pressPosition.y;
 
                 pointerEventData->dragging = (abs(moveX) > dragThreshold || abs(moveY) > dragThreshold);
 
-                //ƒhƒ‰ƒbƒOŠJn
+                //ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹
                 if (pointerEventData->dragging) {
                     pointerEventData->SetPointerDrag(result.GetHitGameObject());
                     ExecuteEvent<IBeginDragHandler>(pointerEventData->GetPointerDrag(), pointerEventData, &IBeginDragHandler::Execute);
                 }
             }
             else {
-                //ƒhƒ‰ƒbƒO’†
+                //ãƒ‰ãƒ©ãƒƒã‚°ä¸­
                 ExecuteEvent<IDragHandler>(pointerEventData->GetPointerDrag(), pointerEventData, &IDragHandler::Execute);
             }
         }
@@ -102,7 +102,7 @@ void InputModule::Process(float deltaTime)
             pointerEventData->SetLastPress(pointerEventData->GetPointerPress());
             pointerEventData->SetPointerPress(nullptr);
 
-            //ƒhƒ‰ƒbƒO‚ªI‚í‚Á‚½‚Æ‚«
+            //ãƒ‰ãƒ©ãƒƒã‚°ãŒçµ‚ã‚ã£ãŸã¨ã
             if (pointerEventData->dragging) {
                 ExecuteEvent<IEndDragHandler>(pointerEventData->GetPointerDrag(), pointerEventData, &IEndDragHandler::Execute);
             }
@@ -114,15 +114,15 @@ void InputModule::Process(float deltaTime)
         }
     }
 
-    //ƒL[ƒ{[ƒh‚âƒQ[ƒ€ƒpƒbƒh‚ÌSubmit”»’è
+    //ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚„ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®Submitåˆ¤å®š
     if (InputSystem::GetInputState("ok", InputStateMask::Release, DeviceFlags::KeyboardAndGamePad)) {
         ExecuteEvent<ISubmitHandler>(eventSystem->GetSelectedGameObject(), axisEventData, &ISubmitHandler::Execute);
     }
 
-    //‘I‘ğƒIƒuƒWƒFƒNƒg‚É‘Î‚·‚éXVˆ—
+    //é¸æŠã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã™ã‚‹æ›´æ–°å‡¦ç†
     ExecuteEvent<IUpdateSelectedHandler>(eventSystem->GetSelectedGameObject(), pointerEventData, &IUpdateSelectedHandler::Execute);
 
-    //AxisƒCƒxƒ“ƒg
+    //Axisã‚¤ãƒ™ãƒ³ãƒˆ
     {
         lastMoveDir = axisEventData->moveDir;
         MoveDirection moveDir = axisEventData->moveDir = static_cast<MoveDirection>(static_cast<int>(InputSystem::GetAxisDirection()));
@@ -139,7 +139,7 @@ void InputModule::Process(float deltaTime)
                 GameObject* selectedObj = eventSystem->GetSelectedGameObject();
                 ExecuteEvent<IMoveHandler>(selectedObj, axisEventData, &IMoveHandler::Execute);
                 GameObject* movedSelectedObj = eventSystem->GetSelectedGameObject();
-                //‘I‘ğƒIƒuƒWƒFƒNƒg‚ª•Ï‚í‚Á‚½‚çA‘I‘ğƒIƒuƒWƒFƒNƒg‚Ì•ÏXƒCƒxƒ“ƒg‚ğ”­s
+                //é¸æŠã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¤‰ã‚ã£ãŸã‚‰ã€é¸æŠã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å¤‰æ›´ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºè¡Œ
                 if (selectedObj != movedSelectedObj) {
                     ExecuteEvent<IDeselectHandler>(selectedObj, axisEventData, &IDeselectHandler::Execute);
                     ExecuteEvent<ISelectHandler>(movedSelectedObj, axisEventData, &ISelectHandler::Execute);
@@ -158,10 +158,10 @@ void InputModule::Process(float deltaTime)
         }
     }
 
-    //ƒzƒC[ƒ‹—ÊXV
+    //ãƒ›ã‚¤ãƒ¼ãƒ«é‡æ›´æ–°
     pointerEventData->scrollDelta = InputSystem::GetWheelDelta();
 
-    // ƒzƒC[ƒ‹ƒCƒxƒ“ƒg
+    // ãƒ›ã‚¤ãƒ¼ãƒ«ã‚¤ãƒ™ãƒ³ãƒˆ
     if (fabsf(pointerEventData->scrollDelta) > 0.01f) {
         ExecuteEvent<IScrollHandler>(result.GetHitGameObject(), pointerEventData, &IScrollHandler::Execute);
     }

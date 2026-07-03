@@ -5,52 +5,52 @@
 
 /**
  * @file
- * @brief ‚·‚×‚Ä‚Ì UI —pƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌŠî’êƒNƒ‰ƒXB
- * @details `RectTransform` ‚ğ•Û‚µAUI “ü—Í‚Ì—LŒø/–³Œø‚ğØ‚è‘Ö‚¦‚éŠî–{‹@”\‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief ã™ã¹ã¦ã® UI ç”¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details `RectTransform` ã‚’ä¿æŒã—ã€UI å…¥åŠ›ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹åŸºæœ¬æ©Ÿèƒ½ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class UIComponent : public Component
 {
 	C_REFLECT(UIComponent)
 	/**
-	 * @brief –{ UI ‚Ì‹éŒ`•ÏŠ·B
-	 * @details ƒŒƒCƒAƒEƒg‚âƒqƒbƒgƒeƒXƒg‚Ég—p‚µ‚Ü‚·i”ñŠ—LjB
+	 * @brief æœ¬ UI ã®çŸ©å½¢å¤‰æ›ã€‚
+	 * @details ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚„ãƒ’ãƒƒãƒˆãƒ†ã‚¹ãƒˆã«ä½¿ç”¨ã—ã¾ã™ï¼ˆéæ‰€æœ‰ï¼‰ã€‚
 	 */
 	RectTransform* rect = nullptr;
 protected:
 	/**
-	 * @brief “ü—Íó•tƒtƒ‰ƒOB
-	 * @details ˆê•”‚Ì‘€ì‚ğó‚¯•t‚¯‚È‚¢‚æ‚¤‚É‚·‚é‚½‚ß‚Ì“à•”ƒtƒ‰ƒO‚Å‚·B
+	 * @brief å…¥åŠ›å—ä»˜ãƒ•ãƒ©ã‚°ã€‚
+	 * @details ä¸€éƒ¨ã®æ“ä½œã‚’å—ã‘ä»˜ã‘ãªã„ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã®å†…éƒ¨ãƒ•ãƒ©ã‚°ã§ã™ã€‚
 	 */
 	C_PROPERTY(CurryEngine::PropertyAttributes::ReadOnly)
 	bool isInputEnabled = true;
 public:
 
 	/**
-	 * @brief `RectTransform` ‚ğİ’è‚µ‚Ü‚·B
-	 * @param rt İ’è‚·‚é `RectTransform` ‚Ö‚Ìƒ|ƒCƒ“ƒ^B
+	 * @brief `RectTransform` ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param rt è¨­å®šã™ã‚‹ `RectTransform` ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚
 	 */
 	void SetRectTransform(RectTransform* rt) { rect = rt; }
 
 	/**
-	 * @brief `RectTransform` ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return `RectTransform` ‚Ö‚Ìƒ|ƒCƒ“ƒ^B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr` ‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief `RectTransform` ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return `RectTransform` ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr` ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	RectTransform* GetRectTransform();
 	
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	UIComponent() = default;
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	virtual ~UIComponent() override = default;
 
 	/**
-	 * @brief ƒIƒuƒWƒFƒNƒg¶¬’¼Œã‚Éˆê“x‚¾‚¯ŒÄ‚Î‚ê‚Ü‚·B
-	 * @details `rect` ‚Ìæ“¾E‰Šú‰»‚È‚Ç‚ğÀ‘•‘¤‚Ås‚¢‚Ü‚·B
+	 * @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆç›´å¾Œã«ä¸€åº¦ã ã‘å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @details `rect` ã®å–å¾—ãƒ»åˆæœŸåŒ–ãªã©ã‚’å®Ÿè£…å´ã§è¡Œã„ã¾ã™ã€‚
 	 */
 	void Awake() override;
 
 	/**
-	 * @brief UI “ü—Í‚Ì—LŒø/–³Œø‚ğİ’è‚µ‚Ü‚·B
-	 * @param enabled `true` ‚Å“ü—Í—LŒøA`false` ‚Å–³ŒøB
+	 * @brief UI å…¥åŠ›ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param enabled `true` ã§å…¥åŠ›æœ‰åŠ¹ã€`false` ã§ç„¡åŠ¹ã€‚
 	 */
 	void SetInputEnabled(bool enabled);
 };

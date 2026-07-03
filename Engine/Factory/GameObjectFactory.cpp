@@ -66,7 +66,7 @@ GameObject* GameObjectFactory::CreateCanvas(Scene* scene, const std::string& nam
 	}
 	return obj;
 }
-//—LŒø‚Èƒ|ƒCƒ“ƒ^‚Æ‚µ‚Ä•Ô‚·
+//æœ‰åŠ¹ãªãƒã‚¤ãƒ³ã‚¿ã¨ã—ã¦è¿”ã™
 GameObject* GameObjectFactory::ResolveCanvasObject(Scene* scene, GameObject* canvas) {
 	if (!canvas) {
 		if (GameObject* obj = scene->objectManager->FindInObjects("Canvas")) {
@@ -229,7 +229,7 @@ GameObject* GameObjectFactory::CreateScrollView(Scene* scene, const std::string&
 	obj->AddComponent<ScrollView>();
 	obj->AddComponent<Mask>();
 
-	// ƒXƒNƒ[ƒ‹ƒrƒ…[‚Ì\‘¢‚ðì¬
+	// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ“ãƒ¥ãƒ¼ã®æ§‹é€ ã‚’ä½œæˆ
 	GameObject* content = CreateUIObject(scene, "Content", canvas);
 	RectTransform* contentRect = content->GetComponent<RectTransform>();
 	contentRect->SetAnchorMin({ 0,0 });
@@ -239,7 +239,7 @@ GameObject* GameObjectFactory::CreateScrollView(Scene* scene, const std::string&
 
 	content->SetParent(obj);
 
-	// ScrollView ƒRƒ“ƒ|[ƒlƒ“ƒg‚É Content ‚ðÝ’è
+	// ScrollView ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã« Content ã‚’è¨­å®š
 	ScrollView* scrollView = obj->GetComponent<ScrollView>();
 	scrollView->contentRef = content->GetId();
 

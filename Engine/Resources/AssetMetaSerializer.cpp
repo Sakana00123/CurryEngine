@@ -63,7 +63,7 @@ namespace CurryEngine
 			}
 			else
 			{
-				meta.isFolder = std::filesystem::is_directory(meta.path); // ƒfƒtƒHƒ‹ƒg’l‚Æ‚µ‚Äƒtƒ@ƒCƒ‹ƒVƒXƒeƒ€‚Ìî•ñ‚ğg—p
+				meta.isFolder = std::filesystem::is_directory(meta.path); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã¨ã—ã¦ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®æƒ…å ±ã‚’ä½¿ç”¨
 			}
 			if (j.contains("importSettings"))
 			{
@@ -71,7 +71,7 @@ namespace CurryEngine
 			}
 			else
 			{
-				meta.importSettings = nlohmann::json::array(); // ƒfƒtƒHƒ‹ƒg’l‚Æ‚µ‚Ä‹ó‚Ì”z—ñ‚ğİ’è
+				meta.importSettings = nlohmann::json::array(); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã¨ã—ã¦ç©ºã®é…åˆ—ã‚’è¨­å®š
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace CurryEngine
 				return false;
 			}
 			nlohmann::json j = meta;
-			ofs << j.dump(4); // ƒCƒ“ƒfƒ“ƒg‚ğ4ƒXƒy[ƒX‚É‚µ‚Ä•Û‘¶
+			ofs << j.dump(4); // ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã‚’4ã‚¹ãƒšãƒ¼ã‚¹ã«ã—ã¦ä¿å­˜
 			return true;
 		}
 
@@ -95,7 +95,7 @@ namespace CurryEngine
 			std::ifstream ifs(metaPath);
 			if (!ifs)
 			{
-				return AssetMeta(); // ƒfƒtƒHƒ‹ƒg‚Ì‹ó‚Ìƒƒ^ƒf[ƒ^‚ğ•Ô‚·
+				return AssetMeta(); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ç©ºã®ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
 			}
 			nlohmann::json j;
 			ifs >> j;

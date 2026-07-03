@@ -14,7 +14,7 @@ void BeatScalerComponent::Start()
 
 void BeatScalerComponent::Update(float deltaTime)
 {
-	// ƒr[ƒgƒJƒEƒ“ƒg‚ÌXV
+	// ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã®æ›´æ–°
 	if (BeatManager::IsJustBeat())
 	{
 		OnBeat();
@@ -24,7 +24,7 @@ void BeatScalerComponent::Update(float deltaTime)
 		targetScale = baseScale;
 	}
 
-	// Œ»İ‚ÌƒXƒP[ƒ‹‚ğƒ^[ƒQƒbƒgƒXƒP[ƒ‹‚É‹ß‚Ã‚¯‚é
+	// ç¾åœ¨ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«ã«è¿‘ã¥ã‘ã‚‹
 	currentScale += (targetScale - currentScale) * scaleSpeed * deltaTime;
 	GetOwner()->transform->SetScale({ currentScale, currentScale, currentScale });
 }
@@ -40,16 +40,16 @@ void BeatScalerComponent::DrawProperty(const PropertyDrawContext& context)
 
 void BeatScalerComponent::OnBeat()
 {
-	// ƒr[ƒgƒJƒEƒ“ƒg‚ğ‘‰Á
+	// ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—åŠ 
 	beatCount++;
 	
-	// ƒXƒP[ƒ‹•p“x‚ÉŠî‚Ã‚¢‚ÄƒXƒP[ƒŠƒ“ƒO‚ğs‚¤‚©”»’è
+	// ã‚¹ã‚±ãƒ¼ãƒ«é »åº¦ã«åŸºã¥ã„ã¦ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã‚’è¡Œã†ã‹åˆ¤å®š
 	if (beatCount % scaleFrequency != 0)
 	{
 		return;
 	}
 
-	// ƒ^[ƒQƒbƒgƒXƒP[ƒ‹‚ğXV
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«ã‚’æ›´æ–°
 	targetScale = baseScale * (1.0f + scaleIntensity);
 	//Console::Log("OnBeat");
 }

@@ -8,13 +8,13 @@ REGISTER_COMPONENT(PointLightComponent, "Lights");
 
 void PointLightComponent::OnEnable()
 {
-	// シーンのポイントライトリストに自身を登録
+	// 繧ｷ繝ｼ繝ｳ縺ｮ繝昴う繝ｳ繝医Λ繧､繝医Μ繧ｹ繝医↓閾ｪ霄ｫ繧堤匳骭ｲ
 	SceneManager::GetLoadingSceneOrCurrentScene()->RegisterPointLight(this);
 }
 
 void PointLightComponent::OnDisable()
 {
-	// シーンのポイントライトリストから自身を削除
+	// 繧ｷ繝ｼ繝ｳ縺ｮ繝昴う繝ｳ繝医Λ繧､繝医Μ繧ｹ繝医°繧芽�ｪ霄ｫ繧貞炎髯､
 	SceneManager::GetCurrentScene()->UnregisterPointLight(this);
 }
 

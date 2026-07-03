@@ -3,23 +3,23 @@
 
 struct CopyItem
 {
-	std::string src;						//!< ƒRƒs[Œ³‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-	std::string type;						//!< ƒRƒs[‚ÌŽí—Þi—á: "file" | "folder" | "glob"j
-	std::vector<std::string> exclude;		//!< ƒRƒs[‚©‚çœŠO‚·‚éŠg’£Žq‚ÌƒŠƒXƒgi—á: [".tmp", ".log"], glob ƒpƒ^[ƒ“‚Ìê‡‚Í ["*.tmp", "*.log"] ‚È‚ÇBƒtƒHƒ‹ƒ_ƒ^ƒCƒv‚Ì‚Ý—LŒøj
+	std::string src;						//!< ã‚³ãƒ”ãƒ¼å…ƒã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	std::string type;						//!< ã‚³ãƒ”ãƒ¼ã®ç¨®é¡žï¼ˆä¾‹: "file" | "folder" | "glob"ï¼‰
+	std::vector<std::string> exclude;		//!< ã‚³ãƒ”ãƒ¼ã‹ã‚‰é™¤å¤–ã™ã‚‹æ‹¡å¼µå­ã®ãƒªã‚¹ãƒˆï¼ˆä¾‹: [".tmp", ".log"], glob ãƒ‘ã‚¿ãƒ¼ãƒ³ã®å ´åˆã¯ ["*.tmp", "*.log"] ãªã©ã€‚ãƒ•ã‚©ãƒ«ãƒ€ã‚¿ã‚¤ãƒ—ã®ã¿æœ‰åŠ¹ï¼‰
 };
 
 /**
  * @file
- * @brief ƒrƒ‹ƒhÝ’è‚ðŠÇ—‚·‚éƒwƒbƒ_B
- * @details ƒrƒ‹ƒhÝ’è‚Ì“Ç‚Ýž‚Ý/•Û‘¶‚ð’ñ‹Ÿ‚µ‚Ü‚·Bƒrƒ‹ƒhÝ’è‚Í `./BuildSetting/build_settings.json` ‚É JSON Œ`Ž®‚Å•Û‘¶‚³‚ê‚Ü‚·B
+ * @brief ãƒ“ãƒ«ãƒ‰è¨­å®šã‚’ç®¡ç†ã™ã‚‹ãƒ˜ãƒƒãƒ€ã€‚
+ * @details ãƒ“ãƒ«ãƒ‰è¨­å®šã®èª­ã¿è¾¼ã¿/ä¿å­˜ã‚’æä¾›ã—ã¾ã™ã€‚ãƒ“ãƒ«ãƒ‰è¨­å®šã¯ `./BuildSetting/build_settings.json` ã« JSON å½¢å¼ã§ä¿å­˜ã•ã‚Œã¾ã™ã€‚
  */
 struct BuildSettings
 {
-	std::string appName = "MyGame";									//!< ƒAƒvƒŠƒP[ƒVƒ‡ƒ“–¼
-	std::string iconPath = "./BuildSetting/curry.ico";				//!< ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒAƒCƒRƒ“‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-	std::string outputDir = "./BuildOutput/";						//!< ƒrƒ‹ƒho—ÍæƒfƒBƒŒƒNƒgƒŠ
-	std::string zipToolPath = "C:/Program Files/7-Zip/7z.exe";		//!< ˆ³kƒc[ƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒXi—á: 7-Zipj
-	std::vector<CopyItem> copyItems;	//!< ƒrƒ‹ƒhŽž‚ÉƒRƒs[‚·‚éƒtƒ@ƒCƒ‹/ƒtƒHƒ‹ƒ_‚ÌƒŠƒXƒg
+	std::string appName = "MyGame";									//!< ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å
+	std::string iconPath = "./BuildSetting/curry.ico";				//!< ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	std::string outputDir = "./BuildOutput/";						//!< ãƒ“ãƒ«ãƒ‰å‡ºåŠ›å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+	std::string zipToolPath = "C:/Program Files/7-Zip/7z.exe";		//!< åœ§ç¸®ãƒ„ãƒ¼ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ï¼ˆä¾‹: 7-Zipï¼‰
+	std::vector<CopyItem> copyItems;	//!< ãƒ“ãƒ«ãƒ‰æ™‚ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«/ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒªã‚¹ãƒˆ
 
 	void Load(const std::string& path = "./BuildSetting/build_settings.json");
 	void Save(const std::string& path = "./BuildSetting/build_settings.json") const;

@@ -11,43 +11,43 @@ void EditorSelection::Select(const std::shared_ptr<GameObject>& object, bool add
 	auto it = std::find(m_selected.begin(), m_selected.end(), object);
 	if (it != m_selected.end()) {
 		if (additive) {
-			// ‚·‚Å‚É‘I‘ğ‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ªÄ“x‘I‘ğ‚³‚ê‚½ê‡Aadditive ‚ª true (CtrlƒNƒŠƒbƒN) ‚È‚ç‘I‘ğ‚ğ‰ğœ‚·‚é
+			// ã™ã§ã«é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå†åº¦é¸æŠã•ã‚ŒãŸå ´åˆã€additive ãŒ true (Ctrlã‚¯ãƒªãƒƒã‚¯) ãªã‚‰é¸æŠã‚’è§£é™¤ã™ã‚‹
 			m_selected.erase(it);
 			return;
 		}
 	}
-	// ƒIƒuƒWƒFƒNƒg‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡A‘I‘ğ‚É’Ç‰Á‚·‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒé¸æŠã•ã‚Œã¦ã„ãªã„å ´åˆã€é¸æŠã«è¿½åŠ ã™ã‚‹
 	m_selected.push_back(object);
 }
 
 void EditorSelection::SelectRange(const std::shared_ptr<GameObject>& object, const std::vector<std::shared_ptr<GameObject>>& flatList, bool additive)
 {
-	// ‚à‚µ‘I‘ğ‚ª‹ó‚È‚çA’Pƒ‚É‘I‘ğ‚·‚é
+	// ã‚‚ã—é¸æŠãŒç©ºãªã‚‰ã€å˜ç´”ã«é¸æŠã™ã‚‹
 	if (m_selected.empty()) {
 		Select(object);
 		return;
 	}
 	
-	auto pivot = m_selected.back(); // ‘I‘ğ‚ÌŠî“_‚Æ‚È‚éƒIƒuƒWƒFƒNƒg
+	auto pivot = m_selected.back(); // é¸æŠã®åŸºç‚¹ã¨ãªã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	auto itPivot = std::find(flatList.begin(), flatList.end(), pivot);
 	auto itTarget = std::find(flatList.begin(), flatList.end(), object);
 	
 	if (itPivot == flatList.end() || itTarget == flatList.end()) {
-		// ‚Ç‚¿‚ç‚©‚ªƒŠƒXƒg‚É‘¶İ‚µ‚È‚¢ê‡‚ÍA’Pƒ‚É‘I‘ğ‚·‚é
+		// ã©ã¡ã‚‰ã‹ãŒãƒªã‚¹ãƒˆã«å­˜åœ¨ã—ãªã„å ´åˆã¯ã€å˜ç´”ã«é¸æŠã™ã‚‹
 		Select(object);
 		return;
 	}
 
 	if (itPivot > itTarget) {
-		std::swap(itPivot, itTarget); // í‚É itPivot < itTarget ‚É‚È‚é‚æ‚¤‚É‚·‚é
+		std::swap(itPivot, itTarget); // å¸¸ã« itPivot < itTarget ã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹
 	}
 
-	// ”ÍˆÍ‘I‘ğ‚ÌŒ‹‰Ê‚ğ additive ƒ‚[ƒh‚Å’Ç‰Á‚·‚é‚©A’Pƒ‚É’u‚«Š·‚¦‚é‚©
+	// ç¯„å›²é¸æŠã®çµæœã‚’ additive ãƒ¢ãƒ¼ãƒ‰ã§è¿½åŠ ã™ã‚‹ã‹ã€å˜ç´”ã«ç½®ãæ›ãˆã‚‹ã‹
 	if (!additive) {
 		m_selected.clear();
 	}
 	for (auto& it = itPivot; it <= itTarget; ++it) {
-		// ‚·‚Å‚É‘I‘ğ‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚Í’Ç‰Á‚µ‚È‚¢
+		// ã™ã§ã«é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯è¿½åŠ ã—ãªã„
 		if (std::find(m_selected.begin(), m_selected.end(), *it) == m_selected.end()) {
 			m_selected.push_back(*it);
 		}
@@ -62,40 +62,40 @@ void EditorSelection::Deselect(const std::shared_ptr<GameObject>& object)
 void EditorSelection::SelectTemp(const std::shared_ptr<GameObject>& object, bool additive)
 {
 	if (!additive) {
-		m_isPreTempCommitInitClear = true; // Ÿ‚Ì CommitTempSelection ‚ÅŠù‘¶‚Ì‘I‘ğ‚ğƒNƒŠƒA‚·‚éƒtƒ‰ƒO‚ğ—§‚Ä‚é
+		m_isPreTempCommitInitClear = true; // æ¬¡ã® CommitTempSelection ã§æ—¢å­˜ã®é¸æŠã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	}
 
 	auto it = std::find(m_selected.begin(), m_selected.end(), object);
 	if (it != m_selected.end()) {
 		if (additive) {
-			// ‚·‚Å‚É‘I‘ğ‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ªÄ“x‘I‘ğ‚³‚ê‚½ê‡Aadditive ‚ª true (CtrlƒNƒŠƒbƒN) ‚È‚ç‘I‘ğ‚ğ‰ğœ‚·‚éƒŠƒXƒg‚É’Ç‰Á‚·‚é
+			// ã™ã§ã«é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå†åº¦é¸æŠã•ã‚ŒãŸå ´åˆã€additive ãŒ true (Ctrlã‚¯ãƒªãƒƒã‚¯) ãªã‚‰é¸æŠã‚’è§£é™¤ã™ã‚‹ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹
 			m_tempDeselected.push_back(object);
 			return;
 		}
 	}
-	// ƒIƒuƒWƒFƒNƒg‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡Aˆê“I‚È‘I‘ğƒŠƒXƒg‚É’Ç‰Á‚·‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒé¸æŠã•ã‚Œã¦ã„ãªã„å ´åˆã€ä¸€æ™‚çš„ãªé¸æŠãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹
 	m_tempSelected.push_back(object);
 }
 
 void EditorSelection::SelectTempRange(const std::shared_ptr<GameObject>& object, const std::vector<std::shared_ptr<GameObject>>& flatList)
 {
-	// ‚à‚µ‘I‘ğ‚ª‹ó‚È‚çA’Pƒ‚Éˆê‘I‘ğ‚·‚é
+	// ã‚‚ã—é¸æŠãŒç©ºãªã‚‰ã€å˜ç´”ã«ä¸€æ™‚é¸æŠã™ã‚‹
 	if (m_selected.empty()) {
 		SelectTemp(object);
 		return;
 	}
 	
-	auto pivot = m_selected.back(); // ‘I‘ğ‚ÌŠî“_‚Æ‚È‚éƒIƒuƒWƒFƒNƒg
+	auto pivot = m_selected.back(); // é¸æŠã®åŸºç‚¹ã¨ãªã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	auto itPivot = std::find(flatList.begin(), flatList.end(), pivot);
 	auto itTarget = std::find(flatList.begin(), flatList.end(), object);
 	
 	if (itPivot == flatList.end() || itTarget == flatList.end()) {
-		// ‚Ç‚¿‚ç‚©‚ªƒŠƒXƒg‚É‘¶İ‚µ‚È‚¢ê‡‚ÍA’Pƒ‚Éˆê‘I‘ğ‚·‚é
+		// ã©ã¡ã‚‰ã‹ãŒãƒªã‚¹ãƒˆã«å­˜åœ¨ã—ãªã„å ´åˆã¯ã€å˜ç´”ã«ä¸€æ™‚é¸æŠã™ã‚‹
 		SelectTemp(object);
 		return;
 	}
 	if (itPivot > itTarget) {
-		std::swap(itPivot, itTarget); // í‚É itPivot < itTarget ‚É‚È‚é‚æ‚¤‚É‚·‚é
+		std::swap(itPivot, itTarget); // å¸¸ã« itPivot < itTarget ã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹
 	}
 	for (auto& it = itPivot; it <= itTarget; ++it) {
 		m_tempSelected.push_back(*it);
@@ -104,19 +104,19 @@ void EditorSelection::SelectTempRange(const std::shared_ptr<GameObject>& object,
 
 void EditorSelection::CommitTempSelection(bool additive)
 {
-	// Šù‘¶‚Ì‘I‘ğ‚ğƒNƒŠƒA‚·‚é•K—v‚ª‚ ‚éê‡‚ÍƒNƒŠƒA‚·‚é
+	// æ—¢å­˜ã®é¸æŠã‚’ã‚¯ãƒªã‚¢ã™ã‚‹å¿…è¦ãŒã‚ã‚‹å ´åˆã¯ã‚¯ãƒªã‚¢ã™ã‚‹
 	if (m_isPreTempCommitInitClear) {
 		m_selected.clear();
 		m_isPreTempCommitInitClear = false;
 	}
 
-	// ˆê“I‚É‘I‘ğ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚ğ³®‚È‘I‘ğ‚É’Ç‰Á‚·‚é
+	// ä¸€æ™‚çš„ã«é¸æŠã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ­£å¼ãªé¸æŠã«è¿½åŠ ã™ã‚‹
 	for (auto& weakObj : m_tempSelected) {
 		if (auto obj = weakObj.lock()) {
 			Select(obj, additive);
 		}
 	}
-	// ˆê“I‚É‘I‘ğ‰ğœ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚ğ³®‚È‘I‘ğ‚©‚çíœ‚·‚é
+	// ä¸€æ™‚çš„ã«é¸æŠè§£é™¤ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ­£å¼ãªé¸æŠã‹ã‚‰å‰Šé™¤ã™ã‚‹
 	for (auto& weakObj : m_tempDeselected) {
 		if (auto obj = weakObj.lock()) {
 			Deselect(obj);
@@ -161,7 +161,7 @@ bool EditorSelection::IsSelected(const GameObject* object) const
 bool EditorSelection::IsEmpty() const
 {
 	if (m_isLocked) {
-		// ƒƒbƒN‚³‚ê‚Ä‚¢‚éê‡‚ÍAƒƒbƒN‚³‚ê‚½‘I‘ğó‘Ô‚ª‹ó‚©‚Ç‚¤‚©‚ğ•Ô‚·
+		// ãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãƒ­ãƒƒã‚¯ã•ã‚ŒãŸé¸æŠçŠ¶æ…‹ãŒç©ºã‹ã©ã†ã‹ã‚’è¿”ã™
 		return m_lockedSelected.empty();
 	}
 	return m_selected.empty();
@@ -170,7 +170,7 @@ bool EditorSelection::IsEmpty() const
 int EditorSelection::Count() const
 {
 	if (m_isLocked) {
-		// ƒƒbƒN‚³‚ê‚Ä‚¢‚éê‡‚ÍAƒƒbƒN‚³‚ê‚½‘I‘ğó‘Ô‚Ì”‚ğ•Ô‚·
+		// ãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãƒ­ãƒƒã‚¯ã•ã‚ŒãŸé¸æŠçŠ¶æ…‹ã®æ•°ã‚’è¿”ã™
 		return static_cast<int>(m_lockedSelected.size());
 	}
 	return static_cast<int>(m_selected.size());
@@ -180,7 +180,7 @@ const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetAll() const
 {
 	std::vector<std::shared_ptr<GameObject>> result;
 	if (m_isLocked) {
-		// ƒƒbƒN‚³‚ê‚Ä‚¢‚éê‡‚ÍAƒƒbƒN‚³‚ê‚½‘I‘ğó‘Ô‚ğ•Ô‚·
+		// ãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãƒ­ãƒƒã‚¯ã•ã‚ŒãŸé¸æŠçŠ¶æ…‹ã‚’è¿”ã™
 		for (const auto& weakObj : m_lockedSelected) {
 			if (auto obj = weakObj.lock()) {
 				result.push_back(obj);
@@ -188,7 +188,7 @@ const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetAll() const
 		}
 	}
 	else {
-		// ƒƒbƒN‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAŒ»İ‚Ì‘I‘ğó‘Ô‚ğ•Ô‚·
+		// ãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã€ç¾åœ¨ã®é¸æŠçŠ¶æ…‹ã‚’è¿”ã™
 		for (const auto& obj : m_selected) {
 			if (obj) {
 				result.push_back(obj);
@@ -218,11 +218,11 @@ const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetLockedAll() 
 std::shared_ptr<GameObject> EditorSelection::GetPrimary() const
 {
 	if (m_isLocked) {
-		// ƒƒbƒN‚³‚ê‚Ä‚¢‚éê‡‚ÍAƒƒbƒN‚³‚ê‚½‘I‘ğó‘Ô‚ÌÅŒã‚ÌƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+		// ãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãƒ­ãƒƒã‚¯ã•ã‚ŒãŸé¸æŠçŠ¶æ…‹ã®æœ€å¾Œã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 		return GetPrimaryLocked();
 	}
 	else {
-		// ƒƒbƒN‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAŒ»İ‚Ì‘I‘ğó‘Ô‚ÌÅŒã‚ÌƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+		// ãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã€ç¾åœ¨ã®é¸æŠçŠ¶æ…‹ã®æœ€å¾Œã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 		return GetPrimarySelected();
 	}
 }

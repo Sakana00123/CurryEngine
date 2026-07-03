@@ -11,26 +11,26 @@ namespace CurryEngine
 	{
 
 		/**
-		 * @brief ƒAƒZƒbƒgƒƒ^ƒf[ƒ^‚ğ•\‚·\‘¢‘ÌBƒAƒZƒbƒg‚Ìí—Ş‚âƒpƒX‚È‚Ç‚Ìî•ñ‚ğ•Û‚µ‚Ü‚·B
-		 * @details ‚±‚Ì\‘¢‘Ì‚ÍAƒAƒZƒbƒg‚ÌŠÇ—‚âƒ[ƒh‚Ég—p‚³‚ê‚éƒƒ^ƒf[ƒ^‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+		 * @brief ã‚¢ã‚»ãƒƒãƒˆãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’è¡¨ã™æ§‹é€ ä½“ã€‚ã‚¢ã‚»ãƒƒãƒˆã®ç¨®é¡ã‚„ãƒ‘ã‚¹ãªã©ã®æƒ…å ±ã‚’ä¿æŒã—ã¾ã™ã€‚
+		 * @details ã“ã®æ§‹é€ ä½“ã¯ã€ã‚¢ã‚»ãƒƒãƒˆã®ç®¡ç†ã‚„ãƒ­ãƒ¼ãƒ‰æ™‚ã«ä½¿ç”¨ã•ã‚Œã‚‹ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’æä¾›ã—ã¾ã™ã€‚
 		 */
 		struct AssetMeta
 		{
-			AssetId id; ///< ƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
-			std::filesystem::path path; ///< ƒAƒZƒbƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-			AssetType type; ///< ƒAƒZƒbƒg‚Ìí—Ş
-			bool isFolder = false; ///< ƒAƒZƒbƒg‚ªƒtƒHƒ‹ƒ_‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
+			AssetId id; ///< ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
+			std::filesystem::path path; ///< ã‚¢ã‚»ãƒƒãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+			AssetType type; ///< ã‚¢ã‚»ãƒƒãƒˆã®ç¨®é¡
+			bool isFolder = false; ///< ã‚¢ã‚»ãƒƒãƒˆãŒãƒ•ã‚©ãƒ«ãƒ€ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
 			nlohmann::json importSettings;
 
 			/**
-			 * @brief ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^B‹ó‚Ìƒƒ^ƒf[ƒ^‚ğ‰Šú‰»‚µ‚Ü‚·B
+			 * @brief ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚ç©ºã®ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
 			 */
 			AssetMeta() = default;
 			/**
-			 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^Bw’è‚³‚ê‚½IDAƒpƒXAí—Ş‚Å‰Šú‰»‚µ‚Ü‚·B
-			 * @param assetId ƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
-			 * @param assetPath ƒAƒZƒbƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-			 * @param assetType ƒAƒZƒbƒg‚Ìí—Ş
+			 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚æŒ‡å®šã•ã‚ŒãŸIDã€ãƒ‘ã‚¹ã€ç¨®é¡ã§åˆæœŸåŒ–ã—ã¾ã™ã€‚
+			 * @param assetId ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
+			 * @param assetPath ã‚¢ã‚»ãƒƒãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+			 * @param assetType ã‚¢ã‚»ãƒƒãƒˆã®ç¨®é¡
 			 */
 			AssetMeta(const AssetId& assetId, const std::filesystem::path& assetPath, AssetType assetType, bool isFolder = false, const nlohmann::json& settings = nlohmann::json())
 				: id(assetId), path(assetPath), type(assetType), isFolder(isFolder), importSettings(settings) {
@@ -42,7 +42,7 @@ namespace CurryEngine
 				static_assert(std::is_base_of_v<IImportSettings, T>, "T must derive from IImportSettings");
 				if (importSettings.is_null())
 				{
-					return T(); // ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Å‰Šú‰»‚³‚ê‚½T‚ğ•Ô‚·
+					return T(); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§åˆæœŸåŒ–ã•ã‚ŒãŸTã‚’è¿”ã™
 				}
 				return importSettings.get<T>();
 			}
@@ -51,7 +51,7 @@ namespace CurryEngine
 			void SetImportSettings(const T& settings)
 			{
 				static_assert(std::is_base_of_v<IImportSettings, T>, "T must derive from IImportSettings");
-				importSettings = settings; // to_json/from_json‚ª‚ ‚ê‚Î©“®•ÏŠ·‚³‚ê‚é
+				importSettings = settings; // to_json/from_jsonãŒã‚ã‚Œã°è‡ªå‹•å¤‰æ›ã•ã‚Œã‚‹
 			}
 
 		};

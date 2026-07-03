@@ -2,19 +2,19 @@
 
 /**
  * @file
- * @brief ‚¸“xƒ^ƒCƒ}[‚É‚æ‚éŠÔŠÇ—ƒ†[ƒeƒBƒŠƒeƒBB
- * @details QueryPerformanceCounter/Frequency ‚ğ—p‚¢‚ÄA
- *          Œo‰ßŠÔAƒfƒ‹ƒ^ƒ^ƒCƒ€AƒXƒP[ƒ‹Ï‚İŠÔ‚Ìæ“¾‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief é«˜ç²¾åº¦ã‚¿ã‚¤ãƒãƒ¼ã«ã‚ˆã‚‹æ™‚é–“ç®¡ç†ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã€‚
+ * @details QueryPerformanceCounter/Frequency ã‚’ç”¨ã„ã¦ã€
+ *          çµŒéæ™‚é–“ã€ãƒ‡ãƒ«ã‚¿ã‚¿ã‚¤ãƒ ã€ã‚¹ã‚±ãƒ¼ãƒ«æ¸ˆã¿æ™‚é–“ã®å–å¾—ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class Time 
 {
 public:
 	/**
-	 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B‚¸“xƒ^ƒCƒ}[‚ğ‰Šú‰»‚µ‚Ü‚·B
-	 * @details ü”g”‚©‚ç 1 ƒJƒEƒ“ƒg‚ ‚½‚è‚Ì•b”‚ğ‹‚ßAŠî€‚ğ‹L˜^‚µ‚Ü‚·B
+	 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚é«˜ç²¾åº¦ã‚¿ã‚¤ãƒãƒ¼ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
+	 * @details å‘¨æ³¢æ•°ã‹ã‚‰ 1 ã‚«ã‚¦ãƒ³ãƒˆã‚ãŸã‚Šã®ç§’æ•°ã‚’æ±‚ã‚ã€åŸºæº–æ™‚åˆ»ã‚’è¨˜éŒ²ã—ã¾ã™ã€‚
 	 */
 	Time();
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	~Time() = default;
 	Time(const Time&) = delete;
 	Time& operator=(const Time&) = delete;
@@ -22,58 +22,58 @@ public:
 	Time& operator=(Time&&) noexcept = delete;
 
 	/**
-	 * @brief ƒ^ƒCƒ}[‚ğƒŠƒZƒbƒg‚µ‚Ü‚·B
-	 * @details Œ»İ‚ğŠî€‚Éæ‚è’¼‚µA’â~ó‘Ô‚ğ‰ğœ‚µ‚Ü‚·B
+	 * @brief ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¾ã™ã€‚
+	 * @details ç¾åœ¨æ™‚åˆ»ã‚’åŸºæº–ã«å–ã‚Šç›´ã—ã€åœæ­¢çŠ¶æ…‹ã‚’è§£é™¤ã—ã¾ã™ã€‚
 	 */
 	void Reset();
 
 	/**
-	 * @brief ’â~’†‚Ìƒ^ƒCƒ}[‚ğÄŠJ‚µ‚Ü‚·B
-	 * @details ’â~’†‚ÉŒo‰ß‚µ‚½ŠÔ‚ğ `pausedTime` ‚É‰ÁZ‚µ‚Ü‚·B
+	 * @brief åœæ­¢ä¸­ã®ã‚¿ã‚¤ãƒãƒ¼ã‚’å†é–‹ã—ã¾ã™ã€‚
+	 * @details åœæ­¢ä¸­ã«çµŒéã—ãŸæ™‚é–“ã‚’ `pausedTime` ã«åŠ ç®—ã—ã¾ã™ã€‚
 	 */
 	void Start();
 
 	/**
-	 * @brief ƒ^ƒCƒ}[‚ğ’â~‚µ‚Ü‚·B
+	 * @brief ã‚¿ã‚¤ãƒãƒ¼ã‚’åœæ­¢ã—ã¾ã™ã€‚
 	 */
 	void Stop();
 
 	/**
-	 * @brief 1ƒtƒŒ[ƒ€•ª‚ÌŠÔ‚ğXV‚µ‚Ü‚·B
-	 * @details `deltaTime` ‚Æ `unscaledDeltaTime` ‚ğŒvZ‚µA•‰’l‚Ìê‡‚Í 0 ‚ÉŠÛ‚ß‚Ü‚·B
+	 * @brief 1ãƒ•ãƒ¬ãƒ¼ãƒ åˆ†ã®æ™‚é–“ã‚’æ›´æ–°ã—ã¾ã™ã€‚
+	 * @details `deltaTime` ã¨ `unscaledDeltaTime` ã‚’è¨ˆç®—ã—ã€è² å€¤ã®å ´åˆã¯ 0 ã«ä¸¸ã‚ã¾ã™ã€‚
 	 */
 	void Tick();
 
 	/**
-	 * @brief ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ŠJn‚©‚ç‚ÌŒo‰ßŠÔi•bj‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Œo‰ßŠÔi•bjB
+	 * @brief ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	float TimeStamp() const;
 
 public:
-	/** @brief ƒXƒP[ƒ‹“K—pŒã‚Ìƒfƒ‹ƒ^ƒ^ƒCƒ€i•bjB*/
+	/** @brief ã‚¹ã‚±ãƒ¼ãƒ«é©ç”¨å¾Œã®ãƒ‡ãƒ«ã‚¿ã‚¿ã‚¤ãƒ ï¼ˆç§’ï¼‰ã€‚*/
 	static float DeltaTime() { return static_cast<float>(deltaTime); }
-	/** @brief ƒXƒP[ƒ‹”ñ“K—p‚Ìƒfƒ‹ƒ^ƒ^ƒCƒ€i•bjB*/
+	/** @brief ã‚¹ã‚±ãƒ¼ãƒ«éé©ç”¨ã®ãƒ‡ãƒ«ã‚¿ã‚¿ã‚¤ãƒ ï¼ˆç§’ï¼‰ã€‚*/
 	static float UnscaledDeltaTime() { return static_cast<float>(unscaledDeltaTime); }
 	/**
-	 * @brief ŠÔƒXƒP[ƒ‹B
-	 * @details 1.0 ‚ª“™‘¬A2.0 ‚ª 2 ”{‘¬A0.5 ‚ª”¼‘¬A0.0 ‚Å’â~B
+	 * @brief æ™‚é–“ã‚¹ã‚±ãƒ¼ãƒ«ã€‚
+	 * @details 1.0 ãŒç­‰é€Ÿã€2.0 ãŒ 2 å€é€Ÿã€0.5 ãŒåŠé€Ÿã€0.0 ã§åœæ­¢ã€‚
 	 */
 	static inline float timeScale{ 1.0f };
 private:
-	/** @brief ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bAƒXƒP[ƒ‹“K—pjB*/
+	/** @brief å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ã€ã‚¹ã‚±ãƒ¼ãƒ«é©ç”¨ï¼‰ã€‚*/
 	static inline double deltaTime{ 0.0f };
-	/** @brief ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bAƒXƒP[ƒ‹”ñ“K—pjB*/
+	/** @brief å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ã€ã‚¹ã‚±ãƒ¼ãƒ«éé©ç”¨ï¼‰ã€‚*/
 	static inline double unscaledDeltaTime{ 0.0f };
 private:
-	/** @brief 1ƒJƒEƒ“ƒg‚ ‚½‚è‚Ì•b”B*/
+	/** @brief 1ã‚«ã‚¦ãƒ³ãƒˆã‚ãŸã‚Šã®ç§’æ•°ã€‚*/
 	double secondsPerCount{ 0.0 };
 
-	LONGLONG baseTime{ 0LL };   //!< Šî€
-	LONGLONG pausedTime{ 0LL }; //!< ’â~’†‚Ì—İÏŠÔ
-	LONGLONG stopTime{ 0LL };   //!< ’â~‚µ‚½
-	LONGLONG lastTime{ 0LL };   //!< ‘OƒtƒŒ[ƒ€‚Ì
-	LONGLONG thisTime{ 0LL };   //!< Œ»İ‚Ì
+	LONGLONG baseTime{ 0LL };   //!< åŸºæº–æ™‚åˆ»
+	LONGLONG pausedTime{ 0LL }; //!< åœæ­¢ä¸­ã®ç´¯ç©æ™‚é–“
+	LONGLONG stopTime{ 0LL };   //!< åœæ­¢ã—ãŸæ™‚åˆ»
+	LONGLONG lastTime{ 0LL };   //!< å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ™‚åˆ»
+	LONGLONG thisTime{ 0LL };   //!< ç¾åœ¨ã®æ™‚åˆ»
 
-	bool stopped{ false };      //!< ’â~’†ƒtƒ‰ƒO
+	bool stopped{ false };      //!< åœæ­¢ä¸­ãƒ•ãƒ©ã‚°
 };

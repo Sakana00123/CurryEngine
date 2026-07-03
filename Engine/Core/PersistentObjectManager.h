@@ -11,7 +11,7 @@ public:
     static void Unregister(const std::shared_ptr<GameObject>& obj) {
         erases.emplace_back(obj);
     }
-    // ƒAƒvƒŠI—¹‚È‚Ç‚ÉŒÄ‚Ô
+    // ã‚¢ãƒ—ãƒªçµ‚äº†æ™‚ãªã©ã«å‘¼ã¶
     static void Clear() {
         persistentObjects.clear();
     }
@@ -25,7 +25,7 @@ public:
                     persistentObjects.end());
                 erases.clear();
             }
-            //—Dæ“x‚Åƒ\[ƒg
+            //å„ªå…ˆåº¦ã§ã‚½ãƒ¼ãƒˆ
             std::sort(persistentObjects.begin(), persistentObjects.end(),
                 [](const std::shared_ptr<GameObject>& a, const std::shared_ptr<GameObject>& b) {
                     return a->priority < b->priority;

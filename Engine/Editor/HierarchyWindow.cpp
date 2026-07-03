@@ -18,7 +18,7 @@
 
 namespace
 {
-	// ƒIƒuƒWƒFƒNƒg‚ÌŠK‘w\‘¢‚ğl—¶‚µ‚ÄAe‚ğ‚½‚È‚¢ƒIƒuƒWƒFƒNƒg‚Ì‚İ‚ğ•Ô‚·
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®éšå±¤æ§‹é€ ã‚’è€ƒæ…®ã—ã¦ã€è¦ªã‚’æŒãŸãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã¿ã‚’è¿”ã™
 	static std::vector<std::weak_ptr<GameObject>> OrganizeObjects(const std::vector<std::shared_ptr<GameObject>>& objects, GameObject* parent)
 	{
 		std::vector<std::weak_ptr<GameObject>> organized;
@@ -76,7 +76,7 @@ namespace CurryEngine
 				{
 					ImGui::PushID(idCounter++);
 
-					// ‚‚³6px‚Ì‹óŠÔ‚ğŠm•ÛiƒJ[ƒ\ƒ‹‚Íi‚Şj
+					// é«˜ã•6pxã®ç©ºé–“ã‚’ç¢ºä¿ï¼ˆã‚«ãƒ¼ã‚½ãƒ«ã¯é€²ã‚€ï¼‰
 					ImVec2 pos = ImGui::GetCursorScreenPos();
 					float w = ImGui::GetContentRegionAvail().x;
 					float h = 6.0f;
@@ -84,7 +84,7 @@ namespace CurryEngine
 
 					if (accept && ImGui::BeginDragDropTarget())
 					{
-						// ƒzƒo[’†‚Ì‚İƒ‰ƒCƒ“•\¦
+						// ãƒ›ãƒãƒ¼ä¸­ã®ã¿ãƒ©ã‚¤ãƒ³è¡¨ç¤º
 						if (ImGui::IsMouseHoveringRect(pos, ImVec2(pos.x + w, pos.y + h)))
 						{
 							ImGui::GetWindowDrawList()->AddLine(
@@ -106,28 +106,28 @@ namespace CurryEngine
 
 			std::function<void(GameObject*)> DrawNodeTree = [&](GameObject* object)
 				{
-					// ƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚½‚ßƒ`ƒFƒbƒN
+					// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ãƒã‚§ãƒƒã‚¯
 					if (!object) return;
 
 					ImGui::PushID(i++);
 
-					//–îˆó‚ğƒNƒŠƒbƒN‚ÅŠK‘w‚ğŠJ‚­B“–‚½‚è”»’è‚Í—]”’‚àŠÜ‚ß‚é
+					//çŸ¢å°ã‚’ã‚¯ãƒªãƒƒã‚¯ã§éšå±¤ã‚’é–‹ãã€‚å½“ãŸã‚Šåˆ¤å®šã¯ä½™ç™½ã‚‚å«ã‚ã‚‹
 					ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow
 						| ImGuiTreeNodeFlags_FramePadding
 						| ImGuiTreeNodeFlags_SpanAvailWidth;
 
-					// ƒfƒtƒHƒ‹ƒg‚ÅŠK‘w‚ğŠJ‚¢‚Ä‚¨‚­‚©‚Ç‚¤‚©
+					// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§éšå±¤ã‚’é–‹ã„ã¦ãŠãã‹ã©ã†ã‹
 					if (object->isDefaultOpenOnHierarchy) {
 						nodeFlags |= ImGuiTreeNodeFlags_DefaultOpen;
 					}
 
-					//q‚ª‚¢‚È‚¢ê‡‚Í–îˆó‚ğ‚Â‚¯‚È‚¢
+					//å­ãŒã„ãªã„å ´åˆã¯çŸ¢å°ã‚’ã¤ã‘ãªã„
 					size_t childCount = object->children.size();
 					if (childCount == 0) {
 						nodeFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 					}
 
-					//‘I‘ğƒtƒ‰ƒO
+					//é¸æŠãƒ•ãƒ©ã‚°
 					if (selection->IsSelected(object)) {
 						nodeFlags |= ImGuiTreeNodeFlags_Selected;
 					}
@@ -135,14 +135,14 @@ namespace CurryEngine
 						nodeFlags |= ImGuiTreeNodeFlags_Selected;
 					}
 
-					// ƒhƒƒbƒv‰Â”\‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+					// ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 					bool acceptDrop = true;
 
-					//ƒhƒƒbƒvæieqŠÖŒW‚ğ‰ğœ‚µ‚½‚¢‚Æ‚«A‚à‚µ‚­‚Í—Dæ“x‚Ì•À‚Ñ‘Ö‚¦‚Ì‚Æ‚«j‚Éƒhƒƒbƒv‰Â”\‚©‚Ç‚¤‚©
+					//ãƒ‰ãƒ­ãƒƒãƒ—å…ˆï¼ˆè¦ªå­é–¢ä¿‚ã‚’è§£é™¤ã—ãŸã„ã¨ãã€ã‚‚ã—ãã¯å„ªå…ˆåº¦ã®ä¸¦ã³æ›¿ãˆã®ã¨ãï¼‰ã«ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ã‹ã©ã†ã‹
 					if (selection)
 					{
 						for (auto& selectObj : selection->GetSelectedAll()) {
-							// ƒhƒƒbƒvƒ\[ƒX‚ÌƒIƒuƒWƒFƒNƒg‚ªUIƒIƒuƒWƒFƒNƒg‚Ìê‡Aƒhƒƒbƒvæ‚ªUIƒIƒuƒWƒFƒNƒg‚Å‚È‚¢‚ÆeqŠÖŒW‚ğ\’z‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
+							// ãƒ‰ãƒ­ãƒƒãƒ—ã‚½ãƒ¼ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒUIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆã€ãƒ‰ãƒ­ãƒƒãƒ—å…ˆãŒUIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ãªã„ã¨è¦ªå­é–¢ä¿‚ã‚’æ§‹ç¯‰ã§ããªã„ã‚ˆã†ã«ã™ã‚‹
 							if (selectObj && selectObj->GetComponent<RectTransform>()) {
 								if (!object->GetComponent<RectTransform>()) {
 									if (object->GetParent() != selectObj->GetParent())
@@ -156,7 +156,7 @@ namespace CurryEngine
 
 					DrawDropZone(object, i, acceptDrop);
 
-					//ƒcƒŠ[ƒm[ƒh‚ğ•`‰æ
+					//ãƒ„ãƒªãƒ¼ãƒãƒ¼ãƒ‰ã‚’æç”»
 					float alpha = 1;//uniqueId-isVisible
 					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, alpha));
 					bool isActive = object->IsActiveSelf();
@@ -167,7 +167,7 @@ namespace CurryEngine
 					//ImGui::Text(std::to_string(object->id.Value()).c_str());
 					//ImGui::SameLine();
 #if 0
-				// —Dæ“x•\¦
+				// å„ªå…ˆåº¦è¡¨ç¤º
 					ImGui::Text("%d", object->priority);
 					ImGui::SameLine();
 #endif // 0
@@ -176,11 +176,11 @@ namespace CurryEngine
 					ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
 					ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
 					ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
-					// ƒm[ƒh‚ğ•`‰æBŠJ‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ•Ô‚·
+					// ãƒãƒ¼ãƒ‰ã‚’æç”»ã€‚é–‹ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’è¿”ã™
 					bool opened = ImGui::TreeNodeEx(object, nodeFlags, object->GetName().c_str());
-					object->isDefaultOpenOnHierarchy = opened; //ŠJ‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ•Û‘¶‚µ‚Ä‚¨‚­
+					object->isDefaultOpenOnHierarchy = opened; //é–‹ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’ä¿å­˜ã—ã¦ãŠã
 
-					//ƒm[ƒh‚É‘Î‚µ‚Äƒhƒ‰ƒbƒOieqŠÖŒW\’zj
+					//ãƒãƒ¼ãƒ‰ã«å¯¾ã—ã¦ãƒ‰ãƒ©ãƒƒã‚°ï¼ˆè¦ªå­é–¢ä¿‚æ§‹ç¯‰ï¼‰
 					if (acceptDrop && ImGui::BeginDragDropTarget()) {
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GameObject")) {
 							IM_ASSERT(payload->DataSize == sizeof(ObjectId*));
@@ -197,7 +197,7 @@ namespace CurryEngine
 						}
 						ImGui::EndDragDropTarget();
 					}
-					//GameObject*ƒf[ƒ^‚Æ‚µ‚Äƒhƒ‰ƒbƒO
+					//GameObject*ãƒ‡ãƒ¼ã‚¿ã¨ã—ã¦ãƒ‰ãƒ©ãƒƒã‚°
 					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
 						ImGui::SetDragDropPayload("GameObject", &object->id, sizeof(ObjectId*));
 						ImGui::Text(std::format("Dragging {} object(s)", selection->GetSelectedAll().size()).c_str());
@@ -210,7 +210,7 @@ namespace CurryEngine
 
 						ImGui::EndDragDropSource();
 					}
-					//ƒtƒH[ƒJƒX‚³‚ê‚½ƒm[ƒh‚ğ‘I‘ğ‚·‚é
+					//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã‚’é¸æŠã™ã‚‹
 					bool shift = ImGui::IsKeyDown(ImGuiKey_LeftShift) || ImGui::IsKeyDown(ImGuiKey_RightShift);
 					bool ctrl = ImGui::IsKeyDown(ImGuiKey_LeftCtrl) || ImGui::IsKeyDown(ImGuiKey_RightCtrl);
 					//static bool delayClick = false;
@@ -225,16 +225,16 @@ namespace CurryEngine
 							else*/
 							{
 								const std::shared_ptr<GameObject>& spObject = objectManager->Find_Ptr(object->GetId());
-								//if (shift) // ShiftƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚ÍAƒNƒŠƒbƒN‚µ‚½ƒIƒuƒWƒFƒNƒg‚©‚çŒ»İ‚Ì‘I‘ğ”ÍˆÍ‚Ü‚Å‚ğ‘I‘ğ‚·‚é
+								//if (shift) // Shiftã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ç¾åœ¨ã®é¸æŠç¯„å›²ã¾ã§ã‚’é¸æŠã™ã‚‹
 								//	selection->SelectRange(spObject, OrganizeTreeNodes(objects), /*additive=*/ctrl);
-								//else // ShiftƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAƒNƒŠƒbƒN‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğ‘I‘ğ‚·‚éBCtrlƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚ÍA‘I‘ğ‚É’Ç‰Á‚·‚éB‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍA‘I‘ğ‚ğ’u‚«Š·‚¦‚é
+								//else // Shiftã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã€ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é¸æŠã™ã‚‹ã€‚Ctrlã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€é¸æŠã«è¿½åŠ ã™ã‚‹ã€‚æŠ¼ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã€é¸æŠã‚’ç½®ãæ›ãˆã‚‹
 								//	selection->Select(spObject, /*additive=*/ctrl);
 								if (shift) selection->SelectRange(spObject, OrganizeTreeNodes(objects), ctrl);
 								else selection->SelectTemp(spObject, ctrl);
 							}
 						}
 					}
-					// ƒNƒŠƒbƒN‚µ‚Ä‚©‚çƒ}ƒEƒX‚ğ“®‚©‚µ‚Ä‚à‘I‘ğ‚³‚ê‚È‚¢‚æ‚¤‚ÉAƒNƒŠƒbƒNŒã‚ÌƒtƒŒ[ƒ€‚Å‘I‘ğ‚·‚é
+					// ã‚¯ãƒªãƒƒã‚¯ã—ã¦ã‹ã‚‰ãƒã‚¦ã‚¹ã‚’å‹•ã‹ã—ã¦ã‚‚é¸æŠã•ã‚Œãªã„ã‚ˆã†ã«ã€ã‚¯ãƒªãƒƒã‚¯å¾Œã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§é¸æŠã™ã‚‹
 					bool isReleased = ImGui::IsMouseReleased(ImGuiMouseButton_Left) || ImGui::IsMouseReleased(ImGuiMouseButton_Right);
 					//if (delayClick && ImGui::IsItemHovered() && isReleased)
 					//{
@@ -259,20 +259,20 @@ namespace CurryEngine
 
 					ImGui::PopStyleColor(4);
 
-					// ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒm[ƒh‚ğInspector‚É•\¦‚·‚é
-					bool flag = ImGui::IsItemActive() || ImGui::IsItemHovered(); //ƒm[ƒh‚ªƒAƒNƒeƒBƒu‚Ü‚½‚Íƒzƒo[‚³‚ê‚Ä‚¢‚é‚©
-					bool isActiveAndHovered = ImGui::IsItemActive() && ImGui::IsItemHovered(); //ƒm[ƒh‚ªƒAƒNƒeƒBƒu‚©‚Âƒzƒo[‚³‚ê‚Ä‚¢‚é‚©
+					// é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã‚’Inspectorã«è¡¨ç¤ºã™ã‚‹
+					bool flag = ImGui::IsItemActive() || ImGui::IsItemHovered(); //ãƒãƒ¼ãƒ‰ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã¾ãŸã¯ãƒ›ãƒãƒ¼ã•ã‚Œã¦ã„ã‚‹ã‹
+					bool isActiveAndHovered = ImGui::IsItemActive() && ImGui::IsItemHovered(); //ãƒãƒ¼ãƒ‰ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‹ã¤ãƒ›ãƒãƒ¼ã•ã‚Œã¦ã„ã‚‹ã‹
 					
 					if (/*selectNode && */flag && isReleased) {
 						if (!ImGui::GetDragDropPayload()) {
-							// ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒm[ƒh‚ğInspector‚É•\¦‚·‚é
+							// é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã‚’Inspectorã«è¡¨ç¤ºã™ã‚‹
 							selection->CommitTempSelection(ctrl);
 							//SelectInspectorNode(selectNode);
 							objectManager->SelectInspectorNode(selectNode);
 						}
 					}
 
-					// ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚Å‚»‚ÌƒIƒuƒWƒFƒNƒg‚ÌƒtƒH[ƒJƒX‚ÉˆÚ“®
+					// ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã§ãã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã«ç§»å‹•
 					if (selectNode && (isActiveAndHovered) && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 					{
 						if (selectNode->transform && scene)
@@ -287,9 +287,9 @@ namespace CurryEngine
 						ImGui::SetTooltip("Priority: %d\nID: %d", object->GetPriority(), object->GetId().Value());
 					}
 
-					// ƒm[ƒhID‚ğ–ß‚·
+					// ãƒãƒ¼ãƒ‰IDã‚’æˆ»ã™
 					ImGui::PopID();
-					//ŠJ‚©‚ê‚Ä‚¢‚éê‡AqŠK‘w‚É‚à“¯‚¶ˆ—‚ğ‚·‚é
+					//é–‹ã‹ã‚Œã¦ã„ã‚‹å ´åˆã€å­éšå±¤ã«ã‚‚åŒã˜å‡¦ç†ã‚’ã™ã‚‹
 					if (opened && childCount > 0) {
 						if (object) {
 							for (GameObject* child : object->children) {
@@ -301,28 +301,28 @@ namespace CurryEngine
 					}
 				};
 
-			// ‹ó”’ƒNƒŠƒbƒN‚Å‘I‘ğ‰ğœ
+			// ç©ºç™½ã‚¯ãƒªãƒƒã‚¯ã§é¸æŠè§£é™¤
 			if ((ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseClicked(ImGuiMouseButton_Right)) && ImGui::IsWindowHovered())
 			{
-				// ƒm[ƒhã‚Å‚Í‚È‚­AƒEƒBƒ“ƒhƒE‚Ì—]”’‚ªƒNƒŠƒbƒN‚³‚ê‚½ê‡
+				// ãƒãƒ¼ãƒ‰ä¸Šã§ã¯ãªãã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½™ç™½ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸå ´åˆ
 				if (!ImGui::IsAnyItemHovered())
 				{
 					objectManager->Reset();
 				}
 			}
 
-			// --- ‰EƒNƒŠƒbƒNƒƒjƒ…[ ---
+			// --- å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ---
 			if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 			{
 				ImGui::OpenPopup("HierarchyContextMenu");
 			}
 
-			//ƒhƒƒbƒvæieqŠÖŒW‚ğ‰ğœ‚µ‚½‚¢‚Æ‚«j
+			//ãƒ‰ãƒ­ãƒƒãƒ—å…ˆï¼ˆè¦ªå­é–¢ä¿‚ã‚’è§£é™¤ã—ãŸã„ã¨ãï¼‰
 			bool acceptDrop = true;
 			if (selection)
 			{
 				for (auto& selectObj : selection->GetSelectedAll()) {
-					// ƒhƒƒbƒvƒ\[ƒX‚ÌƒIƒuƒWƒFƒNƒg‚ªUIƒIƒuƒWƒFƒNƒg‚Ìê‡Aƒhƒƒbƒvæ‚ªUIƒIƒuƒWƒFƒNƒg‚Å‚È‚¢‚Æó‚¯“ü‚ê‚È‚¢
+					// ãƒ‰ãƒ­ãƒƒãƒ—ã‚½ãƒ¼ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒUIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆã€ãƒ‰ãƒ­ãƒƒãƒ—å…ˆãŒUIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ãªã„ã¨å—ã‘å…¥ã‚Œãªã„
 					if (selectObj && selectObj->GetComponent<RectTransform>()) {
 						acceptDrop = false;
 						break;
@@ -349,13 +349,13 @@ namespace CurryEngine
 			}
 
 			for (auto& object : objects) {
-				//ŠJ‚©‚ê‚Ä‚¢‚éê‡AqŠK‘w‚É‚à“¯‚¶ˆ—‚ğ‚·‚é
+				//é–‹ã‹ã‚Œã¦ã„ã‚‹å ´åˆã€å­éšå±¤ã«ã‚‚åŒã˜å‡¦ç†ã‚’ã™ã‚‹
 				if (!object || object->parent) continue;
 				DrawNodeTree(object.get());
 			}
 
-			// ƒŠƒXƒg––”ö‚Ì”Ô•ºDropZone
-			// ƒhƒƒbƒvæ‚Æ‚µ‚ÄuÅŒã‚Ìƒ‹[ƒgƒIƒuƒWƒFƒNƒgv‚ğg‚¤
+			// ãƒªã‚¹ãƒˆæœ«å°¾ã®ç•ªå…µDropZone
+			// ãƒ‰ãƒ­ãƒƒãƒ—å…ˆã¨ã—ã¦ã€Œæœ€å¾Œã®ãƒ«ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚’ä½¿ã†
 			{
 				GameObject* lastRoot = nullptr;
 				for (auto it = objects.rbegin(); it != objects.rend(); ++it) {
@@ -382,7 +382,7 @@ namespace CurryEngine
 					GameObject* obj = pObj.get();
 					if (!obj) continue;
 
-					// ƒhƒƒbƒvæ‚ª“¯‚¶e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Ì•À‚Ñ‘Ö‚¦‚©‚Ç‚¤‚©‚ÍAƒhƒƒbƒvæ‚ÆƒhƒƒbƒvŒ³‚Ìe‚ª“¯‚¶‚©‚Ç‚¤‚©‚Å”»’f‚·‚é
+					// ãƒ‰ãƒ­ãƒƒãƒ—å…ˆãŒåŒã˜è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä¸¦ã³æ›¿ãˆã‹ã©ã†ã‹ã¯ã€ãƒ‰ãƒ­ãƒƒãƒ—å…ˆã¨ãƒ‰ãƒ­ãƒƒãƒ—å…ƒã®è¦ªãŒåŒã˜ã‹ã©ã†ã‹ã§åˆ¤æ–­ã™ã‚‹
 					if (drop.reorder)
 					{
 						if (obj->GetParent() != drop.target->GetParent())
@@ -396,7 +396,7 @@ namespace CurryEngine
 						size_t toIdx = 0;
 						if (drop.appendToEnd)
 						{
-							// ƒhƒƒbƒvæ‚Ìe‚Æ“¯‚¶e‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Ì”‚ğ”‚¦‚é
+							// ãƒ‰ãƒ­ãƒƒãƒ—å…ˆã®è¦ªã¨åŒã˜è¦ªã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ•°ã‚’æ•°ãˆã‚‹
 							toIdx = objects.size();
 						}
 						else
@@ -411,7 +411,7 @@ namespace CurryEngine
 					}
 					else
 					{
-						// ƒhƒƒbƒvæ‚ªƒhƒƒbƒvŒ³‚Ìq‚Å‚ ‚é‚©‚Ç‚¤‚©‚ğŠm”F‚·‚é‚½‚ß‚ÉAƒhƒƒbƒvæ‚Ìe‚ğ‚½‚Ç‚Á‚Ä‚¢‚­
+						// ãƒ‰ãƒ­ãƒƒãƒ—å…ˆãŒãƒ‰ãƒ­ãƒƒãƒ—å…ƒã®å­ã§ã‚ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã™ã‚‹ãŸã‚ã«ã€ãƒ‰ãƒ­ãƒƒãƒ—å…ˆã®è¦ªã‚’ãŸã©ã£ã¦ã„ã
 						bool isChild = false;
 						GameObject* parent = drop.target;
 						while (parent)
@@ -423,9 +423,9 @@ namespace CurryEngine
 							}
 							parent = parent->GetParent();
 						}
-						// ƒhƒƒbƒvæ‚ªƒhƒƒbƒvŒ³‚Ìq‚Å‚È‚¢ê‡‚Ì‚İeqŠÖŒW‚ğ\’z‚·‚é
+						// ãƒ‰ãƒ­ãƒƒãƒ—å…ˆãŒãƒ‰ãƒ­ãƒƒãƒ—å…ƒã®å­ã§ãªã„å ´åˆã®ã¿è¦ªå­é–¢ä¿‚ã‚’æ§‹ç¯‰ã™ã‚‹
 						if (!isChild) {
-							obj->SetParent(drop.target); // eqŠÖŒW\’z
+							obj->SetParent(drop.target); // è¦ªå­é–¢ä¿‚æ§‹ç¯‰
 						}
 					}
 				}
@@ -435,11 +435,11 @@ namespace CurryEngine
 			isNotDestroyObject = true;
 
 #if 0
-			//DontDestroyOnLoad‚Å•Û‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg
+			//DontDestroyOnLoadã§ä¿æŒã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 			if (!PersistentObjectManager::GetObjects().empty()) {
 				if (ImGui::TreeNodeEx("Don't Destroy Objects", ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick)) {
 					for (auto& object : PersistentObjectManager::GetObjects()) {
-						//ŠJ‚©‚ê‚Ä‚¢‚éê‡AqŠK‘w‚É‚à“¯‚¶ˆ—‚ğ‚·‚é
+						//é–‹ã‹ã‚Œã¦ã„ã‚‹å ´åˆã€å­éšå±¤ã«ã‚‚åŒã˜å‡¦ç†ã‚’ã™ã‚‹
 						if (!object || object->parent) continue;
 						DrawNodeTree(object.get());
 					}
@@ -449,7 +449,7 @@ namespace CurryEngine
 #endif // 0
 
 
-			//ƒAƒZƒbƒgƒuƒ‰ƒEƒU‚©‚çƒhƒ‰ƒbƒOƒAƒ“ƒhƒhƒƒbƒv‚Åƒ‚ƒfƒ‹ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+			//ã‚¢ã‚»ãƒƒãƒˆãƒ–ãƒ©ã‚¦ã‚¶ã‹ã‚‰ãƒ‰ãƒ©ãƒƒã‚°ã‚¢ãƒ³ãƒ‰ãƒ‰ãƒ­ãƒƒãƒ—ã§ãƒ¢ãƒ‡ãƒ«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 			if (window)
 			{
 				if (ImGui::BeginDragDropTargetCustom(window->Rect(), window->ID))
@@ -493,15 +493,15 @@ namespace CurryEngine
 				}
 			}
 
-			// --- ‰EƒNƒŠƒbƒNƒƒjƒ…[‚Ì’†g ---
+			// --- å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä¸­èº« ---
 			if (selection)
 			{
 				if (ImGui::BeginPopup("HierarchyContextMenu"))
 				{
-					// ‘I‘ğ’†‚Ìƒm[ƒh‚É‘Î‚·‚éƒƒjƒ…[
+					// é¸æŠä¸­ã®ãƒãƒ¼ãƒ‰ã«å¯¾ã™ã‚‹ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 					if (!selection->IsEmpty())
 					{
-						// íœƒ{ƒ^ƒ“
+						// å‰Šé™¤ãƒœã‚¿ãƒ³
 						if (ImGui::MenuItem("Delete", "Del", false))
 						{
 							auto selectAll = selection->GetSelectedAll();
@@ -514,7 +514,7 @@ namespace CurryEngine
 							}
 							selection->Clear();
 						}
-						// •¡»ƒ{ƒ^ƒ“
+						// è¤‡è£½ãƒœã‚¿ãƒ³
 						if (ImGui::MenuItem("Duplicate", "Ctrl+D", false))
 						{
 							auto selectAll = selection->GetSelectedAll();
@@ -524,12 +524,12 @@ namespace CurryEngine
 								if (GameObject* newObject = objectManager->Duplicate(pObj.get()))
 								{
 									selection->Select(objectManager->Find_Ptr(newObject->GetId()), true);
-									// •¡»‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğInspector‚É•\¦‚·‚é
+									// è¤‡è£½ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’Inspectorã«è¡¨ç¤ºã™ã‚‹
 									objectManager->SelectInspectorNode(newObject);
 								}
 							}
 						}
-						//// —Dæ“x•ÏXƒ{ƒ^ƒ“
+						//// å„ªå…ˆåº¦å¤‰æ›´ãƒœã‚¿ãƒ³
 						//if (ImGui::MenuItem("Increase Priority", "Alt+Up", false))
 						//{
 						//	for (auto& pObj : selection->GetSelectedAll())
@@ -546,8 +546,8 @@ namespace CurryEngine
 						//		pObj->priority--;
 						//	}
 						//}
-						// ƒvƒŒƒnƒu‰»ƒ{ƒ^ƒ“
-						// TODO: ƒvƒŒƒnƒu‰»‚ğ‰EƒNƒŠƒbƒNƒƒjƒ…[‚©‚ç‚Å‚Í‚È‚­Aƒhƒ‰ƒbƒOƒAƒ“ƒhƒhƒƒbƒv‚Å‚Å‚«‚é‚æ‚¤‚É‚·‚éBi•¡”‘I‘ğ‚Ì‚Æ‚«‚Ì‹““®‚ª“ï‚µ‚¢‚½‚ßBj
+						// ãƒ—ãƒ¬ãƒãƒ–åŒ–ãƒœã‚¿ãƒ³
+						// TODO: ãƒ—ãƒ¬ãƒãƒ–åŒ–ã‚’å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰ã§ã¯ãªãã€ãƒ‰ãƒ©ãƒƒã‚°ã‚¢ãƒ³ãƒ‰ãƒ‰ãƒ­ãƒƒãƒ—ã§ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚ï¼ˆè¤‡æ•°é¸æŠã®ã¨ãã®æŒ™å‹•ãŒé›£ã—ã„ãŸã‚ã€‚ï¼‰
 						if (ImGui::MenuItem("Create Prefab", "", false))
 						{
 							if (selectNode)
@@ -555,10 +555,10 @@ namespace CurryEngine
 								char buffer[256] = "";
 								if (Dialog::SaveFileName(buffer, 256, "Prefab Files\0*.prefab\0All Files\0*.*\0", "prefab") == DialogResult::OK)
 								{
-									// Šg’£q‚ğ.prefab‚É•ÏX
+									// æ‹¡å¼µå­ã‚’.prefabã«å¤‰æ›´
 									std::filesystem::path savePath = buffer;
 									savePath.replace_extension(".prefab");
-									// ƒvƒŒƒnƒu‚Æ‚µ‚Ä•Û‘¶
+									// ãƒ—ãƒ¬ãƒãƒ–ã¨ã—ã¦ä¿å­˜
 									objectManager->SaveGameObject(selectNode, savePath.string());
 								}
 							}
@@ -571,10 +571,10 @@ namespace CurryEngine
 
 				if (!selection->IsEmpty())
 				{
-					// íœ‚ÌƒVƒ‡[ƒgƒJƒbƒgƒL[
+					// å‰Šé™¤ã®ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼
 					if (ImGui::Shortcut(ImGuiKey_Delete, ImGuiInputFlags_RouteFocused))
 					{
-						// ƒRƒs[‚ğì¬‚µ‚Äƒ‹[ƒv’†‚ÌƒŠƒXƒg•ÏX‚É‚æ‚é–â‘è‚ğ‰ñ”ğ‚·‚é
+						// ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆã—ã¦ãƒ«ãƒ¼ãƒ—ä¸­ã®ãƒªã‚¹ãƒˆå¤‰æ›´ã«ã‚ˆã‚‹å•é¡Œã‚’å›é¿ã™ã‚‹
 						auto selectAll = selection->GetSelectedAll();
 						for (auto& pObj : selectAll)
 						{
@@ -583,9 +583,9 @@ namespace CurryEngine
 								objectManager->Destroy(pObj->GetName());
 							}
 						}
-						selection->Clear(); // ˆ—Œã‚É‘I‘ğ‚ğƒNƒŠƒA
+						selection->Clear(); // å‡¦ç†å¾Œã«é¸æŠã‚’ã‚¯ãƒªã‚¢
 					}
-					// —Dæ“x•ÏX‚ÌƒVƒ‡[ƒgƒJƒbƒgƒL[
+					// å„ªå…ˆåº¦å¤‰æ›´ã®ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼
 					/*if (ImGui::Shortcut(ImGuiMod_Alt | ImGuiKey_UpArrow, ImGuiInputFlags_RouteFocused))
 					{
 						for (auto& pObj : selection->GetSelectedAll())
@@ -606,7 +606,7 @@ namespace CurryEngine
 							}
 						}
 					}*/
-					// •¡»‚ÌƒVƒ‡[ƒgƒJƒbƒgƒL[
+					// è¤‡è£½ã®ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼
 					if (ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_D, ImGuiInputFlags_RouteFocused))
 					{
 						auto selectAll = selection->GetSelectedAll();
@@ -618,7 +618,7 @@ namespace CurryEngine
 								if (GameObject* newObject = objectManager->Duplicate(pObj.get()))
 								{
 									selection->Select(objectManager->Find_Ptr(newObject->GetId()), true);
-									// •¡»‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğInspector‚É•\¦‚·‚é
+									// è¤‡è£½ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’Inspectorã«è¡¨ç¤ºã™ã‚‹
 									objectManager->SelectInspectorNode(newObject);
 								}
 							}

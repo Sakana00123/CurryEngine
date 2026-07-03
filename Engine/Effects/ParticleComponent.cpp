@@ -29,22 +29,22 @@ void ParticleComponent::Play()
 {
 	//if (effectHandle != -1) return;
 	
-	// ƒGƒtƒFƒNƒg”­¶‘OƒR[ƒ‹ƒoƒbƒNÀs
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆç™ºç”Ÿå‰ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å®Ÿè¡Œ
 	if (settings.onPreEmit)
 	{
 		settings.onPreEmit();
 	}
 
-	// ƒGƒtƒFƒNƒgÄ¶
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
 	{
-		// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚Æ‰ñ“]‚ğæ“¾
+		// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã¨å›è»¢ã‚’å–å¾—
 		Vector3 position = GetOwner()->GetTransform()->GetWorldPosition();
 		Vector3 rotation = GetOwner()->GetTransform()->GetWorldRotation().ToEuler();
 
-		// üã‚ÉƒGƒtƒFƒNƒg‚ğÄ¶‚·‚éê‡
+		// ç·šä¸Šã«ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã™ã‚‹å ´åˆ
 		if (settings.lineData.useLine)
 		{
-			// üã‚É•ªŠ„‚µ‚ÄƒGƒtƒFƒNƒg‚ğÄ¶
+			// ç·šä¸Šã«åˆ†å‰²ã—ã¦ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿ
 			for (int i = 0; i <= settings.lineData.segments.size(); ++i)
 			{
 				LineData::Segment& segment = settings.lineData.segments[i % settings.lineData.segments.size()];
@@ -55,7 +55,7 @@ void ParticleComponent::Play()
 
 				if (segment.start && segment.end)
 				{
-					// n“_‚©‚çI“_‚ÖŒü‚­‰ñ“]‚ğİ’è
+					// å§‹ç‚¹ã‹ã‚‰çµ‚ç‚¹ã¸å‘ãå›è»¢ã‚’è¨­å®š
 					XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&rotation), Transform::QuaternionLookAt(Transform::QuaternionToXMVector(segment.start->GetWorldRotation()), Transform::QuaternionToXMVector(segment.end->GetWorldRotation())));
 				}
 
@@ -73,7 +73,7 @@ void ParticleComponent::Play()
 		}
 		else
 		{
-			// ’Êí‚ÌˆÊ’u‚ÅƒGƒtƒFƒNƒgÄ¶
+			// é€šå¸¸ã®ä½ç½®ã§ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
 			int instanceId = EffectManager::Play(effectHandle, position, rotation);
 			instanceIDs.push_back(instanceId);
 		}
@@ -82,7 +82,7 @@ void ParticleComponent::Play()
 
 void ParticleComponent::Stop()
 {
-	// ‘SƒCƒ“ƒXƒ^ƒ“ƒX’â~
+	// å…¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åœæ­¢
 	for (int instanceId : instanceIDs)
 	{
 		EffectManager::StopImmediate(instanceId);
@@ -102,13 +102,13 @@ void ParticleComponent::SetEffectData(const EffectManager::EffectData& data)
 
 void ParticleComponent::Update(float elapsedTime)
 {
-	// ƒ‹[ƒvÄ¶‚Å‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+	// ãƒ«ãƒ¼ãƒ—å†ç”Ÿã§ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	if (effectHandle == -1 || !IsPlaying())
 	{
 		return;
 	}
 
-	// ƒGƒtƒFƒNƒg‚ªÄ¶’†‚©Šm”F
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãŒå†ç”Ÿä¸­ã‹ç¢ºèª
 	isPlaying = EffectManager::IsPlaying(effectHandle);
 }
 
@@ -116,14 +116,14 @@ void ParticleComponent::Update(float elapsedTime)
 void ParticleComponent::DrawProperty(const PropertyDrawContext& context)
 {
 	Component::DrawProperty(context);
-	//// ƒtƒ@ƒCƒ‹ƒpƒX•\¦
+	//// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹è¡¨ç¤º
 	//ImGui::Text("File Path: %s", filePath.c_str());
 	//ImGui::SameLine();
 
-	//// ƒtƒ@ƒCƒ‹‘I‘ğƒ{ƒ^ƒ“
+	//// ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒœã‚¿ãƒ³
 	//if (ImGui::Button("..."))
 	//{
-	//	// ƒ_ƒCƒAƒƒO‚ğŠJ‚¢‚ÄƒGƒtƒFƒNƒgƒf[ƒ^‚ğ‘I‘ğ
+	//	// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‹ã„ã¦ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’é¸æŠ
 	//	char filename[256]{};
 	//	char filter[] = "Particle Effect Files\0*.json\0All Files\0*.*\0";
 	//	
@@ -134,7 +134,7 @@ void ParticleComponent::DrawProperty(const PropertyDrawContext& context)
 	//	}
 	//}
 
-	//// Play On Awake ƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+	//// Play On Awake ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 	//if (ImGui::Checkbox("Play On Awake", &playOnAwake))
 	//{
 

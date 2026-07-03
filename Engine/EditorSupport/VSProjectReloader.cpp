@@ -5,9 +5,9 @@
 #include <filesystem>
 #include "Engine/Editor/Console.h"
 
-// --- IDispatch ƒwƒ‹ƒp[ ---
+// --- IDispatch ãƒ˜ãƒ«ãƒ‘ãƒ¼ ---
 
-// ƒvƒƒpƒeƒBæ“¾ (get_Xxx)
+// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å–å¾— (get_Xxx)
 static HRESULT DispGetProperty(IDispatch* pDisp, LPCOLESTR name, VARIANT* pResult)
 {
     DISPID dispId;
@@ -22,7 +22,7 @@ static HRESULT DispGetProperty(IDispatch* pDisp, LPCOLESTR name, VARIANT* pResul
         DISPATCH_PROPERTYGET, &dp, pResult, nullptr, nullptr);
 }
 
-// ƒƒ\ƒbƒhŒÄ‚Ño‚µ (ˆø”‚ ‚è)
+// ãƒ¡ã‚½ãƒƒãƒ‰å‘¼ã³å‡ºã— (å¼•æ•°ã‚ã‚Š)
 static HRESULT DispCall(IDispatch* pDisp, LPCOLESTR name,
     VARIANT* args, int argCount, VARIANT* pResult = nullptr)
 {
@@ -33,10 +33,10 @@ static HRESULT DispCall(IDispatch* pDisp, LPCOLESTR name,
     SysFreeString(bstrName);
     if (FAILED(hr)) return hr;
 
-    // IDispatch::Invoke ‚Íˆø”‚ğ‹t‡‚Å“n‚·
+    // IDispatch::Invoke ã¯å¼•æ•°ã‚’é€†é †ã§æ¸¡ã™
     DISPPARAMS dp = {};
     dp.cArgs = argCount;
-    dp.rgvarg = args; // ŒÄ‚Ño‚µŒ³‚Å‹t‡‚É‚µ‚Ä“n‚·‚±‚Æ
+    dp.rgvarg = args; // å‘¼ã³å‡ºã—å…ƒã§é€†é †ã«ã—ã¦æ¸¡ã™ã“ã¨
 
     return pDisp->Invoke(dispId, IID_NULL, LOCALE_USER_DEFAULT,
         DISPATCH_METHOD, &dp, pResult, nullptr, nullptr);
@@ -45,12 +45,12 @@ static HRESULT DispCall(IDispatch* pDisp, LPCOLESTR name,
 
 bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
 {
-	// STA ƒXƒŒƒbƒh‚Å COM ‚ğ‰Šú‰»
+	// STA ã‚¹ãƒ¬ãƒƒãƒ‰ã§ COM ã‚’åˆæœŸåŒ–
 	CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 	bool result = false;
 
     do {
-		// ROT ‚©‚ç Visual Studio ‚Ì DTE ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+		// ROT ã‹ã‚‰ Visual Studio ã® DTE ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 		CComPtr<IRunningObjectTable> rot;
 		if (FAILED(GetRunningObjectTable(0, &rot))) break;
 
@@ -63,44 +63,44 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
             CComPtr<IBindCtx> bindCtx;
             if (FAILED(CreateBindCtx(0, &bindCtx))) continue;
 
-			// ƒ‚ƒjƒJ[‚©‚ç•\¦–¼‚ğæ“¾
+			// ãƒ¢ãƒ‹ã‚«ãƒ¼ã‹ã‚‰è¡¨ç¤ºåã‚’å–å¾—
             LPOLESTR displayName;
             if (FAILED(moniker->GetDisplayName(bindCtx, nullptr, &displayName))) continue;
-            // DTE ƒIƒuƒWƒFƒNƒg‚Í "VisualStudio.DTE" ‚Ån‚Ü‚é ROT ƒGƒ“ƒgƒŠ‚Æ‚µ‚Ä“o˜^‚³‚ê‚Ä‚¢‚é
+            // DTE ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ "VisualStudio.DTE" ã§å§‹ã¾ã‚‹ ROT ã‚¨ãƒ³ãƒˆãƒªã¨ã—ã¦ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹
             std::wstring name(displayName ? displayName : L"");
             CoTaskMemFree(displayName);
 
 
             if (name.find(L"VisualStudio.DTE") != std::wstring::npos) {
-                // Œ©‚Â‚©‚Á‚½ DTE ƒIƒuƒWƒFƒNƒg‚ğ ROT ‚©‚çæ“¾
+                // è¦‹ã¤ã‹ã£ãŸ DTE ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ ROT ã‹ã‚‰å–å¾—
                 CComPtr<IUnknown> unknown;
                 if (SUCCEEDED(rot->GetObject(moniker, &unknown))) {
                     unknown->QueryInterface(IID_IDispatch, (void**)&dte);
                 }
 			}
 			moniker.Release();
-			if (dte) break; // Å‰‚ÉŒ©‚Â‚©‚Á‚½ DTE ‚ğg‚¤
+			if (dte) break; // æœ€åˆã«è¦‹ã¤ã‹ã£ãŸ DTE ã‚’ä½¿ã†
 		}
 		if (!dte) break;
 
-		//// DTE ‚Ì Solution ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+		//// DTE ã® Solution ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 		//CComVariant varSolution;
 		//if (FAILED(DispGetProperty(dte, L"Solution", &varSolution))) break;
 		//if (varSolution.vt != VT_DISPATCH || !varSolution.pdispVal) break;
 		//CComPtr<IDispatch> solution = varSolution.pdispVal;
 
-		//// Solution ƒIƒuƒWƒFƒNƒg‚Ì Projects ƒRƒŒƒNƒVƒ‡ƒ“‚ğæ“¾
+		//// Solution ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã® Projects ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’å–å¾—
 		//CComVariant varProjects;
 		//if (FAILED(DispGetProperty(solution, L"Projects", &varProjects))) break;
 		//if (varProjects.vt != VT_DISPATCH || !varProjects.pdispVal) break;
 		//CComPtr<IDispatch> projects = varProjects.pdispVal;
 
-		//// Projects ƒRƒŒƒNƒVƒ‡ƒ“‚ğ—ñ‹“‚µ‚ÄAvcxprojPath ‚Æ“¯‚¶ƒvƒƒWƒFƒNƒg‚ğ’T‚·
+		//// Projects ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’åˆ—æŒ™ã—ã¦ã€vcxprojPath ã¨åŒã˜ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¢ã™
 		//CComVariant varCount;
 		//if (FAILED(DispGetProperty(projects, L"Count", &varCount))) break;
 		//long count = varCount.lVal;
 
-  //      // ‘ÎÛ‚ÌƒvƒƒWƒFƒNƒg‚ğŒŸõ
+  //      // å¯¾è±¡ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¤œç´¢
 		//CComPtr<IDispatch> targetProject;
   //      std::wstring targetFullName;
 
@@ -111,7 +111,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
 		//	argIndex.vt = VT_I4;
 		//	argIndex.lVal = i;
 
-		//	// Projects ƒRƒŒƒNƒVƒ‡ƒ“‚Ì Item(i) ‚ÅƒvƒƒWƒFƒNƒg‚ğæ“¾
+		//	// Projects ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã® Item(i) ã§ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 		//	CComVariant varProject;
 		//	if (FAILED(DispCall(projects, L"Item", &argIndex, 1, &varProject))) continue;
 		//	if (varProject.vt != VT_DISPATCH || !varProject.pdispVal) continue;
@@ -134,7 +134,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
 		//	break;
 		//}
 
-		//// ƒvƒƒWƒFƒNƒg‚ğƒAƒ“ƒ[ƒh
+		//// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 		//VARIANT argUnload;
 		//VariantInit(&argUnload);
 		//argUnload.vt = VT_DISPATCH;
@@ -151,7 +151,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
 		//	break;
 		//}
 
-		//// ƒvƒƒWƒFƒNƒg‚ğƒŠƒ[ƒh
+		//// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒªãƒ­ãƒ¼ãƒ‰
 		//VARIANT argReload;
 		//VariantInit(&argReload);
 		//argReload.vt = VT_BSTR;
@@ -163,14 +163,14 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
 		//}
 		//SysFreeString(argReload.bstrVal);
 
-        // --- 2. UIHierarchy ‚Åƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒGƒNƒXƒvƒ[ƒ‰[‚ÌƒvƒƒWƒFƒNƒgƒm[ƒh‚ğ‘I‘ğ ---
-        // dte.Windows.Item("{3AE79031-E1BC-11D0-8F78-00A0C9110057}") ‚Å SolutionExplorer ‚ğæ“¾
+        // --- 2. UIHierarchy ã§ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ã‚¯ã‚¹ãƒ—ãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒãƒ¼ãƒ‰ã‚’é¸æŠ ---
+        // dte.Windows.Item("{3AE79031-E1BC-11D0-8F78-00A0C9110057}") ã§ SolutionExplorer ã‚’å–å¾—
         CComVariant varWindows;
         if (FAILED(DispGetProperty(dte, L"Windows", &varWindows))) break;
         if (varWindows.vt != VT_DISPATCH) break;
         CComPtr<IDispatch> windows = varWindows.pdispVal;
 
-        // SolutionExplorer ‚Ì GUID
+        // SolutionExplorer ã® GUID
         VARIANT argWinItem;
         VariantInit(&argWinItem);
         argWinItem.vt = VT_BSTR;
@@ -181,19 +181,19 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
         if (FAILED(hrWin) || varSEWindow.vt != VT_DISPATCH) break;
         CComPtr<IDispatch> seWindow = varSEWindow.pdispVal;
 
-        // Window.Object ¨ UIHierarchy
+        // Window.Object â†’ UIHierarchy
         CComVariant varUIHier;
         if (FAILED(DispGetProperty(seWindow, L"Object", &varUIHier))) break;
         if (varUIHier.vt != VT_DISPATCH) break;
         CComPtr<IDispatch> uiHier = varUIHier.pdispVal;
 
-        // UIHierarchy.UIHierarchyItems ¨ ƒ‹[ƒgƒAƒCƒeƒ€ŒQ
+        // UIHierarchy.UIHierarchyItems â†’ ãƒ«ãƒ¼ãƒˆã‚¢ã‚¤ãƒ†ãƒ ç¾¤
         CComVariant varRootItems;
         if (FAILED(DispGetProperty(uiHier, L"UIHierarchyItems", &varRootItems))) break;
         if (varRootItems.vt != VT_DISPATCH) break;
         CComPtr<IDispatch> rootItems = varRootItems.pdispVal;
 
-        // Item(1) = ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒm[ƒh
+        // Item(1) = ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ¼ãƒ‰
         VARIANT argOne;
         VariantInit(&argOne);
         argOne.vt = VT_I4; argOne.lVal = 1;
@@ -202,7 +202,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
         if (varSlnNode.vt != VT_DISPATCH) break;
         CComPtr<IDispatch> slnNode = varSlnNode.pdispVal;
 
-        // ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒm[ƒh‚Ìq = ƒvƒƒWƒFƒNƒgƒm[ƒhŒQ
+        // ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ¼ãƒ‰ã®å­ = ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒãƒ¼ãƒ‰ç¾¤
         CComVariant varProjItems;
         if (FAILED(DispGetProperty(slnNode, L"UIHierarchyItems", &varProjItems))) break;
         if (varProjItems.vt != VT_DISPATCH) break;
@@ -211,7 +211,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
         CComVariant varProjCount;
         if (FAILED(DispGetProperty(projItems, L"Count", &varProjCount))) break;
 
-        // ƒvƒƒWƒFƒNƒg–¼‚Åƒm[ƒh‚ğ’T‚·
+        // ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆåã§ãƒãƒ¼ãƒ‰ã‚’æ¢ã™
         std::filesystem::path targetPath(vcxprojPath);
         std::wstring targetStem = targetPath.stem().wstring(); // "CurryEngine"
 
@@ -240,26 +240,26 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
             break;
         }
 
-        // --- 3. ƒm[ƒh‚ğ‘I‘ğó‘Ô‚É‚·‚é ---
+        // --- 3. ãƒãƒ¼ãƒ‰ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹ ---
         VARIANT argSelect;
         VariantInit(&argSelect);
         argSelect.vt = VT_BOOL;
         argSelect.boolVal = VARIANT_TRUE;
         DispCall(targetNode, L"Select", &argSelect, 1);
 
-        // --- 4. ExecuteCommand ‚ÅƒAƒ“ƒ[ƒh ¨ ƒŠƒ[ƒh ---
+        // --- 4. ExecuteCommand ã§ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰ â†’ ãƒªãƒ­ãƒ¼ãƒ‰ ---
         auto ExecuteCommand = [&](const wchar_t* cmd) -> HRESULT {
             VARIANT args[2];
             VariantInit(&args[0]);
             args[0].vt = VT_BSTR;
-            args[0].bstrVal = SysAllocString(L""); // CommandArgs (‹t‡‚Å‘æ2ˆø”)
+            args[0].bstrVal = SysAllocString(L""); // CommandArgs (é€†é †ã§ç¬¬2å¼•æ•°)
             VariantInit(&args[1]);
             args[1].vt = VT_BSTR;
-            args[1].bstrVal = SysAllocString(cmd); // Command (‹t‡‚Å‘æ1ˆø”)
+            args[1].bstrVal = SysAllocString(cmd); // Command (é€†é †ã§ç¬¬1å¼•æ•°)
             HRESULT hr = DispCall(dte, L"ExecuteCommand", args, 2);
             SysFreeString(args[0].bstrVal);
             SysFreeString(args[1].bstrVal);
-			// ƒRƒ}ƒ“ƒh‚ÌÀs‚É¸”s‚µ‚½ê‡‚ÍƒGƒ‰[‚ğƒƒO‚Éo‚·
+			// ã‚³ãƒãƒ³ãƒ‰ã®å®Ÿè¡Œã«å¤±æ•—ã—ãŸå ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’ãƒ­ã‚°ã«å‡ºã™
             if (FAILED(hr)) {
                 wchar_t buf[64];
                 swprintf_s(buf, L"0x%08X", (unsigned)hr);
@@ -275,7 +275,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
             break;
         }
 
-        // ƒŠƒ[ƒh‘O‚É­‚µ‘Ò‚Â (UnloadProject ‚ª”ñ“¯Šú‚Ìê‡‚ª‚ ‚é‚½‚ß)
+        // ãƒªãƒ­ãƒ¼ãƒ‰å‰ã«å°‘ã—å¾…ã¤ (UnloadProject ãŒéåŒæœŸã®å ´åˆãŒã‚ã‚‹ãŸã‚)
         Sleep(200);
 
         if (FAILED(ExecuteCommand(L"Project.ReloadProject"))) {

@@ -3,47 +3,47 @@
 
 /**
  * @file
- * @brief UI —pƒOƒ‰ƒtƒBƒbƒN‚ÌƒŒƒCƒLƒƒƒXƒg‚ğs‚¤ƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details —LŒø‰»‚É `EventSystem` ‚Ö“o˜^‚µA–³Œø‰»‚É“o˜^‰ğœ‚µ‚Ü‚·B
- *          ó‚¯æ‚Á‚½ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒg‚ÉŠî‚Ã‚«Aƒqƒbƒg‚µ‚½ UI —v‘f‚Ìî•ñ‚ğ
- *          `RaycastResult` ‚Æ‚µ‚ÄŒ‹‰ÊƒŠƒXƒg‚É’Ç‹L‚µ‚Ü‚·B
+ * @brief UI ç”¨ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã‚’è¡Œã†ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details æœ‰åŠ¹åŒ–æ™‚ã« `EventSystem` ã¸ç™»éŒ²ã—ã€ç„¡åŠ¹åŒ–æ™‚ã«ç™»éŒ²è§£é™¤ã—ã¾ã™ã€‚
+ *          å—ã‘å–ã£ãŸãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆã«åŸºã¥ãã€ãƒ’ãƒƒãƒˆã—ãŸ UI è¦ç´ ã®æƒ…å ±ã‚’
+ *          `RaycastResult` ã¨ã—ã¦çµæœãƒªã‚¹ãƒˆã«è¿½è¨˜ã—ã¾ã™ã€‚
  */
 
 class PointerEventData;
 struct RaycastResult;
 
 /**
- * @brief UI ‚ÌƒqƒbƒgƒeƒXƒg‚ğ’S“–‚·‚éƒŒƒCƒLƒƒƒXƒ^[B
- * @details `UIComponent` ‚ğŒp³‚µA`EventSystem` ‚©‚ç‚Ì–â‚¢‡‚í‚¹‚É‰‚¶‚Ä
- *          ‰æ–Êã‚Ì UI “–‚½‚è”»’è‚ğs‚¢‚Ü‚·B
+ * @brief UI ã®ãƒ’ãƒƒãƒˆãƒ†ã‚¹ãƒˆã‚’æ‹…å½“ã™ã‚‹ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã€‚
+ * @details `UIComponent` ã‚’ç¶™æ‰¿ã—ã€`EventSystem` ã‹ã‚‰ã®å•ã„åˆã‚ã›ã«å¿œã˜ã¦
+ *          ç”»é¢ä¸Šã® UI å½“ãŸã‚Šåˆ¤å®šã‚’è¡Œã„ã¾ã™ã€‚
  */
 class GraphicRaycaster : public UIComponent
 {
 	C_REFLECT(GraphicRaycaster)
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	GraphicRaycaster() = default;
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	virtual ~GraphicRaycaster() override = default;
 
 	/**
-	 * @brief ƒRƒ“ƒ|[ƒlƒ“ƒg—LŒø‰»‚Ìˆ—B
-	 * @details ‚±‚ÌƒŒƒCƒLƒƒƒXƒ^[‚ğ `EventSystem` ‚É“o˜^‚µ‚Ü‚·B
+	 * @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆæœ‰åŠ¹åŒ–æ™‚ã®å‡¦ç†ã€‚
+	 * @details ã“ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã‚’ `EventSystem` ã«ç™»éŒ²ã—ã¾ã™ã€‚
 	 */
 	void OnEnable() override;
 
 	/**
-	 * @brief ƒRƒ“ƒ|[ƒlƒ“ƒg–³Œø‰»‚Ìˆ—B
-	 * @details ‚±‚ÌƒŒƒCƒLƒƒƒXƒ^[‚ğ `EventSystem` ‚©‚ç“o˜^‰ğœ‚µ‚Ü‚·B
+	 * @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆç„¡åŠ¹åŒ–æ™‚ã®å‡¦ç†ã€‚
+	 * @details ã“ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ã‚¿ãƒ¼ã‚’ `EventSystem` ã‹ã‚‰ç™»éŒ²è§£é™¤ã—ã¾ã™ã€‚
 	 */
 	void OnDisable() override;
 
 	/**
-	 * @brief UI —v‘f‚É‘Î‚·‚éƒŒƒCƒLƒƒƒXƒg‚ğÀs‚µ‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^“ü—ÍiˆÊ’u‚È‚Çj‚ğ•Û‚·‚éƒCƒxƒ“ƒgƒf[ƒ^B
-	 * @param resultAppendList ƒqƒbƒgŒ‹‰Ê‚ğ’Ç‹L‚·‚éƒŠƒXƒgBŠù‘¶—v‘f‚Í•Û‚³‚ê‚Ü‚·B
-	 * @details ƒqƒbƒg‚µ‚½ UI —v‘f‚²‚Æ‚É `RaycastResult` ‚ğ¶¬‚µA`resultAppendList` ‚É’Ç‰Á‚µ‚Ü‚·B
-	 *          •À‚Ñ‡‚âƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚ÍÀ‘•ˆË‘¶‚Å‚·B
+	 * @brief UI è¦ç´ ã«å¯¾ã™ã‚‹ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã‚’å®Ÿè¡Œã—ã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿å…¥åŠ›ï¼ˆä½ç½®ãªã©ï¼‰ã‚’ä¿æŒã™ã‚‹ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã€‚
+	 * @param resultAppendList ãƒ’ãƒƒãƒˆçµæœã‚’è¿½è¨˜ã™ã‚‹ãƒªã‚¹ãƒˆã€‚æ—¢å­˜è¦ç´ ã¯ä¿æŒã•ã‚Œã¾ã™ã€‚
+	 * @details ãƒ’ãƒƒãƒˆã—ãŸ UI è¦ç´ ã”ã¨ã« `RaycastResult` ã‚’ç”Ÿæˆã—ã€`resultAppendList` ã«è¿½åŠ ã—ã¾ã™ã€‚
+	 *          ä¸¦ã³é †ã‚„ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã¯å®Ÿè£…ä¾å­˜ã§ã™ã€‚
 	 */
 	void Raycast(std::shared_ptr<PointerEventData> eventData, std::vector<RaycastResult>& resultAppendList);
 };

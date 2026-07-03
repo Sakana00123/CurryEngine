@@ -3,7 +3,7 @@
 using namespace DirectX;
 #include "Engine/Core/Reflection/Meta.h"
 
-//ƒJƒ‰[iXMFLOAT4‚ÆŒİŠ·«‚ ‚èj
+//ã‚«ãƒ©ãƒ¼ï¼ˆXMFLOAT4ã¨äº’æ›æ€§ã‚ã‚Šï¼‰
 C_STRUCT()
 struct Color
 {
@@ -57,16 +57,16 @@ struct Color
 
 	static void ConvertToPastelColors(Color& color);
 	/**
-	 * @brief 16i”ƒJƒ‰[ƒR[ƒhi0xRRGGBBj‚ğRGBi0`1j‚É•ÏŠ·‚·‚é
-	 * @param hexColor 0xRRGGBBŒ`®‚ÌƒJƒ‰[ƒR[ƒh
-	 * @param color •ÏŠ·Œã‚ÌColor\‘¢‘Ìir, g, b, aj
-	 * @param alpha ƒAƒ‹ƒtƒ@’liÈ—ª‚Í1.0j
+	 * @brief 16é€²æ•°ã‚«ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ï¼ˆ0xRRGGBBï¼‰ã‚’RGBï¼ˆ0ã€œ1ï¼‰ã«å¤‰æ›ã™ã‚‹
+	 * @param hexColor 0xRRGGBBå½¢å¼ã®ã‚«ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰
+	 * @param color å¤‰æ›å¾Œã®Coloræ§‹é€ ä½“ï¼ˆr, g, b, aï¼‰
+	 * @param alpha ã‚¢ãƒ«ãƒ•ã‚¡å€¤ï¼ˆçœç•¥æ™‚ã¯1.0ï¼‰
 	 */
 	static void HexToRGB(uint32_t hexColor, Color& color, float alpha = 1.f);
 	/**
-	* @brief F‚ğ­‚µˆÃ‚­‚·‚é
-	* @param color ‘ÎÛ‚ÌFi0`1‚Ì”ÍˆÍj
-	* @param factor ˆÃ‚­‚·‚éŠ„‡i0.0`1.0AƒfƒtƒHƒ‹ƒg‚Í0.8‚Å20%ˆÃ‚­‚·‚éj
+	* @brief è‰²ã‚’å°‘ã—æš—ãã™ã‚‹
+	* @param color å¯¾è±¡ã®è‰²ï¼ˆ0ã€œ1ã®ç¯„å›²ï¼‰
+	* @param factor æš—ãã™ã‚‹å‰²åˆï¼ˆ0.0ã€œ1.0ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯0.8ã§20%æš—ãã™ã‚‹ï¼‰
 	*/
 	static void DarkenColor(Color& color, float factor = 0.8f);
 };

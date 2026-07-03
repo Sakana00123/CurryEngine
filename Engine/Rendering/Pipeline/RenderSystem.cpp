@@ -29,22 +29,22 @@
 
 void RenderSystem::Initialize(Time* time)
 {
-	// ƒV[ƒ“ƒrƒ…[‚Ì•`‰æƒpƒCƒvƒ‰ƒCƒ“‚ğì¬‚µ‚Ä‰Šú‰»
+	// ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã®æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚’ä½œæˆã—ã¦åˆæœŸåŒ–
 	sceneRenderPipeline = std::make_unique<SceneRenderPipeline>();
 	sceneRenderPipeline->SetupRenderPasses();
 	sceneRenderPipeline->Initialize();
 
-	// ƒQ[ƒ€ƒrƒ…[‚Ì•`‰æƒpƒCƒvƒ‰ƒCƒ“‚ğì¬‚µ‚Ä‰Šú‰»
+	// ã‚²ãƒ¼ãƒ ãƒ“ãƒ¥ãƒ¼ã®æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚’ä½œæˆã—ã¦åˆæœŸåŒ–
 	gameRenderPipeline = std::make_unique<GameRenderPipeline>();
 	gameRenderPipeline->SetupRenderPasses();
 	gameRenderPipeline->Initialize();
 
-	// ƒvƒŒƒrƒ…[—p‚Ì•`‰æƒpƒCƒvƒ‰ƒCƒ“‚ğì¬‚µ‚Ä‰Šú‰»
+	// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ã®æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚’ä½œæˆã—ã¦åˆæœŸåŒ–
 	previewRenderPipeline = std::make_unique<PreviewRenderPipeline>();
 	previewRenderPipeline->SetupRenderPasses();
 	previewRenderPipeline->Initialize();
 
-	// ƒGƒtƒFƒNƒgƒvƒŒƒrƒ…[—p‚Ì•`‰æƒpƒCƒvƒ‰ƒCƒ“‚ğì¬‚µ‚Ä‰Šú‰»
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ã®æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚’ä½œæˆã—ã¦åˆæœŸåŒ–
 	effectPreviewRenderPipeline = std::make_unique<EffectPreviewRenderPipeline>();
 	effectPreviewRenderPipeline->SetupRenderPasses();
 	effectPreviewRenderPipeline->Initialize();
@@ -54,7 +54,7 @@ void RenderSystem::Initialize(Time* time)
 
 void RenderSystem::Render()
 {
-    // ƒJƒƒ‰î•ñ
+    // ã‚«ãƒ¡ãƒ©æƒ…å ±
     Vector3 cameraPos = { 0,0,0 };
     XMMATRIX View = XMMatrixIdentity();
     XMMATRIX Projection = XMMatrixIdentity();
@@ -63,22 +63,22 @@ void RenderSystem::Render()
     RenderContext gameContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
 	RenderContext previewContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
 	RenderContext effectPreviewContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
-    // ƒJƒƒ‰î•ñæ“¾
+    // ã‚«ãƒ¡ãƒ©æƒ…å ±å–å¾—
     {
 		auto scene = SceneManager::GetCurrentScene();
 		if (scene && scene->IsStarted())
         {
-            //VƒJƒƒ‰ƒVƒXƒeƒ€
+            //æ–°ã‚«ãƒ¡ãƒ©ã‚·ã‚¹ãƒ†ãƒ 
 #ifdef _DEBUG
             {
                 ProfileScopedSection_2(0, "SceneView::Rendering", ImGuiControl::Profiler::Yellow);
-                // ƒGƒfƒBƒ^ƒrƒ…[—p‚Ì•`‰æˆ—
+                // ã‚¨ãƒ‡ã‚£ã‚¿ãƒ“ãƒ¥ãƒ¼ç”¨ã®æç”»å‡¦ç†
 				EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW);
                 cameraPos = editorCamera->GetPosition();
                 View = editorCamera->GetViewMatrix();
                 Projection = editorCamera->GetProjectionMatrix();
 
-                // RenderContext‚Ìİ’è
+                // RenderContextã®è¨­å®š
                 {
                     sceneContext.renderState = Graphics::GetRenderState();
                     sceneContext.deltaTime = Time::DeltaTime();
@@ -94,18 +94,18 @@ void RenderSystem::Render()
                     DirectX::XMStoreFloat4x4(&sceneContext.inverseProjection, XMMatrixInverse(nullptr, Projection));
                     DirectX::XMStoreFloat4x4(&sceneContext.inverseViewProjection, XMMatrixInverse(nullptr, ViewProjection));
                 }
-                // ƒGƒfƒBƒ^ƒrƒ…[—p‚Ì•`‰æˆ—
+                // ã‚¨ãƒ‡ã‚£ã‚¿ãƒ“ãƒ¥ãƒ¼ç”¨ã®æç”»å‡¦ç†
                 sceneRenderPipeline->Execute(&sceneContext, scene);
             }
 
-            // ƒvƒŒƒrƒ…[—p‚Ì•`‰æˆ—
+            // ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ã®æç”»å‡¦ç†
             {
 				EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_PREVIEW);
                 cameraPos = editorCamera->GetPosition();
                 View = editorCamera->GetViewMatrix();
                 Projection = editorCamera->GetProjectionMatrix();
 
-                // RenderContext‚Ìİ’è
+                // RenderContextã®è¨­å®š
                 {
                     previewContext.renderState = Graphics::GetRenderState();
                     previewContext.deltaTime = Time::DeltaTime();
@@ -125,14 +125,14 @@ void RenderSystem::Render()
                 previewRenderPipeline->Execute(&previewContext, scene);
             }
 
-            // ƒGƒtƒFƒNƒgƒvƒŒƒrƒ…[—p‚Ì•`‰æˆ—
+            // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ã®æç”»å‡¦ç†
             {
                 EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_EFFECT_PREVIEW);
                 cameraPos = editorCamera->GetPosition();
                 View = editorCamera->GetViewMatrix();
                 Projection = editorCamera->GetProjectionMatrix();
 
-                // RenderContext‚Ìİ’è
+                // RenderContextã®è¨­å®š
                 {
                     effectPreviewContext.renderState = Graphics::GetRenderState();
                     effectPreviewContext.deltaTime = Time::DeltaTime();
@@ -153,7 +153,7 @@ void RenderSystem::Render()
 
 #endif // DEBUG
             {
-                // ƒQ[ƒ€ƒrƒ…[—p‚Ì•`‰æˆ—
+                // ã‚²ãƒ¼ãƒ ãƒ“ãƒ¥ãƒ¼ç”¨ã®æç”»å‡¦ç†
 #ifdef _DEBUG
                 ProfileScopedSection_2(0, "GameView::Rendering", ImGuiControl::Profiler::Purple);
 #endif // _DEBUG
@@ -165,7 +165,7 @@ void RenderSystem::Render()
                     View = cam->GetViewMatrix();
                     Projection = cam->GetProjectionMatrix();
 
-                    // RenderContext‚Ìİ’è
+                    // RenderContextã®è¨­å®š
                     {
                         gameContext.renderState = Graphics::GetRenderState();
                         gameContext.deltaTime = Time::DeltaTime();
@@ -182,7 +182,7 @@ void RenderSystem::Render()
                         DirectX::XMStoreFloat4x4(&gameContext.inverseViewProjection, XMMatrixInverse(nullptr, ViewProjection));
                     }
 
-                    // ƒQ[ƒ€ƒrƒ…[—p‚Ì•`‰æˆ—
+                    // ã‚²ãƒ¼ãƒ ãƒ“ãƒ¥ãƒ¼ç”¨ã®æç”»å‡¦ç†
                     gameRenderPipeline->Execute(&gameContext, scene);
                 }
                 else
@@ -198,33 +198,33 @@ void RenderSystem::Render()
         }
     }
 
-	// ƒfƒoƒbƒO•`‰æ (Render‚É“ü‚ê‚Ä‚é——R‚ÍAGUI•`‰æ‚ÅRenderContext‚Ìî•ñ‚ğg‚¢‚½‚¢‚©‚ç)
+	// ãƒ‡ãƒãƒƒã‚°æç”» (Renderã«å…¥ã‚Œã¦ã‚‹ç†ç”±ã¯ã€GUIæç”»ã§RenderContextã®æƒ…å ±ã‚’ä½¿ã„ãŸã„ã‹ã‚‰)
 #ifdef USE_IMGUI
-    // ImGui•`‰æ
+    // ImGuiæç”»
     SceneManager::DrawGUI(&sceneContext, &gameContext);
 
-    // RenderSystem‚ÌGUI•`‰æ
+    // RenderSystemã®GUIæç”»
     DrawEditorGUI();
 
-	// ƒCƒ“ƒ|[ƒgİ’èƒEƒBƒ“ƒhƒE‚ÌGUI•`‰æ
+	// ã‚¤ãƒ³ãƒãƒ¼ãƒˆè¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®GUIæç”»
 	CurryEngine::Resources::ImportSettingsWindow::DrawGUI(&previewContext);
 
-	// ImGuiƒfƒoƒbƒOƒƒOƒEƒBƒ“ƒhƒE‚Ì•\¦
+	// ImGuiãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
     ImGui::ShowDebugLogWindow();
 
-    // ImGuiTheme•`‰æ
+    // ImGuiThemeæç”»
     ImGuiTheme::DrawGUI();
 
-    //ƒGƒtƒFƒNƒgƒGƒfƒBƒ^GUI•`‰æ
+    //ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚¨ãƒ‡ã‚£ã‚¿GUIæç”»
     EffectEditor::DrawGUI(&effectPreviewContext);
 
-    //•¨—ƒGƒ“ƒWƒ“ƒfƒoƒbƒO•`‰æ
+    //ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ãƒ‡ãƒãƒƒã‚°æç”»
     Physics::DrawGUI();
 
-    //ƒŒƒCƒ„[İ’èGUI•`‰æ
+    //ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šGUIæç”»
     LayerManager::Get().DrawLayerSettingsGUI();
 
-    // Undo/RedoƒeƒXƒg—p (Šm”F‚ªI‚í‚Á‚½‚ç•ÊêŠ‚ÉˆÚ‚·)
+    // Undo/Redoãƒ†ã‚¹ãƒˆç”¨ (ç¢ºèªãŒçµ‚ã‚ã£ãŸã‚‰åˆ¥å ´æ‰€ã«ç§»ã™)
     {
         if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_Z))
         {
@@ -235,7 +235,7 @@ void RenderSystem::Render()
             CurryEngine::History::Redo();
         }
 
-        // ƒfƒoƒbƒO—p: Undo/Redo‚Ì“à—e•\¦
+        // ãƒ‡ãƒãƒƒã‚°ç”¨: Undo/Redoã®å†…å®¹è¡¨ç¤º
 		static bool showHistoryWindow = true;
 		if (showHistoryWindow)
         {
@@ -261,7 +261,7 @@ void RenderSystem::Render()
     //ImGui::Text("Video memory usage %d MB", VideoMemoryUsage());
 
     ProfileDrawUI();
-    // ImGui•`‰æ
+    // ImGuiæç”»
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 #endif // USE_IMGUI
@@ -292,7 +292,7 @@ void RenderSystem::DrawEditorGUI()
 
 void RenderSystem::OnSizeChanged(ID3D11Device* device, uint32_t width, uint32_t height)
 {
-    // Å¬‰»i0x0j‚Í–³‹
+    // æœ€å°åŒ–æ™‚ï¼ˆ0x0ï¼‰ã¯ç„¡è¦–
     if (width == 0 || height == 0) return;
 
     sceneRenderPipeline->OnSizeChanged(device, width, height);

@@ -9,21 +9,21 @@ namespace CurryEngine
 	{
 	public:
 		/// <summary>
-		/// •¡”‚ÌƒRƒ}ƒ“ƒh‚ğ‚Ü‚Æ‚ß‚ÄÀs/Œ³‚É–ß‚·‚½‚ß‚ÌƒRƒ}ƒ“ƒhBExecute‚Å’Ç‰Á‚³‚ê‚½‡”Ô‚ÅƒRƒ}ƒ“ƒh‚ğÀs‚µAUndo‚Å‹t‡‚ÅƒRƒ}ƒ“ƒh‚ğŒ³‚É–ß‚·B
+		/// è¤‡æ•°ã®ã‚³ãƒãƒ³ãƒ‰ã‚’ã¾ã¨ã‚ã¦å®Ÿè¡Œ/å…ƒã«æˆ»ã™ãŸã‚ã®ã‚³ãƒãƒ³ãƒ‰ã€‚Executeã§è¿½åŠ ã•ã‚ŒãŸé †ç•ªã§ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œã—ã€Undoã§é€†é †ã§ã‚³ãƒãƒ³ãƒ‰ã‚’å…ƒã«æˆ»ã™ã€‚
 		/// </summary>
-		/// <param name="description">ƒRƒ}ƒ“ƒh‚Ìà–¾BUndo/RedoƒXƒ^ƒbƒN‚Å•\¦‚³‚ê‚éB</param>
+		/// <param name="description">ã‚³ãƒãƒ³ãƒ‰ã®èª¬æ˜ã€‚Undo/Redoã‚¹ã‚¿ãƒƒã‚¯ã§è¡¨ç¤ºã•ã‚Œã‚‹ã€‚</param>
 		CompoundCommand(const std::string& description = "Compound Command") : m_description(description) {}
 		~CompoundCommand() override = default;
 
 		/**
-		 * @brief ƒRƒ}ƒ“ƒh‚ğ’Ç‰Á‚·‚é
-		 * @param command ’Ç‰Á‚·‚éƒRƒ}ƒ“ƒhBŠ—LŒ ‚ÍCompoundCommand‚ÉˆÚ‚éB
+		 * @brief ã‚³ãƒãƒ³ãƒ‰ã‚’è¿½åŠ ã™ã‚‹
+		 * @param command è¿½åŠ ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰ã€‚æ‰€æœ‰æ¨©ã¯CompoundCommandã«ç§»ã‚‹ã€‚
 		 */
 		void AddCommand(std::unique_ptr<IEditorCommand> command);
 
 		/**
-		 * @brief ƒRƒ}ƒ“ƒh‚ª‹ó‚©‚Ç‚¤‚©‚ğ•Ô‚·
-		 * @return ƒRƒ}ƒ“ƒh‚ª‹ó‚È‚çtrueA‚»‚¤‚Å‚È‚¯‚ê‚Îfalse
+		 * @brief ã‚³ãƒãƒ³ãƒ‰ãŒç©ºã‹ã©ã†ã‹ã‚’è¿”ã™
+		 * @return ã‚³ãƒãƒ³ãƒ‰ãŒç©ºãªã‚‰trueã€ãã†ã§ãªã‘ã‚Œã°false
 		 */
 		bool IsEmpty() const;
 

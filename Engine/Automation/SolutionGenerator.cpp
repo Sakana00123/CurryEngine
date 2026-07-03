@@ -5,10 +5,10 @@
 
 namespace fs = std::filesystem;
 
-// ƒ‰ƒ“ƒ_ƒ€‚ÈGUID‚à‚Ç‚«‚ª•K—v‚È‚Ì‚ÅŒÅ’è’l‚ÅOKi•Ï‚í‚ç‚È‚¢‚È‚çj
-// –{—ˆ‚ÍCoCreateGuid()‚Å¶¬‚·‚é‚ªAŒÅ’è‚Å‚à“®‚­
+// ãƒ©ãƒ³ãƒ€ãƒ ãªGUIDã‚‚ã©ããŒå¿…è¦ãªã®ã§å›ºå®šå€¤ã§OKï¼ˆå¤‰ã‚ã‚‰ãªã„ãªã‚‰ï¼‰
+// æœ¬æ¥ã¯CoCreateGuid()ã§ç”Ÿæˆã™ã‚‹ãŒã€å›ºå®šã§ã‚‚å‹•ã
 static const char* PROJECT_GUID = "{8A5B4A7C-1234-4321-ABCD-000000000001}";
-static const char* SOLUTION_GUID = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"; // C#ƒvƒƒWƒFƒNƒgí•Ê
+static const char* SOLUTION_GUID = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"; // C#ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆç¨®åˆ¥
 
 bool SolutionGenerator::Generate(const std::string& projectRoot,
     const std::string& projectName,
@@ -42,7 +42,7 @@ bool SolutionGenerator::Generate(const std::string& projectRoot,
 
     // --- MyProject.sln ---
     std::string sln =
-        "\xEF\xBB\xBF\n"   // UTF-8 BOMiVS—v‹j
+        "\xEF\xBB\xBF\n"   // UTF-8 BOMï¼ˆVSè¦æ±‚ï¼‰
         "Microsoft Visual Studio Solution File, Format Version 12.00\n"
         "# Visual Studio Version 17\n"
         "VisualStudioVersion = 17.0.31903.59\n"
@@ -60,7 +60,7 @@ bool SolutionGenerator::Generate(const std::string& projectRoot,
         "\tEndGlobalSection\n"
         "EndGlobal\n";
 
-    // ‘‚«o‚µ
+    // æ›¸ãå‡ºã—
     auto writeFile = [](const fs::path& path, const std::string& content) -> bool
         {
             std::ofstream f(path);

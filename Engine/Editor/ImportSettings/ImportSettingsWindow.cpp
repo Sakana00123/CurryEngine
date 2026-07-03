@@ -33,32 +33,32 @@ namespace ImGui
 		ImDrawList* draw = window->DrawList;
 		const ImVec2 pos = window->DC.CursorPos;
 
-		// ѓTѓCѓY‚МЊ€’иЃiѓfѓtѓHѓ‹ѓg‚Н‰Ў•ќ€к”tЃAЌ‚‚і12pxЃj
+		// г‚µг‚¤г‚єгЃ®ж±єе®љпј€гѓ‡гѓ•г‚©гѓ«гѓ€гЃЇжЁЄе№…дёЂжќЇгЂЃй«гЃ•12pxпј‰
 		float default_width = ImGui::GetContentRegionAvail().x;
 		float default_height = 12.0f;
 		ImVec2 size = ImGui::CalcItemSize(size_arg, default_width, default_height);
 
-		// ѓeѓLѓXѓgЃiѓ‰ѓxѓ‹Ѓj‚Є‚ ‚йЏкЌ‡‚НЃAѓeѓLѓXѓg‚МЌ‚‚і•Є‚ѕ‚Ї”z’u—М€жЃibbЃj‚рЌL‚°‚й
+		// гѓ†г‚­г‚№гѓ€пј€гѓ©гѓ™гѓ«пј‰гЃЊгЃ‚г‚‹е ґеђ€гЃЇгЂЃгѓ†г‚­г‚№гѓ€гЃ®й«гЃ•е€†гЃ гЃ‘й…ЌзЅ®й еџџпј€bbпј‰г‚’еєѓгЃ’г‚‹
 		bool has_text = (label && label[0] != '\0' && !ImGui::FindRenderedTextEnd(label));
 		float text_height = has_text ? (ImGui::CalcTextSize(label).y + 4.0f) : 0.0f;
 
 		const ImRect bb(pos, ImVec2(pos.x + size.x, pos.y + text_height + size.y));
 
-		// ImGui‚Й—М€ж‚р“o^‚µ‚ДѓJЃ[ѓ\ѓ‹‚рђi‚Я‚й
+		// ImGuiгЃ«й еџџг‚’з™»йЊІгЃ—гЃ¦г‚«гѓјг‚Ѕгѓ«г‚’йЂІг‚Ѓг‚‹
 		ImGui::ItemSize(bb, style.FramePadding.y);
 		if (!ImGui::ItemAdd(bb, id)) return;
 
-		// 1. ѓ‰ѓxѓ‹ѓeѓLѓXѓg‚Є‚ ‚йЏкЌ‡‚Н•`‰ж
+		// 1. гѓ©гѓ™гѓ«гѓ†г‚­г‚№гѓ€гЃЊгЃ‚г‚‹е ґеђ€гЃЇжЏЏз”»
 		if (has_text) {
 			draw->AddText(pos, ImGui::GetColorU32(ImGuiCol_Text), label);
 		}
 
-		// ѓЌЃ[ѓfѓBѓ“ѓOѓoЃ[–{‘М‚М•`‰жЉоЏЂЌА•W
+		// гѓ­гѓјгѓ‡г‚Јгѓіг‚°гѓђгѓјжњ¬дЅ“гЃ®жЏЏз”»еџєжє–еє§жЁ™
 		ImVec2 bar_min(bb.Min.x, bb.Min.y + text_height);
 		ImVec2 bar_max(bb.Max.x, bb.Max.y);
 
 #if 1
-		// 2. ЉЉ‚з‚©‚Иђi’»ѓAѓjѓЃЃ[ѓVѓ‡ѓ“ (Lerp)
+		// 2. ж»‘г‚‰гЃ‹гЃЄйЂІжЌ—г‚ўгѓ‹гѓЎгѓјг‚·гѓ§гѓі (Lerp)
 		float& anim_fraction = GetAnim(id);
 		anim_fraction = ImLerp(anim_fraction, ImClamp(fraction, 0.0f, 1.0f), g.IO.DeltaTime * 14.0f);
 #else
@@ -66,34 +66,34 @@ namespace ImGui
 #endif // 0
 
 
-		// 3. ”wЊiЃiѓgѓ‰ѓbѓNЃj‚М•`‰ж
+		// 3. иѓЊж™Їпј€гѓ€гѓ©гѓѓг‚Їпј‰гЃ®жЏЏз”»
 		ImU32 col_bg = ImGui::GetColorU32(ImGuiCol_FrameBg);
-		float rounding = size.y * 0.5f; // Љ®‘S‚ИЉЫЉpЃiѓJѓvѓZѓ‹Њ^Ѓj‚Й‚·‚й
+		float rounding = size.y * 0.5f; // е®Ње…ЁгЃЄдёёи§’пј€г‚«гѓ—г‚»гѓ«ећ‹пј‰гЃ«гЃ™г‚‹
 		draw->AddRectFilled(bar_min, bar_max, col_bg, rounding);
 
-		// 4. ђi’»ѓoЃ[ЃiѓAѓNѓeѓBѓu•”•ЄЃj‚Ж“®‚­ЋОђьѓpѓ^Ѓ[ѓ“‚М•`‰ж
+		// 4. йЂІжЌ—гѓђгѓјпј€г‚ўг‚Їгѓ†г‚Јгѓ–йѓЁе€†пј‰гЃЁе‹•гЃЏж–њз·љгѓ‘г‚їгѓјгѓігЃ®жЏЏз”»
 		if (anim_fraction > 0.001f) {
 			float progress_w = size.x * anim_fraction;
 			ImVec2 progress_max(bar_min.x + progress_w, bar_max.y);
-			ImU32 col_accent = ImGui::GetColorU32(ImGuiCol_SliderGrab); // ѓeЃ[ѓ}‚МѓЃѓCѓ“ђF
+			ImU32 col_accent = ImGui::GetColorU32(ImGuiCol_SliderGrab); // гѓ†гѓјгѓћгЃ®гѓЎг‚¤гѓіи‰І
 
-			// ђi’»ѓoЃ[‚МѓxЃ[ѓXЃi“y‘дЃj‚рЉЫЉp‚Е•`‰ж
+			// йЂІжЌ—гѓђгѓјгЃ®гѓ™гѓјг‚№пј€ењџеЏ°пј‰г‚’дёёи§’гЃ§жЏЏз”»
 			draw->AddRectFilled(bar_min, progress_max, col_accent, rounding);
 
-			// Ѓљ ЏCђі“_: ‘¶ЌЭ‚µ‚И‚ў PathClip ‚М‘г‚н‚и‚Й•WЏЂ‚МЋlЉpЊ`ѓNѓЉѓbѓsѓ“ѓO‚р“K—p
-			// ‚±‚к‚ЕЌ¶‰E‚МЊАЉE‚р€А‘S‚Йђ§ЊА‚µЃAѓ‹Ѓ[ѓv“а‚МЊvЋZ‚рѓVѓ“ѓvѓ‹‚Й‚µ‚Ь‚·
+			// в… дї®ж­Јз‚№: е­ењЁгЃ—гЃЄгЃ„ PathClip гЃ®д»Јг‚Џг‚ЉгЃ«жЁ™жє–гЃ®е››и§’еЅўг‚ЇгѓЄгѓѓгѓ”гѓіг‚°г‚’йЃ©з”Ё
+			// гЃ“г‚ЊгЃ§е·¦еЏігЃ®й™ђз•Њг‚’е®‰е…ЁгЃ«е€¶й™ђгЃ—гЂЃгѓ«гѓјгѓ—е†…гЃ®иЁ€з®—г‚’г‚·гѓігѓ—гѓ«гЃ«гЃ—гЃѕгЃ™
 			draw->PushClipRect(bar_min, progress_max, true);
 
-			// ѓAѓjѓЃЃ[ѓVѓ‡ѓ“—p‚МЋћЉФѓIѓtѓZѓbѓg
+			// г‚ўгѓ‹гѓЎгѓјг‚·гѓ§гѓіз”ЁгЃ®ж™‚й–“г‚Єгѓ•г‚»гѓѓгѓ€
 			float time = (float)g.Time;
 			float speed = 40.0f;
-			float stripe_spacing = 16.0f; // ЋОђь‚МЉФЉu
-			float stripe_width = 8.0f;    // ЋОђь‚М‘ѕ‚і
+			float stripe_spacing = 16.0f; // ж–њз·љгЃ®й–“йљ”
+			float stripe_width = 8.0f;    // ж–њз·љгЃ®е¤ЄгЃ•
 
 			float offset = ImFmod(time * speed, stripe_spacing);
-			ImU32 col_stripe = IM_COL32(255, 255, 255, 35); // ”’‚М•s“§–ѕ“x‚рЏ­‚µ’Іђ®Ѓi–с14%Ѓj
+			ImU32 col_stripe = IM_COL32(255, 255, 255, 35); // з™ЅгЃ®дёЌйЂЏжЋеє¦г‚’е°‘гЃ—иЄїж•ґпј€зґ„14%пј‰
 
-			// ЋОђь‚р•`‰ж
+			// ж–њз·љг‚’жЏЏз”»
 			float start_x = bar_min.x - size.y;
 			float end_x = progress_max.x + size.y;
 
@@ -106,24 +106,24 @@ namespace ImGui
 				draw->AddQuadFilled(p_tl, p_tr, p_br, p_bl, col_stripe);
 			}
 
-			// ЋlЉpЊ`ѓNѓЉѓbѓsѓ“ѓO‚р‰рЏњ
+			// е››и§’еЅўг‚ЇгѓЄгѓѓгѓ”гѓіг‚°г‚’и§Јй™¤
 			draw->PopClipRect();
 
-			// Ѓљ ЏCђі“_ЃiѓJѓvѓZѓ‹Њ^ѓ}ѓXѓNЏ€—ќЃj: 
-			// ЋlЉpЊ`ѓNѓЉѓbѓsѓ“ѓO‚ѕ‚Ї‚ѕ‚ЖЃu—ј’[‚МЉЫЉp•”•ЄЃv‚©‚зЋОђь‚Єѓnѓ~Џo‚Д•sЋ©‘R‚Й‚И‚й‚Ѕ‚ЯЃA
-			// ѓoЃ[‚М€к”ФЉO‘¤‚МЉЫЉp‚р•вђі‚µ‚Ь‚·ЃB
-			// ђi’»ѓoЃ[‚ЄЉ®‘S‚Й–ћѓ^ѓ“Ѓi1.0Ѓj‚Е‚И‚ўЏкЌ‡ЃA‰E’[‚МЉЫ‚Э‚ргY—н‚Йѓ}ѓXѓN‚·‚й‚Ѕ‚Я‚Й
-			// ѓgѓ‰ѓbѓN‚М”wЊiђF‚Ж“Ї‚¶ђF‚ЕЉO‘¤‚рЌДѓЊѓ“ѓ_ѓЉѓ“ѓO‚·‚й‚©ЃA
-			// ѓAѓ“ѓ`ѓGѓCѓЉѓAѓX‚Є•ц‚к‚И‚ў‚ж‚¤‚Й“а‘¤‚Й‚ѕ‚ЇЋОђь‚рЋы‚Я‚йЏ€—ќ‚рЋ©“®‚ЕЌs‚ў‚Ь‚·ЃB
+			// в… дї®ж­Јз‚№пј€г‚«гѓ—г‚»гѓ«ећ‹гѓћг‚№г‚Їе‡¦зђ†пј‰: 
+			// е››и§’еЅўг‚ЇгѓЄгѓѓгѓ”гѓіг‚°гЃ гЃ‘гЃ гЃЁгЂЊдёЎз«ЇгЃ®дёёи§’йѓЁе€†гЂЌгЃ‹г‚‰ж–њз·љгЃЊгѓЏгѓџе‡єгЃ¦дёЌи‡Єз„¶гЃ«гЃЄг‚‹гЃџг‚ЃгЂЃ
+			// гѓђгѓјгЃ®дёЂз•Єе¤–еЃґгЃ®дёёи§’г‚’иЈњж­ЈгЃ—гЃѕгЃ™гЂ‚
+			// йЂІжЌ—гѓђгѓјгЃЊе®Ње…ЁгЃ«жєЂг‚їгѓіпј€1.0пј‰гЃ§гЃЄгЃ„е ґеђ€гЂЃеЏіз«ЇгЃ®дёёгЃїг‚’з¶єйє—гЃ«гѓћг‚№г‚ЇгЃ™г‚‹гЃџг‚ЃгЃ«
+			// гѓ€гѓ©гѓѓг‚ЇгЃ®иѓЊж™Їи‰ІгЃЁеђЊгЃи‰ІгЃ§е¤–еЃґг‚’е†Ќгѓ¬гѓігѓЂгѓЄгѓіг‚°гЃ™г‚‹гЃ‹гЂЃ
+			// г‚ўгѓігѓЃг‚Ёг‚¤гѓЄг‚ўг‚№гЃЊеґ©г‚ЊгЃЄгЃ„г‚€гЃ†гЃ«е†…еЃґгЃ«гЃ гЃ‘ж–њз·љг‚’еЏЋг‚Ѓг‚‹е‡¦зђ†г‚’и‡Єе‹•гЃ§иЎЊгЃ„гЃѕгЃ™гЂ‚
 			if (anim_fraction < 0.99f && progress_w > rounding) {
-				// ђi’»’†‚М‰E’[•”•Є‚МЉЫ‚Э‚ргY—н‚Й•вђі‚·‚й‚Ѕ‚ЯЃA
-				// ѓAѓNѓZѓ“ѓgѓJѓ‰Ѓ[‚МЃu‰E‘¤”ј•Є‚ѕ‚Ї‚МЉЫЉpЃv‚рЏг‚©‚зЌД•`‰ж‚µ‚ДЋОђь‚М‚Н‚ЭЏo‚µ‚ргY—н‚ЙЏгЏ‘‚«‰B•Б‚µ‚Ь‚·ЃB
+				// йЂІжЌ—дё­гЃ®еЏіз«ЇйѓЁе€†гЃ®дёёгЃїг‚’з¶єйє—гЃ«иЈњж­ЈгЃ™г‚‹гЃџг‚ЃгЂЃ
+				// г‚ўг‚Їг‚»гѓігѓ€г‚«гѓ©гѓјгЃ®гЂЊеЏіеЃґеЌЉе€†гЃ гЃ‘гЃ®дёёи§’гЂЌг‚’дёЉгЃ‹г‚‰е†ЌжЏЏз”»гЃ—гЃ¦ж–њз·љгЃ®гЃЇгЃїе‡єгЃ—г‚’з¶єйє—гЃ«дёЉж›ёгЃЌйљ и”ЅгЃ—гЃѕгЃ™гЂ‚
 				draw->PushClipRect(ImVec2(progress_max.x - rounding, bar_min.y), progress_max, true);
 				draw->AddRectFilled(bar_min, progress_max, col_accent, rounding);
 				draw->PopClipRect();
 			}
 
-			// Ќ¶’[‚МЉЫ‚Э‚©‚з‚Н‚ЭЏo‚ЅЋОђь‚р‰B‚·ѓ}ѓXѓN
+			// е·¦з«ЇгЃ®дёёгЃїгЃ‹г‚‰гЃЇгЃїе‡єгЃџж–њз·љг‚’йљ гЃ™гѓћг‚№г‚Ї
 			if (progress_w > rounding) {
 				draw->PushClipRect(bar_min, ImVec2(bar_min.x + rounding, bar_max.y), true);
 				draw->AddRectFilled(bar_min, progress_max, col_accent, rounding);
@@ -166,25 +166,25 @@ namespace CurryEngine::Resources
 		const AssetMeta* meta = AssetDatabase::Find(_targetId);
 		if (!meta) { _isOpen = false; return; }
 
-		// ѓ|ѓbѓvѓAѓbѓv‚Є‚Ь‚ѕЉJ‚ў‚Д‚ў‚И‚ўЏкЌ‡‚НЉJ‚­
+		// гѓќгѓѓгѓ—г‚ўгѓѓгѓ—гЃЊгЃѕгЃ й–‹гЃ„гЃ¦гЃ„гЃЄгЃ„е ґеђ€гЃЇй–‹гЃЏ
 		if (_isOpen && !ImGui::IsPopupOpen("Import Settings"))
 		{
 			ImGui::OpenPopup("Import Settings");
 		}
 
 		ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f)); // ѓ|ѓbѓvѓAѓbѓv‚М€К’u‚р‰ж–К’†‰›‚ЙђЭ’и
+		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f)); // гѓќгѓѓгѓ—г‚ўгѓѓгѓ—гЃ®дЅЌзЅ®г‚’з”»йќўдё­е¤®гЃ«иЁ­е®љ
 
-		// ѓ|ѓbѓvѓAѓbѓv‚ЄЉJ‚ў‚Д‚ў‚й‚Ж‚«‚ѕ‚Ї•`‰ж‚·‚й
+		// гѓќгѓѓгѓ—г‚ўгѓѓгѓ—гЃЊй–‹гЃ„гЃ¦гЃ„г‚‹гЃЁгЃЌгЃ гЃ‘жЏЏз”»гЃ™г‚‹
 		if (ImGui::BeginPopupModal("Import Settings", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
-			// Џг’i: ѓtѓ@ѓCѓ‹–ј‚ЖѓAѓZѓbѓgЋн•К
+			// дёЉж®µ: гѓ•г‚Ўг‚¤гѓ«еђЌгЃЁг‚ўг‚»гѓѓгѓ€зЁ®е€Ґ
 			ImGui::TextUnformatted(reinterpret_cast<const char*>(std::filesystem::path(meta->path).filename().u8string().c_str()));
 			ImGui::SameLine();
 			ImGui::TextDisabled(AssetMetaSerializer::AssetTypeToString(meta->type).c_str());
 			ImGui::Separator();
 
-			// ’†’i: Ќ¶‚ЙѓvѓЊѓrѓ…Ѓ[ЃA‰E‚ЙђЭ’иѓtѓBЃ[ѓ‹ѓhЃiBeginTable‚Е2ѓJѓ‰ѓЂЃj
+			// дё­ж®µ: е·¦гЃ«гѓ—гѓ¬гѓ“гѓҐгѓјгЂЃеЏігЃ«иЁ­е®љгѓ•г‚Јгѓјгѓ«гѓ‰пј€BeginTableгЃ§2г‚«гѓ©гѓ пј‰
 			if (ImGui::BeginTable("ImportSettingsLayout", 2, ImGuiTableFlags_Resizable))
 			{
 				ImGui::TableSetupColumn("Preview", ImGuiTableColumnFlags_WidthFixed, 200.0f);
@@ -195,14 +195,14 @@ namespace CurryEngine::Resources
 				DrawPreview(_targetId, context);
 
 				ImGui::TableSetColumnIndex(1);
-				DrawSettingsFields(_targetId); // ‚±‚±‚Е_editingSettings‚р’јђЪ•ТЏW
+				DrawSettingsFields(_targetId); // гЃ“гЃ“гЃ§_editingSettingsг‚’з›ґжЋҐз·Ёй›†
 
 				ImGui::EndTable();
 			}
 
 			ImGui::Separator();
 
-			// ‰є’i: Applyѓ{ѓ^ѓ“Ѓi_isDirty‚М‚Ж‚«‚ѕ‚ЇѓnѓCѓ‰ѓCѓgЃj
+			// дё‹ж®µ: Applyгѓњг‚їгѓіпј€_isDirtyгЃ®гЃЁгЃЌгЃ гЃ‘гѓЏг‚¤гѓ©г‚¤гѓ€пј‰
 			ImGui::BeginDisabled(!_isDirty);
 			if (ImGui::Button("Apply"))
 			{
@@ -212,42 +212,42 @@ namespace CurryEngine::Resources
 
 			ImGui::SameLine();
 
-			// Revertѓ{ѓ^ѓ“Ѓi.meta‚МЊ»ЌЭ’l‚Й–Я‚·Ѓj
+			// Revertгѓњг‚їгѓіпј€.metaгЃ®зЏѕењЁеЂ¤гЃ«ж€»гЃ™пј‰
 			if (ImGui::Button("Revert"))
 			{
 				_editingSettings = meta->importSettings;
 				_isDirty = false;
-				RequestPreviewUpdate(_targetId); // RevertЊг‚МђЭ’и‚ЙЉо‚Г‚ў‚ДѓvѓЊѓrѓ…Ѓ[‚рЌXђV
+				RequestPreviewUpdate(_targetId); // RevertеѕЊгЃ®иЁ­е®љгЃ«еџєгЃҐгЃ„гЃ¦гѓ—гѓ¬гѓ“гѓҐгѓјг‚’ж›ґж–°
 			}
 
 			ImGui::SameLine();
 
-			// Resetѓ{ѓ^ѓ“ЃiѓfѓtѓHѓ‹ѓgђЭ’и‚Й–Я‚·Ѓj
+			// Resetгѓњг‚їгѓіпј€гѓ‡гѓ•г‚©гѓ«гѓ€иЁ­е®љгЃ«ж€»гЃ™пј‰
 			if (ImGui::Button("Reset To Default"))
 			{
 				if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 				{
 					_editingSettings = drawer->GetDefaultSettings();
-					_isDirty = true; // ѓfѓtѓHѓ‹ѓgђЭ’и‚Н‚Ь‚ѕ•Ы‘¶‚і‚к‚Д‚ў‚И‚ў‚М‚ЕЃA•ПЌXѓtѓ‰ѓO‚р—§‚Д‚й
-					RequestPreviewUpdate(_targetId); // ѓfѓtѓHѓ‹ѓgђЭ’и‚ЙЉо‚Г‚ў‚ДѓvѓЊѓrѓ…Ѓ[‚рЌXђV
+					_isDirty = true; // гѓ‡гѓ•г‚©гѓ«гѓ€иЁ­е®љгЃЇгЃѕгЃ дїќе­гЃ•г‚ЊгЃ¦гЃ„гЃЄгЃ„гЃ®гЃ§гЂЃе¤‰ж›ґгѓ•гѓ©г‚°г‚’з«‹гЃ¦г‚‹
+					RequestPreviewUpdate(_targetId); // гѓ‡гѓ•г‚©гѓ«гѓ€иЁ­е®љгЃ«еџєгЃҐгЃ„гЃ¦гѓ—гѓ¬гѓ“гѓҐгѓјг‚’ж›ґж–°
 				}
 			}
 
-			// •В‚¶‚йѓ{ѓ^ѓ“
+			// й–‰гЃг‚‹гѓњг‚їгѓі
 			if (ImGui::Button("Close"))
 			{
 				if (_isDirty)
 				{
-					ShowCloseConfirmDialog(); // •ПЌX‚Є‚ ‚йЏкЌ‡‚НЉm”Fѓ_ѓCѓAѓЌѓO‚р•\Ћ¦
+					ShowCloseConfirmDialog(); // е¤‰ж›ґгЃЊгЃ‚г‚‹е ґеђ€гЃЇзўєиЄЌгѓЂг‚¤г‚ўгѓ­г‚°г‚’иЎЁз¤є
 				}
 				else
 				{
-					ImGui::CloseCurrentPopup(); // •ПЌX‚И‚µ‚И‚з‘¦•В‚¶
-					CloseWindow();				// ѓEѓBѓ“ѓhѓE‚р•В‚¶‚й
+					ImGui::CloseCurrentPopup(); // е¤‰ж›ґгЃЄгЃ—гЃЄг‚‰еЌій–‰гЃ
+					CloseWindow();				// г‚¦г‚Јгѓігѓ‰г‚¦г‚’й–‰гЃг‚‹
 				}
 			}
 
-			// Љm”Fѓ_ѓCѓAѓЌѓOЃiѓlѓXѓg‚і‚к‚ЅPopupModalЃj
+			// зўєиЄЌгѓЂг‚¤г‚ўгѓ­г‚°пј€гѓЌг‚№гѓ€гЃ•г‚ЊгЃџPopupModalпј‰
 			if (_showCloseConfirm && !ImGui::IsPopupOpen("Unsaved Changes"))
 			{
 				ImGui::OpenPopup("Unsaved Changes");
@@ -257,53 +257,53 @@ namespace CurryEngine::Resources
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 			if (ImGui::BeginPopupModal("Unsaved Changes", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 			{
-				ImGui::TextUnformatted(U8("ђЭ’и‚Є•ПЌX‚і‚к‚Д‚ў‚Ь‚·ЃB"));
-				ImGui::TextUnformatted(U8("•ПЌX‚р•Ы‘¶‚№‚ё‚Й•В‚¶‚Ь‚·‚©ЃH"));
+				ImGui::TextUnformatted(U8("иЁ­е®љгЃЊе¤‰ж›ґгЃ•г‚ЊгЃ¦гЃ„гЃѕгЃ™гЂ‚"));
+				ImGui::TextUnformatted(U8("е¤‰ж›ґг‚’дїќе­гЃ›гЃљгЃ«й–‰гЃгЃѕгЃ™гЃ‹пјџ"));
 				ImGui::Separator();
 
-				if (ImGui::Button(U8("•ПЌX‚р•Ы‘¶‚µ‚Д•В‚¶‚й")))
+				if (ImGui::Button(U8("е¤‰ж›ґг‚’дїќе­гЃ—гЃ¦й–‰гЃг‚‹")))
 				{
-					OnApply(_targetId); // •ПЌX‚р•Ы‘¶
-					ImGui::CloseCurrentPopup(); // Љm”Fѓ_ѓCѓAѓЌѓO‚р•В‚¶‚й
-					ImGui::CloseCurrentPopup(); // ѓCѓ“ѓ|Ѓ[ѓgђЭ’иѓEѓBѓ“ѓhѓE‚р•В‚¶‚й
-					CloseWindow(); // ѓEѓBѓ“ѓhѓE‚р•В‚¶‚й
+					OnApply(_targetId); // е¤‰ж›ґг‚’дїќе­
+					ImGui::CloseCurrentPopup(); // зўєиЄЌгѓЂг‚¤г‚ўгѓ­г‚°г‚’й–‰гЃг‚‹
+					ImGui::CloseCurrentPopup(); // г‚¤гѓігѓќгѓјгѓ€иЁ­е®љг‚¦г‚Јгѓігѓ‰г‚¦г‚’й–‰гЃг‚‹
+					CloseWindow(); // г‚¦г‚Јгѓігѓ‰г‚¦г‚’й–‰гЃг‚‹
 				}
 				ImGui::SameLine();
-				if (ImGui::Button(U8("•ПЌX‚р”jЉь‚·‚й")))
+				if (ImGui::Button(U8("е¤‰ж›ґг‚’з ґжЈ„гЃ™г‚‹")))
 				{
-					ImGui::CloseCurrentPopup(); // Љm”Fѓ_ѓCѓAѓЌѓO‚р•В‚¶‚й
-					ImGui::CloseCurrentPopup(); // ѓCѓ“ѓ|Ѓ[ѓgђЭ’иѓEѓBѓ“ѓhѓE‚р•В‚¶‚й
-					CloseWindow(); // ѓEѓBѓ“ѓhѓE‚р•В‚¶‚й
+					ImGui::CloseCurrentPopup(); // зўєиЄЌгѓЂг‚¤г‚ўгѓ­г‚°г‚’й–‰гЃг‚‹
+					ImGui::CloseCurrentPopup(); // г‚¤гѓігѓќгѓјгѓ€иЁ­е®љг‚¦г‚Јгѓігѓ‰г‚¦г‚’й–‰гЃг‚‹
+					CloseWindow(); // г‚¦г‚Јгѓігѓ‰г‚¦г‚’й–‰гЃг‚‹
 				}
 				ImGui::SameLine();
-				if (ImGui::Button(U8("ѓLѓѓѓ“ѓZѓ‹")))
+				if (ImGui::Button(U8("г‚­гѓЈгѓіг‚»гѓ«")))
 				{
-					ImGui::CloseCurrentPopup(); // Љm”Fѓ_ѓCѓAѓЌѓO‚р•В‚¶‚й
-					CloseConfirmDialog(); // Љm”Fѓ_ѓCѓAѓЌѓO‚р•В‚¶‚й
+					ImGui::CloseCurrentPopup(); // зўєиЄЌгѓЂг‚¤г‚ўгѓ­г‚°г‚’й–‰гЃг‚‹
+					CloseConfirmDialog(); // зўєиЄЌгѓЂг‚¤г‚ўгѓ­г‚°г‚’й–‰гЃг‚‹
 				}
 
 				ImGui::EndPopup();
 			}
 
-			// “З‚ЭЌћ‚Э’†‚МѓЌЃ[ѓfѓBѓ“ѓO•\Ћ¦
+			// иЄ­гЃїиѕјгЃїдё­гЃ®гѓ­гѓјгѓ‡г‚Јгѓіг‚°иЎЁз¤є
 			if (_isPreviewUpdating && !ImGui::IsPopupOpen("##Loading Preview"))
 			{
-				_previewProgress = 0.0f; // ѓvѓЌѓOѓЊѓXѓoЃ[‚рѓЉѓZѓbѓg
-				g_map.clear(); // ѓAѓjѓЃЃ[ѓVѓ‡ѓ“‚МЏу‘Ф‚рѓЉѓZѓbѓg
+				_previewProgress = 0.0f; // гѓ—гѓ­г‚°гѓ¬г‚№гѓђгѓјг‚’гѓЄг‚»гѓѓгѓ€
+				g_map.clear(); // г‚ўгѓ‹гѓЎгѓјг‚·гѓ§гѓігЃ®зЉ¶ж…‹г‚’гѓЄг‚»гѓѓгѓ€
 				ImGui::OpenPopup("##Loading Preview");
 			}
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 			if (ImGui::BeginPopupModal("##Loading Preview", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 			{
-				std::string statusText = _isPreviewLoadCancelled ? U8("ѓvѓЊѓrѓ…Ѓ[‚М“З‚ЭЌћ‚Э‚рѓLѓѓѓ“ѓZѓ‹‚µ‚Д‚ў‚Ь‚·...") : std::string(U8("ѓvѓЊѓrѓ…Ѓ[‚р“З‚ЭЌћ‚с‚Е‚ў‚Ь‚·...")) + std::to_string(static_cast<int>(_previewProgress * 100)) + "%";
+				std::string statusText = _isPreviewLoadCancelled ? U8("гѓ—гѓ¬гѓ“гѓҐгѓјгЃ®иЄ­гЃїиѕјгЃїг‚’г‚­гѓЈгѓіг‚»гѓ«гЃ—гЃ¦гЃ„гЃѕгЃ™...") : std::string(U8("гѓ—гѓ¬гѓ“гѓҐгѓјг‚’иЄ­гЃїиѕјг‚“гЃ§гЃ„гЃѕгЃ™...")) + std::to_string(static_cast<int>(_previewProgress * 100)) + "%";
 				ImGui::TextUnformatted(statusText.c_str());
 
 				ImGui::LoadingBar("Loading Preview", _previewProgress, ImVec2(300, 20));
 
 				ImGui::BeginDisabled(_isPreviewLoadCancelled);
-				if (ImGui::Button(U8("ѓLѓѓѓ“ѓZѓ‹")))
+				if (ImGui::Button(U8("г‚­гѓЈгѓіг‚»гѓ«")))
 				{
-					// ѓvѓЊѓrѓ…Ѓ[‚МЌXђV‚рѓLѓѓѓ“ѓZѓ‹‚·‚й‚Ѕ‚Я‚Мѓtѓ‰ѓO‚р—§‚Д‚й
+					// гѓ—гѓ¬гѓ“гѓҐгѓјгЃ®ж›ґж–°г‚’г‚­гѓЈгѓіг‚»гѓ«гЃ™г‚‹гЃџг‚ЃгЃ®гѓ•гѓ©г‚°г‚’з«‹гЃ¦г‚‹
 					_isPreviewLoadCancelled = true;
 				}
 				ImGui::EndDisabled();
@@ -312,7 +312,7 @@ namespace CurryEngine::Resources
 			}
 			if (!_isPreviewUpdating && ImGui::IsPopupOpen("##Loading Preview"))
 			{
-				_isPreviewLoadCancelled = false; // ѓLѓѓѓ“ѓZѓ‹ѓtѓ‰ѓO‚рѓЉѓZѓbѓg
+				_isPreviewLoadCancelled = false; // г‚­гѓЈгѓіг‚»гѓ«гѓ•гѓ©г‚°г‚’гѓЄг‚»гѓѓгѓ€
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -337,21 +337,21 @@ namespace CurryEngine::Resources
 			LOG_ERROR("Failed to open import settings: Asset not found with ID " + id.ToString());
 			return;
 		}
-		// ђЭ’и‚р•ТЏW‚·‚й‚Ѕ‚Я‚ЙЃAЊ»ЌЭ‚МѓCѓ“ѓ|Ѓ[ѓgђЭ’и‚рѓRѓsЃ[‚µ‚Д•ЫЋќ‚µ‚Ь‚·ЃB
+		// иЁ­е®љг‚’з·Ёй›†гЃ™г‚‹гЃџг‚ЃгЃ«гЂЃзЏѕењЁгЃ®г‚¤гѓігѓќгѓјгѓ€иЁ­е®љг‚’г‚ігѓ”гѓјгЃ—гЃ¦дїќжЊЃгЃ—гЃѕгЃ™гЂ‚
 		_targetId = id;
 		_editingSettings = meta->importSettings;
 		_isDirty = false;
 		_isOpen = true;
-		// ѓvѓЊѓrѓ…Ѓ[‚МЌXђV‚рѓЉѓNѓGѓXѓg
+		// гѓ—гѓ¬гѓ“гѓҐгѓјгЃ®ж›ґж–°г‚’гѓЄг‚Їг‚Ёг‚№гѓ€
 		RequestPreviewUpdate(id);
 
-		// ѓvѓЊѓrѓ…Ѓ[ѓJѓЃѓ‰‚МЏ‰Љъ‰»
+		// гѓ—гѓ¬гѓ“гѓҐгѓјг‚«гѓЎгѓ©гЃ®е€ќжњџеЊ–
 		if (Scene* currentScene = SceneManager::GetCurrentScene())
 		{
 			if (EditorCamera* editorCamera = currentScene->GetEditorCamera(EDITOR_CAMERA_PREVIEW))
 			{
 				editorCamera->Initialize();
-				editorCamera->SetPosition(Vector3(0, 0, 0)); // “KђШ‚ИЏ‰Љъ€К’u‚ЙђЭ’и
+				editorCamera->SetPosition(Vector3(0, 0, 0)); // йЃ©е€‡гЃЄе€ќжњџдЅЌзЅ®гЃ«иЁ­е®љ
 			}
 		}
 	}
@@ -364,7 +364,7 @@ namespace CurryEngine::Resources
 		
 		if (_previewResource)
 		{
-			// ѓvѓЊѓrѓ…Ѓ[—p‚МѓЉѓ\Ѓ[ѓX‚Є‚ ‚йЏкЌ‡‚Н•`‰ж‚·‚й
+			// гѓ—гѓ¬гѓ“гѓҐгѓјз”ЁгЃ®гѓЄг‚Ѕгѓјг‚№гЃЊгЃ‚г‚‹е ґеђ€гЃЇжЏЏз”»гЃ™г‚‹
 			if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 			{
 				drawer->DrawPreview(_previewResource, context);
@@ -391,10 +391,10 @@ namespace CurryEngine::Resources
 
 		if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 		{
-			// ђЭ’иѓtѓBЃ[ѓ‹ѓh‚р•`‰ж‚µЃAѓ†Ѓ[ѓUЃ[‚Є•ПЌX‚µ‚ЅЏкЌ‡‚Н_editingSettings‚рЌXђV
+			// иЁ­е®љгѓ•г‚Јгѓјгѓ«гѓ‰г‚’жЏЏз”»гЃ—гЂЃгѓ¦гѓјг‚¶гѓјгЃЊе¤‰ж›ґгЃ—гЃџе ґеђ€гЃЇ_editingSettingsг‚’ж›ґж–°
 			if (drawer->DrawSettingsFields(_editingSettings, _isDirty))
 			{
-				RequestPreviewUpdate(id); // ђЭ’и•ПЌX‚Й‰ћ‚¶‚ДѓvѓЊѓrѓ…Ѓ[‚рЌXђV
+				RequestPreviewUpdate(id); // иЁ­е®ље¤‰ж›ґгЃ«еїњгЃгЃ¦гѓ—гѓ¬гѓ“гѓҐгѓјг‚’ж›ґж–°
 			}
 		}
 		else
@@ -406,15 +406,15 @@ namespace CurryEngine::Resources
 
 	void ImportSettingsWindow::OnApply(const AssetId& id)
 	{
-		AssetMeta* meta = AssetDatabase::FindMutable(id); // Џ‘‚«Ќћ‚Э—p‚Мconst–і‚µ”Е
+		AssetMeta* meta = AssetDatabase::FindMutable(id); // ж›ёгЃЌиѕјгЃїз”ЁгЃ®constз„ЎгЃ—з‰€
 		if (!meta) return;
 
-		// .meta‚ЙЏ‘‚«Ќћ‚Э
+		// .metaгЃ«ж›ёгЃЌиѕјгЃї
 		meta->importSettings = _editingSettings;
 		AssetMetaSerializer::Save(*meta);
 
-		// ЌДѓCѓ“ѓ|Ѓ[ѓgЃiResourceManager‚МѓLѓѓѓbѓVѓ…‚рЌXђVЃj
-		AssetDatabase::LoadAsset<Resource>(id); // ѓLѓѓѓbѓVѓ…ЌXђV‚М‚Ѕ‚Я‚ЙѓЌЃ[ѓh
+		// е†Ќг‚¤гѓігѓќгѓјгѓ€пј€ResourceManagerгЃ®г‚­гѓЈгѓѓг‚·гѓҐг‚’ж›ґж–°пј‰
+		AssetDatabase::LoadAsset<Resource>(id); // г‚­гѓЈгѓѓг‚·гѓҐж›ґж–°гЃ®гЃџг‚ЃгЃ«гѓ­гѓјгѓ‰
 
 		_isDirty = false;
 	}
@@ -436,13 +436,13 @@ namespace CurryEngine::Resources
 		const AssetMeta* meta = AssetDatabase::Find(id);
 		if (!meta) return;
 
-		// •ТЏWѓoѓbѓtѓ@‚МђЭ’и‚Е€кЋћ“I‚ИAssetMeta‚рЌм‚иЃAѓvѓЊѓrѓ…Ѓ[—p‚ЙѓCѓ“ѓ|Ѓ[ѓg‚·‚й
+		// з·Ёй›†гѓђгѓѓгѓ•г‚ЎгЃ®иЁ­е®љгЃ§дёЂж™‚зљ„гЃЄAssetMetaг‚’дЅњг‚ЉгЂЃгѓ—гѓ¬гѓ“гѓҐгѓјз”ЁгЃ«г‚¤гѓігѓќгѓјгѓ€гЃ™г‚‹
 		AssetMeta previewMeta = *meta;
 		previewMeta.importSettings = _editingSettings;
 
 		if (IImporter* importer = ImporterRegistry::Find(previewMeta.type))
 		{
-			_previewResource = nullptr; // Љщ‘¶‚МѓvѓЊѓrѓ…Ѓ[ѓЉѓ\Ѓ[ѓX‚р‰р•ъ
+			_previewResource = nullptr; // ж—ўе­гЃ®гѓ—гѓ¬гѓ“гѓҐгѓјгѓЄг‚Ѕгѓјг‚№г‚’и§Јж”ѕ
 			_previewResource = importer->Import(previewMeta);
 		}
 	}
@@ -462,17 +462,17 @@ namespace CurryEngine::Resources
 		const AssetMeta* meta = AssetDatabase::Find(_targetId);
 		if (meta)
 		{
-			// ѓEѓBѓ“ѓhѓE‚р•В‚¶‚й‚Ж‚«‚ЙЃA•`‰жѓNѓ‰ѓX‚МЏу‘Ф‚рѓЉѓZѓbѓg‚·‚йЃB
+			// г‚¦г‚Јгѓігѓ‰г‚¦г‚’й–‰гЃг‚‹гЃЁгЃЌгЃ«гЂЃжЏЏз”»г‚Їгѓ©г‚№гЃ®зЉ¶ж…‹г‚’гѓЄг‚»гѓѓгѓ€гЃ™г‚‹гЂ‚
 			if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 			{
-				drawer->Reset(); // •`‰жѓNѓ‰ѓX‚МЏу‘Ф‚рѓЉѓZѓbѓg‚µ‚ДЃAѓvѓЊѓrѓ…Ѓ[ѓЉѓ\Ѓ[ѓX‚МѓNѓЉЃ[ѓ“ѓAѓbѓv‚И‚З‚рЌs‚¤
+				drawer->Reset(); // жЏЏз”»г‚Їгѓ©г‚№гЃ®зЉ¶ж…‹г‚’гѓЄг‚»гѓѓгѓ€гЃ—гЃ¦гЂЃгѓ—гѓ¬гѓ“гѓҐгѓјгѓЄг‚Ѕгѓјг‚№гЃ®г‚ЇгѓЄгѓјгѓіг‚ўгѓѓгѓ—гЃЄгЃ©г‚’иЎЊгЃ†
 			}
 		}
-		_previewResource = nullptr; // ѓvѓЊѓrѓ…Ѓ[ѓЉѓ\Ѓ[ѓX‚р‰р•ъ
+		_previewResource = nullptr; // гѓ—гѓ¬гѓ“гѓҐгѓјгѓЄг‚Ѕгѓјг‚№г‚’и§Јж”ѕ
 		_isOpen = false;
-		_targetId = AssetId(); // ѓ^Ѓ[ѓQѓbѓgID‚рѓЉѓZѓbѓg
-		_isDirty = false; // •ПЌXѓtѓ‰ѓO‚рѓЉѓZѓbѓg
-		_showCloseConfirm = false; // Љm”Fѓ_ѓCѓAѓЌѓOѓtѓ‰ѓO‚рѓЉѓZѓbѓg
+		_targetId = AssetId(); // г‚їгѓјг‚Ігѓѓгѓ€IDг‚’гѓЄг‚»гѓѓгѓ€
+		_isDirty = false; // е¤‰ж›ґгѓ•гѓ©г‚°г‚’гѓЄг‚»гѓѓгѓ€
+		_showCloseConfirm = false; // зўєиЄЌгѓЂг‚¤г‚ўгѓ­г‚°гѓ•гѓ©г‚°г‚’гѓЄг‚»гѓѓгѓ€
 	}
 
 }

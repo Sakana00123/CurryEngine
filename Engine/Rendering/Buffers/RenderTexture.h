@@ -10,49 +10,49 @@ public:
 	RenderTexture() = default;
 	~RenderTexture() = default;
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Ìì¬
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä½œæˆ
 	void Create(ID3D11Device* device, UINT width, UINT height, bool withDepthStencil = true);
-	// ƒŠƒ\[ƒX‚Ì‰ğ•ú(‚·‚×‚Ä‚ÌComPtr‚ğƒŠƒZƒbƒg)
+	// ãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾(ã™ã¹ã¦ã®ComPtrã‚’ãƒªã‚»ãƒƒãƒˆ)
 	void Release();
 
-	// ƒŠƒTƒCƒY
+	// ãƒªã‚µã‚¤ã‚º
 	void Resize(ID3D11Device* device, UINT width, UINT height);
 
-	// •‚ğæ“¾
+	// å¹…ã‚’å–å¾—
 	uint32_t GetWidth() const;
-	// ‚‚³‚ğæ“¾
+	// é«˜ã•ã‚’å–å¾—
 	uint32_t GetHeight() const;
 
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğæ“¾iƒZƒ}ƒ“ƒeƒBƒNƒX‚É‰‚¶‚½ SRV ‚ğ•Ô‚·‚±‚Æ‚ª‚Å‚«‚éBDefault‚ÆDepth‚É‘Î‰j
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—ï¼ˆã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ã«å¿œã˜ãŸ SRV ã‚’è¿”ã™ã“ã¨ãŒã§ãã‚‹ã€‚Defaultã¨Depthã«å¯¾å¿œï¼‰
 	ID3D11ShaderResourceView* GetSRV(TextureSemantic semantic = TextureSemantic::Default) const override;
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ÌƒAƒhƒŒƒX‚ğæ“¾iAPI ŒÄ‚Ño‚µ—pBƒZƒ}ƒ“ƒeƒBƒNƒX‚É‰‚¶‚½ SRV ƒAƒhƒŒƒX‚ğ•Ô‚·‚±‚Æ‚ª‚Å‚«‚éBDefault‚ÆDepth‚É‘Î‰j
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ï¼ˆAPI å‘¼ã³å‡ºã—ç”¨ã€‚ã‚»ãƒãƒ³ãƒ†ã‚£ã‚¯ã‚¹ã«å¿œã˜ãŸ SRV ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ã“ã¨ãŒã§ãã‚‹ã€‚Defaultã¨Depthã«å¯¾å¿œï¼‰
 	ID3D11ShaderResourceView** GetSRVAddress(TextureSemantic semantic = TextureSemantic::Default) override;
 
-	// ƒeƒNƒXƒ`ƒƒ‚ÌŸŒ³‚ğæ“¾
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æ¬¡å…ƒã‚’å–å¾—
 	TextureDimension GetDimension() const override { return TextureDimension::Texture2D; }
 
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğæ“¾
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—
 	ID3D11ShaderResourceView* GetColorBuffer() const;
 
-	// [“xƒoƒbƒtƒ@‚ÌƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğæ“¾
+	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—
 	ID3D11ShaderResourceView* GetDepthBuffer() const;
 
-	// FƒeƒNƒXƒ`ƒƒ‚ğæ“¾
+	// è‰²ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å–å¾—
 	RawTexture2D* GetColorTexture() const;
 
-	// [“xƒeƒNƒXƒ`ƒƒ‚ğæ“¾
+	// æ·±åº¦ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å–å¾—
 	RawTexture2D* GetDepthTexture() const;
 
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚ğæ“¾
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—
 	ID3D11RenderTargetView* GetRenderTargetView() const;
 
-	// [“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚ğæ“¾
+	// æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—
 	ID3D11DepthStencilView* GetDepthStencilView() const;
-	// ƒrƒ…[ƒ|[ƒg‚ğæ“¾
+	// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã‚’å–å¾—
 	D3D11_VIEWPORT GetViewport() const;
 
-	// ƒNƒŠƒA
+	// ã‚¯ãƒªã‚¢
 	void Clear(ID3D11DeviceContext* context, const Color& color) const;
 private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_rtv;

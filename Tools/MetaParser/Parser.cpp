@@ -9,7 +9,7 @@
 #include <windows.h>
 
 // ============================================================
-//  “à•”ƒ†[ƒeƒBƒŠƒeƒBiŠù‘¶j
+//  å†…éƒ¨ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ï¼ˆæ—¢å­˜ï¼‰
 // ============================================================
 
 static std::string ShiftJisToUtf8(const std::string& sjis)
@@ -78,10 +78,10 @@ static std::string StripCommentsAndWhitespace(const std::string& s)
 
 static bool IsDirectlyAfterMacro(const std::string& textAfterMacro, const std::smatch& m)
 {
-    // ƒ}ƒNƒ•Â‚¶Š‡ŒÊ ~ ƒL[ƒ[ƒh‚ÌŠÔ‚¾‚¯æ‚èo‚·
+    // ãƒã‚¯ãƒ­é–‰ã˜æ‹¬å¼§ ~ ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®é–“ã ã‘å–ã‚Šå‡ºã™
     std::string gap = textAfterMacro.substr(0, m.position(0));
     std::string stripped = StripCommentsAndWhitespace(gap);
-    // ‹ó”’E‰üsˆÈŠO‚ªc‚Á‚Ä‚¢‚½‚çu’¼Œã‚Å‚Í‚È‚¢v
+    // ç©ºç™½ãƒ»æ”¹è¡Œä»¥å¤–ãŒæ®‹ã£ã¦ã„ãŸã‚‰ã€Œç›´å¾Œã§ã¯ãªã„ã€
     return stripped.find_first_not_of(" \t\r\n") == std::string::npos;
 }
 
@@ -180,7 +180,7 @@ FileInfo Parser::ParseFile(const std::string& path)
 
     std::string content((std::istreambuf_iterator<char>(ifs)),
         std::istreambuf_iterator<char>());
-    content = ShiftJisToUtf8(content);
+    //content = ShiftJisToUtf8(content);
 
     std::string cleaned = RemoveComments(content);
 
@@ -206,7 +206,7 @@ std::vector<ClassInfo> Parser::ExtractClasses(const std::string& text)
     std::regex classRegex(
         R"((class)\s+(\w+)\s*((?:\s*:\s*(?:public|protected|private)\s+\w+(?:\s*,\s*(?:public|protected|private)\s+\w+)*)?)?\s*(?://[^\n]*)?\s*\{)"
     );
-    // struct ‚Í ExtractStructs ‚ª’S“–‚·‚é‚½‚ß class ‚Ì‚İ‚Éƒ}ƒbƒ`
+    // struct ã¯ ExtractStructs ãŒæ‹…å½“ã™ã‚‹ãŸã‚ class ã®ã¿ã«ãƒãƒƒãƒ
 
     auto begin = std::sregex_iterator(text.begin(), text.end(), classRegex);
     auto end = std::sregex_iterator();
@@ -278,7 +278,7 @@ void Parser::ExtractFields(const std::string& text, size_t classPos, ClassInfo& 
         field.name = m[2].str();
         field.attributes = attributes;
 
-		// Getter/Setter‘®«‚ª‚ ‚ê‚Î customGetter/customSetter ‚Éƒƒ\ƒbƒh–¼‚ğƒZƒbƒg
+		// Getter/Setterå±æ€§ãŒã‚ã‚Œã° customGetter/customSetter ã«ãƒ¡ã‚½ãƒƒãƒ‰åã‚’ã‚»ãƒƒãƒˆ
         for (const auto& attr : attributes)
         {
             if (attr.name == "Getter" && !attr.args.empty())
@@ -308,7 +308,7 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
         if (lineStart == std::string::npos) break;
         lineStart++;
 
-		// ; ‚© { ‚Ì‚Ç‚¿‚ç‚©‘‚¢•û‚ğs––‚Æ‚İ‚È‚·iŠÖ”éŒ¾‚¾‚¯‚Å‚È‚­’è‹`‚à‚ ‚é‚½‚ßj
+		// ; ã‹ { ã®ã©ã¡ã‚‰ã‹æ—©ã„æ–¹ã‚’è¡Œæœ«ã¨ã¿ãªã™ï¼ˆé–¢æ•°å®£è¨€ã ã‘ã§ãªãå®šç¾©ã‚‚ã‚ã‚‹ãŸã‚ï¼‰
 		size_t semicolonPos = text.find(';', lineStart);
 		size_t bracePos = text.find('{', lineStart);
 
@@ -329,7 +329,7 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
         std::string line = text.substr(lineStart, lineEnd - lineStart);
         Trim(line);
 
-        // const ƒƒ\ƒbƒh‚©‚Ç‚¤‚©‚ğ”»’è
+        // const ãƒ¡ã‚½ãƒƒãƒ‰ã‹ã©ã†ã‹ã‚’åˆ¤å®š
         std::regex constMethodRegex(R"(\)\s*const\s*$)");
         bool isConst = std::regex_search(line, constMethodRegex);
 
@@ -347,7 +347,7 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
         method.name = m[2].str();
 		method.isConst = isConst;
 		
-		// ƒtƒB[ƒ‹ƒh‚Ì Getter/Setter ‚Æ‚µ‚Ä’è‹`‚³‚ê‚Ä‚¢‚éƒƒ\ƒbƒh‚©‚Ç‚¤‚©‚ğ”»’è
+		// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã® Getter/Setter ã¨ã—ã¦å®šç¾©ã•ã‚Œã¦ã„ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã‹ã©ã†ã‹ã‚’åˆ¤å®š
         for (const auto& field : info.fields)
         {
             if (field.customGetter == method.name || field.customSetter == method.name)
@@ -357,11 +357,11 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
 			}
         }
 
-		// ˆø”ƒŠƒXƒg‚ğƒp[ƒX
+		// å¼•æ•°ãƒªã‚¹ãƒˆã‚’ãƒ‘ãƒ¼ã‚¹
         std::string argsStr = m[3].str();
-        // —á: "ForceMode mode = ForceMode::Force"  ¨  type="ForceMode", name="mode", default="ForceMode::Force"
-        // —á: "float value = 0.0f"                 ¨  type="float",     name="value", default="0.0f"
-		// —á: "const Vector3& position"            ¨  type="const Vector3&", name="position", default=""
+        // ä¾‹: "ForceMode mode = ForceMode::Force"  â†’  type="ForceMode", name="mode", default="ForceMode::Force"
+        // ä¾‹: "float value = 0.0f"                 â†’  type="float",     name="value", default="0.0f"
+		// ä¾‹: "const Vector3& position"            â†’  type="const Vector3&", name="position", default=""
         //std::regex argRegex (R"(([A-Za-z0-9_:<>]+(?:\s*[*&])?)\s+([A-Za-z0-9_]+)\s*(?:=\s*([^,]+))?)");
         std::regex argRegex (R"(((?:const\s+)?[A-Za-z0-9_:<>]+\s*[&*]*)\s+([A-Za-z0-9_]+)\s*(?:=\s*([^,)]+))?)");
         auto aIt = std::sregex_iterator(argsStr.begin(), argsStr.end(), argRegex);
@@ -396,7 +396,7 @@ void Parser::ExtractMethods(const std::string& text, size_t classPos, ClassInfo&
 
 // ============================================================
 //  ExtractEnums
-//  C_ENUM() ƒ}ƒNƒ‚Ì’¼Œã‚É‚ ‚é enum / enum class ‚ğ’Šo‚·‚é
+//  C_ENUM() ãƒã‚¯ãƒ­ã®ç›´å¾Œã«ã‚ã‚‹ enum / enum class ã‚’æŠ½å‡ºã™ã‚‹
 // ============================================================
 
 std::vector<EnumInfo> Parser::ExtractEnums(const std::string& text)
@@ -409,12 +409,12 @@ std::vector<EnumInfo> Parser::ExtractEnums(const std::string& text)
         pos = text.find("C_ENUM", pos);
         if (pos == std::string::npos) break;
 
-        // C_ENUM(...) ‚Ì•Â‚¶Š‡ŒÊ‚ÌŸ‚©‚ç enum ‚ğ’T‚·
+        // C_ENUM(...) ã®é–‰ã˜æ‹¬å¼§ã®æ¬¡ã‹ã‚‰ enum ã‚’æ¢ã™
         size_t afterMacro = text.find(')', pos);
         if (afterMacro == std::string::npos) break;
         afterMacro++;
 
-        // ‹ó”’E‰üs‚ğƒXƒLƒbƒv‚µ‚Ä enum / enum class ‚ğ’T‚·
+        // ç©ºç™½ãƒ»æ”¹è¡Œã‚’ã‚¹ã‚­ãƒƒãƒ—ã—ã¦ enum / enum class ã‚’æ¢ã™
 		std::string sub = text.substr(afterMacro);
         std::regex enumRegex(R"(\benum\s+(class\s+)?(\w+)\s*(?::\s*(\w+))?\s*\{)");
 		std::smatch m;
@@ -439,7 +439,7 @@ std::vector<EnumInfo> Parser::ExtractEnums(const std::string& text)
             << (info.isClass ? " (class)" : "")
             << " : " << info.underlyingType << "\n";
 
-        // ƒuƒƒbƒN“à‚ğæ“¾‚µ‚Äƒƒ“ƒo[‚ğ—ñ‹“
+        // ãƒ–ãƒ­ãƒƒã‚¯å†…ã‚’å–å¾—ã—ã¦ãƒ¡ãƒ³ãƒãƒ¼ã‚’åˆ—æŒ™
         size_t enumStart = afterMacro + m.position(0);
         auto [blockStart, blockEnd] = FindClassBlock(text, enumStart);
         if (blockStart == std::string::npos)
@@ -450,7 +450,7 @@ std::vector<EnumInfo> Parser::ExtractEnums(const std::string& text)
 
         std::string body = text.substr(blockStart + 1, blockEnd - blockStart - 1);
 
-        // "Name = Value," ‚Ü‚½‚Í "Name," ‚ğƒp[ƒX
+        // "Name = Value," ã¾ãŸã¯ "Name," ã‚’ãƒ‘ãƒ¼ã‚¹
         std::regex valueRegex(R"(\b([A-Za-z_]\w*)\s*(?:=\s*(-?\d+))?\s*[,}])");
         int nextValue = 0;
         auto vIt = std::sregex_iterator(body.begin(), body.end(), valueRegex);
@@ -482,7 +482,7 @@ std::vector<EnumInfo> Parser::ExtractEnums(const std::string& text)
 
 // ============================================================
 //  ExtractStructs
-//  C_STRUCT() ƒ}ƒNƒ‚Ì’¼Œã‚É‚ ‚é struct ‚ğ’Šo‚·‚é
+//  C_STRUCT() ãƒã‚¯ãƒ­ã®ç›´å¾Œã«ã‚ã‚‹ struct ã‚’æŠ½å‡ºã™ã‚‹
 // ============================================================
 
 std::vector<StructInfo> Parser::ExtractStructs(const std::string& text)
@@ -541,7 +541,7 @@ void Parser::ExtractStructFields(const std::string& text, size_t blockStart, siz
 {
     std::string body = text.substr(blockStart + 1, blockEnd - blockStart - 1);
 
-    // 1s‚¸‚Âˆ—
+    // 1è¡Œãšã¤å‡¦ç†
     std::istringstream stream(body);
     std::string line;
     while (std::getline(stream, line))
@@ -549,32 +549,32 @@ void Parser::ExtractStructFields(const std::string& text, size_t blockStart, siz
         Trim(line);
         if (line.empty()) continue;
 
-        // ƒƒ\ƒbƒhE‰‰ZqEƒRƒ“ƒXƒgƒ‰ƒNƒ^EƒfƒXƒgƒ‰ƒNƒ^‚ğœŠO
+        // ãƒ¡ã‚½ãƒƒãƒ‰ãƒ»æ¼”ç®—å­ãƒ»ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é™¤å¤–
         if (line.find('(') != std::string::npos) continue;
         if (line.find('~') != std::string::npos) continue;
         if (line.find("operator") != std::string::npos) continue;
 
-        // ƒZƒ~ƒRƒƒ“‚ÅI‚í‚és‚Ì‚İ‘ÎÛ
+        // ã‚»ãƒŸã‚³ãƒ­ãƒ³ã§çµ‚ã‚ã‚‹è¡Œã®ã¿å¯¾è±¡
         if (line.back() != ';') continue;
-        line.pop_back(); // ƒZƒ~ƒRƒƒ“œ‹
+        line.pop_back(); // ã‚»ãƒŸã‚³ãƒ­ãƒ³é™¤å»
         Trim(line);
 
-        // ƒ|ƒCƒ“ƒ^EQÆCüq‚ğœ‹iŒ^–¼‚Ì³‹K‰»j
-        // "float* x" ¨ "float x" / "const Vector3& v" ¨ "Vector3 v"
-        // const ‚àœ‹
+        // ãƒã‚¤ãƒ³ã‚¿ãƒ»å‚ç…§ä¿®é£¾å­ã‚’é™¤å»ï¼ˆå‹åã®æ­£è¦åŒ–ï¼‰
+        // "float* x" â†’ "float x" / "const Vector3& v" â†’ "Vector3 v"
+        // const ã‚‚é™¤å»
         std::string normalized = line;
-        // const ‚ğœ‹
+        // const ã‚’é™¤å»
         std::regex constRegex(R"(\bconst\b)");
         normalized = std::regex_replace(normalized, constRegex, "");
-        // * & ‚ğœ‹
+        // * & ã‚’é™¤å»
         for (char& c : normalized)
             if (c == '*' || c == '&') c = ' ';
         Trim(normalized);
-        // ˜A‘±ƒXƒy[ƒX‚ğ1‚Â‚É
+        // é€£ç¶šã‚¹ãƒšãƒ¼ã‚¹ã‚’1ã¤ã«
         normalized = std::regex_replace(normalized, std::regex(R"(\s+)"), " ");
 
-        // "Type Name" ‚Ü‚½‚Í "Type Name = defaultValue" ‚ğƒp[ƒX
-        // ƒfƒtƒHƒ‹ƒg’l•”•ª‚Í–³‹
+        // "Type Name" ã¾ãŸã¯ "Type Name = defaultValue" ã‚’ãƒ‘ãƒ¼ã‚¹
+        // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤éƒ¨åˆ†ã¯ç„¡è¦–
         std::regex fieldRegex(R"(^([A-Za-z0-9_:<>]+)\s+([A-Za-z0-9_]+)(?:\s*=.*)?$)");
         std::smatch m;
         if (!std::regex_match(normalized, m, fieldRegex)) continue;
@@ -582,7 +582,7 @@ void Parser::ExtractStructFields(const std::string& text, size_t blockStart, siz
         std::string type = m[1].str();
         std::string name = m[2].str();
 
-        // ƒAƒNƒZƒXw’èqEƒL[ƒ[ƒh‚ğœŠO
+        // ã‚¢ã‚¯ã‚»ã‚¹æŒ‡å®šå­ãƒ»ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’é™¤å¤–
         static const std::vector<std::string> keywords = {
             "public", "private", "protected", "static", "virtual",
             "inline", "explicit", "friend", "typedef", "using",

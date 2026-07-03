@@ -7,14 +7,14 @@
 
 static char pathBuffer[MAX_PATH];
 
-// [ƒtƒ@ƒCƒ‹‚ğŠJ‚­]ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ğ•\¦
+// [ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã]ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
 DialogResult Dialog::OpenFileName(char* filepath, int size, const char* filter, const char* title, HWND hWnd, bool multiSelect)
 {
-	// ‰ŠúƒpƒXİ’è
+	// åˆæœŸãƒ‘ã‚¹è¨­å®š
 	char dirname[MAX_PATH];
 	if (filepath[0] != '0')
 	{
-		// ƒfƒBƒŒƒNƒgƒŠƒpƒXæ“¾
+		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹å–å¾—
 		::_splitpath_s(filepath, nullptr, 0, dirname, MAX_PATH, nullptr, 0, nullptr, 0);
 	}
 	else
@@ -25,7 +25,7 @@ DialogResult Dialog::OpenFileName(char* filepath, int size, const char* filter, 
 	{
 		strcpy_s(dirname, MAX_PATH, pathBuffer);
 	}
-	// lpstrInitialDir ‚Í \ ‚Å‚È‚¢‚Æó‚¯•t‚¯‚È‚¢
+	// lpstrInitialDir ã¯ \ ã§ãªã„ã¨å—ã‘ä»˜ã‘ãªã„
 	for (char* p = dirname; *p != '\0'; p++)
 	{
 		if (*p == '/')
@@ -37,7 +37,7 @@ DialogResult Dialog::OpenFileName(char* filepath, int size, const char* filter, 
 		filter = "All Files\0*.*\0\0";
 	}
 
-	// \‘¢‘ÌƒZƒbƒg
+	// æ§‹é€ ä½“ã‚»ãƒƒãƒˆ
 	OPENFILENAMEA	ofn;
 	memset(&ofn, 0, sizeof(OPENFILENAMEA));
 	ofn.lStructSize = sizeof(OPENFILENAMEA);
@@ -54,29 +54,29 @@ DialogResult Dialog::OpenFileName(char* filepath, int size, const char* filter, 
 		ofn.Flags |= OFN_ALLOWMULTISELECT | OFN_EXPLORER;
 	}
 
-	// ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠæ“¾
+	// ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå–å¾—
 	char currentDir[MAX_PATH];
 	if (!::GetCurrentDirectoryA(MAX_PATH, currentDir))
 	{
 		currentDir[0] = '\0';
 	}
 
-	// ƒ_ƒCƒAƒƒOƒI[ƒvƒ“
+	// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚ªãƒ¼ãƒ—ãƒ³
 	if (::GetOpenFileNameA(&ofn) == FALSE)
 	{
 		return DialogResult::Cancel;
 	}
 
-	// ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠ•œ‹A
+	// ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå¾©å¸°
 	if (currentDir[0] != '\0')
 	{
 		::SetCurrentDirectoryA(currentDir);
 	}
 
-	// ÅIƒpƒX‚ğ‹L‰¯
+	// æœ€çµ‚ãƒ‘ã‚¹ã‚’è¨˜æ†¶
 	strcpy_s(pathBuffer, MAX_PATH, filepath);
 
-	//ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠ‚É‘Î‚·‚é‘Š‘ÎƒpƒX‚É•ÏŠ·
+	//ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«å¯¾ã™ã‚‹ç›¸å¯¾ãƒ‘ã‚¹ã«å¤‰æ›
 	char relativePath[MAX_PATH];
 	char baseDir[MAX_PATH];
 	if (::GetCurrentDirectoryA(MAX_PATH, baseDir)) {
@@ -86,21 +86,21 @@ DialogResult Dialog::OpenFileName(char* filepath, int size, const char* filter, 
 			FILE_ATTRIBUTE_DIRECTORY,
 			filepath,
 			FILE_ATTRIBUTE_NORMAL)) {
-			//‘Š‘ÎƒpƒX‚Ö‚Ì•ÏŠ·‚ª¬Œ÷‚µ‚½‚çfilepath‚ğã‘‚«
+			//ç›¸å¯¾ãƒ‘ã‚¹ã¸ã®å¤‰æ›ãŒæˆåŠŸã—ãŸã‚‰filepathã‚’ä¸Šæ›¸ã
 			strcpy_s(filepath, size, relativePath);
 		}
 	}
 	return DialogResult::OK;
 }
 
-// [ƒtƒ@ƒCƒ‹‚ğ•Û‘¶]ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ğ•\¦
+// [ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜]ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
 DialogResult Dialog::SaveFileName(char* filepath, int size, const char* filter, const char* title, const char* ext, HWND hWnd)
 {
-	// ‰ŠúƒpƒXİ’è
+	// åˆæœŸãƒ‘ã‚¹è¨­å®š
 	char dirname[MAX_PATH];
 	if (filepath[0] != '0')
 	{
-		// ƒfƒBƒŒƒNƒgƒŠƒpƒXæ“¾
+		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹å–å¾—
 		::_splitpath_s(filepath, nullptr, 0, dirname, MAX_PATH, nullptr, 0, nullptr, 0);
 	}
 	else
@@ -111,7 +111,7 @@ DialogResult Dialog::SaveFileName(char* filepath, int size, const char* filter, 
 	{
 		strcpy_s(dirname, MAX_PATH, pathBuffer);
 	}
-	// lpstrInitialDir ‚Í \ ‚Å‚È‚¢‚Æó‚¯•t‚¯‚È‚¢
+	// lpstrInitialDir ã¯ \ ã§ãªã„ã¨å—ã‘ä»˜ã‘ãªã„
 	for (char* p = dirname; *p != '\0'; p++)
 	{
 		if (*p == '/')
@@ -123,7 +123,7 @@ DialogResult Dialog::SaveFileName(char* filepath, int size, const char* filter, 
 		filter = "All Files\0*.*\0\0";
 	}
 
-	// \‘¢‘ÌƒZƒbƒg
+	// æ§‹é€ ä½“ã‚»ãƒƒãƒˆ
 	OPENFILENAMEA	ofn;
 	memset(&ofn, 0, sizeof(OPENFILENAMEA));
 	ofn.lStructSize = sizeof(OPENFILENAMEA);
@@ -137,29 +137,29 @@ DialogResult Dialog::SaveFileName(char* filepath, int size, const char* filter, 
 	ofn.lpstrDefExt = ext;
 	ofn.Flags = OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY;
 
-	// ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠæ“¾
+	// ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå–å¾—
 	char current_dir[MAX_PATH];
 	if (!::GetCurrentDirectoryA(MAX_PATH, current_dir))
 	{
 		current_dir[0] = '\0';
 	}
 
-	// ƒ_ƒCƒAƒƒOƒI[ƒvƒ“
+	// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚ªãƒ¼ãƒ—ãƒ³
 	if (::GetSaveFileNameA(&ofn) == FALSE)
 	{
 		return DialogResult::Cancel;
 	}
 
-	// ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠ•œ‹A
+	// ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå¾©å¸°
 	if (current_dir[0] != '\0')
 	{
 		::SetCurrentDirectoryA(current_dir);
 	}
 
-	// ÅIƒpƒX‚ğ‹L‰¯
+	// æœ€çµ‚ãƒ‘ã‚¹ã‚’è¨˜æ†¶
 	strcpy_s(pathBuffer, MAX_PATH, filepath);
 
-	//ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠ‚É‘Î‚·‚é‘Š‘ÎƒpƒX‚É•ÏŠ·
+	//ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«å¯¾ã™ã‚‹ç›¸å¯¾ãƒ‘ã‚¹ã«å¤‰æ›
 	char relativePath[MAX_PATH];
 	char baseDir[MAX_PATH];
 	if (::GetCurrentDirectoryA(MAX_PATH, baseDir)) {
@@ -169,7 +169,7 @@ DialogResult Dialog::SaveFileName(char* filepath, int size, const char* filter, 
 			FILE_ATTRIBUTE_DIRECTORY,
 			filepath,
 			FILE_ATTRIBUTE_NORMAL)) {
-			//‘Š‘ÎƒpƒX‚Ö‚Ì•ÏŠ·‚ª¬Œ÷‚µ‚½‚çfilepath‚ğã‘‚«
+			//ç›¸å¯¾ãƒ‘ã‚¹ã¸ã®å¤‰æ›ãŒæˆåŠŸã—ãŸã‚‰filepathã‚’ä¸Šæ›¸ã
 			strcpy_s(filepath, size, relativePath);
 		}
 	}
@@ -180,13 +180,13 @@ DialogResult Dialog::SaveFileName(char* filepath, int size, const char* filter, 
 static std::string OpenFolderDialog(HWND hWnd, const char* title)
 {
 	std::string folderPath;
-	// IFileDialog ‚ğg—p‚µ‚ÄƒtƒHƒ‹ƒ_‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦
+	// IFileDialog ã‚’ä½¿ç”¨ã—ã¦ãƒ•ã‚©ãƒ«ãƒ€é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤º
 	IFileDialog* pFileDialog = nullptr;
 	HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pFileDialog));
 	if (FAILED(hr)) {
 		return folderPath;
 	}
-	// ƒtƒHƒ‹ƒ_‘I‘ğƒ‚[ƒh‚ğ—LŒø‚É‚·‚é
+	// ãƒ•ã‚©ãƒ«ãƒ€é¸æŠãƒ¢ãƒ¼ãƒ‰ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 	DWORD dwOptions = 0;
 	pFileDialog->GetOptions(&dwOptions);
 	pFileDialog->SetOptions(dwOptions | FOS_PICKFOLDERS);
@@ -200,10 +200,10 @@ static std::string OpenFolderDialog(HWND hWnd, const char* title)
 		if (SUCCEEDED(pFileDialog->GetResult(&pItem))) {
 			PWSTR pszFolderPath = nullptr;
 			if (SUCCEEDED(pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFolderPath))) {
-				// wstring ‚©‚ç string (UTF-8) ‚É•ÏŠ·
+				// wstring ã‹ã‚‰ string (UTF-8) ã«å¤‰æ›
 				int len = WideCharToMultiByte(CP_UTF8, 0, pszFolderPath, -1,
 					nullptr, 0, nullptr, nullptr);
-				folderPath.resize(static_cast<size_t>(len - 1)); // null terminator ‚ğœ‚­
+				folderPath.resize(static_cast<size_t>(len - 1)); // null terminator ã‚’é™¤ã
 				WideCharToMultiByte(CP_UTF8, 0, pszFolderPath, -1,
 					folderPath.data(), len, nullptr, nullptr);
 
@@ -219,7 +219,7 @@ static std::string OpenFolderDialog(HWND hWnd, const char* title)
 
 
 
-// [ƒfƒBƒŒƒNƒgƒŠ‚ğ‘I‘ğ]ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ğ•\¦
+// [ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é¸æŠ]ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
 DialogResult Dialog::SelectDirectoryName(char* directoryPath, int size, const char* title, HWND hWnd)
 {
 	std::string folderPath = OpenFolderDialog(hWnd, title);
@@ -230,7 +230,7 @@ DialogResult Dialog::SelectDirectoryName(char* directoryPath, int size, const ch
 	return DialogResult::Cancel;
 }
 
-// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒ_ƒCƒAƒƒO‚ğ•\¦‚µA‘I‘ğ‚³‚ê‚½ƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Ô‚·i“à•”‚ÅDialogƒNƒ‰ƒX‚ğg—pj
+// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã€é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™ï¼ˆå†…éƒ¨ã§Dialogã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ï¼‰
 char* OpenFileDialog(const char* filter, const char* title, HWND hWnd, bool multiSelect)
 {
 	static char filepath[MAX_PATH] = "";
@@ -240,7 +240,7 @@ char* OpenFileDialog(const char* filter, const char* title, HWND hWnd, bool mult
 	return nullptr;
 }
 
-// ƒtƒ@ƒCƒ‹ƒZ[ƒuƒ_ƒCƒAƒƒO‚ğ•\¦‚µA‘I‘ğ‚³‚ê‚½ƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Ô‚·i“à•”‚ÅDialogƒNƒ‰ƒX‚ğg—pj
+// ãƒ•ã‚¡ã‚¤ãƒ«ã‚»ãƒ¼ãƒ–ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã€é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™ï¼ˆå†…éƒ¨ã§Dialogã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ï¼‰
 char* SaveFileDialog(const char* filter, const char* title, const char* ext, HWND hWnd)
 {
 	static char filepath[MAX_PATH] = "";
@@ -250,7 +250,7 @@ char* SaveFileDialog(const char* filter, const char* title, const char* ext, HWN
 	return nullptr;
 }
 
-// ƒtƒ@ƒCƒ‹‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦‚µA‘I‘ğ‚³‚ê‚½ƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Ô‚·i“à•”‚ÅDialogƒNƒ‰ƒX‚ğg—pj
+// ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã€é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™ï¼ˆå†…éƒ¨ã§Dialogã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ï¼‰
 char* SelectFileDialog(const char* title, const char* filter, HWND hWnd, bool multiSelect)
 {
 	static char filepath[MAX_PATH] = "";
@@ -260,7 +260,7 @@ char* SelectFileDialog(const char* title, const char* filter, HWND hWnd, bool mu
 	return nullptr;
 }
 
-// ƒfƒBƒŒƒNƒgƒŠ‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦‚µA‘I‘ğ‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠƒpƒX‚ğ•Ô‚·i“à•”‚ÅDialogƒNƒ‰ƒX‚ğg—pj
+// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªé¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã€é¸æŠã•ã‚ŒãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹ã‚’è¿”ã™ï¼ˆå†…éƒ¨ã§Dialogã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ï¼‰
 char* SelectDirectoryDialog(const char* title, HWND hWnd)
 {
 	static char directoryPath[MAX_PATH] = "";

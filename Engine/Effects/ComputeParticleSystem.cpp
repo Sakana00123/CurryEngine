@@ -10,19 +10,19 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView, DirectX::XMUINT2 splitCount)
 {
 	HRESULT hr;
-	//ƒoƒCƒgƒjƒbƒNƒ\[ƒg‚Ìd—lãA‚Q‚Ì—İæ‚É‚µ‚Ä‚¨‚©‚È‚¢‚Æ‚¢‚¯‚È‚¢‚½‚ßAƒp[ƒeƒBƒNƒ‹”‚ğ•â³
+	//ãƒã‚¤ãƒˆãƒ‹ãƒƒã‚¯ã‚½ãƒ¼ãƒˆã®ä»•æ§˜ä¸Šã€ï¼’ã®ç´¯ä¹—ã«ã—ã¦ãŠã‹ãªã„ã¨ã„ã‘ãªã„ãŸã‚ã€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ•°ã‚’è£œæ­£
 	float f_exponent = log2f(static_cast<float>(particlesCount));
 	int exponent = static_cast<int>(ceilf(f_exponent) + 0.5f);
 	particlesCount = static_cast<UINT>(pow(2, exponent) + 0.5f);
 	particlesCount = max(min(particlesCount, 1 << 27), 1 << 7);
 
-	//ƒp[ƒeƒBƒNƒ‹”‚ğƒXƒŒƒbƒh”‚É‡‚í‚¹‚Ä§ŒÀ
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ•°ã‚’ã‚¹ãƒ¬ãƒƒãƒ‰æ•°ã«åˆã‚ã›ã¦åˆ¶é™
 	numParticles = ((particlesCount + (NumParticleThread - 1)) / NumParticleThread) * NumParticleThread;
 	numEmitParticles = numParticles;
 	textureSplitCount = splitCount;
 	oneShotInitialize = false;
 
-	//’è”ƒoƒbƒtƒ@
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	{
 		D3D11_BUFFER_DESC bufferDesc{};
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -42,7 +42,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		}
 	}
 
-	//ƒp[ƒeƒBƒNƒ‹ƒoƒbƒtƒ@¶¬
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	{
 		D3D11_BUFFER_DESC desc{};
 		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
@@ -59,7 +59,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 	}
 
-	//ƒp[ƒeƒBƒNƒ‹ƒwƒbƒ_[ƒoƒbƒtƒ@
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒ˜ãƒƒãƒ€ãƒ¼ãƒãƒƒãƒ•ã‚¡
 	{
 		D3D11_BUFFER_DESC desc{};
 		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
@@ -76,7 +76,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 	}
 
-	//ƒp[ƒeƒBƒNƒ‹‚Ì¶¬/”jŠü”Ô†‚ğ—­‚ß‚Şƒoƒbƒtƒ@¶¬
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®ç”Ÿæˆ/ç ´æ£„ç•ªå·ã‚’æºœã‚è¾¼ã‚€ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	{
 		D3D11_BUFFER_DESC desc{};
 		desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;
@@ -87,7 +87,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		hr = device->CreateBuffer(&desc, nullptr, particleAppendConsumeBuffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-		//Append/Consume‚ğ—˜—p‚·‚éê‡‚Íƒrƒ…[‘¤‚Éƒtƒ‰ƒO‚ğ—§‚Ä‚é
+		//Append/Consumeã‚’åˆ©ç”¨ã™ã‚‹å ´åˆã¯ãƒ“ãƒ¥ãƒ¼å´ã«ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 		D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc{};
 		uavDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 		uavDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -98,7 +98,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 	}
 
-	//ƒp[ƒeƒBƒNƒ‹ƒGƒ~ƒbƒg—pƒoƒbƒtƒ@¶¬
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚¨ãƒŸãƒƒãƒˆç”¨ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	{
 		D3D11_BUFFER_DESC desc{};
 		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
@@ -116,7 +116,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 	}
 
-	//ƒp[ƒeƒBƒNƒ‹‚ÌXVE•`‰æ”‚ÌíŒ¸‚Ì‚½‚ß‚Ìƒoƒbƒtƒ@
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æ›´æ–°ãƒ»æç”»æ•°ã®å‰Šæ¸›ã®ãŸã‚ã®ãƒãƒƒãƒ•ã‚¡
 	{
 		D3D11_BUFFER_DESC desc{};
 		desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;
@@ -126,7 +126,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		D3D11_SUBRESOURCE_DATA initializeData{};
 		std::vector<UINT> initializeBuffer(desc.ByteWidth / sizeof(UINT));
 		{
-			//‰Šú’lİ’è
+			//åˆæœŸå€¤è¨­å®š
 			DrawIndirect* drawData = reinterpret_cast<DrawIndirect*>(initializeBuffer.data() + DrawIndirectOffset / sizeof(UINT));
 			drawData->vertexCountPerInstance = numParticles;
 			drawData->instanceCount = 1;
@@ -134,7 +134,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 			drawData->startInstanceLocation = 0;
 		}
 
-		//‰Šú‰»‚µ‚Ä‚¨‚­
+		//åˆæœŸåŒ–ã—ã¦ãŠã
 		{
 			UINT index = NumEmitPixelParticleIndirectOffset / sizeof(UINT);
 			initializeBuffer[index] = 0;
@@ -145,7 +145,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		hr = device->CreateBuffer(&desc, &initializeData, indirectDataBuffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-		//Append/Consume‚ğ—˜—p‚·‚éê‡‚Íƒrƒ…[‘¤‚Éƒtƒ‰ƒO‚ğ—§‚Ä‚é
+		//Append/Consumeã‚’åˆ©ç”¨ã™ã‚‹å ´åˆã¯ãƒ“ãƒ¥ãƒ¼å´ã«ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 		D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc{};
 		uavDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 		uavDesc.Format = DXGI_FORMAT_R32_TYPELESS;
@@ -156,7 +156,7 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 	}
 
-	//ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_[“Ç‚İ‚İ
+	//ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼èª­ã¿è¾¼ã¿
 	std::string dir = EnginePaths::ShadersDataDir;
 	CreateComputeShaderFromCSO(device, (dir + "ComputeParticleInitCS.cso").c_str(), initShader.GetAddressOf());
 	CreateComputeShaderFromCSO(device, (dir + "ComputeParticleEmitCS.cso").c_str(), emitShader.GetAddressOf());
@@ -167,17 +167,17 @@ ComputeParticleSystem::ComputeParticleSystem(ID3D11Device* device, UINT particle
 	CreateComputeShaderFromCSO(device, (dir + "ComputeParticleBitonicSortB2CS.cso").c_str(), sortB2Shader.GetAddressOf());
 	CreateComputeShaderFromCSO(device, (dir + "ComputeParticleBitonicSortC2CS.cso").c_str(), sortC2Shader.GetAddressOf());
 
-	//•`‰æ—pî•ñ¶¬
+	//æç”»ç”¨æƒ…å ±ç”Ÿæˆ
 	this->shaderResourceView = shaderResourceView;
 	CreateVertexShaderFromCSO(device,	(dir + "ComputeParticleRenderVS.cso").c_str(), vertexShader.GetAddressOf(), nullptr, nullptr, 0);
 	CreateGeometryShaderFromCSO(device, (dir + "ComputeParticleRenderGS.cso").c_str(), geometryShader.GetAddressOf());
 	CreatePixelShaderFromCSO(device,	(dir + "ComputeParticleRenderPS.cso").c_str(), pixelShader.GetAddressOf());
 
 
-	// ƒOƒ‰ƒf[ƒVƒ‡ƒ“‰Šú‰»
+	// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³åˆæœŸåŒ–
 	InitGradientTexture(device);
 
-	// ‘SƒXƒƒbƒg‚ğƒfƒtƒHƒ‹ƒgi”’A•s“§–¾j‚Å‰Šú‰»
+	// å…¨ã‚¹ãƒ­ãƒƒãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆï¼ˆç™½ã€ä¸é€æ˜ï¼‰ã§åˆæœŸåŒ–
 	{
 		ImGradientHDRState defaultState{};
 		defaultState.AddColorMarker(0.0f, { 1.0f, 1.0f, 1.0f }, 1.0f);
@@ -208,24 +208,24 @@ void ComputeParticleSystem::Emit(const EmitParticleData& data)
 		return;
 
 	if (data.parameter.z <= 0) {
-		//’x‰„‚È‚µ‚È‚ç’¼Ú’Ç‰Á
+		//é…å»¶ãªã—ãªã‚‰ç›´æ¥è¿½åŠ 
 		emitParticles.emplace_back(data);
 	}
 	else {
-		//•Û—¯ƒŠƒXƒg‚É’Ç‰Á
+		//ä¿ç•™ãƒªã‚¹ãƒˆã«è¿½åŠ 
 		pendingParticles.emplace_back(data);
 	}
 }
 
 void ComputeParticleSystem::PixelEmitBegin(ID3D11DeviceContext* immediateContext, float deltaTime)
 {
-	//’è”ƒoƒbƒtƒ@İ’è
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	{
 		immediateContext->PSSetConstantBuffers(10, 1, commonConstantBuffer.GetAddressOf());
 		immediateContext->CSSetConstantBuffers(10, 1, commonConstantBuffer.GetAddressOf());
 		immediateContext->CSSetConstantBuffers(11, 1, bitonicSortConstantBuffer.GetAddressOf());
 
-		//’è”ƒoƒbƒtƒ@XV
+		//å®šæ•°ãƒãƒƒãƒ•ã‚¡æ›´æ–°
 		CommonConstants constant;
 		constant.textureSplitCount = textureSplitCount;
 		constant.systemNumParticles = numParticles;
@@ -234,7 +234,7 @@ void ComputeParticleSystem::PixelEmitBegin(ID3D11DeviceContext* immediateContext
 		immediateContext->UpdateSubresource(commonConstantBuffer.Get(), 0, nullptr, &constant, 0, 0);
 	}
 
-	//‰Šú‰»ˆ—
+	//åˆæœŸåŒ–å‡¦ç†
 	if (!oneShotInitialize)
 	{
 		oneShotInitialize = true;
@@ -242,7 +242,7 @@ void ComputeParticleSystem::PixelEmitBegin(ID3D11DeviceContext* immediateContext
 		immediateContext->Dispatch(numParticles / NumParticleThread, 1, 1);
 	}
 
-	//ƒsƒNƒZƒ‹ƒGƒ~ƒbƒ^[‚Ìˆ—
+	//ãƒ”ã‚¯ã‚»ãƒ«ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ã®å‡¦ç†
 	ID3D11UnorderedAccessView* uavs[] =
 	{
 		particleEmitUnordredAccessView.Get(),
@@ -260,7 +260,7 @@ void ComputeParticleSystem::PixelEmitEnd(ID3D11DeviceContext* immediateContext)
 
 void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float deltaTime)
 {
-	//•Û—¯ƒŠƒXƒg‚Ìƒp[ƒeƒBƒNƒ‹‚Ìˆ—
+	//ä¿ç•™ãƒªã‚¹ãƒˆã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®å‡¦ç†
 	{
 		for (size_t i = 0; i < pendingParticles.size();)
 		{
@@ -270,10 +270,10 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 			{
 				emitParticles.emplace_back(data);
 
-				//ÅŒã‚Ì—v‘f‚ÆŒğŠ·‚µ‚Äíœ
+				//æœ€å¾Œã®è¦ç´ ã¨äº¤æ›ã—ã¦å‰Šé™¤
 				data = pendingParticles.back();
 				pendingParticles.pop_back();
-				//ƒCƒ“ƒfƒbƒNƒX‚Í‚»‚Ì‚Ü‚ÜiÅŒã‚©‚ç‚Á‚Ä‚«‚½—v‘f‚ğÄ•]‰¿j
+				//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¯ãã®ã¾ã¾ï¼ˆæœ€å¾Œã‹ã‚‰æŒã£ã¦ããŸè¦ç´ ã‚’å†è©•ä¾¡ï¼‰
 			}
 			else {
 				i++;
@@ -282,9 +282,9 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 		
 	}
 
-	//’è”ƒoƒbƒtƒ@İ’è
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	{
-		//’è”ƒoƒbƒtƒ@XV
+		//å®šæ•°ãƒãƒƒãƒ•ã‚¡æ›´æ–°
 		CommonConstants constant;
 		constant.textureSplitCount = textureSplitCount;
 		constant.systemNumParticles = numParticles;
@@ -297,7 +297,7 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 
 	}
 
-	//SRV/UAVİ’è
+	//SRV/UAVè¨­å®š
 	{
 		immediateContext->CSSetShaderResources(0, 1, particleEmitShaderResourceView.GetAddressOf());
 
@@ -305,7 +305,7 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 		immediateContext->CSSetShaderResources(1, 1, gradientTextureSRV.GetAddressOf());
 
 
-		//Append/Consumeƒoƒbƒtƒ@‰Šú‰»ˆ—
+		//Append/Consumeãƒãƒƒãƒ•ã‚¡åˆæœŸåŒ–å‡¦ç†
 		if (!oneShotInitialize)
 		{
 			UINT clearParameter = 0;
@@ -322,7 +322,7 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 		immediateContext->CSSetUnorderedAccessViews(0, ARRAYSIZE(uavs), uavs, nullptr);
 	}
 
-	//‰Šú‰»ˆ—
+	//åˆæœŸåŒ–å‡¦ç†
 	if (!oneShotInitialize)
 	{
 		oneShotInitialize = true;
@@ -330,17 +330,17 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 		immediateContext->Dispatch(numParticles / NumParticleThread, 1, 1);
 	}
 
-	//ƒtƒŒ[ƒ€ŠJn‚Ìˆ—
+	//ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹æ™‚ã®å‡¦ç†
 	{
-		//Œ»İƒtƒŒ[ƒ€‚Å‚Ìƒp[ƒeƒBƒNƒ‹‘”‚ğZo
-		//‚»‚ê‚É‡‚í‚¹‚ÄŠeíİ’è‚ğs‚¤
+		//ç¾åœ¨ãƒ•ãƒ¬ãƒ¼ãƒ ã§ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç·æ•°ã‚’ç®—å‡º
+		//ãã‚Œã«åˆã‚ã›ã¦å„ç¨®è¨­å®šã‚’è¡Œã†
 		immediateContext->CSSetShader(beginFrameShader.Get(), nullptr, 0);
 		immediateContext->Dispatch(1, 1, 1);
 	}
 
-	//ƒGƒ~ƒbƒgˆ—
+	//ã‚¨ãƒŸãƒƒãƒˆå‡¦ç†
 	{
-		//ƒGƒ~ƒbƒgƒoƒbƒtƒ@XV
+		//ã‚¨ãƒŸãƒƒãƒˆãƒãƒƒãƒ•ã‚¡æ›´æ–°
 		if (!emitParticles.empty())
 		{
 			D3D11_BOX writeBox{};
@@ -363,15 +363,15 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 		immediateContext->DispatchIndirect(indirectDataBuffer.Get(), EmitDispatchIndirectOffset);
 	}
 
-	//XVˆ—
+	//æ›´æ–°å‡¦ç†
 	{
 		immediateContext->CSSetShader(updateShader.Get(), nullptr, 0);
 		immediateContext->DispatchIndirect(indirectDataBuffer.Get(), UpdateDispatchIndirectOffset);
 	}
 
 	{
-		//ƒ\[ƒgˆ—
-		//ƒoƒCƒgƒjƒbƒNƒ\[ƒg
+		//ã‚½ãƒ¼ãƒˆå‡¦ç†
+		//ãƒã‚¤ãƒˆãƒ‹ãƒƒã‚¯ã‚½ãƒ¼ãƒˆ
 		float f_exponent = log2f(static_cast<float>(numParticles));
 		UINT exponent = static_cast<UINT>(ceilf(f_exponent) + 0.5f);
 		for (UINT i = 0; i < exponent; ++i)
@@ -398,14 +398,14 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 		}
 	}
 
-	//ƒtƒŒ[ƒ€I—¹‚Ìˆ—
+	//ãƒ•ãƒ¬ãƒ¼ãƒ çµ‚äº†æ™‚ã®å‡¦ç†
 	{
-		//‘ƒp[ƒeƒBƒNƒ‹”‚ğ•Ï“®‚³‚¹‚é
+		//ç·ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ•°ã‚’å¤‰å‹•ã•ã›ã‚‹
 		immediateContext->CSSetShader(endFrameShader.Get(), nullptr, 0);
 		immediateContext->Dispatch(1, 1, 1);
 	}
 
-	//NULL‚ÌUAVİ’è
+	//NULLã®UAVè¨­å®š
 	{
 		ID3D11UnorderedAccessView* uavs[] = { nullptr, nullptr, nullptr, nullptr };
 		immediateContext->CSSetUnorderedAccessViews(0, ARRAYSIZE(uavs), uavs, nullptr);
@@ -414,39 +414,39 @@ void ComputeParticleSystem::Update(ID3D11DeviceContext* immediateContext, float 
 
 void ComputeParticleSystem::Render(ID3D11DeviceContext* immediateContext)
 {
-	//“_•`‰æİ’è
+	//ç‚¹æç”»è¨­å®š
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
-	//ƒVƒF[ƒ_[İ’è
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¨­å®š
 	immediateContext->VSSetShader(vertexShader.Get(), nullptr, 0);
 	immediateContext->GSSetShader(geometryShader.Get(), nullptr, 0);
 	immediateContext->PSSetShader(pixelShader.Get(), nullptr, 0);
 
-	//“ü—ÍƒŒƒCƒAƒEƒgİ’è
+	//å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®š
 	immediateContext->IASetInputLayout(nullptr);
 
-	//ƒŠƒ\[ƒXİ’è
+	//ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	immediateContext->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
 	immediateContext->GSSetShaderResources(0, 1, particleDataShaderResourceView.GetAddressOf());
 	immediateContext->GSSetShaderResources(1, 1, particleHeaderShaderResourceView.GetAddressOf());
 
-	//ƒoƒbƒtƒ@ƒNƒŠƒA
+	//ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	ID3D11Buffer* clearBuffer[] = { nullptr };
 	UINT strides[] = { 0 };
 	UINT offsets[] = { 0 };
 	immediateContext->IASetVertexBuffers(0, 1, clearBuffer, strides, offsets);
 	immediateContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
 
-	//GPU‘¤‚ÅŒvZ‚µ‚½ƒp[ƒeƒBƒNƒ‹‚Ì•`‰æ”‚ğCPU‘¤‚Åæ“¾‚µ‚Ä•`‰æƒR[ƒ‹‚ğŒÄ‚Ño‚·‚Ì‚Í‚à‚Á‚½‚¢‚È‚¢‚Ì‚ÅA
-	// DrawIndirect–½—ß‚ğg‚Á‚ÄGPU‘¤‚¾‚¯‚Åˆ—‚³‚¹‚é
+	//GPUå´ã§è¨ˆç®—ã—ãŸãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æç”»æ•°ã‚’CPUå´ã§å–å¾—ã—ã¦æç”»ã‚³ãƒ¼ãƒ«ã‚’å‘¼ã³å‡ºã™ã®ã¯ã‚‚ã£ãŸã„ãªã„ã®ã§ã€
+	// DrawIndirectå‘½ä»¤ã‚’ä½¿ã£ã¦GPUå´ã ã‘ã§å‡¦ç†ã•ã›ã‚‹
 	immediateContext->DrawInstancedIndirect(indirectDataBuffer.Get(), DrawIndirectOffset);
 
-	//ƒVƒF[ƒ_[–³Œø‰»
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç„¡åŠ¹åŒ–
 	immediateContext->VSSetShader(nullptr, nullptr, 0);
 	immediateContext->GSSetShader(nullptr, nullptr, 0);
 	immediateContext->PSSetShader(nullptr, nullptr, 0);
 
-	//ƒŠƒ\[ƒXƒNƒŠƒA
+	//ãƒªã‚½ãƒ¼ã‚¹ã‚¯ãƒªã‚¢
 	ID3D11ShaderResourceView* clearShaderResourceViews[] = { nullptr, nullptr };
 	immediateContext->PSSetShaderResources(0, 2, clearShaderResourceViews);
 	immediateContext->GSSetShaderResources(0, 2, clearShaderResourceViews);
@@ -464,12 +464,12 @@ void ComputeParticleSystem::DrawGUI()
 
 void ComputeParticleSystem::InitGradientTexture(ID3D11Device* device)
 {
-	// --- Texture1D Array ì¬ ---
+	// --- Texture1D Array ä½œæˆ ---
 	D3D11_TEXTURE1D_DESC texDesc{};
 	texDesc.Width = GradientResolution;
 	texDesc.MipLevels = 1;
 	texDesc.ArraySize = MaxGradientSlots;
-	texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // HDR‘Î‰
+	texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // HDRå¯¾å¿œ
 	texDesc.Usage = D3D11_USAGE_DEFAULT;
 	texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	texDesc.CPUAccessFlags = 0;
@@ -478,7 +478,7 @@ void ComputeParticleSystem::InitGradientTexture(ID3D11Device* device)
 	HRESULT hr = device->CreateTexture1D(&texDesc, nullptr, gradientTexture.GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), L"Failed to create gradient Texture1DArray");
 
-	// --- SRV ì¬ ---
+	// --- SRV ä½œæˆ ---
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE1DARRAY;
@@ -496,7 +496,7 @@ void ComputeParticleSystem::SetGradient(UINT slot, const ImGradientHDRState& sta
 {
 	_ASSERT_EXPR(slot < MaxGradientSlots, L"Gradient slot out of range");
 
-	// --- CPU‘¤‚ÅƒeƒNƒZƒ‹—ñ‚ğƒxƒCƒN ---
+	// --- CPUå´ã§ãƒ†ã‚¯ã‚»ãƒ«åˆ—ã‚’ãƒ™ã‚¤ã‚¯ ---
 	std::array<std::array<float, 4>, GradientResolution> texels{};
 	for (UINT i = 0; i < GradientResolution; ++i)
 	{
@@ -505,12 +505,12 @@ void ComputeParticleSystem::SetGradient(UINT slot, const ImGradientHDRState& sta
 		texels[i] = c;
 	}
 
-	// --- ŠY“–ƒXƒƒbƒgiArraySlicej‚¾‚¯ UpdateSubresource ‚Åã‘‚« ---
+	// --- è©²å½“ã‚¹ãƒ­ãƒƒãƒˆï¼ˆArraySliceï¼‰ã ã‘ UpdateSubresource ã§ä¸Šæ›¸ã ---
 	// SubresourceIndex = MipSlice + (ArraySlice * MipLevels)
 	//                  = 0        + (slot       * 1         )
 	UINT subresource = D3D11CalcSubresource(0, slot, 1);
 
-	// immediateContext ‚ª•K—v‚È‚½‚ßADevice ‚©‚çæ“¾
+	// immediateContext ãŒå¿…è¦ãªãŸã‚ã€Device ã‹ã‚‰å–å¾—
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
 	Microsoft::WRL::ComPtr<ID3D11Device> device;
 	gradientTexture->GetDevice(device.GetAddressOf());
@@ -519,9 +519,9 @@ void ComputeParticleSystem::SetGradient(UINT slot, const ImGradientHDRState& sta
 	context->UpdateSubresource(
 		gradientTexture.Get(),
 		subresource,
-		nullptr,                      // pDstBox = nullptr ¨ ƒXƒƒbƒg‘S‘Ì
+		nullptr,                      // pDstBox = nullptr â†’ ã‚¹ãƒ­ãƒƒãƒˆå…¨ä½“
 		texels.data(),
-		sizeof(float) * 4 * GradientResolution, // RowPitch   (1D ‚È‚Ì‚ÅÀ¿•sg—p‚¾‚ª•K—v)
-		0                             // DepthPitch (1D ‚È‚Ì‚Å 0 ‚Å‚æ‚¢)
+		sizeof(float) * 4 * GradientResolution, // RowPitch   (1D ãªã®ã§å®Ÿè³ªä¸ä½¿ç”¨ã ãŒå¿…è¦)
+		0                             // DepthPitch (1D ãªã®ã§ 0 ã§ã‚ˆã„)
 	);
 }

@@ -11,10 +11,10 @@ namespace CurryEngine
 	UndoRedoStack& History::GetUndoRedoStack()
 	{
 		Scene* currentScene = SceneManager::GetCurrentScene();
-		if (currentScene) { // ���݂̃V�[�������݂���ꍇ�́A���̃V�[����UndoRedoStack��Ԃ�
+		if (currentScene) { // 現在のシーンが存在する場合は、そのシーンのUndoRedoStackを返す
 			return currentScene->undoRedoStack;
 		}
-		static UndoRedoStack dummyStack; // �V�[�����Ȃ��ꍇ�̃_�~�[
+		static UndoRedoStack dummyStack; // シーンがない場合のダミー
 		return dummyStack;
 	}
 }

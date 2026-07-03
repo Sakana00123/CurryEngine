@@ -8,26 +8,26 @@ REGISTER_COMPONENT(TrailRenderer, "Renderer");
 
 void TrailRenderer::Initialize()
 {
-	// ƒgƒŒƒCƒ‹ƒŒƒ“ƒ_ƒ‰[‚Ì‰Šú‰»ƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
-	// —á: ’¸“_ƒoƒbƒtƒ@‚Ìì¬AƒVƒF[ƒ_[‚Ìƒ[ƒh‚È‚Ç
+	// ãƒˆãƒ¬ã‚¤ãƒ«ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã®åˆæœŸåŒ–ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
+	// ä¾‹: é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆã€ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰ãªã©
 
 }
 
 void TrailRenderer::Update(float deltaTime)
 {
-	// ƒgƒŒƒCƒ‹‚ÌXVƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
-	// —á: ’¸“_‚ÌˆÊ’u‚âF‚ÌXVAõ–½‚ÌŠÇ—‚È‚Ç
+	// ãƒˆãƒ¬ã‚¤ãƒ«ã®æ›´æ–°ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
+	// ä¾‹: é ‚ç‚¹ã®ä½ç½®ã‚„è‰²ã®æ›´æ–°ã€å¯¿å‘½ã®ç®¡ç†ãªã©
 
 	for (auto& segment : segments)
 	{
 		segment.age += deltaTime;
-		segment.color.a = std::max(0.0f, 1.0f - (segment.age / fadeDuration)); // Œo‰ßŠÔ‚É‰‚¶‚ÄƒAƒ‹ƒtƒ@’l‚ğŒ¸­
+		segment.color.a = std::max(0.0f, 1.0f - (segment.age / fadeDuration)); // çµŒéæ™‚é–“ã«å¿œã˜ã¦ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã‚’æ¸›å°‘
 	}
 	for (auto it = segments.begin(); it != segments.end();)
 	{
 		if (it->age >= fadeDuration)
 		{
-			it = segments.erase(it); // õ–½‚ªs‚«‚½ƒZƒOƒƒ“ƒg‚ğíœ
+			it = segments.erase(it); // å¯¿å‘½ãŒå°½ããŸã‚»ã‚°ãƒ¡ãƒ³ãƒˆã‚’å‰Šé™¤
 		}
 		else
 		{
@@ -35,7 +35,7 @@ void TrailRenderer::Update(float deltaTime)
 		}
 	}
 
-	if (segments.empty() || (GetTransform()->GetWorldPosition() - lastPosition).Length() > trailThreshold) // ˆê’è‹——£ˆÈãˆÚ“®‚µ‚½‚çV‚µ‚¢ƒZƒOƒƒ“ƒg‚ğ’Ç‰Á
+	if (segments.empty() || (GetTransform()->GetWorldPosition() - lastPosition).Length() > trailThreshold) // ä¸€å®šè·é›¢ä»¥ä¸Šç§»å‹•ã—ãŸã‚‰æ–°ã—ã„ã‚»ã‚°ãƒ¡ãƒ³ãƒˆã‚’è¿½åŠ 
 	{
 		TrailSegment newSegment;
 		newSegment.position = GetTransform()->GetWorldPosition();
@@ -50,8 +50,8 @@ void TrailRenderer::Update(float deltaTime)
 
 void TrailRenderer::Render(RenderContext* context)
 {
-	// ƒgƒŒƒCƒ‹‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒƒWƒbƒN‚ğ‚±‚±‚ÉÀ‘•
-	// —á: ’¸“_ƒoƒbƒtƒ@‚Ìİ’èAƒVƒF[ƒ_[‚Ì“K—pA•`‰æƒR[ƒ‹‚È‚Ç
+	// ãƒˆãƒ¬ã‚¤ãƒ«ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
+	// ä¾‹: é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®šã€ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®é©ç”¨ã€æç”»ã‚³ãƒ¼ãƒ«ãªã©
 	int numSegments = static_cast<int>(segments.size());
 	for (int i = 0; i < numSegments - 1; ++i)
 	{
@@ -59,7 +59,7 @@ void TrailRenderer::Render(RenderContext* context)
 		const auto& segmentB = segments[i + 1];
 		Vector3 direction = segmentB.position - segmentA.position;
 		Vector3 perpendicular = Vector3::Cross(direction.Normalize(), Vector3::Up) * (trailWidth * 0.5f);
-		// lŠpŒ`‚Ì’¸“_‚ğŒvZ
+		// å››è§’å½¢ã®é ‚ç‚¹ã‚’è¨ˆç®—
 		Vector3 vertices[4] =
 		{
 			segmentA.position + perpendicular,
@@ -75,7 +75,7 @@ void TrailRenderer::Render(RenderContext* context)
 			segmentB.color
 		};
 
-		// ’¸“_‚ğ’Ç‰Ái2‚Â‚ÌOŠpŒ`‚ÅlŠpŒ`‚ğ•`‰æj
+		// é ‚ç‚¹ã‚’è¿½åŠ ï¼ˆ2ã¤ã®ä¸‰è§’å½¢ã§å››è§’å½¢ã‚’æç”»ï¼‰
 		DebugRenderer::AddVertex(vertices[0], colors[0]); // A+
 		DebugRenderer::AddVertex(vertices[1], colors[1]); // A-
 		DebugRenderer::AddVertex(vertices[2], colors[2]); // B+

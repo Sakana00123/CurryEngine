@@ -13,7 +13,7 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, const wchar_t* filename, size_t m
 
 	std::unique_ptr<Vertex[]> vertices{ std::make_unique<Vertex[]>(max_vertices) };
 
-	//’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	D3D11_BUFFER_DESC buffer_desc{};
 	buffer_desc.ByteWidth = static_cast<UINT>(sizeof(Vertex) * max_vertices);
 	buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -28,11 +28,11 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, const wchar_t* filename, size_t m
 	hr = device->CreateBuffer(&buffer_desc, &subresource_data, vertex_buffer.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	//‰æ‘œƒtƒ@ƒCƒ‹‚Ìƒ[ƒh‚ÆƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ­ãƒ¼ãƒ‰ã¨ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	hr = LoadTextureFromFile(device, filename, shader_resource_view.GetAddressOf(), &texture2d_desc);
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	//“ü—ÍƒŒƒCƒAƒEƒgƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
 	{
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
@@ -42,12 +42,12 @@ SpriteBatch::SpriteBatch(ID3D11Device* device, const wchar_t* filename, size_t m
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
 		D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
-	//’¸“_ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	std::string dir = EnginePaths::ShadersDataDir;
 	hr = CreateVertexShaderFromCSO(device, (dir + "sprite_vs.cso").c_str(), vertex_shader.GetAddressOf(), input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	//ƒsƒNƒZƒ‹ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	hr = CreatePixelShaderFromCSO(device, (dir + "sprite_ps.cso").c_str(), pixel_shader.GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 }
@@ -110,12 +110,12 @@ void SpriteBatch::Render(ID3D11DeviceContext* immediate_context,
 	float sw, float sh
 )
 {
-	//ƒXƒNƒŠ[ƒ“‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹
 	D3D11_VIEWPORT viewport{};
 	UINT num_viewports{ 1 };
 	immediate_context->RSGetViewports(&num_viewports, &viewport);
 
-	//ˆø”‚©‚ç‹éŒ`‚ÌŠe’¸“_‚ÌˆÊ’uiƒXƒNƒŠ[ƒ“À•WŒnj‚ğŒvZ‚·‚é
+	//å¼•æ•°ã‹ã‚‰çŸ©å½¢ã®å„é ‚ç‚¹ã®ä½ç½®ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ï¼‰ã‚’è¨ˆç®—ã™ã‚‹
 	// left-top
 	float x0{ dx };
 	float y0{ dy };
@@ -129,7 +129,7 @@ void SpriteBatch::Render(ID3D11DeviceContext* immediate_context,
 	float x3{ dx + dw };
 	float y3{ dy + dh };
 
-	//Ø‚èæ‚èˆÊ’u
+	//åˆ‡ã‚Šå–ã‚Šä½ç½®
 	//left-top
 	float tx0{ sx };
 	float ty0{ sy };
@@ -143,17 +143,17 @@ void SpriteBatch::Render(ID3D11DeviceContext* immediate_context,
 	float tx3{ sx + sw };
 	float ty3{ sy + sh };
 
-	//‰ñ“]‚Ì’†S‚ğ‹éŒ`‚Ì’†S“_‚É‚µ‚½ê‡
+	//å›è»¢ã®ä¸­å¿ƒã‚’çŸ©å½¢ã®ä¸­å¿ƒç‚¹ã«ã—ãŸå ´åˆ
 	float cx = dx + dw * 0.5f;
 	float cy = dy + dh * 0.5f;
 
-	//‰ñ“]ˆ—
+	//å›è»¢å‡¦ç†
 	Rotate(x0, y0, cx, cy, angle);
 	Rotate(x1, y1, cx, cy, angle);
 	Rotate(x2, y2, cx, cy, angle);
 	Rotate(x3, y3, cx, cy, angle);
 
-	//ƒXƒNƒŠ[ƒ“À•WŒn‚©‚çNDC‚Ö‚ÌÀ•W•ÏŠ·‚ğs‚¤
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã‹ã‚‰NDCã¸ã®åº§æ¨™å¤‰æ›ã‚’è¡Œã†
 	x0 = 2.0f * x0 / viewport.Width - 1.0f;
 	y0 = 1.0f - 2.0f * y0 / viewport.Height;
 	x1 = 2.0f * x1 / viewport.Width - 1.0f;

@@ -3,16 +3,16 @@
 
 struct ProjectSettingsData
 {
-	std::string projectName; // ƒvƒƒWƒFƒNƒg–¼
-	std::string companyName; // ‰ïĞ–¼
-	std::string version; // ƒo[ƒWƒ‡ƒ“
-	std::string author; // ìÒ–¼
-	std::string description; // ƒvƒƒWƒFƒNƒg‚Ìà–¾
+	std::string projectName; // ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆå
+	std::string companyName; // ä¼šç¤¾å
+	std::string version; // ãƒãƒ¼ã‚¸ãƒ§ãƒ³
+	std::string author; // ä½œè€…å
+	std::string description; // ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®èª¬æ˜
 
-	// ‚»‚Ì‘¼‚ÌƒvƒƒWƒFƒNƒgİ’è€–Ú‚ğ‚±‚±‚É’Ç‰Á‰Â”\
-	std::string scriptProjectPath; // .csproj‚ÌƒpƒX
-	std::string scriptOutputPath; // o—Í‚³‚ê‚éDLL‚ÌƒpƒX
-	std::string scriptWatchDirectory; // ƒXƒNƒŠƒvƒg‚ÌŠÄ‹ƒfƒBƒŒƒNƒgƒŠ
+	// ãã®ä»–ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆè¨­å®šé …ç›®ã‚’ã“ã“ã«è¿½åŠ å¯èƒ½
+	std::string scriptProjectPath; // .csprojã®ãƒ‘ã‚¹
+	std::string scriptOutputPath; // å‡ºåŠ›ã•ã‚Œã‚‹DLLã®ãƒ‘ã‚¹
+	std::string scriptWatchDirectory; // ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ç›£è¦–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 
 };
 

@@ -51,22 +51,22 @@ class Framework
 public:
     BOOL vsync{ TRUE };
 
-    const float fixedTimeStep = 1.0f / 60;//ŒÅ’èXVŠÔŠu(FPS)
+    const float fixedTimeStep = 1.0f / 60;//å›ºå®šæ›´æ–°é–“éš”(FPS)
     float accumulatedTime = 0.0f;
-    //XVŠÔŠu‚ğŒÅ’è’·‚É‚·‚é‚©‚Ç‚¤‚©
+    //æ›´æ–°é–“éš”ã‚’å›ºå®šé•·ã«ã™ã‚‹ã‹ã©ã†ã‹
 //#define FIXED
 
 #ifdef FIXED
     bool timerActive = true;
 #endif
 
-	// ƒrƒfƒIƒƒ‚ƒŠg—p—Ê‚ğMB’PˆÊ‚Åæ“¾
+	// ãƒ“ãƒ‡ã‚ªãƒ¡ãƒ¢ãƒªä½¿ç”¨é‡ã‚’MBå˜ä½ã§å–å¾—
     size_t VideoMemoryUsage();
 
-	// ‰¼ RenderSystem
+	// ä»® RenderSystem
 	class RenderSystem* renderSystem;
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^EƒfƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     Framework(HWND hwnd);
     ~Framework();
 
@@ -75,15 +75,15 @@ public:
     Framework(Framework&&) noexcept = delete;
     Framework& operator=(Framework&&) noexcept = delete;
 
-    // ƒƒCƒ“ƒ‹[ƒv
+    // ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
     int Run();
 
-    // ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
     LRESULT CALLBACK HandleMessage(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 public:
     
-    static inline bool isPaused = false;// Profiler—p
+    static inline bool isPaused = false;// Profilerç”¨
     static void SetPause(bool pause) {
         isPaused = pause;
     }

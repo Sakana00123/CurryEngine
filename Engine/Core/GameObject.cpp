@@ -31,7 +31,7 @@ void GameObject::Create(const std::string& name) {
 }
 
 void GameObject::SetName(const std::string& newName) {
-    if (name == newName) return; // –¼‘O‚ª“¯‚¶ê‡‚Í‰½‚à‚µ‚È‚¢
+    if (name == newName) return; // åå‰ãŒåŒã˜å ´åˆã¯ä½•ã‚‚ã—ãªã„
     std::string uniqueName = MakeUniqueName(newName);
     name = uniqueName;
 }
@@ -39,22 +39,22 @@ void GameObject::SetName(const std::string& newName) {
 std::string GameObject::MakeUniqueName(const std::string& name) {
     std::string baseName = name;
 
-    // –¼‘O‚Ì––”ö‚ª "(”š)" ‚É‚È‚Á‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN‚µ‚Äƒx[ƒX–¼‚ğ’Šo
+    // åå‰ã®æœ«å°¾ãŒ "(æ•°å­—)" ã«ãªã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã—ã¦ãƒ™ãƒ¼ã‚¹åã‚’æŠ½å‡º
     if (!baseName.empty() && baseName.back() == ')') {
         size_t openParen = baseName.find_last_of('(');
         if (openParen != std::string::npos) {
             bool isAllDigit = true;
-            // ƒJƒbƒR‚Ì’†g‚ª‚·‚×‚Ä”š‚©Šm”F
+            // ã‚«ãƒƒã‚³ã®ä¸­èº«ãŒã™ã¹ã¦æ•°å­—ã‹ç¢ºèª
             for (size_t j = openParen + 1; j < baseName.size() - 1; ++j) {
                 if (!std::isdigit(static_cast<unsigned char>(baseName[j]))) {
                     isAllDigit = false;
                     break;
                 }
             }
-            // ’†g‚ª”š‚Ì‚İ‚Å‚ ‚ê‚Îƒx[ƒX–¼‚©‚çƒJƒbƒR•”•ª‚ğíœ
+            // ä¸­èº«ãŒæ•°å­—ã®ã¿ã§ã‚ã‚Œã°ãƒ™ãƒ¼ã‚¹åã‹ã‚‰ã‚«ãƒƒã‚³éƒ¨åˆ†ã‚’å‰Šé™¤
             if (isAllDigit && openParen + 1 < baseName.size() - 1) {
                 size_t trimPos = openParen;
-                // ƒJƒbƒR‚Ì‘O‚Ì”¼ŠpƒXƒy[ƒX‚àíœ
+                // ã‚«ãƒƒã‚³ã®å‰ã®åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ã‚‚å‰Šé™¤
                 while (trimPos > 0 && baseName[trimPos - 1] == ' ') {
                     trimPos--;
                 }
@@ -63,13 +63,13 @@ std::string GameObject::MakeUniqueName(const std::string& name) {
         }
     }
 
-    // ‚Ü‚¸ˆø”‚Å“n‚³‚ê‚½–¼‘O‚ªÕ“Ë‚µ‚Ä‚¢‚È‚¢‚©Šm”F‚µAg—p‰Â”\‚Å‚ ‚ê‚Î‚»‚Ì‚Ü‚Ü•Ô‚·
+    // ã¾ãšå¼•æ•°ã§æ¸¡ã•ã‚ŒãŸåå‰ãŒè¡çªã—ã¦ã„ãªã„ã‹ç¢ºèªã—ã€ä½¿ç”¨å¯èƒ½ã§ã‚ã‚Œã°ãã®ã¾ã¾è¿”ã™
     std::string result = name;
     if (!ObjectManager::Find(result)) {
         return result;
     }
 
-    // Õ“Ë‚µ‚Ä‚¢‚éê‡‚Íƒx[ƒX–¼‚É " (”Ô†)" ‚ğ•t‚¯‚Ä‹ó‚¢‚Ä‚¢‚é”Ô†‚ğ’T‚·
+    // è¡çªã—ã¦ã„ã‚‹å ´åˆã¯ãƒ™ãƒ¼ã‚¹åã« " (ç•ªå·)" ã‚’ä»˜ã‘ã¦ç©ºã„ã¦ã„ã‚‹ç•ªå·ã‚’æ¢ã™
     int i = 1;
     while (true) {
         result = baseName + " (" + std::to_string(i) + ")";
@@ -82,7 +82,7 @@ std::string GameObject::MakeUniqueName(const std::string& name) {
 }
 
 void GameObject::SetParent(GameObject* newParent) {
-    if (parent) { //‚·‚Å‚Ée‚ªİ’è‚³‚ê‚Ä‚¢‚½‚çA‚»‚Ìe‚Ìq‚©‚ç©g‚ğíœ
+    if (parent) { //ã™ã§ã«è¦ªãŒè¨­å®šã•ã‚Œã¦ã„ãŸã‚‰ã€ãã®è¦ªã®å­ã‹ã‚‰è‡ªèº«ã‚’å‰Šé™¤
         auto& children = parent->children;
         children.erase(std::remove(children.begin(), children.end(), this), children.end());
     }
@@ -90,13 +90,13 @@ void GameObject::SetParent(GameObject* newParent) {
     if (parent) {
         newParent->children.push_back(this);
     }
-	// eqŠÖŒW‚ª•Ï‚í‚Á‚½‚Ì‚ÅAÄŒvZ‚ª•K—v‚Èó‘Ô‚É‚·‚é
+	// è¦ªå­é–¢ä¿‚ãŒå¤‰ã‚ã£ãŸã®ã§ã€å†è¨ˆç®—ãŒå¿…è¦ãªçŠ¶æ…‹ã«ã™ã‚‹
 	if (Transform* transform = GetTransform())
     {
         transform->MarkNeedsUpdate();
     }
 
-	// ŠK‘w\‘¢‚Ì•ÏX‚É”º‚¢AƒAƒNƒeƒBƒuó‘Ô‚ğXV‚·‚é
+	// éšå±¤æ§‹é€ ã®å¤‰æ›´ã«ä¼´ã„ã€ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’æ›´æ–°ã™ã‚‹
 	this->RefreshActiveInHierarchy();
 }
 
@@ -114,18 +114,18 @@ void GameObject::BeginFrame()
         }
 	}
 
-	// ”jŠü—\–ñ‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğíœ
+	// ç ´æ£„äºˆç´„ã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å‰Šé™¤
     if (!removes.empty()) {
 
-        // íœ‘O‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌOnDestroy‚ğŒÄ‚Ño‚·
+        // å‰Šé™¤å‰ã«ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®OnDestroyã‚’å‘¼ã³å‡ºã™
         for (const auto& comp : removes) {
             if (comp) {
                 comp->OnDestroy();
-				comp->SetEnabled(false); // –³Œø‰»‚µ‚Ä‚©‚çíœ‚·‚é
+				comp->SetEnabled(false); // ç„¡åŠ¹åŒ–ã—ã¦ã‹ã‚‰å‰Šé™¤ã™ã‚‹
             }
         }
 
-        // íœ‘ÎÛ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒŠƒXƒg‚©‚çíœ
+        // å‰Šé™¤å¯¾è±¡ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
         for (const auto& comp : removes) {
             _components.erase(std::remove_if(_components.begin(), _components.end(),
                 [&comp](const std::shared_ptr<Component>& c) { return c == comp; }),
@@ -152,7 +152,7 @@ void GameObject::EndFrame()
 
 void GameObject::Update(float deltaTime)
 {
-    //—Dæ“x‚Åƒ\[ƒg
+    //å„ªå…ˆåº¦ã§ã‚½ãƒ¼ãƒˆ
     //std::sort(_components.begin(), _components.end(),
     //    [](const std::shared_ptr<Component>& a, const std::shared_ptr<Component>& b) {
     //        if (a == nullptr && b == nullptr)
@@ -161,7 +161,7 @@ void GameObject::Update(float deltaTime)
     //        if (b == nullptr) return true;
     //        return a->priority < b->priority;
     //    });
-	// ƒ\[ƒg‚ÌˆÀ’è«‚ğ•Û‚Â‚½‚ßAOrderManager::Sort ‚ğg—p‚µ‚Äƒ\[ƒg‚·‚é
+	// ã‚½ãƒ¼ãƒˆã®å®‰å®šæ€§ã‚’ä¿ã¤ãŸã‚ã€OrderManager::Sort ã‚’ä½¿ç”¨ã—ã¦ã‚½ãƒ¼ãƒˆã™ã‚‹
     {
 		ProfileScopedSection_3(0, "GameObject::Update - Sort Components", ImGuiControl::Profiler::Color::Green);
         CurryEngine::OrderManager::Sort(_components);
@@ -177,12 +177,12 @@ void GameObject::Update(float deltaTime)
                 {
                     if (component->IsEnabled())
                     {
-						if (component->m_started == false) { // Start() ‚ª‚Ü‚¾ŒÄ‚Ño‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍŒÄ‚Ño‚·
+						if (component->m_started == false) { // Start() ãŒã¾ã å‘¼ã³å‡ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯å‘¼ã³å‡ºã™
 							ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Yellow);
                             component->Start();
                             component->m_started = true;
 						}
-						else { // Start() ‚ªŒÄ‚Ño‚³‚ê‚½Œã‚Í Update() ‚ğŒÄ‚Ño‚·(Start() ‚ªŒÄ‚Ño‚³‚ê‚½ƒtƒŒ[ƒ€‚Å‚Í Update() ‚ÍŒÄ‚Ño‚³‚È‚¢)
+						else { // Start() ãŒå‘¼ã³å‡ºã•ã‚ŒãŸå¾Œã¯ Update() ã‚’å‘¼ã³å‡ºã™(Start() ãŒå‘¼ã³å‡ºã•ã‚ŒãŸãƒ•ãƒ¬ãƒ¼ãƒ ã§ã¯ Update() ã¯å‘¼ã³å‡ºã•ãªã„)
 							ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Blue);
                             component->Update(deltaTime);
                         }
@@ -287,7 +287,7 @@ void GameObject::Begin(RenderContext* rtx) {
         }
     }
 }
-//‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì2D•`‰æˆ—
+//ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®2Dæç”»å‡¦ç†
 void GameObject::Draw(RenderContext* rtx) {
     if (IsActive()) {
 		ProfileScopedSection_2(0, "GameObject::Draw", ImGuiControl::Profiler::Color::Green);
@@ -303,7 +303,7 @@ void GameObject::Draw(RenderContext* rtx) {
         }
     }
 }
-//‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì2D•`‰æŒãˆ—
+//ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®2Dæç”»å¾Œå‡¦ç†
 void GameObject::End(RenderContext* rtx) {
     if (IsActive()) {
 		ProfileScopedSection_2(0, "GameObject::End", ImGuiControl::Profiler::Color::Green);
@@ -319,7 +319,7 @@ void GameObject::End(RenderContext* rtx) {
         }
     }
 }
-//‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì”jŠüƒR[ƒ‹ƒoƒbƒNˆ—
+//ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ç ´æ£„ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‡¦ç†
 void GameObject::OnDestroy() {
     ProfileScopedSection_3(0, (name + " OnDestroy").c_str(), ImGuiControl::Profiler::Color::Red);
     
@@ -328,13 +328,13 @@ void GameObject::OnDestroy() {
         if (const auto& component = weakComp.lock()) {
             component->OnDestroy();
             component->Finalize();
-			component->SetEnabled(false); // ”jŠü‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Í–³Œø‚É‚·‚é
+			component->SetEnabled(false); // ç ´æ£„ã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯ç„¡åŠ¹ã«ã™ã‚‹
         }
     }
-	// ”jŠüŒã‚ÉƒRƒ“ƒ|[ƒlƒ“ƒgƒŠƒXƒg‚ğƒNƒŠƒA
+	// ç ´æ£„å¾Œã«ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
 	_components.clear();
 }
-//‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒCƒ“ƒXƒyƒNƒ^•`‰æ
+//ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿æç”»
 void GameObject::DrawProperty() {
 #ifdef USE_IMGUI
 
@@ -361,21 +361,21 @@ void GameObject::RefreshActiveInHierarchy()
 {
     bool previousActiveInHierarchy = activeInHierarchy;
 
-    // e‚ª”ñƒAƒNƒeƒBƒu‚Ìê‡‚Í‰e‹¿‚ğó‚¯‚È‚¢
+    // è¦ªãŒéã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã®å ´åˆã¯å½±éŸ¿ã‚’å—ã‘ãªã„
     activeInHierarchy = activeSelf && (parent ? parent->activeInHierarchy : true);
 
-	// ƒV[ƒ“ŠJn‘O‚È‚ç‚±‚êˆÈ~‚Ìˆ—‚Ís‚í‚È‚¢
+	// ã‚·ãƒ¼ãƒ³é–‹å§‹å‰ãªã‚‰ã“ã‚Œä»¥é™ã®å‡¦ç†ã¯è¡Œã‚ãªã„
     if (GetScene() && !GetScene()->IsStarted()) {
         return;
 	}
 
-	// ƒV[ƒ“‚ªŠJn‚³‚ê‚Ä‚¢‚éó‘Ô‚ÅAƒAƒNƒeƒBƒu‚É‚È‚Á‚Ä‚½‚çAwake‚ğŒÄ‚Ño‚·
+	// ã‚·ãƒ¼ãƒ³ãŒé–‹å§‹ã•ã‚Œã¦ã„ã‚‹çŠ¶æ…‹ã§ã€ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã£ã¦ãŸã‚‰Awakeã‚’å‘¼ã³å‡ºã™
 	if (activeInHierarchy)
     {
-		AwakeComponents(); // ƒAƒNƒeƒBƒuó‘Ô‚ª•Ï‰»‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅAwake‚ğŒÄ‚Ño‚·
+		AwakeComponents(); // ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ãŒå¤‰åŒ–ã—ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§Awakeã‚’å‘¼ã³å‡ºã™
 	}
 
-	// ƒAƒNƒeƒBƒuó‘Ô‚ª•Ï‰»‚µ‚½ê‡AƒRƒ“ƒ|[ƒlƒ“ƒg‚É“`”d
+	// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ãŒå¤‰åŒ–ã—ãŸå ´åˆã€ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ä¼æ’­
     for (size_t i = 0; i < _components.size(); i++)
     {
         std::weak_ptr<Component> weakComp = _components.at(i);
@@ -385,7 +385,7 @@ void GameObject::RefreshActiveInHierarchy()
 		}
     }
 
-    // qƒIƒuƒWƒFƒNƒg‚É‚à“`”d
+    // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚‚ä¼æ’­
     for (GameObject* child : children)
     {
         child->RefreshActiveInHierarchy();
@@ -395,20 +395,20 @@ void GameObject::RefreshActiveInHierarchy()
 void GameObject::RefreshComponentActive(Component* component)
 {
     if (GetScene() && !GetScene()->IsStarted()) {
-        return; // ƒV[ƒ“ŠJn‘O‚ÍƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒAƒNƒeƒBƒuó‘Ô‚ğXV‚µ‚È‚¢
+        return; // ã‚·ãƒ¼ãƒ³é–‹å§‹å‰ã¯ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’æ›´æ–°ã—ãªã„
 	}
 
 	if (const auto& comp = component)
     {
 		bool oldEnable = comp->enabledInGame;
 		bool newEnable = IsActive() && comp->enabledSelf;
-        // ƒAƒNƒeƒBƒuó‘Ô‚ª•Ï‰»‚µ‚½ê‡‚ÉƒR[ƒ‹ƒoƒbƒN‚ğŒÄ‚Ño‚·
+        // ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ãŒå¤‰åŒ–ã—ãŸå ´åˆã«ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‘¼ã³å‡ºã™
         if (oldEnable != newEnable)
         {
-			// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒAƒNƒeƒBƒuó‘Ô‚ğXV
+			// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’æ›´æ–°
 			comp->enabledInGame = newEnable;
 
-			// ƒAƒNƒeƒBƒuó‘Ô‚É‰‚¶‚ÄƒR[ƒ‹ƒoƒbƒN‚ğŒÄ‚Ño‚·
+			// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã«å¿œã˜ã¦ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‘¼ã³å‡ºã™
             if (newEnable)
                 comp->OnEnable();
             else
@@ -422,9 +422,9 @@ void GameObject::Destroy(float delay)
     if (Scene* scene = SceneManager::GetCurrentScene()) {
         scene->Destroy(this->name);
 
-		destroyDelay = delay; // ”jŠü‚Ü‚Å‚Ì’x‰„ŠÔ‚ğİ’è
+		destroyDelay = delay; // ç ´æ£„ã¾ã§ã®é…å»¶æ™‚é–“ã‚’è¨­å®š
 
-		// ’x‰„ŠÔ‚ª0ˆÈ‰º‚Ìê‡‚Í‘¦À‚É”jŠü‚·‚é (epsilonˆÈ‰º‚Ì’l‚ğ0‚Æ‚İ‚È‚·)
+		// é…å»¶æ™‚é–“ãŒ0ä»¥ä¸‹ã®å ´åˆã¯å³åº§ã«ç ´æ£„ã™ã‚‹ (epsilonä»¥ä¸‹ã®å€¤ã‚’0ã¨ã¿ãªã™)
 		if (delay <= FLT_EPSILON)
         {
             for (auto& component : _components) {
@@ -456,7 +456,7 @@ void GameObject::AttachComponent(const std::string& name, std::shared_ptr<Compon
 
 	int tailPriority = _components.empty()
         ? 0
-		: _components.back()->GetPriority() + CurryEngine::OrderManager::STEP; // ’Ç‰Á‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì—Dæ“x‚ğAŒ»İ‚ÌÅŒã”ö‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì—Dæ“x‚æ‚è‚à‘å‚«‚­‚·‚é
+		: _components.back()->GetPriority() + CurryEngine::OrderManager::STEP; // è¿½åŠ ã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å„ªå…ˆåº¦ã‚’ã€ç¾åœ¨ã®æœ€å¾Œå°¾ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å„ªå…ˆåº¦ã‚ˆã‚Šã‚‚å¤§ããã™ã‚‹
 	component->SetPriority(tailPriority);
 
     _components.emplace_back(component);
@@ -466,12 +466,12 @@ void GameObject::AttachComponent(const std::string& name, std::shared_ptr<Compon
 
 void GameObject::InitializeComponent(std::shared_ptr<Component>& component)
 {
-    //‰Šú‰»ˆ—
+    //åˆæœŸåŒ–å‡¦ç†
 	if (!component->m_initialized)
     {
 		ProfileScopedSection_3(0, (name + " Initialize: " + component->name).c_str(), ImGuiControl::Profiler::Color::Green);
         component->Initialize();
-        component->m_initialized = true; // ‰Šú‰»ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+        component->m_initialized = true; // åˆæœŸåŒ–ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
     }
 }
 
@@ -485,7 +485,7 @@ void GameObject::AwakeComponents()
             if (!component->m_awaked) {
 				ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Green);
                 component->Awake();
-                component->m_awaked = true; // Awake‚ªŒÄ‚Ño‚³‚ê‚½ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+                component->m_awaked = true; // AwakeãŒå‘¼ã³å‡ºã•ã‚ŒãŸãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
             }
         }
 	}
@@ -496,14 +496,14 @@ json GameObject::Serialize() const {
 	ProfileScopedSection_3(0, name.c_str(), ImGuiControl::Profiler::Color::Green);
 
     json j;
-	// ƒo[ƒWƒ‡ƒ“î•ñ‚ğ’Ç‰Á(«—ˆ‚ÌŒİŠ·«‚Ì‚½‚ß)
+	// ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã‚’è¿½åŠ (å°†æ¥ã®äº’æ›æ€§ã®ãŸã‚)
 	j["version"] = (int)CurryEngine::GameObjectSerializeVersion::Latest;
 
-	// Šî–{“I‚ÈƒvƒƒpƒeƒB‚ğè“®‚ÅƒVƒŠƒAƒ‰ƒCƒY
+	// åŸºæœ¬çš„ãªãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æ‰‹å‹•ã§ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     j["id"] = id.ToString();
 	j["layer"] = layer;
     //j["isActive"] = activeSelf;
-    // ƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒVƒXƒeƒ€‚ğg—p‚µ‚½ƒVƒŠƒAƒ‰ƒCƒY
+    // ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ ã‚’ä½¿ç”¨ã—ãŸã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	std::string className = "GameObject";
 #if 0
     while (auto* meta = ReflectionRegistry::FindClass(className)) {
@@ -517,28 +517,28 @@ json GameObject::Serialize() const {
                 j[prop.name] = value;
             }
         }
-        // Œp³Œ³ƒNƒ‰ƒX‚àˆ—
+        // ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‚‚å‡¦ç†
         if (meta->base.empty())
             break;
         className = meta->base;
     }
 #else
-	std::vector<std::string> toVisit = { className }; // –K–â—\’è‚ÌƒNƒ‰ƒX–¼‚ÌƒXƒ^ƒbƒN
-	std::unordered_set<std::string> visited; // –K–âÏ‚İƒNƒ‰ƒX‚ÌƒZƒbƒg
+	std::vector<std::string> toVisit = { className }; // è¨ªå•äºˆå®šã®ã‚¯ãƒ©ã‚¹åã®ã‚¹ã‚¿ãƒƒã‚¯
+	std::unordered_set<std::string> visited; // è¨ªå•æ¸ˆã¿ã‚¯ãƒ©ã‚¹ã®ã‚»ãƒƒãƒˆ
     while (!toVisit.empty()) {
         std::string currentClass = toVisit.front();
 		toVisit.erase(toVisit.begin());
         if (visited.count(currentClass)) {
-            continue; // ‚·‚Å‚É–K–âÏ‚İ‚Ìê‡‚ÍƒXƒLƒbƒv
+            continue; // ã™ã§ã«è¨ªå•æ¸ˆã¿ã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		}
         visited.insert(currentClass);
         auto* meta = ReflectionRegistry::FindClass(currentClass);
         if (!meta) {
             Console::LogWarning("Reflection metadata not found for class: " + currentClass);
-            continue; // ƒƒ^ƒf[ƒ^‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+            continue; // ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		}
 
-		// ŠeƒvƒƒpƒeƒB‚ğ‘–¸
+		// å„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’èµ°æŸ»
         for (const auto& prop : meta->properties) {
             const char* base = reinterpret_cast<const char*>(this);
             const char* propAddr = base + prop.offset;
@@ -550,7 +550,7 @@ json GameObject::Serialize() const {
             }
         }
 
-		// Œp³Œ³ƒNƒ‰ƒX‚à–K–â—\’è‚É’Ç‰Á
+		// ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‚‚è¨ªå•äºˆå®šã«è¿½åŠ 
         for (const auto& base : meta->bases) {
             if (!base.empty()) {
                 toVisit.push_back(base);
@@ -565,7 +565,7 @@ json GameObject::Serialize() const {
     if (parent) {
         j["parent"] = parent->id.ToString();
     } else {
-		j["parent"] = ObjectId::Invalid().ToString(); // e‚ª‚¢‚È‚¢ê‡‚Í–³Œø‚ÈID‚ğİ’è
+		j["parent"] = ObjectId::Invalid().ToString(); // è¦ªãŒã„ãªã„å ´åˆã¯ç„¡åŠ¹ãªIDã‚’è¨­å®š
     }
     j["components"] = json::array();
     for (const auto& component : _components) {
@@ -573,24 +573,24 @@ json GameObject::Serialize() const {
             json compJson = component->Serialize();
             compJson["type"] = component->name;
 			compJson["id"] = component->id.ToString();
-			// Reflection‚É‚æ‚éƒvƒƒpƒeƒBƒVƒŠƒAƒ‰ƒCƒY
+			// Reflectionã«ã‚ˆã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 			std::string compName = component->name;
 #if 0
             while (auto* meta = ReflectionRegistry::FindClass(compName))
             {
-                // ŠeƒvƒƒpƒeƒB‚ğ‘–¸
+                // å„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’èµ°æŸ»
                 for (const auto& prop : meta->properties)
                 {
                     if (prop.GetAttribute("NonSerialized"))
                     {
-                        continue; // NonSerialized‘®«‚ª‚ ‚éê‡‚ÍƒXƒLƒbƒv
+                        continue; // NonSerializedå±æ€§ãŒã‚ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                     }
 
-                    // ƒIƒtƒZƒbƒg‚©‚çƒvƒƒpƒeƒB‚ÌƒAƒhƒŒƒX‚ğæ“¾(component‚Ìæ“ªƒAƒhƒŒƒX + ƒIƒtƒZƒbƒg)
+                    // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‹ã‚‰ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—(componentã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ + ã‚ªãƒ•ã‚»ãƒƒãƒˆ)
                     const char* base = reinterpret_cast<const char*>(component.get());
                     const char* propAddr = base + prop.offset;
 
-                    // ƒvƒƒpƒeƒB‚ÌŒ^‚É‘Î‰‚·‚éƒVƒŠƒAƒ‰ƒCƒU‚ğæ“¾
+                    // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å‹ã«å¯¾å¿œã™ã‚‹ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶ã‚’å–å¾—
                     const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
                     if (!typeInfo)
                     {
@@ -598,13 +598,13 @@ json GameObject::Serialize() const {
                         continue;
                     }
 
-                    // ƒVƒŠƒAƒ‰ƒCƒYÀs
+                    // ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå®Ÿè¡Œ
                     json value;
                     typeInfo->serialize(propAddr, value);
                     compJson[prop.name] = value;
                 }
 
-                // Œp³Œ³ƒNƒ‰ƒX‚àˆ—
+                // ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‚‚å‡¦ç†
                 for (const auto& base : meta->bases)
                 {
                     if (!base.empty())
@@ -615,34 +615,34 @@ json GameObject::Serialize() const {
                 }
             }
 #else
-            std::vector<std::string> toVisit = { compName }; // –K–â—\’è‚ÌƒNƒ‰ƒX–¼‚ÌƒXƒ^ƒbƒN
-            std::unordered_set<std::string> visited; // –K–âÏ‚İƒNƒ‰ƒX‚ÌƒZƒbƒg
+            std::vector<std::string> toVisit = { compName }; // è¨ªå•äºˆå®šã®ã‚¯ãƒ©ã‚¹åã®ã‚¹ã‚¿ãƒƒã‚¯
+            std::unordered_set<std::string> visited; // è¨ªå•æ¸ˆã¿ã‚¯ãƒ©ã‚¹ã®ã‚»ãƒƒãƒˆ
             while (!toVisit.empty()) {
                 std::string currentClass = toVisit.front();
                 toVisit.erase(toVisit.begin());
                 if (visited.count(currentClass)) {
-                    continue; // ‚·‚Å‚É–K–âÏ‚İ‚Ìê‡‚ÍƒXƒLƒbƒv
+                    continue; // ã™ã§ã«è¨ªå•æ¸ˆã¿ã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                 }
                 visited.insert(currentClass);
                 auto* meta = ReflectionRegistry::FindClass(currentClass);
                 if (!meta) {
                     Console::LogWarning("Reflection metadata not found for class: " + currentClass);
-                    continue; // ƒƒ^ƒf[ƒ^‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+                    continue; // ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                 }
 
-                // ŠeƒvƒƒpƒeƒB‚ğ‘–¸
+                // å„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’èµ°æŸ»
                 for (const auto& prop : meta->properties)
                 {
                     if (prop.GetAttribute("NonSerialized"))
                     {
-                        continue; // NonSerialized‘®«‚ª‚ ‚éê‡‚ÍƒXƒLƒbƒv
+                        continue; // NonSerializedå±æ€§ãŒã‚ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                     }
 
-                    // ƒIƒtƒZƒbƒg‚©‚çƒvƒƒpƒeƒB‚ÌƒAƒhƒŒƒX‚ğæ“¾(component‚Ìæ“ªƒAƒhƒŒƒX + ƒIƒtƒZƒbƒg)
+                    // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‹ã‚‰ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—(componentã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ + ã‚ªãƒ•ã‚»ãƒƒãƒˆ)
                     const char* base = reinterpret_cast<const char*>(component.get());
                     const char* propAddr = base + prop.offset;
 
-                    // ƒvƒƒpƒeƒB‚ÌŒ^‚É‘Î‰‚·‚éƒVƒŠƒAƒ‰ƒCƒU‚ğæ“¾
+                    // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å‹ã«å¯¾å¿œã™ã‚‹ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶ã‚’å–å¾—
                     const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
                     if (!typeInfo)
                     {
@@ -650,13 +650,13 @@ json GameObject::Serialize() const {
                         continue;
                     }
 
-                    // ƒVƒŠƒAƒ‰ƒCƒYÀs
+                    // ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå®Ÿè¡Œ
                     json value;
                     typeInfo->serialize(propAddr, value);
                     compJson[prop.name] = value;
                 }
 
-                // Œp³Œ³ƒNƒ‰ƒX‚à–K–â—\’è‚É’Ç‰Á
+                // ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‚‚è¨ªå•äºˆå®šã«è¿½åŠ 
                 for (const auto& base : meta->bases) {
                     if (!base.empty()) {
                         toVisit.push_back(base);
@@ -667,17 +667,17 @@ json GameObject::Serialize() const {
 #endif // 0
 
 
-			// ƒIƒuƒWƒFƒNƒg‚Æ‚µ‚ÄƒVƒŠƒAƒ‰ƒCƒY‚³‚ê‚½ê‡‚Ì‚İ’Ç‰Á
+			// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã—ã¦ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã•ã‚ŒãŸå ´åˆã®ã¿è¿½åŠ 
             if (compJson.is_object())
             {
-				// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ª“o˜^‚³‚ê‚Ä‚é‚©Šm”F
+				// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒç™»éŒ²ã•ã‚Œã¦ã‚‹ã‹ç¢ºèª
                 if (!ComponentFactory::Exists(component->name))
                 {
-					// “o˜^‚³‚ê‚Ä‚È‚¢ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìê‡‚ÍƒƒO‚ğo‚µ‚ÄƒXƒLƒbƒv
+					// ç™»éŒ²ã•ã‚Œã¦ãªã„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å ´åˆã¯ãƒ­ã‚°ã‚’å‡ºã—ã¦ã‚¹ã‚­ãƒƒãƒ—
 					Console::LogError("Object::Serialize: Unknown component type: " + component->name);
                     continue;
                 }
-				else // “o˜^‚³‚ê‚Ä‚¢‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìê‡‚Í”z—ñ‚É’Ç‰Á
+				else // ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å ´åˆã¯é…åˆ—ã«è¿½åŠ 
                 {
                     j["components"].push_back(compJson);
                 }
@@ -691,18 +691,18 @@ void GameObject::Deserialize(const json& j)
 {
 	ProfileScopedSection_3(0, name.c_str(), ImGuiControl::Profiler::Color::Green);
 
-    // ƒo[ƒWƒ‡ƒ“î•ñ‚ğæ“¾
+    // ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã‚’å–å¾—
     version = static_cast<int>(
         j.value("version", static_cast<int>(CurryEngine::GameObjectSerializeVersion::Legacy)));
 
-	// –¼‘OAIDAƒAƒNƒeƒBƒuó‘Ô‚Ì•œŒ³
+	// åå‰ã€IDã€ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã®å¾©å…ƒ
 
     if (j.contains("id")) {
         if (j["id"].is_number_integer()) {
             id = ObjectId::FromLegacy(j["id"].get<int>());
         }
         else {
-            // VƒtƒH[ƒ}ƒbƒg: uint64 •¶š—ñ
+            // æ–°ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ: uint64 æ–‡å­—åˆ—
 			id = ObjectId::FromString(j["id"].get<std::string>());
         }
     }
@@ -711,7 +711,7 @@ void GameObject::Deserialize(const json& j)
         layer = j["layer"].get<int>();
 	}
 
-	// ƒŠƒtƒŒƒNƒVƒ‡ƒ“ƒVƒXƒeƒ€‚ğg—p‚µ‚½ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ ã‚’ä½¿ç”¨ã—ãŸãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     std::string className = "GameObject";
 #if 0
     while (auto* meta = ReflectionRegistry::FindClass(className)) {
@@ -726,41 +726,41 @@ void GameObject::Deserialize(const json& j)
                 typeInfo->deserialize(propAddr, value);
             }
         }
-        // Œp³Œ³ƒNƒ‰ƒX‚àˆ—
+        // ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‚‚å‡¦ç†
         if (meta->base.empty())
             break;
         className = meta->base;
     }
 #else
-    std::vector<std::string> toVisit = { className }; // –K–â—\’è‚ÌƒNƒ‰ƒX–¼‚ÌƒXƒ^ƒbƒN
-    std::unordered_set<std::string> visited; // –K–âÏ‚İƒNƒ‰ƒX‚ÌƒZƒbƒg
+    std::vector<std::string> toVisit = { className }; // è¨ªå•äºˆå®šã®ã‚¯ãƒ©ã‚¹åã®ã‚¹ã‚¿ãƒƒã‚¯
+    std::unordered_set<std::string> visited; // è¨ªå•æ¸ˆã¿ã‚¯ãƒ©ã‚¹ã®ã‚»ãƒƒãƒˆ
     while (!toVisit.empty()) {
         std::string currentClass = toVisit.front();
         toVisit.erase(toVisit.begin());
         if (visited.count(currentClass)) {
-            continue; // ‚·‚Å‚É–K–âÏ‚İ‚Ìê‡‚ÍƒXƒLƒbƒv
+            continue; // ã™ã§ã«è¨ªå•æ¸ˆã¿ã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
         }
         visited.insert(currentClass);
         auto* meta = ReflectionRegistry::FindClass(currentClass);
         if (!meta) {
             Console::LogWarning("Reflection metadata not found for class: " + currentClass);
-            continue; // ƒƒ^ƒf[ƒ^‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+            continue; // ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
         }
 
-        // ŠeƒvƒƒpƒeƒB‚ğ‘–¸
+        // å„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’èµ°æŸ»
         for (const auto& prop : meta->properties) {
             char* base = reinterpret_cast<char*>(this);
             char* propAddr = base + prop.offset;
             const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
             if (typeInfo) {
                 if (!j.contains(prop.name))
-                    continue; // JSON‚ÉƒvƒƒpƒeƒB‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+                    continue; // JSONã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                 const json& value = j[prop.name];
                 typeInfo->deserialize(propAddr, value);
             }
         }
 
-        // Œp³Œ³ƒNƒ‰ƒX‚à–K–â—\’è‚É’Ç‰Á
+        // ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‚‚è¨ªå•äºˆå®šã«è¿½åŠ 
         for (const auto& base : meta->bases) {
             if (!base.empty()) {
                 toVisit.push_back(base);
@@ -771,28 +771,28 @@ void GameObject::Deserialize(const json& j)
 #endif // 0
 
 
-	bool isActiveSelf = this->activeSelf; // ƒfƒtƒHƒ‹ƒg‚ÍŒ»İ‚ÌactiveSelf‚Ì’l
+	bool isActiveSelf = this->activeSelf; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ç¾åœ¨ã®activeSelfã®å€¤
     if (j.contains("isActive")) {
         isActiveSelf = j["isActive"].get<bool>();
     }
-	// ƒAƒNƒeƒBƒuó‘Ô‚Ìİ’è
-	SetActive(isActiveSelf); // activeSelf‚ğæ‚Éİ’è
+	// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã®è¨­å®š
+	SetActive(isActiveSelf); // activeSelfã‚’å…ˆã«è¨­å®š
 
-	// —Dæ“x‚Ì•œŒ³
+	// å„ªå…ˆåº¦ã®å¾©å…ƒ
 	ObjectId parentId = ObjectId::Invalid();
     if (j.contains("parent")) {
         if (j["parent"].is_number_integer()) {
             parentId = ObjectId::FromLegacy(j["parent"].get<int>());
         }
         else {
-            // VƒtƒH[ƒ}ƒbƒg: uint64 •¶š—ñ
+            // æ–°ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ: uint64 æ–‡å­—åˆ—
             parentId = ObjectId::FromString(j["parent"].get<std::string>());
 		}
     }
 
 
     isCreated = true;
-    //eƒIƒuƒWƒFƒNƒg‚Ìİ’è‚ÍA‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ª¶¬‚³‚ê‚½Œã‚És‚¤
+    //è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®šã¯ã€ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç”Ÿæˆã•ã‚ŒãŸå¾Œã«è¡Œã†
     if (parentId.IsValid()) {
         pendingParentID = parentId;
     }
@@ -804,13 +804,13 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
             if (compJson.contains("type")) {
                 std::string type = compJson["type"].get<std::string>();
 
-				// ì¬‚·‚é‘O‚ÉA‘®«ƒ`ƒFƒbƒN‚ğs‚¤
+				// ä½œæˆã™ã‚‹å‰ã«ã€å±æ€§ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
 				auto& allComponents = ComponentFactory::GetAll();
                 auto it = allComponents.find(type);
 				ComponentFactory::Entry* entry = it != allComponents.end() ? &it->second : nullptr;
 				if (entry)
                 {
-					// DisallowMultiple‘®«‚ª‚ ‚éê‡A‚·‚Å‚É“¯‚¶Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‘¶İ‚µ‚È‚¢‚©ƒ`ƒFƒbƒN
+					// DisallowMultipleå±æ€§ãŒã‚ã‚‹å ´åˆã€ã™ã§ã«åŒã˜å‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒå­˜åœ¨ã—ãªã„ã‹ãƒã‚§ãƒƒã‚¯
                     if (entry->attributes & ComponentAttributes::DisallowMultiple) {
                         bool exists = false;
                         for (const auto& comp : _components) {
@@ -821,7 +821,7 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
                         }
                         if (exists) {
                             Console::LogError("GameObject::DeserializeComponents: Multiple components of type " + type + " are not allowed. Skipping.");
-                            continue; // “¯‚¶Œ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‚·‚Å‚É‘¶İ‚·‚éê‡‚ÍƒXƒLƒbƒv
+                            continue; // åŒã˜å‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒã™ã§ã«å­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 						}
                     }
 				}
@@ -833,10 +833,10 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
                     continue;
 				}
 
-				// TODO: ƒRƒ“ƒ|[ƒlƒ“ƒgID‚Ì•œŒ³‚Æd•¡ƒ`ƒFƒbƒNB«—ˆ“I‚É‚ÍID‚Ìƒ}ƒbƒsƒ“ƒO‚à•K—v‚É‚È‚é‚©‚à‚µ‚ê‚È‚¢B
+				// TODO: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆIDã®å¾©å…ƒã¨é‡è¤‡ãƒã‚§ãƒƒã‚¯ã€‚å°†æ¥çš„ã«ã¯IDã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚‚å¿…è¦ã«ãªã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã€‚
 				std::unordered_set<ObjectId>& existingComponentIds = GetScene()->objectManager->GetExistingComponentIds();
 
-				// ID‚Ì•œŒ³
+				// IDã®å¾©å…ƒ
 				if (compJson.contains("id"))
                 {
                     ObjectId oldCompId;
@@ -848,21 +848,21 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
                     }
 
                     if (!idMap.empty() && idMap.find(oldCompId) != idMap.end()) {
-                        component->id = idMap.at(oldCompId); // •¡»‚È‚Ç‚Ìê‡‚ÌIDƒ}ƒbƒsƒ“ƒO‚ğ“K—p
+                        component->id = idMap.at(oldCompId); // è¤‡è£½ãªã©ã®å ´åˆã®IDãƒãƒƒãƒ”ãƒ³ã‚°ã‚’é©ç”¨
                     }
                     else {
                         component->id = oldCompId;
                         if (!component->id.IsValid()) {
-                            component->id = ObjectId::Generate(); // ID‚ª–³Œø‚Èê‡‚ÍV‚½‚É¶¬
+                            component->id = ObjectId::Generate(); // IDãŒç„¡åŠ¹ãªå ´åˆã¯æ–°ãŸã«ç”Ÿæˆ
                         }
                         if (existingComponentIds.count(component->GetId()) > 0) {
-                            component->id = ObjectId::Generate(); // ID‚ªd•¡‚µ‚Ä‚¢‚éê‡‚ÍV‚½‚É¶¬
+                            component->id = ObjectId::Generate(); // IDãŒé‡è¤‡ã—ã¦ã„ã‚‹å ´åˆã¯æ–°ãŸã«ç”Ÿæˆ
                         }
                     }
                 }
-				existingComponentIds.insert(component->GetId()); // ID‚ğŠù‘¶IDƒZƒbƒg‚É’Ç‰Á
+				existingComponentIds.insert(component->GetId()); // IDã‚’æ—¢å­˜IDã‚»ãƒƒãƒˆã«è¿½åŠ 
 
-				// TransformƒRƒ“ƒ|[ƒlƒ“ƒg‚Í“Á•Êˆµ‚¢‚µ‚ÄGameObject‚Ìtransformƒƒ“ƒo‚ÉƒZƒbƒg
+				// Transformã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯ç‰¹åˆ¥æ‰±ã„ã—ã¦GameObjectã®transformãƒ¡ãƒ³ãƒã«ã‚»ãƒƒãƒˆ
                 if (type == "Transform") {
 					transform = std::dynamic_pointer_cast<Transform>(component).get();
 				}
@@ -870,88 +870,88 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
 					transform = std::dynamic_pointer_cast<RectTransform>(component).get();
                 }
 
-                // ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒZƒbƒgƒAƒbƒv
+                // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
                 AttachComponent(type, component, false);
 				int priority = component->GetPriority();
 
-                // ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY
+                // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
                 component->Deserialize(compJson);
 
-                // Reflection‚É‚æ‚éƒvƒƒpƒeƒBƒfƒVƒŠƒAƒ‰ƒCƒY
+                // Reflectionã«ã‚ˆã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
                 std::string compName = type;
 
 #if 0
                 while (auto* meta = ReflectionRegistry::FindClass(compName))
                 {
-                    // ŠeƒvƒƒpƒeƒB‚ğ‘–¸
+                    // å„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’èµ°æŸ»
                     for (const auto& prop : meta->properties)
                     {
-                        // JSON‚ÉƒvƒƒpƒeƒB‚ª‘¶İ‚·‚é‚©Šm”F
+                        // JSONã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèª
                         if (!compJson.contains(prop.name))
                             continue;
                         if (prop.GetAttribute("NonSerialized"))
-                            continue; // NonSerialized‘®«‚ª‚ ‚éê‡‚ÍƒXƒLƒbƒv
+                            continue; // NonSerializedå±æ€§ãŒã‚ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 
-                        // ƒIƒtƒZƒbƒg‚©‚çƒvƒƒpƒeƒB‚ÌƒAƒhƒŒƒX‚ğæ“¾(component‚Ìæ“ªƒAƒhƒŒƒX + ƒIƒtƒZƒbƒg)
+                        // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‹ã‚‰ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—(componentã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ + ã‚ªãƒ•ã‚»ãƒƒãƒˆ)
                         char* base = reinterpret_cast<char*>(component.get());
                         char* propAddr = base + prop.offset;
-                        // ƒvƒƒpƒeƒB‚ÌŒ^‚É‘Î‰‚·‚éƒVƒŠƒAƒ‰ƒCƒU‚ğæ“¾
+                        // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å‹ã«å¯¾å¿œã™ã‚‹ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶ã‚’å–å¾—
                         const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
                         if (!typeInfo)
                         {
                             Console::LogWarning("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + type);
                             continue;
                         }
-                        // ƒfƒVƒŠƒAƒ‰ƒCƒYÀs
+                        // ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå®Ÿè¡Œ
                         const json& value = compJson[prop.name];
                         typeInfo->deserialize(propAddr, value);
                     }
-                    // Œp³Œ³ƒNƒ‰ƒX‚àˆ—
+                    // ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‚‚å‡¦ç†
                     if (meta->base.empty())
                         break;
                     compName = meta->base;
                 }
 #else
-                std::vector<std::string> toVisit = { compName }; // –K–â—\’è‚ÌƒNƒ‰ƒX–¼‚ÌƒXƒ^ƒbƒN
-                std::unordered_set<std::string> visited; // –K–âÏ‚İƒNƒ‰ƒX‚ÌƒZƒbƒg
+                std::vector<std::string> toVisit = { compName }; // è¨ªå•äºˆå®šã®ã‚¯ãƒ©ã‚¹åã®ã‚¹ã‚¿ãƒƒã‚¯
+                std::unordered_set<std::string> visited; // è¨ªå•æ¸ˆã¿ã‚¯ãƒ©ã‚¹ã®ã‚»ãƒƒãƒˆ
                 while (!toVisit.empty()) {
                     std::string currentClass = toVisit.front();
                     toVisit.erase(toVisit.begin());
                     if (visited.count(currentClass)) {
-                        continue; // ‚·‚Å‚É–K–âÏ‚İ‚Ìê‡‚ÍƒXƒLƒbƒv
+                        continue; // ã™ã§ã«è¨ªå•æ¸ˆã¿ã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                     }
                     visited.insert(currentClass);
                     auto* meta = ReflectionRegistry::FindClass(currentClass);
                     if (!meta) {
                         Console::LogWarning("Reflection metadata not found for class: " + currentClass);
-                        continue; // ƒƒ^ƒf[ƒ^‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+                        continue; // ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                     }
 
-                    // ŠeƒvƒƒpƒeƒB‚ğ‘–¸
+                    // å„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’èµ°æŸ»
                     for (const auto& prop : meta->properties)
                     {
-                        // JSON‚ÉƒvƒƒpƒeƒB‚ª‘¶İ‚·‚é‚©Šm”F
+                        // JSONã«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèª
                         if (!compJson.contains(prop.name))
                             continue;
                         if (prop.GetAttribute("NonSerialized"))
-                            continue; // NonSerialized‘®«‚ª‚ ‚éê‡‚ÍƒXƒLƒbƒv
+                            continue; // NonSerializedå±æ€§ãŒã‚ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 
-                        // ƒIƒtƒZƒbƒg‚©‚çƒvƒƒpƒeƒB‚ÌƒAƒhƒŒƒX‚ğæ“¾(component‚Ìæ“ªƒAƒhƒŒƒX + ƒIƒtƒZƒbƒg)
+                        // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‹ã‚‰ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—(componentã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ + ã‚ªãƒ•ã‚»ãƒƒãƒˆ)
                         char* base = reinterpret_cast<char*>(component.get());
                         char* propAddr = base + prop.offset;
-                        // ƒvƒƒpƒeƒB‚ÌŒ^‚É‘Î‰‚·‚éƒVƒŠƒAƒ‰ƒCƒU‚ğæ“¾
+                        // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å‹ã«å¯¾å¿œã™ã‚‹ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶ã‚’å–å¾—
                         const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
                         if (!typeInfo)
                         {
                             Console::LogWarning("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + type);
                             continue;
                         }
-                        // ƒfƒVƒŠƒAƒ‰ƒCƒYÀs
+                        // ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå®Ÿè¡Œ
                         const json& value = compJson[prop.name];
                         typeInfo->deserialize(propAddr, value);
                     }
 
-                    // Œp³Œ³ƒNƒ‰ƒX‚à–K–â—\’è‚É’Ç‰Á
+                    // ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‚‚è¨ªå•äºˆå®šã«è¿½åŠ 
                     for (const auto& base : meta->bases) {
                         if (!base.empty()) {
                             toVisit.push_back(base);
@@ -961,9 +961,9 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
                 }
 #endif // 0
 
-				component->SetPriority(priority); // ƒfƒVƒŠƒAƒ‰ƒCƒY‘O‚Ì—Dæ“x‚ğ•œŒ³
+				component->SetPriority(priority); // ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå‰ã®å„ªå…ˆåº¦ã‚’å¾©å…ƒ
 
-                // Å‰‚Ì‰Šú‰»ˆ—
+                // æœ€åˆã®åˆæœŸåŒ–å‡¦ç†
                 InitializeComponent(component);
             }
         }
@@ -971,7 +971,7 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
 
     if (GetScene() && GetScene()->IsStarted())
     {
-        AwakeComponents(); // ƒV[ƒ“‚ª‚·‚Å‚ÉŠJn‚³‚ê‚Ä‚¢‚éê‡‚ÍAwake‚àŒÄ‚Ño‚·
-		RefreshActiveInHierarchy(); // ƒAƒNƒeƒBƒuó‘Ô‚ğXV‚µ‚ÄAƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌOnEnable/OnDisable‚ğ³‚µ‚­ŒÄ‚Ño‚·
+        AwakeComponents(); // ã‚·ãƒ¼ãƒ³ãŒã™ã§ã«é–‹å§‹ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯Awakeã‚‚å‘¼ã³å‡ºã™
+		RefreshActiveInHierarchy(); // ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã‚’æ›´æ–°ã—ã¦ã€ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®OnEnable/OnDisableã‚’æ­£ã—ãå‘¼ã³å‡ºã™
     }
 }

@@ -15,7 +15,7 @@
 
 Transform* Component::GetTransform() const
 {
-	// Š‘®‚·‚é GameObject ‚ª—LŒø‚Èó‘Ô‚Å‚ ‚ê‚Î Transform ‚ğ•Ô‚·B–³Œø‚Èó‘Ô‚È‚ç nullptr ‚ğ•Ô‚·B
+	// æ‰€å±ã™ã‚‹ GameObject ãŒæœ‰åŠ¹ãªçŠ¶æ…‹ã§ã‚ã‚Œã° Transform ã‚’è¿”ã™ã€‚ç„¡åŠ¹ãªçŠ¶æ…‹ãªã‚‰ nullptr ã‚’è¿”ã™ã€‚
 	if (GetOwner())
 	{
 		return GetOwner()->GetTransform();
@@ -25,7 +25,7 @@ Transform* Component::GetTransform() const
 
 Scene* Component::GetScene() const
 {
-	// Š‘®‚·‚é GameObject ‚ª—LŒø‚Èó‘Ô‚Å‚ ‚ê‚Î Scene ‚ğ•Ô‚·B–³Œø‚Èó‘Ô‚È‚ç nullptr ‚ğ•Ô‚·B
+	// æ‰€å±ã™ã‚‹ GameObject ãŒæœ‰åŠ¹ãªçŠ¶æ…‹ã§ã‚ã‚Œã° Scene ã‚’è¿”ã™ã€‚ç„¡åŠ¹ãªçŠ¶æ…‹ãªã‚‰ nullptr ã‚’è¿”ã™ã€‚
 	if (GetOwner())
 	{
 		return GetOwner()->GetScene();
@@ -35,9 +35,9 @@ Scene* Component::GetScene() const
 
 void Component::SetEnabled(bool set)
 {
-	// ©g‚Ì—LŒøó‘Ô‚ğXV
+	// è‡ªèº«ã®æœ‰åŠ¹çŠ¶æ…‹ã‚’æ›´æ–°
 	enabledSelf = set;
-	// Š‘®‚·‚é GameObject ‚É—LŒøó‘Ô‚Ì•ÏX‚ğ’Ê’m
+	// æ‰€å±ã™ã‚‹ GameObject ã«æœ‰åŠ¹çŠ¶æ…‹ã®å¤‰æ›´ã‚’é€šçŸ¥
 	if (GetOwner())
 	{
 		GetOwner()->RefreshComponentActive(this);
@@ -46,13 +46,13 @@ void Component::SetEnabled(bool set)
 
 bool Component::IsEnabled() const
 {
-	// Œ»İ‚Ì—LŒøó‘Ô‚ğ•Ô‚·
+	// ç¾åœ¨ã®æœ‰åŠ¹çŠ¶æ…‹ã‚’è¿”ã™
 	return enabledInGame;
 }
 
 bool Component::IsEnabledSelf() const
 {
-	// ©g‚Ì—LŒøó‘Ô‚ğ•Ô‚·
+	// è‡ªèº«ã®æœ‰åŠ¹çŠ¶æ…‹ã‚’è¿”ã™
 	return enabledSelf;
 }
 
@@ -89,7 +89,7 @@ static GameObject* InstantiateInternal(const std::string& prefabPath, Transform*
 		}
 	}
 	
-	// ¸”s‚µ‚½ê‡‚Í nullptr ‚ğ•Ô‚·
+	// å¤±æ•—ã—ãŸå ´åˆã¯ nullptr ã‚’è¿”ã™
 	return nullptr;
 }
 
@@ -114,7 +114,7 @@ static GameObject* InstantiateInternal(GameObject* prefabObject, Transform* pare
 		}
 	}
 
-	// ¸”s‚µ‚½ê‡‚Í nullptr ‚ğ•Ô‚·
+	// å¤±æ•—ã—ãŸå ´åˆã¯ nullptr ã‚’è¿”ã™
 	return nullptr;
 }
 
@@ -138,33 +138,33 @@ GameObject* Component::Instantiate(GameObject* prefab, const Vector3& position, 
 	return InstantiateInternal(prefab, nullptr, position, rotation);
 }
 
-// --- ƒfƒtƒHƒ‹ƒgƒvƒƒpƒeƒB•`‰æiƒŠƒtƒŒƒNƒVƒ‡ƒ“‚Åæ“¾‚µ‚½ƒtƒB[ƒ‹ƒh‚ğ•`‰æj ---
+// --- ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ï¼ˆãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã§å–å¾—ã—ãŸãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’æç”»ï¼‰ ---
 
 #ifdef USE_IMGUI
 void Component::DrawProperty(const PropertyDrawContext& context)
 {
-	// ƒŠƒtƒŒƒNƒVƒ‡ƒ“‚Åæ“¾‚µ‚½ƒtƒB[ƒ‹ƒh‚ğ•`‰æ
-	std::vector<std::string> typeNames; // ƒNƒ‰ƒXŠK‘w‚ÌŒ^–¼‚ğŠi”[‚·‚éƒxƒNƒ^[
-	std::vector<const ClassMeta*> classMetas; // ƒNƒ‰ƒXŠK‘w‚Ìƒƒ^ƒf[ƒ^‚ğŠi”[‚·‚éƒxƒNƒ^[
+	// ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã§å–å¾—ã—ãŸãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’æç”»
+	std::vector<std::string> typeNames; // ã‚¯ãƒ©ã‚¹éšå±¤ã®å‹åã‚’æ ¼ç´ã™ã‚‹ãƒ™ã‚¯ã‚¿ãƒ¼
+	std::vector<const ClassMeta*> classMetas; // ã‚¯ãƒ©ã‚¹éšå±¤ã®ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹ãƒ™ã‚¯ã‚¿ãƒ¼
 	{
 		const ClassMeta* meta = GetClassMeta();
 		while (meta)
 		{
-			typeNames.push_back(meta->name); // Œ^–¼‚ğ’Ç‰Á
-			classMetas.push_back(meta); // ƒƒ^ƒf[ƒ^‚ğ’Ç‰Á
+			typeNames.push_back(meta->name); // å‹åã‚’è¿½åŠ 
+			classMetas.push_back(meta); // ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
 			if (meta->bases.empty())
 			{
-				break; // Œp³Œ³‚ª‚È‚¢ê‡‚ÍI—¹
+				break; // ç¶™æ‰¿å…ƒãŒãªã„å ´åˆã¯çµ‚äº†
 			}
-			meta = ReflectionRegistry::FindClass(meta->bases.front()); // Å‰‚ÌŒp³Œ³‚ğæ“¾‚µ‚Äƒ‹[ƒv‚ğ‘±‚¯‚é
+			meta = ReflectionRegistry::FindClass(meta->bases.front()); // æœ€åˆã®ç¶™æ‰¿å…ƒã‚’å–å¾—ã—ã¦ãƒ«ãƒ¼ãƒ—ã‚’ç¶šã‘ã‚‹
 		}
 	}
 
 	{
-		// ƒvƒƒpƒeƒB•`‰æ‚ÌŠJn
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã®é–‹å§‹
 		IMGUI_PROPERTY_BEGIN();
 
-		for (int i = static_cast<int>(classMetas.size()) - 1; i >= 0; --i) // ƒNƒ‰ƒXŠK‘w‚Ì‡˜‚Å•`‰æ‚·‚é‚½‚ß‚É‹t‡‚Åƒ‹[ƒv
+		for (int i = static_cast<int>(classMetas.size()) - 1; i >= 0; --i) // ã‚¯ãƒ©ã‚¹éšå±¤ã®é †åºã§æç”»ã™ã‚‹ãŸã‚ã«é€†é †ã§ãƒ«ãƒ¼ãƒ—
 		{
 			const ClassMeta* meta = classMetas[i];
 
@@ -173,17 +173,17 @@ void Component::DrawProperty(const PropertyDrawContext& context)
 				CurryEngine::PropertyEditor::DrawProperty(&prop, &context);
 			}
 
-			// ƒNƒ‰ƒX‚Ì‹«ŠE
-			ImGui::Separator(); // ƒvƒƒpƒeƒB‚Ì‹æØ‚èü
+			// ã‚¯ãƒ©ã‚¹ã®å¢ƒç•Œ
+			ImGui::Separator(); // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®åŒºåˆ‡ã‚Šç·š
 
 		}
 
-		// ƒvƒƒpƒeƒB•`‰æ‚ÌI—¹
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã®çµ‚äº†
 		IMGUI_PROPERTY_END();
 
 
 #if 0
-		// ƒeƒXƒg—p‚ÅŠÖ”ŒÄ‚Ño‚µ‚ÌImGui::Button‚ğ’Ç‰Á
+		// ãƒ†ã‚¹ãƒˆç”¨ã§é–¢æ•°å‘¼ã³å‡ºã—ã®ImGui::Buttonã‚’è¿½åŠ 
 		if (ImGui::CollapsingHeader("Test Functions"))
 		{
 			for (const auto& meta : classMetas)
@@ -194,11 +194,11 @@ void Component::DrawProperty(const PropertyDrawContext& context)
 				for (const auto& func : meta->methods)
 				{
 					if (!func.invoker)
-						continue; // ŠÖ”‚ªŒÄ‚Ño‚¹‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+						continue; // é–¢æ•°ãŒå‘¼ã³å‡ºã›ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 					ImGui::PushID(func.name.c_str());
 					if (ImGui::Button(func.name.c_str()))
 					{
-						func.InvokeVoid(this, {}); // ˆø”‚È‚µ‚ÅŠÖ”‚ğŒÄ‚Ño‚·
+						func.InvokeVoid(this, {}); // å¼•æ•°ãªã—ã§é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 					}
 					ImGui::PopID();
 				}

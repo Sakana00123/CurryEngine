@@ -6,7 +6,7 @@
 namespace CurryEngine
 {
 	/**
-	 * @brief string Œ^‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB
+	 * @brief string å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
 	 */
 	class StringDrawer : public IPropertyDrawer
 	{

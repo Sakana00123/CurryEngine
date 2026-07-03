@@ -67,21 +67,21 @@ protected:
 
 	virtual void OnUpdateInternal(float deltaTime) = 0;
 
-	float m_delay = 0.0f; // ’x‰„ŠÔ
-	float m_duration = 0.0f; // Œp‘±ŠÔ
-	float m_elapsedTime = 0.0f; // Œo‰ßŠÔ
+	float m_delay = 0.0f; // é…å»¶æ™‚é–“
+	float m_duration = 0.0f; // ç¶™ç¶šæ™‚é–“
+	float m_elapsedTime = 0.0f; // çµŒéæ™‚é–“
 
-	bool m_started = false; // ŠJnÏ‚İƒtƒ‰ƒO
-	bool m_completed = false; // Š®—¹Ï‚İƒtƒ‰ƒO
-	bool m_killed = false; // ‹­§I—¹Ï‚İƒtƒ‰ƒO
+	bool m_started = false; // é–‹å§‹æ¸ˆã¿ãƒ•ãƒ©ã‚°
+	bool m_completed = false; // å®Œäº†æ¸ˆã¿ãƒ•ãƒ©ã‚°
+	bool m_killed = false; // å¼·åˆ¶çµ‚äº†æ¸ˆã¿ãƒ•ãƒ©ã‚°
 
-	UpdateType m_updateType = UpdateType::Update; // XVƒ^ƒCƒv
-	int m_loopCount = 0; // ƒ‹[ƒv‰ñ”
-	LoopType m_loopType = LoopType::Restart; // ƒ‹[ƒvƒ^ƒCƒv
+	UpdateType m_updateType = UpdateType::Update; // æ›´æ–°ã‚¿ã‚¤ãƒ—
+	int m_loopCount = 0; // ãƒ«ãƒ¼ãƒ—å›æ•°
+	LoopType m_loopType = LoopType::Restart; // ãƒ«ãƒ¼ãƒ—ã‚¿ã‚¤ãƒ—
 
-	std::function<void()> m_onStart; // ŠJn‚ÉÀs‚·‚éŠÖ”
-	std::function<void()> m_onUpdate; // XV‚ÉÀs‚·‚éŠÖ”
-	std::function<void()> m_onComplete; // Š®—¹‚ÉÀs‚·‚éŠÖ”
+	std::function<void()> m_onStart; // é–‹å§‹æ™‚ã«å®Ÿè¡Œã™ã‚‹é–¢æ•°
+	std::function<void()> m_onUpdate; // æ›´æ–°æ™‚ã«å®Ÿè¡Œã™ã‚‹é–¢æ•°
+	std::function<void()> m_onComplete; // å®Œäº†æ™‚ã«å®Ÿè¡Œã™ã‚‹é–¢æ•°
 };
 
 template<typename T>
@@ -101,10 +101,10 @@ protected:
 	void OnUpdateInternal(float deltaTime) override;
 
 private:
-	T* m_target; // ‘ÎÛƒIƒuƒWƒFƒNƒg
-	T m_from; // ŠJn’l
-	T m_to; // I—¹’l
-	Ease m_ease; // ƒC[ƒWƒ“ƒOƒ^ƒCƒv
+	T* m_target; // å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	T m_from; // é–‹å§‹å€¤
+	T m_to; // çµ‚äº†å€¤
+	Ease m_ease; // ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—
 };
 
 class Sequence : public ITween

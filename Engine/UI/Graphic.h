@@ -4,67 +4,67 @@ class Canvas;
 
 /**
  * @file
- * @brief UI ‚Ì•`‰æ—v‘f‚ÌŠî’êƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details eŠK‘w‚Ì `Canvas` ‚Ö‚Ì“o˜^/‰ğœ‚ğ©“®‚Ås‚¢AƒqƒbƒgƒeƒXƒgiƒŒƒCƒLƒƒƒXƒgj‰Â”Û‚Ì
- *          ƒtƒ‰ƒO‚ğ’ñ‹Ÿ‚µ‚Ü‚·B`ImGui` ‚ª—LŒø‚Èê‡‚ÍƒCƒ“ƒXƒyƒNƒ^‚ÅŠÈˆÕ•ÒW‚ª‰Â”\‚Å‚·B
+ * @brief UI ã®æç”»è¦ç´ ã®åŸºåº•ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details è¦ªéšå±¤ã® `Canvas` ã¸ã®ç™»éŒ²/è§£é™¤ã‚’è‡ªå‹•ã§è¡Œã„ã€ãƒ’ãƒƒãƒˆãƒ†ã‚¹ãƒˆï¼ˆãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆï¼‰å¯å¦ã®
+ *          ãƒ•ãƒ©ã‚°ã‚’æä¾›ã—ã¾ã™ã€‚`ImGui` ãŒæœ‰åŠ¹ãªå ´åˆã¯ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã§ç°¡æ˜“ç·¨é›†ãŒå¯èƒ½ã§ã™ã€‚
  */
 
 /**
- * @brief UI •`‰æ—v‘f‚ÌŠî’êƒNƒ‰ƒXB
- * @details `UIComponent` ‚ğŒp³‚µA`RectTransform` ‚É‚æ‚é“–‚½‚è”»’è‚ÆA
- *          e `Canvas` ‚Ö‚Ì“o˜^ŠÇ—‚ğ’S‚¢‚Ü‚·B
+ * @brief UI æç”»è¦ç´ ã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details `UIComponent` ã‚’ç¶™æ‰¿ã—ã€`RectTransform` ã«ã‚ˆã‚‹å½“ãŸã‚Šåˆ¤å®šã¨ã€
+ *          è¦ª `Canvas` ã¸ã®ç™»éŒ²ç®¡ç†ã‚’æ‹…ã„ã¾ã™ã€‚
  */
 class Graphic : public UIComponent
 {
 	C_REFLECT(Graphic)
 public:
 	/**
-	 * @brief ƒŒƒCƒLƒƒƒXƒg”»’è‚Ì‘ÎÛ‚Æ‚·‚é‚©B
-	 * @details `true` ‚Ìê‡A`Raycast` ‚Å `RectTransform` “à‚É‚ ‚é‚©‚ğ”»’è‚µ‚Ü‚·B
+	 * @brief ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆåˆ¤å®šã®å¯¾è±¡ã¨ã™ã‚‹ã‹ã€‚
+	 * @details `true` ã®å ´åˆã€`Raycast` ã§ `RectTransform` å†…ã«ã‚ã‚‹ã‹ã‚’åˆ¤å®šã—ã¾ã™ã€‚
 	 */
 	C_PROPERTY()
 	bool isRaycastTarget = true;
 
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	Graphic() = default;
 
 	/**
-	 * @brief ƒfƒXƒgƒ‰ƒNƒ^B
-	 * @details ‚Ü‚¾ `Canvas` ‚É“o˜^‚³‚ê‚Ä‚¢‚éê‡‚Í“o˜^‰ğœ‚µ‚Ü‚·i’x‰„íœjB
+	 * @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	 * @details ã¾ã  `Canvas` ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ç™»éŒ²è§£é™¤ã—ã¾ã™ï¼ˆé…å»¶å‰Šé™¤ï¼‰ã€‚
 	 */
 	virtual ~Graphic() override = default;
 
 	/**
-	 * @brief —LŒø‰»ˆ—B
-	 * @details `Canvas` ‚É“o˜^‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í“o˜^‚µ‚Ü‚·B
+	 * @brief æœ‰åŠ¹åŒ–å‡¦ç†ã€‚
+	 * @details `Canvas` ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ç™»éŒ²ã—ã¾ã™ã€‚
 	 */
 	void OnEnable() override;
 
 	/**
-	 * @brief –³Œø‰»ˆ—B
-	 * @details `Canvas` ‚É“o˜^‚³‚ê‚Ä‚¢‚éê‡‚Í“o˜^‰ğœ‚µ‚Ü‚·i’x‰„íœjB
+	 * @brief ç„¡åŠ¹åŒ–å‡¦ç†ã€‚
+	 * @details `Canvas` ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ç™»éŒ²è§£é™¤ã—ã¾ã™ï¼ˆé…å»¶å‰Šé™¤ï¼‰ã€‚
 	 */
 	void OnDisable() override;
 
 	/**
-	 * @brief e `Canvas` ‚ğæ“¾‚µ‚Ü‚·B
-	 * @return e `Canvas` ‚Ö‚Ìƒ|ƒCƒ“ƒ^B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr` ‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief è¦ª `Canvas` ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return è¦ª `Canvas` ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr` ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	Canvas* GetCanvas() const;
 
 	/**
-	 * @brief ƒŒƒCƒLƒƒƒXƒgiƒqƒbƒgƒeƒXƒgj‚ğs‚¢‚Ü‚·B
-	 * @param position ƒXƒNƒŠ[ƒ“À•WŒn‚Å‚ÌƒeƒXƒgˆÊ’uB
-	 * @return “–‚½‚è”»’è‚ª—LŒø‚©‚ÂA‹éŒ`“à‚Å‚ ‚ê‚Î `true`B‚»‚êˆÈŠO‚Í `false`B
-	 * @details `isRaycastTarget` ‚ª `true` ‚Ì‚Æ‚«‚Ì‚İA`RectTransform::Contains` ‚ğ—p‚¢‚Ä
-	 *          ‹éŒ`“à”»’è‚ğs‚¢‚Ü‚·B
+	 * @brief ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆï¼ˆãƒ’ãƒƒãƒˆãƒ†ã‚¹ãƒˆï¼‰ã‚’è¡Œã„ã¾ã™ã€‚
+	 * @param position ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã§ã®ãƒ†ã‚¹ãƒˆä½ç½®ã€‚
+	 * @return å½“ãŸã‚Šåˆ¤å®šãŒæœ‰åŠ¹ã‹ã¤ã€çŸ©å½¢å†…ã§ã‚ã‚Œã° `true`ã€‚ãã‚Œä»¥å¤–ã¯ `false`ã€‚
+	 * @details `isRaycastTarget` ãŒ `true` ã®ã¨ãã®ã¿ã€`RectTransform::Contains` ã‚’ç”¨ã„ã¦
+	 *          çŸ©å½¢å†…åˆ¤å®šã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	bool Raycast(const Vector2& position);
 
 #ifdef USE_IMGUI
 	/**
-	 * @brief ƒCƒ“ƒXƒyƒNƒ^—p‚ÌƒvƒƒpƒeƒB•`‰æB
-	 * @details `USE_IMGUI` ’è‹`‚Ì‚İAƒŒƒCƒLƒƒƒXƒg‘ÎÛƒtƒ‰ƒO‚ğƒgƒOƒ‹•\¦‚µ‚Ü‚·B
+	 * @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚
+	 * @details `USE_IMGUI` å®šç¾©æ™‚ã®ã¿ã€ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆå¯¾è±¡ãƒ•ãƒ©ã‚°ã‚’ãƒˆã‚°ãƒ«è¡¨ç¤ºã—ã¾ã™ã€‚
 	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI

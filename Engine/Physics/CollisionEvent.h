@@ -4,82 +4,82 @@
 class GameObject;
 class Collider;
 
-// Õ“ËƒCƒxƒ“ƒg‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì
+// è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“
 
 struct ContactPoint
 {
-	Vector3 point; // ÚG“_‚ÌˆÊ’u
-	Vector3 normal;   //@ÚG“_‚Ì–@üƒxƒNƒgƒ‹
-	float separation; // ÚG“_‚Å‚ÌƒRƒ‰ƒCƒ_[‚Ì‹——£
-	Collider* thisCollider; // ©g‚ÌƒRƒ‰ƒCƒ_
-	Collider* otherCollider; // Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_
+	Vector3 point; // æ¥è§¦ç‚¹ã®ä½ç½®
+	Vector3 normal;   //ã€€æ¥è§¦ç‚¹ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+	float separation; // æ¥è§¦ç‚¹ã§ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è·é›¢
+	Collider* thisCollider; // è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€
+	Collider* otherCollider; // è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€
 };
 
 
 struct CollisionInfo
 {
-	GameObject* self; // ©g‚ÌGameObject
-	Collider* selfCollider; // ©g‚ÌƒRƒ‰ƒCƒ_[
-	GameObject* other; // Õ“Ë‘Šè‚ÌGameObject
-	Collider* otherCollider; // Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
+	GameObject* self; // è‡ªèº«ã®GameObject
+	Collider* selfCollider; // è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+	GameObject* other; // è¡çªç›¸æ‰‹ã®GameObject
+	Collider* otherCollider; // è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 
-	std::vector<ContactPoint> contacts; // •¡”‚ÌÚG“_‚Ìî•ñ‚ğŠi”[‚·‚é”z—ñ
-	Vector3 impulse; // Õ“Ë‚ğ‰ğŒˆ‚·‚é‚½‚ß‚ÉŒİ‚¢‚ÌƒRƒ‰ƒCƒ_‚É‰Á‚¦‚ç‚ê‚½‡Œv‚ÌÕŒ‚—ÊiƒxƒNƒgƒ‹j
+	std::vector<ContactPoint> contacts; // è¤‡æ•°ã®æ¥è§¦ç‚¹ã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹é…åˆ—
+	Vector3 impulse; // è¡çªã‚’è§£æ±ºã™ã‚‹ãŸã‚ã«äº’ã„ã®ã‚³ãƒ©ã‚¤ãƒ€ã«åŠ ãˆã‚‰ã‚ŒãŸåˆè¨ˆã®è¡æ’ƒé‡ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ï¼‰
 };
 
-// ƒgƒŠƒK[ƒCƒxƒ“ƒg‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì
+// ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“
 struct TriggerInfo
 {
-	GameObject* self; // ©g‚ÌGameObject
-	Collider* selfCollider; // ©g‚ÌƒRƒ‰ƒCƒ_[
-	GameObject* other; // ƒgƒŠƒK[‘Šè‚ÌGameObject
-	Collider* otherCollider; // ƒgƒŠƒK[‘Šè‚ÌƒRƒ‰ƒCƒ_[
+	GameObject* self; // è‡ªèº«ã®GameObject
+	Collider* selfCollider; // è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+	GameObject* other; // ãƒˆãƒªã‚¬ãƒ¼ç›¸æ‰‹ã®GameObject
+	Collider* otherCollider; // ãƒˆãƒªã‚¬ãƒ¼ç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 };
 
-// Õ“ËƒCƒxƒ“ƒg‚ÌƒR[ƒ‹ƒoƒbƒN‚ğˆ—‚·‚éƒCƒ“ƒ^[ƒtƒF[ƒXƒNƒ‰ƒX
+// è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‡¦ç†ã™ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹
 class ICollisionEventCallback
 {
 public:
 	virtual ~ICollisionEventCallback() = default;
 
 	/**
-	 * @brief Õ“ËƒCƒxƒ“ƒg‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
-	 * @param collisionInfo Õ“ËƒCƒxƒ“ƒg‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì‚Ö‚ÌQÆ
+	 * @brief è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+	 * @param collisionInfo è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“ã¸ã®å‚ç…§
 	 */
 	virtual void OnCollisionEnter(const CollisionInfo& collisionInfo) {}
 	/**
-	 * @brief Õ“ËƒCƒxƒ“ƒg‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
-	 * @param collisionInfo Õ“ËƒCƒxƒ“ƒg‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì‚Ö‚ÌQÆ
+	 * @brief è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+	 * @param collisionInfo è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“ã¸ã®å‚ç…§
 	 */
 	virtual void OnCollisionStay(const CollisionInfo& collisionInfo) {}
 	/**
-	 * @brief Õ“ËƒCƒxƒ“ƒg‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
-	 * @param collisionInfo Õ“ËƒCƒxƒ“ƒg‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì‚Ö‚ÌQÆ
+	 * @brief è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+	 * @param collisionInfo è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“ã¸ã®å‚ç…§
 	 */
 	virtual void OnCollisionExit(const CollisionInfo& collisionInfo) {}
 };
 
-// ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ÌƒR[ƒ‹ƒoƒbƒN‚ğˆ—‚·‚éƒCƒ“ƒ^[ƒtƒF[ƒXƒNƒ‰ƒX
+// ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‡¦ç†ã™ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹
 class ITriggerEventCallback
 {
 public:
 	virtual ~ITriggerEventCallback() = default;
 
 	/**
-	 * @brief ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
-	 * @param triggerInfo ƒgƒŠƒK[ƒCƒxƒ“ƒg‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì‚Ö‚ÌQÆ
+	 * @brief ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+	 * @param triggerInfo ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“ã¸ã®å‚ç…§
 	 */
 	virtual void OnTriggerEnter(const TriggerInfo& triggerInfo) {}
 
 	/**
-	 * @brief ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
-	 * @param triggerInfo ƒgƒŠƒK[ƒCƒxƒ“ƒg‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì‚Ö‚ÌQÆ
+	 * @brief ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+	 * @param triggerInfo ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“ã¸ã®å‚ç…§
 	 */
 	virtual void OnTriggerStay(const TriggerInfo& triggerInfo) {}
 
 	/**
-	 * @brief ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
-	 * @param triggerInfo ƒgƒŠƒK[ƒCƒxƒ“ƒg‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì‚Ö‚ÌQÆ
+	 * @brief ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+	 * @param triggerInfo ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“ã¸ã®å‚ç…§
 	 */
 	virtual void OnTriggerExit(const TriggerInfo& triggerInfo) {}
 };

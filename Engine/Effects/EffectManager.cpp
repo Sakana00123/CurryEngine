@@ -13,20 +13,20 @@ void EffectManager::ClearAll()
 
 EffectHandle EffectManager::CreateEffectData()
 {
-	// V‚µ‚¢ƒGƒtƒFƒNƒgƒf[ƒ^’Ç‰Á—p‚Ìƒnƒ“ƒhƒ‹
+	// æ–°ã—ã„ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿è¿½åŠ ç”¨ã®ãƒãƒ³ãƒ‰ãƒ«
 	//static EffectHandle nextHandle = 0;
-	//EffectHandle handle = nextHandle++; // ƒnƒ“ƒhƒ‹‚ÍƒCƒ“ƒNƒŠƒƒ“ƒg‚µ‚Ä‚¢‚­
+	//EffectHandle handle = nextHandle++; // ãƒãƒ³ãƒ‰ãƒ«ã¯ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã—ã¦ã„ã
 	EffectHandle handle = static_cast<EffectHandle>(effectData.size());
-	effectData.emplace(); // V‚µ‚¢ƒGƒtƒFƒNƒgƒf[ƒ^‚ğ’Ç‰Á
+	effectData.emplace(); // æ–°ã—ã„ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
 	return handle;
 }
 
 EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 {
-	// ƒGƒtƒFƒNƒgƒf[ƒ^“Ç‚İ‚İ
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 	if (std::filesystem::exists(filePath))
 	{
-		// ‚·‚Å‚É“¯‚¶ƒf[ƒ^‚ª‘¶İ‚·‚éê‡‚Í‚»‚ê‚ğ•Ô‚·
+		// ã™ã§ã«åŒã˜ãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ãã‚Œã‚’è¿”ã™
 		for (int i = 0; i < effectData.size(); ++i)
 		{
 			if (effectData[i].filePath == filePath)
@@ -38,15 +38,15 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 		json j;
 		if (JsonFileHandler::LoadJsonFromFile(j, filePath))
 		{
-			// V‚µ‚¢ƒGƒtƒFƒNƒgƒf[ƒ^’Ç‰Á—p‚Ìƒnƒ“ƒhƒ‹
+			// æ–°ã—ã„ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿è¿½åŠ ç”¨ã®ãƒãƒ³ãƒ‰ãƒ«
 			EffectHandle handle = CreateEffectData();
 			effectData[handle].filePath = filePath;
 			effectData[handle].handle = handle;
 
-			// ƒGƒtƒFƒNƒg–¼‚ğ”½‰f
+			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåã‚’åæ˜ 
 			effectData[handle].name = j.value("name", "Effect" + std::to_string(handle));
 
-			// “Ç‚İ‚İƒf[ƒ^‚ğƒGƒ~ƒbƒ^[ƒf[ƒ^‚É”½‰f
+			// èª­ã¿è¾¼ã¿ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«åæ˜ 
 			auto& emitterDataList = effectData[handle].emitters;
 			auto emitterJsonList = j.value("emitterDataList", json::array());
 			for (const auto& emitterJson : emitterJsonList)
@@ -55,7 +55,7 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 				emitterData.name = emitterJson.value("name", "Emitter");
 				emitterData.isEnabled = emitterJson.value("isEnabled", true);
 
-				// ƒGƒ~ƒbƒgİ’è
+				// ã‚¨ãƒŸãƒƒãƒˆè¨­å®š
 				{
 					emitterData.emitData.maxParticles = emitterJson.value("maxParticles", 1000);
 					if (emitterJson.contains("emitCount"))
@@ -83,7 +83,7 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 					emitterData.emitData.loop = emitterJson.value("loop", false);
 					emitterData.emitData.duration = emitterJson.value("duration", 1.0f);
 				}
-				// Œ`óİ’è
+				// å½¢çŠ¶è¨­å®š
 				{
 					emitterData.shapeData.shape = static_cast<ShapeType>(emitterJson.value("shapeType", 0));
 					emitterData.shapeData.directionMode = static_cast<DirectionMode>(emitterJson.value("directionMode", 0));
@@ -96,7 +96,7 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 					emitterData.shapeData.radius = emitterJson.value("radius", 1.0f);
 					emitterData.shapeData.height = emitterJson.value("height", 1.0f);
 				}
-				// “®ìİ’è
+				// å‹•ä½œè¨­å®š
 				{
 					if (emitterJson.contains("velocity"))
 						emitterData.motionData.velocity = emitterJson["velocity"].get<Range<Vector3>>();
@@ -106,7 +106,7 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 						emitterData.motionData.lifeTime = emitterJson["lifeTime"].get<Range<float>>();
 					emitterData.motionData.useGravity = emitterJson.value("useGravity", false);
 				}
-				// ƒrƒWƒ…ƒAƒ‹İ’è
+				// ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«è¨­å®š
 				{
 					emitterData.visualData.renderingMode = static_cast<RenderingMode>(emitterJson.value("renderingMode", 0));
 					emitterData.visualData.texturePath = emitterJson.value("texturePath", "");
@@ -138,10 +138,10 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 					if (emitterJson.contains("fadeOutTime"))
 						emitterData.visualData.fadeOutTime = emitterJson["fadeOutTime"].get<Range<float>>();
 
-					// ƒOƒ‰ƒf[ƒVƒ‡ƒ“İ’è
+					// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³è¨­å®š
 					{
 						ImGradientHDRState gradientState{};
-						// ƒJƒ‰[‚ÌƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒ}[ƒJ[‚ğ“Ç‚İ‚Ş
+						// ã‚«ãƒ©ãƒ¼ã®ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ¼ã‚«ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 						{
 							auto gradientColorsJson = emitterJson.value("gradientColors", json::array());
 							for (const auto& colorMarkerJson : gradientColorsJson)
@@ -159,7 +159,7 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 							}
 						}
 
-						// ƒAƒ‹ƒtƒ@‚ÌƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒ}[ƒJ[‚ğ“Ç‚İ‚Ş
+						// ã‚¢ãƒ«ãƒ•ã‚¡ã®ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ¼ã‚«ãƒ¼ã‚’èª­ã¿è¾¼ã‚€
 						{
 							auto gradientAlphasJson = emitterJson.value("gradientAlphas", json::array());
 							for (const auto& alphaMarkerJson : gradientAlphasJson)
@@ -170,27 +170,27 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 								gradientState.AddAlphaMarker(alphaMarker.Position, alphaMarker.Alpha);
 							}
 						}
-						// ƒOƒ‰ƒf[ƒVƒ‡ƒ“ó‘Ô‚ğƒGƒ~ƒbƒ^[ƒf[ƒ^‚É”½‰f
+						// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³çŠ¶æ…‹ã‚’ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«åæ˜ 
 						emitterData.visualData.gradientState = gradientState;
 					}
 				}
 				
-				// ƒGƒ~ƒbƒ^ƒf[ƒ^ƒŠƒXƒg‚É’Ç‰Á
+				// ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«è¿½åŠ 
 				emitterDataList.push_back(emitterData);
 			}
 
-			// ¬Œ÷‚µ‚½‚Ì‚Åƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+			// æˆåŠŸã—ãŸã®ã§ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 			return handle;
 		}
 	}
-	// “Ç‚İ‚İ¸”s
+	// èª­ã¿è¾¼ã¿å¤±æ•—
 	Console::LogError("Failed to load effect data from file: " + filePath);
-	return -1; // –³Œø‚Èƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+	return -1; // ç„¡åŠ¹ãªãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 }
 
 EffectHandle EffectManager::LoadEffectDataWithDialog()
 {
-	// ƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO•\¦
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
 	{
 		const char* filter = "JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
 		char filePath[256] = { 0 };
@@ -198,34 +198,34 @@ EffectHandle EffectManager::LoadEffectDataWithDialog()
 		DialogResult result = Dialog::OpenFileName(filePath, sizeof(filePath), filter, nullptr, hwnd);
 		if (result == DialogResult::OK) {
 			std::filesystem::path path(filePath);
-			// Šg’£q‚ª.json‚Å‚È‚¢ê‡A.json‚ğ’Ç‰Á
+			// æ‹¡å¼µå­ãŒ.jsonã§ãªã„å ´åˆã€.jsonã‚’è¿½åŠ 
 			path.replace_extension(".json");
 
-			// ƒGƒtƒFƒNƒgƒf[ƒ^“Ç‚İ‚İ
+			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 			return LoadEffectData(path.string());
 		}
 		else {
-			return -1; // –³Œø‚Èƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+			return -1; // ç„¡åŠ¹ãªãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 		}
 	}
 }
 
 void EffectManager::SaveEffectData(EffectHandle handle, const std::string& filePath)
 {
-	// ƒGƒtƒFƒNƒgƒf[ƒ^•Û‘¶
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ä¿å­˜
 	json j;
-	// ƒGƒtƒFƒNƒg–¼•Û‘¶
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåä¿å­˜
 	j["name"] = effectData.at(handle).name;
-	// ƒGƒ~ƒbƒ^ƒf[ƒ^ƒŠƒXƒg‰Šú‰»
+	// ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆåˆæœŸåŒ–
 	j["emitterDataList"] = json::array();
-	// ƒGƒ~ƒbƒ^ƒf[ƒ^•Û‘¶
+	// ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿ä¿å­˜
 	for (const auto& emitterData : effectData.at(handle).emitters)
 	{
-		// ƒGƒ~ƒbƒ^[ƒf[ƒ^‚ğJSON‚É•ÏŠ·
+		// ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’JSONã«å¤‰æ›
 		json emitterJson;
 		emitterJson["name"] = emitterData.name;
 		emitterJson["isEnabled"] = emitterData.isEnabled;
-		// ƒGƒ~ƒbƒgİ’è
+		// ã‚¨ãƒŸãƒƒãƒˆè¨­å®š
 		{
 			emitterJson["maxParticles"] = emitterData.emitData.maxParticles;
 			emitterJson["emitCount"] = emitterData.emitData.emitCount;
@@ -239,7 +239,7 @@ void EffectManager::SaveEffectData(EffectHandle handle, const std::string& fileP
 			emitterJson["loop"] = emitterData.emitData.loop;
 			emitterJson["duration"] = emitterData.emitData.duration;
 		}
-		// Œ`óİ’è
+		// å½¢çŠ¶è¨­å®š
 		{
 			emitterJson["shapeType"] = static_cast<uint8_t>(emitterData.shapeData.shape);
 			emitterJson["directionMode"] = static_cast<uint8_t>(emitterData.shapeData.directionMode);
@@ -251,14 +251,14 @@ void EffectManager::SaveEffectData(EffectHandle handle, const std::string& fileP
 			emitterJson["radius"] = emitterData.shapeData.radius;
 			emitterJson["height"] = emitterData.shapeData.height;
 		}
-		// “®ìİ’è
+		// å‹•ä½œè¨­å®š
 		{
 			emitterJson["velocity"] = emitterData.motionData.velocity;
 			emitterJson["acceleration"] = emitterData.motionData.acceleration;
 			emitterJson["lifeTime"] = emitterData.motionData.lifeTime;
 			emitterJson["useGravity"] = emitterData.motionData.useGravity;
 		}
-		// ƒrƒWƒ…ƒAƒ‹İ’è
+		// ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«è¨­å®š
 		{
 			emitterJson["renderingMode"] = static_cast<uint8_t>(emitterData.visualData.renderingMode);
 			emitterJson["texturePath"] = emitterData.visualData.texturePath;
@@ -276,9 +276,9 @@ void EffectManager::SaveEffectData(EffectHandle handle, const std::string& fileP
 			emitterJson["fadeInTime"] = emitterData.visualData.fadeInTime;
 			emitterJson["fadeOutTime"] = emitterData.visualData.fadeOutTime;
 
-			// ƒOƒ‰ƒf[ƒVƒ‡ƒ“İ’è
+			// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³è¨­å®š
 			{
-				// ƒJƒ‰[‚ÌƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒ}[ƒJ[‚ğ•Û‘¶
+				// ã‚«ãƒ©ãƒ¼ã®ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ¼ã‚«ãƒ¼ã‚’ä¿å­˜
 				for (int i = 0; i < emitterData.visualData.gradientState.ColorCount; ++i)
 				{
 					const auto& colorMarker = emitterData.visualData.gradientState.Colors[i];
@@ -288,7 +288,7 @@ void EffectManager::SaveEffectData(EffectHandle handle, const std::string& fileP
 							{ "intensity", colorMarker.Intensity }
 						});
 				}
-				// ƒAƒ‹ƒtƒ@‚ÌƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒ}[ƒJ[‚ğ•Û‘¶
+				// ã‚¢ãƒ«ãƒ•ã‚¡ã®ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ¼ã‚«ãƒ¼ã‚’ä¿å­˜
 				for (int i = 0; i < emitterData.visualData.gradientState.AlphaCount; ++i)
 				{
 					const auto& alphaMarker = emitterData.visualData.gradientState.Alphas[i];
@@ -300,16 +300,16 @@ void EffectManager::SaveEffectData(EffectHandle handle, const std::string& fileP
 			}
 		}
 
-		// ƒGƒ~ƒbƒ^ƒf[ƒ^ƒŠƒXƒg‚É’Ç‰Á
+		// ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«è¿½åŠ 
 		j["emitterDataList"].push_back(emitterJson);
 	}
-	// ƒtƒ@ƒCƒ‹‚É•Û‘¶
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
 	JsonFileHandler::SaveJsonToFile(j, filePath);
 }
 
 void EffectManager::SaveEffectDataWithDialog(EffectHandle handle)
 {
-	// ƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO•\¦
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
 	{
 		const char* filter = "JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
 		char filePath[256] = { 0 };
@@ -317,40 +317,40 @@ void EffectManager::SaveEffectDataWithDialog(EffectHandle handle)
 		DialogResult result = Dialog::SaveFileName(filePath, sizeof(filePath), filter, nullptr, ".json", hwnd);
 		if (result == DialogResult::OK) {
 			std::filesystem::path path(filePath);
-			// Šg’£q‚ª.json‚Å‚È‚¢ê‡A.json‚ğ’Ç‰Á
+			// æ‹¡å¼µå­ãŒ.jsonã§ãªã„å ´åˆã€.jsonã‚’è¿½åŠ 
 			path.replace_extension(".json");
-			// ƒGƒtƒFƒNƒgƒf[ƒ^•Û‘¶
+			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ä¿å­˜
 			SaveEffectData(handle, path.string());
 		}
 	}
 }
 
-// ƒGƒtƒFƒNƒgÄ¶
+// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
 int EffectManager::Play(EffectHandle handle, const Vector3& pos, const Vector3& rot)
 {
-	// ƒnƒ“ƒhƒ‹ƒ`ƒFƒbƒN
+	// ãƒãƒ³ãƒ‰ãƒ«ãƒã‚§ãƒƒã‚¯
 	if (handle < 0 || handle >= static_cast<EffectHandle>(effectData.size()))
 	{
 		Console::LogError("EffectManager::Play: Invalid effect handle " + std::to_string(handle));
-		return -1; // –³Œø‚ÈÄ¶ƒCƒ“ƒXƒ^ƒ“ƒXID‚ğ•Ô‚·
+		return -1; // ç„¡åŠ¹ãªå†ç”Ÿã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã‚’è¿”ã™
 	}
 
-	// V‚µ‚¢Ä¶ƒCƒ“ƒXƒ^ƒ“ƒXID‚ğ¶¬
+	// æ–°ã—ã„å†ç”Ÿã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã‚’ç”Ÿæˆ
 	int playInstanceId = nextPlayInstanceId++;
 
 	auto& effect = effectData[handle];
-	auto& particleSystemMap = particleSystems[handle][playInstanceId]; // ƒnƒ“ƒhƒ‹‚ÆÄ¶ƒCƒ“ƒXƒ^ƒ“ƒXID‚É‘Î‰‚·‚éƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€ƒ}ƒbƒv
+	auto& particleSystemMap = particleSystems[handle][playInstanceId]; // ãƒãƒ³ãƒ‰ãƒ«ã¨å†ç”Ÿã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã«å¯¾å¿œã™ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãƒãƒƒãƒ—
 
-	// ŠeƒGƒ~ƒbƒ^[ƒf[ƒ^‚ğˆ—
+	// å„ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’å‡¦ç†
 	for (int emitterIndex = 0; emitterIndex < effect.emitters.size(); ++emitterIndex)
 	{
 		const auto& emitterData = effect.emitters[emitterIndex];
 		const std::string& effectFilePath = effect.filePath;
-		// ƒeƒNƒXƒ`ƒƒƒpƒX‚ÆÅ‘åƒp[ƒeƒBƒNƒ‹”æ“¾
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹ã¨æœ€å¤§ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ•°å–å¾—
 		const std::string& texturePath = emitterData.visualData.texturePath;
 		uint32_t maxParticles = emitterData.emitData.maxParticles;
 
-		// ŠY“–‚·‚éƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€‚ª‘¶İ‚µ‚È‚¢ê‡‚Í¶¬
+		// è©²å½“ã™ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ç”Ÿæˆ
 		if (particleSystemMap.find(emitterIndex) == particleSystemMap.end())
 		{
 			AssetTexture texture;
@@ -362,9 +362,9 @@ int EffectManager::Play(EffectHandle handle, const Vector3& pos, const Vector3& 
 			{
 				texture.MakeDummy(Graphics::GetDevice());
 			}
-			//ƒeƒNƒXƒ`ƒƒSRVæ“¾
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£SRVå–å¾—
 			Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv = texture.GetSRV();
-			//ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€¶¬
+			//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ ç”Ÿæˆ
 			particleSystemMap[emitterIndex] = std::make_unique<ComputeParticleSystem>(Graphics::GetDevice(), maxParticles, srv, emitterData.visualData.textureSplitCount);
 		}
 
@@ -376,15 +376,15 @@ int EffectManager::Play(EffectHandle handle, const Vector3& pos, const Vector3& 
 
 			EmitterPlayState state;
 			state.handle = handle;
-			state.emitterIndex = emitterIndex; // ‚±‚ê•K—v‚©‰ö‚µ‚¢
+			state.emitterIndex = emitterIndex; // ã“ã‚Œå¿…è¦ã‹æ€ªã—ã„
 			state.playInstanceId = playInstanceId;
-			state.emitterData = emitterData; // ƒGƒ~ƒbƒ^[ƒf[ƒ^‚ğƒvƒŒƒCó‘Ô‚ÉƒRƒs[iÄ¶’†‚ÉƒGƒ~ƒbƒ^[ƒf[ƒ^‚ª•ÏX‚³‚ê‚Ä‚à‰e‹¿‚µ‚È‚¢‚æ‚¤‚Éj
+			state.emitterData = emitterData; // ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ—ãƒ¬ã‚¤çŠ¶æ…‹ã«ã‚³ãƒ”ãƒ¼ï¼ˆå†ç”Ÿä¸­ã«ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚Œã¦ã‚‚å½±éŸ¿ã—ãªã„ã‚ˆã†ã«ï¼‰
 			state.elapsedTime = 0.0f;
 			state.nextEmitTime = initialDelay;
 			state.isPlaying = true;
 			state.position = pos;
 			state.rotationEuler = rot;
-			EmitOnce(state); // ‰‰ñƒGƒ~ƒbƒg‚ğ‘¦À‚És‚¤
+			EmitOnce(state); // åˆå›ã‚¨ãƒŸãƒƒãƒˆã‚’å³åº§ã«è¡Œã†
 
 			playingEmitters.push_back(state);
 		}
@@ -394,13 +394,13 @@ int EffectManager::Play(EffectHandle handle, const Vector3& pos, const Vector3& 
 
 void EffectManager::Stop(EffectHandle handle)
 {
-	// ƒnƒ“ƒhƒ‹ƒ`ƒFƒbƒN
+	// ãƒãƒ³ãƒ‰ãƒ«ãƒã‚§ãƒƒã‚¯
 	if (handle < 0 || handle >= static_cast<EffectHandle>(effectData.size()))
 	{
 		Console::LogError("EffectManager::Stop: Invalid effect handle " + std::to_string(handle));
 		return;
 	}
-	// Ä¶’†‚ÌƒGƒ~ƒbƒ^‚ğ’â~
+	// å†ç”Ÿä¸­ã®ã‚¨ãƒŸãƒƒã‚¿ã‚’åœæ­¢
 	for (auto& emitterState : playingEmitters)
 	{
 		if (emitterState.handle == handle)
@@ -412,7 +412,7 @@ void EffectManager::Stop(EffectHandle handle)
 
 void EffectManager::StopImmediate(int playInstanceId)
 {
-	// Ä¶ƒCƒ“ƒXƒ^ƒ“ƒXID‚É‘Î‰‚·‚éƒGƒ~ƒbƒ^‚ğ’â~
+	// å†ç”Ÿã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã«å¯¾å¿œã™ã‚‹ã‚¨ãƒŸãƒƒã‚¿ã‚’åœæ­¢
 	for (auto& emitterState : playingEmitters)
 	{
 		if (emitterState.playInstanceId == playInstanceId)
@@ -424,13 +424,13 @@ void EffectManager::StopImmediate(int playInstanceId)
 
 bool EffectManager::IsPlaying(EffectHandle handle)
 {
-	// ƒnƒ“ƒhƒ‹ƒ`ƒFƒbƒN
+	// ãƒãƒ³ãƒ‰ãƒ«ãƒã‚§ãƒƒã‚¯
 	if (handle < 0 || handle >= static_cast<EffectHandle>(effectData.size()))
 	{
 		Console::LogError("EffectManager::IsPlaying: Invalid effect handle " + std::to_string(handle));
 		return false;
 	}
-	// Ä¶’†‚ÌƒGƒ~ƒbƒ^‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
+	// å†ç”Ÿä¸­ã®ã‚¨ãƒŸãƒƒã‚¿ãŒå­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 	for (const auto& emitterState : playingEmitters)
 	{
 		if (emitterState.handle == handle && emitterState.isPlaying)
@@ -443,25 +443,25 @@ bool EffectManager::IsPlaying(EffectHandle handle)
 
 EffectHandle EffectManager::CopyEffectData(EffectHandle srcHandle)
 {
-	// ƒGƒtƒFƒNƒgƒf[ƒ^ƒRƒs[
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚³ãƒ”ãƒ¼
 	if (srcHandle < 0 || srcHandle >= static_cast<EffectHandle>(effectData.size()))
 	{
 		Console::LogError("EffectManager::CopyEffectData: Invalid effect handle " + std::to_string(srcHandle));
-		return -1; // –³Œø‚Èƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+		return -1; // ç„¡åŠ¹ãªãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 	}
-	// V‚µ‚¢ƒGƒtƒFƒNƒgƒf[ƒ^’Ç‰Á—p‚Ìƒnƒ“ƒhƒ‹
+	// æ–°ã—ã„ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿è¿½åŠ ç”¨ã®ãƒãƒ³ãƒ‰ãƒ«
 	EffectHandle newHandle = CreateEffectData();
-	// ƒf[ƒ^ƒRƒs[
+	// ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ”ãƒ¼
 	effectData[newHandle] = effectData[srcHandle];
-	effectData[newHandle].handle = newHandle; // ƒnƒ“ƒhƒ‹XV
-	effectData[newHandle].name += "_Copy"; // –¼‘OXV
-	effectData[newHandle].filePath += "_Copy"; // ƒtƒ@ƒCƒ‹ƒpƒXXV
+	effectData[newHandle].handle = newHandle; // ãƒãƒ³ãƒ‰ãƒ«æ›´æ–°
+	effectData[newHandle].name += "_Copy"; // åå‰æ›´æ–°
+	effectData[newHandle].filePath += "_Copy"; // ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹æ›´æ–°
 	return newHandle;
 }
 
 EffectManager::EffectData& EffectManager::GetEffectData(EffectHandle handle)
 {
-	// ƒGƒtƒFƒNƒgƒf[ƒ^æ“¾
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿å–å¾—
 	if (handle < 0 || handle >= static_cast<EffectHandle>(effectData.size()))
 	{
 		throw std::out_of_range("EffectManager::GetEffectData: Invalid effect handle " + std::to_string(handle));
@@ -476,21 +476,21 @@ void EffectManager::ClearEffectData()
 
 void EffectManager::StopAll()
 {
-	// ‘SƒGƒtƒFƒNƒg’â~
+	// å…¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåœæ­¢
 	particleSystems.clear();
 	playingEmitters.clear();
 }
 
 void EffectManager::Initialize()
 {
-	//ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€‰Šú‰»
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ åˆæœŸåŒ–
 	particleSystems.clear();
 	playingEmitters.clear();
 }
 
 void EffectManager::Update(float deltaTime)
 {
-	// Ä¶’†‚ÌƒGƒ~ƒbƒ^‚ğXV
+	// å†ç”Ÿä¸­ã®ã‚¨ãƒŸãƒƒã‚¿ã‚’æ›´æ–°
 	for (auto& emitterState : playingEmitters)
 	{
 		if (!emitterState.isPlaying)
@@ -504,32 +504,32 @@ void EffectManager::Update(float deltaTime)
 #endif // _DEBUG
 
 		
-		// Œo‰ßŠÔXV
+		// çµŒéæ™‚é–“æ›´æ–°
 		emitterState.elapsedTime += deltaTime;
 
-		// ƒ‹[ƒv‚ÆÄ¶’â~‚Ìˆ—
+		// ãƒ«ãƒ¼ãƒ—ã¨å†ç”Ÿåœæ­¢ã®å‡¦ç†
 		if (emitterState.elapsedTime >= emitData.duration)
 		{
 			if (emitData.loop)
 			{
-				emitterState.elapsedTime = fmod(emitterState.elapsedTime, emitData.duration); // ƒ‹[ƒv‚·‚éê‡‚ÍŒo‰ßŠÔ‚ğƒŠƒZƒbƒg
-				EmitOnce(emitterState); // ƒ‹[ƒv‚·‚éê‡‚ÍÄ“xƒGƒ~ƒbƒg
+				emitterState.elapsedTime = fmod(emitterState.elapsedTime, emitData.duration); // ãƒ«ãƒ¼ãƒ—ã™ã‚‹å ´åˆã¯çµŒéæ™‚é–“ã‚’ãƒªã‚»ãƒƒãƒˆ
+				EmitOnce(emitterState); // ãƒ«ãƒ¼ãƒ—ã™ã‚‹å ´åˆã¯å†åº¦ã‚¨ãƒŸãƒƒãƒˆ
 			}
 			else
 			{
-				emitterState.isPlaying = false; // ƒ‹[ƒv‚µ‚È‚¢ê‡‚ÍÄ¶’â~
+				emitterState.isPlaying = false; // ãƒ«ãƒ¼ãƒ—ã—ãªã„å ´åˆã¯å†ç”Ÿåœæ­¢
 				continue;
 			}
 		}
 	}
 
-	// Ä¶’â~‚µ‚½ƒGƒ~ƒbƒ^‚ğƒŠƒXƒg‚©‚çíœ
-	std::erase_if(playingEmitters, [](const EmitterPlayState& state) { return !state.isPlaying; }); // Ä¶’â~‚µ‚½ƒGƒ~ƒbƒ^‚ğƒŠƒXƒg‚©‚çíœ
+	// å†ç”Ÿåœæ­¢ã—ãŸã‚¨ãƒŸãƒƒã‚¿ã‚’ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
+	std::erase_if(playingEmitters, [](const EmitterPlayState& state) { return !state.isPlaying; }); // å†ç”Ÿåœæ­¢ã—ãŸã‚¨ãƒŸãƒƒã‚¿ã‚’ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
 
-	// g‚í‚ê‚È‚­‚È‚Á‚½playInstanceId‚Ìƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€‚ğGC
-	// handle‚²‚Æ‚ÉA‚Ü‚¾playingEmitters‚Éc‚Á‚Ä‚¢‚éplayInstanceId‚ÌƒZƒbƒg‚ğì¬‚µA‚»‚êˆÈŠO‚ÌplayInstanceId‚Ìƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€‚ğíœ‚·‚é
+	// ä½¿ã‚ã‚Œãªããªã£ãŸplayInstanceIdã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’GC
+	// handleã”ã¨ã«ã€ã¾ã playingEmittersã«æ®‹ã£ã¦ã„ã‚‹playInstanceIdã®ã‚»ãƒƒãƒˆã‚’ä½œæˆã—ã€ãã‚Œä»¥å¤–ã®playInstanceIdã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 	{
-		// ¶‘¶’†‚ÌplayInstanceId‚ÌƒZƒbƒg‚ğì¬
+		// ç”Ÿå­˜ä¸­ã®playInstanceIdã®ã‚»ãƒƒãƒˆã‚’ä½œæˆ
 		std::unordered_map<EffectHandle, std::unordered_set<int>> alivePlayInstanceIds;
 		for (const auto& emitterState : playingEmitters)
 		{
@@ -539,20 +539,20 @@ void EffectManager::Update(float deltaTime)
 			}
 		}
 
-		// ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€‚ğGC
+		// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’GC
 		for (auto& [handle, playInstanceMap] : particleSystems)
 		{
 			std::erase_if(playInstanceMap, [&](const auto& pair) {
 				auto it = alivePlayInstanceIds.find(handle);
-				return it == alivePlayInstanceIds.end() || it->second.count(pair.first) == 0; // ¶‘¶’†‚ÌplayInstanceId‚É‘¶İ‚µ‚È‚¢ê‡‚Ííœ
+				return it == alivePlayInstanceIds.end() || it->second.count(pair.first) == 0; // ç”Ÿå­˜ä¸­ã®playInstanceIdã«å­˜åœ¨ã—ãªã„å ´åˆã¯å‰Šé™¤
 				});
 		}
 		std::erase_if(particleSystems, [](const auto& pair) {
-			return pair.second.empty(); // playInstanceMap‚ª‹ó‚Ìhandle‚Ííœ
+			return pair.second.empty(); // playInstanceMapãŒç©ºã®handleã¯å‰Šé™¤
 			});
 	}
 
-	//ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€XV
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ æ›´æ–°
 	ID3D11DeviceContext* immediateContext = Graphics::GetDeviceContext();
 
 	for (auto& [handle, instanceMap] : particleSystems)
@@ -569,18 +569,18 @@ void EffectManager::Update(float deltaTime)
 
 void EffectManager::Render(RenderContext* rtx)
 {
-	//ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€•`‰æ
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ æç”»
 	for (auto& [handle, instanceMap] : particleSystems)
 	{
 		for (auto& [playInstanceId, particleSystemList] : instanceMap)
 		{
 			for (auto& [emitterIndex, particleSystem] : particleSystemList)
 			{
-				// •`‰æ‘Oİ’è
+				// æç”»å‰è¨­å®š
 				rtx->renderState->BindBlendState(rtx->immediateContext, particleSystem->blendState);
 				rtx->renderState->BindDepthStencilState(rtx->immediateContext, particleSystem->depthStencilState);
 
-				// •`‰æ
+				// æç”»
 				particleSystem->Render(rtx->immediateContext);
 			}
 		}
@@ -589,13 +589,13 @@ void EffectManager::Render(RenderContext* rtx)
 
 void EffectManager::ReInitializeParticleSystem()
 {
-	// ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€Ä‰Šú‰»
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ å†åˆæœŸåŒ–
 	StopAll();
 }
 
 void EffectManager::EmitOnce(const EmitterPlayState& state)
 {
-	// ƒGƒtƒFƒNƒg‚ğˆê“x‚¾‚¯ƒGƒ~ƒbƒg
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ä¸€åº¦ã ã‘ã‚¨ãƒŸãƒƒãƒˆ
 #ifdef _DEBUG
 	const auto& emitterData = state.emitterData;
 #else
@@ -604,7 +604,7 @@ void EffectManager::EmitOnce(const EmitterPlayState& state)
 
 	if (!emitterData.isEnabled)
 	{
-		return; // ƒGƒ~ƒbƒg‚ª–³Œø‚Èê‡‚Í‰½‚à‚µ‚È‚¢
+		return; // ã‚¨ãƒŸãƒƒãƒˆãŒç„¡åŠ¹ãªå ´åˆã¯ä½•ã‚‚ã—ãªã„
 	}
 
 	const std::string& effectFilePath = effectData[state.handle].filePath;
@@ -618,63 +618,63 @@ void EffectManager::EmitOnce(const EmitterPlayState& state)
 	}
 
 
-	// ƒuƒŒƒ“ƒhƒXƒe[ƒgİ’è
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	particleSystemList[state.emitterIndex]->blendState = emitterData.visualData.blendState;
 	particleSystemList[state.emitterIndex]->depthStencilState = emitterData.visualData.renderingMode == RenderingMode::ScreenSpace ? DepthStencilState::NoTestNoWrite : DepthStencilState::TestOnly;
 
 
-	// ƒGƒ~ƒbƒg”•ªƒ‹[ƒv
+	// ã‚¨ãƒŸãƒƒãƒˆæ•°åˆ†ãƒ«ãƒ¼ãƒ—
 	int emitCount = emitterData.emitData.emitCount.GetRandom();
 	for (int i = 0; i < emitCount; ++i)
 	{
 		ComputeParticleSystem::EmitParticleData emitData;
-		emitData.parameter.x = static_cast<float>(emitterData.visualData.renderingMode); // •`‰æƒ‚[ƒhİ’è
-		emitData.parameter.y = emitterData.motionData.lifeTime.GetRandom(); // ¶‘¶ŠÔİ’è
+		emitData.parameter.x = static_cast<float>(emitterData.visualData.renderingMode); // æç”»ãƒ¢ãƒ¼ãƒ‰è¨­å®š
+		emitData.parameter.y = emitterData.motionData.lifeTime.GetRandom(); // ç”Ÿå­˜æ™‚é–“è¨­å®š
 
-		float delayTime = 0.0f; // ’x‰„ŠÔ‰Šú‰»
-		delayTime += emitterData.emitData.initialDelay.GetRandom(); // ‰Šú’x‰„ŠÔİ’è
-		delayTime += emitterData.emitData.emitInterval.GetRandom() * i; // ƒGƒ~ƒbƒgŠÔŠuİ’è
+		float delayTime = 0.0f; // é…å»¶æ™‚é–“åˆæœŸåŒ–
+		delayTime += emitterData.emitData.initialDelay.GetRandom(); // åˆæœŸé…å»¶æ™‚é–“è¨­å®š
+		delayTime += emitterData.emitData.emitInterval.GetRandom() * i; // ã‚¨ãƒŸãƒƒãƒˆé–“éš”è¨­å®š
 
-		emitData.parameter.z = delayTime; // ’x‰„ŠÔİ’è
-		emitData.parameter.w = static_cast<float>(state.emitterIndex); // ƒGƒ~ƒbƒ^ƒCƒ“ƒfƒbƒNƒX‚ğw¬•ª‚Éİ’è
+		emitData.parameter.z = delayTime; // é…å»¶æ™‚é–“è¨­å®š
+		emitData.parameter.w = static_cast<float>(state.emitterIndex); // ã‚¨ãƒŸãƒƒã‚¿ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’wæˆåˆ†ã«è¨­å®š
 		if (!emitterData.visualData.useGradient)
 		{
-			emitData.parameter.w = -1.0f; // ƒOƒ‰ƒf[ƒVƒ‡ƒ“‚ğg—p‚µ‚È‚¢ê‡‚Íw¬•ª‚É-1‚ğİ’è
+			emitData.parameter.w = -1.0f; // ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ä½¿ç”¨ã—ãªã„å ´åˆã¯wæˆåˆ†ã«-1ã‚’è¨­å®š
 		}
 
-		// ˆÊ’uİ’è
+		// ä½ç½®è¨­å®š
 		{
 			emitData.position.x = state.position.x;
 			emitData.position.y = state.position.y;
 			emitData.position.z = state.position.z;
 		}
 
-		// ‰ñ“]İ’è
+		// å›è»¢è¨­å®š
 		{
 			Vector3 rotationEuler = emitterData.emitData.rotationEuler.GetRandom();
 			XMFLOAT3 euler = {
-				rotationEuler.x + state.rotationEuler.x + 180.0f, // X²‰ñ“]‚É180“x’Ç‰ÁiŒü‚«”½“]‚ğ•â³j
+				rotationEuler.x + state.rotationEuler.x + 180.0f, // Xè»¸å›è»¢ã«180åº¦è¿½åŠ ï¼ˆå‘ãåè»¢ã‚’è£œæ­£ï¼‰
 				rotationEuler.y + state.rotationEuler.y,
 				rotationEuler.z + state.rotationEuler.z
 			};
 			emitData.rotation.x = DirectX::XMConvertToRadians(euler.x);
 			emitData.rotation.y = DirectX::XMConvertToRadians(euler.y);
 			emitData.rotation.z = DirectX::XMConvertToRadians(euler.z);
-			emitData.rotation.w = static_cast<float>(emitterData.emitData.rotationEasingType); // ‰ñ“]ƒC[ƒWƒ“ƒOƒ^ƒCƒv‚ğw¬•ª‚Éİ’è
+			emitData.rotation.w = static_cast<float>(emitterData.emitData.rotationEasingType); // å›è»¢ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—ã‚’wæˆåˆ†ã«è¨­å®š
 
 			Vector3 endRotationEuler = emitterData.emitData.endRotationEuler.GetRandom();
 			XMFLOAT3 endEuler = {
-				endRotationEuler.x + state.rotationEuler.x + 180.0f, // X²‰ñ“]‚É180“x’Ç‰ÁiŒü‚«”½“]‚ğ•â³j
+				endRotationEuler.x + state.rotationEuler.x + 180.0f, // Xè»¸å›è»¢ã«180åº¦è¿½åŠ ï¼ˆå‘ãåè»¢ã‚’è£œæ­£ï¼‰
 				endRotationEuler.y + state.rotationEuler.y,
 				endRotationEuler.z + state.rotationEuler.z
 			};
 			emitData.endRotation.x = DirectX::XMConvertToRadians(endEuler.x);
 			emitData.endRotation.y = DirectX::XMConvertToRadians(endEuler.y);
 			emitData.endRotation.z = DirectX::XMConvertToRadians(endEuler.z);
-			emitData.endRotation.w = emitterData.emitData.rotationEasingTime.GetRandom(); // ‰ñ“]ƒC[ƒWƒ“ƒOŠÔ‚ğw¬•ª‚Éİ’è
+			emitData.endRotation.w = emitterData.emitData.rotationEasingTime.GetRandom(); // å›è»¢ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ã‚’wæˆåˆ†ã«è¨­å®š
 		}
 
-		// ‰‘¬“xİ’è
+		// åˆé€Ÿåº¦è¨­å®š
 		{
 			Vector3 velocity = emitterData.motionData.velocity.GetRandom();
 			emitData.velocity.x = velocity.x;
@@ -682,32 +682,32 @@ void EffectManager::EmitOnce(const EmitterPlayState& state)
 			emitData.velocity.z = velocity.z;
 		}
 
-		// ‰Á‘¬“xİ’è
+		// åŠ é€Ÿåº¦è¨­å®š
 		{
 			Vector3 acceleration = emitterData.motionData.acceleration.GetRandom();
 			if (emitterData.motionData.useGravity)
 			{
-				acceleration += Vector3(0.0f, -9.81f, 0.0f); // d—Í‰Á‘¬“x‚ğ’Ç‰Á
+				acceleration += Vector3(0.0f, -9.81f, 0.0f); // é‡åŠ›åŠ é€Ÿåº¦ã‚’è¿½åŠ 
 			}
 			emitData.acceleration = { acceleration.x, acceleration.y, acceleration.z, 0.0f };
 		}
 
-		// ƒVƒFƒCƒvƒGƒ~ƒbƒ^İ’è‚ğ“K—p
+		// ã‚·ã‚§ã‚¤ãƒ—ã‚¨ãƒŸãƒƒã‚¿è¨­å®šã‚’é©ç”¨
 		ApplyShapeEmitterSettings(emitterData.shapeData, emitData, i, emitCount);
 
-		// ‚»‚Ì‘¼İ’è
+		// ãã®ä»–è¨­å®š
 		{
-			// ¶¬ˆÊ’uƒIƒtƒZƒbƒg“K—p
+			// ç”Ÿæˆä½ç½®ã‚ªãƒ•ã‚»ãƒƒãƒˆé©ç”¨
 			emitData.position.x += emitterData.emitData.positionOffset.x;
 			emitData.position.y += emitterData.emitData.positionOffset.y;
 			emitData.position.z += emitterData.emitData.positionOffset.z;
 		}
 
-		// ƒrƒWƒ…ƒAƒ‹İ’è
+		// ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«è¨­å®š
 		{
 			Vector2 startSize = emitterData.visualData.startSize.GetRandom();
 			Vector2 endSize = emitterData.visualData.endSize.GetRandom();
-			float easingMode = static_cast<float>(emitterData.visualData.sizeEasingType); // ƒTƒCƒYƒC[ƒWƒ“ƒOƒ^ƒCƒv‚ğz¬•ª‚Éİ’è
+			float easingMode = static_cast<float>(emitterData.visualData.sizeEasingType); // ã‚µã‚¤ã‚ºã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—ã‚’zæˆåˆ†ã«è¨­å®š
 			emitData.scale = DirectX::XMFLOAT4(startSize.x, startSize.y, easingMode, 0);
 			float easingTime = emitterData.visualData.sizeEasingTime.GetRandom();
 			emitData.endScale = DirectX::XMFLOAT4(endSize.x, endSize.y, easingTime, 0);
@@ -728,12 +728,12 @@ void EffectManager::EmitOnce(const EmitterPlayState& state)
 			}
 		}
 
-		// ƒGƒ~ƒbƒg
+		// ã‚¨ãƒŸãƒƒãƒˆ
 		particleSystemList[state.emitterIndex]->Emit(emitData);
 	}
 
-	// ƒOƒ‰ƒf[ƒVƒ‡ƒ“‚Ìİ’è (•`‰æƒ‚[ƒh‚ªƒOƒ‰ƒf[ƒVƒ‡ƒ“‚Ìê‡‚Ì‚İ)
-	// TODO: •`‰æƒ‚[ƒh‚ªƒOƒ‰ƒf[ƒVƒ‡ƒ“‚Ìê‡‚Ì‚İİ’è‚·‚é‚æ‚¤‚É•ÏX
+	// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã®è¨­å®š (æç”»ãƒ¢ãƒ¼ãƒ‰ãŒã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã®å ´åˆã®ã¿)
+	// TODO: æç”»ãƒ¢ãƒ¼ãƒ‰ãŒã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã®å ´åˆã®ã¿è¨­å®šã™ã‚‹ã‚ˆã†ã«å¤‰æ›´
 	if (emitterData.visualData.useGradient)
 	{
 		particleSystemList[state.emitterIndex]->SetGradient(state.emitterIndex, emitterData.visualData.gradientState);
@@ -743,34 +743,34 @@ void EffectManager::EmitOnce(const EmitterPlayState& state)
 
 void EffectManager::ApplyShapeEmitterSettings(const EmitterShapeData& s, ComputeParticleSystem::EmitParticleData& emitData, int index, int emitCount)
 {
-	// ƒVƒFƒCƒvƒGƒ~ƒbƒ^İ’è‚ğemitData‚É“K—p
+	// ã‚·ã‚§ã‚¤ãƒ—ã‚¨ãƒŸãƒƒã‚¿è¨­å®šã‚’emitDataã«é©ç”¨
 	Vector3 position{};
 	Vector3 velocityDir{};
 
-	// ˆÊ’uİ’è
+	// ä½ç½®è¨­å®š
 	switch (s.shape)
 	{
 		case ShapeType::Point:
 		{
-			// “_‚ÌˆÊ’u‚ÍŒ´“_
+			// ç‚¹ã®ä½ç½®ã¯åŸç‚¹
 			position = Vector3(0.0f, 0.0f, 0.0f);
 			break;
 		}
 		case ShapeType::Ring:
 		{
-			// ƒŠƒ“ƒOã‚Ì‹Ï“™‚ÈˆÊ’u‚ğæ“¾
+			// ãƒªãƒ³ã‚°ä¸Šã®å‡ç­‰ãªä½ç½®ã‚’å–å¾—
 			float angle = (static_cast<float>(index) / emitCount) * DirectX::XM_2PI;
 			position = Vector3(std::cosf(angle), 0.0f, std::sinf(angle)) * s.radius;
 			break;
 		}
 		case ShapeType::Sphere:
 		{
-			// ƒ‰ƒ“ƒ_ƒ€‚È‹…‚Ì’†‚ÌˆÊ’u‚ğæ“¾
-			float u = Random(0.0f, 1.0f); // 0~1‚Ìƒ‰ƒ“ƒ_ƒ€‚È’l
-			float v = Random(0.0f, 1.0f); // 0~1‚Ìƒ‰ƒ“ƒ_ƒ€‚È’l
-			float theta = u * DirectX::XM_2PI; // 0~2PI‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈŠp“x
-			float phi = std::acosf(2.0f * v - 1.0f); // 0~PI‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈŠp“x
-			float r = s.radius * std::cbrtf(Random(0.0f, 1.0f)); // ”¼Œa‚ğl—¶‚µ‚½ƒ‰ƒ“ƒ_ƒ€‚È‹——£
+			// ãƒ©ãƒ³ãƒ€ãƒ ãªçƒã®ä¸­ã®ä½ç½®ã‚’å–å¾—
+			float u = Random(0.0f, 1.0f); // 0~1ã®ãƒ©ãƒ³ãƒ€ãƒ ãªå€¤
+			float v = Random(0.0f, 1.0f); // 0~1ã®ãƒ©ãƒ³ãƒ€ãƒ ãªå€¤
+			float theta = u * DirectX::XM_2PI; // 0~2PIã®ãƒ©ãƒ³ãƒ€ãƒ ãªè§’åº¦
+			float phi = std::acosf(2.0f * v - 1.0f); // 0~PIã®ãƒ©ãƒ³ãƒ€ãƒ ãªè§’åº¦
+			float r = s.radius * std::cbrtf(Random(0.0f, 1.0f)); // åŠå¾„ã‚’è€ƒæ…®ã—ãŸãƒ©ãƒ³ãƒ€ãƒ ãªè·é›¢
 			float x = r * std::sinf(phi) * std::cosf(theta);
 			float y = r * std::sinf(phi) * std::sinf(theta);
 			float z = r * std::cosf(phi);
@@ -779,7 +779,7 @@ void EffectManager::ApplyShapeEmitterSettings(const EmitterShapeData& s, Compute
 		}
 		case ShapeType::Cylinder:
 		{
-			// ƒ‰ƒ“ƒ_ƒ€‚È‰~’Œ‚Ì’†‚ÌˆÊ’u‚ğæ“¾
+			// ãƒ©ãƒ³ãƒ€ãƒ ãªå††æŸ±ã®ä¸­ã®ä½ç½®ã‚’å–å¾—
 			float angle = Random(0.0f, DirectX::XM_2PI);
 			float radius = Random(0.0f, s.radius);
 			float height = Random(-s.height / 2.0f, s.height / 2.0f);
@@ -790,17 +790,17 @@ void EffectManager::ApplyShapeEmitterSettings(const EmitterShapeData& s, Compute
 		}
 	}
 
-	// •ûŒüİ’è
+	// æ–¹å‘è¨­å®š
 	switch (s.directionMode)
 	{
 		case DirectionMode::Default:
 		{
-			velocityDir = Vector3(0, 0, 0); // ‘¬“x•ûŒü‚Íİ’è‚µ‚È‚¢
+			velocityDir = Vector3(0, 0, 0); // é€Ÿåº¦æ–¹å‘ã¯è¨­å®šã—ãªã„
 			break;
 		}
 		case DirectionMode::Axis:
 		{
-			// w’è²•ûŒü‚ğ³‹K‰»‚µ‚Äg—p
+			// æŒ‡å®šè»¸æ–¹å‘ã‚’æ­£è¦åŒ–ã—ã¦ä½¿ç”¨
 			velocityDir = s.directionAxis.Normalize();
 			break;
 		}
@@ -811,13 +811,13 @@ void EffectManager::ApplyShapeEmitterSettings(const EmitterShapeData& s, Compute
 		}
 		case DirectionMode::Outward:
 		{
-			// ˆÊ’uƒxƒNƒgƒ‹‚ªƒ[ƒƒxƒNƒgƒ‹‚É‹ß‚¢ê‡‚Ì‘Îô
+			// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ãŒã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã«è¿‘ã„å ´åˆã®å¯¾ç­–
 			if (position.LengthSq() < 1e-6f)
 			{
-				// ˆÊ’uƒxƒNƒgƒ‹‚ªƒ[ƒƒxƒNƒgƒ‹‚É‹ß‚¢ê‡Aƒ‰ƒ“ƒ_ƒ€•ûŒü‚ğg—p
+				// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ãŒã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã«è¿‘ã„å ´åˆã€ãƒ©ãƒ³ãƒ€ãƒ æ–¹å‘ã‚’ä½¿ç”¨
 				velocityDir = RandomDirection();
 			}
-			else // ’Êí‚Ìê‡
+			else // é€šå¸¸ã®å ´åˆ
 			{
 				velocityDir = position.Normalize();
 			}
@@ -825,13 +825,13 @@ void EffectManager::ApplyShapeEmitterSettings(const EmitterShapeData& s, Compute
 		}
 		case DirectionMode::Inward:
 		{
-			// ˆÊ’uƒxƒNƒgƒ‹‚ªƒ[ƒƒxƒNƒgƒ‹‚É‹ß‚¢ê‡‚Ì‘Îô
+			// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ãŒã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã«è¿‘ã„å ´åˆã®å¯¾ç­–
 			if (position.LengthSq() < 1e-6f)
 			{
-				// ˆÊ’uƒxƒNƒgƒ‹‚ªƒ[ƒƒxƒNƒgƒ‹‚É‹ß‚¢ê‡A•ûŒü‚Íƒ[ƒƒxƒNƒgƒ‹‚É‚·‚é
+				// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ãŒã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã«è¿‘ã„å ´åˆã€æ–¹å‘ã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã«ã™ã‚‹
 				velocityDir = Vector3(0.0f, 0.0f, 0.0f);
 			}
-			else // ’Êí‚Ìê‡
+			else // é€šå¸¸ã®å ´åˆ
 			{
 				velocityDir = (position * -1.0f).Normalize();
 			}
@@ -839,18 +839,18 @@ void EffectManager::ApplyShapeEmitterSettings(const EmitterShapeData& s, Compute
 		}
 		case DirectionMode::Normal:
 		{
-			// Œ`ó‚É‰‚¶‚½–@ü•ûŒü‚ğİ’è
+			// å½¢çŠ¶ã«å¿œã˜ãŸæ³•ç·šæ–¹å‘ã‚’è¨­å®š
 			switch (s.shape)
 			{
 				case ShapeType::Point:
 				{
-					velocityDir = Vector3(0.0f, 1.0f, 0.0f); // ã•ûŒü
+					velocityDir = Vector3(0.0f, 1.0f, 0.0f); // ä¸Šæ–¹å‘
 					break;
 				}
 				case ShapeType::Ring:
 				case ShapeType::Sphere:
 				{
-					// ˆÊ’uƒxƒNƒgƒ‹‚ªƒ[ƒƒxƒNƒgƒ‹‚É‹ß‚¢ê‡‚Ì‘Îô
+					// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ãŒã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã«è¿‘ã„å ´åˆã®å¯¾ç­–
 					if (position.LengthSq() < 1e-6f)
 					{
 						velocityDir = RandomDirection();
@@ -863,7 +863,7 @@ void EffectManager::ApplyShapeEmitterSettings(const EmitterShapeData& s, Compute
 				}
 				case ShapeType::Cylinder:
 				{
-					// ã‰º–Ê‚É‹ß‚¢ê‡
+					// ä¸Šä¸‹é¢ã«è¿‘ã„å ´åˆ
 					const float topThreshold = s.height * 0.45f;
 					if (std::fabs(position.y) > topThreshold)
 					{
@@ -882,43 +882,43 @@ void EffectManager::ApplyShapeEmitterSettings(const EmitterShapeData& s, Compute
 		}
 	}
 	
-	// ‰ñ“]s—ñŒvZ
+	// å›è»¢è¡Œåˆ—è¨ˆç®—
 	XMMATRIX rotMatrix = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat4(&emitData.rotation));
 	XMFLOAT3 localPos = position;
 	XMVECTOR LocalPos = XMLoadFloat3(&localPos);
 
-	// ˆÊ’u‰ñ“]
+	// ä½ç½®å›è»¢
 	XMVECTOR RotatedLocalPos = XMVector3Transform(LocalPos, rotMatrix);
 
-	// ƒ[ƒ‹ƒhˆÊ’uŒvZ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰ä½ç½®è¨ˆç®—
 	XMFLOAT3 emitterWorldPos = { emitData.position.x, emitData.position.y, emitData.position.z };
 	XMVECTOR EmitterWorldPos = XMLoadFloat3(&emitterWorldPos);
 	XMVECTOR WorldPos = RotatedLocalPos + EmitterWorldPos;
 
-	// ˆÊ’uİ’è
+	// ä½ç½®è¨­å®š
 	XMStoreFloat4(&emitData.position, WorldPos);
 
-	// ‘¬“xƒxƒNƒgƒ‹ŒvZ
+	// é€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«è¨ˆç®—
 	XMVECTOR dir = XMVector3TransformNormal(XMLoadFloat3(reinterpret_cast<XMFLOAT3*>(&velocityDir)), rotMatrix);
 	XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&velocityDir), dir);
 
 	Vector3 velocity = velocityDir.Normalize();
 
-	// ‘¬“xİ’è
+	// é€Ÿåº¦è¨­å®š
 	emitData.velocity.x += velocity.x;
 	emitData.velocity.y += velocity.y;
 	emitData.velocity.z += velocity.z;
 
-	// ‘¬“x‚Ìƒ‰ƒ“ƒ_ƒ€İ’è
+	// é€Ÿåº¦ã®ãƒ©ãƒ³ãƒ€ãƒ è¨­å®š
 	emitData.startSpeed = s.speed.GetRandom();
 	emitData.endSpeed = s.endSpeed.GetRandom();
-	emitData.speedEasingMode = static_cast<float>(s.speedEasingType); // ‘¬“xƒC[ƒWƒ“ƒOƒ^ƒCƒv‚ğİ’è
-	emitData.speedEasingTime = s.speedEasingTime.GetRandom(); // ‘¬“xƒC[ƒWƒ“ƒOŠÔ‚ğİ’è
+	emitData.speedEasingMode = static_cast<float>(s.speedEasingType); // é€Ÿåº¦ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—ã‚’è¨­å®š
+	emitData.speedEasingTime = s.speedEasingTime.GetRandom(); // é€Ÿåº¦ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ã‚’è¨­å®š
 }
 
 float EffectManager::Random(float min, float max)
 {
-	// min‚©‚çmax‚Ü‚Å‚Ìƒ‰ƒ“ƒ_ƒ€‚È•‚“®¬”“_”‚ğ¶¬
+	// minã‹ã‚‰maxã¾ã§ã®ãƒ©ãƒ³ãƒ€ãƒ ãªæµ®å‹•å°æ•°ç‚¹æ•°ã‚’ç”Ÿæˆ
 	return min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (max - min)));
 }
 
@@ -932,14 +932,14 @@ Vector3 EffectManager::RandomBoxPosition(const Vector3& size)
 
 Vector3 EffectManager::RandomDirection()
 {
-	// ƒ‰ƒ“ƒ_ƒ€‚È’PˆÊƒxƒNƒgƒ‹‚ğ¶¬
-	// -1~1‚Ìƒ‰ƒ“ƒ_ƒ€‚Èz’l
+	// ãƒ©ãƒ³ãƒ€ãƒ ãªå˜ä½ãƒ™ã‚¯ãƒˆãƒ«ã‚’ç”Ÿæˆ
+	// -1~1ã®ãƒ©ãƒ³ãƒ€ãƒ ãªzå€¤
 	float z = Random(-1.0f, 1.0f);
-	// 0~2PI‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈŠp“x
+	// 0~2PIã®ãƒ©ãƒ³ãƒ€ãƒ ãªè§’åº¦
 	float theta = Random(0.0f, DirectX::XM_2PI);
-	// ”¼Œa‚ğŒvZ
+	// åŠå¾„ã‚’è¨ˆç®—
 	float r = std::sqrtf(1.0f - z * z);
-	// x,yÀ•W‚ğŒvZ
+	// x,yåº§æ¨™ã‚’è¨ˆç®—
 	float x = r * std::cosf(theta);
 	float y = r * std::sinf(theta);
 
@@ -958,7 +958,7 @@ Vector3 EffectManager::RandomHemisphereDirection(const Vector3& normal)
 
 Vector3 EffectManager::RandomConeDirection(const Vector3& dir, float coneAngle)
 {
-	// Šî€•ûŒü‚ğãƒxƒNƒgƒ‹‚É‚µ‚Ä‰ñ“]s—ñ‚ğì¬
+	// åŸºæº–æ–¹å‘ã‚’ä¸Šãƒ™ã‚¯ãƒˆãƒ«ã«ã—ã¦å›è»¢è¡Œåˆ—ã‚’ä½œæˆ
 	float cosTheta = Random(std::cosf(XMConvertToRadians(coneAngle)), 1.0f);
 	float sinTheta = std::sqrtf(1.0f - cosTheta * cosTheta);
 	float phi = Random(0.0f, DirectX::XM_2PI);
@@ -969,17 +969,17 @@ Vector3 EffectManager::RandomConeDirection(const Vector3& dir, float coneAngle)
 		sinTheta * std::sinf(phi),
 	};
 
-	// dir•ûŒü‚Ö‚Ì‰ñ“]s—ñ‚ğŒvZ
+	// diræ–¹å‘ã¸ã®å›è»¢è¡Œåˆ—ã‚’è¨ˆç®—
 	Vector3 axis = Vector3(Vector3::up).Cross(dir).Normalize();
 	float angle = std::acosf(Vector3(Vector3::up).Dot(dir.Normalize()));
 
-	// dir‚ªãƒxƒNƒgƒ‹‚Æ‚Ù‚Ú•½s‚Èê‡A‰ñ“]‚Í•s—v
+	// dirãŒä¸Šãƒ™ã‚¯ãƒˆãƒ«ã¨ã»ã¼å¹³è¡Œãªå ´åˆã€å›è»¢ã¯ä¸è¦
 	if (axis.LengthSq() < 1e-6f)
 	{
 		return dir.Normalize();
 	}
 
-	// ƒƒhƒŠƒQƒX‚Ì‰ñ“]Œö®‚ğg—p‚µ‚Ä‰ñ“]
+	// ãƒ­ãƒ‰ãƒªã‚²ã‚¹ã®å›è»¢å…¬å¼ã‚’ä½¿ç”¨ã—ã¦å›è»¢
 	float cosA = std::cosf(angle);
 	float sinA = std::sinf(angle);
 	Vector3 rotatedDir =

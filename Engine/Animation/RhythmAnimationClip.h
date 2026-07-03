@@ -11,11 +11,11 @@
 
 struct RhythmAnimationClip
 {
-	std::string name;       // ƒNƒŠƒbƒv–¼
-	ModelAsset::Animation* sourceAnimation = nullptr; // Œ³‚Æ‚È‚éƒAƒjƒ[ƒVƒ‡ƒ“
+	std::string name;       // ã‚¯ãƒªãƒƒãƒ—å
+	ModelAsset::Animation* sourceAnimation = nullptr; // å…ƒã¨ãªã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	
-	int startBeat = 0;    // ŠJnƒr[ƒg
-	int endBeat = -1;      // I—¹ƒr[ƒg(-1 ‚Ìê‡‚ÍÅŒã‚Ü‚Å)
-	bool snapToBeat = true; // ƒr[ƒg‚ÉƒXƒiƒbƒv‚·‚é‚©
+	int startBeat = 0;    // é–‹å§‹ãƒ“ãƒ¼ãƒˆ
+	int endBeat = -1;      // çµ‚äº†ãƒ“ãƒ¼ãƒˆ(-1 ã®å ´åˆã¯æœ€å¾Œã¾ã§)
+	bool snapToBeat = true; // ãƒ“ãƒ¼ãƒˆã«ã‚¹ãƒŠãƒƒãƒ—ã™ã‚‹ã‹
 
 };

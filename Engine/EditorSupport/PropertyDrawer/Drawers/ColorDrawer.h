@@ -6,7 +6,7 @@
 namespace CurryEngine
 {
 	/**
-	 * @brief Color Œ^‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB
+	 * @brief Color å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
 	 */
 	class ColorDrawer : public IPropertyDrawer
 	{

@@ -4,24 +4,24 @@
 class ShadowApplyPass : public RenderPass
 {
 public:
-	// ShadowMapPass‚Ì‰Šú‰»ˆ—
+	// ShadowMapPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// ShadowMapPass‚ÌI—¹‰»ˆ—
+	// ShadowMapPassã®çµ‚äº†åŒ–å‡¦ç†
 	void Finalize() override;
 
-	// ShadowMapPass‚ÌÀ‘•
+	// ShadowMapPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
-	// ShadowMapPass‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// ShadowMapPassã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	void DrawProperty() override;
 
 private:
-	// ƒVƒƒƒhƒEƒ}ƒbƒv“K—p—p‚ÌƒŠƒ\[ƒXi—á: ƒVƒF[ƒ_[‚È‚Çj‚ğ‚±‚±‚É’Ç‰Á
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—é©ç”¨ç”¨ã®ãƒªã‚½ãƒ¼ã‚¹ï¼ˆä¾‹: ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãªã©ï¼‰ã‚’ã“ã“ã«è¿½åŠ 
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> cascadedShadowPs;
-	// ƒVƒƒƒhƒEƒ}ƒbƒv—p‚Ìƒ}ƒeƒŠƒAƒ‹
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ç”¨ã®ãƒãƒ†ãƒªã‚¢ãƒ«
 	std::shared_ptr<Material> m_cascadedShadowMaterial;
 
-	RenderTexture m_shadowRenderTexture; // ƒVƒƒƒhƒEƒ}ƒbƒv‚ğ‡¬‚·‚é‚½‚ß‚ÌƒŒƒ“ƒ_[ƒeƒNƒXƒ`ƒƒ
+	RenderTexture m_shadowRenderTexture; // ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’åˆæˆã™ã‚‹ãŸã‚ã®ãƒ¬ãƒ³ãƒ€ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£
 
 };

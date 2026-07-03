@@ -11,15 +11,15 @@ namespace ComponentAttributes
 {
     enum : unsigned int {
         None = 0,
-        DisallowMultiple = 1 << 0, // “¯ˆêƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚É•¡”‘¶İ‚Å‚«‚È‚¢
-        ExecuteInEditMode = 1 << 1, // ƒGƒfƒBƒ^ƒ‚[ƒh‚Å‚à Update ‚ğŒÄ‚Ño‚·
-		HideInAddComponentMenu = 1 << 2, // Add Component ƒƒjƒ…[‚É•\¦‚µ‚È‚¢
-		RequiredComponent = 1 << 3, // w’è‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ª•K—viRequireComponentj
+        DisallowMultiple = 1 << 0, // åŒä¸€ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¤‡æ•°å­˜åœ¨ã§ããªã„
+        ExecuteInEditMode = 1 << 1, // ã‚¨ãƒ‡ã‚£ã‚¿ãƒ¢ãƒ¼ãƒ‰ã§ã‚‚ Update ã‚’å‘¼ã³å‡ºã™
+		HideInAddComponentMenu = 1 << 2, // Add Component ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¡¨ç¤ºã—ãªã„
+		RequiredComponent = 1 << 3, // æŒ‡å®šã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒå¿…è¦ï¼ˆRequireComponentï¼‰
     };
 }
 
-/** @brief ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìƒtƒ@ƒNƒgƒŠ[ƒNƒ‰ƒXB
- * @details ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì“o˜^‚Æ¶¬‚ğŠÇ—‚µ‚Ü‚·B‘®«ƒtƒ‰ƒO‚âˆË‘¶ŠÖŒW‚àƒTƒ|[ƒg‚µ‚Ü‚·B
+/** @brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¼ã‚¯ãƒ©ã‚¹ã€‚
+ * @details ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ç™»éŒ²ã¨ç”Ÿæˆã‚’ç®¡ç†ã—ã¾ã™ã€‚å±æ€§ãƒ•ãƒ©ã‚°ã‚„ä¾å­˜é–¢ä¿‚ã‚‚ã‚µãƒãƒ¼ãƒˆã—ã¾ã™ã€‚
  */
 class ComponentFactory {
 public:
@@ -27,9 +27,9 @@ public:
         std::string category;
         std::function<std::shared_ptr<Component>()> createFunc;
 
-        // ’Ç‰Á•”•ªF§–ñŒn‘®«
-        unsigned int attributes = 0;                  // DisallowMultiple, ExecuteInEditMode ‚È‚Ç
-        std::vector<std::string> requiredComponents; // RequireComponent —p
+        // è¿½åŠ éƒ¨åˆ†ï¼šåˆ¶ç´„ç³»å±æ€§
+        unsigned int attributes = 0;                  // DisallowMultiple, ExecuteInEditMode ãªã©
+        std::vector<std::string> requiredComponents; // RequireComponent ç”¨
     };
 
     static void Register(
@@ -40,20 +40,20 @@ public:
         std::vector<std::string> requireComponents = {}
     );
 
-	/** @brief w’è‚Ì–¼‘O‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ¶¬‚µ‚Ü‚·B
-	 * @param name ƒRƒ“ƒ|[ƒlƒ“ƒg–¼B
-	 * @return ¶¬‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì‹¤—Lƒ|ƒCƒ“ƒ^B–¼‘O‚ª•s–¾‚Èê‡‚Í nullptrB
+	/** @brief æŒ‡å®šã®åå‰ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * @param name ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåã€‚
+	 * @return ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å…±æœ‰ãƒã‚¤ãƒ³ã‚¿ã€‚åå‰ãŒä¸æ˜ãªå ´åˆã¯ nullptrã€‚
      */
     static std::shared_ptr<Component> Create(const std::string& name);
 
-	/** @brief w’è‚Ì–¼‘O‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©‚ğ•Ô‚µ‚Ü‚·B
-	 *  @param name ƒRƒ“ƒ|[ƒlƒ“ƒg–¼B
-	 *  @return “o˜^‚³‚ê‚Ä‚¢‚ê‚Î trueA‚»‚¤‚Å‚È‚¯‚ê‚Î falseB
+	/** @brief æŒ‡å®šã®åå‰ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’è¿”ã—ã¾ã™ã€‚
+	 *  @param name ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåã€‚
+	 *  @return ç™»éŒ²ã•ã‚Œã¦ã„ã‚Œã° trueã€ãã†ã§ãªã‘ã‚Œã° falseã€‚
      */
     static bool Exists(const std::string& name);
 
-	/** @brief “o˜^‚³‚ê‚Ä‚¢‚é‚·‚×‚Ä‚ÌƒRƒ“ƒ|[ƒlƒ“ƒgî•ñ‚ğ•Ô‚µ‚Ü‚·B
-	 * @return ƒRƒ“ƒ|[ƒlƒ“ƒg–¼‚ğƒL[AEntry ‚ğ’l‚Æ‚·‚éƒ}ƒbƒvB
+	/** @brief ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã™ã¹ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆæƒ…å ±ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåã‚’ã‚­ãƒ¼ã€Entry ã‚’å€¤ã¨ã™ã‚‹ãƒãƒƒãƒ—ã€‚
      */
     static std::unordered_map<std::string, Entry>& GetAll();
 

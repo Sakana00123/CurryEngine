@@ -1,22 +1,22 @@
 #include "pch.h"
 #include "ResourceManager.h"
-#include "Engine/Resources/Shader.h" // ShaderƒNƒ‰ƒX‚Ì’è‹`‚ª•K—v
-#include "Engine/Resources/Texture.h" // TextureƒNƒ‰ƒX‚Ì’è‹`‚ª•K—v
+#include "Engine/Resources/Shader.h" // Shaderã‚¯ãƒ©ã‚¹ã®å®šç¾©ãŒå¿…è¦
+#include "Engine/Resources/Texture.h" // Textureã‚¯ãƒ©ã‚¹ã®å®šç¾©ãŒå¿…è¦
 #include "Engine/Editor/Console.h"
 #include "Engine/Core/Time.h"
 
-// ƒfƒoƒbƒOƒrƒ‹ƒh‚ÆƒŠƒŠ[ƒXƒrƒ‹ƒh‚ÅƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ÌŒŸõ•û–@‚ğØ‚è‘Ö‚¦‚é
+// ãƒ‡ãƒãƒƒã‚°ãƒ“ãƒ«ãƒ‰ã¨ãƒªãƒªãƒ¼ã‚¹ãƒ“ãƒ«ãƒ‰ã§ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¤œç´¢æ–¹æ³•ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 static std::string AdjustShaderPath(const std::string& path) {
 	std::string findPath = path;
 #ifdef _DEBUG
-	// csoƒtƒ@ƒCƒ‹‚¾‚Á‚½‚çAhlsl‚É•ÏŠ·‚µ‚ÄŒŸõ 
+	// csoãƒ•ã‚¡ã‚¤ãƒ«ã ã£ãŸã‚‰ã€hlslã«å¤‰æ›ã—ã¦æ¤œç´¢ 
 	auto fsPath = std::filesystem::path(path);
 	if (fsPath.extension() == ".cso") {
 		std::filesystem::path hlslPath = EnginePaths::ShaderSourceDir / fsPath.filename().replace_extension(".hlsl");
 		findPath = hlslPath.string();
 	}
 #else
-	// –{”ÔŠÂ‹«‚Å‚ÍAcsoƒtƒ@ƒCƒ‹‚ÅŒŸõ
+	// æœ¬ç•ªç’°å¢ƒã§ã¯ã€csoãƒ•ã‚¡ã‚¤ãƒ«ã§æ¤œç´¢
 	auto fsPath = std::filesystem::path(path);
 	if (fsPath.extension() == ".hlsl") {
 		std::filesystem::path csoPath = EnginePaths::ShadersDataDir / fsPath.filename().replace_extension(".cso");
@@ -34,7 +34,7 @@ void ResourceManager::Initialize()
 	shaderPaths.clear();
 
 //#ifdef _DEBUG
-	// ‰Šú‰»‚É‚·‚×‚Ä‚ÌƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ
+	// åˆæœŸåŒ–æ™‚ã«ã™ã¹ã¦ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿
 	LoadAllShaders();
 //#endif // _DEBUG
 }
@@ -50,14 +50,14 @@ void ResourceManager::Register(const std::string& filePath, std::shared_ptr<Reso
 {
 	resource->AddRef();
 	_resources[filePath] = resource;
-	_files[filePath] = std::filesystem::last_write_time(filePath);// ÅIXV“ú‚ğ•Û‘¶
+	_files[filePath] = std::filesystem::last_write_time(filePath);// æœ€çµ‚æ›´æ–°æ—¥æ™‚ã‚’ä¿å­˜
 	std::filesystem::path fsPath(filePath);
 #ifdef _DEBUG
 	if (fsPath.extension() == ".cso") {
-		// csoƒtƒ@ƒCƒ‹‚¾‚Á‚½‚çAhlsl‚É•ÏŠ·‚µ‚Ä“o˜^
+		// csoãƒ•ã‚¡ã‚¤ãƒ«ã ã£ãŸã‚‰ã€hlslã«å¤‰æ›ã—ã¦ç™»éŒ²
 		std::filesystem::path hlslPath = EnginePaths::ShaderSourceDir / fsPath.filename().replace_extension(".hlsl");
 
-		// hlslƒtƒ@ƒCƒ‹‚àŠÄ‹‘ÎÛ‚É’Ç‰Á
+		// hlslãƒ•ã‚¡ã‚¤ãƒ«ã‚‚ç›£è¦–å¯¾è±¡ã«è¿½åŠ 
 		if (std::filesystem::exists(hlslPath))
 		{
 			_resources[hlslPath.string()] = resource;
@@ -69,13 +69,13 @@ void ResourceManager::Register(const std::string& filePath, std::shared_ptr<Reso
 
 std::shared_ptr<Resource> ResourceManager::Load(const std::string& path)
 {
-	// ‚·‚Å‚Éƒ[ƒh‚³‚ê‚Ä‚¢‚é‚©Šm”F
+	// ã™ã§ã«ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 	std::string findPath = AdjustShaderPath(path);
 	auto it = _resources.find(findPath);
 	if (it != _resources.end()) {
-		return it->second; // Šù‘¶‚ÌƒŠƒ\[ƒX‚ğ•Ô‚·
+		return it->second; // æ—¢å­˜ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’è¿”ã™
 	}
-	// V‚µ‚¢ƒŠƒ\[ƒX‚ğì¬
+	// æ–°ã—ã„ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆ
 	std::shared_ptr<Resource> resource;
 	std::filesystem::path fsPath(findPath);
 
@@ -95,8 +95,8 @@ std::shared_ptr<Resource> ResourceManager::Load(const std::string& path)
 #endif // _DEBUG
 
 
-		// ƒVƒF[ƒ_[ƒ^ƒCƒv‚Ì„’è
-		std::string stem = fsPath.stem().string(); // ƒtƒ@ƒCƒ‹–¼iŠg’£q‚È‚µj
+		// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚¿ã‚¤ãƒ—ã®æ¨å®š
+		std::string stem = fsPath.stem().string(); // ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆæ‹¡å¼µå­ãªã—ï¼‰
 		std::string suffix = "";
 		if (stem.size() >= 2) {
 		    suffix = stem.substr(stem.size() - 2, 2);
@@ -128,17 +128,17 @@ std::shared_ptr<Resource> ResourceManager::Load(const std::string& path)
 	} else {
 		Console::LogError("Unsupported resource type: " + path);
 	}
-	return nullptr; // ƒ[ƒh¸”s
+	return nullptr; // ãƒ­ãƒ¼ãƒ‰å¤±æ•—
 }
 
 std::shared_ptr<Resource> ResourceManager::Get(const std::string& path)
 {
-	// ‚·‚Å‚Éƒ[ƒh‚³‚ê‚Ä‚¢‚é‚©Šm”F
+	// ã™ã§ã«ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 	auto it = _resources.find(AdjustShaderPath(path));
 	if (it != _resources.end()) {
 		return it->second;
 	}
-	return nullptr; // Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡
+	return nullptr; // è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆ
 }
 
 std::vector<std::string> ResourceManager::GetShaderPaths()
@@ -176,8 +176,8 @@ void ResourceManager::UnloadAll()
 void ResourceManager::Update()
 {
 #ifdef _DEBUG
-	//static float timeAccumulator = 0.0f; // ŠÔ‚Ì—İÏ
-	//static constexpr float hotReloadInterval = 1.0f; // ƒzƒbƒgƒŠƒ[ƒh‚ÌŠÔŠui•bj
+	//static float timeAccumulator = 0.0f; // æ™‚é–“ã®ç´¯ç©
+	//static constexpr float hotReloadInterval = 1.0f; // ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ã®é–“éš”ï¼ˆç§’ï¼‰
 	//timeAccumulator += Time::UnscaledDeltaTime();
 	//if (timeAccumulator >= hotReloadInterval)
 	//{
@@ -190,26 +190,26 @@ void ResourceManager::Update()
 void ResourceManager::UpdateHotReload()
 {
 #ifdef _DEBUG
-	// ƒzƒbƒgƒŠƒ[ƒh‚ÌÀ‘•—áiƒtƒ@ƒCƒ‹‚Ì•ÏX‚ğŠÄ‹‚µ‚ÄƒŠƒ[ƒh‚·‚é‚È‚Çj
+	// ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ã®å®Ÿè£…ä¾‹ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«ã®å¤‰æ›´ã‚’ç›£è¦–ã—ã¦ãƒªãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãªã©ï¼‰
 	for (auto& [path, resource] : _resources)
 	{
-		// ƒtƒ@ƒCƒ‹‚Ì‘¶İƒ`ƒFƒbƒN
+		// ãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 		if (!std::filesystem::exists(path)) continue;
 
-		// ÅIXV“ú‚Ìæ“¾
+		// æœ€çµ‚æ›´æ–°æ—¥æ™‚ã®å–å¾—
 		auto& lastTime = _files[path];
 
-		// —á‚¦‚ÎAƒtƒ@ƒCƒ‹‚Ìƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ğƒ`ƒFƒbƒN‚µ‚Ä•ÏX‚ª‚ ‚ê‚ÎƒŠƒ[ƒh
+		// ä¾‹ãˆã°ã€ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦å¤‰æ›´ãŒã‚ã‚Œã°ãƒªãƒ­ãƒ¼ãƒ‰
 		auto now = std::filesystem::last_write_time(path);
 
 #ifdef _DEBUG
-		// ’Ç‰Á: csoƒtƒ@ƒCƒ‹‚Ìê‡‚Í‘Î‰‚·‚éhlslƒtƒ@ƒCƒ‹‚ÌXV‚àƒ`ƒFƒbƒN
+		// è¿½åŠ : csoãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆã¯å¯¾å¿œã™ã‚‹hlslãƒ•ã‚¡ã‚¤ãƒ«ã®æ›´æ–°ã‚‚ãƒã‚§ãƒƒã‚¯
 		std::filesystem::path fsPath(path);
 		if (fsPath.extension() == ".cso") {
-			// csoƒtƒ@ƒCƒ‹‚¾‚Á‚½‚çAhlsl‚É•ÏŠ·‚µ‚Ä“o˜^
+			// csoãƒ•ã‚¡ã‚¤ãƒ«ã ã£ãŸã‚‰ã€hlslã«å¤‰æ›ã—ã¦ç™»éŒ²
 			std::filesystem::path hlslPath = EnginePaths::ShaderSourceDir / fsPath.filename().replace_extension(".hlsl");
 			
-			// hlslƒtƒ@ƒCƒ‹‚àŠÄ‹‘ÎÛ‚É’Ç‰Á
+			// hlslãƒ•ã‚¡ã‚¤ãƒ«ã‚‚ç›£è¦–å¯¾è±¡ã«è¿½åŠ 
 			if (std::filesystem::exists(hlslPath))
 			{
 				lastTime = _files[hlslPath.string()];
@@ -222,7 +222,7 @@ void ResourceManager::UpdateHotReload()
 			lastTime = now;
 			resource->Reload();
 
-			// “Á’è‚ÌŒ^‚É‘Î‚·‚é’Ç‰Áˆ—
+			// ç‰¹å®šã®å‹ã«å¯¾ã™ã‚‹è¿½åŠ å‡¦ç†
 			if (std::dynamic_pointer_cast<Shader>(resource)) {
 				UpdateShaderNames();
 			}
@@ -234,42 +234,42 @@ void ResourceManager::UpdateHotReload()
 void ResourceManager::LoadAllShaders()
 {
 	namespace fs = std::filesystem;
-	const std::string shaderDir = EnginePaths::ShadersDataDir; // ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚Ì”z’uæƒfƒBƒŒƒNƒgƒŠ
+	const std::string shaderDir = EnginePaths::ShadersDataDir; // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®é…ç½®å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	if (fs::exists(shaderDir) && fs::is_directory(shaderDir)) {
 		for (const auto& entry : fs::recursive_directory_iterator(shaderDir)) {
 			if (entry.is_regular_file()) {
 				const auto& path = entry.path();
-				// ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ÌŠg’£q‚ğƒ`ƒFƒbƒNi.csoj
+				// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã‚’ãƒã‚§ãƒƒã‚¯ï¼ˆ.csoï¼‰
 				if (path.extension() == ".cso") 
 				{
 					std::string pathStr = path.string();
 
-					// ƒtƒ@ƒCƒ‹–¼‚©‚çƒVƒF[ƒ_[ƒ^[ƒQƒbƒg‚ğ„’è
-					std::string stem = path.stem().string(); // ƒtƒ@ƒCƒ‹–¼iŠg’£q‚È‚µj
-					if (stem.size() < 2) continue; // Å’á‚Å‚à––”ö2•¶š‚ª•K—v
-					std::string suffix = stem.substr(stem.size() - 2, 2); // ƒtƒ@ƒCƒ‹–¼‚Ì––”ö2•¶š‚ğæ“¾
-					std::transform(suffix.begin(), suffix.end(), suffix.begin(), ::tolower); // ¬•¶š‚É•ÏŠ·
+					// ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ¨å®š
+					std::string stem = path.stem().string(); // ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆæ‹¡å¼µå­ãªã—ï¼‰
+					if (stem.size() < 2) continue; // æœ€ä½ã§ã‚‚æœ«å°¾2æ–‡å­—ãŒå¿…è¦
+					std::string suffix = stem.substr(stem.size() - 2, 2); // ãƒ•ã‚¡ã‚¤ãƒ«åã®æœ«å°¾2æ–‡å­—ã‚’å–å¾—
+					std::transform(suffix.begin(), suffix.end(), suffix.begin(), ::tolower); // å°æ–‡å­—ã«å¤‰æ›
 					std::shared_ptr<Shader> shader;
 					if (suffix == "vs") {
-						// ’¸“_ƒVƒF[ƒ_[‚Ìƒ[ƒh
+						// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰
 						shader = Load<VertexShader>(pathStr);
 					} else if (suffix == "ps") {
-						// ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚Ìƒ[ƒh
+						// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰
 						shader = Load<PixelShader>(pathStr);
 					} else if (suffix == "gs") {
-						// ƒWƒIƒƒgƒŠƒVƒF[ƒ_[‚Ìƒ[ƒh
+						// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰
 						shader = Load<GeometryShader>(pathStr);
 					} else if (suffix == "cs") {
-						// ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_[‚Ìƒ[ƒh
+						// ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰
 						shader = Load<ComputeShader>(pathStr);
 					} else if (suffix == "hs") {
-						// ƒnƒ‹ƒVƒF[ƒ_[‚Ìƒ[ƒh
+						// ãƒãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰
 						shader = Load<HullShader>(pathStr);
 					} else if (suffix == "ds") {
-						// ƒhƒƒCƒ“ƒVƒF[ƒ_[‚Ìƒ[ƒh
+						// ãƒ‰ãƒ¡ã‚¤ãƒ³ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰
 						shader = Load<DomainShader>(pathStr);
 					} else {
-						continue; // •s–¾‚Èƒ^ƒCƒv‚ÍƒXƒLƒbƒv
+						continue; // ä¸æ˜ãªã‚¿ã‚¤ãƒ—ã¯ã‚¹ã‚­ãƒƒãƒ—
 					}
 
 					if (shader) {
@@ -281,22 +281,22 @@ void ResourceManager::LoadAllShaders()
 			}
 		}
 	}
-	// ƒVƒF[ƒ_[ƒpƒX‚ÌƒLƒƒƒbƒVƒ…‚ğXV
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ‘ã‚¹ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’æ›´æ–°
 	UpdateShaderNames();
 }
 
 void ResourceManager::LoadAllTextures()
 {
-	// ƒeƒNƒXƒ`ƒƒƒtƒHƒ‹ƒ_“à‚Ì‚·‚×‚Ä‚ÌƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚©ãƒ«ãƒ€å†…ã®ã™ã¹ã¦ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿
 	namespace fs = std::filesystem;
-	const std::string textureDir = EnginePaths::ImagesDataDir; // ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚Ì”z’uæƒfƒBƒŒƒNƒgƒŠ
+	const std::string textureDir = EnginePaths::ImagesDataDir; // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®é…ç½®å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	if (fs::exists(textureDir) && fs::is_directory(textureDir)) {
 		for (const auto& entry : fs::recursive_directory_iterator(textureDir)) {
 			if (entry.is_regular_file()) {
 				const auto& path = entry.path();
-				// ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚ÌŠg’£q‚ğƒ`ƒFƒbƒNi—á: .png, .jpg, .jpeg, .tga, .ddsj
+				// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã‚’ãƒã‚§ãƒƒã‚¯ï¼ˆä¾‹: .png, .jpg, .jpeg, .tga, .ddsï¼‰
 				std::string ext = path.extension().string();
-				std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower); // ¬•¶š‚É•ÏŠ·
+				std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower); // å°æ–‡å­—ã«å¤‰æ›
 				if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".dds") {
 					std::string pathStr = path.string();
 					auto texture = Load<AssetTexture>(pathStr);
@@ -314,24 +314,24 @@ void ResourceManager::LoadAllTextures()
 void ResourceManager::UpdateShaderNames()
 {
 #ifdef _DEBUG
-	// Šù‘¶‚ÌƒLƒƒƒbƒVƒ…‚ğƒNƒŠƒA
+	// æ—¢å­˜ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ã‚¯ãƒªã‚¢
 	shaderPaths.clear();
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚ğ‘–¸‚µ‚Ä–¼‘O‚ğXV
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã‚’èµ°æŸ»ã—ã¦åå‰ã‚’æ›´æ–°
 	for (const auto& [path, resource] : _resources) {
 		if (std::dynamic_pointer_cast<Shader>(resource)) {
 			std::filesystem::path fsPath(path);
 
-			// hlslƒtƒ@ƒCƒ‹‚¾‚Á‚½‚ç“o˜^
+			// hlslãƒ•ã‚¡ã‚¤ãƒ«ã ã£ãŸã‚‰ç™»éŒ²
 			if (fsPath.extension() == ".hlsl")
 			{
-				// w’è‚ÌƒVƒF[ƒ_[ƒfƒBƒŒƒNƒgƒŠ“à‚Ì‘Î‰‚·‚éƒtƒ@ƒCƒ‹‚ğ’T‚·
+				// æŒ‡å®šã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®å¯¾å¿œã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¢ã™
 				std::filesystem::path fileName = fsPath.filename();
 				fsPath = std::filesystem::path(EnginePaths::ShaderSourceDir) / fileName;
-				// ‘¶İ‚·‚é‚È‚ç‚»‚ê‚ğ“o˜^
+				// å­˜åœ¨ã™ã‚‹ãªã‚‰ãã‚Œã‚’ç™»éŒ²
 				if (std::filesystem::exists(fsPath))
 				{
 					shaderPaths.push_back(fsPath.string());
-					continue; // ‚·‚Å‚É’Ç‰Á‚µ‚½‚Ì‚ÅŸ‚Ö
+					continue; // ã™ã§ã«è¿½åŠ ã—ãŸã®ã§æ¬¡ã¸
 				}
 			}
 		}

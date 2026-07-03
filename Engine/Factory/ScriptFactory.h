@@ -3,22 +3,22 @@
 #include <string>
 /**
  * @file
- * @brief ƒXƒNƒŠƒvƒg‚ÌŠÇ—‚ğs‚¤ƒtƒ@ƒNƒgƒŠƒNƒ‰ƒXB
+ * @brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ç®¡ç†ã‚’è¡Œã†ãƒ•ã‚¡ã‚¯ãƒˆãƒªã‚¯ãƒ©ã‚¹ã€‚
  */
 class ScriptFactory
 {
 public:
-	/** @brief “o˜^‚³‚ê‚Ä‚¢‚éƒXƒNƒŠƒvƒg‚ğ‚·‚×‚ÄƒNƒŠƒA‚µ‚Ü‚·B*/
+	/** @brief ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ã™ã¹ã¦ã‚¯ãƒªã‚¢ã—ã¾ã™ã€‚*/
 	void Clear() { registry.clear(); }
-	/** @brief ƒXƒNƒŠƒvƒg‚ğ“o˜^‚µ‚Ü‚·B*/
+	/** @brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’ç™»éŒ²ã—ã¾ã™ã€‚*/
 	void Register(const char* name);
 
-	/** @brief “o˜^‚³‚ê‚Ä‚¢‚é‚·‚×‚Ä‚ÌƒXƒNƒŠƒvƒg–¼‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã™ã¹ã¦ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆåã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	std::vector<std::string> GetRegisteredScriptNames() const;
 	
 private:
 	std::vector<std::string> registry;
 };
 
-// ƒOƒ[ƒoƒ‹‚ÈƒXƒNƒŠƒvƒgƒtƒ@ƒNƒgƒŠƒCƒ“ƒXƒ^ƒ“ƒX
+// ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ•ã‚¡ã‚¯ãƒˆãƒªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 ScriptFactory& GetScriptFactory();

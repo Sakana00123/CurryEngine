@@ -4,16 +4,16 @@
 class PreRenderPass : public RenderPass
 {
 public:
-	// PreRenderPass‚Ì‰Šú‰»ˆ—
+	// PreRenderPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// PreRenderPass‚ÌI—¹‰»ˆ—
+	// PreRenderPassã®çµ‚äº†åŒ–å‡¦ç†
 	void Finalize() override;
 
-	// PreRenderPass‚ÌŽÀ‘•
+	// PreRenderPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 private:
-	RenderTexture m_preRenderTexture; // ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðƒƒ“ƒo•Ï”‚Æ‚µ‚Ä•ÛŽ
+	RenderTexture m_preRenderTexture; // ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ãƒ¡ãƒ³ãƒå¤‰æ•°ã¨ã—ã¦ä¿æŒ
 
 };

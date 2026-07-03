@@ -7,25 +7,25 @@ class ScriptWatcher;
 
 /**
  * @file
- * @brief ƒXƒNƒŠƒvƒgƒVƒXƒeƒ€‚ÌŠÇ—ƒNƒ‰ƒXB
- * @details ƒXƒNƒŠƒvƒgƒVƒXƒeƒ€‚Ì‰Šú‰»AƒŠƒ[ƒhAI—¹ˆ—‚ğs‚¢‚Ü‚·B
+ * @brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚·ã‚¹ãƒ†ãƒ ã®ç®¡ç†ã‚¯ãƒ©ã‚¹ã€‚
+ * @details ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚·ã‚¹ãƒ†ãƒ ã®åˆæœŸåŒ–ã€ãƒªãƒ­ãƒ¼ãƒ‰ã€çµ‚äº†å‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
  */
 class ScriptSystem
 {
 public:
-	/** @brief ƒXƒNƒŠƒvƒgƒVƒXƒeƒ€‚Ì‰Šú‰»B*/
+	/** @brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚·ã‚¹ãƒ†ãƒ ã®åˆæœŸåŒ–ã€‚*/
 	static void Initialize();
 
-	/** @brief ƒXƒNƒŠƒvƒgƒVƒXƒeƒ€‚ÌI—¹ˆ—B*/
+	/** @brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚·ã‚¹ãƒ†ãƒ ã®çµ‚äº†å‡¦ç†ã€‚*/
 	static void Shutdown();
 
-	/** @brief ƒXƒNƒŠƒvƒgƒVƒXƒeƒ€‚ÌƒŠƒ[ƒhB*/
+	/** @brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚·ã‚¹ãƒ†ãƒ ã®ãƒªãƒ­ãƒ¼ãƒ‰ã€‚*/
 	static void Reload();
 
-	/* ƒ†[ƒU[ƒXƒNƒŠƒvƒg‚Ìƒrƒ‹ƒh‚ğ—v‹‚·‚é‚½‚ß‚ÌŠÖ”B¬Œ÷‚·‚é‚ÆƒŠƒ[ƒh‚à‚³‚ê‚éB*/
+	/* ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ“ãƒ«ãƒ‰ã‚’è¦æ±‚ã™ã‚‹ãŸã‚ã®é–¢æ•°ã€‚æˆåŠŸã™ã‚‹ã¨ãƒªãƒ­ãƒ¼ãƒ‰ã‚‚ã•ã‚Œã‚‹ã€‚*/
 	static void RequestScriptBuildAndReload();
 
-	// ----- ScriptComponent ‚©‚çŒÄ‚ÔAPI -----
+	// ----- ScriptComponent ã‹ã‚‰å‘¼ã¶API -----
 
 
 	static void* CreateScript(const std::string& typeName, uint64_t ownerId, uint64_t componentId);
@@ -52,7 +52,7 @@ public:
 	static void OnTriggerExitScript(void* gcHandle, const TriggerInfo& info);
 
 
-	// ----- ‚»‚Ì‘¼‚ÌAPI -----
+	// ----- ãã®ä»–ã®API -----
 
 	static std::vector<std::string> GetRegisteredScriptNames();
 
@@ -61,11 +61,11 @@ public:
 	static void AddTempScriptName(const std::string& name);
 
 private:
-	// ƒXƒNƒŠƒvƒgƒzƒXƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ›ã‚¹ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 	static inline ScriptHost* s_scriptHost = nullptr;
 
-	static inline ScriptWatcher* s_scriptWatcher = nullptr; // ƒXƒNƒŠƒvƒgƒtƒ@ƒCƒ‹‚ÌŠÄ‹‚ÆƒŠƒ[ƒh‚ğ’S“–‚·‚éƒCƒ“ƒXƒ^ƒ“ƒX
+	static inline ScriptWatcher* s_scriptWatcher = nullptr; // ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã®ç›£è¦–ã¨ãƒªãƒ­ãƒ¼ãƒ‰ã‚’æ‹…å½“ã™ã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 
-	// “o˜^‚³‚ê‚Ä‚¢‚éƒXƒNƒŠƒvƒg‚Ì–¼‘O‚ÌƒLƒƒƒbƒVƒ…iGetRegisteredScriptNames‚ÌŒÄ‚Ño‚µ‚²‚Æ‚ÉƒzƒXƒg‚©‚çæ“¾‚µ‚ÄXV‚·‚éj
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®åå‰ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ï¼ˆGetRegisteredScriptNamesã®å‘¼ã³å‡ºã—ã”ã¨ã«ãƒ›ã‚¹ãƒˆã‹ã‚‰å–å¾—ã—ã¦æ›´æ–°ã™ã‚‹ï¼‰
 	static inline std::vector<std::string> s_tempNames;
 };

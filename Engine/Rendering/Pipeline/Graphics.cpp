@@ -45,7 +45,7 @@ void Graphics::Initialize(HWND hwnd, bool fullScreenMode)
 	m_screenSize.cx = client_rect.right - client_rect.left;
 	m_screenSize.cy = client_rect.bottom - client_rect.top;
 
-	//ƒfƒoƒCƒXAƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgAƒXƒƒbƒvƒ`ƒF[ƒ“ì¬
+	//ãƒ‡ãƒã‚¤ã‚¹ã€ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ä½œæˆ
 	HRESULT hr{ S_OK };
 
 	UINT create_factory_flags{};
@@ -70,13 +70,13 @@ void Graphics::Initialize(HWND hwnd, bool fullScreenMode)
 
 	CreateSwapChain(dxgi_factory6.Get());
 
-	// ƒŒƒ“ƒ_[ƒXƒe[ƒg¶¬
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆç”Ÿæˆ
 	renderState = std::make_unique<RenderState>(device.Get());
 
-	// ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒNƒƒbƒh¶¬
+	// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¯ãƒ¯ãƒƒãƒ‰ç”Ÿæˆ
 	fullScreenQuad = std::make_unique<FullScreenQuad>(device.Get());
 
-	// DDSƒeƒNƒXƒ`ƒƒƒ[ƒh
+	// DDSãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ­ãƒ¼ãƒ‰
 	//D3D11_TEXTURE2D_DESC texture2d_desc;
 	//LoadTextureFromFile(device.Get(), L"./Assets/environments/sunset_jhbcentral_4k/sunset_jhbcentral_4k.dds",
 	//	shader_resource_views[0].GetAddressOf(), &texture2d_desc);
@@ -189,22 +189,22 @@ void Graphics::OnSizeChanged(UINT64 width, UINT64 height)
 
 	if (width != m_screenSize.cx || height != m_screenSize.cy)
 	{
-		// ƒtƒŒ[ƒ€ƒoƒbƒtƒ@‰ğ•ú
+		// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡è§£æ”¾
 		//frameBuffers[0].reset();
 		//frameBuffers[1].reset();
 
-		// ƒXƒNƒŠ[ƒ“ƒTƒCƒYXV
+		// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚ºæ›´æ–°
 		m_screenSize.cx = static_cast<LONG>(width);
 		m_screenSize.cy = static_cast<LONG>(height);
 
-		// ƒRƒ“ƒeƒLƒXƒg‚Ìó‘ÔƒNƒŠƒA
+		// ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®çŠ¶æ…‹ã‚¯ãƒªã‚¢
 		immediate_context->Flush();
 		immediate_context->ClearState();
 
-		// ƒXƒƒbƒvƒ`ƒF[ƒ“Äì¬
+		// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³å†ä½œæˆ
 		CreateSwapChain(dxgi_factory6.Get());
 
-		// ƒtƒŒ[ƒ€ƒoƒbƒtƒ@Äì¬
+		// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡å†ä½œæˆ
 		//frameBuffers[0] = std::make_unique<FrameBuffer>(device.Get(), static_cast<uint32_t>(width), static_cast<uint32_t>(height));
 		//frameBuffers[1] = std::make_unique<FrameBuffer>(device.Get(), static_cast<uint32_t>(width), static_cast<uint32_t>(height));
 	}
@@ -216,9 +216,9 @@ void Graphics::CreateSwapChain(IDXGIFactory6* dxgi_factory6)
 
 	if (swap_chain)
 	{
-		// ƒXƒƒbƒvƒ`ƒF[ƒ“‚ªŠù‚É‘¶İ‚·‚éê‡AƒŠƒTƒCƒYˆ—‚ğs‚¤
+		// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ãŒæ—¢ã«å­˜åœ¨ã™ã‚‹å ´åˆã€ãƒªã‚µã‚¤ã‚ºå‡¦ç†ã‚’è¡Œã†
 
-		// ƒoƒbƒNƒoƒbƒtƒ@‚Æ[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚ÌƒoƒCƒ“ƒh‰ğœ
+		// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã¨æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒã‚¤ãƒ³ãƒ‰è§£é™¤
 		ID3D11RenderTargetView* null_render_target_views[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT]{};
 		immediate_context->OMSetRenderTargets(_countof(null_render_target_views), null_render_target_views, nullptr);
 
@@ -226,7 +226,7 @@ void Graphics::CreateSwapChain(IDXGIFactory6* dxgi_factory6)
 		immediate_context->PSSetShaderResources(0, _countof(null_shader_resource_views), null_shader_resource_views);
 		immediate_context->VSSetShaderResources(0, _countof(null_shader_resource_views), null_shader_resource_views);
 
-		// ƒrƒ…[‚Ì‰ğ•ú
+		// ãƒ“ãƒ¥ãƒ¼ã®è§£æ”¾
 		m_buckBufferRTV.Reset();
 		m_defaultDSV.Reset();
 #if 1
@@ -234,21 +234,21 @@ void Graphics::CreateSwapChain(IDXGIFactory6* dxgi_factory6)
 		immediate_context->ClearState();
 #endif
 
-		// ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìî•ñæ“¾
+		// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®æƒ…å ±å–å¾—
 		DXGI_SWAP_CHAIN_DESC swapChainDesc{};
 		swap_chain->GetDesc(&swapChainDesc);
 		
-		// ƒoƒbƒtƒ@‚ÌƒŠƒTƒCƒY
+		// ãƒãƒƒãƒ•ã‚¡ã®ãƒªã‚µã‚¤ã‚º
 		hr = swap_chain->ResizeBuffers(swapChainDesc.BufferCount, m_screenSize.cx, m_screenSize.cy, swapChainDesc.BufferDesc.Format, swapChainDesc.Flags);
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-		// GetBuffer‚¨‚æ‚ÑCreateRenderTargetView‚Åg—p‚·‚é‚½‚ßAƒoƒbƒNƒoƒbƒtƒ@‚ğæ“¾
+		// GetBufferãŠã‚ˆã³CreateRenderTargetViewã§ä½¿ç”¨ã™ã‚‹ãŸã‚ã€ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚’å–å¾—
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> render_target_buffer;
 		hr = swap_chain->GetBuffer(0, IID_PPV_ARGS(render_target_buffer.GetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 		D3D11_TEXTURE2D_DESC texture2d_desc;
 		render_target_buffer->GetDesc(&texture2d_desc);
-		// ƒoƒbƒNƒoƒbƒtƒ@—pƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚ÌÄì¬
+		// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®å†ä½œæˆ
 		hr = device->CreateRenderTargetView(render_target_buffer.Get(), NULL, m_buckBufferRTV.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 	}
@@ -290,7 +290,7 @@ void Graphics::CreateSwapChain(IDXGIFactory6* dxgi_factory6)
 		_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 	}
 
-	// [“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚ÌÄì¬
+	// æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®å†ä½œæˆ
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> depth_stencil_buffer{};
 	D3D11_TEXTURE2D_DESC texture2d_desc{};
 	texture2d_desc.Width = m_screenSize.cx;
@@ -347,7 +347,7 @@ void Graphics::Clear(float r, float g, float b, float a)
 
 void Graphics::Present(bool vsync)
 {
-	//sync_interval‚É1‚ğƒZƒbƒg‚·‚é‚Æ•`‰æŠÔŠu‚ªŒÅ’èƒtƒŒ[ƒ€ƒŒ[ƒg‚Å“®ì‚·‚é‚æ‚¤‚É‚È‚é
+	//sync_intervalã«1ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã¨æç”»é–“éš”ãŒå›ºå®šãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆã§å‹•ä½œã™ã‚‹ã‚ˆã†ã«ãªã‚‹
 	UINT sync_interval{ vsync ? 1U : 0U };
 	UINT flags = (tearingSupported && !m_fullscreenMode && !vsync) ? DXGI_PRESENT_ALLOW_TEARING : 0;
 	HRESULT hr = swap_chain->Present(sync_interval, flags);

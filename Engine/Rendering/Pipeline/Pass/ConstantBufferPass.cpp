@@ -8,7 +8,7 @@
 
 void ConstantBufferPass::Initialize()
 {
-	// ’è”ƒoƒbƒtƒ@‚Ì‰Šú‰»‚âƒŠƒ\[ƒX‚Ì€”õ‚ğs‚¤
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–ã‚„ãƒªã‚½ãƒ¼ã‚¹ã®æº–å‚™ã‚’è¡Œã†
 	auto device = Graphics::GetDevice();
 	HRESULT hr{ S_OK };
 
@@ -34,7 +34,7 @@ void ConstantBufferPass::Initialize()
 
 void ConstantBufferPass::Execute(RenderContext* rtx, Scene* scene)
 {
-	// ƒV[ƒ“’è”ƒoƒbƒtƒ@‚ÌXV
+	// ã‚·ãƒ¼ãƒ³å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
 	sceneConstants.view = rtx->view;
 	sceneConstants.projection = rtx->projection;
 	sceneConstants.viewProjection = rtx->viewProjection;
@@ -50,7 +50,7 @@ void ConstantBufferPass::Execute(RenderContext* rtx, Scene* scene)
 	sceneConstants.unscaledDeltaTime = rtx->unscaledDeltaTime;
 	Graphics::GetScreenSize(sceneConstants.screenSize.x, sceneConstants.screenSize.y);
 	
-	// ƒVƒƒƒhƒE’è”ƒoƒbƒtƒ@‚ÌXV(‚¢‚Ü‚ÍŒÅ’è’l)
+	// ã‚·ãƒ£ãƒ‰ã‚¦å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°(ã„ã¾ã¯å›ºå®šå€¤)
 	//shadowConstants.min = 0.6f;
 	//shadowConstants.max = 0.8f;
 	//shadowConstants.gaussian_sigma = 1.0f;
@@ -59,15 +59,15 @@ void ConstantBufferPass::Execute(RenderContext* rtx, Scene* scene)
 	shadowConstants.shadowDepthBias = 0.000175f;
 	shadowConstants.colorizeCascadedLayer = false;
     
-	// ƒ‰ƒCƒg’è”ƒoƒbƒtƒ@‚ÌXV
+	// ãƒ©ã‚¤ãƒˆå®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
 	DirectionalLight directionalLightData = scene->directionalLight ? scene->directionalLight->GetDirectionalLight() : DirectionalLight{};
 	LightConstants lightConstants{};
 	lightConstants.ambientColor = { 0.1f, 0.1f, 0.1f, 1.0f };
 	lightConstants.directionalLightDirection = directionalLightData.direction;
 	lightConstants.directionalLightColor = directionalLightData.color;
 	
-	// RenderContext‚É‚àƒ‰ƒCƒg‚ÌŒü‚«‚ğİ’è‚µ‚Ä‚¨‚­iƒVƒF[ƒ_‚Å’¼Ú’è”ƒoƒbƒtƒ@‚©‚çæ‚é‚Ì‚Å‚Í‚È‚­ARenderContext‚©‚çæ‚éê‡‚à‚ ‚é‚½‚ßj
-	rtx->lightDirection = scene->directionalLight ? directionalLightData.direction : DirectX::XMFLOAT4{ -0.3f,-0.94f,0.36f,0.0f }; // ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒg‚ÌŒü‚«‚ÍAƒV[ƒ“‚ÉƒfƒBƒŒƒNƒVƒ‡ƒiƒ‹ƒ‰ƒCƒg‚ª‚È‚¢ê‡‚Ì’l‚Æ“¯‚¶‚É‚µ‚Ä‚¨‚­
+	// RenderContextã«ã‚‚ãƒ©ã‚¤ãƒˆã®å‘ãã‚’è¨­å®šã—ã¦ãŠãï¼ˆã‚·ã‚§ãƒ¼ãƒ€ã§ç›´æ¥å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰å–ã‚‹ã®ã§ã¯ãªãã€RenderContextã‹ã‚‰å–ã‚‹å ´åˆã‚‚ã‚ã‚‹ãŸã‚ï¼‰
+	rtx->lightDirection = scene->directionalLight ? directionalLightData.direction : DirectX::XMFLOAT4{ -0.3f,-0.94f,0.36f,0.0f }; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ©ã‚¤ãƒˆã®å‘ãã¯ã€ã‚·ãƒ¼ãƒ³ã«ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒ«ãƒ©ã‚¤ãƒˆãŒãªã„å ´åˆã®å€¤ã¨åŒã˜ã«ã—ã¦ãŠã
 	
 	for (size_t i = 0; i < scene->pointLights.size() && i < 8; ++i)
 	{
@@ -80,21 +80,21 @@ void ConstantBufferPass::Execute(RenderContext* rtx, Scene* scene)
 		lightConstants.spotLights[i] = spotLightData;
 	}
 	
-    // ’è”ƒoƒbƒtƒ@‚Éƒf[ƒ^‚ğ“]‘—‚µ‚ÄƒVƒF[ƒ_‚ÉƒoƒCƒ“ƒh‚·‚é
+    // å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«ãƒ‡ãƒ¼ã‚¿ã‚’è»¢é€ã—ã¦ã‚·ã‚§ãƒ¼ãƒ€ã«ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
     auto immediateContext = rtx->immediateContext;
-    // ƒV[ƒ“’è”ƒoƒbƒtƒ@‚ÌXV‚ÆƒoƒCƒ“ƒh
+    // ã‚·ãƒ¼ãƒ³å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°ã¨ãƒã‚¤ãƒ³ãƒ‰
     immediateContext->UpdateSubresource(constantBuffers[0].Get(), 0, nullptr, &sceneConstants, 0, 0);
     immediateContext->VSSetConstantBuffers(1, 1, constantBuffers[0].GetAddressOf());
     immediateContext->PSSetConstantBuffers(1, 1, constantBuffers[0].GetAddressOf());
     immediateContext->GSSetConstantBuffers(1, 1, constantBuffers[0].GetAddressOf());
     immediateContext->CSSetConstantBuffers(1, 1, constantBuffers[0].GetAddressOf());
-    // ƒVƒƒƒhƒE’è”ƒoƒbƒtƒ@‚ÌXV‚ÆƒoƒCƒ“ƒh
+    // ã‚·ãƒ£ãƒ‰ã‚¦å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°ã¨ãƒã‚¤ãƒ³ãƒ‰
     immediateContext->UpdateSubresource(constantBuffers[1].Get(), 0, nullptr, &shadowConstants, 0, 0);
     immediateContext->PSSetConstantBuffers(2, 1, constantBuffers[1].GetAddressOf());
     immediateContext->VSSetConstantBuffers(2, 1, constantBuffers[1].GetAddressOf());
     immediateContext->GSSetConstantBuffers(2, 1, constantBuffers[1].GetAddressOf());
     immediateContext->CSSetConstantBuffers(2, 1, constantBuffers[1].GetAddressOf());
-    // ƒ‰ƒCƒg’è”ƒoƒbƒtƒ@‚ÌXV‚ÆƒoƒCƒ“ƒh
+    // ãƒ©ã‚¤ãƒˆå®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°ã¨ãƒã‚¤ãƒ³ãƒ‰
     immediateContext->UpdateSubresource(constantBuffers[2].Get(), 0, nullptr, &lightConstants, 0, 0);
     immediateContext->PSSetConstantBuffers(4, 1, constantBuffers[2].GetAddressOf());
     immediateContext->VSSetConstantBuffers(4, 1, constantBuffers[2].GetAddressOf());

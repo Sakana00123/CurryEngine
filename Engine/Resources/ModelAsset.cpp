@@ -8,14 +8,14 @@
 
 bool ModelAsset::LoadFromFile(const std::string& path)
 {
-	// ƒtƒ@ƒCƒ‹‚©‚çƒ‚ƒfƒ‹ƒf[ƒ^‚ğ“Ç‚İ‚Şˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 	_path = path;
 	CurryEngine::Utils::GltfImporter importer;
     if (!importer.Import(path, *this)) {
         return false;
 	}
     
-    // ƒŠƒ\[ƒX‚Ìì¬‚ÆƒAƒbƒvƒ[ƒh
+    // ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆã¨ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
 	auto device = Graphics::GetDevice();
     CreateAndUploadResources(device);
 	return true;
@@ -23,7 +23,7 @@ bool ModelAsset::LoadFromFile(const std::string& path)
 
 bool ModelAsset::Reload()
 {
-	// ƒzƒbƒgƒŠƒ[ƒh‚Ì‚½‚ß‚ÌÄ“Ç‚İ‚İˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ã®ãŸã‚ã®å†èª­ã¿è¾¼ã¿å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 	return LoadFromFile(_path);
 }
 
@@ -31,7 +31,7 @@ bool ModelAsset::Reload()
 
 void ModelAsset::CumulateTransforms(std::vector<Node>& nodes)
 {
-	// ƒm[ƒh‚ÌŠK‘w\‘¢‚ğƒgƒ‰ƒo[ƒX‚µ‚ÄAƒ[ƒJƒ‹•ÏŠ·‚ğ—İÏ‚µ‚ÄƒOƒ[ƒoƒ‹•ÏŠ·‚ğŒvZB
+	// ãƒãƒ¼ãƒ‰ã®éšå±¤æ§‹é€ ã‚’ãƒˆãƒ©ãƒãƒ¼ã‚¹ã—ã¦ã€ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ›ã‚’ç´¯ç©ã—ã¦ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ›ã‚’è¨ˆç®—ã€‚
     std::function<void(int, int)> traverse = [&](int parentIndex, int nodeIndex)->void
         {
             DirectX::XMMATRIX P = parentIndex > -1 ? DirectX::XMLoadFloat4x4(&nodes.at(parentIndex).globalTransform) : DirectX::XMMatrixIdentity();

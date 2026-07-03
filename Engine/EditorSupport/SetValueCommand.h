@@ -9,19 +9,19 @@ namespace CurryEngine
 	{
 	public:
 		/// <summary>
-		/// ’l‚ğ•ÏX‚·‚éƒRƒ}ƒ“ƒhBExecute‚ÅV‚µ‚¢’l‚ğƒZƒbƒg‚µAUndo‚ÅŒÃ‚¢’l‚ğƒZƒbƒg‚·‚éB
+		/// å€¤ã‚’å¤‰æ›´ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰ã€‚Executeã§æ–°ã—ã„å€¤ã‚’ã‚»ãƒƒãƒˆã—ã€Undoã§å¤ã„å€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 		/// </summary>
-		/// <param name="description">ƒRƒ}ƒ“ƒh‚Ìà–¾BUndo/RedoƒXƒ^ƒbƒN‚Å•\¦‚³‚ê‚éB</param>
-		/// <param name="setter">’l‚ğƒZƒbƒg‚·‚éŠÖ”BExecute‚ÆUndo‚Ì—¼•û‚ÅŒÄ‚Ño‚³‚ê‚éB</param>
-		/// <param name="oldValue">ŒÃ‚¢’lBUndo‚ÅƒZƒbƒg‚³‚ê‚éB</param>
-		/// <param name="newValue">V‚µ‚¢’lBExecute‚ÅƒZƒbƒg‚³‚ê‚éB</param>
+		/// <param name="description">ã‚³ãƒãƒ³ãƒ‰ã®èª¬æ˜ã€‚Undo/Redoã‚¹ã‚¿ãƒƒã‚¯ã§è¡¨ç¤ºã•ã‚Œã‚‹ã€‚</param>
+		/// <param name="setter">å€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹é–¢æ•°ã€‚Executeã¨Undoã®ä¸¡æ–¹ã§å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚</param>
+		/// <param name="oldValue">å¤ã„å€¤ã€‚Undoã§ã‚»ãƒƒãƒˆã•ã‚Œã‚‹ã€‚</param>
+		/// <param name="newValue">æ–°ã—ã„å€¤ã€‚Executeã§ã‚»ãƒƒãƒˆã•ã‚Œã‚‹ã€‚</param>
 		SetValueCommand(const std::string& description, std::function<void(const T&)> setter, T oldValue, T newValue)
 			: m_description(description)
 			, m_setter(std::move(setter))
 			, m_oldValue(std::move(oldValue))
 			, m_newValue(std::move(newValue)) { }
 
-		// IEditorCommand‚ÌÀ‘•
+		// IEditorCommandã®å®Ÿè£…
 		void Execute() override { m_setter(m_newValue); }
 		void Undo() override { m_setter(m_oldValue); }
 		std::string GetDescription() const override { return m_description; }

@@ -23,98 +23,98 @@ public:
 	DepthStencilState depthStencilState = DepthStencilState::NoTestNoWrite;
 
 
-	//ƒp[ƒeƒBƒNƒ‹ƒXƒŒƒbƒh”
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚¹ãƒ¬ãƒƒãƒ‰æ•°
 	static constexpr UINT NumParticleThread = 1024;
 
-	//ƒp[ƒeƒBƒNƒ‹¶¬—p\‘¢‘Ì
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç”Ÿæˆç”¨æ§‹é€ ä½“
 	struct EmitParticleData
 	{
-		DirectX::XMFLOAT4 parameter{ 0,1,-1,-1 };	//x : •`‰æƒ‚[ƒh, y : ¶‘¶ŠÔ, z : ¶¬’x‰„ŠÔiCPU‘¤j/ ¶‘¶ŠÔ‹L˜^—piGPU‘¤j, w : ƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒeƒNƒXƒ`ƒƒƒCƒ“ƒfƒbƒNƒX(0`MaxGradientSlots-1, -1‚Ì‚Æ‚«ƒOƒ‰ƒf[ƒVƒ‡ƒ“‚È‚µ)
+		DirectX::XMFLOAT4 parameter{ 0,1,-1,-1 };	//x : æç”»ãƒ¢ãƒ¼ãƒ‰, y : ç”Ÿå­˜æ™‚é–“, z : ç”Ÿæˆé…å»¶æ™‚é–“ï¼ˆCPUå´ï¼‰/ ç”Ÿå­˜æ™‚é–“è¨˜éŒ²ç”¨ï¼ˆGPUå´ï¼‰, w : ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(0ã€œMaxGradientSlots-1, -1ã®ã¨ãã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ãªã—)
 
-		DirectX::XMFLOAT4 position{ 0,0,0,0 };		// xyz: ¶¬À•W, w: ƒC[ƒWƒ“ƒOƒ‚[ƒh
-		DirectX::XMFLOAT4 rotation{ 0,0,0,0 };		// xyz: ‰ñ“] (ƒIƒCƒ‰[Šp), w: ƒC[ƒWƒ“ƒOƒ‚[ƒh
-		DirectX::XMFLOAT4 scale{ 1,1,1,1 };			// xy: ŠJnƒXƒP[ƒ‹, z: ƒC[ƒWƒ“ƒOƒ‚[ƒh, w: ‹ó‚«
+		DirectX::XMFLOAT4 position{ 0,0,0,0 };		// xyz: ç”Ÿæˆåº§æ¨™, w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰
+		DirectX::XMFLOAT4 rotation{ 0,0,0,0 };		// xyz: å›è»¢ (ã‚ªã‚¤ãƒ©ãƒ¼è§’), w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰
+		DirectX::XMFLOAT4 scale{ 1,1,1,1 };			// xy: é–‹å§‹ã‚¹ã‚±ãƒ¼ãƒ«, z: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰, w: ç©ºã
 
-		DirectX::XMFLOAT4 endPosition{ 0,0,0,0 };	// xyz: –Ú•WÀ•W (ƒC[ƒWƒ“ƒO‚Ìƒ^[ƒQƒbƒg), w: ƒC[ƒWƒ“ƒOŠÔ (0‚Ì‚Æ‚«ƒC[ƒWƒ“ƒO‚È‚µ)
-		DirectX::XMFLOAT4 endRotation{ 0,0,0,0 };	// xyz: –Ú•W‰ñ“] (ƒIƒCƒ‰[Šp, ƒC[ƒWƒ“ƒO‚Ìƒ^[ƒQƒbƒg), w: ƒC[ƒWƒ“ƒOŠÔ (0‚Ì‚Æ‚«ƒC[ƒWƒ“ƒO‚È‚µ)
-		DirectX::XMFLOAT4 endScale{ 1,1,1,1 };		// xy: –Ú•WƒXƒP[ƒ‹ (ƒC[ƒWƒ“ƒO‚Ìƒ^[ƒQƒbƒg), z: ƒC[ƒWƒ“ƒOŠÔ (0‚Ì‚Æ‚«ƒC[ƒWƒ“ƒO‚È‚µ), w: ‹ó‚«
+		DirectX::XMFLOAT4 endPosition{ 0,0,0,0 };	// xyz: ç›®æ¨™åº§æ¨™ (ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ), w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ (0ã®ã¨ãã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãªã—)
+		DirectX::XMFLOAT4 endRotation{ 0,0,0,0 };	// xyz: ç›®æ¨™å›è»¢ (ã‚ªã‚¤ãƒ©ãƒ¼è§’, ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ), w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ (0ã®ã¨ãã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãªã—)
+		DirectX::XMFLOAT4 endScale{ 1,1,1,1 };		// xy: ç›®æ¨™ã‚¹ã‚±ãƒ¼ãƒ« (ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ), z: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ (0ã®ã¨ãã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãªã—), w: ç©ºã
 
-		DirectX::XMFLOAT4 velocity{ 0,0,0,0 };		// xyz: ‰‘¬, w: ‹ó‚«
-		DirectX::XMFLOAT4 acceleration{ 0,0,0,0 };	//‰Á‘¬“x
+		DirectX::XMFLOAT4 velocity{ 0,0,0,0 };		// xyz: åˆé€Ÿ, w: ç©ºã
+		DirectX::XMFLOAT4 acceleration{ 0,0,0,0 };	//åŠ é€Ÿåº¦
 
-		float startSpeed = 1.0f;					// ŠJn‚Ì‘¬“x”{—¦
-		float endSpeed = 1.0f;						// I—¹‚Ì‘¬“x”{—¦
-		float speedEasingMode = 0.0f;				// ‘¬“x‚ÌƒC[ƒWƒ“ƒOƒ‚[ƒhi0:LinearA1~:ŠeíƒC[ƒWƒ“ƒOŠÖ”j
-		float speedEasingTime = 0.0f;				// ‘¬“x‚ÌƒC[ƒWƒ“ƒOŠÔi0‚Ì‚Æ‚«ƒC[ƒWƒ“ƒO‚È‚µj
+		float startSpeed = 1.0f;					// é–‹å§‹æ™‚ã®é€Ÿåº¦å€ç‡
+		float endSpeed = 1.0f;						// çµ‚äº†æ™‚ã®é€Ÿåº¦å€ç‡
+		float speedEasingMode = 0.0f;				// é€Ÿåº¦ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰ï¼ˆ0:Linearã€1~:å„ç¨®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°é–¢æ•°ï¼‰
+		float speedEasingTime = 0.0f;				// é€Ÿåº¦ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ï¼ˆ0ã®ã¨ãã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãªã—ï¼‰
 
 
-		DirectX::XMFLOAT4 startColor{ 1,1,1,1 };	// ŠJnF
-		DirectX::XMFLOAT4 endColor{ 1,1,1,1 };		// I—¹F
+		DirectX::XMFLOAT4 startColor{ 1,1,1,1 };	// é–‹å§‹è‰²
+		DirectX::XMFLOAT4 endColor{ 1,1,1,1 };		// çµ‚äº†è‰²
 
-		float fadeInTime = 0.0f;					//ƒtƒF[ƒhƒCƒ“ŠÔ (4bytes) (0‚Ì‚Æ‚«ƒtƒF[ƒhƒCƒ“‚È‚µ)
-		float fadeOutTime = 0.0f;					//ƒtƒF[ƒhƒAƒEƒgŠÔ (4bytes) (0‚Ì‚Æ‚«ƒtƒF[ƒhƒAƒEƒg‚È‚µ)
-		BYTE padding[8]{};					//ƒpƒfƒBƒ“ƒOi\‘¢‘ÌƒTƒCƒY‚ğ16‚Ì”{”‚É‚·‚é‚½‚ßj
+		float fadeInTime = 0.0f;					//ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³æ™‚é–“ (4bytes) (0ã®ã¨ããƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ãªã—)
+		float fadeOutTime = 0.0f;					//ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆæ™‚é–“ (4bytes) (0ã®ã¨ããƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆãªã—)
+		BYTE padding[8]{};					//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ï¼ˆæ§‹é€ ä½“ã‚µã‚¤ã‚ºã‚’16ã®å€æ•°ã«ã™ã‚‹ãŸã‚ï¼‰
 
 	};
 
-	//ƒp[ƒeƒBƒNƒ‹\‘¢‘Ì
-	//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‘¤‚Å‚Íg—p‚µ‚È‚¢‚ªAŒ`®‚Æ‚µ‚Ä•K—v‚È‚Ì‚Å‚±‚±‚ÅéŒ¾‚µ‚Ä‚¨‚­
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ§‹é€ ä½“
+	//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å´ã§ã¯ä½¿ç”¨ã—ãªã„ãŒã€å½¢å¼ã¨ã—ã¦å¿…è¦ãªã®ã§ã“ã“ã§å®£è¨€ã—ã¦ãŠã
 	struct ParticleData
 	{
-		DirectX::XMFLOAT4 parameter{ 0,1,-1,-1 };	//x : •`‰æƒ‚[ƒh, y : ¶‘¶ŠÔ, z : ¶¬’x‰„ŠÔiCPU‘¤j/ ¶‘¶ŠÔ‹L˜^—piGPU‘¤j, w : ƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒeƒNƒXƒ`ƒƒƒCƒ“ƒfƒbƒNƒX(0`MaxGradientSlots-1, -1‚Ì‚Æ‚«ƒOƒ‰ƒf[ƒVƒ‡ƒ“‚È‚µ)
+		DirectX::XMFLOAT4 parameter{ 0,1,-1,-1 };	//x : æç”»ãƒ¢ãƒ¼ãƒ‰, y : ç”Ÿå­˜æ™‚é–“, z : ç”Ÿæˆé…å»¶æ™‚é–“ï¼ˆCPUå´ï¼‰/ ç”Ÿå­˜æ™‚é–“è¨˜éŒ²ç”¨ï¼ˆGPUå´ï¼‰, w : ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(0ã€œMaxGradientSlots-1, -1ã®ã¨ãã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ãªã—)
 
-		DirectX::XMFLOAT4 position{ 0,0,0,0 };		// xyz: À•W, w: ƒC[ƒWƒ“ƒOƒ‚[ƒh
-		DirectX::XMFLOAT4 rotation{ 0,0,0,0 };		// xyz: ‰ñ“] (ƒIƒCƒ‰[Šp), w: ƒC[ƒWƒ“ƒOƒ‚[ƒh
-		DirectX::XMFLOAT4 scale{ 1,1,1,1 };			// xy : ƒXƒP[ƒ‹, z: ƒC[ƒWƒ“ƒOƒ‚[ƒh, w: ‹ó‚«
+		DirectX::XMFLOAT4 position{ 0,0,0,0 };		// xyz: åº§æ¨™, w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰
+		DirectX::XMFLOAT4 rotation{ 0,0,0,0 };		// xyz: å›è»¢ (ã‚ªã‚¤ãƒ©ãƒ¼è§’), w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰
+		DirectX::XMFLOAT4 scale{ 1,1,1,1 };			// xy : ã‚¹ã‚±ãƒ¼ãƒ«, z: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰, w: ç©ºã
 
-		DirectX::XMFLOAT4 initialPosition{ 0,0,0,0 };	// xyz: ‰ŠúÀ•W, w: ‹ó‚«
-		DirectX::XMFLOAT4 initialRotation{ 0,0,0,0 };	// xyz: ‰Šú‰ñ“] (ƒIƒCƒ‰[Šp), w: ‹ó‚«
-		DirectX::XMFLOAT4 initialScale{ 1,1,1,1 };		// xy: ‰ŠúƒXƒP[ƒ‹, zw: ‹ó‚«
+		DirectX::XMFLOAT4 initialPosition{ 0,0,0,0 };	// xyz: åˆæœŸåº§æ¨™, w: ç©ºã
+		DirectX::XMFLOAT4 initialRotation{ 0,0,0,0 };	// xyz: åˆæœŸå›è»¢ (ã‚ªã‚¤ãƒ©ãƒ¼è§’), w: ç©ºã
+		DirectX::XMFLOAT4 initialScale{ 1,1,1,1 };		// xy: åˆæœŸã‚¹ã‚±ãƒ¼ãƒ«, zw: ç©ºã
 
-		DirectX::XMFLOAT4 endPosition{ 0,0,0,0 };	// xyz: –Ú•WÀ•W (ƒC[ƒWƒ“ƒO‚Ìƒ^[ƒQƒbƒg), w: ƒC[ƒWƒ“ƒOŠÔ (0‚Ì‚Æ‚«ƒC[ƒWƒ“ƒO‚È‚µ)
-		DirectX::XMFLOAT4 endRotation{ 0,0,0,0 };	// xyz: –Ú•W‰ñ“] (ƒIƒCƒ‰[Šp, ƒC[ƒWƒ“ƒO‚Ìƒ^[ƒQƒbƒg), w: ƒC[ƒWƒ“ƒOŠÔ (0‚Ì‚Æ‚«ƒC[ƒWƒ“ƒO‚È‚µ)
-		DirectX::XMFLOAT4 endScale{ 1,1,1,1 };		// xy: –Ú•WƒXƒP[ƒ‹ (ƒC[ƒWƒ“ƒO‚Ìƒ^[ƒQƒbƒg), z: ƒC[ƒWƒ“ƒOŠÔ (0‚Ì‚Æ‚«ƒC[ƒWƒ“ƒO‚È‚µ), w: ‹ó‚«
+		DirectX::XMFLOAT4 endPosition{ 0,0,0,0 };	// xyz: ç›®æ¨™åº§æ¨™ (ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ), w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ (0ã®ã¨ãã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãªã—)
+		DirectX::XMFLOAT4 endRotation{ 0,0,0,0 };	// xyz: ç›®æ¨™å›è»¢ (ã‚ªã‚¤ãƒ©ãƒ¼è§’, ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ), w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ (0ã®ã¨ãã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãªã—)
+		DirectX::XMFLOAT4 endScale{ 1,1,1,1 };		// xy: ç›®æ¨™ã‚¹ã‚±ãƒ¼ãƒ« (ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ), z: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ (0ã®ã¨ãã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãªã—), w: ç©ºã
 
-		DirectX::XMFLOAT4 velocity{ 0,0,0,0 };		// xyz: ‰‘¬, w: ƒC[ƒWƒ“ƒOƒ‚[ƒh
-		DirectX::XMFLOAT4 acceleration{ 0,0,0,0 };	//‰Á‘¬“x
+		DirectX::XMFLOAT4 velocity{ 0,0,0,0 };		// xyz: åˆé€Ÿ, w: ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰
+		DirectX::XMFLOAT4 acceleration{ 0,0,0,0 };	//åŠ é€Ÿåº¦
 
-		DirectX::XMFLOAT4 initialVelocity{ 0,0,0,0 };		// xyz: ‰Šú‘¬“x, w: ‹ó‚«
-		float startSpeed = 1.0f;					// ŠJn‚Ì‘¬“x”{—¦
-		float endSpeed = 1.0f;						// I—¹‚Ì‘¬“x”{—¦
-		float speedEasingMode = 0.0f;				// ‘¬“x‚ÌƒC[ƒWƒ“ƒOƒ‚[ƒhi0:LinearA1~:ŠeíƒC[ƒWƒ“ƒOŠÖ”j
-		float speedEasingTime = 0.0f;				// ‘¬“x‚ÌƒC[ƒWƒ“ƒOŠÔi0‚Ì‚Æ‚«ƒC[ƒWƒ“ƒO‚È‚µj
+		DirectX::XMFLOAT4 initialVelocity{ 0,0,0,0 };		// xyz: åˆæœŸé€Ÿåº¦, w: ç©ºã
+		float startSpeed = 1.0f;					// é–‹å§‹æ™‚ã®é€Ÿåº¦å€ç‡
+		float endSpeed = 1.0f;						// çµ‚äº†æ™‚ã®é€Ÿåº¦å€ç‡
+		float speedEasingMode = 0.0f;				// é€Ÿåº¦ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰ï¼ˆ0:Linearã€1~:å„ç¨®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°é–¢æ•°ï¼‰
+		float speedEasingTime = 0.0f;				// é€Ÿåº¦ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“ï¼ˆ0ã®ã¨ãã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ãªã—ï¼‰
 
-		DirectX::XMFLOAT4 texcoord;					//UVî•ñ
-		DirectX::XMFLOAT4 color;					//Fî•ñ
-		DirectX::XMFLOAT4 startColor{ 1,1,1,1 };	// ŠJnF
-		DirectX::XMFLOAT4 endColor{ 1,1,1,1 };		// I—¹F
+		DirectX::XMFLOAT4 texcoord;					//UVæƒ…å ±
+		DirectX::XMFLOAT4 color;					//è‰²æƒ…å ±
+		DirectX::XMFLOAT4 startColor{ 1,1,1,1 };	// é–‹å§‹è‰²
+		DirectX::XMFLOAT4 endColor{ 1,1,1,1 };		// çµ‚äº†è‰²
 
-		float fadeInTime = 0.0f;					//ƒtƒF[ƒhƒCƒ“ŠÔ (4bytes) (0‚Ì‚Æ‚«ƒtƒF[ƒhƒCƒ“‚È‚µ)
-		float fadeOutTime = 0.0f;					//ƒtƒF[ƒhƒAƒEƒgŠÔ (4bytes) (0‚Ì‚Æ‚«ƒtƒF[ƒhƒAƒEƒg‚È‚µ)
-		BYTE padding[8]{};					//ƒpƒfƒBƒ“ƒOi\‘¢‘ÌƒTƒCƒY‚ğ16‚Ì”{”‚É‚·‚é‚½‚ßj
+		float fadeInTime = 0.0f;					//ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³æ™‚é–“ (4bytes) (0ã®ã¨ããƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ãªã—)
+		float fadeOutTime = 0.0f;					//ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆæ™‚é–“ (4bytes) (0ã®ã¨ããƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆãªã—)
+		BYTE padding[8]{};					//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ï¼ˆæ§‹é€ ä½“ã‚µã‚¤ã‚ºã‚’16ã®å€æ•°ã«ã™ã‚‹ãŸã‚ï¼‰
 	};
 
-	//ƒp[ƒeƒBƒNƒ‹ƒwƒbƒ_[\‘¢‘Ì
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒ˜ãƒƒãƒ€ãƒ¼æ§‹é€ ä½“
 	struct ParticleHeader
 	{
-		UINT alive;			//¶‘¶ƒtƒ‰ƒO
-		UINT particleIndex;	//ƒp[ƒeƒBƒNƒ‹”Ô†
-		float depth;		//[“x
+		UINT alive;			//ç”Ÿå­˜ãƒ•ãƒ©ã‚°
+		UINT particleIndex;	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç•ªå·
+		float depth;		//æ·±åº¦
 		UINT dummy;
 	};
 
-	//”Ä—pî•ñ’è‹`
+	//æ±ç”¨æƒ…å ±å®šç¾©
 	struct CommonConstants
 	{
-		//float deltaTime;					//ƒfƒ‹ƒ^ƒ^ƒCƒ€
-		DirectX::XMUINT2 textureSplitCount;	//ƒeƒNƒXƒ`ƒƒ‚Ì•ªŠ„”
-		UINT systemNumParticles;			//ƒp[ƒeƒBƒNƒ‹‘”
-		UINT totalEmitCount;				//Œ»İ‚ÌƒtƒŒ[ƒ€‚Å‚Ìƒp[ƒeƒBƒNƒ‹‘¶¬”
-		UINT maxEmitParticles;				//Œ»İ‚ÌƒtƒŒ[ƒ€‚Å‚Ìƒp[ƒeƒBƒNƒ‹Å‘å¶¬”
+		//float deltaTime;					//ãƒ‡ãƒ«ã‚¿ã‚¿ã‚¤ãƒ 
+		DirectX::XMUINT2 textureSplitCount;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®åˆ†å‰²æ•°
+		UINT systemNumParticles;			//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç·æ•°
+		UINT totalEmitCount;				//ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç·ç”Ÿæˆæ•°
+		UINT maxEmitParticles;				//ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æœ€å¤§ç”Ÿæˆæ•°
 		UINT commonDummy[3];
 	};
 
-	//ƒoƒCƒgƒjƒbƒNƒ\[ƒgî•ñ’è‹`
+	//ãƒã‚¤ãƒˆãƒ‹ãƒƒã‚¯ã‚½ãƒ¼ãƒˆæƒ…å ±å®šç¾©
 	struct BitonicSortConstants
 	{
 		UINT increment;
@@ -139,43 +139,43 @@ public:
 	void DrawGUI();
 
 private:
-	UINT numParticles;//ƒp[ƒeƒBƒNƒ‹‘”
-	UINT numEmitParticles;//1ƒtƒŒ[ƒ€‚Å¶¬‰Â”\‚Èƒp[ƒeƒBƒNƒ‹”
-	bool oneShotInitialize;//‰Šú‰»ƒtƒ‰ƒO
-	DirectX::XMUINT2 textureSplitCount;//ƒeƒNƒXƒ`ƒƒ•ªŠ„”
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView;//ƒp[ƒeƒBƒNƒ‹•`‰æ—pƒeƒNƒXƒ`ƒƒ
+	UINT numParticles;//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç·æ•°
+	UINT numEmitParticles;//1ãƒ•ãƒ¬ãƒ¼ãƒ ã§ç”Ÿæˆå¯èƒ½ãªãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ•°
+	bool oneShotInitialize;//åˆæœŸåŒ–ãƒ•ãƒ©ã‚°
+	DirectX::XMUINT2 textureSplitCount;//ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ†å‰²æ•°
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView;//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»ç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£
 
-	std::vector<EmitParticleData> pendingParticles;//ƒGƒ~ƒbƒg‘Ò‚¿ƒp[ƒeƒBƒNƒ‹
-	std::vector<EmitParticleData> emitParticles;//Œ»İ‚ÌƒtƒŒ[ƒ€‚ÅƒGƒ~ƒbƒg‚·‚éƒp[ƒeƒBƒNƒ‹
-	Microsoft::WRL::ComPtr<ID3D11Buffer> commonConstantBuffer;//‹¤’Ê’è”ƒoƒbƒtƒ@
-	Microsoft::WRL::ComPtr<ID3D11Buffer> bitonicSortConstantBuffer;//ƒoƒCƒgƒjƒbƒNƒ\[ƒg—p’è”ƒoƒbƒtƒ@
+	std::vector<EmitParticleData> pendingParticles;//ã‚¨ãƒŸãƒƒãƒˆå¾…ã¡ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+	std::vector<EmitParticleData> emitParticles;//ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ã‚¨ãƒŸãƒƒãƒˆã™ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+	Microsoft::WRL::ComPtr<ID3D11Buffer> commonConstantBuffer;//å…±é€šå®šæ•°ãƒãƒƒãƒ•ã‚¡
+	Microsoft::WRL::ComPtr<ID3D11Buffer> bitonicSortConstantBuffer;//ãƒã‚¤ãƒˆãƒ‹ãƒƒã‚¯ã‚½ãƒ¼ãƒˆç”¨å®šæ•°ãƒãƒƒãƒ•ã‚¡
 
-	//ƒp[ƒeƒBƒNƒ‹ƒoƒbƒtƒ@
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒƒãƒ•ã‚¡
 	Microsoft::WRL::ComPtr<ID3D11Buffer> particleDataBuffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> particleDataShaderResourceView;
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particleDataUnordredAccessView;
 
-	//–¢g—pƒp[ƒeƒBƒNƒ‹”Ô†‚ğŠi”[‚µ‚½Append/Cosumeƒoƒbƒtƒ@
+	//æœªä½¿ç”¨ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç•ªå·ã‚’æ ¼ç´ã—ãŸAppend/Cosumeãƒãƒƒãƒ•ã‚¡
 	Microsoft::WRL::ComPtr<ID3D11Buffer> particleAppendConsumeBuffer;
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particleAppendConsumeUnordredAccessView;
 
-	//ƒp[ƒeƒBƒNƒ‹¶¬î•ñ‚ğŠi”[‚µ‚½ƒoƒbƒtƒ@
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç”Ÿæˆæƒ…å ±ã‚’æ ¼ç´ã—ãŸãƒãƒƒãƒ•ã‚¡
 	Microsoft::WRL::ComPtr<ID3D11Buffer> particleEmitBuffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> particleEmitShaderResourceView;
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particleEmitUnordredAccessView;
 
-	//DispatchIndirect—p\‘¢‘Ì
-	using DispatchIndirect = DirectX::XMUINT3; //UINT3‚Å\•ª
+	//DispatchIndirectç”¨æ§‹é€ ä½“
+	using DispatchIndirect = DirectX::XMUINT3; //UINT3ã§ååˆ†
 
-	//	00ƒoƒCƒg–ÚFŒ»İ‚Ìƒp[ƒeƒBƒNƒ‹‘”
-	//	04ƒoƒCƒg–ÚF1ƒtƒŒ[ƒ€‘O‚Ìƒp[ƒeƒBƒNƒ‹‘”
-	//	08ƒoƒCƒg–ÚFƒp[ƒeƒBƒNƒ‹”jŠü”
-	//	12ƒoƒCƒg–ÚFƒp[ƒeƒBƒNƒ‹¶¬—pDispatchIndirectî•ñ
+	//	00ãƒã‚¤ãƒˆç›®ï¼šç¾åœ¨ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç·æ•°
+	//	04ãƒã‚¤ãƒˆç›®ï¼š1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç·æ•°
+	//	08ãƒã‚¤ãƒˆç›®ï¼šãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç ´æ£„æ•°
+	//	12ãƒã‚¤ãƒˆç›®ï¼šãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç”Ÿæˆç”¨DispatchIndirectæƒ…å ±
 	static constexpr UINT NumCurrentParticleOffset = 0;
 	static constexpr UINT NumPreviousParticleOffset = NumCurrentParticleOffset + sizeof(UINT);
 	static constexpr UINT NumDeadParticleOffset = NumPreviousParticleOffset + sizeof(UINT);
 	static constexpr UINT EmitDispatchIndirectOffset = NumDeadParticleOffset + sizeof(UINT);
-	//DrawInstanced—pDrawIndirect—p\‘¢‘Ì
+	//DrawInstancedç”¨DrawIndirectç”¨æ§‹é€ ä½“
 	struct DrawIndirect
 	{
 		UINT vertexCountPerInstance;
@@ -183,11 +183,11 @@ private:
 		UINT startVertexLocation;
 		UINT startInstanceLocation;
 	};
-	//	24ƒoƒCƒg–ÚFƒp[ƒeƒBƒNƒ‹XV—pDispatchIndirectî•ñ
-	//	36ƒoƒCƒg–ÚFƒp[ƒeƒBƒNƒ‹¶¬‚Ég—p‚·‚éƒCƒ“ƒfƒbƒNƒX(Append/Consume‚Ì‘ã‚í‚è)
-	//	40ƒoƒCƒg–ÚFDrawIndirectî•ñ
-	//	40ƒoƒCƒg–ÚFƒsƒNƒZƒ‹ƒp[ƒeƒBƒNƒ‹¶¬”ƒJƒEƒ“ƒ^[
-	//	44ƒoƒCƒg–ÚFDrawIndirectî•ñ
+	//	24ãƒã‚¤ãƒˆç›®ï¼šãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ›´æ–°ç”¨DispatchIndirectæƒ…å ±
+	//	36ãƒã‚¤ãƒˆç›®ï¼šãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç”Ÿæˆæ™‚ã«ä½¿ç”¨ã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(Append/Consumeã®ä»£ã‚ã‚Š)
+	//	40ãƒã‚¤ãƒˆç›®ï¼šDrawIndirectæƒ…å ±
+	//	40ãƒã‚¤ãƒˆç›®ï¼šãƒ”ã‚¯ã‚»ãƒ«ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç”Ÿæˆæ•°ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
+	//	44ãƒã‚¤ãƒˆç›®ï¼šDrawIndirectæƒ…å ±
 	static constexpr UINT UpdateDispatchIndirectOffset = EmitDispatchIndirectOffset + sizeof(DispatchIndirect);
 	static constexpr UINT NumEmitParticleIndexOffset = UpdateDispatchIndirectOffset + sizeof(DispatchIndirect);
 	static constexpr UINT NumEmitPixelParticleIndirectOffset = NumEmitParticleIndexOffset + sizeof(UINT);
@@ -195,16 +195,16 @@ private:
 
 	static constexpr UINT DrawIndirectSize = DrawIndirectOffset + sizeof(DrawIndirect);
 
-	//DrawIndirect‚ğ—p‚¢‚é‚½‚ßARWStructuredBuffer‚ğ—p‚¢‚é‚à‚Ì‚É•ÏX
+	//DrawIndirectã‚’ç”¨ã„ã‚‹ãŸã‚ã€RWStructuredBufferã‚’ç”¨ã„ã‚‹ã‚‚ã®ã«å¤‰æ›´
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indirectDataBuffer;
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> indirectDataUnordredAccessView;
 
-	//ƒp[ƒeƒBƒNƒ‹ƒwƒbƒ_[ƒoƒbƒtƒ@
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒ˜ãƒƒãƒ€ãƒ¼ãƒãƒƒãƒ•ã‚¡
 	Microsoft::WRL::ComPtr<ID3D11Buffer> particleHeaderBuffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> particleHeaderShaderResourceView;
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particleHeaderUnordredAccessView;
 
-	//ŠeíƒVƒF[ƒ_[
+	//å„ç¨®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> initShader;
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> emitShader;
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> updateShader;
@@ -219,24 +219,24 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
 
 
-	// ---- ƒOƒ‰ƒf[ƒVƒ‡ƒ“ŠÖ˜A ----
+	// ---- ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³é–¢é€£ ----
 public:
-	// ƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒXƒƒbƒgÅ‘å”
+	// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ­ãƒƒãƒˆæœ€å¤§æ•°
 	static constexpr UINT MaxGradientSlots = 16;
 
-	// w’èƒXƒƒbƒg‚ÉƒOƒ‰ƒf[ƒVƒ‡ƒ“‚ğƒxƒCƒN‚µ‚Ä‘‚«‚Ş
-	// slot : ƒGƒ~ƒbƒ^‚ÌƒCƒ“ƒfƒbƒNƒX‚É‘Î‰iparameter.w‚É“n‚·’l‚Æˆê’v‚³‚¹‚éj
+	// æŒ‡å®šã‚¹ãƒ­ãƒƒãƒˆã«ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ãƒ™ã‚¤ã‚¯ã—ã¦æ›¸ãè¾¼ã‚€
+	// slot : ã‚¨ãƒŸãƒƒã‚¿ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾å¿œï¼ˆparameter.wã«æ¸¡ã™å€¤ã¨ä¸€è‡´ã•ã›ã‚‹ï¼‰
 	void SetGradient(UINT slot, const ImGradientHDRState& state);
 
 private:
-	// ƒOƒ‰ƒf[ƒVƒ‡ƒ“Texture1DArray–{‘Ì
+	// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³Texture1DArrayæœ¬ä½“
 	Microsoft::WRL::ComPtr<ID3D11Texture1D> gradientTexture;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> gradientTextureSRV;
 
-	// ƒxƒCƒN‰ğ‘œ“x
+	// ãƒ™ã‚¤ã‚¯è§£åƒåº¦
 	static constexpr UINT GradientResolution = 128;
 
-	// Texture1DArray ‰Šú‰»
+	// Texture1DArray åˆæœŸåŒ–
 	void InitGradientTexture(ID3D11Device* device);
 	
 

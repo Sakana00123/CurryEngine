@@ -11,13 +11,13 @@
 
 bool SceneMigrator::Migrate(ObjectManager* objectManager)
 {
-    // ‡@ ‹ŒID‚ðŒŸo‚µAƒIƒuƒWƒFƒNƒg–{‘Ì‚ÌID‚ðVID‚ÉXV‚µ‚È‚ª‚ç•ÏŠ·•\‚ðì‚é
+    // â‘  æ—§IDã‚’æ¤œå‡ºã—ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæœ¬ä½“ã®IDã‚’æ–°IDã«æ›´æ–°ã—ãªãŒã‚‰å¤‰æ›è¡¨ã‚’ä½œã‚‹
     RemapTable remap = BuildRemapTable(objectManager);
 
     if (remap.empty())
-        return false; // ‹ŒID‚ªˆêŒ‚à‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+        return false; // æ—§IDãŒä¸€ä»¶ã‚‚ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 
-    // ‡A •ÏŠ·•\‚ðŽg‚Á‚ÄeŽqŽQÆ‚ð‘‚«Š·‚¦‚é
+    // â‘¡ å¤‰æ›è¡¨ã‚’ä½¿ã£ã¦è¦ªå­å‚ç…§ã‚’æ›¸ãæ›ãˆã‚‹
     ApplyRemap(objectManager, remap);
 
     Console::Log("[SceneMigrator] Migrated " +
@@ -41,8 +41,8 @@ SceneMigrator::BuildRemapTable(ObjectManager* objectManager)
         if (obj->id.IsLegacy())
         {
             ObjectId newId = ObjectId::Generate();
-            remap[obj->id] = newId;  // ‹ŒID ¨ VID ‚ð‹L˜^
-            obj->id = newId;         // Object::id ‚Í public ‚È‚Ì‚Å’¼Ú‘‚«Š·‚¦
+            remap[obj->id] = newId;  // æ—§ID â†’ æ–°ID ã‚’è¨˜éŒ²
+            obj->id = newId;         // Object::id ã¯ public ãªã®ã§ç›´æŽ¥æ›¸ãæ›ãˆ
         }
     }
 
@@ -56,7 +56,7 @@ void SceneMigrator::ApplyRemap(ObjectManager* objectManager,
     {
         if (!obj) continue;
 
-        // --- parentId ‚Ì·‚µ‘Ö‚¦ ---
+        // --- parentId ã®å·®ã—æ›¿ãˆ ---
         if (obj->parentId.IsValid())
         {
             auto it = remap.find(obj->parentId);
@@ -64,8 +64,8 @@ void SceneMigrator::ApplyRemap(ObjectManager* objectManager,
                 obj->parentId = it->second;
         }
 
-        // --- pendingParentID ‚Ì·‚µ‘Ö‚¦ ---
-        // ƒfƒVƒŠƒAƒ‰ƒCƒY’¼Œã‚Åe‚ª‚Ü‚¾‰ðŒˆ‚³‚ê‚Ä‚¢‚È‚¢ƒP[ƒX‚ðƒJƒo[‚·‚é
+        // --- pendingParentID ã®å·®ã—æ›¿ãˆ ---
+        // ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºç›´å¾Œã§è¦ªãŒã¾ã è§£æ±ºã•ã‚Œã¦ã„ãªã„ã‚±ãƒ¼ã‚¹ã‚’ã‚«ãƒãƒ¼ã™ã‚‹
         if (obj->pendingParentID.IsValid())
         {
             auto it = remap.find(obj->pendingParentID);

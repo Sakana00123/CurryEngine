@@ -7,28 +7,28 @@
 namespace CurryEngine
 {
 	/**
-	 * @brief �v���p�e�B�h�����[�̃��W�X�g���N���X�B�v���p�e�B�̌^�ɑΉ�����h�����[���Ǘ����A�v���p�e�B�`��֐���񋟂��܂��B
-	 * @details PropertyDrawerRegistry �́A�v���p�e�B�̌^�����L�[�Ƃ��āA�Ή����� IPropertyDrawer �̃C���X�^���X���Ǘ�����N���X�ł��B�v���p�e�B�`��̍ۂɁA�v���p�e�B�̌^�ɑΉ�����h�����[�����̃��W�X�g������擾���Ďg�p���܂��B
-	 * @note ���݂̓V���O���g���p�^�[���Ŏ�������Ă��܂����A�����I�ɕ����C���X�^���X���K�v�ɂȂ����ꍇ�̓V���O���g������߂�\��ł��B
+	 * @brief プロパティドロワーのレジストリクラス。プロパティの型に対応するドロワーを管理し、プロパティ描画関数を提供します。
+	 * @details PropertyDrawerRegistry は、プロパティの型名をキーとして、対応する IPropertyDrawer のインスタンスを管理するクラスです。プロパティ描画の際に、プロパティの型に対応するドロワーをこのレジストリから取得して使用します。
+	 * @note 現在はシングルトンパターンで実装されていますが、将来的に複数インスタンスが必要になった場合はシングルトンをやめる予定です。
 	 */
 	class PropertyDrawerRegistry
 	{
 	public:
-		// TODO: �����I�ɕ����C���X�^���X���K�v�ɂȂ�����V���O���g������߂�
+		// TODO: 将来的に複数インスタンスが必要になったらシングルトンをやめる
 		static PropertyDrawerRegistry& Get();
-		// �R���X�g���N�^�Ńh�����[�̓o�^���s��
-		// TODO: ���ƂŎ����o�^�@�\����������\��Ȃ̂ŁA����͎蓮�Ńh�����[��o�^���邽�߂̃R�[�h���R���X�g���N�^�ɏ����Ă��܂��B
+		// コンストラクタでドロワーの登録を行う
+		// TODO: あとで自動登録機能を実装する予定なので、現状は手動でドロワーを登録するためのコードをコンストラクタに書いています。
 		PropertyDrawerRegistry();
 
 		/**
-		 * @brief �h�����[�̓o�^�B�v���p�e�B�̌^�����L�[�Ƃ��āA�Ή����� IPropertyDrawer �̃C���X�^���X�����W�X�g���ɓo�^���܂��B
-		 * @param typeName �h�����[��o�^����v���p�e�B�̌^���B��: "int", "float", "Vector3" �ȂǁB
-		 * @param drawer �o�^���� IPropertyDrawer �̃C���X�^���X�B�v���p�e�B�̌^�ɑΉ�����`�揈�������������N���X�̃C���X�^���X��n���Ă��������B
-		 * @note �h�����[�� std::unique_ptr �ŊǗ�����邽�߁A�Ăяo�����̓h�����[�̏��L����n���K�v������܂��B��: `registry.Register("int", std::make_unique<IntPropertyDrawer>());`
+		 * @brief ドロワーの登録。プロパティの型名をキーとして、対応する IPropertyDrawer のインスタンスをレジストリに登録します。
+		 * @param typeName ドロワーを登録するプロパティの型名。例: "int", "float", "Vector3" など。
+		 * @param drawer 登録する IPropertyDrawer のインスタンス。プロパティの型に対応する描画処理を実装したクラスのインスタンスを渡してください。
+		 * @note ドロワーは std::unique_ptr で管理されるため、呼び出し元はドロワーの所有権を渡す必要があります。例: `registry.Register("int", std::make_unique<IntPropertyDrawer>());`
 		 */
 		void Register(const std::string& typeName, std::unique_ptr<IPropertyDrawer> drawer);
 
-		// �h�����[�̎擾�B������Ȃ��ꍇ�� nullptr ��Ԃ�
+		// ドロワーの取得。見つからない場合は nullptr を返す
 		IPropertyDrawer* Find(const std::string& typeName) const;
 	private:
 		std::unordered_map<std::string, std::unique_ptr<IPropertyDrawer>> m_drawers;

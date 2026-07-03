@@ -83,7 +83,7 @@ void EasingComponent::DrawProperty(const PropertyDrawContext& context)
 		{
 			handler.AddEasing(easeItem.second);
 		}
-		//PropertyÉAÉNÉZÉXê›íË
+		//Property„Ç¢„ÇØ„Çª„ÇπË®≠ÂÆö
 		PropertyAccessor<float> accessor;
 		switch (valueType)
 		{

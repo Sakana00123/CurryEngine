@@ -6,7 +6,7 @@
 namespace CurryEngine
 {
 	/**
-	 * @brief Vector2 Œ^‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB
+	 * @brief Vector2 å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
 	 */
 	class Vector2Drawer : public IPropertyDrawer
 	{

@@ -34,26 +34,26 @@ HRESULT LoadTextureFromFile(ID3D11Device* device, const std::filesystem::path& p
 			const wchar_t* filename = path.c_str();
 			std::filesystem::path extension = path.extension();
 			if (extension == ".tga" || extension == ".TGA") {
-				// TGA ƒtƒ@ƒCƒ‹‚Í WIC ‚Å‚ÍƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢‚½‚ßADirectXTex ‚ðŽg—p‚µ‚Ä“Ç‚Ýž‚Þ
+				// TGA ãƒ•ã‚¡ã‚¤ãƒ«ã¯ WIC ã§ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ãŸã‚ã€DirectXTex ã‚’ä½¿ç”¨ã—ã¦èª­ã¿è¾¼ã‚€
 				DirectX::ScratchImage image;
 				hr = DirectX::LoadFromTGAFile(filename, nullptr, image);
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-				// DirectXTex ‚ðŽg—p‚µ‚Ä ID3D11Resource ‚ðì¬‚·‚é
+				// DirectXTex ã‚’ä½¿ç”¨ã—ã¦ ID3D11Resource ã‚’ä½œæˆã™ã‚‹
 				hr = DirectX::CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), resource.GetAddressOf());
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-				// ID3D11ShaderResourceView ‚ðì¬‚·‚é
+				// ID3D11ShaderResourceView ã‚’ä½œæˆã™ã‚‹
 				hr = device->CreateShaderResourceView(resource.Get(), nullptr, shader_resource_view);
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 			}
 			else if (extension == ".hdr" || extension == ".HDR") {
-				// HDR ƒtƒ@ƒCƒ‹‚Í WIC ‚Å‚ÍƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢‚½‚ßADirectXTex ‚ðŽg—p‚µ‚Ä“Ç‚Ýž‚Þ
+				// HDR ãƒ•ã‚¡ã‚¤ãƒ«ã¯ WIC ã§ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ãŸã‚ã€DirectXTex ã‚’ä½¿ç”¨ã—ã¦èª­ã¿è¾¼ã‚€
 				DirectX::ScratchImage image;
 				hr = DirectX::LoadFromHDRFile(filename, nullptr, image);
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-				// DirectXTex ‚ðŽg—p‚µ‚Ä ID3D11Resource ‚ðì¬‚·‚é
+				// DirectXTex ã‚’ä½¿ç”¨ã—ã¦ ID3D11Resource ã‚’ä½œæˆã™ã‚‹
 				hr = DirectX::CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), resource.GetAddressOf());
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-				// ID3D11ShaderResourceView ‚ðì¬‚·‚é
+				// ID3D11ShaderResourceView ã‚’ä½œæˆã™ã‚‹
 				hr = device->CreateShaderResourceView(resource.Get(), nullptr, shader_resource_view);
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 			}
@@ -81,7 +81,7 @@ HRESULT LoadTextureFromFile(ID3D11Device* device, const wchar_t* filename,
 	HRESULT hr{ S_OK };
 	ComPtr<ID3D11Resource> resource;
 
-	// TODO: ResourceManager‚ÉƒLƒƒƒbƒVƒ…‹@”\‚ª‚ ‚é‚Ì‚ÅA‚»‚¿‚ç‚É“‡‚·‚éBi‚±‚ÌŠÖ”‚ªF‚ñ‚ÈŠ‚ÅŒÄ‚Î‚ê‚Ä‚¢‚é‚½‚ßAResourceManager‚É“‡‚·‚é‚Ì‚ª‘å•Ïj
+	// TODO: ResourceManagerã«ã‚­ãƒ£ãƒƒã‚·ãƒ¥æ©Ÿèƒ½ãŒã‚ã‚‹ã®ã§ã€ãã¡ã‚‰ã«çµ±åˆã™ã‚‹ã€‚ï¼ˆã“ã®é–¢æ•°ãŒè‰²ã‚“ãªæ‰€ã§å‘¼ã°ã‚Œã¦ã„ã‚‹ãŸã‚ã€ResourceManagerã«çµ±åˆã™ã‚‹ã®ãŒå¤§å¤‰ï¼‰
 	auto it = resources.find(filename);
 	if (it != resources.end())
 	{
@@ -103,26 +103,26 @@ HRESULT LoadTextureFromFile(ID3D11Device* device, const wchar_t* filename,
 			std::filesystem::path wicFilename(filename);
 			std::filesystem::path extension = wicFilename.extension();
 			if (extension == ".tga" || extension == ".TGA") {
-				// TGA ƒtƒ@ƒCƒ‹‚Í WIC ‚Å‚ÍƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢‚½‚ßADirectXTex ‚ðŽg—p‚µ‚Ä“Ç‚Ýž‚Þ
+				// TGA ãƒ•ã‚¡ã‚¤ãƒ«ã¯ WIC ã§ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ãŸã‚ã€DirectXTex ã‚’ä½¿ç”¨ã—ã¦èª­ã¿è¾¼ã‚€
 				DirectX::ScratchImage image;
 				hr = DirectX::LoadFromTGAFile(filename, nullptr, image);
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-				// DirectXTex ‚ðŽg—p‚µ‚Ä ID3D11Resource ‚ðì¬‚·‚é
+				// DirectXTex ã‚’ä½¿ç”¨ã—ã¦ ID3D11Resource ã‚’ä½œæˆã™ã‚‹
 				hr = DirectX::CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), resource.GetAddressOf());
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-				// ID3D11ShaderResourceView ‚ðì¬‚·‚é
+				// ID3D11ShaderResourceView ã‚’ä½œæˆã™ã‚‹
 				hr = device->CreateShaderResourceView(resource.Get(), nullptr, shader_resource_view);
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 			}
 			else if (extension == ".hdr" || extension == ".HDR") {
-				// HDR ƒtƒ@ƒCƒ‹‚Í WIC ‚Å‚ÍƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢‚½‚ßADirectXTex ‚ðŽg—p‚µ‚Ä“Ç‚Ýž‚Þ
+				// HDR ãƒ•ã‚¡ã‚¤ãƒ«ã¯ WIC ã§ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ãŸã‚ã€DirectXTex ã‚’ä½¿ç”¨ã—ã¦èª­ã¿è¾¼ã‚€
 				DirectX::ScratchImage image;
 				hr = DirectX::LoadFromHDRFile(filename, nullptr, image);
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-				// DirectXTex ‚ðŽg—p‚µ‚Ä ID3D11Resource ‚ðì¬‚·‚é
+				// DirectXTex ã‚’ä½¿ç”¨ã—ã¦ ID3D11Resource ã‚’ä½œæˆã™ã‚‹
 				hr = DirectX::CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(), resource.GetAddressOf());
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
-				// ID3D11ShaderResourceView ‚ðì¬‚·‚é
+				// ID3D11ShaderResourceView ã‚’ä½œæˆã™ã‚‹
 				hr = device->CreateShaderResourceView(resource.Get(), nullptr, shader_resource_view);
 				_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 			}

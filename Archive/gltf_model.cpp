@@ -567,25 +567,25 @@ void GltfModel::Animate(size_t animationIndex, float time, std::vector<Node>& an
     using namespace std;
     using namespace DirectX;
 
-    // ŠÔ‚É‘Î‰‚·‚éƒL[ƒtƒŒ[ƒ€ƒCƒ“ƒfƒbƒNƒX‚Æ•âŠÔŒW”‚ğ‹‚ß‚éƒ‰ƒ€ƒ_ŠÖ”
+    // æ™‚é–“ã«å¯¾å¿œã™ã‚‹ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¨è£œé–“ä¿‚æ•°ã‚’æ±‚ã‚ã‚‹ãƒ©ãƒ ãƒ€é–¢æ•°
     function<size_t(const vector<float>&, float, float&)> indexof{
         [](const vector<float>& timelines, float time, float& interpolationFactor)->size_t {
             const size_t keyframeCount{ timelines.size() };
 
-            // ƒAƒjƒ[ƒVƒ‡ƒ“ŠÔ‚ªÅIƒL[ƒtƒŒ[ƒ€‚ğ’´‚¦‚Ä‚¢‚éê‡AÅŒã‚Ì2‚Â‚Å•âŠÔ
+            // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ™‚é–“ãŒæœ€çµ‚ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã€æœ€å¾Œã®2ã¤ã§è£œé–“
             if (time > timelines.at(keyframeCount - 1))
             {
                 interpolationFactor = 1.0f;
                 return keyframeCount - 2;
             }
-            // Å‰‚ÌƒL[ƒtƒŒ[ƒ€‚æ‚è‘O‚È‚çÅ‰‚ÌƒL[ƒtƒŒ[ƒ€‚ğg—p
+            // æœ€åˆã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ˆã‚Šå‰ãªã‚‰æœ€åˆã®ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ä½¿ç”¨
             else if (time < timelines.at(0))
             {
                 interpolationFactor = 0.0f;
                 return 0;
             }
 
-            // ‘Î‰‚·‚éƒL[ƒtƒŒ[ƒ€ƒCƒ“ƒfƒbƒNƒX‚ğ’T‚·
+            // å¯¾å¿œã™ã‚‹ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æ¢ã™
             size_t keyframeIndex{ 0 };
             for (size_t timeIndex = 1; timeIndex < keyframeCount; ++timeIndex)
             {
@@ -596,16 +596,16 @@ void GltfModel::Animate(size_t animationIndex, float time, std::vector<Node>& an
                 }
             }
 
-            // •âŠÔŒW”‚ÌŒvZi0.0`1.0‚Ì”ÍˆÍj
+            // è£œé–“ä¿‚æ•°ã®è¨ˆç®—ï¼ˆ0.0ã€œ1.0ã®ç¯„å›²ï¼‰
             interpolationFactor = (time - timelines.at(keyframeIndex + 0)) /
                 (timelines.at(keyframeIndex + 1) - timelines.at(keyframeIndex + 0));
             return keyframeIndex;
     } };
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ª‘¶İ‚µ‚Ä‚¢‚éê‡‚Ì‚İˆ—
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå­˜åœ¨ã—ã¦ã„ã‚‹å ´åˆã®ã¿å‡¦ç†
     if (animations.size() > 0)
     {
-        //’Ç‰Á
+        //è¿½åŠ 
         float blendRate = 1.0f;
         if (isBlendStart && time < animationBlendTime) {
             blendRate = time / animationBlendTime;
@@ -614,13 +614,13 @@ void GltfModel::Animate(size_t animationIndex, float time, std::vector<Node>& an
 
         const Animation& animation{ animations.at(animationIndex) };
 
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŠeƒ`ƒƒƒlƒ‹‚ğˆ—
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å„ãƒãƒ£ãƒãƒ«ã‚’å‡¦ç†
         for (vector<Animation::Channel>::const_reference channel : animation.channels)
         {
             const Animation::Sampler& sampler{ animation.samplers.at(channel.sampler) };
             const vector<float>& timeline{ animation.timelines.at(sampler.input) };
 
-            // ƒL[ƒtƒŒ[ƒ€‚ª‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+            // ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ãŒãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
             if (timeline.size() == 0)
             {
                 continue;
@@ -631,7 +631,7 @@ void GltfModel::Animate(size_t animationIndex, float time, std::vector<Node>& an
 
             float rate = blendRate < 1.f ? blendRate : interpolationFactor;
 
-            // ‘ÎÛ‚ÌƒvƒƒpƒeƒBiƒXƒP[ƒ‹E‰ñ“]EˆÊ’uj‚É‰‚¶‚Ä•âŠÔ‚Æ“K—p‚ğs‚¤
+            // å¯¾è±¡ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ï¼ˆã‚¹ã‚±ãƒ¼ãƒ«ãƒ»å›è»¢ãƒ»ä½ç½®ï¼‰ã«å¿œã˜ã¦è£œé–“ã¨é©ç”¨ã‚’è¡Œã†
             if (channel.targetPath == "scale")
             {
                 const vector<XMFLOAT3>& scales{ animation.scales.at(sampler.output) };
@@ -639,7 +639,7 @@ void GltfModel::Animate(size_t animationIndex, float time, std::vector<Node>& an
                 XMVECTOR S0 = XMLoadFloat3((blendRate < 1.f) ? &animatedNodes.at(channel.targetNode).scale : &scales.at(keyframeIndex + 0));
                 XMVECTOR S1 = XMLoadFloat3(&scales.at(keyframeIndex + 1));
 
-                // üŒ`•âŠÔ‚ÅƒXƒP[ƒ‹‚ğ‹‚ß‚Äƒm[ƒh‚ÉŠi”[
+                // ç·šå½¢è£œé–“ã§ã‚¹ã‚±ãƒ¼ãƒ«ã‚’æ±‚ã‚ã¦ãƒãƒ¼ãƒ‰ã«æ ¼ç´
                 XMStoreFloat3(&animatedNodes.at(channel.targetNode).scale,
                     XMVectorLerp(S0, S1, rate));
             }
@@ -650,7 +650,7 @@ void GltfModel::Animate(size_t animationIndex, float time, std::vector<Node>& an
                 XMVECTOR R0 = XMLoadFloat4((blendRate < 1.f) ? &animatedNodes.at(channel.targetNode).rotation : &rotations.at(keyframeIndex + 0));
                 XMVECTOR R1 = XMLoadFloat4(&rotations.at(keyframeIndex + 1));
 
-                // ‹…–ÊüŒ`•âŠÔiSlerpj‚Å‰ñ“]‚ğ•âŠÔ‚µA³‹K‰»‚µ‚Ä“K—p
+                // çƒé¢ç·šå½¢è£œé–“ï¼ˆSlerpï¼‰ã§å›è»¢ã‚’è£œé–“ã—ã€æ­£è¦åŒ–ã—ã¦é©ç”¨
                 XMStoreFloat4(&animatedNodes.at(channel.targetNode).rotation,
                     XMQuaternionNormalize(XMQuaternionSlerp(R0, R1, rate)));
             }
@@ -661,13 +661,13 @@ void GltfModel::Animate(size_t animationIndex, float time, std::vector<Node>& an
                 XMVECTOR T0 = XMLoadFloat3((blendRate < 1.f) ? &animatedNodes.at(channel.targetNode).translation : &translations.at(keyframeIndex + 0));
                 XMVECTOR T1 = XMLoadFloat3(&translations.at(keyframeIndex + 1));
 
-                // üŒ`•âŠÔ‚ÅˆÊ’u‚ğ‹‚ß‚Äƒm[ƒh‚ÉŠi”[
+                // ç·šå½¢è£œé–“ã§ä½ç½®ã‚’æ±‚ã‚ã¦ãƒãƒ¼ãƒ‰ã«æ ¼ç´
                 XMStoreFloat3(&animatedNodes.at(channel.targetNode).translation,
                     XMVectorLerp(T0, T1, rate));
             }
         }
 
-        // ƒAƒjƒ[ƒVƒ‡ƒ“Œã‚Éƒm[ƒh‚Ìƒ[ƒ‹ƒh•ÏŠ·‚ğXV
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã«ãƒãƒ¼ãƒ‰ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ã‚’æ›´æ–°
         CumulateTransforms(animatedNodes);
     }
 }
@@ -676,11 +676,11 @@ void GltfModel::Animate(size_t animationIndex, float time, std::vector<Node>& an
 void GltfModel::UpdateAnimation(float elapsedTime)
 {
 #if 0
-    if (animations.size() <= animationIndex) return;//ƒAƒjƒ[ƒVƒ‡ƒ“‚ª–³‚©‚Á‚½‚çƒXƒ‹[
+    if (animations.size() <= animationIndex) return;//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒç„¡ã‹ã£ãŸã‚‰ã‚¹ãƒ«ãƒ¼
     if (nodes.size() > 0)
     {
         Animate(animationIndex, time += (elapsedTime * timeRate), nodes);
-        //ƒAƒjƒ[ƒVƒ‡ƒ“‚ªÅŒã‚É“’B‚µ‚½‚ç
+        //ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒæœ€å¾Œã«åˆ°é”ã—ãŸã‚‰
         if (animations.at(animationIndex).duration < time)
         {
             if (loop) {
@@ -740,14 +740,14 @@ void GltfModel::Render(ID3D11DeviceContext* immediate_context, const DirectX::XM
 {
     //const std::vector<Node>& nodes{ animatedNodes.size() > 0 ? animatedNodes : GltfModel::nodes };
 
-    // animatedNodes ‚ª‹ó‚È‚ç model.nodes ‚ğg‚¤
+    // animatedNodes ãŒç©ºãªã‚‰ model.nodes ã‚’ä½¿ã†
     const auto& src = animatedNodes.size() > 0 ? animatedNodes : GltfModel::nodes;
 
-    // š model.nodes ‚Æ“¯‚¶ index ‘ÌŒn‚Åg‚¦‚é‚æ‚¤‚ÉƒRƒs[
-    std::vector<Node> resolvedNodes = GltfModel::nodes; // ƒTƒCƒY‚Æ index \‘¢‚Í‚±‚ê‚ª³
+    // â˜… model.nodes ã¨åŒã˜ index ä½“ç³»ã§ä½¿ãˆã‚‹ã‚ˆã†ã«ã‚³ãƒ”ãƒ¼
+    std::vector<Node> resolvedNodes = GltfModel::nodes; // ã‚µã‚¤ã‚ºã¨ index æ§‹é€ ã¯ã“ã‚ŒãŒæ­£
     for (size_t i = 0; i < std::min<size_t>(resolvedNodes.size(), src.size()); i++)
     {
-        resolvedNodes[i] = src[i]; // local/globalTransform ‚¾‚¯‚ğã‘‚«
+        resolvedNodes[i] = src[i]; // local/globalTransform ã ã‘ã‚’ä¸Šæ›¸ã
     }
     const std::vector<Node>& nodes = resolvedNodes;
 
@@ -790,7 +790,7 @@ void GltfModel::Render(ID3D11DeviceContext* immediate_context, const DirectX::XM
                 immediate_context->IASetIndexBuffer(primitive.indexBufferView.buffer.Get(),
                     primitive.indexBufferView.format, 0);
 
-                //TODO: UINT36 textureResourceViewsƒIƒuƒWƒFƒNƒg‚ğƒoƒCƒ“ƒh‚·‚é
+                //TODO: UINT36 textureResourceViewsã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
                 const Material& material{ materials.at(primitive.material) };
                 if (material.name == "B_dish")
                 {
@@ -802,7 +802,7 @@ void GltfModel::Render(ID3D11DeviceContext* immediate_context, const DirectX::XM
                 {
                     continue;
                 }
-                // ‚±‚±’Ç‰Á
+                // ã“ã“è¿½åŠ 
                 //{
                 //	immediate_context->PSSetShader(taskAlphaShader.Get(), nullptr, 0);
                 //}
@@ -945,14 +945,14 @@ void GltfModel::SecondRender(ID3D11DeviceContext* immediate_context, const Direc
                 immediate_context->IASetIndexBuffer(primitive.indexBufferView.buffer.Get(),
                     primitive.indexBufferView.format, 0);
 
-                //TODO: UINT36 textureResourceViewsƒIƒuƒWƒFƒNƒg‚ğƒoƒCƒ“ƒh‚·‚é
+                //TODO: UINT36 textureResourceViewsã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
                 const Material& material{ materials.at(primitive.material) };
 
                 if (/*material.data.alphaMode == 0 || material.data.alphaMode == 1||*/ material.name != "B_vinyl")
                 {
                     continue;
                 }
-                // ‚±‚±’Ç‰Á
+                // ã“ã“è¿½åŠ 
                 //{
                 //	immediate_context->PSSetShader(taskAlphaShader.Get(), nullptr, 0);
                 //}

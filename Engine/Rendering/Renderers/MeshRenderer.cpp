@@ -8,10 +8,10 @@ REGISTER_COMPONENT(MeshRenderer, "Renderer")
 
 void MeshRenderer::Initialize()
 {
-	// ƒfƒtƒHƒ‹ƒg‚ÅƒLƒ…[ƒu‚ğİ’è
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã‚­ãƒ¥ãƒ¼ãƒ–ã‚’è¨­å®š
 	SetPrimitiveMesh(primitiveType);
 
-	// ƒfƒtƒHƒ‹ƒgƒ}ƒeƒŠƒAƒ‹‚Ìì¬
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ†ãƒªã‚¢ãƒ«ã®ä½œæˆ
 	if (!material)
 	{
 		auto device = Graphics::GetDevice();
@@ -20,10 +20,10 @@ void MeshRenderer::Initialize()
 		std::shared_ptr<Shader> ps = ResourceManager::Load<PixelShader>("./Data/Shaders/geometric_primitive_ps.cso");
 		material->SetShader(device, vs);
 		material->SetShader(device, ps);
-		// ƒV[ƒ“’è”ƒoƒbƒtƒ@‚ğƒoƒCƒ“ƒh‚µ‚È‚¢‚æ‚¤‚Éİ’èi‚±‚Ìƒ}ƒeƒŠƒAƒ‹‚ÍƒV[ƒ“’è”ƒoƒbƒtƒ@‚ğg—p‚µ‚È‚¢‚½‚ßj
+		// ã‚·ãƒ¼ãƒ³å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’ãƒã‚¤ãƒ³ãƒ‰ã—ãªã„ã‚ˆã†ã«è¨­å®šï¼ˆã“ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã¯ã‚·ãƒ¼ãƒ³å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ç”¨ã—ãªã„ãŸã‚ï¼‰
 		material->SetNotBindCBuffer({ "SCENE_CONSTANT_BUFFER" });
 
-		// ƒfƒtƒHƒ‹ƒg‚Ì”’FƒeƒNƒXƒ`ƒƒ‚ğì¬‚µ‚Äİ’è
+		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ç™½è‰²ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä½œæˆã—ã¦è¨­å®š
 		material->SetValue("materialColor", Color::White);
 	}
 }
@@ -34,26 +34,26 @@ void MeshRenderer::Render(RenderContext* rtx)
 
 	auto immediateContext = rtx->immediateContext;
 
-	// ƒƒbƒVƒ…‚Ì’¸“_ƒoƒbƒtƒ@‚ÆƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒZƒbƒg
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚»ãƒƒãƒˆ
 	uint32_t vertexStride{ mesh->vertexStride };
 	uint32_t vertexOffset{ 0 };
 	immediateContext->IASetVertexBuffers(0, 1, mesh->vertexBuffer.GetAddressOf(), &vertexStride, &vertexOffset);
 	immediateContext->IASetIndexBuffer(mesh->indexBuffer.Get(), mesh->indexFormat, 0);
 
-	// ƒvƒŠƒ~ƒeƒBƒuƒgƒ|ƒƒW[‚ğİ’èi‚±‚±‚Å‚ÍOŠpŒ`ƒŠƒXƒg‚ğ‘z’èj
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ãƒˆãƒãƒ­ã‚¸ãƒ¼ã‚’è¨­å®šï¼ˆã“ã“ã§ã¯ä¸‰è§’å½¢ãƒªã‚¹ãƒˆã‚’æƒ³å®šï¼‰
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// ƒ}ƒeƒŠƒAƒ‹‚ªİ’è‚³‚ê‚Ä‚¢‚ê‚Î“K—p
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ãŒè¨­å®šã•ã‚Œã¦ã„ã‚Œã°é©ç”¨
 	if (material)
 	{
 		material->SetValue("world", GetTransform()->GetWorld());
 		material->Apply(rtx);
 	}
 
-	// ƒTƒuƒƒbƒVƒ…‚²‚Æ‚É•`‰æ
+	// ã‚µãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã”ã¨ã«æç”»
 	for (const auto& subMesh : mesh->subMeshes)
 	{
-		// ƒCƒ“ƒfƒbƒNƒX‚ğg—p‚µ‚Ä•`‰æ
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½¿ç”¨ã—ã¦æç”»
 		immediateContext->DrawIndexed(subMesh.indexCount, subMesh.indexOffset, 0);
 	}
 }
@@ -61,7 +61,7 @@ void MeshRenderer::Render(RenderContext* rtx)
 Math::BoundingBox MeshRenderer::CalculateAABB() const
 {
 	if (!mesh) return Math::BoundingBox();
-	// ƒƒbƒVƒ…‚Ìƒ[ƒJƒ‹‹óŠÔ‚ÌƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ğƒ[ƒ‹ƒh‹óŠÔ‚É•ÏŠ·‚µ‚Ä•Ô‚·
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ­ãƒ¼ã‚«ãƒ«ç©ºé–“ã®ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ã«å¤‰æ›ã—ã¦è¿”ã™
 	Math::BoundingBox localBounds = mesh->localBounds;
 	Math::BoundingBox worldBounds;
 	Vector3 worldMin, worldMax;
@@ -79,7 +79,7 @@ void MeshRenderer::DrawProperty(const PropertyDrawContext& context)
 {
 	Renderer::DrawProperty(context);
 
-	// ƒvƒŠƒ~ƒeƒBƒuƒ^ƒCƒv‚Ì‘I‘ğ
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã‚¿ã‚¤ãƒ—ã®é¸æŠ
 	const char* primitiveTypes[] = { "Cube", "Sphere", "Plane", "Capsule", "Cylinder" };
 	if (ImGui::Combo("Primitive Type", &primitiveType, primitiveTypes, IM_ARRAYSIZE(primitiveTypes)))
 	{
@@ -87,7 +87,7 @@ void MeshRenderer::DrawProperty(const PropertyDrawContext& context)
 	}
 
 
-	// ƒƒbƒVƒ…‚ÌƒvƒƒpƒeƒB‚ğ•\¦
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¡¨ç¤º
 	if (mesh)
 	{
 		ImGui::Text("SubMeshCount: %d", mesh->subMeshes.size());
@@ -103,7 +103,7 @@ void MeshRenderer::DrawProperty(const PropertyDrawContext& context)
 json MeshRenderer::Serialize() const
 {
 	json j = Renderer::Serialize();
-	// ƒƒbƒVƒ…‚ÌƒpƒX‚ğ•Û‘¶
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ‘ã‚¹ã‚’ä¿å­˜
 	//j["meshPath"] = mesh ? mesh->GetPath() : "";
 	j["primitiveType"] = primitiveType;
 	return j;
@@ -112,7 +112,7 @@ json MeshRenderer::Serialize() const
 void MeshRenderer::Deserialize(const json& j)
 {
 	Renderer::Deserialize(j);
-	// ƒƒbƒVƒ…‚ÌƒpƒX‚©‚çƒƒbƒVƒ…‚ğƒ[ƒh
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ‘ã‚¹ã‹ã‚‰ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ãƒ­ãƒ¼ãƒ‰
 	//if (j.contains("meshPath") && j["meshPath"].is_string())
 	//{
 	//	std::string meshPath = j["meshPath"];
@@ -133,19 +133,19 @@ void MeshRenderer::SetPrimitiveMesh(int type)
 	primitiveType = type;
 	switch (type)
 	{
-	case 0: // ƒLƒ…[ƒu
+	case 0: // ã‚­ãƒ¥ãƒ¼ãƒ–
 		mesh = ProceduralMesh::CreateCube(1, 1, 1);
 		break;
-	case 1: // ‹…
+	case 1: // çƒ
 		mesh = ProceduralMesh::CreateSphere(1);
 		break;
-	case 2: // •½–Ê
+	case 2: // å¹³é¢
 		mesh = ProceduralMesh::CreatePlane(1, 1);
 		break;
-	case 3: // ƒJƒvƒZƒ‹
+	case 3: // ã‚«ãƒ—ã‚»ãƒ«
 		mesh = ProceduralMesh::CreateCapsule(1, 2);
 		break;
-	case 4: // ‰~’Œ
+	case 4: // å††æŸ±
 		mesh = ProceduralMesh::CreateCylinder(1, 2);
 		break;
 	default:

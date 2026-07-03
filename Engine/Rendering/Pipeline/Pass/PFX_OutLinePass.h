@@ -4,19 +4,19 @@
 class PFX_OutLinePass : public RenderPass
 {
 public:
-	// RenderPass‚Ì‰Šú‰»ˆ—
+	// RenderPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// RenderPass‚ÌI—¹‰»ˆ—
+	// RenderPassã®çµ‚äº†åŒ–å‡¦ç†
 	void Finalize() override;
 
-	// RenderPass‚ÌŽÀ‘•
+	// RenderPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
-	// RenderPass‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// RenderPassã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	void DrawProperty() override;
 
 private:
-	std::shared_ptr<Material> m_material; // ƒ}ƒeƒŠƒAƒ‹
-	RenderTexture m_renderTexture; // •`‰æŒ‹‰Ê‚ð‘‚«ž‚ÞƒeƒNƒXƒ`ƒƒ
+	std::shared_ptr<Material> m_material; // ãƒžãƒ†ãƒªã‚¢ãƒ«
+	RenderTexture m_renderTexture; // æç”»çµæžœã‚’æ›¸ãè¾¼ã‚€ãƒ†ã‚¯ã‚¹ãƒãƒ£
 };

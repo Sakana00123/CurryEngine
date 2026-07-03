@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Resources/Texture.h"
 
-// ImGui‚Ìƒe[ƒ}İ’è
+// ImGuiã®ãƒ†ãƒ¼ãƒè¨­å®š
 enum ImGuiThemeType
 {
 	CurryTheme,
@@ -15,26 +15,26 @@ enum ImGuiThemeType
 	NumImGuiThemes
 };
 
-// ImGuiƒe[ƒ}ŠÇ—ƒNƒ‰ƒX
+// ImGuiãƒ†ãƒ¼ãƒç®¡ç†ã‚¯ãƒ©ã‚¹
 class ImGuiTheme
 {
 public:
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	static void Initialize();
 
-	// ƒe[ƒ}İ’è
+	// ãƒ†ãƒ¼ãƒè¨­å®š
 	static void SetTheme(ImGuiThemeType themeType);
 
-	// Œ»İ‚Ìƒe[ƒ}æ“¾
+	// ç¾åœ¨ã®ãƒ†ãƒ¼ãƒå–å¾—
 	static ImGuiThemeType GetCurrentTheme();
 
-	// GUI•`‰æ
+	// GUIæç”»
 	static void DrawGUI();
 
-	// ƒe[ƒ}İ’èƒEƒBƒ“ƒhƒE‚ğŠJ‚­
+	// ãƒ†ãƒ¼ãƒè¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 	static void Show() { isOpen = true; }
 
-	// ƒe[ƒ}İ’èƒEƒBƒ“ƒhƒE‚ªŠJ‚¢‚Ä‚¢‚é‚©
+	// ãƒ†ãƒ¼ãƒè¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‹ã„ã¦ã„ã‚‹ã‹
 	static bool IsOpen() { return isOpen; }
 private:
 	

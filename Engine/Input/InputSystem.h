@@ -2,9 +2,9 @@
 
 /**
  * @file
- * @brief “ü—ÍƒVƒXƒeƒ€‚ÌŒöŠJƒCƒ“ƒ^[ƒtƒF[ƒXB
- * @details ƒL[ƒ{[ƒhEƒ}ƒEƒXEƒQ[ƒ€ƒpƒbƒh‚Ì“ü—Íó‘Ôæ“¾AXVA
- *          ƒ}ƒEƒXÀ•W‚âƒzƒC[ƒ‹—ÊAƒAƒNƒeƒBƒuƒfƒoƒCƒXØ‚è‘Ö‚¦‚È‚Ç‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief å…¥åŠ›ã‚·ã‚¹ãƒ†ãƒ ã®å…¬é–‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
+ * @details ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ»ãƒã‚¦ã‚¹ãƒ»ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®å…¥åŠ›çŠ¶æ…‹å–å¾—ã€æ›´æ–°ã€
+ *          ãƒã‚¦ã‚¹åº§æ¨™ã‚„ãƒ›ã‚¤ãƒ¼ãƒ«é‡ã€ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ‡ãƒã‚¤ã‚¹åˆ‡ã‚Šæ›¿ãˆãªã©ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 
 #include <Windows.h>
@@ -24,76 +24,76 @@
 #define DIRECTION_SET_MAX 2
 
 /**
- * @brief “ü—ÍƒfƒoƒCƒX‚Ìí•ÊB
+ * @brief å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ã®ç¨®åˆ¥ã€‚
  */
 enum class InputDevice { Keybord, Mouse, GamePad };
 
 /**
- * @brief ’Pˆê‚Ì“ü—ÍiƒL[/ƒ}ƒEƒXƒ{ƒ^ƒ“/ƒQ[ƒ€ƒpƒbƒhƒ{ƒ^ƒ“j‚ğ•\‚·Šî’êƒNƒ‰ƒXB
- * @details ‰Ÿ‰ºŠÔ‚Ì’~ÏAƒgƒŠƒK[/ƒŠƒŠ[ƒX”»’è‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief å˜ä¸€ã®å…¥åŠ›ï¼ˆã‚­ãƒ¼/ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³/ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ãƒœã‚¿ãƒ³ï¼‰ã‚’è¡¨ã™åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details æŠ¼ä¸‹æ™‚é–“ã®è“„ç©ã€ãƒˆãƒªã‚¬ãƒ¼/ãƒªãƒªãƒ¼ã‚¹åˆ¤å®šã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class InputKey
 {
 protected:
-	int vKey;                 //!< ƒo[ƒ`ƒƒƒ‹ƒL[ƒR[ƒhi‚Ü‚½‚Íƒ{ƒ^ƒ“/“ü—Í‚Ì¯•Êqj
-	float pressTime;          //!< Œ»İƒtƒŒ[ƒ€‚Ü‚Å‚Ì‰Ÿ‰ºŠÔi•bjB0‚È‚ç–¢‰Ÿ‰º
-	float oldPressTime;       //!< ‘OƒtƒŒ[ƒ€‚Ü‚Å‚Ì‰Ÿ‰ºŠÔi•bj
-	InputDevice deviceType;   //!< ‚±‚Ì“ü—Í‚ÌƒfƒoƒCƒXí•Ê
+	int vKey;                 //!< ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ï¼ˆã¾ãŸã¯ãƒœã‚¿ãƒ³/å…¥åŠ›ã®è­˜åˆ¥å­ï¼‰
+	float pressTime;          //!< ç¾åœ¨ãƒ•ãƒ¬ãƒ¼ãƒ ã¾ã§ã®æŠ¼ä¸‹æ™‚é–“ï¼ˆç§’ï¼‰ã€‚0ãªã‚‰æœªæŠ¼ä¸‹
+	float oldPressTime;       //!< å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã¾ã§ã®æŠ¼ä¸‹æ™‚é–“ï¼ˆç§’ï¼‰
+	InputDevice deviceType;   //!< ã“ã®å…¥åŠ›ã®ãƒ‡ãƒã‚¤ã‚¹ç¨®åˆ¥
 public:
 	/**
-	 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B
-	 * @param vKey ƒo[ƒ`ƒƒƒ‹ƒL[ƒR[ƒh
-	 * @param deviceType ƒfƒoƒCƒXí•Ê
+	 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	 * @param vKey ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰
+	 * @param deviceType ãƒ‡ãƒã‚¤ã‚¹ç¨®åˆ¥
 	 */
 	InputKey(int vKey, InputDevice deviceType) : vKey(vKey), pressTime(0), oldPressTime(0), deviceType(deviceType) {}
 	virtual ~InputKey() = default;
 
 	/**
-	 * @brief “ü—Íó‘Ô‚ğXV‚µ‚Ü‚·B
-	 * @param elapsedTime Œo‰ßŠÔi•bj
+	 * @brief å…¥åŠ›çŠ¶æ…‹ã‚’æ›´æ–°ã—ã¾ã™ã€‚
+	 * @param elapsedTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰
 	 */
 	virtual void Update(float elapsedTime);
 
 	/**
-	 * @brief ƒo[ƒ`ƒƒƒ‹ƒL[ƒR[ƒh‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒo[ƒ`ƒƒƒ‹ƒL[ƒR[ƒh
+	 * @brief ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰
 	 */
 	int GetVKey() const { return vKey; }
 
 	/**
-	 * @brief ‰Ÿ‚³‚ê‚Ä‚¢‚é‚©B
-	 * @return ‰Ÿ‰º’†‚È‚ç true
+	 * @brief æŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹ã€‚
+	 * @return æŠ¼ä¸‹ä¸­ãªã‚‰ true
 	 */
 	bool IsPressed() const { return pressTime > 0; }
 
 	/**
-	 * @brief ‚±‚ÌƒtƒŒ[ƒ€‚ÅV‚½‚É‰Ÿ‚³‚ê‚½‚©B
-	 * @return ¡ƒtƒŒ[ƒ€‚Å‰Ÿ‰ºŠJn‚È‚ç true
+	 * @brief ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§æ–°ãŸã«æŠ¼ã•ã‚ŒãŸã‹ã€‚
+	 * @return ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§æŠ¼ä¸‹é–‹å§‹ãªã‚‰ true
 	 */
 	bool IsTrigger() const { return (oldPressTime == 0 && pressTime > 0); }
 
 	/**
-	 * @brief ‚±‚ÌƒtƒŒ[ƒ€‚Å—£‚³‚ê‚½‚©B
-	 * @return ¡ƒtƒŒ[ƒ€‚ÅƒŠƒŠ[ƒX‚È‚ç true
+	 * @brief ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§é›¢ã•ã‚ŒãŸã‹ã€‚
+	 * @return ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§ãƒªãƒªãƒ¼ã‚¹ãªã‚‰ true
 	 */
 	bool IsRelease() const { return (pressTime == 0 && oldPressTime > 0); }
 
 	/**
-	 * @brief “ü—Í‚ÌƒfƒoƒCƒXí•Ê‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒfƒoƒCƒXí•Ê
+	 * @brief å…¥åŠ›ã®ãƒ‡ãƒã‚¤ã‚¹ç¨®åˆ¥ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒ‡ãƒã‚¤ã‚¹ç¨®åˆ¥
 	 */
 	InputDevice GetDeviceType() const { return deviceType; }
 };
 
 /**
- * @brief ƒL[ƒ{[ƒh“ü—Í‚ğ•\‚·ƒNƒ‰ƒXB
+ * @brief ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›ã‚’è¡¨ã™ã‚¯ãƒ©ã‚¹ã€‚
  */
 class Keybord : public InputKey
 {
 public:
 	/**
-	 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B
-	 * @param vKey ƒo[ƒ`ƒƒƒ‹ƒL[ƒR[ƒhiVK_XXXj
+	 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	 * @param vKey ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ï¼ˆVK_XXXï¼‰
 	 */
 	Keybord(int vKey) : InputKey(vKey, InputDevice::Keybord) {}
 	~Keybord() override = default;
@@ -102,14 +102,14 @@ public:
 };
 
 /**
- * @brief ƒ}ƒEƒX“ü—Íiƒ{ƒ^ƒ“j‚ğ•\‚·ƒNƒ‰ƒXB
+ * @brief ãƒã‚¦ã‚¹å…¥åŠ›ï¼ˆãƒœã‚¿ãƒ³ï¼‰ã‚’è¡¨ã™ã‚¯ãƒ©ã‚¹ã€‚
  */
 class Mouse : public InputKey
 {
 public:
 	/**
-	 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B
-	 * @param vKey ƒ{ƒ^ƒ“‚Ì‰¼‘zƒL[iVK_LBUTTON/VK_RBUTTON ‚È‚Çj
+	 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	 * @param vKey ãƒœã‚¿ãƒ³ã®ä»®æƒ³ã‚­ãƒ¼ï¼ˆVK_LBUTTON/VK_RBUTTON ãªã©ï¼‰
 	 */
 	Mouse(int vKey) : InputKey(vKey, InputDevice::Mouse) {}
 	~Mouse() override = default;
@@ -118,32 +118,32 @@ public:
 };
 
 /**
- * @brief ƒQ[ƒ€ƒpƒbƒh‚Ì“ü—Íƒ^ƒCƒvB
+ * @brief ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®å…¥åŠ›ã‚¿ã‚¤ãƒ—ã€‚
  */
 enum class KeyType { Key, LeftTrigger, RightTrigger };
 
 /**
- * @brief ƒXƒeƒBƒbƒN‚Ì¶‰EB
+ * @brief ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å·¦å³ã€‚
  */
 enum class Side { Left, Right };
 
 /**
- * @brief ²‚Ìí—ŞB
+ * @brief è»¸ã®ç¨®é¡ã€‚
  */
 enum class Axis { X, Y };
 
 /**
- * @brief ƒQ[ƒ€ƒpƒbƒh“ü—Í‚ğ•\‚·ƒNƒ‰ƒXB
- * @details ƒ{ƒ^ƒ“‚É‰Á‚¦AƒgƒŠƒK[iƒAƒiƒƒOj‚Ì‰Ÿ‰º”»’è‚É‚à‘Î‰‚µ‚Ü‚·B
+ * @brief ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰å…¥åŠ›ã‚’è¡¨ã™ã‚¯ãƒ©ã‚¹ã€‚
+ * @details ãƒœã‚¿ãƒ³ã«åŠ ãˆã€ãƒˆãƒªã‚¬ãƒ¼ï¼ˆã‚¢ãƒŠãƒ­ã‚°ï¼‰ã®æŠ¼ä¸‹åˆ¤å®šã«ã‚‚å¯¾å¿œã—ã¾ã™ã€‚
  */
 class GamePad : public InputKey
 {
-	KeyType keyType; //!< ƒ{ƒ^ƒ“‚©ƒgƒŠƒK[‚©‚Ìí•Ê
+	KeyType keyType; //!< ãƒœã‚¿ãƒ³ã‹ãƒˆãƒªã‚¬ãƒ¼ã‹ã®ç¨®åˆ¥
 public:
 	/**
-	 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B
-	 * @param vKey ƒo[ƒ`ƒƒƒ‹ƒL[
-	 * @param type ”»’è‚·‚é“ü—Í‚Ìí—Şiƒ{ƒ^ƒ“/ƒgƒŠƒK[j
+	 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	 * @param vKey ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼
+	 * @param type åˆ¤å®šã™ã‚‹å…¥åŠ›ã®ç¨®é¡ï¼ˆãƒœã‚¿ãƒ³/ãƒˆãƒªã‚¬ãƒ¼ï¼‰
 	 */
 	GamePad(int vKey, KeyType type = KeyType::Key) : InputKey(vKey, InputDevice::GamePad), keyType(type) {}
 	~GamePad() override = default;
@@ -151,44 +151,44 @@ public:
 	GamePad& operator=(GamePad&) = delete;
 
 	/**
-	 * @brief “ü—Íó‘Ô‚ğXV‚µ‚Ü‚·B
-	 * @param elapsedTime Œo‰ßŠÔi•bj
+	 * @brief å…¥åŠ›çŠ¶æ…‹ã‚’æ›´æ–°ã—ã¾ã™ã€‚
+	 * @param elapsedTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰
 	 */
 	void Update(float elapsedTime) override;
 };
 
 /**
- * @brief ƒfƒbƒhƒ][ƒ“‚Ìƒ‚[ƒhB
+ * @brief ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®ãƒ¢ãƒ¼ãƒ‰ã€‚
  */
 enum class DeadZoneMode { IndependentAxes, Circular, None };
 
 /**
- * @brief “ü—ÍƒfƒoƒCƒX‚ÌƒtƒBƒ‹ƒ^B
+ * @brief å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ã®ãƒ•ã‚£ãƒ«ã‚¿ã€‚
  */
 enum class DeviceFlags { All, KeyboardOnly, MouseOnly, GamePadOnly, KeyboardAndMouse, KeyboardAndGamePad, MouseAndGamePad };
 
 /**
- * @brief “ü—Íó‘Ô‚Ìi‚è‚İƒ}ƒXƒNB
+ * @brief å…¥åŠ›çŠ¶æ…‹ã®çµã‚Šè¾¼ã¿ãƒã‚¹ã‚¯ã€‚
  */
 enum class InputStateMask { None, Trigger, Release };
 
 /**
- * @brief •ûŒü“ü—Í‚Ì—£U’lB
+ * @brief æ–¹å‘å…¥åŠ›ã®é›¢æ•£å€¤ã€‚
  */
 enum class Direction { Up, Left, Down, Right, None };
 
 /**
- * @brief “ü—Í‚ğˆêŒ³ŠÇ—‚·‚éƒVƒXƒeƒ€i‘Sƒƒ“ƒo[Ã“IjB
- * @details ƒAƒNƒVƒ‡ƒ“–¼‚Å‚Ì–â‚¢‡‚í‚¹AƒXƒeƒBƒbƒNEƒ}ƒEƒXÀ•W‚Ìæ“¾A
- *          ƒfƒoƒCƒX‚ÌÚ‘±ó‘Ô‚¨‚æ‚ÑƒAƒNƒeƒBƒuƒfƒoƒCƒX‚Ì”»’è‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief å…¥åŠ›ã‚’ä¸€å…ƒç®¡ç†ã™ã‚‹ã‚·ã‚¹ãƒ†ãƒ ï¼ˆå…¨ãƒ¡ãƒ³ãƒãƒ¼é™çš„ï¼‰ã€‚
+ * @details ã‚¢ã‚¯ã‚·ãƒ§ãƒ³åã§ã®å•ã„åˆã‚ã›ã€ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãƒ»ãƒã‚¦ã‚¹åº§æ¨™ã®å–å¾—ã€
+ *          ãƒ‡ãƒã‚¤ã‚¹ã®æ¥ç¶šçŠ¶æ…‹ãŠã‚ˆã³ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ‡ãƒã‚¤ã‚¹ã®åˆ¤å®šã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class InputSystem
 {
 private:
-	static inline std::map<std::string, std::vector<std::unique_ptr<InputKey>>> inputKeys; //!< ƒAƒNƒVƒ‡ƒ“–¼¨“ü—ÍƒL[W‡
-	static inline std::unique_ptr<InputKey> directionKeys[DIRECTION_SET_MAX][DIRECTION_KEY_NUM]; //!< •ûŒü“ü—Íiã‰º¶‰Ej‚ÌƒL[ƒZƒbƒg
-	static inline std::unordered_map<int, InputKey*> vKeyMap; //!< ƒo[ƒ`ƒƒƒ‹ƒL[ƒR[ƒh¨InputKey ‚Ìƒ}ƒbƒsƒ“ƒOiƒXƒNƒŠƒvƒg—pj
-	static inline std::vector<std::unique_ptr<InputKey>> rawKeys; //!< ‰¼‘zƒL[ƒR[ƒh‚Å“o˜^‚³‚ê‚½‘SƒL[‚ÌW‡iƒXƒNƒŠƒvƒg—pj
+	static inline std::map<std::string, std::vector<std::unique_ptr<InputKey>>> inputKeys; //!< ã‚¢ã‚¯ã‚·ãƒ§ãƒ³åâ†’å…¥åŠ›ã‚­ãƒ¼é›†åˆ
+	static inline std::unique_ptr<InputKey> directionKeys[DIRECTION_SET_MAX][DIRECTION_KEY_NUM]; //!< æ–¹å‘å…¥åŠ›ï¼ˆä¸Šä¸‹å·¦å³ï¼‰ã®ã‚­ãƒ¼ã‚»ãƒƒãƒˆ
+	static inline std::unordered_map<int, InputKey*> vKeyMap; //!< ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰â†’InputKey ã®ãƒãƒƒãƒ”ãƒ³ã‚°ï¼ˆã‚¹ã‚¯ãƒªãƒ—ãƒˆç”¨ï¼‰
+	static inline std::vector<std::unique_ptr<InputKey>> rawKeys; //!< ä»®æƒ³ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ã§ç™»éŒ²ã•ã‚ŒãŸå…¨ã‚­ãƒ¼ã®é›†åˆï¼ˆã‚¹ã‚¯ãƒªãƒ—ãƒˆç”¨ï¼‰
 #if 0
 	static inline std::vector<std::unique_ptr<InputKey>> navigationKeys[DIRECTION_KEY_NUM];
 #endif // 0
@@ -198,161 +198,161 @@ private:
 
 public:
 	/**
-	 * @brief ‰Šú‰»ˆ—B
+	 * @brief åˆæœŸåŒ–å‡¦ç†ã€‚
 	 */
 	static void Initialize();
 
 	/**
-	 * @brief I—¹ˆ—B
+	 * @brief çµ‚äº†å‡¦ç†ã€‚
 	 */
 	static void Finalize();
 
 	/**
-	 * @brief –ˆƒtƒŒ[ƒ€‚ÌXVˆ—B
-	 * @param elapsedTime Œo‰ßŠÔi•bj
+	 * @brief æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ›´æ–°å‡¦ç†ã€‚
+	 * @param elapsedTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰
 	 */
 	static void Update(float elapsedTime);
 
 	/**
-	 * @brief ƒtƒŒ[ƒ€I—¹‚ÌŒãˆ—B
-	 * @details ƒgƒŠƒK[EƒŠƒŠ[ƒX”»’è‚ÌXV‚È‚ÇB
+	 * @brief ãƒ•ãƒ¬ãƒ¼ãƒ çµ‚äº†æ™‚ã®å¾Œå‡¦ç†ã€‚
+	 * @details ãƒˆãƒªã‚¬ãƒ¼ãƒ»ãƒªãƒªãƒ¼ã‚¹åˆ¤å®šã®æ›´æ–°ãªã©ã€‚
 	 */
 	static void EndFrame();
 
 	/**
-	 * @brief ƒEƒBƒ“ƒhƒEƒƒbƒZ[ƒW‚Ìˆ—B
-	 * @param hwnd ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	 * @param msg ƒƒbƒZ[ƒWID
-	 * @param wParam ƒpƒ‰ƒ[ƒ^1
-	 * @param lParam ƒpƒ‰ƒ[ƒ^2
-	 * @return Šù’èˆ—‚ÉˆÏ‚Ë‚é’l
+	 * @brief ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡¦ç†ã€‚
+	 * @param hwnd ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	 * @param msg ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ID
+	 * @param wParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿1
+	 * @param lParam ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿2
+	 * @return æ—¢å®šå‡¦ç†ã«å§”ã­ã‚‹å€¤
 	 */
 	static LRESULT HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	/**
-	 * @brief ƒAƒNƒVƒ‡ƒ“‚É‘Î‚·‚é“ü—Íó‘Ô‚ğæ“¾‚µ‚Ü‚·B
-	 * @param action ƒAƒNƒVƒ‡ƒ“–¼i`inputKeys` ‚ÌƒL[j
-	 * @param state  ƒgƒŠƒK[/ƒŠƒŠ[ƒX/w’è‚È‚µ‚ÌƒtƒBƒ‹ƒ^
-	 * @param flag   QÆ‚·‚éƒfƒoƒCƒX‚Ìí—Ş
-	 * @return ğŒ‚É‡’v‚·‚é“ü—Í‚ª‚ ‚ê‚Î true
+	 * @brief ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«å¯¾ã™ã‚‹å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @param action ã‚¢ã‚¯ã‚·ãƒ§ãƒ³åï¼ˆ`inputKeys` ã®ã‚­ãƒ¼ï¼‰
+	 * @param state  ãƒˆãƒªã‚¬ãƒ¼/ãƒªãƒªãƒ¼ã‚¹/æŒ‡å®šãªã—ã®ãƒ•ã‚£ãƒ«ã‚¿
+	 * @param flag   å‚ç…§ã™ã‚‹ãƒ‡ãƒã‚¤ã‚¹ã®ç¨®é¡
+	 * @return æ¡ä»¶ã«åˆè‡´ã™ã‚‹å…¥åŠ›ãŒã‚ã‚Œã° true
 	 */
 	static bool GetInputState(const std::string& action, InputStateMask state = InputStateMask::None, DeviceFlags flag = DeviceFlags::All);
 
 	/**
-	 * @brief ƒAƒNƒVƒ‡ƒ“‚É“ü—ÍƒL[‚ğ“o˜^‚µ‚Ü‚·B
-	 * @param action ƒAƒNƒVƒ‡ƒ“–¼i”CˆÓ‚Ì•¶š—ñj
-	 * @param key “o˜^‚·‚é“ü—ÍƒL[iKeybord/Mouse/GamePad ‚Ì‚¢‚¸‚ê‚©j
+	 * @brief ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«å…¥åŠ›ã‚­ãƒ¼ã‚’ç™»éŒ²ã—ã¾ã™ã€‚
+	 * @param action ã‚¢ã‚¯ã‚·ãƒ§ãƒ³åï¼ˆä»»æ„ã®æ–‡å­—åˆ—ï¼‰
+	 * @param key ç™»éŒ²ã™ã‚‹å…¥åŠ›ã‚­ãƒ¼ï¼ˆKeybord/Mouse/GamePad ã®ã„ãšã‚Œã‹ï¼‰
 	 */
 	static void RegisterKey(const std::string& action, std::unique_ptr<InputKey> key);
 
 	/**
-	 * @brief ‰¼‘zƒL[ƒR[ƒh‚É‘Î‚·‚é“ü—Íó‘Ô‚ğæ“¾‚µ‚Ü‚·iå‚ÉƒXƒNƒŠƒvƒg—pjB
-	 * @param vKey ƒo[ƒ`ƒƒƒ‹ƒL[ƒR[ƒh
-	 * @return ‰Ÿ‚³‚ê‚Ä‚¢‚ê‚Î true
+	 * @brief ä»®æƒ³ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ã«å¯¾ã™ã‚‹å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—ã—ã¾ã™ï¼ˆä¸»ã«ã‚¹ã‚¯ãƒªãƒ—ãƒˆç”¨ï¼‰ã€‚
+	 * @param vKey ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰
+	 * @return æŠ¼ã•ã‚Œã¦ã„ã‚Œã° true
 	 */
 	static bool GetKeyTrigger(int vKey);
 
 	/**
-	 * @brief ‰¼‘zƒL[ƒR[ƒh‚É‘Î‚·‚éƒŠƒŠ[ƒXó‘Ô‚ğæ“¾‚µ‚Ü‚·iå‚ÉƒXƒNƒŠƒvƒg—pjB
-	 * @param vKey ƒo[ƒ`ƒƒƒ‹ƒL[ƒR[ƒh
-	 * @return —£‚³‚ê‚½‚Î‚©‚è‚È‚ç true
+	 * @brief ä»®æƒ³ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ã«å¯¾ã™ã‚‹ãƒªãƒªãƒ¼ã‚¹çŠ¶æ…‹ã‚’å–å¾—ã—ã¾ã™ï¼ˆä¸»ã«ã‚¹ã‚¯ãƒªãƒ—ãƒˆç”¨ï¼‰ã€‚
+	 * @param vKey ãƒãƒ¼ãƒãƒ£ãƒ«ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰
+	 * @return é›¢ã•ã‚ŒãŸã°ã‹ã‚Šãªã‚‰ true
 	 */
 	static bool GetKeyRelease(int vKey);
 
 	/**
-	 * @brief ƒXƒeƒBƒbƒN‚Ì²’l‚ğæ“¾‚µ‚Ü‚·i-1`1jB
-	 * @param side ¶‰E
+	 * @brief ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®è»¸å€¤ã‚’å–å¾—ã—ã¾ã™ï¼ˆ-1ã€œ1ï¼‰ã€‚
+	 * @param side å·¦å³
 	 * @param axis X/Y
-	 * @return ³‹K‰»‚³‚ê‚½²’l
+	 * @return æ­£è¦åŒ–ã•ã‚ŒãŸè»¸å€¤
 	 */
 	static float GetAxis(Side side, Axis axis);
 
 	/**
-	 * @brief ƒXƒeƒBƒbƒN‚Ì²‚Ì¶’l‚ğæ“¾‚µ‚Ü‚·i®”jB
-	 * @param side ¶‰E
+	 * @brief ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®è»¸ã®ç”Ÿå€¤ã‚’å–å¾—ã—ã¾ã™ï¼ˆæ•´æ•°ï¼‰ã€‚
+	 * @param side å·¦å³
 	 * @param axis X/Y
-	 * @return ²‚Ì¶’l
+	 * @return è»¸ã®ç”Ÿå€¤
 	 */
 	static int GetAxisRaw(Side side, Axis axis);
 
 	/**
-	 * @brief ƒXƒeƒBƒbƒN‚Ì—£U•ûŒü‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ã‰º¶‰E‚Ü‚½‚Í None
+	 * @brief ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®é›¢æ•£æ–¹å‘ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ä¸Šä¸‹å·¦å³ã¾ãŸã¯ None
 	 */
 	static Direction GetAxisDirection();
 
 	/**
-	 * @brief ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÚ“®—Ê‚ğæ“¾‚µ‚Ü‚·B
-	 * @param[out] x X •ûŒü‚Ìƒfƒ‹ƒ^
-	 * @param[out] y Y •ûŒü‚Ìƒfƒ‹ƒ^
+	 * @brief ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ç§»å‹•é‡ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @param[out] x X æ–¹å‘ã®ãƒ‡ãƒ«ã‚¿
+	 * @param[out] y Y æ–¹å‘ã®ãƒ‡ãƒ«ã‚¿
 	 */
 	static void GetMouseDelta(int& x, int& y);
 
 	/**
-	 * @brief ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚Ì X À•W‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Œ»İ‚Ì X À•WiƒsƒNƒZƒ‹j
+	 * @brief ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã® X åº§æ¨™ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ç¾åœ¨ã® X åº§æ¨™ï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
 	 */
 	static int GetMousePositionX();
 
 	/**
-	 * @brief ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚Ì Y À•W‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Œ»İ‚Ì Y À•WiƒsƒNƒZƒ‹j
+	 * @brief ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã® Y åº§æ¨™ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ç¾åœ¨ã® Y åº§æ¨™ï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
 	 */
 	static int GetMousePositionY();
 
 	/**
-	 * @brief ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌÀ•W‚ğæ“¾‚µ‚Ü‚·B
-	 * @param[out] position {x,y} ‚Ì”z—ñ
+	 * @brief ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®åº§æ¨™ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @param[out] position {x,y} ã®é…åˆ—
 	 */
 	static void GetMousePosition(float position[2]);
 
 	/**
-	 * @brief ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌÀ•W‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒ}ƒEƒXÀ•W‚ÌƒxƒNƒgƒ‹
+	 * @brief ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®åº§æ¨™ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒã‚¦ã‚¹åº§æ¨™ã®ãƒ™ã‚¯ãƒˆãƒ«
 	 */
 	static Vector2 GetMousePosition();
 
 	/**
-	 * @brief ‘OƒtƒŒ[ƒ€‚Ìƒ}ƒEƒX X À•W‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ‘O‰ñ‚Ì X À•W
+	 * @brief å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒã‚¦ã‚¹ X åº§æ¨™ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return å‰å›ã® X åº§æ¨™
 	 */
 	static int GetOldMousePositionX();
 
 	/**
-	 * @brief ‘OƒtƒŒ[ƒ€‚Ìƒ}ƒEƒX Y À•W‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ‘O‰ñ‚Ì Y À•W
+	 * @brief å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒã‚¦ã‚¹ Y åº§æ¨™ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return å‰å›ã® Y åº§æ¨™
 	 */
 	static int GetOldMousePositionY();
 
 	/**
-	 * @brief ƒ}ƒEƒXƒzƒC[ƒ‹‚Ì‰ñ“]—Ê‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒzƒC[ƒ‹‚Ìƒfƒ‹ƒ^—Ê
+	 * @brief ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ã®å›è»¢é‡ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒ›ã‚¤ãƒ¼ãƒ«ã®ãƒ‡ãƒ«ã‚¿é‡
 	 */
 	static float GetWheelDelta();
 
 	/**
-	 * @brief ƒJ[ƒ\ƒ‹‚ÌƒƒbƒNó‘Ô‚ğİ’è‚µ‚Ü‚·B
-	 * @param lock ƒƒbƒN‚·‚é‚©
-	 * @param changeVisible true ‚Ìê‡A•\¦ó‘Ô‚à‡‚í‚¹‚Ä•ÏX
+	 * @brief ã‚«ãƒ¼ã‚½ãƒ«ã®ãƒ­ãƒƒã‚¯çŠ¶æ…‹ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param lock ãƒ­ãƒƒã‚¯ã™ã‚‹ã‹
+	 * @param changeVisible true ã®å ´åˆã€è¡¨ç¤ºçŠ¶æ…‹ã‚‚åˆã‚ã›ã¦å¤‰æ›´
 	 */
 	static void SetCursorLock(bool lock, bool changeVisible = true);
 
 	/**
-	 * @brief ƒJ[ƒ\ƒ‹‚ªƒƒbƒN‚³‚ê‚Ä‚¢‚é‚©B
-	 * @return ƒƒbƒN’†‚È‚ç true
+	 * @brief ã‚«ãƒ¼ã‚½ãƒ«ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹ã‹ã€‚
+	 * @return ãƒ­ãƒƒã‚¯ä¸­ãªã‚‰ true
 	 */
 	static bool IsCursorLock();
 
 	/**
-	 * @brief ƒJ[ƒ\ƒ‹‚ª•\¦‚³‚ê‚Ä‚¢‚é‚©B
-	 * @return •\¦’†‚È‚ç true
+	 * @brief ã‚«ãƒ¼ã‚½ãƒ«ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹ã€‚
+	 * @return è¡¨ç¤ºä¸­ãªã‚‰ true
 	 */
 	static bool IsCursorVisible();
 
 private:
 	/**
-	 * @brief ƒJ[ƒ\ƒ‹‚Ì•\¦/”ñ•\¦‚ğØ‚è‘Ö‚¦‚Ü‚·B
-	 * @param visible •\¦‚·‚é‚È‚ç true
+	 * @brief ã‚«ãƒ¼ã‚½ãƒ«ã®è¡¨ç¤º/éè¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆã¾ã™ã€‚
+	 * @param visible è¡¨ç¤ºã™ã‚‹ãªã‚‰ true
 	 */
 	static void SetCursorVisible(bool visible) {
 		cursolVisible = visible;
@@ -363,55 +363,55 @@ private:
 	}
 
 private:
-	static inline InputDevice activeDevice = InputDevice::Keybord; //!< ÅŒã‚É‘€ì‚³‚ê‚½ƒfƒoƒCƒX
+	static inline InputDevice activeDevice = InputDevice::Keybord; //!< æœ€å¾Œã«æ“ä½œã•ã‚ŒãŸãƒ‡ãƒã‚¤ã‚¹
 public:
 	/**
-	 * @brief ƒQ[ƒ€ƒpƒbƒh‚ªÚ‘±‚³‚ê‚Ä‚¢‚é‚©B
-	 * @return Ú‘±‚³‚ê‚Ä‚¢‚ê‚Î true
+	 * @brief ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ãŒæ¥ç¶šã•ã‚Œã¦ã„ã‚‹ã‹ã€‚
+	 * @return æ¥ç¶šã•ã‚Œã¦ã„ã‚Œã° true
 	 */
 	static bool IsGamepadConnected() { return isGamePadConnected; }
 	/**
-	 * @brief Œ»İƒAƒNƒeƒBƒu‚ÈƒfƒoƒCƒX‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒfƒoƒCƒXí•Ê
+	 * @brief ç¾åœ¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªãƒ‡ãƒã‚¤ã‚¹ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ãƒ‡ãƒã‚¤ã‚¹ç¨®åˆ¥
 	 */
 	static InputDevice GetActiveDevice() { return activeDevice; }
 
 	/**
-	 * @brief “ü—Í‚Ì—LŒø/–³Œø‚ğİ’è‚µ‚Ü‚·B
-	 * @param enable —LŒø‚É‚·‚é‚È‚ç true
+	 * @brief å…¥åŠ›ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param enable æœ‰åŠ¹ã«ã™ã‚‹ãªã‚‰ true
 	 */
 	static void SetInputEnabled(bool enable) { inputEnabled = enable; }
 
 	/**
-	 * @brief “ü—Í‚ª—LŒø‚©‚Ç‚¤‚©‚ğæ“¾‚µ‚Ü‚·B
-	 * @return —LŒø‚È‚ç true
+	 * @brief å…¥åŠ›ãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return æœ‰åŠ¹ãªã‚‰ true
 	 */
 	static bool IsInputEnabled() { return inputEnabled; }
 private:
 	friend class GamePad;
 	/**
-	 * @brief XInput ‚Ìó‘Ô‚ğæ“¾‚µ‚Ü‚·i“à•”—pjB
+	 * @brief XInput ã®çŠ¶æ…‹ã‚’å–å¾—ã—ã¾ã™ï¼ˆå†…éƒ¨ç”¨ï¼‰ã€‚
 	 */
 	static XINPUT_STATE GetXInputState() { return state; }
 private:
-	static inline float m_axis[2][2]; //!< ƒXƒeƒBƒbƒN²’l [Side][Axis]
-	static inline XINPUT_STATE state; //!< XInput ‚Ì¶ó‘Ô
-	static inline DeadZoneMode deadZoneMode = DeadZoneMode::Circular; //!< ƒfƒbƒhƒ][ƒ“ˆ—ƒ‚[ƒh
-	static inline int					slot = 0; //!< g—p‚·‚éƒRƒ“ƒgƒ[ƒ‰‚ÌƒXƒƒbƒg”Ô†
+	static inline float m_axis[2][2]; //!< ã‚¹ãƒ†ã‚£ãƒƒã‚¯è»¸å€¤ [Side][Axis]
+	static inline XINPUT_STATE state; //!< XInput ã®ç”ŸçŠ¶æ…‹
+	static inline DeadZoneMode deadZoneMode = DeadZoneMode::Circular; //!< ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³å‡¦ç†ãƒ¢ãƒ¼ãƒ‰
+	static inline int					slot = 0; //!< ä½¿ç”¨ã™ã‚‹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®ã‚¹ãƒ­ãƒƒãƒˆç•ªå·
 private:
-	static inline int				mousePositionX[2]; //!< [0]=Œ»İ, [1]=‘O‰ñ
-	static inline int				mousePositionY[2]; //!< [0]=Œ»İ, [1]=‘O‰ñ
-	static inline float wheelDelta;                //!< ƒ}ƒEƒXƒzƒC[ƒ‹‚Ìƒfƒ‹ƒ^
+	static inline int				mousePositionX[2]; //!< [0]=ç¾åœ¨, [1]=å‰å›
+	static inline int				mousePositionY[2]; //!< [0]=ç¾åœ¨, [1]=å‰å›
+	static inline float wheelDelta;                //!< ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ã®ãƒ‡ãƒ«ã‚¿
 public:
-	static inline WPARAM inputChar{};     //!< ÅV‚Ì•¶š“ü—ÍiWM_CHARj
-	static inline WPARAM inputKeyDown{};  //!< ÅV‚ÌƒL[‰Ÿ‰ºiWM_KEYDOWNj
-	static inline std::wstring inputString{}; //!< ƒtƒŒ[ƒ€’†‚É“ü—Í‚³‚ê‚½•¶š—ñ
-	static inline std::string keyString{};   //!< ƒtƒŒ[ƒ€’†‚É‰Ÿ‰º‚³‚ê‚½ƒL[‚Ì–¼Ì
+	static inline WPARAM inputChar{};     //!< æœ€æ–°ã®æ–‡å­—å…¥åŠ›ï¼ˆWM_CHARï¼‰
+	static inline WPARAM inputKeyDown{};  //!< æœ€æ–°ã®ã‚­ãƒ¼æŠ¼ä¸‹ï¼ˆWM_KEYDOWNï¼‰
+	static inline std::wstring inputString{}; //!< ãƒ•ãƒ¬ãƒ¼ãƒ ä¸­ã«å…¥åŠ›ã•ã‚ŒãŸæ–‡å­—åˆ—
+	static inline std::string keyString{};   //!< ãƒ•ãƒ¬ãƒ¼ãƒ ä¸­ã«æŠ¼ä¸‹ã•ã‚ŒãŸã‚­ãƒ¼ã®åç§°
 private:
-	static inline bool isGamePadConnected = false; //!< ƒQ[ƒ€ƒpƒbƒhÚ‘±ó‘Ô
+	static inline bool isGamePadConnected = false; //!< ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰æ¥ç¶šçŠ¶æ…‹
 	
 private:
-	static inline bool cursolLock = false;   //!< ƒJ[ƒ\ƒ‹ƒƒbƒNó‘Ô
-	static inline bool cursolVisible = true; //!< ƒJ[ƒ\ƒ‹•\¦ó‘Ô
-	static inline bool inputEnabled = true;   //!< “ü—Í—LŒøó‘Ô
+	static inline bool cursolLock = false;   //!< ã‚«ãƒ¼ã‚½ãƒ«ãƒ­ãƒƒã‚¯çŠ¶æ…‹
+	static inline bool cursolVisible = true; //!< ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤ºçŠ¶æ…‹
+	static inline bool inputEnabled = true;   //!< å…¥åŠ›æœ‰åŠ¹çŠ¶æ…‹
 };

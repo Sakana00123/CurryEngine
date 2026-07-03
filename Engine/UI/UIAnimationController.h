@@ -5,71 +5,71 @@
 
 /**
  * @file
- * @brief UI ‚Ìó‘Ô‘JˆÚiIdle/Hovered/Selected/Pressed/Disabled/Customj‚ğƒAƒjƒ[ƒVƒ‡ƒ“§Œä‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details Šeó‘Ô‚²‚Æ‚Ìƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“İ’èiˆÊ’u/ƒTƒCƒY‚Ì•âŠÔAŠÔAEasej‚ğ•Û‚µA
- *          ó‘Ô•ÏX‚É `EasingHandler` ‚Å•âŠÔ‚ğs‚¢‚Ü‚·B
+ * @brief UI ã®çŠ¶æ…‹é·ç§»ï¼ˆIdle/Hovered/Selected/Pressed/Disabled/Customï¼‰ã‚’ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ¶å¾¡ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details å„çŠ¶æ…‹ã”ã¨ã®ãƒˆãƒ©ãƒ³ã‚¸ã‚·ãƒ§ãƒ³è¨­å®šï¼ˆä½ç½®/ã‚µã‚¤ã‚ºã®è£œé–“ã€æ™‚é–“ã€Easeï¼‰ã‚’ä¿æŒã—ã€
+ *          çŠ¶æ…‹å¤‰æ›´æ™‚ã« `EasingHandler` ã§è£œé–“ã‚’è¡Œã„ã¾ã™ã€‚
  */
 class UIAnimationController : public UIComponent
 {
 public:
 	/**
-	 * @brief UI ‚Ìó‘ÔB
+	 * @brief UI ã®çŠ¶æ…‹ã€‚
 	 */
 	enum class State { Idle, Hovered, Selected, Pressed, Disabled, Custom, StateCount };
 
 	/**
-	 * @brief ó‘Ô‘JˆÚ‚Ìƒpƒ‰ƒ[ƒ^B
-	 * @details ˆÊ’u‚ÆƒTƒCƒY‚ğŒÂ•Ê‚É—LŒø‰»‚µ‚Ä•âŠÔ‚Å‚«‚Ü‚·B
+	 * @brief çŠ¶æ…‹é·ç§»ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã€‚
+	 * @details ä½ç½®ã¨ã‚µã‚¤ã‚ºã‚’å€‹åˆ¥ã«æœ‰åŠ¹åŒ–ã—ã¦è£œé–“ã§ãã¾ã™ã€‚
 	 */
 	struct Transition {
-		bool enableTranslate = false; //!< ˆÊ’u•âŠÔ‚Ì—LŒø/–³Œø
-		XMFLOAT2 position;            //!< ‘JˆÚæ‚Ìƒ[ƒJƒ‹ˆÊ’u
-		bool enableSizing = false;   //!< ƒTƒCƒY•âŠÔ‚Ì—LŒø/–³Œø
-		XMFLOAT2 size;               //!< ‘JˆÚæ‚ÌƒTƒCƒY
-		float duration = 0.2f;       //!< •âŠÔŠÔi•bj
-		EaseType type;               //!< ƒC[ƒWƒ“ƒOƒ^ƒCƒv
+		bool enableTranslate = false; //!< ä½ç½®è£œé–“ã®æœ‰åŠ¹/ç„¡åŠ¹
+		XMFLOAT2 position;            //!< é·ç§»å…ˆã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®
+		bool enableSizing = false;   //!< ã‚µã‚¤ã‚ºè£œé–“ã®æœ‰åŠ¹/ç„¡åŠ¹
+		XMFLOAT2 size;               //!< é·ç§»å…ˆã®ã‚µã‚¤ã‚º
+		float duration = 0.2f;       //!< è£œé–“æ™‚é–“ï¼ˆç§’ï¼‰
+		EaseType type;               //!< ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—
 	};
 
 	/**
-	 * @brief w’èó‘Ô‚Ìƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“‚ğİ’è‚µ‚Ü‚·B
-	 * @param state ‘ÎÛó‘ÔB
-	 * @param transition ‘JˆÚƒpƒ‰ƒ[ƒ^B
+	 * @brief æŒ‡å®šçŠ¶æ…‹ã®ãƒˆãƒ©ãƒ³ã‚¸ã‚·ãƒ§ãƒ³ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param state å¯¾è±¡çŠ¶æ…‹ã€‚
+	 * @param transition é·ç§»ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã€‚
 	 */
 	void SetTransition(State state, const Transition& transition);
 
 	/**
-	 * @brief –ˆƒtƒŒ[ƒ€XVB
-	 * @param elapsedTime Œo‰ßŠÔi•bjB
-	 * @details Œ»İ‚Ì•âŠÔ‚ği‚ßAˆÊ’u/ƒTƒCƒY‚ğ”½‰f‚µ‚Ü‚·B
+	 * @brief æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚
+	 * @param elapsedTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
+	 * @details ç¾åœ¨ã®è£œé–“ã‚’é€²ã‚ã€ä½ç½®/ã‚µã‚¤ã‚ºã‚’åæ˜ ã—ã¾ã™ã€‚
 	 */
 	void Update(float elapsedTime) override;
 
 	/**
-	 * @brief ó‘Ô‚ğ•ÏX‚µ‚Ü‚·B
-	 * @param newState V‚µ‚¢ó‘ÔB
-	 * @details Œ»İ’l‚ğ‹N“_‚Æ‚µ‚ÄA‘Î‰‚·‚éƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“‚Å•âŠÔ‚ğŠJn‚µ‚Ü‚·B
+	 * @brief çŠ¶æ…‹ã‚’å¤‰æ›´ã—ã¾ã™ã€‚
+	 * @param newState æ–°ã—ã„çŠ¶æ…‹ã€‚
+	 * @details ç¾åœ¨å€¤ã‚’èµ·ç‚¹ã¨ã—ã¦ã€å¯¾å¿œã™ã‚‹ãƒˆãƒ©ãƒ³ã‚¸ã‚·ãƒ§ãƒ³ã§è£œé–“ã‚’é–‹å§‹ã—ã¾ã™ã€‚
 	 */
 	void SetState(State newState);
 
 private:
-	/** @brief ƒC[ƒWƒ“ƒOis‚ğŠÇ—‚·‚éƒnƒ“ƒhƒ‰B*/
+	/** @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°é€²è¡Œã‚’ç®¡ç†ã™ã‚‹ãƒãƒ³ãƒ‰ãƒ©ã€‚*/
 	EasingHandler handler;
-	/** @brief Œ»İó‘ÔB*/
+	/** @brief ç¾åœ¨çŠ¶æ…‹ã€‚*/
 	State currentState;
-	/** @brief ‘JˆÚæó‘ÔB*/
+	/** @brief é·ç§»å…ˆçŠ¶æ…‹ã€‚*/
 	State targetState;
 
-	/** @brief Šeó‘Ô‚Ìƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“İ’è”z—ñB*/
+	/** @brief å„çŠ¶æ…‹ã®ãƒˆãƒ©ãƒ³ã‚¸ã‚·ãƒ§ãƒ³è¨­å®šé…åˆ—ã€‚*/
 	Transition transitions[static_cast<size_t>(State::StateCount)];
 	
-	/** @brief Œ»İ‚Ìó‘Ô‘JˆÚ‚Ìi’»i0`1jB*/
+	/** @brief ç¾åœ¨ã®çŠ¶æ…‹é·ç§»ã®é€²æ—ï¼ˆ0ã€œ1ï¼‰ã€‚*/
 	float transitionProgress;
 
-	/** @brief ˆÊ’u•âŠÔ‚ÌŠJn/I—¹’lB*/
+	/** @brief ä½ç½®è£œé–“ã®é–‹å§‹/çµ‚äº†å€¤ã€‚*/
 	XMFLOAT2 fromPosition;
 	XMFLOAT2 toPosition;
 
-	/** @brief ƒTƒCƒY•âŠÔ‚ÌŠJn/I—¹’lB*/
+	/** @brief ã‚µã‚¤ã‚ºè£œé–“ã®é–‹å§‹/çµ‚äº†å€¤ã€‚*/
 	XMFLOAT2 fromSize;
 	XMFLOAT2 toSize;
 };

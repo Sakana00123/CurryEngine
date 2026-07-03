@@ -4,35 +4,35 @@
 
 #ifdef X3DAUDIO
 /**
- * @brief ƒI[ƒfƒBƒIƒŠƒXƒi[ƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details 3D ƒTƒEƒ“ƒh‚Ì’®æÒiƒJƒƒ‰“™j‚ğ•\Œ»‚µ‚Ü‚·B
+ * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒªã‚¹ãƒŠãƒ¼ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details 3D ã‚µã‚¦ãƒ³ãƒ‰ã®è´å–è€…ï¼ˆã‚«ãƒ¡ãƒ©ç­‰ï¼‰ã‚’è¡¨ç¾ã—ã¾ã™ã€‚
  */
 class AudioListener : public Component
 {
 private:
-	/** @brief Œ»İ‚ÌƒŠƒXƒi[B*/
+	/** @brief ç¾åœ¨ã®ãƒªã‚¹ãƒŠãƒ¼ã€‚*/
 	static inline AudioListener* listener;
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	AudioListener() = default;
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	virtual ~AudioListener() override;
 
 	/**
-	 * @brief ‰Šú‰»ˆ—B
-	 * @details Å‰‚É¶¬‚³‚ê‚½ƒŠƒXƒi[‚ğŒ»İ‚ÌƒŠƒXƒi[‚Æ‚µ‚Ü‚·B
+	 * @brief åˆæœŸåŒ–å‡¦ç†ã€‚
+	 * @details æœ€åˆã«ç”Ÿæˆã•ã‚ŒãŸãƒªã‚¹ãƒŠãƒ¼ã‚’ç¾åœ¨ã®ãƒªã‚¹ãƒŠãƒ¼ã¨ã—ã¾ã™ã€‚
 	 */
 	void Awake() override;
 
 	/**
-	 * @brief ƒtƒŒ[ƒ€XVB
-	 * @param deltaTime Œo‰ßŠÔi•bjB
+	 * @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void Update(float deltaTime) override;
 
 	/**
-	 * @brief Œ»İ‚ÌƒŠƒXƒi[‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Œ»İ‚ÌƒŠƒXƒi[i–¢İ’è‚Í `nullptr`jB
+	 * @brief ç¾åœ¨ã®ãƒªã‚¹ãƒŠãƒ¼ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ç¾åœ¨ã®ãƒªã‚¹ãƒŠãƒ¼ï¼ˆæœªè¨­å®šæ™‚ã¯ `nullptr`ï¼‰ã€‚
 	 */
 	static inline AudioListener* GetListener() { return listener; }
 

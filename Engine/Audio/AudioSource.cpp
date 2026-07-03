@@ -13,19 +13,19 @@ REGISTER_COMPONENT(AudioSource, "Audio")
 
 void AudioSource::SetSource(const std::wstring& filePath)
 {
-	// Ä¶’†‚È‚ç’â~
+	// å†ç”Ÿä¸­ãªã‚‰åœæ­¢
 	Stop();
 	if (sourceVoice)
 	{
 		sourceVoice->DestroyVoice();
 	}
-	// ƒtƒ@ƒCƒ‹ƒpƒX‚É "BGM" ‚ªŠÜ‚Ü‚ê‚Ä‚¢‚ê‚Î BGMAŠÜ‚Ü‚ê‚Ä‚¢‚È‚¯‚ê‚Î SE ‚Æ‚µ‚Äˆµ‚¤
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã« "BGM" ãŒå«ã¾ã‚Œã¦ã„ã‚Œã° BGMã€å«ã¾ã‚Œã¦ã„ãªã‘ã‚Œã° SE ã¨ã—ã¦æ‰±ã†
 	this->type = std::wstring(filePath).find(L"BGM") != std::wstring::npos ? SoundType::BGM : SoundType::SE;
-	// ƒtƒ@ƒCƒ‹ƒpƒX‚ğ•Û‘¶
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’ä¿å­˜
 	this->filePath = filePath;
-	// ƒ‹[ƒvİ’è
+	// ãƒ«ãƒ¼ãƒ—è¨­å®š
 	this->loop = (this->type == SoundType::BGM) ? true : false;
-	// ƒI[ƒfƒBƒIƒoƒbƒtƒ@‚ğæ“¾
+	// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒƒãƒ•ã‚¡ã‚’å–å¾—
 	m_SptrBuffer = Audio::AudioBuffer::GetResource(filePath);
 	if (!m_SptrBuffer)
 	{
@@ -34,7 +34,7 @@ void AudioSource::SetSource(const std::wstring& filePath)
 		LOG_ERROR(utf8Message.c_str());
 		return;
 	}
-	// ƒ\[ƒXƒ{ƒCƒX‚ğì¬
+	// ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ã‚’ä½œæˆ
 	Audio::CreateAudioSource(m_SptrBuffer, &sourceVoice, type);
 }
 AudioSource::~AudioSource()
@@ -56,30 +56,30 @@ void AudioSource::Start()
 
 void AudioSource::Update(float deltaTime)
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return;
 	}
 
-	// ƒI[ƒfƒBƒIƒAƒiƒ‰ƒCƒU‚ÌXV
+	// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã®æ›´æ–°
 	if (m_AudioAnalyzer)
 	{
 		m_AudioAnalyzer->Update(deltaTime);
 	}
 
-	//‰¹Œ¹‚ª3D‰¹Œ¹‚Æ‚µ‚Äˆµ‚í‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+	//éŸ³æºãŒ3DéŸ³æºã¨ã—ã¦æ‰±ã‚ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	if (!use3DAudio) return;
 	
 #ifdef X3DAUDIO
-	// 3D‰¹Œ¹‚Æ‚µ‚Äˆµ‚¤ê‡‚ÍƒŠƒXƒi[‚Æ‰¹Œ¹‚ÌˆÊ’uŠÖŒW‚©‚ç‰¹—Ê‚âƒpƒ“‚ğŒvZ‚·‚é
+	// 3DéŸ³æºã¨ã—ã¦æ‰±ã†å ´åˆã¯ãƒªã‚¹ãƒŠãƒ¼ã¨éŸ³æºã®ä½ç½®é–¢ä¿‚ã‹ã‚‰éŸ³é‡ã‚„ãƒ‘ãƒ³ã‚’è¨ˆç®—ã™ã‚‹
 	C3DAudio::Culculate3DAudio(this->gameObject);
 #endif // X3DAUDIO
 }
 
 void AudioSource::Play()
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return;
@@ -90,40 +90,40 @@ void AudioSource::Play()
 	XAUDIO2_VOICE_STATE voiceState = {};
 	sourceVoice->GetState(&voiceState);
 
-	// ‚·‚Å‚ÉÄ¶’†‚È‚ç‰½‚à‚µ‚È‚¢
+	// ã™ã§ã«å†ç”Ÿä¸­ãªã‚‰ä½•ã‚‚ã—ãªã„
 	if (voiceState.BuffersQueued)
 	{
 		//Stop(false, 0);
 		return;
 	}
 
-	// Ä¶’â~(ƒeƒCƒ‹–³‚µ)
+	// å†ç”Ÿåœæ­¢(ãƒ†ã‚¤ãƒ«ç„¡ã—)
 	Stop(false);
 
-	// ƒoƒbƒtƒ@‚ğƒ\[ƒXƒ{ƒCƒX‚ÉƒZƒbƒg
+	// ãƒãƒƒãƒ•ã‚¡ã‚’ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ã«ã‚»ãƒƒãƒˆ
 	XAUDIO2_BUFFER* pBuffer = &m_SptrBuffer->buffer;
 	pBuffer->LoopCount = loop ? XAUDIO2_LOOP_INFINITE : 0;
 	hr = sourceVoice->SubmitSourceBuffer(pBuffer);
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// BGM ‚Ìê‡‚ÍƒI[ƒfƒBƒIƒAƒiƒ‰ƒCƒU‚ğ‰Šú‰»
+	// BGM ã®å ´åˆã¯ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã‚’åˆæœŸåŒ–
 	if (type == SoundType::BGM)
 	{
-		// ƒI[ƒfƒBƒIƒAƒiƒ‰ƒCƒU‚ğ‰Šú‰»
+		// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã‚’åˆæœŸåŒ–
 		m_AudioAnalyzer = std::make_unique<AudioAnalyzer>();
 		m_AudioAnalyzer->Initialize(sourceVoice, m_SptrBuffer.get());
-		// Ä¶Šî€‚ğƒŠƒZƒbƒg
+		// å†ç”ŸåŸºæº–ã‚’ãƒªã‚»ãƒƒãƒˆ
 		m_AudioAnalyzer->ResetPlaybackBase();
 	}
 
-	// Ä¶ŠJn
+	// å†ç”Ÿé–‹å§‹
 	hr = sourceVoice->Start(0);
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 }
 
 void AudioSource::Stop(bool playTails)
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return;
@@ -132,7 +132,7 @@ void AudioSource::Stop(bool playTails)
 	XAUDIO2_VOICE_STATE voiceState{};
 	sourceVoice->GetState(&voiceState);
 
-	// Ä¶’†‚Å‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	// å†ç”Ÿä¸­ã§ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!voiceState.BuffersQueued)
 	{
 		return;
@@ -145,17 +145,17 @@ void AudioSource::Stop(bool playTails)
 	hr = sourceVoice->FlushSourceBuffers();
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// SamplesPlayed ƒŠƒZƒbƒg
+	// SamplesPlayed ãƒªã‚»ãƒƒãƒˆ
 	hr = sourceVoice->Discontinuity();
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// ƒI[ƒfƒBƒIƒAƒiƒ‰ƒCƒU‚ğƒNƒŠƒA
+	// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã‚’ã‚¯ãƒªã‚¢
 	m_AudioAnalyzer.reset();
 }
 
 void AudioSource::Pause()
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return;
@@ -166,7 +166,7 @@ void AudioSource::Pause()
 
 void AudioSource::Resume()
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return;
@@ -179,7 +179,7 @@ void AudioSource::SetVolume(float volume)
 {
 	this->volume = volume;
 
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return;
@@ -191,7 +191,7 @@ void AudioSource::SetVolume(float volume)
 float AudioSource::GetVolume()
 {
 	float volume = 0.0f;
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return volume;
@@ -223,25 +223,25 @@ void AudioSource::SetPan(float pan)
 	m_Pan = std::clamp(pan, -1.0f, 1.0f);
 
 #if 0
-	// TODO:•Ï‰»–³‚µ
-	float angle = (m_Pan + 1.0f) * (XM_PI / 4.0f); // -1.0 ` 1.0 ‚ğ 0 ` ƒÎ/2 ‚É•ÏŠ·
+	// TODO:å¤‰åŒ–ç„¡ã—
+	float angle = (m_Pan + 1.0f) * (XM_PI / 4.0f); // -1.0 ã€œ 1.0 ã‚’ 0 ã€œ Ï€/2 ã«å¤‰æ›
 	//float left = cosf(angle);
 	//float right = sinf(angle);
 
-	// “ü—Í‚ªƒXƒeƒŒƒI‚È‚ç¶‚Æ‰E‚ğ•½‹Ï‰»‚µ‚Äƒpƒ“‚ğ“K—p
+	// å…¥åŠ›ãŒã‚¹ãƒ†ãƒ¬ã‚ªãªã‚‰å·¦ã¨å³ã‚’å¹³å‡åŒ–ã—ã¦ãƒ‘ãƒ³ã‚’é©ç”¨
 	float leftInputGain = cosf(angle);
 	float rightInputGain = sinf(angle);
 
-	// ¶“ü—Í‚ğ¶/‰E‚ÉŠ„‚èU‚é
-	// ‰E“ü—Í‚ğ¶/‰E‚ÉŠ„‚èU‚é
+	// å·¦å…¥åŠ›ã‚’å·¦/å³ã«å‰²ã‚ŠæŒ¯ã‚‹
+	// å³å…¥åŠ›ã‚’å·¦/å³ã«å‰²ã‚ŠæŒ¯ã‚‹
 	float matrix[4] = {
-		leftInputGain, rightInputGain,  // ¶“ü—Í
-		leftInputGain, rightInputGain   // ‰E“ü—Í
+		leftInputGain, rightInputGain,  // å·¦å…¥åŠ›
+		leftInputGain, rightInputGain   // å³å…¥åŠ›
 	};
 	sourceVoice->SetOutputMatrix(nullptr, 2, 2, matrix);
 
 #else
-	// TODO:‰½ŒÌ‚©Š®‘S‚É¶‚ÉŠñ‚Á‚Ä‚µ‚Ü‚¤
+	// TODO:ä½•æ•…ã‹å®Œå…¨ã«å·¦ã«å¯„ã£ã¦ã—ã¾ã†
 	float outputMatrix[8] = {};
 	float left = 1.0f - (m_Pan * 0.5f + 0.5f);
 	float right = m_Pan * 0.5f + 0.5f;
@@ -349,7 +349,7 @@ void AudioSource::SetPan(float pan)
 
 void AudioSource::SetLoopOption(float begin, float length)
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return;
@@ -364,11 +364,11 @@ void AudioSource::SetLoopOption(float begin, float length)
 	UINT32 loopBegin = static_cast<UINT32>(sampleRate * begin);
 	UINT32 loopLength = static_cast<UINT32>(sampleRate * length);
 
-	// ”ÍˆÍƒ`ƒFƒbƒN
+	// ç¯„å›²ãƒã‚§ãƒƒã‚¯
 	if (loopBegin >= totalSamples) {
 		loopBegin = 0;
 		loopLength = 0;
-		pBuffer->LoopCount = 0; // –³Œø‰»
+		pBuffer->LoopCount = 0; // ç„¡åŠ¹åŒ–
 	}
 	else if (loopBegin + loopLength > totalSamples) {
 		loopLength = totalSamples - loopBegin;
@@ -380,7 +380,7 @@ void AudioSource::SetLoopOption(float begin, float length)
 
 float AudioSource::GetPlaybackTime() const
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î 0 ‚ğ•Ô‚·
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã° 0 ã‚’è¿”ã™
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return 0.0f;
@@ -395,7 +395,7 @@ float AudioSource::GetPlaybackTime() const
 
 float AudioSource::GetPlaybackDeltaTime()
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î 0 ‚ğ•Ô‚·
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã° 0 ã‚’è¿”ã™
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return 0.0f;
@@ -405,7 +405,7 @@ float AudioSource::GetPlaybackDeltaTime()
 
 	uint64_t samples = state.SamplesPlayed;
 
-	// ‘O‰ñ‚ÌƒTƒ“ƒvƒ‹”‚©‚ç‚Ì·•ª‚ğŒvZ‚µ‚Ä•b”‚É•ÏŠ·
+	// å‰å›ã®ã‚µãƒ³ãƒ—ãƒ«æ•°ã‹ã‚‰ã®å·®åˆ†ã‚’è¨ˆç®—ã—ã¦ç§’æ•°ã«å¤‰æ›
 	float deltaTime = (samples - m_LastSamplesPlayed) / static_cast<float>(m_SptrBuffer->wfx.Format.nSamplesPerSec);
 	m_LastSamplesPlayed = static_cast<float>(samples);
 	return deltaTime;
@@ -414,7 +414,7 @@ float AudioSource::GetPlaybackDeltaTime()
 
 uint32_t AudioSource::GetBufferQueueCount()
 {
-	//ƒoƒbƒtƒ@‚âƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î 0 ‚ğ•Ô‚·
+	//ãƒãƒƒãƒ•ã‚¡ã‚„ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã° 0 ã‚’è¿”ã™
 	if (!m_SptrBuffer || !sourceVoice)
 	{
 		return 0;
@@ -426,7 +426,7 @@ uint32_t AudioSource::GetBufferQueueCount()
 
 float AudioSource::GetTotalDuration() const
 {
-	// ƒoƒbƒtƒ@‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î 0 ‚ğ•Ô‚·
+	// ãƒãƒƒãƒ•ã‚¡ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã° 0 ã‚’è¿”ã™
 	if (!m_SptrBuffer)
 	{
 		return 0.0f;
@@ -457,7 +457,7 @@ const AudioAnalyzer::Result& AudioSource::GetAudioAnalyzerBasicResult() const
 #ifdef USE_IMGUI
 void AudioSource::DrawProperty(const PropertyDrawContext& context)
 {
-	// ƒtƒ@ƒCƒ‹‘I‘ğƒ_ƒCƒAƒƒO
+	// ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 	if (ImGui::Button("Source")) {
 		static const char* filter = "Audio Files(*.wav*)\0*.wav*;\0All Files(*.*)\0*.*;\0\0)";
 
@@ -469,7 +469,7 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 			SetSource(wpath);
 		}
 	}
-	// ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‘Î‰
+	// ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—å¯¾å¿œ
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH")) {
@@ -483,7 +483,7 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 		ImGui::EndDragDropTarget();
 	}
 	ImGui::SameLine();
-	// Œ»İ‚Ìƒtƒ@ƒCƒ‹ƒpƒX‚ğ•\¦
+	// ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¡¨ç¤º
 	std::wstring path = filePath.empty() ? L"No file" : filePath;
 	if (!std::filesystem::exists(path)) {
 		path = L"File not found: " + path;
@@ -491,15 +491,15 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 
 	ImGui::Text(std::string(path.begin(), path.end()).c_str());
 
-	// ƒ\[ƒXƒ{ƒCƒX‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+	// ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (sourceVoice)
 	{
-		// 3D‰¹Œ¹ŠÖ˜A‚Ìİ’è
+		// 3DéŸ³æºé–¢é€£ã®è¨­å®š
 		{
-			// 3D‰¹Œ¹‚Æ‚µ‚Äˆµ‚¤‚©
+			// 3DéŸ³æºã¨ã—ã¦æ‰±ã†ã‹
 			ImGui::Checkbox("3D Audio", &use3DAudio);
 
-			// ƒpƒ“İ’è
+			// ãƒ‘ãƒ³è¨­å®š
 			if (ImGui::SliderFloat("Pan", &m_Pan, -1.0f, 1.0f))
 			{
 				SetPan(m_Pan);
@@ -508,7 +508,7 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 
 #if 0
 		ImGui::Separator();
-		// ƒ‹[ƒvİ’è
+		// ãƒ«ãƒ¼ãƒ—è¨­å®š
 		static float loopBegin = 0.0f;
 		static float loopLength = 0.0f;
 		if (ImGui::InputFloat("Loop Begin", &loopBegin)) {
@@ -521,14 +521,14 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 		}
 #endif // 0
 
-		// Ä¶‚Ì©“®Ä¶
+		// å†ç”Ÿæ™‚ã®è‡ªå‹•å†ç”Ÿ
 		ImGui::Checkbox("PlayOnStart", &playOnStart);
 
-		// ƒ‹[ƒv—L–³
+		// ãƒ«ãƒ¼ãƒ—æœ‰ç„¡
 		ImGui::Checkbox("Loop", &loop);
 
 
-		// Ä¶E’â~ƒ{ƒ^ƒ“
+		// å†ç”Ÿãƒ»åœæ­¢ãƒœã‚¿ãƒ³
 		if (ImGui::Button("Play")) {
 			Play();
 		}
@@ -536,7 +536,7 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 			Stop();
 		}
 
-		// ‰¹—ÊƒXƒ‰ƒCƒ_[
+		// éŸ³é‡ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼
 		volume = GetVolume();
 		if (ImGui::SliderFloat("Volume", &volume, 0, 1)) {
 			SetVolume(volume);
@@ -545,7 +545,7 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 
 	ImGui::Separator();
 
-	// ƒ}ƒXƒ^[‰¹—ÊABGM‰¹—ÊASE‰¹—Ê
+	// ãƒã‚¹ã‚¿ãƒ¼éŸ³é‡ã€BGMéŸ³é‡ã€SEéŸ³é‡
 	{
 		if (ImGui::SliderFloat("MasterVolume", &masterVolume, 0, 1)) {
 			Audio::SetMasterVolume(masterVolume);
@@ -558,40 +558,40 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 		}
 	}
 
-	// ƒI[ƒfƒBƒIƒAƒiƒ‰ƒCƒU‚ÌŒ‹‰Ê‚ğ•\¦
+	// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã®çµæœã‚’è¡¨ç¤º
 	if (m_AudioAnalyzer)
 	{
 		const AudioAnalyzer::Result& result = m_AudioAnalyzer->GetResult();
 		ImGui::Text("RMS: %.4f", result.rms);
 		ImGui::Text("Peak: %.4f", result.peak);
-		// ƒXƒyƒNƒgƒ‹ƒf[ƒ^‚ÌŠÈˆÕ•\¦
+		// ã‚¹ãƒšã‚¯ãƒˆãƒ«ãƒ‡ãƒ¼ã‚¿ã®ç°¡æ˜“è¡¨ç¤º
 		ImGui::PlotLines("Spectrum", result.spectrum.data(), static_cast<int>(result.spectrum.size()), 0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
 		
-		// ü”g”‘Ñˆæ‚²‚Æ‚ÌƒŒƒxƒ‹•\¦
+		// å‘¨æ³¢æ•°å¸¯åŸŸã”ã¨ã®ãƒ¬ãƒ™ãƒ«è¡¨ç¤º
 		const AudioAnalyzerResult& analyzerResult = m_AudioAnalyzer->GetAnalyzerResult();
 		ImGui::Text("Low Peak: %.4f", analyzerResult.lowPeak);
 		ImGui::Text("Mid Peak: %.4f", analyzerResult.midPeak);
 		ImGui::Text("High Peak: %.4f", analyzerResult.highPeak);
 
-		// ’áü”g”‘Ñˆæ‚ÌƒŒƒxƒ‹•\¦
+		// ä½å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ¬ãƒ™ãƒ«è¡¨ç¤º
 		ImGui::PlotLines("Low Bands", 
 			reinterpret_cast<const float*>(analyzerResult.lowBands.data()), 
 			static_cast<int>(analyzerResult.lowBands.size()), 
 			0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
 
-		// ’†ü”g”‘Ñˆæ‚ÌƒŒƒxƒ‹•\¦
+		// ä¸­å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ¬ãƒ™ãƒ«è¡¨ç¤º
 		ImGui::PlotLines("Mid Bands",
 			reinterpret_cast<const float*>(analyzerResult.midBands.data()),
 			static_cast<int>(analyzerResult.midBands.size()),
 			0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
 
-		// ‚ü”g”‘Ñˆæ‚ÌƒŒƒxƒ‹•\¦
+		// é«˜å‘¨æ³¢æ•°å¸¯åŸŸã®ãƒ¬ãƒ™ãƒ«è¡¨ç¤º
 		ImGui::PlotLines("High Bands",
 			reinterpret_cast<const float*>(analyzerResult.highBands.data()),
 			static_cast<int>(analyzerResult.highBands.size()),
 			0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
 
-		// ‘S‘Ì‚ÌRMS’l
+		// å…¨ä½“ã®RMSå€¤
 		ImGui::Text("Overall RMS: %.4f", analyzerResult.overallRMS);
 	}
 

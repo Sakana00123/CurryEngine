@@ -16,25 +16,25 @@ public:
 #endif // USE_IMGUI
 
 
-	/** @brief �J�n�ʒu�̐ݒ�B*/
+	/** @brief 開始位置の設定。*/
 	void SetFrom(const XMFLOAT2& v) { from = v; }
 
-	/** @brief �I���ʒu�̐ݒ�B*/
+	/** @brief 終了位置の設定。*/
 	void SetTo(const XMFLOAT2& v) { to = v; }
 
-	/** @brief �J�n�ʒu�̎擾�B*/
+	/** @brief 開始位置の取得。*/
 	XMFLOAT2 GetFrom() const { return from; }
 
-	/** @brief �I���ʒu�̎擾�B*/
+	/** @brief 終了位置の取得。*/
 	XMFLOAT2 GetTo() const { return to; }
 
-	/** @brief �C�[�W���O�n���h����ݒ肵�܂��B*/
+	/** @brief イージングハンドラを設定します。*/
 	void SetHandler(const EasingHandler& h) { handler = h; }
 
-	/** @brief ��X�P�[�����Ԃ��g�p���邩��ݒ肵�܂��B*/
+	/** @brief 非スケール時間を使用するかを設定します。*/
 	void SetUseUnscaledTime(bool use) { useUnscaledTime = use; }
 
-	/** @brief ��X�P�[�����Ԃ��g�p���邩��Ԃ��܂��B*/
+	/** @brief 非スケール時間を使用するかを返します。*/
 	bool UsesUnscaledTime() const { return useUnscaledTime; }
 };
 

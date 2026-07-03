@@ -19,15 +19,15 @@ namespace CurryEngine
 
 		char buffer[256];
 		strncpy_s(buffer, mixed ? "---" : value.c_str(), sizeof(buffer));
-		buffer[sizeof(buffer) - 1] = '\0'; // ƒoƒbƒtƒ@‚ÌÅŒã‚ğ null ‚ÅI’[
+		buffer[sizeof(buffer) - 1] = '\0'; // ãƒãƒƒãƒ•ã‚¡ã®æœ€å¾Œã‚’ null ã§çµ‚ç«¯
 		bool edited = ImGui::InputText("##string", buffer, sizeof(buffer));
 		if (edited)
 		{
-			// ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—B•¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚·‚×‚Ä‚Ì‘ÎÛ‚É‘Î‚µ‚ÄV‚µ‚¢’l‚ğ“K—p‚µ‚Ü‚·B
+			// å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã€‚è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ã™ã¹ã¦ã®å¯¾è±¡ã«å¯¾ã—ã¦æ–°ã—ã„å€¤ã‚’é©ç”¨ã—ã¾ã™ã€‚
 			PropertyDrawHelper::ApplyToAll<std::string>(context, prop, std::string(buffer));
 		}
 
-		// ’l‚ÌƒRƒ~ƒbƒgˆ—Bƒ†[ƒU[‚ª•ÒW‚ğŠ®—¹‚µ‚½‚Æ‚«‚ÉAUndo/Redo ƒRƒ}ƒ“ƒh‚ğ”­s‚µ‚Ü‚·B
+		// å€¤ã®ã‚³ãƒŸãƒƒãƒˆå‡¦ç†ã€‚ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç·¨é›†ã‚’å®Œäº†ã—ãŸã¨ãã«ã€Undo/Redo ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œã—ã¾ã™ã€‚
 		PropertyDrawHelper::CommitEdit<std::string>(prop, context, m_state, std::string(buffer),
 			[](const std::string& v) {
 				return v;
@@ -36,11 +36,11 @@ namespace CurryEngine
 				return a == b;
 			},
 			[&]() {
-				// •ÒWŠJn‘O‚Ìó‘Ô‚ğ•Û‘¶‚·‚éŠÖ”B‚±‚±‚Å‚ÍAŒ»İ‚Ì std::string ’l‚ğ m_state ‚É•Û‘¶‚µ‚Ä‚¢‚Ü‚·B
+				// ç·¨é›†é–‹å§‹å‰ã®çŠ¶æ…‹ã‚’ä¿å­˜ã™ã‚‹é–¢æ•°ã€‚ã“ã“ã§ã¯ã€ç¾åœ¨ã® std::string å€¤ã‚’ m_state ã«ä¿å­˜ã—ã¦ã„ã¾ã™ã€‚
 				return ImGui::IsItemActivated();
 			},
 			[&]() {
-				// ƒRƒ~ƒbƒg‚µ‚Ä‚à‚¢‚¢‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚éŠÖ”B‚±‚±‚Å‚Íí‚É true ‚ğ•Ô‚µ‚Ä‚¢‚Ü‚·‚ªA•K—v‚É‰‚¶‚ÄğŒ‚ğ’Ç‰Á‚Å‚«‚Ü‚·B
+				// ã‚³ãƒŸãƒƒãƒˆã—ã¦ã‚‚ã„ã„ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹é–¢æ•°ã€‚ã“ã“ã§ã¯å¸¸ã« true ã‚’è¿”ã—ã¦ã„ã¾ã™ãŒã€å¿…è¦ã«å¿œã˜ã¦æ¡ä»¶ã‚’è¿½åŠ ã§ãã¾ã™ã€‚
 				return ImGui::IsItemDeactivatedAfterEdit();
 			}
 		);

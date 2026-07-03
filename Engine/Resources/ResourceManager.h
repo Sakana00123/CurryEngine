@@ -9,83 +9,83 @@
 class ResourceManager
 {
 public:
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	static void Initialize();
 
-	// I—¹ˆ—
+	// çµ‚äº†å‡¦ç†
 	static void Finalize();
 
-	// ƒŠƒ\[ƒX‚ÌŠÄ‹“o˜^iƒzƒbƒgƒŠƒ[ƒh—pj
+	// ãƒªã‚½ãƒ¼ã‚¹ã®ç›£è¦–ç™»éŒ²ï¼ˆãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ç”¨ï¼‰
 	static void Register(const std::string& filePath, std::shared_ptr<Resource> resource);
 
-	// w’è‚µ‚½Œ^‚ÅƒŠƒ\[ƒX‚ğƒ[ƒh
+	// æŒ‡å®šã—ãŸå‹ã§ãƒªã‚½ãƒ¼ã‚¹ã‚’ãƒ­ãƒ¼ãƒ‰
 	template<typename T>
 	static std::shared_ptr<T> Load(const std::string& path)
 	{
-		// V‚µ‚¢ƒŠƒ\[ƒX‚ğì¬
+		// æ–°ã—ã„ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆ
 		std::shared_ptr<Resource> resource = std::make_shared<T>();
 
 		std::filesystem::path filePath(path);
 #ifndef _DEBUG
-		// ƒŠƒŠ[ƒXƒrƒ‹ƒh‚Å‚ÍCSOƒtƒ@ƒCƒ‹‚Ì‚İ“Ç‚İ‚Ş
+		// ãƒªãƒªãƒ¼ã‚¹ãƒ“ãƒ«ãƒ‰ã§ã¯CSOãƒ•ã‚¡ã‚¤ãƒ«ã®ã¿èª­ã¿è¾¼ã‚€
 		if (filePath.extension() == ".hlsl")
 		{
-			// CSOƒtƒ@ƒCƒ‹‚ÌƒpƒX‚ğ¶¬
+			// CSOãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‚’ç”Ÿæˆ
 			filePath = std::filesystem::path(EnginePaths::ShadersDataDir) / (filePath.stem().string() + ".cso");
 		}
 #endif // _DEBUG
 
 		if (resource->LoadFromFile(filePath.string())) {
-			// ƒ[ƒh¬Œ÷‚µ‚½‚çŠÇ—‚É’Ç‰Á
+			// ãƒ­ãƒ¼ãƒ‰æˆåŠŸã—ãŸã‚‰ç®¡ç†ã«è¿½åŠ 
 			Register(filePath.string(), resource);
 			return std::dynamic_pointer_cast<T>(resource);
 		}
-		return nullptr; // ƒ[ƒh¸”s
+		return nullptr; // ãƒ­ãƒ¼ãƒ‰å¤±æ•—
 	}
 
-	// w’è‚µ‚½Œ^‚ÅƒŠƒ\[ƒX‚ğƒ[ƒhi‚·‚Å‚Éƒ[ƒh‚³‚ê‚Ä‚¢‚éê‡‚ÍŠù‘¶‚ÌƒŠƒ\[ƒX‚ğ•Ô‚·j
+	// æŒ‡å®šã—ãŸå‹ã§ãƒªã‚½ãƒ¼ã‚¹ã‚’ãƒ­ãƒ¼ãƒ‰ï¼ˆã™ã§ã«ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯æ—¢å­˜ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’è¿”ã™ï¼‰
 	template<typename T>
 	static std::shared_ptr<T> GetOrLoad(const std::string& path)
 	{
-		// ‚·‚Å‚Éƒ[ƒh‚³‚ê‚Ä‚¢‚é‚©Šm”F
+		// ã™ã§ã«ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 		auto it = _resources.find(path);
 		if (it != _resources.end()) {
-			return std::dynamic_pointer_cast<T>(it->second); // Šù‘¶‚ÌƒŠƒ\[ƒX‚ğ•Ô‚·
+			return std::dynamic_pointer_cast<T>(it->second); // æ—¢å­˜ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’è¿”ã™
 		}
-		// V‚µ‚¢ƒŠƒ\[ƒX‚ğì¬
+		// æ–°ã—ã„ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆ
 		std::shared_ptr<Resource> resource = std::make_shared<T>();
 
 		std::filesystem::path filePath(path);
 #ifndef _DEBUG
-		// ƒŠƒŠ[ƒXƒrƒ‹ƒh‚Å‚ÍCSOƒtƒ@ƒCƒ‹‚Ì‚İ“Ç‚İ‚Ş
+		// ãƒªãƒªãƒ¼ã‚¹ãƒ“ãƒ«ãƒ‰ã§ã¯CSOãƒ•ã‚¡ã‚¤ãƒ«ã®ã¿èª­ã¿è¾¼ã‚€
 		if (filePath.extension() == ".hlsl")
 		{
-			// CSOƒtƒ@ƒCƒ‹‚ÌƒpƒX‚ğ¶¬
+			// CSOãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‚’ç”Ÿæˆ
 			filePath = std::filesystem::path(EnginePaths::ShadersDataDir) / (filePath.stem().string() + ".cso");
 		}
 #endif // _DEBUG
 
 		if (resource->LoadFromFile(filePath.string())) {
-			// ƒ[ƒh¬Œ÷‚µ‚½‚çŠÇ—‚É’Ç‰Á
+			// ãƒ­ãƒ¼ãƒ‰æˆåŠŸã—ãŸã‚‰ç®¡ç†ã«è¿½åŠ 
 			Register(filePath.string(), resource);
 			return std::dynamic_pointer_cast<T>(resource);
 		}
-		return nullptr; // ƒ[ƒh¸”s
+		return nullptr; // ãƒ­ãƒ¼ãƒ‰å¤±æ•—
 	}
 
-	// ƒŠƒ\[ƒX‚Ìƒ[ƒhi‚·‚Å‚Éƒ[ƒh‚³‚ê‚Ä‚¢‚éê‡‚ÍŠù‘¶‚ÌƒŠƒ\[ƒX‚ğ•Ô‚·j
+	// ãƒªã‚½ãƒ¼ã‚¹ã®ãƒ­ãƒ¼ãƒ‰ï¼ˆã™ã§ã«ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯æ—¢å­˜ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’è¿”ã™ï¼‰
 	static std::shared_ptr<Resource> Load(const std::string& path);
 
-	// ƒŠƒ\[ƒX‚Ìæ“¾iƒ[ƒh‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·j
+	// ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—ï¼ˆãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™ï¼‰
 	static std::shared_ptr<Resource> Get(const std::string& path);
 
-	// w’è‚µ‚½Œ^‚ÅƒŠƒ\[ƒX‚ğæ“¾iƒ[ƒh‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·j
+	// æŒ‡å®šã—ãŸå‹ã§ãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—ï¼ˆãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™ï¼‰
 	template<typename T>
 	static std::shared_ptr<T> GetAs(const std::string& path) {
 		return std::dynamic_pointer_cast<T>(Get(path));
 	}
 
-	// ƒVƒF[ƒ_[‚Ìƒ[ƒh
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰
 	template<typename T>
 	static std::shared_ptr<T> LoadShader(const std::string& name) {
 #ifdef _DEBUG
@@ -96,7 +96,7 @@ public:
 		return Load<T>(filePath.string());
 	}
 
-	// ƒVƒF[ƒ_[‚Ìƒ[ƒhi‚·‚Å‚Éƒ[ƒh‚³‚ê‚Ä‚¢‚éê‡‚ÍŠù‘¶‚ÌƒŠƒ\[ƒX‚ğ•Ô‚·j
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ­ãƒ¼ãƒ‰ï¼ˆã™ã§ã«ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯æ—¢å­˜ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’è¿”ã™ï¼‰
 	template<typename T>
 	static std::shared_ptr<T> GetOrLoadShader(const std::string& name) {
 #ifdef _DEBUG
@@ -107,7 +107,7 @@ public:
 		return GetOrLoad<T>(filePath.string());
 	}
 
-	// ƒVƒF[ƒ_[‚Ìæ“¾iƒ[ƒh‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·j
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®å–å¾—ï¼ˆãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™ï¼‰
 	template<typename T>
 	static std::shared_ptr<T> GetShader(const std::string& name) {
 #ifdef _DEBUG
@@ -119,7 +119,7 @@ public:
 	}
 
 
-	// w’è‚µ‚½Œ^‚Ì‚·‚×‚Ä‚ÌƒŠƒ\[ƒX‚ğæ“¾
+	// æŒ‡å®šã—ãŸå‹ã®ã™ã¹ã¦ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—
 	template<typename T>
 	static std::vector<std::shared_ptr<T>> GetResourcesOfType() {
 		std::vector<std::shared_ptr<T>> result;
@@ -131,38 +131,38 @@ public:
 		return result;
 	}
 
-	// ƒ[ƒh‚³‚ê‚Ä‚¢‚éƒVƒF[ƒ_[ƒpƒX‚Ìˆê——‚ğæ“¾
+	// ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ‘ã‚¹ã®ä¸€è¦§ã‚’å–å¾—
 	static std::vector<std::string> GetShaderPaths();
 
-	// ƒŠƒ\[ƒX‚ÌƒŠƒ[ƒh
+	// ãƒªã‚½ãƒ¼ã‚¹ã®ãƒªãƒ­ãƒ¼ãƒ‰
 	static void Reload(const std::string& path);
 
-	// ƒŠƒ\[ƒX‚ÌƒAƒ“ƒ[ƒh
+	// ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 	static void Unload(const std::string& path);
 
-	// ‘SƒŠƒ\[ƒX‚ÌƒAƒ“ƒ[ƒh
+	// å…¨ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 	static void UnloadAll();
 
-	// ƒzƒbƒgƒŠƒ[ƒh—p‚ÌXVˆ—
+	// ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ç”¨ã®æ›´æ–°å‡¦ç†
 	static void Update();
 
-	// ƒzƒbƒgƒŠƒ[ƒh—p‚ÌXVˆ—
+	// ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ç”¨ã®æ›´æ–°å‡¦ç†
 	static void UpdateHotReload();
 
-	// ƒVƒF[ƒ_[ƒtƒHƒ‹ƒ_“à‚Ì‚·‚×‚Ä‚ÌƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚©ãƒ«ãƒ€å†…ã®ã™ã¹ã¦ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿
 	static void LoadAllShaders();
 
-	// ƒeƒNƒXƒ`ƒƒƒtƒHƒ‹ƒ_“à‚Ì‚·‚×‚Ä‚ÌƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚©ãƒ«ãƒ€å†…ã®ã™ã¹ã¦ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿
 	static void LoadAllTextures();
 
-	// ƒVƒF[ƒ_[–¼‚ÌƒLƒƒƒbƒVƒ…‚ğXV
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’æ›´æ–°
 	static void UpdateShaderNames();
 private:
-	// ƒtƒ@ƒCƒ‹‚ÌÅIXV“ú‚ğŠÇ—iƒzƒbƒgƒŠƒ[ƒh—pj
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€çµ‚æ›´æ–°æ—¥æ™‚ã‚’ç®¡ç†ï¼ˆãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ç”¨ï¼‰
 	static inline std::unordered_map<std::string, std::filesystem::file_time_type> _files;
 
-	// ƒpƒX‚ğƒL[‚É‚µ‚ÄƒŠƒ\[ƒX‚ğŠÇ—
+	// ãƒ‘ã‚¹ã‚’ã‚­ãƒ¼ã«ã—ã¦ãƒªã‚½ãƒ¼ã‚¹ã‚’ç®¡ç†
 	static inline std::unordered_map<std::string, std::shared_ptr<Resource>> _resources;
 
-	static inline std::vector<std::string> shaderPaths; // ƒ[ƒh‚³‚ê‚Ä‚¢‚éƒVƒF[ƒ_[ƒpƒX‚ÌƒLƒƒƒbƒVƒ…
+	static inline std::vector<std::string> shaderPaths; // ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ‘ã‚¹ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥
 };

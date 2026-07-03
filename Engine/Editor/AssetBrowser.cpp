@@ -29,7 +29,7 @@
 
 void AssetBrowser::Initialize()
 {
-	// ƒAƒZƒbƒgƒuƒ‰ƒEƒU‚Ì‰Šú‰»ˆ—iƒAƒCƒRƒ“‚Ì“Ç‚İ‚İ‚È‚Çj
+	// ã‚¢ã‚»ãƒƒãƒˆãƒ–ãƒ©ã‚¦ã‚¶ã®åˆæœŸåŒ–å‡¦ç†ï¼ˆã‚¢ã‚¤ã‚³ãƒ³ã®èª­ã¿è¾¼ã¿ãªã©ï¼‰
 	currentDirectory = s_AssetPath;
 	LoadTextureFromFile(Graphics::GetDevice(), std::filesystem::path(EnginePaths::IconsDir).append("directoryIcon.png").wstring().c_str(), directoryIcon.ReleaseAndGetAddressOf(), NULL);
 	LoadTextureFromFile(Graphics::GetDevice(), std::filesystem::path(EnginePaths::IconsDir).append("fileIcon.png").wstring().c_str(), fileIcon.ReleaseAndGetAddressOf(), NULL);
@@ -42,9 +42,9 @@ void AssetBrowser::Initialize()
 
 void AssetBrowser::InitializeDropTarget(HWND hwnd)
 {
-	HRESULT hr = OleInitialize(nullptr); // ƒhƒƒbƒvƒ^[ƒQƒbƒg‚Ì‰Šú‰»‚É•K—v
+	HRESULT hr = OleInitialize(nullptr); // ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®åˆæœŸåŒ–ã«å¿…è¦
 
-	oleInitializedHere = (hr == S_OK); // AssetBrowser‚ªOLE‚ğ‰Šú‰»‚µ‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	oleInitializedHere = (hr == S_OK); // AssetBrowserãŒOLEã‚’åˆæœŸåŒ–ã—ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 
 	DropTargetCallbacks callbacks;
 	callbacks.isOverGrid = [](const POINTL& pt)
@@ -59,7 +59,7 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 	};
 	callbacks.onDrop = [](const std::vector<std::filesystem::path>& paths)
 	{
-			isExternalDragActive = false; // ƒhƒƒbƒvŠ®—¹‚µ‚½‚Ì‚Åƒhƒ‰ƒbƒO‚ÍƒAƒNƒeƒBƒu‚Å‚È‚¢
+			isExternalDragActive = false; // ãƒ‰ãƒ­ãƒƒãƒ—å®Œäº†ã—ãŸã®ã§ãƒ‰ãƒ©ãƒƒã‚°ã¯ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§ãªã„
 			bool anySucceeded = false;
 			for (const auto& src : paths)
 			{
@@ -76,7 +76,7 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 
 					//if (auto meta = CurryEngine::Resources::AssetDatabase::Import(dst))
 					//{
-					//	// ƒCƒ“ƒ|[ƒg¬Œ÷‚µ‚½‚çƒCƒ“ƒ|[ƒgİ’èƒEƒBƒ“ƒhƒE‚ğŠJ‚­
+					//	// ã‚¤ãƒ³ãƒãƒ¼ãƒˆæˆåŠŸã—ãŸã‚‰ã‚¤ãƒ³ãƒãƒ¼ãƒˆè¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 					//	CurryEngine::Resources::ImportSettingsWindow::OpenForNewAsset(meta->id);
 					//}
 
@@ -94,12 +94,12 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 	};
 	callbacks.onDragEnter = []()
 		{
-			isExternalDragActive = true; // ƒhƒ‰ƒbƒO‚ªŠJn‚³‚ê‚½‚Ì‚ÅƒAƒNƒeƒBƒu‚É‚·‚é
+			isExternalDragActive = true; // ãƒ‰ãƒ©ãƒƒã‚°ãŒé–‹å§‹ã•ã‚ŒãŸã®ã§ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
 			//Console::Log("External drag entered.");
 		};
 	callbacks.onDragLeave = []()
 		{
-			isExternalDragActive = false; // ƒhƒ‰ƒbƒO‚ªI—¹‚µ‚½‚Ì‚ÅƒAƒNƒeƒBƒu‚Å‚È‚¢
+			isExternalDragActive = false; // ãƒ‰ãƒ©ãƒƒã‚°ãŒçµ‚äº†ã—ãŸã®ã§ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§ãªã„
 			//Console::Log("External drag left.");
 		};
 
@@ -117,7 +117,7 @@ void AssetBrowser::FinalizeDropTarget(HWND hwnd)
 		dropTarget->Release();
 		dropTarget = nullptr;
 	}
-	// AssetBrowser‚ªOLE‚ğ‰Šú‰»‚µ‚Ä‚¢‚½ê‡‚Ì‚İAOleUninitialize‚ğŒÄ‚Ño‚·
+	// AssetBrowserãŒOLEã‚’åˆæœŸåŒ–ã—ã¦ã„ãŸå ´åˆã®ã¿ã€OleUninitializeã‚’å‘¼ã³å‡ºã™
 	if (oleInitializedHere)
 	{
 		OleUninitialize();
@@ -129,20 +129,20 @@ void AssetBrowser::OnDropFiles(HWND hwnd, HDROP hDrop)
 {
 #if 0
 
-	// „Ÿ„Ÿ ƒhƒƒbƒvÀ•W‚ªƒAƒZƒbƒgƒOƒŠƒbƒh“à‚©Šm”F „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
+	// â”€â”€ ãƒ‰ãƒ­ãƒƒãƒ—åº§æ¨™ãŒã‚¢ã‚»ãƒƒãƒˆã‚°ãƒªãƒƒãƒ‰å†…ã‹ç¢ºèª â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	POINT dropPoint;
-	DragQueryPoint(hDrop, &dropPoint);          // ƒNƒ‰ƒCƒAƒ“ƒgÀ•W
-	ClientToScreen(hwnd, &dropPoint);           // ƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·
+	DragQueryPoint(hDrop, &dropPoint);          // ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™
+	ClientToScreen(hwnd, &dropPoint);           // ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›
 
 	if (!PtInRect(&assetGridScreenRect, dropPoint))
 	{
-		// ƒOƒŠƒbƒhŠO‚Ö‚Ìƒhƒƒbƒv‚Í–³‹
+		// ã‚°ãƒªãƒƒãƒ‰å¤–ã¸ã®ãƒ‰ãƒ­ãƒƒãƒ—ã¯ç„¡è¦–
 		DragFinish(hDrop);
 		Console::Log("Drop ignored: outside asset grid.");
 		return;
 	}
 
-	// „Ÿ„Ÿ ƒtƒ@ƒCƒ‹ƒpƒXûW „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
+	// â”€â”€ ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹åé›† â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	UINT fileCount = DragQueryFileW(hDrop, 0xFFFFFFFF, nullptr, 0);
 
 	std::vector<fs::path> droppedPaths;
@@ -156,19 +156,19 @@ void AssetBrowser::OnDropFiles(HWND hwnd, HDROP hDrop)
 	}
 	DragFinish(hDrop);
 
-	// currentDirectory ‚ÖƒRƒs[
+	// currentDirectory ã¸ã‚³ãƒ”ãƒ¼
 	bool anySucceeded = false;
 	for (const auto& src : droppedPaths)
 	{
 		fs::path dst = currentDirectory / src.filename();
 
-		// “¯–¼ƒtƒ@ƒCƒ‹‚ªŠù‚É‚ ‚éê‡‚Íƒ†ƒj[ƒN‚È–¼‘O‚ğ¶¬
+		// åŒåãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«ã‚ã‚‹å ´åˆã¯ãƒ¦ãƒ‹ãƒ¼ã‚¯ãªåå‰ã‚’ç”Ÿæˆ
 		if (fs::exists(dst))
 			dst = MakeUniqueFilePath(currentDirectory,
 				src.stem().string(), src.extension().string());
 		try
 		{
-			// ƒfƒBƒŒƒNƒgƒŠ‚ÍƒtƒHƒ‹ƒ_‚²‚ÆÄ‹AƒRƒs[
+			// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¯ãƒ•ã‚©ãƒ«ãƒ€ã”ã¨å†å¸°ã‚³ãƒ”ãƒ¼
 			if (fs::is_directory(src))
 				fs::copy(src, dst, fs::copy_options::recursive);
 			else
@@ -203,13 +203,13 @@ void AssetBrowser::DrawGUI()
 		ImGui::Begin("Asset Browser", &isOpen);
 		ImGuiWindow* window = ImGui::GetCurrentWindow();
 #if 1
-		// currentDirectory‚ª‹ó‚Ìê‡‚ÍAssetsƒtƒHƒ‹ƒ_‚ğ•\¦‚·‚é
+		// currentDirectoryãŒç©ºã®å ´åˆã¯Assetsãƒ•ã‚©ãƒ«ãƒ€ã‚’è¡¨ç¤ºã™ã‚‹
 		if (currentDirectory.empty())
 		{
 			currentDirectory = s_AssetPath;
 		}
 
-		//ŒŸõƒo[
+		//æ¤œç´¢ãƒãƒ¼
 		static char searchBuffer[128] = "";
 		ImGui::InputTextWithHint("##SearchAssets", "Search assets...", searchBuffer, IM_ARRAYSIZE(searchBuffer));
 
@@ -221,13 +221,13 @@ void AssetBrowser::DrawGUI()
 			ImGui::TableSetupColumn("Assets");
 			ImGui::TableNextRow();
 
-			//¶‘¤FƒtƒHƒ‹ƒ_ŠK‘w
+			//å·¦å´ï¼šãƒ•ã‚©ãƒ«ãƒ€éšå±¤
 			ImGui::TableSetColumnIndex(0);
 			ImGui::BeginChild("FolderPanel");
 			DrawFolderTree("./", currentDirectory);
 			ImGui::EndChild();
 
-			//‰E‘¤FƒAƒZƒbƒgƒOƒŠƒbƒh
+			//å³å´ï¼šã‚¢ã‚»ãƒƒãƒˆã‚°ãƒªãƒƒãƒ‰
 			ImGui::TableSetColumnIndex(1);
 			ImGui::BeginChild("AssetPanel");
 			DrawUnityPath(currentDirectory);
@@ -269,7 +269,7 @@ void AssetBrowser::DrawGUI()
 			ID3D11ShaderResourceView* iconImage = isDirectory ? directoryIcon.Get() : fileIcon.Get();
 			std::wstring extension = relativePath.extension().wstring();
 			if (extension == L".png" || extension == L".jpeg" || extension == L".DDS" || extension == L".dds" || extension == L".tif") {
-				//Œ©‚Â‚©‚Á‚½‚ç
+				//è¦‹ã¤ã‹ã£ãŸã‚‰
 				if (images.find(filePathWString) != images.end()) {
 					iconImage = images.at(filePathWString).Get();
 				}
@@ -297,34 +297,34 @@ void AssetBrowser::DrawGUI()
 
 #endif // 0
 
-		// ImGui::End() ‚ğŒÄ‚Ô‘O‚É AssetBrowser ƒEƒBƒ“ƒhƒE‘S‘ÌiqƒEƒBƒ“ƒhƒEŠÜ‚Şj‚ÌƒtƒH[ƒJƒXó‘Ô‚ğæ“¾
+		// ImGui::End() ã‚’å‘¼ã¶å‰ã« AssetBrowser ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å…¨ä½“ï¼ˆå­ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å«ã‚€ï¼‰ã®ãƒ•ã‚©ãƒ¼ã‚«ã‚¹çŠ¶æ…‹ã‚’å–å¾—
 		bool isAssetBrowserFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows);
 
 		ImGui::End();
 
-		// -- ƒL[ƒ{[ƒhƒVƒ‡[ƒgƒJƒbƒg ---------------------------------------
-		// ƒeƒLƒXƒg“ü—Í’†EƒŠƒl[ƒ€’†EƒEƒBƒ“ƒhƒE‚ªƒtƒH[ƒJƒX‚³‚ê‚Ä‚È‚¢‚Æ‚«‚ÍƒVƒ‡[ƒgƒJƒbƒg‚ğ–³Œø‚É‚·‚é
+		// -- ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆ ---------------------------------------
+		// ãƒ†ã‚­ã‚¹ãƒˆå…¥åŠ›ä¸­ãƒ»ãƒªãƒãƒ¼ãƒ ä¸­ãƒ»ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚Œã¦ãªã„ã¨ãã¯ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚’ç„¡åŠ¹ã«ã™ã‚‹
 		if ((!ImGui::GetIO().WantTextInput && !isRenaming) && isAssetBrowserFocused)
 		{
-			// Ctrl + A‚Å‘S‘I‘ğ
+			// Ctrl + Aã§å…¨é¸æŠ
 			if (ImGui::GetIO().KeyCtrl && ImGui::IsKeyPressed(ImGuiKey_A, false))
 			{
-				// Œ»İ•\¦‚³‚ê‚Ä‚¢‚éƒAƒZƒbƒg‚ğ‚·‚×‚Ä‘I‘ğ‚·‚é
+				// ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚»ãƒƒãƒˆã‚’ã™ã¹ã¦é¸æŠã™ã‚‹
 				for (const auto& path : lastResultOrder)
 					selectedAssets.insert(path);
 				if (!selectedAssets.empty())
-					lastClickedAsset = lastResultOrder.back(); // Å‰‚Ì‘I‘ğ‚ğŠî€“_‚É‚·‚é
+					lastClickedAsset = lastResultOrder.back(); // æœ€åˆã®é¸æŠã‚’åŸºæº–ç‚¹ã«ã™ã‚‹
 			}
 
 			if (!lastClickedAsset.empty())
 			{
-				// F2ƒL[‚ÅƒŠƒl[ƒ€ŠJn
+				// F2ã‚­ãƒ¼ã§ãƒªãƒãƒ¼ãƒ é–‹å§‹
 				if (ImGui::IsKeyPressed(ImGuiKey_F2, false))
 				{
 					StartRename(lastClickedAsset);
 				}
 
-				// DeleteƒL[‚ÅíœŠm”Fƒ‚[ƒ_ƒ‹‚ğ•\¦
+				// Deleteã‚­ãƒ¼ã§å‰Šé™¤ç¢ºèªãƒ¢ãƒ¼ãƒ€ãƒ«ã‚’è¡¨ç¤º
 				if (ImGui::IsKeyPressed(ImGuiKey_Delete, false) && !selectedAssets.empty())
 				{
 					StartDelete(lastClickedAsset);
@@ -332,19 +332,19 @@ void AssetBrowser::DrawGUI()
 			}
 		}
 
-		// -- ƒ‚[ƒ_ƒ‹‚Ì•`‰æ‚ÍƒEƒBƒ“ƒhƒE‚Ì•`‰æ‚Æ‚Í•ª‚¯‚ÄAí‚ÉÅŒã‚És‚¤ -----------------
+		// -- ãƒ¢ãƒ¼ãƒ€ãƒ«ã®æç”»ã¯ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æç”»ã¨ã¯åˆ†ã‘ã¦ã€å¸¸ã«æœ€å¾Œã«è¡Œã† -----------------
 
-		// ƒXƒNƒŠƒvƒgì¬ƒ‚[ƒ_ƒ‹
+		// ã‚¹ã‚¯ãƒªãƒ—ãƒˆä½œæˆãƒ¢ãƒ¼ãƒ€ãƒ«
 		DrawScriptCreationModal();
-		// HLSLƒVƒF[ƒ_[ì¬ƒ‚[ƒ_ƒ‹
+		// HLSLã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ä½œæˆãƒ¢ãƒ¼ãƒ€ãƒ«
 		DrawHlslShaderCreationModal();
-		// ƒV[ƒ“ì¬ƒ‚[ƒ_ƒ‹
+		// ã‚·ãƒ¼ãƒ³ä½œæˆãƒ¢ãƒ¼ãƒ€ãƒ«
 		DrawNewSceneCreationModal();
-		// íœŠm”Fƒ‚[ƒ_ƒ‹
+		// å‰Šé™¤ç¢ºèªãƒ¢ãƒ¼ãƒ€ãƒ«
 		DrawDeleteConfirmModal();
 	};
 
-	// TODO : MaterialEditor‚ÌDrawGUI‚ğAssetBrowser‚ÌDrawGUI‚Ì’†‚ÅŒÄ‚Ô‚Ì‚Í“KØ‚Å‚Í‚È‚¢B
+	// TODO : MaterialEditorã®DrawGUIã‚’AssetBrowserã®DrawGUIã®ä¸­ã§å‘¼ã¶ã®ã¯é©åˆ‡ã§ã¯ãªã„ã€‚
 	if (materialEditor)
 	{
 		materialEditor->DrawGUI(nullptr);
@@ -356,15 +356,15 @@ void AssetBrowser::DrawGUI()
 
 void AssetBrowser::Refresh()
 {
-	// ƒLƒƒƒbƒVƒ…‚ğƒNƒŠƒA‚µ‚ÄÄ“Ç‚İ‚İ‚·‚é
+	// ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ã‚¯ãƒªã‚¢ã—ã¦å†èª­ã¿è¾¼ã¿ã™ã‚‹
 	lastResultOrder.clear();
 	selectedAssets.clear();
 
-	// ƒLƒƒƒbƒVƒ…‚ğƒNƒŠƒA
+	// ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ã‚¯ãƒªã‚¢
 	cacheSearchResults.clear();
 
 #ifdef _DEBUG
-	// ./Assets/ModelsˆÈ‰º‚Ì‚·‚×‚Ä‚Ìcereal/batchCerealƒtƒ@ƒCƒ‹‚ğíœiŒÃ‚¢ƒLƒƒƒbƒVƒ…‚ªc‚Á‚Ä‚¢‚é‚Æ–â‘è‚É‚È‚é‚½‚ßj
+	// ./Assets/Modelsä»¥ä¸‹ã®ã™ã¹ã¦ã®cereal/batchCerealãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ï¼ˆå¤ã„ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒæ®‹ã£ã¦ã„ã‚‹ã¨å•é¡Œã«ãªã‚‹ãŸã‚ï¼‰
 	for (const auto& entry : fs::recursive_directory_iterator("./Assets/Models"))
 	{
 		if (entry.is_regular_file())
@@ -391,16 +391,16 @@ void AssetBrowser::StartRename(const fs::path& assetPath)
 
 void AssetBrowser::StartDelete(const fs::path& assetPath)
 {
-	// •¡”‘I‘ğ’†‚Í‚·‚×‚Ä‚ğíœ‘ÎÛ‚Æ‚µ‚Äƒ‚[ƒ_ƒ‹‚ğ•\¦‚·‚é
-	// deleteTargetAsset‚Íƒ‚[ƒ_ƒ‹‚Åg—p‚·‚é‚½‚ß‚Ì•Ï”‚È‚Ì‚ÅA
-	// •¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚Í“Á‚ÉˆÓ–¡‚ğ‚½‚È‚¢‚ªA•Ö‹XãÅŒã‚ÉƒNƒŠƒbƒN‚³‚ê‚½ƒAƒZƒbƒg‚ğƒZƒbƒg‚µ‚Ä‚¨‚­
+	// è¤‡æ•°é¸æŠä¸­ã¯ã™ã¹ã¦ã‚’å‰Šé™¤å¯¾è±¡ã¨ã—ã¦ãƒ¢ãƒ¼ãƒ€ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹
+	// deleteTargetAssetã¯ãƒ¢ãƒ¼ãƒ€ãƒ«ã§ä½¿ç”¨ã™ã‚‹ãŸã‚ã®å¤‰æ•°ãªã®ã§ã€
+	// è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ç‰¹ã«æ„å‘³ã‚’æŒãŸãªã„ãŒã€ä¾¿å®œä¸Šæœ€å¾Œã«ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆã‚’ã‚»ãƒƒãƒˆã—ã¦ãŠã
 	showDeleteConfirmModal = true;
 	deleteTargetAsset = assetPath;
 }
 
 void AssetBrowser::ShowScriptCreationModal(const fs::path& initDir)
 {
-	// ƒ‚[ƒ_ƒ‹‚ğ•\¦‚·‚é‚½‚ß‚Ìƒtƒ‰ƒO‚Æ‰ŠúƒfƒBƒŒƒNƒgƒŠ‚ğİ’è
+	// ãƒ¢ãƒ¼ãƒ€ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ã¨åˆæœŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’è¨­å®š
 	showScriptCreationModal = true;
 	scriptCreationInitDir = initDir;
 }
@@ -410,20 +410,20 @@ void AssetBrowser::CreateCSharpScript(const fs::path& directory, const std::stri
 	fs::path newScriptPath = MakeUniqueFilePath(directory, scriptName);
 
 	if (fs::exists(newScriptPath))
-	{ // “¯–¼‚Ìƒtƒ@ƒCƒ‹‚ªŠù‚É‘¶İ‚·‚éê‡‚ÍƒGƒ‰[‚ğ•\¦‚µ‚Äˆ—‚ğI—¹
-		LOG_ERROR(u8"“¯‚¶–¼‘O‚Ìƒtƒ@ƒCƒ‹‚ª‚·‚Å‚É‘¶İ‚µ‚Ü‚·: " + newScriptPath.u8string());
+	{ // åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«å­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¡¨ç¤ºã—ã¦å‡¦ç†ã‚’çµ‚äº†
+		LOG_ERROR(u8"åŒã˜åå‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒã™ã§ã«å­˜åœ¨ã—ã¾ã™: " + newScriptPath.u8string());
 		return;
 	}
 	if (!newScriptPath.has_stem() || newScriptPath.extension() != ".cs")
-	{ // ƒtƒ@ƒCƒ‹–¼‚ª–³Œø‚Èê‡‚ÍƒGƒ‰[‚ğ•\¦‚µ‚Äˆ—‚ğI—¹
-		LOG_ERROR(u8"ƒXƒNƒŠƒvƒg–¼‚ª•s³‚Å‚·Bƒtƒ@ƒCƒ‹‚ÌŠg’£q‚Í .cs ‚Å‚ ‚é•K—v‚ª‚ ‚è‚Ü‚·B");
+	{ // ãƒ•ã‚¡ã‚¤ãƒ«åãŒç„¡åŠ¹ãªå ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¡¨ç¤ºã—ã¦å‡¦ç†ã‚’çµ‚äº†
+		LOG_ERROR(u8"ã‚¹ã‚¯ãƒªãƒ—ãƒˆåãŒä¸æ­£ã§ã™ã€‚ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã¯ .cs ã§ã‚ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚");
 		return;
 	}
 
 	std::ofstream newScriptFile(newScriptPath);
 	if (newScriptFile.is_open())
 	{
-		// ƒXƒNƒŠƒvƒgƒeƒ“ƒvƒŒ[ƒg‚Ì“à—e‚ğV‚µ‚¢ƒtƒ@ƒCƒ‹‚É‘‚«‚Ş
+		// ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å†…å®¹ã‚’æ–°ã—ã„ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚€
 		newScriptFile << "// This is a generated C# script.\n";
 		newScriptFile << "using CurryEngine;\n\n";
 		newScriptFile << "public class " << newScriptPath.stem().string() << " : Behaviour\n";
@@ -442,7 +442,7 @@ void AssetBrowser::CreateCSharpScript(const fs::path& directory, const std::stri
 		newScriptFile.close();
 
 		Console::Log("Created new script: " + newScriptPath.string());
-		Refresh(); // ƒLƒƒƒbƒVƒ…‚ğƒNƒŠƒA‚µ‚ÄV‚µ‚¢ƒXƒNƒŠƒvƒg‚ªƒAƒZƒbƒgƒuƒ‰ƒEƒU‚É•\¦‚³‚ê‚é‚æ‚¤‚É‚·‚é
+		Refresh(); // ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ã‚¯ãƒªã‚¢ã—ã¦æ–°ã—ã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒã‚¢ã‚»ãƒƒãƒˆãƒ–ãƒ©ã‚¦ã‚¶ã«è¡¨ç¤ºã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹
 	}
 	else
 	{
@@ -460,22 +460,22 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 {
 	fs::path newShaderPath = MakeUniqueFilePath(directory, shaderName, extension);
 	if (fs::exists(newShaderPath))
-	{ // “¯–¼‚Ìƒtƒ@ƒCƒ‹‚ªŠù‚É‘¶İ‚·‚éê‡‚ÍƒGƒ‰[‚ğ•\¦‚µ‚Äˆ—‚ğI—¹
+	{ // åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«å­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¡¨ç¤ºã—ã¦å‡¦ç†ã‚’çµ‚äº†
 		Console::LogError("A file with the same name already exists: " + newShaderPath.string());
 		return;
 	}
 	if (!newShaderPath.has_stem())
-	{ // ƒtƒ@ƒCƒ‹–¼‚ª–³Œø‚Èê‡‚ÍƒGƒ‰[‚ğ•\¦‚µ‚Äˆ—‚ğI—¹
+	{ // ãƒ•ã‚¡ã‚¤ãƒ«åãŒç„¡åŠ¹ãªå ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¡¨ç¤ºã—ã¦å‡¦ç†ã‚’çµ‚äº†
 		Console::LogError("Invalid shader name. The file extension must be .hlsl");
 		return;
 	}
 	std::ofstream newShaderFile(newShaderPath);
 	if (newShaderFile.is_open())
 	{
-		char shaderType[3] = {}; // ’¸“_ƒVƒF[ƒ_[‚È‚ç "vs", ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚È‚ç "ps"AƒWƒIƒƒgƒŠƒVƒF[ƒ_[‚È‚ç "gs"AƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_[‚È‚ç "cs" ‚ğ shaderType ‚ÉƒZƒbƒg‚·‚é
+		char shaderType[3] = {}; // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãªã‚‰ "vs", ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãªã‚‰ "ps"ã€ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãªã‚‰ "gs"ã€ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãªã‚‰ "cs" ã‚’ shaderType ã«ã‚»ãƒƒãƒˆã™ã‚‹
 		std::string lowerStem = newShaderPath.stem().string();
 		std::transform(lowerStem.begin(), lowerStem.end(), lowerStem.begin(), ::tolower);
-		// stem‚Ì––”ö2•¶š‚ğŒ©‚ÄAshaderType‚ğŒˆ’è‚·‚é
+		// stemã®æœ«å°¾2æ–‡å­—ã‚’è¦‹ã¦ã€shaderTypeã‚’æ±ºå®šã™ã‚‹
 		if (lowerStem.size() >= 2)
 		{
 			std::string suffix = lowerStem.substr(lowerStem.size() - 2);
@@ -489,10 +489,10 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 				strcpy_s(shaderType, "cs");
 		}
 
-		// ƒVƒF[ƒ_[ƒeƒ“ƒvƒŒ[ƒg‚Ì“à—e‚ğV‚µ‚¢ƒtƒ@ƒCƒ‹‚É‘‚«‚Ş(shaderType‚É‰‚¶‚Ä“à—e‚ğ•Ï‚¦‚é)
+		// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å†…å®¹ã‚’æ–°ã—ã„ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚€(shaderTypeã«å¿œã˜ã¦å†…å®¹ã‚’å¤‰ãˆã‚‹)
 		switch (shaderType[0])
 		{
-			case 'v': // ’¸“_ƒVƒF[ƒ_[
+			case 'v': // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 				newShaderFile << "// Vertex Shader Template\n";
 				newShaderFile << "struct VSInput\n";
 				newShaderFile << "{\n";
@@ -513,7 +513,7 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 				newShaderFile << "    return output;\n";
 				newShaderFile << "}\n";
 				break;
-			case 'p': // ƒsƒNƒZƒ‹ƒVƒF[ƒ_[
+			case 'p': // ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 				newShaderFile << "// Pixel Shader Template\n";
 				newShaderFile << "struct PSInput\n";
 				newShaderFile << "{\n";
@@ -527,7 +527,7 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 				newShaderFile << "    return float4(1, 0, 1, 1); // Magenta for debugging\n";
 				newShaderFile << "}\n";
 				break;
-			case 'g': // ƒWƒIƒƒgƒŠƒVƒF[ƒ_[
+			case 'g': // ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 				newShaderFile << "// Geometry Shader Template\n";
 				newShaderFile << "struct GSInput\n";
 				newShaderFile << "{\n";
@@ -541,7 +541,7 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 				newShaderFile << "    // TODO: Implement geometry shader logic here\n";
 				newShaderFile << "}\n";
 				break;
-			case 'c': // ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_[
+			case 'c': // ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 				newShaderFile << "// Compute Shader Template\n";
 				newShaderFile << "[numthreads(8, 8, 1)]\n";
 				newShaderFile << "void main(uint3 DTid : SV_DispatchThreadID)\n";
@@ -549,7 +549,7 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 				newShaderFile << "    // TODO: Implement compute shader logic here\n";
 				newShaderFile << "}\n";
 				break;
-			default: // •s–¾‚Èƒ^ƒCƒv
+			default: // ä¸æ˜ãªã‚¿ã‚¤ãƒ—
 				newShaderFile << "// HLSL Shader Template\n";
 				newShaderFile << "// TODO: Implement shader logic here\n";
 				break;
@@ -561,19 +561,19 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 
 		if (extension == ".hlsl")
 		{
-			// V‚µ‚¢ƒVƒF[ƒ_[‚ğƒŠƒ\[ƒXƒ}ƒl[ƒWƒƒ[‚Éƒ[ƒh‚µ‚Ä“o˜^‚·‚é
+			// æ–°ã—ã„ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ãƒªã‚½ãƒ¼ã‚¹ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã«ãƒ­ãƒ¼ãƒ‰ã—ã¦ç™»éŒ²ã™ã‚‹
 			ResourceManager::Load(newShaderPath.string());
 			ResourceManager::LoadAllShaders();
 		}
 
-		// V‚µ‚¢ƒVƒF[ƒ_[‚ğƒvƒƒWƒFƒNƒg‚É“o˜^‚·‚é‚½‚ß‚ÌƒLƒ…[‚É’Ç‰Á
+		// æ–°ã—ã„ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«ç™»éŒ²ã™ã‚‹ãŸã‚ã®ã‚­ãƒ¥ãƒ¼ã«è¿½åŠ 
 		VcxprojHelper::EnqueueShaderRegistration(newShaderPath);
 
-		Refresh(); // ƒLƒƒƒbƒVƒ…‚ğƒNƒŠƒA‚µ‚ÄV‚µ‚¢ƒVƒF[ƒ_[‚ªƒAƒZƒbƒgƒuƒ‰ƒEƒU‚É•\¦‚³‚ê‚é‚æ‚¤‚É‚·‚é
+		Refresh(); // ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ã‚¯ãƒªã‚¢ã—ã¦æ–°ã—ã„ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒã‚¢ã‚»ãƒƒãƒˆãƒ–ãƒ©ã‚¦ã‚¶ã«è¡¨ç¤ºã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹
 	}
 	else
 	{
-		LOG_ERROR(u8"ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½: " + newShaderPath.u8string());
+		LOG_ERROR(u8"ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ: " + newShaderPath.u8string());
 	}
 }
 
@@ -586,23 +586,23 @@ void AssetBrowser::ShowNewSceneCreationModal(const fs::path& initDir)
 void AssetBrowser::CreateNewScene(const fs::path& templateScenePath, const fs::path& newScenePath)
 {
 	if (fs::exists(newScenePath))
-	{ // “¯–¼‚Ìƒtƒ@ƒCƒ‹‚ªŠù‚É‘¶İ‚·‚éê‡‚ÍƒGƒ‰[‚ğ•\¦‚µ‚Äˆ—‚ğI—¹
-		LOG_ERROR(u8"“¯‚¶–¼‘O‚Ìƒtƒ@ƒCƒ‹‚ª‚·‚Å‚É‘¶İ‚µ‚Ü‚·: " + newScenePath.u8string());
+	{ // åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«å­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¡¨ç¤ºã—ã¦å‡¦ç†ã‚’çµ‚äº†
+		LOG_ERROR(u8"åŒã˜åå‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒã™ã§ã«å­˜åœ¨ã—ã¾ã™: " + newScenePath.u8string());
 		return;
 	}
 	if (!newScenePath.has_stem() || newScenePath.extension() != ".scene")
-	{ // ƒtƒ@ƒCƒ‹–¼‚ª–³Œø‚Èê‡‚ÍƒGƒ‰[‚ğ•\¦‚µ‚Äˆ—‚ğI—¹
-		LOG_ERROR(u8"ƒV[ƒ“–¼‚ª•s³‚Å‚·Bƒtƒ@ƒCƒ‹Šg’£q‚Í .scene ‚Å‚ ‚é•K—v‚ª‚ ‚è‚Ü‚·B");
+	{ // ãƒ•ã‚¡ã‚¤ãƒ«åãŒç„¡åŠ¹ãªå ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¡¨ç¤ºã—ã¦å‡¦ç†ã‚’çµ‚äº†
+		LOG_ERROR(u8"ã‚·ãƒ¼ãƒ³åãŒä¸æ­£ã§ã™ã€‚ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã¯ .scene ã§ã‚ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚");
 		return;
 	}
 	json j;
-	JsonFileHandler::LoadJsonFromFile(j, templateScenePath.string(), JsonIOFormat::Text); // ƒeƒ“ƒvƒŒ[ƒgƒV[ƒ“‚ÌJSON‚ğ“Ç‚İ‚Ş
+	JsonFileHandler::LoadJsonFromFile(j, templateScenePath.string(), JsonIOFormat::Text); // ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚·ãƒ¼ãƒ³ã®JSONã‚’èª­ã¿è¾¼ã‚€
 	std::string sceneName = newScenePath.stem().string();
-	j["name"] = sceneName; // ƒV[ƒ“–¼‚ğV‚µ‚¢‚à‚Ì‚É•ÏX
-	JsonFileHandler::SaveJsonToFile(j, newScenePath.string()); // JSONƒtƒ@ƒCƒ‹‚É•Û‘¶
-	//SceneManager::Register(newScenePath.string()); // ƒV[ƒ“ƒ}ƒl[ƒWƒƒ[‚É“o˜^
-	SceneManager::ChangeScene(sceneName); // ƒV[ƒ“ƒ}ƒl[ƒWƒƒ[‚ÅØ‚è‘Ö‚¦
-	Refresh(); // ƒLƒƒƒbƒVƒ…‚ğƒNƒŠƒA‚µ‚ÄV‚µ‚¢ƒV[ƒ“‚ªƒAƒZƒbƒgƒuƒ‰ƒEƒU‚É•\¦‚³‚ê‚é‚æ‚¤‚É‚·‚é
+	j["name"] = sceneName; // ã‚·ãƒ¼ãƒ³åã‚’æ–°ã—ã„ã‚‚ã®ã«å¤‰æ›´
+	JsonFileHandler::SaveJsonToFile(j, newScenePath.string()); // JSONãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
+	//SceneManager::Register(newScenePath.string()); // ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã«ç™»éŒ²
+	SceneManager::ChangeScene(sceneName); // ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã§åˆ‡ã‚Šæ›¿ãˆ
+	Refresh(); // ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ã‚¯ãƒªã‚¢ã—ã¦æ–°ã—ã„ã‚·ãƒ¼ãƒ³ãŒã‚¢ã‚»ãƒƒãƒˆãƒ–ãƒ©ã‚¦ã‚¶ã«è¡¨ç¤ºã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹
 }
 
 void AssetBrowser::OpenAsset(const fs::path& assetPath)
@@ -612,26 +612,26 @@ void AssetBrowser::OpenAsset(const fs::path& assetPath)
 	AssetType type = DetectAssetTypeFromFile(assetPath);
 	if (type == AssetType::Scene)
 	{
-		// ƒV[ƒ“ƒtƒ@ƒCƒ‹‚È‚çƒV[ƒ“‚ğŠJ‚­
+		// ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãªã‚‰ã‚·ãƒ¼ãƒ³ã‚’é–‹ã
 		SceneManager::ChangeScene(assetPath.stem().string());
 	}
 	else if (type == AssetType::Prefab)
 	{
-		// ƒvƒŒƒnƒuƒtƒ@ƒCƒ‹‚È‚çƒvƒŒƒnƒuƒGƒfƒBƒ^‚ÅŠJ‚­i–¢À‘•j
+		// ãƒ—ãƒ¬ãƒãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ãªã‚‰ãƒ—ãƒ¬ãƒãƒ–ã‚¨ãƒ‡ã‚£ã‚¿ã§é–‹ãï¼ˆæœªå®Ÿè£…ï¼‰
 		//Console::Log("Opening prefab editor for: " + path.string());
 		Console::Log("Prefab editing is not implemented yet.");
 	}
 	else if (type == AssetType::Script)
 	{
-		// ƒXƒNƒŠƒvƒgƒtƒ@ƒCƒ‹‚È‚çVisual Studio‚ÅŠJ‚­
-		std::wstring slnPath = std::filesystem::path(EnginePaths::SolutionFile).wstring(); // ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ÌƒpƒX
+		// ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãªã‚‰Visual Studioã§é–‹ã
+		std::wstring slnPath = std::filesystem::path(EnginePaths::SolutionFile).wstring(); // ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹
 		std::wstring filePath = absolutePath.wstring();
-		//OpenFileInVisualStudio(slnPath, filePath); // ƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹ƒpƒX‚ªƒn[ƒhƒR[ƒh‚³‚ê‚Ä‚¢‚é‚½‚ßAVisual Studio‚ª³‚µ‚­ŠJ‚¯‚È‚¢‰Â”\«‚ª‚ ‚é
-		OpenFileWithDefaultApplication(absolutePath.wstring()); // ‚Æ‚è‚ ‚¦‚¸ŠÖ˜A•t‚¯‚³‚ê‚½ƒAƒvƒŠ‚ÅŠJ‚­iVisual Studio‚ªŠÖ˜A•t‚¯‚³‚ê‚Ä‚¢‚ê‚Î‚»‚¿‚ç‚ÅŠJ‚­j
+		//OpenFileInVisualStudio(slnPath, filePath); // ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ãŒãƒãƒ¼ãƒ‰ã‚³ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹ãŸã‚ã€Visual StudioãŒæ­£ã—ãé–‹ã‘ãªã„å¯èƒ½æ€§ãŒã‚ã‚‹
+		OpenFileWithDefaultApplication(absolutePath.wstring()); // ã¨ã‚Šã‚ãˆãšé–¢é€£ä»˜ã‘ã•ã‚ŒãŸã‚¢ãƒ—ãƒªã§é–‹ãï¼ˆVisual StudioãŒé–¢é€£ä»˜ã‘ã•ã‚Œã¦ã„ã‚Œã°ãã¡ã‚‰ã§é–‹ãï¼‰
 	}
 	else if (type == AssetType::Material)
 	{
-		// ƒ}ƒeƒŠƒAƒ‹ƒtƒ@ƒCƒ‹‚È‚çƒ}ƒeƒŠƒAƒ‹ƒGƒfƒBƒ^‚ÅŠJ‚­
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ãªã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«ã‚¨ãƒ‡ã‚£ã‚¿ã§é–‹ã
 		if (auto meta = CurryEngine::Resources::AssetDatabase::FindByPath(assetPath))
 		{
 			materialEditor = std::make_unique<CurryEngine::Editor::MaterialEditor>(meta->id);
@@ -643,20 +643,20 @@ void AssetBrowser::OpenAsset(const fs::path& assetPath)
 	}
 	else
 	{
-		// ‚»‚êˆÈŠO‚Ìƒtƒ@ƒCƒ‹‚È‚çŠù’è‚ÌƒAƒvƒŠ‚ÅŠJ‚­
-		// ƒtƒ@ƒCƒ‹ƒpƒX‚ğâ‘ÎƒpƒX‚É•ÏŠ·‚µ‚Ä‚©‚çŠJ‚­i‘Š‘ÎƒpƒX‚¾‚Æ¸”s‚·‚é‚±‚Æ‚ª‚ ‚é‚½‚ßj
+		// ãã‚Œä»¥å¤–ã®ãƒ•ã‚¡ã‚¤ãƒ«ãªã‚‰æ—¢å®šã®ã‚¢ãƒ—ãƒªã§é–‹ã
+		// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’çµ¶å¯¾ãƒ‘ã‚¹ã«å¤‰æ›ã—ã¦ã‹ã‚‰é–‹ãï¼ˆç›¸å¯¾ãƒ‘ã‚¹ã ã¨å¤±æ•—ã™ã‚‹ã“ã¨ãŒã‚ã‚‹ãŸã‚ï¼‰
 		OpenFileWithDefaultApplication(absolutePath.wstring());
 	}
 }
 
 void AssetBrowser::SearchAssets(const fs::path& root, const std::u8string& keyword, std::vector<fs::directory_entry>& results)
 {
-	//ƒLƒƒƒbƒVƒ…‚³‚ê‚Ä‚é‚©Šm”F
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã•ã‚Œã¦ã‚‹ã‹ç¢ºèª
 	if (cacheSearchResults.find(root) != cacheSearchResults.end())
 	{
 		if (cacheSearchResults.at(root).find(keyword) != cacheSearchResults.at(root).end())
 		{
-			//ƒLƒƒƒbƒVƒ…‚³‚ê‚½Œ‹‰Ê‚ğ•Ô‚·
+			//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã•ã‚ŒãŸçµæœã‚’è¿”ã™
 			results = cacheSearchResults.at(root).at(keyword);
 			return;
 		}
@@ -681,21 +681,21 @@ void AssetBrowser::SearchAssets(const fs::path& root, const std::u8string& keywo
 		}
 	}
 
-	//Œ‹‰Ê‚ğƒLƒƒƒbƒVƒ…
+	//çµæœã‚’ã‚­ãƒ£ãƒƒã‚·ãƒ¥
 	cacheSearchResults[root][keyword] = results;
 }
 
 void AssetBrowser::OnAssetDeleted(const fs::path& assetPath)
 {
-	// ƒAƒZƒbƒg‚ªíœ‚³‚ê‚½Œã‚Ìˆ—
+	// ã‚¢ã‚»ãƒƒãƒˆãŒå‰Šé™¤ã•ã‚ŒãŸå¾Œã®å‡¦ç†
 
-	// íœ‚³‚ê‚½ƒAƒZƒbƒg‚ªƒVƒF[ƒ_[‚¾‚Á‚½ê‡AVcxprojHelper‚Éíœ‚³‚ê‚½ƒVƒF[ƒ_[‚ÌƒpƒX‚ğ’Ê’m‚µ‚ÄƒvƒƒWƒFƒNƒgƒtƒ@ƒCƒ‹‚©‚ç‚àíœ‚·‚é
+	// å‰Šé™¤ã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãŒã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã ã£ãŸå ´åˆã€VcxprojHelperã«å‰Šé™¤ã•ã‚ŒãŸã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒ‘ã‚¹ã‚’é€šçŸ¥ã—ã¦ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚‚å‰Šé™¤ã™ã‚‹
 	if (DetectAssetTypeFromFile(assetPath) == AssetType::Shader)
 	{
 		VcxprojHelper::EnqueueShaderUnregistration(assetPath);
 	}
 
-	// ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚©‚ç‚àíœ
+	// ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‹ã‚‰ã‚‚å‰Šé™¤
 	//CurryEngine::Resources::AssetDatabase::RemoveByPath(assetPath);
 
 }
@@ -705,7 +705,7 @@ void AssetBrowser::DrawFolderTree(const std::filesystem::path& root, std::filesy
 {
 	for (const auto& entry : std::filesystem::directory_iterator(root))
 	{
-		//ƒfƒBƒŒƒNƒgƒŠ‚È‚ç
+		//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãªã‚‰
 		if (entry.is_directory())
 		{
 			const auto& name = entry.path().filename().u8string();
@@ -713,7 +713,7 @@ void AssetBrowser::DrawFolderTree(const std::filesystem::path& root, std::filesy
 
 			bool open = ImGui::TreeNodeEx(reinterpret_cast<const char*>(name.c_str()), flags);
 
-			//ƒtƒHƒ‹ƒ_‚ğƒhƒƒbƒvƒ^[ƒQƒbƒg‚É
+			//ãƒ•ã‚©ãƒ«ãƒ€ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«
 			if (settings.acceptDropToFolderTree)
 			{
 				if (HandleDropTargetForFolder(entry.path()))
@@ -745,28 +745,28 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 	std::transform(query.begin(), query.end(), query.begin(), ::tolower);
 
 
-	// ƒTƒ€ƒlƒCƒ‹ƒTƒCƒYƒXƒ‰ƒCƒ_[
+	// ã‚µãƒ ãƒã‚¤ãƒ«ã‚µã‚¤ã‚ºã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼
 	ImGui::TextDisabled("Size");
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(120.f);
 	ImGui::SliderFloat("##ThumbnailSize", &thumbnailSize, 32.0f, 128.0f, "%.0f");
 	ImGui::Separator();
 
-	// „Ÿ„Ÿ ƒOƒŠƒbƒh‚Ì—ñ”ŒvZ „Ÿ„Ÿ
+	// â”€â”€ ã‚°ãƒªãƒƒãƒ‰ã®åˆ—æ•°è¨ˆç®— â”€â”€
 	constexpr float padding = 10.0f;
 	float totalWidth = ImGui::GetContentRegionAvail().x;
 	int columns = max(1, int(totalWidth / (thumbnailSize + padding)));
 	float textHeight = ImGui::GetTextLineHeightWithSpacing();
 
-	// „Ÿ„Ÿ ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[iƒzƒo[‘ÎÛ‚ğ‹L˜^‚µ‚Ä‚¨‚­j „Ÿ„Ÿ
-	// ƒzƒo[’†‚ÌƒAƒCƒeƒ€ƒpƒX‚ğæ‚É‚±‚±‚Åó‚¯æ‚é\‘¢‚É‚·‚é
-	static fs::path pendingContextPath; // ‰EƒNƒŠƒbƒN‚ÅƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ğŠJ‚­‘ÎÛ‚ÌƒpƒX‚ğˆê“I‚É•Û‘¶‚·‚é•Ï”
-	static bool pendingContextOpen = false; // ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ğŠJ‚­‚×‚«‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	// â”€â”€ ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼ˆãƒ›ãƒãƒ¼å¯¾è±¡ã‚’è¨˜éŒ²ã—ã¦ãŠãï¼‰ â”€â”€
+	// ãƒ›ãƒãƒ¼ä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ãƒ‘ã‚¹ã‚’å…ˆã«ã“ã“ã§å—ã‘å–ã‚‹æ§‹é€ ã«ã™ã‚‹
+	static fs::path pendingContextPath; // å³ã‚¯ãƒªãƒƒã‚¯ã§ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãå¯¾è±¡ã®ãƒ‘ã‚¹ã‚’ä¸€æ™‚çš„ã«ä¿å­˜ã™ã‚‹å¤‰æ•°
+	static bool pendingContextOpen = false; // ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãã¹ãã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 
-	// ¡ƒtƒŒ[ƒ€‚ÅƒAƒCƒeƒ€ã‚ÅƒNƒŠƒbƒN‚³‚ê‚½‚©’ÇÕ‚·‚éƒtƒ‰ƒO
+	// ä»Šãƒ•ãƒ¬ãƒ¼ãƒ ã§ã‚¢ã‚¤ãƒ†ãƒ ä¸Šã§ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‹è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 	bool clickedOnItem = false;
 	
-	// ƒAƒZƒbƒgƒOƒŠƒbƒhƒpƒlƒ‹‚Ì‰æ–ÊÀ•W‚ğ–ˆƒtƒŒ[ƒ€‹L˜^‚µ‚Ä‚¨‚­iƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚Ìƒ^[ƒQƒbƒg”»’è‚Ég—pj
+	// ã‚¢ã‚»ãƒƒãƒˆã‚°ãƒªãƒƒãƒ‰ãƒ‘ãƒãƒ«ã®ç”»é¢åº§æ¨™ã‚’æ¯ãƒ•ãƒ¬ãƒ¼ãƒ è¨˜éŒ²ã—ã¦ãŠãï¼ˆãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåˆ¤å®šã«ä½¿ç”¨ï¼‰
 	{
 		ImVec2 panelMin = ImGui::GetCursorScreenPos();
 		ImVec2 panelSize = ImGui::GetContentRegionAvail();
@@ -781,32 +781,32 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 		assetGridScreenRect = { ptMin.x, ptMin.y, ptMax.x, ptMax.y };
 	}
 
-	// „Ÿ„Ÿ ƒAƒZƒbƒgƒOƒŠƒbƒh‚Ì•`‰æ „Ÿ„Ÿ
+	// â”€â”€ ã‚¢ã‚»ãƒƒãƒˆã‚°ãƒªãƒƒãƒ‰ã®æç”» â”€â”€
 	if (ImGui::BeginTable("AssetGrid", columns, ImGuiTableFlags_NoBordersInBody))
 	{
 		//for (const auto& entry : std::filesystem::directory_iterator(folderPath))
 		std::vector<fs::directory_entry> results;
 		SearchAssets(folderPath, query, results);
 
-		// ‘O‰ñ‚ÌŒŸõŒ‹‰Ê‚Ì‡˜‚ğ•Û‘¶‚µ‚Ä‚¨‚­iShift”ÍˆÍ‘I‘ğ‚Ì‚½‚ßj
+		// å‰å›ã®æ¤œç´¢çµæœã®é †åºã‚’ä¿å­˜ã—ã¦ãŠãï¼ˆShiftç¯„å›²é¸æŠã®ãŸã‚ï¼‰
 		lastResultOrder.clear();
 		for (const auto& entry : results)
 		{
 			lastResultOrder.push_back(entry.path());
 		}
 
-		// „Ÿ„Ÿ ƒAƒCƒeƒ€‚²‚Æ‚Ì•`‰æƒ‹[ƒv „Ÿ„Ÿ
+		// â”€â”€ ã‚¢ã‚¤ãƒ†ãƒ ã”ã¨ã®æç”»ãƒ«ãƒ¼ãƒ— â”€â”€
 		int i = 0;
 		for (const auto& entry : results)
 		{
 			ImGui::TableNextColumn();
 
-			// •`‰æ‚·‚é‘O‚ÉAƒAƒCƒeƒ€‚ªƒrƒ…[ƒ|[ƒg“à‚É‚ ‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚ÄAƒrƒ…[ƒ|[ƒgŠO‚ÌƒAƒCƒeƒ€‚Í•`‰æ‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+			// æç”»ã™ã‚‹å‰ã«ã€ã‚¢ã‚¤ãƒ†ãƒ ãŒãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆå†…ã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¦ã€ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆå¤–ã®ã‚¢ã‚¤ãƒ†ãƒ ã¯æç”»ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 			ImVec2 cursorPos = ImGui::GetCursorScreenPos();
 			if (!ImGui::IsRectVisible(cursorPos, ImVec2(cursorPos.x + thumbnailSize, cursorPos.y + thumbnailSize + (padding * 2.0f))))
 			{
-				// ƒrƒ…[ƒ|[ƒgŠO‚ÌƒAƒCƒeƒ€‚Í•`‰æ‚¹‚¸‚ÉAƒ_ƒ~[‚ÌƒXƒy[ƒX‚¾‚¯Šm•Û‚µ‚ÄŸ‚ÌƒAƒCƒeƒ€‚Ö
-				ImGui::Dummy(ImVec2(thumbnailSize, thumbnailSize + (padding * 2.0f) + textHeight)); // ƒAƒCƒRƒ“‚ÆƒeƒLƒXƒg‚ÌƒXƒy[ƒX‚ğŠm•Û
+				// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆå¤–ã®ã‚¢ã‚¤ãƒ†ãƒ ã¯æç”»ã›ãšã«ã€ãƒ€ãƒŸãƒ¼ã®ã‚¹ãƒšãƒ¼ã‚¹ã ã‘ç¢ºä¿ã—ã¦æ¬¡ã®ã‚¢ã‚¤ãƒ†ãƒ ã¸
+				ImGui::Dummy(ImVec2(thumbnailSize, thumbnailSize + (padding * 2.0f) + textHeight)); // ã‚¢ã‚¤ã‚³ãƒ³ã¨ãƒ†ã‚­ã‚¹ãƒˆã®ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç¢ºä¿
 				continue;
 			}
 
@@ -824,11 +824,11 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 			bool isDirectory = entry.is_directory();
 			AssetType type = DetectAssetTypeFromFile(path);
 
-			// -- ƒAƒCƒRƒ“‰æ‘œ‚Ì‰ğŒˆ -------------------------------
+			// -- ã‚¢ã‚¤ã‚³ãƒ³ç”»åƒã®è§£æ±º -------------------------------
 			ID3D11ShaderResourceView* iconImage = isDirectory ? directoryIcon.Get() : fileIcon.Get();
-			//ƒAƒZƒbƒgƒ^ƒCƒv‚ªƒeƒNƒXƒ`ƒƒ‚È‚ç
+			//ã‚¢ã‚»ãƒƒãƒˆã‚¿ã‚¤ãƒ—ãŒãƒ†ã‚¯ã‚¹ãƒãƒ£ãªã‚‰
 			if (type == AssetType::Texture) {
-				//Œ©‚Â‚©‚Á‚½‚ç
+				//è¦‹ã¤ã‹ã£ãŸã‚‰
 				if (images.find(filePathWString) != images.end()) {
 					iconImage = images.at(filePathWString).Get();
 				}
@@ -839,19 +839,19 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 				}
 			}
 
-			// -- ‘I‘ğƒnƒCƒ‰ƒCƒg ----------------------------------
+			// -- é¸æŠãƒã‚¤ãƒ©ã‚¤ãƒˆ ----------------------------------
 			bool isSelected = selectedAssets.contains(path);
 			if (isSelected)
 				ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyleColorVec4(ImGuiCol_ButtonActive));
 
-			// -- ƒAƒCƒRƒ“‚Ì•`‰æ‚ÆƒCƒ“ƒ^ƒ‰ƒNƒVƒ‡ƒ“ ----------------
+			// -- ã‚¢ã‚¤ã‚³ãƒ³ã®æç”»ã¨ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ã‚·ãƒ§ãƒ³ ----------------
 			ImGui::ImageButton("##img", (ImTextureRef)iconImage,
 				{ thumbnailSize,thumbnailSize });
 
 			if (isSelected)
 				ImGui::PopStyleColor();
 
-			// -- ƒ^ƒCƒvƒoƒbƒW (ƒfƒBƒŒƒNƒgƒŠˆÈŠO) ----------------------
+			// -- ã‚¿ã‚¤ãƒ—ãƒãƒƒã‚¸ (ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥å¤–) ----------------------
 			if (!isDirectory)
 			{
 				const char* badge = nullptr;
@@ -869,30 +869,30 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 				}
 				if (badge)
 				{
-					// ƒ{ƒ^ƒ“¶ã‚ÉƒI[ƒo[ƒŒƒC (ƒeƒLƒXƒg•‚ğl—¶‚µ‚Ä”z’u)
+					// ãƒœã‚¿ãƒ³å·¦ä¸Šã«ã‚ªãƒ¼ãƒãƒ¼ãƒ¬ã‚¤ (ãƒ†ã‚­ã‚¹ãƒˆå¹…ã‚’è€ƒæ…®ã—ã¦é…ç½®)
 					int textCount = static_cast<int>(strlen(badge));
 					ImVec2 btnMin = ImGui::GetItemRectMin();
 					ImVec2 btnMax = ImGui::GetItemRectMax();
 					ImDrawList* dl = ImGui::GetWindowDrawList();
-					ImVec2 badgeMax = { btnMin.x + 8.0f + textCount * 7.0f, btnMin.y + 14.0f }; // ƒoƒbƒW‚Ì•‚ÍƒeƒLƒXƒg’·‚É‰‚¶‚Ä•Ï“®
-					ImVec2 badgeMin = { btnMin.x, btnMin.y - 4.0f }; // ƒAƒCƒRƒ“‚Ìã‚É­‚µd‚È‚é‚æ‚¤‚É”z’u
+					ImVec2 badgeMax = { btnMin.x + 8.0f + textCount * 7.0f, btnMin.y + 14.0f }; // ãƒãƒƒã‚¸ã®å¹…ã¯ãƒ†ã‚­ã‚¹ãƒˆé•·ã«å¿œã˜ã¦å¤‰å‹•
+					ImVec2 badgeMin = { btnMin.x, btnMin.y - 4.0f }; // ã‚¢ã‚¤ã‚³ãƒ³ã®ä¸Šã«å°‘ã—é‡ãªã‚‹ã‚ˆã†ã«é…ç½®
 					dl->AddRectFilled(badgeMin, badgeMax, ImGui::ColorConvertFloat4ToU32(badgeColor), 3.0f);
 					dl->AddText({ badgeMin.x + 3.5f, badgeMin.y - 1.f }, IM_COL32(255, 255, 255, 255), badge);
 				}
 			}
 
-			// -- ƒzƒo[EƒNƒŠƒbƒN‚Ìˆ— -------------------------------
+			// -- ãƒ›ãƒãƒ¼ãƒ»ã‚¯ãƒªãƒƒã‚¯ã®å‡¦ç† -------------------------------
 			if (ImGui::IsItemHovered())
 			{
-				// ¶ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ÅŠJ‚­
+				// å·¦ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã§é–‹ã
 				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
-					if (isDirectory) // ƒfƒBƒŒƒNƒgƒŠ‚È‚ç‚»‚Ì’†‚ÖˆÚ“®
+					if (isDirectory) // ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãªã‚‰ãã®ä¸­ã¸ç§»å‹•
 						currentDirectory /= path.filename();
-					else // ƒtƒ@ƒCƒ‹‚È‚çŠJ‚­
+					else // ãƒ•ã‚¡ã‚¤ãƒ«ãªã‚‰é–‹ã
 						OpenAsset(path);
 				}
-				// ƒVƒ“ƒOƒ‹ƒNƒŠƒbƒN‚Å‘I‘ğ (ƒŠƒl[ƒ€’†‚Íœ‚­)
+				// ã‚·ãƒ³ã‚°ãƒ«ã‚¯ãƒªãƒƒã‚¯ã§é¸æŠ (ãƒªãƒãƒ¼ãƒ ä¸­ã¯é™¤ã)
 				else if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !isRenaming)
 				{
 					clickedOnItem = true;
@@ -901,11 +901,11 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 
 					if (shift && !lastClickedAsset.empty())
 					{
-						// -- Shift”ÍˆÍ‘I‘ğ ----------------
-						// Ctrl‚ğ“¯‰Ÿ‚µ‚µ‚Ä‚¢‚È‚¯‚ê‚ÎŠù‘¶‘I‘ğ‚ğƒNƒŠƒA
+						// -- Shiftç¯„å›²é¸æŠ ----------------
+						// Ctrlã‚’åŒæ™‚æŠ¼ã—ã—ã¦ã„ãªã‘ã‚Œã°æ—¢å­˜é¸æŠã‚’ã‚¯ãƒªã‚¢
 						if (!ctrl) selectedAssets.clear();
 
-						// lastResultOrder ‚©‚çŠî“_‚Æ¡‰ñ‚ÌŠÔ‚ğ‘I‘ğ‚·‚é
+						// lastResultOrder ã‹ã‚‰åŸºç‚¹ã¨ä»Šå›ã®é–“ã‚’é¸æŠã™ã‚‹
 						auto itAnchor = std::find(lastResultOrder.begin(), lastResultOrder.end(), lastClickedAsset);
 						auto itCurrent = std::find(lastResultOrder.begin(), lastResultOrder.end(), path);
 						if (itAnchor != lastResultOrder.end() && itCurrent != lastResultOrder.end())
@@ -914,11 +914,11 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 							for (auto it = itAnchor; it <= itCurrent; ++it)
 								selectedAssets.insert(*it);
 						}
-						// lastClickedAsset ‚Í Shift’†‚ÍXV‚µ‚È‚¢iŠî“_‚ğˆÛj
+						// lastClickedAsset ã¯ Shiftä¸­ã¯æ›´æ–°ã—ãªã„ï¼ˆåŸºç‚¹ã‚’ç¶­æŒï¼‰
 					}
 					else if (ctrl)
 					{
-						// -- Ctrl‚Å•¡”‘I‘ğ‚ÌƒgƒOƒ‹ ----------------
+						// -- Ctrlã§è¤‡æ•°é¸æŠã®ãƒˆã‚°ãƒ« ----------------
 						if (isSelected)
 							selectedAssets.erase(path);
 						else
@@ -927,69 +927,69 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 					}
 					else
 					{
-						// -- ’Pˆê‘I‘ğ ----------------
+						// -- å˜ä¸€é¸æŠ ----------------
 						selectedAssets.clear();
 						selectedAssets.insert(path);
 						lastClickedAsset = path;
 					}
 				}
-				// ‰EƒNƒŠƒbƒN -> ‘I‘ğ‚µ‚ÄƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ğ—\–ñ
+				// å³ã‚¯ãƒªãƒƒã‚¯ -> é¸æŠã—ã¦ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’äºˆç´„
 				if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 				{
-					// ‰EƒNƒŠƒbƒN‚µ‚½ƒAƒCƒeƒ€‚ª‘I‘ğÏ‚İ‚Å‚È‚¢ê‡‚ÍA‘I‘ğ‚ğƒŠƒZƒbƒg‚µ‚Ä‚»‚ÌƒAƒCƒeƒ€‚¾‚¯‚ğ‘I‘ğó‘Ô‚É‚·‚é
+					// å³ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠæ¸ˆã¿ã§ãªã„å ´åˆã¯ã€é¸æŠã‚’ãƒªã‚»ãƒƒãƒˆã—ã¦ãã®ã‚¢ã‚¤ãƒ†ãƒ ã ã‘ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 					if (!isSelected)
 					{
 						selectedAssets.clear();
 						selectedAssets.insert(path);
 						lastClickedAsset = path;
 					}
-					pendingContextPath = path; // ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ğŠJ‚­‘ÎÛ‚ÌƒpƒX‚ğ•Û‘¶
-					pendingContextOpen = true; // ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ğŠJ‚­‚×‚«ƒtƒ‰ƒO‚ğ—§‚Ä‚é
-					clickedOnItem = true; // ƒAƒCƒeƒ€ã‚ÅƒNƒŠƒbƒN‚³‚ê‚½ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+					pendingContextPath = path; // ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãå¯¾è±¡ã®ãƒ‘ã‚¹ã‚’ä¿å­˜
+					pendingContextOpen = true; // ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãã¹ããƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
+					clickedOnItem = true; // ã‚¢ã‚¤ãƒ†ãƒ ä¸Šã§ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 				}
 			}
 
-			// -- ƒhƒƒbƒvƒ^[ƒQƒbƒg(ƒtƒHƒ‹ƒ_‚Ì‚İ) -------------------------------
+			// -- ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ(ãƒ•ã‚©ãƒ«ãƒ€ã®ã¿) -------------------------------
 			if (settings.acceptDropToAssetGrid && isDirectory)
 			{
 				HandleDropTargetForFolder(path);
 			}
 
-			// -- ƒhƒ‰ƒbƒOƒ\[ƒX ----------------------------------
+			// -- ãƒ‰ãƒ©ãƒƒã‚°ã‚½ãƒ¼ã‚¹ ----------------------------------
 			if (ImGui::BeginDragDropSource())
 			{
 				const char* payloadType = isDirectory ? "FOLDER_PATH" : "ASSET_PATH";
 				ImGui::SetDragDropPayload(payloadType, 
-					pathStr, path.u8string().size() + 1);
-				// ƒhƒ‰ƒbƒO’†ƒvƒŒƒrƒ…[ƒ‰ƒxƒ‹
+					filePathU8String.c_str(), path.u8string().size() + 1);
+				// ãƒ‰ãƒ©ãƒƒã‚°ä¸­ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒ©ãƒ™ãƒ«
 				ImGui::TextUnformatted(filenameStr);
 				ImGui::EndDragDropSource();
 			}
 			
-			// -- ƒtƒ@ƒCƒ‹–¼ / ƒŠƒl[ƒ€“ü—Í -------------------------------
+			// -- ãƒ•ã‚¡ã‚¤ãƒ«å / ãƒªãƒãƒ¼ãƒ å…¥åŠ› -------------------------------
 			bool renamingThis = (isRenaming && renamingTarget == path);
 			if (renamingThis)
 			{
-				// ƒŠƒl[ƒ€ŠJn’¼Œã‚ÍƒeƒLƒXƒg“ü—Í‚ÉƒtƒH[ƒJƒX‚ğƒZƒbƒg
+				// ãƒªãƒãƒ¼ãƒ é–‹å§‹ç›´å¾Œã¯ãƒ†ã‚­ã‚¹ãƒˆå…¥åŠ›ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’ã‚»ãƒƒãƒˆ
 				if (renamingJustStarted)
 				{
-					ImGui::SetKeyboardFocusHere(0); // ƒtƒH[ƒJƒX‚ğ“ü—ÍƒeƒLƒXƒg‚ÉƒZƒbƒg
+					ImGui::SetKeyboardFocusHere(0); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’å…¥åŠ›ãƒ†ã‚­ã‚¹ãƒˆã«ã‚»ãƒƒãƒˆ
 					renamingJustStarted = false;
 				}
 
-				// “ü—ÍƒtƒB[ƒ‹ƒh‚ğ•\¦
+				// å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’è¡¨ç¤º
 				ImGui::SetNextItemWidth(thumbnailSize);
 				ImGuiInputTextFlags renameFlags =
 					ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll;
 				bool confirmed = ImGui::InputText("##Rename", renameBuffer, IM_ARRAYSIZE(renameBuffer), renameFlags);
 
-				// ƒtƒH[ƒJƒX‚ğ¸‚¤ or ƒLƒƒƒ“ƒZƒ‹ (EscƒL[) ‚ÅƒŠƒl[ƒ€ƒ‚[ƒhI—¹
-				bool lostFocus = ImGui::IsItemDeactivated() && !confirmed; // Enter‚ÅŠm’è‚µ‚½ê‡‚Í”ñƒAƒNƒeƒBƒu‰»‚³‚ê‚Ä‚àƒŠƒl[ƒ€ƒ‚[ƒh‚ğI—¹‚µ‚È‚¢
+				// ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’å¤±ã† or ã‚­ãƒ£ãƒ³ã‚»ãƒ« (Escã‚­ãƒ¼) ã§ãƒªãƒãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰çµ‚äº†
+				bool lostFocus = ImGui::IsItemDeactivated() && !confirmed; // Enterã§ç¢ºå®šã—ãŸå ´åˆã¯éã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–ã•ã‚Œã¦ã‚‚ãƒªãƒãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚’çµ‚äº†ã—ãªã„
 				
-				// Šm’è or ƒLƒƒƒ“ƒZƒ‹ or ƒtƒH[ƒJƒX‚ğ¸‚¤ ‚ÅƒŠƒl[ƒ€ƒ‚[ƒhI—¹
+				// ç¢ºå®š or ã‚­ãƒ£ãƒ³ã‚»ãƒ« or ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’å¤±ã† ã§ãƒªãƒãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰çµ‚äº†
 				if (confirmed && renameBuffer[0] != '\0')
 				{
-					// ƒtƒ@ƒCƒ‹‚Ìê‡‚ÍŒ³‚ÌŠg’£q‚ğ‹­§ˆÛ
+					// ãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆã¯å…ƒã®æ‹¡å¼µå­ã‚’å¼·åˆ¶ç¶­æŒ
 					std::u8string newName = reinterpret_cast<const char8_t*>(renameBuffer);
 					if (!isDirectory)
 					{
@@ -1004,8 +1004,8 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 						fs::rename(path, newPath, ec);
 						if (!ec)
 						{
-							//CurryEngine::Resources::AssetDatabase::Rename(path, newPath); // ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚ÌƒpƒX‚àXV
-							lastClickedAsset = newPath; // ƒNƒŠƒbƒN‚³‚ê‚½ƒAƒZƒbƒg‚ÌƒpƒX‚ğV‚µ‚¢‚à‚Ì‚ÉXV
+							//CurryEngine::Resources::AssetDatabase::Rename(path, newPath); // ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®ãƒ‘ã‚¹ã‚‚æ›´æ–°
+							lastClickedAsset = newPath; // ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹ã‚’æ–°ã—ã„ã‚‚ã®ã«æ›´æ–°
 							Refresh();
 						}
 						else
@@ -1022,12 +1022,12 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 			}
 			else
 			{
-				// ’Êí•\¦i’·‚¢ƒtƒ@ƒCƒ‹–¼‚ÍƒTƒ€ƒlƒCƒ‹•‚ÅƒNƒŠƒbƒvj
+				// é€šå¸¸è¡¨ç¤ºï¼ˆé•·ã„ãƒ•ã‚¡ã‚¤ãƒ«åã¯ã‚µãƒ ãƒã‚¤ãƒ«å¹…ã§ã‚¯ãƒªãƒƒãƒ—ï¼‰
 				float textWidth = ImGui::CalcTextSize(filenameStr).x;
 				if (textWidth > thumbnailSize)
 				{
-					// ƒNƒŠƒbƒv‚·‚éê‡‚Í––”ö‚ğ "..." ‚É’u‚«Š·‚¦‚é
-					float ectWidth = ImGui::CalcTextSize("...").x; // ‚±‚ê‚Å "..." ‚Ì•‚ğŒvZ‚µ‚Ä‚¨‚­
+					// ã‚¯ãƒªãƒƒãƒ—ã™ã‚‹å ´åˆã¯æœ«å°¾ã‚’ "..." ã«ç½®ãæ›ãˆã‚‹
+					float ectWidth = ImGui::CalcTextSize("...").x; // ã“ã‚Œã§ "..." ã®å¹…ã‚’è¨ˆç®—ã—ã¦ãŠã
 					int clipCount = 0;
 					while (textWidth > thumbnailSize && clipCount < filenameString.size())
 					{
@@ -1044,33 +1044,33 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 			ImGui::EndGroup();
 		}
 
-		// ‹ó”’ƒGƒŠƒA‚Ì‰EƒNƒŠƒbƒN
+		// ç©ºç™½ã‚¨ãƒªã‚¢ã®å³ã‚¯ãƒªãƒƒã‚¯
 		if (ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows)
 			&& ImGui::IsMouseClicked(ImGuiMouseButton_Right)
-			&& !pendingContextOpen) // ‚·‚Å‚ÉƒAƒCƒeƒ€ã‚Ì‰EƒNƒŠƒbƒN‚ÅŠJ‚­‚×‚«ƒRƒ“ƒeƒLƒXƒg‚ª—\–ñ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ì‚İ
+			&& !pendingContextOpen) // ã™ã§ã«ã‚¢ã‚¤ãƒ†ãƒ ä¸Šã®å³ã‚¯ãƒªãƒƒã‚¯ã§é–‹ãã¹ãã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãŒäºˆç´„ã•ã‚Œã¦ã„ãªã„å ´åˆã®ã¿
 		{
-			pendingContextPath = fs::path(); // ‹ó‚ÌƒpƒX‚ğƒZƒbƒg‚µ‚ÄAƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ª‹ó”’ƒGƒŠƒA—p‚Å‚ ‚é‚±‚Æ‚ğ¦‚·
-			pendingContextOpen = true; // ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ğŠJ‚­‚×‚«ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+			pendingContextPath = fs::path(); // ç©ºã®ãƒ‘ã‚¹ã‚’ã‚»ãƒƒãƒˆã—ã¦ã€ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒç©ºç™½ã‚¨ãƒªã‚¢ç”¨ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™
+			pendingContextOpen = true; // ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãã¹ããƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 		}
 
 		ImGui::EndTable();
 
-		// -- ‹ó”’ƒGƒŠƒA‚ÌƒNƒŠƒbƒN‚Å‘I‘ğ‰ğœ -------------------------------
+		// -- ç©ºç™½ã‚¨ãƒªã‚¢ã®ã‚¯ãƒªãƒƒã‚¯ã§é¸æŠè§£é™¤ -------------------------------
 		if (ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows)
 			&& ImGui::IsMouseClicked(ImGuiMouseButton_Left)
-			&& !clickedOnItem // ƒAƒCƒeƒ€ã‚ÅƒNƒŠƒbƒN‚³‚ê‚½ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚È‚¢ê‡‚Ì‚İ
-			&& !ImGui::GetIO().KeyCtrl // CtrlƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ì‚İ
-			&& !ImGui::GetIO().KeyShift // ShiftƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ì‚İ
-			&& !ImGui::IsPopupOpen("AssetGridContextMenu")) // ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ªŠJ‚¢‚Ä‚¢‚éÅ’†‚ÍŒë‘€ì‚ğ–h‚®‚½‚ß‘I‘ğ‰ğœ‚µ‚È‚¢
+			&& !clickedOnItem // ã‚¢ã‚¤ãƒ†ãƒ ä¸Šã§ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ãªã„å ´åˆã®ã¿
+			&& !ImGui::GetIO().KeyCtrl // Ctrlã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãªã„å ´åˆã®ã¿
+			&& !ImGui::GetIO().KeyShift // Shiftã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãªã„å ´åˆã®ã¿
+			&& !ImGui::IsPopupOpen("AssetGridContextMenu")) // ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé–‹ã„ã¦ã„ã‚‹æœ€ä¸­ã¯èª¤æ“ä½œã‚’é˜²ããŸã‚é¸æŠè§£é™¤ã—ãªã„
 		{
 			selectedAssets.clear();
 			lastClickedAsset.clear();
 			if (isRenaming) {
-				isRenaming = false; // ƒŠƒl[ƒ€ƒ‚[ƒh‚àI—¹
+				isRenaming = false; // ãƒªãƒãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚‚çµ‚äº†
 			}
 		}
 
-		// -- ƒhƒƒbƒvƒ^[ƒQƒbƒg‚ÌƒrƒWƒ…ƒAƒ‹ƒtƒB[ƒhƒoƒbƒN -------------------------------
+		// -- ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ -------------------------------
 		if (isExternalDragHovering)
 		{
 			ImDrawList* dl = ImGui::GetWindowDrawList();
@@ -1078,31 +1078,31 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 			ImVec2 panelSize = ImGui::GetContentRegionAvail();
 			ImVec2 panelMax = { panelMin.x + panelSize.x, panelMin.y + panelSize.y };
 			
-			// ”¼“§–¾‚ÌÂ‚¢ƒI[ƒo[ƒŒƒC
+			// åŠé€æ˜ã®é’ã„ã‚ªãƒ¼ãƒãƒ¼ãƒ¬ã‚¤
 			dl->AddRectFilled(panelMin, panelMax, IM_COL32(100, 150, 255, 100));
 
-			//Â‚¢˜gü
+			//é’ã„æ ç·š
 			dl->AddRect(panelMin, panelMax, IM_COL32(100, 150, 255, 200), 0.0f, ImDrawFlags_None, 3.0f);
 
-			// ƒhƒƒbƒv‰Â”\‚Å‚ ‚é‚±‚Æ‚ğ¦‚·ƒeƒLƒXƒg
-			const char* msg = reinterpret_cast<const char*>(u8"‚±‚±‚Éƒhƒƒbƒv‚µ‚ÄƒCƒ“ƒ|[ƒg");
+			// ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ†ã‚­ã‚¹ãƒˆ
+			const char* msg = reinterpret_cast<const char*>(u8"ã“ã“ã«ãƒ‰ãƒ­ãƒƒãƒ—ã—ã¦ã‚¤ãƒ³ãƒãƒ¼ãƒˆ");
 			ImVec2 textSize = ImGui::CalcTextSize(msg);
 			ImVec2 textPos = { 
 				panelMin.x + (panelSize.x - textSize.x) * 0.5f,
 				panelMin.y + (panelSize.y - textSize.y) * 0.5f 
 			};
-			// ƒeƒLƒXƒg‚Ì‰e (“Ç‚İ‚â‚·‚­‚·‚é‚½‚ß‚Ì•‚¢ƒeƒLƒXƒg‚ğ­‚µƒIƒtƒZƒbƒg‚µ‚Ä•`‰æ)
+			// ãƒ†ã‚­ã‚¹ãƒˆã®å½± (èª­ã¿ã‚„ã™ãã™ã‚‹ãŸã‚ã®é»’ã„ãƒ†ã‚­ã‚¹ãƒˆã‚’å°‘ã—ã‚ªãƒ•ã‚»ãƒƒãƒˆã—ã¦æç”»)
 			dl->AddText({ textPos.x + 1, textPos.y + 1 }, IM_COL32(0, 0, 0, 150), msg);
-			// ƒeƒLƒXƒg–{‘Ì
+			// ãƒ†ã‚­ã‚¹ãƒˆæœ¬ä½“
 			dl->AddText(textPos, IM_COL32(255, 255, 255, 255), msg);
 
 		}
 
-		// -- ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚Ì•\¦ -------------------------------
+		// -- ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤º -------------------------------
 		if (pendingContextOpen)
 		{
 			ImGui::OpenPopup("AssetGridContextMenu");
-			pendingContextOpen = false; // ƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+			pendingContextOpen = false; // ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 		}
 		ShowContextMenu(pendingContextPath);
 	}
@@ -1111,12 +1111,12 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 
 #ifdef USE_IMGUI
 void AssetBrowser::DrawUnityPath(const fs::path& path) {
-	fs::path result = path.lexically_normal().make_preferred(); // ³‹K‰»‚µ‚ÄOS‚É‡‚í‚¹‚½ƒpƒX‹æØ‚è•¶š‚É•ÏŠ·
+	fs::path result = path.lexically_normal().make_preferred(); // æ­£è¦åŒ–ã—ã¦OSã«åˆã‚ã›ãŸãƒ‘ã‚¹åŒºåˆ‡ã‚Šæ–‡å­—ã«å¤‰æ›
 
-	// Windows—p‚Ì \ ‚ğ / ‚É“ˆê
+	// Windowsç”¨ã® \ ã‚’ / ã«çµ±ä¸€
 	//std::replace(result.begin(), result.end(), '\\', '/');
 
-	// ƒXƒ‰ƒbƒVƒ…‚Å•ªŠ„‚µA" > " ‚Å˜AŒ‹
+	// ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã§åˆ†å‰²ã—ã€" > " ã§é€£çµ
 	std::u8string resultStr = result.u8string();
 	std::stringstream ss(std::string(resultStr.begin(), resultStr.end()));
 	std::string segment;
@@ -1137,7 +1137,7 @@ void AssetBrowser::DrawUnityPath(const fs::path& path) {
 		{
 			currentDirectory = dir;
 		}
-		//ƒtƒHƒ‹ƒ_‚ğƒhƒƒbƒvƒ^[ƒQƒbƒg‚É
+		//ãƒ•ã‚©ãƒ«ãƒ€ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«
 		if (settings.acceptDropToCurrentPath)
 		{
 			HandleDropTargetForFolder(dir);
@@ -1157,85 +1157,85 @@ void AssetBrowser::DrawUnityPath(const fs::path& path) {
 
 void AssetBrowser::DrawScriptCreationModal()
 {
-	// ƒ‚[ƒ_ƒ‹‚ªŠJ‚­ƒtƒ‰ƒO‚ª—§‚Á‚½‚çOpenPopup‚ğŒÄ‚Ño‚·
+	// ãƒ¢ãƒ¼ãƒ€ãƒ«ãŒé–‹ããƒ•ãƒ©ã‚°ãŒç«‹ã£ãŸã‚‰OpenPopupã‚’å‘¼ã³å‡ºã™
 	if (showScriptCreationModal)
 	{
 		ImGui::OpenPopup("Create New Script");
-		strncpy_s(scriptNameBuffer, NewScriptName, IM_ARRAYSIZE(scriptNameBuffer)); // ƒoƒbƒtƒ@‚É‰Šú’l‚ğƒZƒbƒg
-		showScriptCreationModal = false; // ƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		strncpy_s(scriptNameBuffer, NewScriptName, IM_ARRAYSIZE(scriptNameBuffer)); // ãƒãƒƒãƒ•ã‚¡ã«åˆæœŸå€¤ã‚’ã‚»ãƒƒãƒˆ
+		showScriptCreationModal = false; // ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	}
 	else if (!ImGui::IsPopupOpen("Create New Script"))
 	{
-		return; // ƒ‚[ƒ_ƒ‹‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+		return; // ãƒ¢ãƒ¼ãƒ€ãƒ«ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	}
 
-	// ƒ‚[ƒ_ƒ‹‚Ì“à—e
+	// ãƒ¢ãƒ¼ãƒ€ãƒ«ã®å†…å®¹
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(360, 130), ImGuiCond_Appearing);
 
 	if (ImGui::BeginPopupModal("Create New Script", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
 	{
-		// ƒXƒNƒŠƒvƒg–¼“ü—ÍƒtƒB[ƒ‹ƒh
-		ImGui::Text(reinterpret_cast<const char*>(u8"–¼‘O:"));
+		// ã‚¹ã‚¯ãƒªãƒ—ãƒˆåå…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+		ImGui::Text(reinterpret_cast<const char*>(u8"åå‰:"));
 		ImGui::SameLine();
-		ImGui::SetNextItemWidth(-1); // ƒEƒBƒ“ƒhƒE•‚¢‚Á‚Ï‚¢‚É“ü—ÍƒtƒB[ƒ‹ƒh‚ğL‚°‚é
+		ImGui::SetNextItemWidth(-1); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã„ã£ã±ã„ã«å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’åºƒã’ã‚‹
 
-		// Enter‚ÅŠm’èA‘S‘I‘ğA•¶šƒtƒBƒ‹ƒ^i‰p”š‚ÆƒAƒ“ƒ_[ƒXƒRƒA‚Ì‚İj
+		// Enterã§ç¢ºå®šã€å…¨é¸æŠã€æ–‡å­—ãƒ•ã‚£ãƒ«ã‚¿ï¼ˆè‹±æ•°å­—ã¨ã‚¢ãƒ³ãƒ€ãƒ¼ã‚¹ã‚³ã‚¢ã®ã¿ï¼‰
 		ImGuiInputFlags inputFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CallbackCharFilter;
 		static auto CharFilter = [](ImGuiInputTextCallbackData* data) -> int {
 			const char* allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-			if (data->EventChar == '\n' || data->EventChar == '\r') // EnterƒL[
-				return 0; // ‹–‰Â
-			if (data->EventChar == '\b') // ƒoƒbƒNƒXƒy[ƒX
-				return 0; // ‹–‰Â
-			if (data->EventChar == '\0') // I’[•¶š
-				return 0; // ‹–‰Â
-			if (strchr(allowedChars, data->EventChar) != nullptr) // ‹–‰Â‚³‚ê‚½•¶š
-				return 0; // ‹–‰Â
-			return 1; // •s‹–‰Â
+			if (data->EventChar == '\n' || data->EventChar == '\r') // Enterã‚­ãƒ¼
+				return 0; // è¨±å¯
+			if (data->EventChar == '\b') // ãƒãƒƒã‚¯ã‚¹ãƒšãƒ¼ã‚¹
+				return 0; // è¨±å¯
+			if (data->EventChar == '\0') // çµ‚ç«¯æ–‡å­—
+				return 0; // è¨±å¯
+			if (strchr(allowedChars, data->EventChar) != nullptr) // è¨±å¯ã•ã‚ŒãŸæ–‡å­—
+				return 0; // è¨±å¯
+			return 1; // ä¸è¨±å¯
 			};
 
-		// “ü—ÍƒtƒB[ƒ‹ƒh‚ğ•\¦
+		// å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’è¡¨ç¤º
 		bool confirm = ImGui::InputText("##ScriptName", scriptNameBuffer, IM_ARRAYSIZE(scriptNameBuffer), inputFlags, CharFilter);
 
-		// “ü—Í‚³‚ê‚½ƒXƒNƒŠƒvƒg–¼‚ÌŒŸØ
+		// å…¥åŠ›ã•ã‚ŒãŸã‚¹ã‚¯ãƒªãƒ—ãƒˆåã®æ¤œè¨¼
 		bool isValidPath = true;
 		fs::path newScriptPath = scriptCreationInitDir / (std::string(scriptNameBuffer) + ".cs");
 		const char8_t* message;
 		if (scriptNameBuffer[0] == '\0')
 		{
-			message = u8"–¼‘O‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B";
+			message = u8"åå‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚";
 			isValidPath = false;
 		}
 		else if (fs::exists(newScriptPath))
 		{
-			message = u8"“¯–¼‚Ìƒtƒ@ƒCƒ‹‚ªŠù‚É‘¶İ‚µ‚Ü‚·B";
+			message = u8"åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«å­˜åœ¨ã—ã¾ã™ã€‚";
 			isValidPath = false;
 		}
 		else
 		{
 			message = u8"";
 		}
-		// ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
+		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
 		ImGui::TextWrapped(reinterpret_cast<const char*>(message));
 		
-		ImGui::Spacing(); // ƒXƒy[ƒX‚ğ‹ó‚¯‚é
+		ImGui::Spacing(); // ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 
 		ImVec2 buttonSize(160, 0);
 
-		// ì¬ƒ{ƒ^ƒ“
+		// ä½œæˆãƒœã‚¿ãƒ³
 		ImGui::BeginDisabled(!isValidPath);
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"ì¬"), buttonSize) || (confirm && isValidPath))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"ä½œæˆ"), buttonSize) || (confirm && isValidPath))
 		{
 			CreateCSharpScript(scriptCreationInitDir, scriptNameBuffer);
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndDisabled();
 
-		// ƒLƒƒƒ“ƒZƒ‹ƒ{ƒ^ƒ“
+		// ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒœã‚¿ãƒ³
 		ImGui::SameLine();
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"ƒLƒƒƒ“ƒZƒ‹"), buttonSize) || ImGui::IsKeyPressed(ImGuiKey_Escape))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"ã‚­ãƒ£ãƒ³ã‚»ãƒ«"), buttonSize) || ImGui::IsKeyPressed(ImGuiKey_Escape))
 		{
 			ImGui::CloseCurrentPopup();
 		}
@@ -1245,27 +1245,27 @@ void AssetBrowser::DrawScriptCreationModal()
 
 }
 
-// V‹KHLSLƒVƒF[ƒ_[ì¬ƒ‚[ƒ_ƒ‹‚Ì“à—e
+// æ–°è¦HLSLã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ä½œæˆãƒ¢ãƒ¼ãƒ€ãƒ«ã®å†…å®¹
 void AssetBrowser::DrawHlslShaderCreationModal()
 {
-	// ƒ‚[ƒ_ƒ‹‚ªŠJ‚­ƒtƒ‰ƒO‚ª—§‚Á‚½‚çOpenPopup‚ğŒÄ‚Ño‚·
+	// ãƒ¢ãƒ¼ãƒ€ãƒ«ãŒé–‹ããƒ•ãƒ©ã‚°ãŒç«‹ã£ãŸã‚‰OpenPopupã‚’å‘¼ã³å‡ºã™
 	if (showHlslShaderCreationModal)
 	{
 		ImGui::OpenPopup("Create New Shader");
-		strncpy_s(hlslShaderNameBuffer, NewHlslShaderName, IM_ARRAYSIZE(hlslShaderNameBuffer)); // ƒoƒbƒtƒ@‚É‰Šú’l‚ğƒZƒbƒg
-		showHlslShaderCreationModal = false; // ƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		strncpy_s(hlslShaderNameBuffer, NewHlslShaderName, IM_ARRAYSIZE(hlslShaderNameBuffer)); // ãƒãƒƒãƒ•ã‚¡ã«åˆæœŸå€¤ã‚’ã‚»ãƒƒãƒˆ
+		showHlslShaderCreationModal = false; // ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	}
 	else if (!ImGui::IsPopupOpen("Create New Shader"))
 	{
-		return; // ƒ‚[ƒ_ƒ‹‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+		return; // ãƒ¢ãƒ¼ãƒ€ãƒ«ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	}
-	// ƒ‚[ƒ_ƒ‹‚Ì“à—e
+	// ãƒ¢ãƒ¼ãƒ€ãƒ«ã®å†…å®¹
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_Always); // ƒTƒCƒY‚Í“à—e‚É‡‚í‚¹‚Ä©“®’²®
+	ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_Always); // ã‚µã‚¤ã‚ºã¯å†…å®¹ã«åˆã‚ã›ã¦è‡ªå‹•èª¿æ•´
 	if (ImGui::BeginPopupModal("Create New Shader", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
 	{
-		// ƒVƒF[ƒ_[ƒeƒ“ƒvƒŒ[ƒg‚Ì‘I‘ğ
+		// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®é¸æŠ
 		static int selectedTemplate = 0;
 		//static const char* templates[] = {
 		//	"Unlit Shader",
@@ -1273,9 +1273,9 @@ void AssetBrowser::DrawHlslShaderCreationModal()
 		//	"Custom Template",
 		//};
 		//static const char8_t* templateDescriptions[] = {
-		//	u8"Unlit Shader: ƒ‰ƒCƒeƒBƒ“ƒO‚È‚µ‚ÌƒVƒ“ƒvƒ‹‚ÈƒVƒF[ƒ_[B",
-		//	u8"Lit Shader: ƒ‰ƒCƒeƒBƒ“ƒO‚É‘Î‰‚µ‚½Šî–{“I‚ÈƒVƒF[ƒ_[B",
-		//	u8"Custom Template: ƒ†[ƒU[‚ªì¬‚µ‚½ƒVƒF[ƒ_[ƒeƒ“ƒvƒŒ[ƒg‚ğg—p‚µ‚Ü‚·B"
+		//	u8"Unlit Shader: ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ãªã—ã®ã‚·ãƒ³ãƒ—ãƒ«ãªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚",
+		//	u8"Lit Shader: ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã«å¯¾å¿œã—ãŸåŸºæœ¬çš„ãªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚",
+		//	u8"Custom Template: ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒä½œæˆã—ãŸã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ä½¿ç”¨ã—ã¾ã™ã€‚"
 		//};
 		//static fs::path templateShaderPaths[] = {
 		//	"./Assets/Shaders/UnlitTemplate.shader",
@@ -1290,10 +1290,10 @@ void AssetBrowser::DrawHlslShaderCreationModal()
 			"Compute Shader"
 		};
 		static const char8_t* templateDescriptions[] = {
-			u8"HLSL Header: ‹¤’Ê‚Ì’è”ƒoƒbƒtƒ@‚â\‘¢‘Ì‚ğ’è‹`‚·‚é‚½‚ß‚Ìƒeƒ“ƒvƒŒ[ƒgB",
-			u8"Vertex Shader: ’¸“_‚²‚Æ‚ÉÀs‚³‚ê‚éƒVƒF[ƒ_[B’¸“_‚ÌˆÊ’u‚â–@ü‚È‚Ç‚ğˆ—‚µ‚Ü‚·B",
-			u8"Pixel Shader: ƒsƒNƒZƒ‹‚²‚Æ‚ÉÀs‚³‚ê‚éƒVƒF[ƒ_[BÅI“I‚ÈƒsƒNƒZƒ‹‚ÌF‚ğŒˆ’è‚µ‚Ü‚·B",
-			u8"Compute Shader: ”Ä—pŒvZƒVƒF[ƒ_[BƒOƒ‰ƒtƒBƒbƒNƒXˆÈŠO‚ÌŒvZ‚É‚àg—p‚Å‚«‚Ü‚·B"
+			u8"HLSL Header: å…±é€šã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚„æ§‹é€ ä½“ã‚’å®šç¾©ã™ã‚‹ãŸã‚ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã€‚",
+			u8"Vertex Shader: é ‚ç‚¹ã”ã¨ã«å®Ÿè¡Œã•ã‚Œã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚é ‚ç‚¹ã®ä½ç½®ã‚„æ³•ç·šãªã©ã‚’å‡¦ç†ã—ã¾ã™ã€‚",
+			u8"Pixel Shader: ãƒ”ã‚¯ã‚»ãƒ«ã”ã¨ã«å®Ÿè¡Œã•ã‚Œã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚æœ€çµ‚çš„ãªãƒ”ã‚¯ã‚»ãƒ«ã®è‰²ã‚’æ±ºå®šã—ã¾ã™ã€‚",
+			u8"Compute Shader: æ±ç”¨è¨ˆç®—ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã€‚ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ä»¥å¤–ã®è¨ˆç®—ã«ã‚‚ä½¿ç”¨ã§ãã¾ã™ã€‚"
 		};
 		static std::string templateExtensions[] = {
 			".hlsli",
@@ -1306,68 +1306,68 @@ void AssetBrowser::DrawHlslShaderCreationModal()
 		//	"./Assets/Shaders/PixelShaderTemplate.shader",
 		//	"./Assets/Shaders/ComputeShaderTemplate.shader"
 		//};
-		ImGui::Text(reinterpret_cast<const char*>(u8"ƒeƒ“ƒvƒŒ[ƒg:"));
+		ImGui::Text(reinterpret_cast<const char*>(u8"ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ:"));
 		ImGui::SameLine();
-		ImGui::SetNextItemWidth(-1); // ƒEƒBƒ“ƒhƒE•‚¢‚Á‚Ï‚¢‚ÉƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ğL‚°‚é
+		ImGui::SetNextItemWidth(-1); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã„ã£ã±ã„ã«ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã‚’åºƒã’ã‚‹
 		ImGui::Combo("##ShaderTemplate", &selectedTemplate, templates, IM_ARRAYSIZE(templates));
 		ImGui::TextWrapped(reinterpret_cast<const char*>(templateDescriptions[selectedTemplate]));
-		ImGui::Spacing(); // ƒXƒy[ƒX‚ğ‹ó‚¯‚é
+		ImGui::Spacing(); // ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 
-		// ƒVƒF[ƒ_[–¼“ü—ÍƒtƒB[ƒ‹ƒh
-		ImGui::Text(reinterpret_cast<const char*>(u8"–¼‘O:"));
+		// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åå…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+		ImGui::Text(reinterpret_cast<const char*>(u8"åå‰:"));
 		ImGui::SameLine();
-		ImGui::SetNextItemWidth(-1); // ƒEƒBƒ“ƒhƒE•‚¢‚Á‚Ï‚¢‚É“ü—ÍƒtƒB[ƒ‹ƒh‚ğL‚°‚é
-		// Enter‚ÅŠm’èA‘S‘I‘ğA•¶šƒtƒBƒ‹ƒ^i‰p”š‚ÆƒAƒ“ƒ_[ƒXƒRƒA‚Ì‚İj
+		ImGui::SetNextItemWidth(-1); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã„ã£ã±ã„ã«å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’åºƒã’ã‚‹
+		// Enterã§ç¢ºå®šã€å…¨é¸æŠã€æ–‡å­—ãƒ•ã‚£ãƒ«ã‚¿ï¼ˆè‹±æ•°å­—ã¨ã‚¢ãƒ³ãƒ€ãƒ¼ã‚¹ã‚³ã‚¢ã®ã¿ï¼‰
 		ImGuiInputFlags inputFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CallbackCharFilter;
 		static auto CharFilter = [](ImGuiInputTextCallbackData* data) -> int {
 			const char* allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-			if (data->EventChar == '\n' || data->EventChar == '\r') // EnterƒL[
-				return 0; // ‹–‰Â
-			if (data->EventChar == '\b') // ƒoƒbƒNƒXƒy[ƒX
-				return 0; // ‹–‰Â
-			if (data->EventChar == '\0') // I’[•¶š
-				return 0; // ‹–‰Â
-			if (strchr(allowedChars, data->EventChar) != nullptr) // ‹–‰Â‚³‚ê‚½•¶š
-				return 0; // ‹–‰Â
-			return 1; // •s‹–‰Â
+			if (data->EventChar == '\n' || data->EventChar == '\r') // Enterã‚­ãƒ¼
+				return 0; // è¨±å¯
+			if (data->EventChar == '\b') // ãƒãƒƒã‚¯ã‚¹ãƒšãƒ¼ã‚¹
+				return 0; // è¨±å¯
+			if (data->EventChar == '\0') // çµ‚ç«¯æ–‡å­—
+				return 0; // è¨±å¯
+			if (strchr(allowedChars, data->EventChar) != nullptr) // è¨±å¯ã•ã‚ŒãŸæ–‡å­—
+				return 0; // è¨±å¯
+			return 1; // ä¸è¨±å¯
 			};
-		// “ü—ÍƒtƒB[ƒ‹ƒh‚ğ•\¦
+		// å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’è¡¨ç¤º
 		bool confirm = ImGui::InputText("##ShaderName", hlslShaderNameBuffer, IM_ARRAYSIZE(hlslShaderNameBuffer), inputFlags, CharFilter);
-		// “ü—Í‚³‚ê‚½ƒVƒF[ƒ_[–¼‚ÌŒŸØ
+		// å…¥åŠ›ã•ã‚ŒãŸã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åã®æ¤œè¨¼
 		bool isValidPath = true;
 		fs::path newShaderPath = hlslShaderCreationInitDir / (std::string(hlslShaderNameBuffer) + templateExtensions[selectedTemplate]);
 		const char8_t* message;
 		if (hlslShaderNameBuffer[0] == '\0')
 		{
-			message = u8"–¼‘O‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B";
+			message = u8"åå‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚";
 			isValidPath = false;
 		}
 		else if (fs::exists(newShaderPath))
 		{
-			message = u8"“¯–¼‚Ìƒtƒ@ƒCƒ‹‚ªŠù‚É‘¶İ‚µ‚Ü‚·B";
+			message = u8"åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«å­˜åœ¨ã—ã¾ã™ã€‚";
 			isValidPath = false;
 		}
 		else
 		{
 			message = u8"";
 		}
-		// ì¬‚³‚ê‚éƒtƒ@ƒCƒ‹ƒpƒX‚ğ•\¦
-		ImGui::TextWrapped(reinterpret_cast<const char*>(u8"ì¬‚³‚ê‚éƒtƒ@ƒCƒ‹: %s"), newShaderPath.string().c_str());
-		// ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
+		// ä½œæˆã•ã‚Œã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¡¨ç¤º
+		ImGui::TextWrapped(reinterpret_cast<const char*>(u8"ä½œæˆã•ã‚Œã‚‹ãƒ•ã‚¡ã‚¤ãƒ«: %s"), newShaderPath.string().c_str());
+		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
 		ImGui::TextWrapped(reinterpret_cast<const char*>(message));
-		ImGui::Spacing(); // ƒXƒy[ƒX‚ğ‹ó‚¯‚é
+		ImGui::Spacing(); // ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 		ImVec2 buttonSize(160, 0);
-		// ì¬ƒ{ƒ^ƒ“
+		// ä½œæˆãƒœã‚¿ãƒ³
 		ImGui::BeginDisabled(!isValidPath);
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"ì¬"), buttonSize) || (confirm && isValidPath))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"ä½œæˆ"), buttonSize) || (confirm && isValidPath))
 		{
 			CreateHlslShader(hlslShaderCreationInitDir, hlslShaderNameBuffer, templateExtensions[selectedTemplate]);
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndDisabled();
-		// ƒLƒƒƒ“ƒZƒ‹ƒ{ƒ^ƒ“
+		// ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒœã‚¿ãƒ³
 		ImGui::SameLine();
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"ƒLƒƒƒ“ƒZƒ‹"), buttonSize) || ImGui::IsKeyPressed(ImGuiKey_Escape))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"ã‚­ãƒ£ãƒ³ã‚»ãƒ«"), buttonSize) || ImGui::IsKeyPressed(ImGuiKey_Escape))
 		{
 			ImGui::CloseCurrentPopup();
 		}
@@ -1375,28 +1375,28 @@ void AssetBrowser::DrawHlslShaderCreationModal()
 	}
 }
 
-// V‹KƒV[ƒ“ì¬ƒ‚[ƒ_ƒ‹‚Ì“à—e
+// æ–°è¦ã‚·ãƒ¼ãƒ³ä½œæˆãƒ¢ãƒ¼ãƒ€ãƒ«ã®å†…å®¹
 void AssetBrowser::DrawNewSceneCreationModal()
 {
 	if (showNewSceneCreationModal)
 	{
 		ImGui::OpenPopup("Create New Scene");
-		strncpy_s(sceneNameBuffer, NewSceneName, IM_ARRAYSIZE(sceneNameBuffer)); // ƒoƒbƒtƒ@‚É‰Šú’l‚ğƒZƒbƒg
-		showNewSceneCreationModal = false; // ƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		strncpy_s(sceneNameBuffer, NewSceneName, IM_ARRAYSIZE(sceneNameBuffer)); // ãƒãƒƒãƒ•ã‚¡ã«åˆæœŸå€¤ã‚’ã‚»ãƒƒãƒˆ
+		showNewSceneCreationModal = false; // ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	}
 	else if (!ImGui::IsPopupOpen("Create New Scene"))
 	{
-		return; // ƒ‚[ƒ_ƒ‹‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+		return; // ãƒ¢ãƒ¼ãƒ€ãƒ«ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	}
 
-	// ƒ‚[ƒ_ƒ‹‚Ì“à—e
+	// ãƒ¢ãƒ¼ãƒ€ãƒ«ã®å†…å®¹
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_Always); // ƒTƒCƒY‚Í“à—e‚É‡‚í‚¹‚Ä©“®’²®
+	ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_Always); // ã‚µã‚¤ã‚ºã¯å†…å®¹ã«åˆã‚ã›ã¦è‡ªå‹•èª¿æ•´
 
 	if (ImGui::BeginPopupModal("Create New Scene", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
 	{
-		// ƒV[ƒ“ƒeƒ“ƒvƒŒ[ƒg‚Ì‘I‘ğ
+		// ã‚·ãƒ¼ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®é¸æŠ
 		static int selectedTemplate = 0;
 		static const char* templates[] = {
 			"Empty Scene",
@@ -1404,16 +1404,16 @@ void AssetBrowser::DrawNewSceneCreationModal()
 			"Custom Template",
 		};
 		static const char8_t* templateDescriptions[] = {
-			u8"‹ó‚ÌƒV[ƒ“B‰½‚à”z’u‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB",
-			u8"ƒfƒtƒHƒ‹ƒg‚ÌƒV[ƒ“BƒJƒƒ‰‚Æƒ‰ƒCƒg‚ª”z’u‚³‚ê‚½ó‘Ô‚Å‚·B",
-			u8"ƒJƒXƒ^ƒ€ƒeƒ“ƒvƒŒ[ƒgBƒ†[ƒU[‚ªì¬‚µ‚½ƒV[ƒ“ƒeƒ“ƒvƒŒ[ƒg‚ğg—p‚µ‚Ü‚·B"
+			u8"ç©ºã®ã‚·ãƒ¼ãƒ³ã€‚ä½•ã‚‚é…ç½®ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚",
+			u8"ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚·ãƒ¼ãƒ³ã€‚ã‚«ãƒ¡ãƒ©ã¨ãƒ©ã‚¤ãƒˆãŒé…ç½®ã•ã‚ŒãŸçŠ¶æ…‹ã§ã™ã€‚",
+			u8"ã‚«ã‚¹ã‚¿ãƒ ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã€‚ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒä½œæˆã—ãŸã‚·ãƒ¼ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ä½¿ç”¨ã—ã¾ã™ã€‚"
 		};
 		static fs::path templateScenePaths[] = {
 			"./Assets/Scenes/EmptyScene.scene",
 			"./Assets/Scenes/DefaultScene.scene",
 			"./Assets/Scenes/"
 		};
-		ImGui::Text(reinterpret_cast<const char*>(u8"ƒeƒ“ƒvƒŒ[ƒg:"));
+		ImGui::Text(reinterpret_cast<const char*>(u8"ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ:"));
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(-1);
 		if (ImGui::BeginCombo("##SceneTemplate", templates[selectedTemplate]))
@@ -1427,7 +1427,7 @@ void AssetBrowser::DrawNewSceneCreationModal()
 				}
 				if (ImGui::IsItemHovered())
 				{
-					// ƒc[ƒ‹ƒ`ƒbƒv‚Åƒeƒ“ƒvƒŒ[ƒg‚Ìà–¾‚ğ•\¦
+					// ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã§ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®èª¬æ˜ã‚’è¡¨ç¤º
 					ImGui::SetTooltip("%s", templateDescriptions[i]);
 				}
 				if (isSelected)
@@ -1438,14 +1438,14 @@ void AssetBrowser::DrawNewSceneCreationModal()
 			ImGui::EndCombo();
 		}
 
-		if (selectedTemplate == 2) // ƒJƒXƒ^ƒ€ƒeƒ“ƒvƒŒ[ƒg‚ª‘I‘ğ‚³‚ê‚½ê‡‚ÍAƒeƒ“ƒvƒŒ[ƒgƒfƒBƒŒƒNƒgƒŠ‚ğ‘I‘ğ‚·‚éUI‚ğ•\¦
+		if (selectedTemplate == 2) // ã‚«ã‚¹ã‚¿ãƒ ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãŒé¸æŠã•ã‚ŒãŸå ´åˆã¯ã€ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é¸æŠã™ã‚‹UIã‚’è¡¨ç¤º
 		{
-			ImGui::Text(reinterpret_cast<const char*>(u8"ƒeƒ“ƒvƒŒ[ƒgƒV[ƒ“:"));
+			ImGui::Text(reinterpret_cast<const char*>(u8"ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚·ãƒ¼ãƒ³:"));
 			ImGui::SameLine();
 			ImGui::SetNextItemWidth(-1);
-			if (ImGui::Button(reinterpret_cast<const char*>(u8"‘I‘ğ")))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"é¸æŠ")))
 			{
-				// ƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO‚ğŠJ‚¢‚ÄƒV[ƒ“ƒtƒ@ƒCƒ‹‚ğ‘I‘ğ‚³‚¹‚é
+				// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‹ã„ã¦ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸æŠã•ã›ã‚‹
 				char* resultPath = OpenFileDialog(
 					"Scene Files (*.scene)\0*.scene\0All Files (*.*)\0*.*\0"
 					"Select Scene Template"
@@ -1453,26 +1453,26 @@ void AssetBrowser::DrawNewSceneCreationModal()
 				std::string selectedPath = resultPath ? std::string(resultPath) : "";
 				if (!selectedPath.empty())
 				{
-					templateScenePaths[2] = selectedPath; // ƒJƒXƒ^ƒ€ƒeƒ“ƒvƒŒ[ƒg‚ÌƒpƒX‚ğXV
+					templateScenePaths[2] = selectedPath; // ã‚«ã‚¹ã‚¿ãƒ ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ãƒ‘ã‚¹ã‚’æ›´æ–°
 				}
 			}
 			if (templateScenePaths[2].has_filename())
 			{
-				ImGui::TextWrapped(reinterpret_cast<const char*>(u8"‘I‘ğ‚³‚ê‚½ƒeƒ“ƒvƒŒ[ƒg: %s"), templateScenePaths[2].string().c_str());
+				ImGui::TextWrapped(reinterpret_cast<const char*>(u8"é¸æŠã•ã‚ŒãŸãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ: %s"), templateScenePaths[2].string().c_str());
 			}
 			else
 			{
-				ImGui::TextWrapped(reinterpret_cast<const char*>(u8"ƒV[ƒ“ƒeƒ“ƒvƒŒ[ƒg‚Æ‚µ‚Äg—p‚·‚éƒV[ƒ“ƒtƒ@ƒCƒ‹‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B"));
+				ImGui::TextWrapped(reinterpret_cast<const char*>(u8"ã‚·ãƒ¼ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã¨ã—ã¦ä½¿ç”¨ã™ã‚‹ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚"));
 			}
 		}
 
 
-		// ƒeƒ“ƒvƒŒ[ƒg‘I‘ğ‚ÆƒV[ƒ“–¼“ü—Í‚ÌŠÔ‚ÉƒXƒy[ƒX‚ğ‹ó‚¯‚é
+		// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆé¸æŠã¨ã‚·ãƒ¼ãƒ³åå…¥åŠ›ã®é–“ã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç©ºã‘ã‚‹
 		ImGui::Spacing();
-		// ƒV[ƒ“–¼“ü—ÍƒtƒB[ƒ‹ƒh
-		ImGui::Text(reinterpret_cast<const char*>(u8"ƒV[ƒ“–¼:"));
+		// ã‚·ãƒ¼ãƒ³åå…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+		ImGui::Text(reinterpret_cast<const char*>(u8"ã‚·ãƒ¼ãƒ³å:"));
 		ImGui::SameLine();
-		ImGui::SetNextItemWidth(-1); // ƒEƒBƒ“ƒhƒE•‚¢‚Á‚Ï‚¢‚É“ü—ÍƒtƒB[ƒ‹ƒh‚ğL‚°‚é
+		ImGui::SetNextItemWidth(-1); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã„ã£ã±ã„ã«å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’åºƒã’ã‚‹
 		ImGuiInputFlags inputFlags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_ElideLeft;
 		bool confirm = ImGui::InputText("##SceneName", sceneNameBuffer, IM_ARRAYSIZE(sceneNameBuffer), inputFlags);
 		const char8_t* message;
@@ -1480,22 +1480,22 @@ void AssetBrowser::DrawNewSceneCreationModal()
 		fs::path newScenePath = sceneCreationInitDir / (std::string(sceneNameBuffer) + ".scene");
 		if (selectedTemplate == 2 && (!templateScenePaths[2].has_filename() || templateScenePaths[2].extension() != ".scene"))
 		{
-			message = u8"—LŒø‚ÈƒV[ƒ“ƒeƒ“ƒvƒŒ[ƒg‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B";
+			message = u8"æœ‰åŠ¹ãªã‚·ãƒ¼ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚";
 			isValid = false;
 		}
 		else if (sceneNameBuffer[0] == '\0')
 		{
-			message = u8"ƒV[ƒ“–¼‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B";
+			message = u8"ã‚·ãƒ¼ãƒ³åã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚";
 			isValid = false;
 		}
 		else if (fs::exists(newScenePath))
 		{
-			message = u8"“¯–¼‚Ìƒtƒ@ƒCƒ‹‚ªŠù‚É‘¶İ‚µ‚Ü‚·B";
+			message = u8"åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«å­˜åœ¨ã—ã¾ã™ã€‚";
 			isValid = false;
 		}
 		else if (!newScenePath.has_stem() || newScenePath.extension() != ".scene")
 		{
-			message = u8"–³Œø‚ÈƒV[ƒ“–¼‚Å‚·BŠg’£q‚Í .scene ‚É‚µ‚Ä‚­‚¾‚³‚¢B";
+			message = u8"ç„¡åŠ¹ãªã‚·ãƒ¼ãƒ³åã§ã™ã€‚æ‹¡å¼µå­ã¯ .scene ã«ã—ã¦ãã ã•ã„ã€‚";
 			isValid = false;
 		}
 		else
@@ -1509,7 +1509,7 @@ void AssetBrowser::DrawNewSceneCreationModal()
 		ImGui::Spacing();
 		ImVec2 buttonSize(160, 0);
 		ImGui::BeginDisabled(!isValid);
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"ì¬"), buttonSize) || (confirm && isValid))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"ä½œæˆ"), buttonSize) || (confirm && isValid))
 		{
 			CreateNewScene(templateScenePaths[selectedTemplate], newScenePath);
 			ImGui::CloseCurrentPopup();
@@ -1517,7 +1517,7 @@ void AssetBrowser::DrawNewSceneCreationModal()
 		ImGui::EndDisabled();
 		ImGui::SameLine();
 
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"ƒLƒƒƒ“ƒZƒ‹"), buttonSize) || ImGui::IsKeyPressed(ImGuiKey_Escape))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"ã‚­ãƒ£ãƒ³ã‚»ãƒ«"), buttonSize) || ImGui::IsKeyPressed(ImGuiKey_Escape))
 		{
 			ImGui::CloseCurrentPopup();
 		}
@@ -1526,55 +1526,55 @@ void AssetBrowser::DrawNewSceneCreationModal()
 
 }
 
-// íœŠm”Fƒ‚[ƒ_ƒ‹‚Ì“à—e
+// å‰Šé™¤ç¢ºèªãƒ¢ãƒ¼ãƒ€ãƒ«ã®å†…å®¹
 void AssetBrowser::DrawDeleteConfirmModal()
 {
 	if (showDeleteConfirmModal)
 	{
 		ImGui::OpenPopup("Delete Confirmation");
-		showDeleteConfirmModal = false; // ƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		showDeleteConfirmModal = false; // ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	}
 	else if (!ImGui::IsPopupOpen("Delete Confirmation"))
 	{
-		return; // ƒ‚[ƒ_ƒ‹‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+		return; // ãƒ¢ãƒ¼ãƒ€ãƒ«ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	}
 
-	// ƒ‚[ƒ_ƒ‹‚Ì“à—e
+	// ãƒ¢ãƒ¼ãƒ€ãƒ«ã®å†…å®¹
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	ImGui::SetNextWindowSize(ImVec2(420, 0), ImGuiCond_Appearing); // ƒTƒCƒY‚Í“à—e‚É‡‚í‚¹‚Ä©“®’²®
+	ImGui::SetNextWindowSize(ImVec2(420, 0), ImGuiCond_Appearing); // ã‚µã‚¤ã‚ºã¯å†…å®¹ã«åˆã‚ã›ã¦è‡ªå‹•èª¿æ•´
 
 	if (ImGui::BeginPopupModal("Delete Confirmation", nullptr,
 		ImGuiWindowFlags_NoDocking |
 		ImGuiWindowFlags_NoSavedSettings |
 		ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"ˆÈ‰º‚ÌƒAƒCƒeƒ€‚ğíœ‚µ‚Ü‚·‚©H"));
+		ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"ä»¥ä¸‹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã—ã¾ã™ã‹ï¼Ÿ"));
 		ImGui::Spacing();
 		if (selectedAssets.size() == 1)
 		{
-			// ’Pˆê‘I‘ğ‚Ìê‡‚Í‘ÎÛ‚Ìƒtƒ@ƒCƒ‹/ƒtƒHƒ‹ƒ_–¼‚ğ•\¦
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.85f, 0.3f, 1.0f)); // ŒxF
+			// å˜ä¸€é¸æŠã®å ´åˆã¯å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«/ãƒ•ã‚©ãƒ«ãƒ€åã‚’è¡¨ç¤º
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.85f, 0.3f, 1.0f)); // è­¦å‘Šè‰²
 			ImGui::PushTextWrapPos(ImGui::GetContentRegionAvail().x);
 			ImGui::TextUnformatted(reinterpret_cast<const char*>(deleteTargetAsset.u8string().c_str()));
 			ImGui::PopTextWrapPos();
 			ImGui::PopStyleColor();
 
-			// ƒfƒBƒŒƒNƒgƒŠ‚Ìê‡‚Í’Ç‰ÁŒx
+			// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å ´åˆã¯è¿½åŠ è­¦å‘Š
 			if (fs::is_directory(deleteTargetAsset))
 			{
 				ImGui::Spacing();
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.4f, 0.4f, 1.0f));
-				ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"ƒtƒHƒ‹ƒ_‚²‚Æ’†g‚à‚·‚×‚Äíœ‚³‚ê‚Ü‚·B"));
+				ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"ãƒ•ã‚©ãƒ«ãƒ€ã”ã¨ä¸­èº«ã‚‚ã™ã¹ã¦å‰Šé™¤ã•ã‚Œã¾ã™ã€‚"));
 				ImGui::PopStyleColor();
 			}
 		}
 		else
 		{
-			// •¡”‘I‘ğ‚Ìê‡‚ÍAŒ”‚Ææ“ª”Œ‚ğƒvƒŒƒrƒ…[•\¦
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.85f, 0.3f, 1.0f)); // ŒxF
+			// è¤‡æ•°é¸æŠã®å ´åˆã¯ã€ä»¶æ•°ã¨å…ˆé ­æ•°ä»¶ã‚’ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤º
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.85f, 0.3f, 1.0f)); // è­¦å‘Šè‰²
 			ImGui::PushTextWrapPos(ImGui::GetContentRegionAvail().x);
-			ImGui::Text(reinterpret_cast<const char*>(u8"%zu ŒÂ‚ÌƒAƒCƒeƒ€"), selectedAssets.size());
+			ImGui::Text(reinterpret_cast<const char*>(u8"%zu å€‹ã®ã‚¢ã‚¤ãƒ†ãƒ "), selectedAssets.size());
 			ImGui::PopTextWrapPos();
 			ImGui::PopStyleColor();
 
@@ -1587,18 +1587,18 @@ void AssetBrowser::DrawDeleteConfirmModal()
 				ImGui::PopStyleColor();
 				if (++preview >= 5 && selectedAssets.size() > 5)
 				{
-					ImGui::TextDisabled(reinterpret_cast<const char*>(u8"  ... ‘¼ %zu ŒÂ"), selectedAssets.size() - 5);
+					ImGui::TextDisabled(reinterpret_cast<const char*>(u8"  ... ä»– %zu å€‹"), selectedAssets.size() - 5);
 					break;
 				}
 			}
-			// ƒtƒHƒ‹ƒ_‚ªŠÜ‚Ü‚ê‚Ä‚¢‚éê‡‚Í’Ç‰ÁŒx
+			// ãƒ•ã‚©ãƒ«ãƒ€ãŒå«ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯è¿½åŠ è­¦å‘Š
 			bool hasDir = std::any_of(selectedAssets.begin(), selectedAssets.end(),
 				[](const fs::path& p) { return fs::is_directory(p); });
 			if (hasDir)
 			{
 				ImGui::Spacing();
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.4f, 0.4f, 1.0f));
-				ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"ƒtƒHƒ‹ƒ_‚ªŠÜ‚Ü‚ê‚Ü‚·B’†g‚à‚·‚×‚Äíœ‚³‚ê‚Ü‚·B"));
+				ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"ãƒ•ã‚©ãƒ«ãƒ€ãŒå«ã¾ã‚Œã¾ã™ã€‚ä¸­èº«ã‚‚ã™ã¹ã¦å‰Šé™¤ã•ã‚Œã¾ã™ã€‚"));
 				ImGui::PopStyleColor();
 			}
 		}
@@ -1612,11 +1612,11 @@ void AssetBrowser::DrawDeleteConfirmModal()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.75f, 0.18f, 0.18f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.90f, 0.28f, 0.28f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.60f, 0.10f, 0.10f, 1.0f));
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"íœ‚·‚é"), buttonSize)
-			|| ImGui::IsKeyPressed(ImGuiKey_Enter)) // Enter‚Å‚àŠm’è
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"å‰Šé™¤ã™ã‚‹"), buttonSize)
+			|| ImGui::IsKeyPressed(ImGuiKey_Enter)) // Enterã§ã‚‚ç¢ºå®š
 		{
-			// ‘I‘ğ‚³‚ê‚½ƒAƒZƒbƒg‚ğíœ‚·‚éˆ—
-			std::unordered_set<fs::path> assets(selectedAssets.begin(), selectedAssets.end()); // íœ‘ÎÛ‚ğƒRƒs[‚µ‚Ä‚¨‚­iíœ’†‚É selectedAssets ‚ª•Ï‰»‚·‚é‰Â”\«‚ª‚ ‚é‚½‚ßj
+			// é¸æŠã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆã‚’å‰Šé™¤ã™ã‚‹å‡¦ç†
+			std::unordered_set<fs::path> assets(selectedAssets.begin(), selectedAssets.end()); // å‰Šé™¤å¯¾è±¡ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ãŠãï¼ˆå‰Šé™¤ä¸­ã« selectedAssets ãŒå¤‰åŒ–ã™ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ï¼‰
 			for (const auto& asset : assets)
 			{
 				std::error_code ec;
@@ -1628,14 +1628,14 @@ void AssetBrowser::DrawDeleteConfirmModal()
 				}
 				else
 				{
-					// ƒtƒ@ƒCƒ‹‚Ìê‡‚à“¯—l‚É ec ‚ğ“n‚·
+					// ãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆã‚‚åŒæ§˜ã« ec ã‚’æ¸¡ã™
 					fs::remove(asset, ec);
 					if (!ec) {
 						OnAssetDeleted(asset);
 					}
 				}
 
-				// ÅI“I‚ÈŒ‹‰Ê‚ğƒƒO‚Éo—Í
+				// æœ€çµ‚çš„ãªçµæœã‚’ãƒ­ã‚°ã«å‡ºåŠ›
 				if (ec) {
 					LOG_ERROR("Failed to delete " + asset.string() + ": " + ec.message() + " (Code: " + std::to_string(ec.value()) + ")");
 				}
@@ -1651,7 +1651,7 @@ void AssetBrowser::DrawDeleteConfirmModal()
 
 		ImGui::SameLine();
 
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"ƒLƒƒƒ“ƒZƒ‹"), buttonSize)
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"ã‚­ãƒ£ãƒ³ã‚»ãƒ«"), buttonSize)
 			|| ImGui::IsKeyPressed(ImGuiKey_Escape))
 		{
 			ImGui::CloseCurrentPopup();
@@ -1664,46 +1664,46 @@ void AssetBrowser::DrawDeleteConfirmModal()
 
 void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 {
-	// ‰EƒNƒŠƒbƒN‚³‚ê‚½ƒAƒZƒbƒg‚É‰‚¶‚½ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚ğ•\¦‚·‚éˆ—‚ğ‚±‚±‚ÉÀ‘•
-	// —á: ƒtƒ@ƒCƒ‹‚ğƒGƒNƒXƒvƒ[ƒ‰[‚ÅŠJ‚­AíœA–¼‘O•ÏX‚È‚Ç
-	bool isSelected = !assetPath.empty(); // assetPath‚ª‹ó‚Å‚È‚¢ê‡‚Í‰½‚©‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚é‚Æ‚İ‚È‚·
+	// å³ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆã«å¿œã˜ãŸã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…
+	// ä¾‹: ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¨ã‚¯ã‚¹ãƒ—ãƒ­ãƒ¼ãƒ©ãƒ¼ã§é–‹ãã€å‰Šé™¤ã€åå‰å¤‰æ›´ãªã©
+	bool isSelected = !assetPath.empty(); // assetPathãŒç©ºã§ãªã„å ´åˆã¯ä½•ã‹ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹ã¨ã¿ãªã™
 	fs::path folderPath = assetPath.empty() ? currentDirectory : assetPath.parent_path();
 
 	if (ImGui::BeginPopup("AssetGridContextMenu"))
 	{
-		// -- ‘I‘ğ‚³‚ê‚½ƒAƒZƒbƒg‚ª‚ ‚éê‡‚É•\¦‚³‚ê‚éƒƒjƒ…[€–Ú ----------------------
+		// -- é¸æŠã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãŒã‚ã‚‹å ´åˆã«è¡¨ç¤ºã•ã‚Œã‚‹ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›® ----------------------
 		if (isSelected)
 		{
-			auto meta = CurryEngine::Resources::AssetDatabase::FindByPath(assetPath); // ƒAƒZƒbƒg‚ÌƒpƒX‚©‚çƒAƒZƒbƒgƒf[ƒ^‚ğæ“¾‚·‚éˆ—
+			auto meta = CurryEngine::Resources::AssetDatabase::FindByPath(assetPath); // ã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹ã‹ã‚‰ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹å‡¦ç†
 			if (meta && CurryEngine::Resources::ImporterRegistry::Find(meta->type))
 			{
 				if (ImGui::MenuItem("Open Import Settings"))
 				{
-					CurryEngine::Resources::ImportSettingsWindow::Open(meta->id); // ƒCƒ“ƒ|[ƒgİ’èƒEƒBƒ“ƒhƒE‚ğŠJ‚­ˆ—
+					CurryEngine::Resources::ImportSettingsWindow::Open(meta->id); // ã‚¤ãƒ³ãƒãƒ¼ãƒˆè¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ãå‡¦ç†
 				}
 			}
 
 			if (ImGui::MenuItem("Open"))
 			{
-				OpenAsset(assetPath); // ƒAƒZƒbƒg‚ğŠJ‚­ˆ—
+				OpenAsset(assetPath); // ã‚¢ã‚»ãƒƒãƒˆã‚’é–‹ãå‡¦ç†
 			}
 			//if (ImGui::MenuItem("Show in Explorer"))
 			//{
-			//	ShowInExplorer(assetPath); // ƒGƒNƒXƒvƒ[ƒ‰[‚Å•\¦‚·‚éˆ—
+			//	ShowInExplorer(assetPath); // ã‚¨ã‚¯ã‚¹ãƒ—ãƒ­ãƒ¼ãƒ©ãƒ¼ã§è¡¨ç¤ºã™ã‚‹å‡¦ç†
 			//}
 			if (ImGui::MenuItem("Rename"))
 			{
-				StartRename(assetPath); // ƒŠƒl[ƒ€ˆ—
+				StartRename(assetPath); // ãƒªãƒãƒ¼ãƒ å‡¦ç†
 			}
 			if (ImGui::MenuItem("Delete"))
 			{
-				StartDelete(assetPath); // íœˆ—
+				StartDelete(assetPath); // å‰Šé™¤å‡¦ç†
 			}
 
-			ImGui::Separator(); // ‘I‘ğ‚³‚ê‚½ƒAƒZƒbƒg‚ÆƒtƒHƒ‹ƒ_—¼•û‚É‹¤’Ê‚Ìƒƒjƒ…[€–Ú‚ğ•ª‚¯‚é‚½‚ß‚ÌƒZƒpƒŒ[ƒ^[
+			ImGui::Separator(); // é¸æŠã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆã¨ãƒ•ã‚©ãƒ«ãƒ€ä¸¡æ–¹ã«å…±é€šã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã‚’åˆ†ã‘ã‚‹ãŸã‚ã®ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ãƒ¼
 		}
 
-		// -- í‚É•\¦‚³‚ê‚éƒƒjƒ…[€–ÚiƒtƒHƒ‹ƒ_‚Ìì¬AƒV[ƒ“‚Ìì¬AƒXƒNƒŠƒvƒg‚Ìì¬‚È‚Çj ----------------------
+		// -- å¸¸ã«è¡¨ç¤ºã•ã‚Œã‚‹ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ï¼ˆãƒ•ã‚©ãƒ«ãƒ€ã®ä½œæˆã€ã‚·ãƒ¼ãƒ³ã®ä½œæˆã€ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ä½œæˆãªã©ï¼‰ ----------------------
 		if (ImGui::MenuItem("Create Folder"))
 		{
 			fs::create_directory(folderPath / "New Folder");
@@ -1723,10 +1723,10 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 		}
 		if (ImGui::MenuItem("Create Material"))
 		{
-			// V‚µ‚¢ƒ}ƒeƒŠƒAƒ‹‚ğì¬‚·‚éˆ—
+			// æ–°ã—ã„ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ä½œæˆã™ã‚‹å‡¦ç†
 			fs::path newMaterialPath = MakeUniqueFilePath(folderPath, "New Material", ".mat");
 			std::ofstream ofs(newMaterialPath);
-			ofs << "{}"; // ‹ó‚Ìƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚ğJSONŒ`®‚Å‘‚«‚Ş
+			ofs << "{}"; // ç©ºã®ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’JSONå½¢å¼ã§æ›¸ãè¾¼ã‚€
 			ofs.close();
 			Refresh();
 		}
@@ -1754,10 +1754,10 @@ fs::path AssetBrowser::MakeUniqueFilePath(const fs::path& dir, const fs::path& s
 fs::path AssetBrowser::ToUnityStylePath(const fs::path& path) {
 	fs::path result = path;
 
-	// Windows—p‚Ì \ ‚ğ / ‚É“ˆê
+	// Windowsç”¨ã® \ ã‚’ / ã«çµ±ä¸€
 	//std::replace(result.begin(), result.end(), '\\', '/');
 
-	// ƒXƒ‰ƒbƒVƒ…‚Å•ªŠ„‚µA" > " ‚Å˜AŒ‹
+	// ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã§åˆ†å‰²ã—ã€" > " ã§é€£çµ
 	std::wstringstream ws(result.wstring());
 	std::wstring segment;
 	std::vector<std::wstring> segments;
@@ -1780,21 +1780,21 @@ bool AssetBrowser::MoveAssetToFolder(const fs::path& srcPath, const fs::path& ds
 {
 	std::filesystem::path src(srcPath);
 	std::filesystem::path dst = dstFolderPath;
-	dst /= src.filename(); // Œ³‚Ìƒtƒ@ƒCƒ‹–¼‚ğˆÛ
+	dst /= src.filename(); // å…ƒã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ç¶­æŒ
 
 	bool success = false;
 	try {
 		std::filesystem::rename(src, dst);
-		Refresh(); // ƒuƒ‰ƒEƒU‚ğXV‚µ‚Ä•ÏX‚ğ”½‰f
+		Refresh(); // ãƒ–ãƒ©ã‚¦ã‚¶ã‚’æ›´æ–°ã—ã¦å¤‰æ›´ã‚’åæ˜ 
 		success = true;
 	}
 	catch (std::filesystem::filesystem_error& e) {
-		// ƒƒO‚âƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
-		std::cerr << "ˆÚ“®¸”s: " << e.what() << std::endl;
+		// ãƒ­ã‚°ã‚„ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+		std::cerr << "ç§»å‹•å¤±æ•—: " << e.what() << std::endl;
 		success = false;
 	}
 
-	// ˆÚ“®‚É¬Œ÷‚µ‚½ê‡‚ÍAƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚àXV
+	// ç§»å‹•ã«æˆåŠŸã—ãŸå ´åˆã¯ã€ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚‚æ›´æ–°
 	/*if (success) {
 		CurryEngine::Resources::AssetDatabase::Rename(src, dst);
 	}*/
@@ -1808,17 +1808,17 @@ bool AssetBrowser::MoveFolderToFolder(const fs::path& source, const fs::path& de
 		if (!fs::exists(source) || !fs::is_directory(source)) return false;
 		if (!fs::exists(destinationParent) || !fs::is_directory(destinationParent)) return false;
 
-		// ƒtƒHƒ‹ƒ_–¼‚ğæ“¾‚µ‚ÄˆÚ“®æƒpƒX‚ğì‚é
+		// ãƒ•ã‚©ãƒ«ãƒ€åã‚’å–å¾—ã—ã¦ç§»å‹•å…ˆãƒ‘ã‚¹ã‚’ä½œã‚‹
 		fs::path sourcePath(source);
 		fs::path destPath = fs::path(destinationParent) / sourcePath.filename();
 
 		fs::rename(sourcePath, destPath);
-		Refresh(); // ƒuƒ‰ƒEƒU‚ğXV‚µ‚Ä•ÏX‚ğ”½‰f
+		Refresh(); // ãƒ–ãƒ©ã‚¦ã‚¶ã‚’æ›´æ–°ã—ã¦å¤‰æ›´ã‚’åæ˜ 
 		//CurryEngine::Resources::AssetDatabase::RemapPathPrefix(sourcePath, destPath);
 		return true;
 	}
 	catch (const std::exception& e) {
-		// ƒƒOo—Í‚È‚Ç
+		// ãƒ­ã‚°å‡ºåŠ›ãªã©
 		std::cerr << "MoveFolder error: " << e.what() << std::endl;
 		LOG_ERROR(std::format("MoveFolder error: {}", e.what()));
 		return false;
@@ -1834,13 +1834,15 @@ bool AssetBrowser::HandleDropTargetForFolder(const fs::path& targetFolderPath)
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH"))
 		{
-			const char* assetPath = (const char*)payload->Data;
-			MoveAssetToFolder(assetPath, targetFolderPath);
+			const char8_t* assetPath = (const char8_t*)payload->Data;
+			fs::path payloadPath(assetPath);
+			MoveAssetToFolder(payloadPath, targetFolderPath);
 		}
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FOLDER_PATH"))
 		{
-			const char* folderPath = (const char*)payload->Data;
-			MoveFolderToFolder(folderPath, targetFolderPath);
+			const char8_t* folderPath = (const char8_t*)payload->Data;
+			fs::path payloadFolderPath(folderPath);
+			MoveFolderToFolder(payloadFolderPath, targetFolderPath);
 		}
 		ImGui::EndDragDropTarget();
 	}

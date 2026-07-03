@@ -9,20 +9,20 @@
 template<typename T>
 struct Range
 {
-	// ”ÍˆÍ‚ÌÅ¬’l‚ÆÅ‘å’l
+	// ç¯„å›²ã®æœ€å°å€¤ã¨æœ€å¤§å€¤
 	T min;
 	T max;
 
-	// min ‚©‚ç max ‚Ì”ÍˆÍ‚Åƒ‰ƒ“ƒ_ƒ€‚È’l‚ğæ“¾
+	// min ã‹ã‚‰ max ã®ç¯„å›²ã§ãƒ©ãƒ³ãƒ€ãƒ ãªå€¤ã‚’å–å¾—
 	T GetRandom() const
 	{
 		if (min == max) return min;
 		//float t = static_cast<float>(rand()) / RAND_MAX;
 		//return min + (max - min) * t;
 
-		// std::mt19937 ‚Æ std::uniform_real_distribution ‚ğg—p‚µ‚Äƒ‰ƒ“ƒ_ƒ€‚È’l‚ğ¶¬
-		static std::random_device rd;  // ”ñŒˆ’è“I‚È—”¶¬Ší
-		static std::mt19937 gen(rd()); // ƒƒ‹ƒZƒ“ƒkEƒcƒCƒXƒ^[‚Ì—”¶¬Ší
+		// std::mt19937 ã¨ std::uniform_real_distribution ã‚’ä½¿ç”¨ã—ã¦ãƒ©ãƒ³ãƒ€ãƒ ãªå€¤ã‚’ç”Ÿæˆ
+		static std::random_device rd;  // éæ±ºå®šçš„ãªä¹±æ•°ç”Ÿæˆå™¨
+		static std::mt19937 gen(rd()); // ãƒ¡ãƒ«ã‚»ãƒ³ãƒŒãƒ»ãƒ„ã‚¤ã‚¹ã‚¿ãƒ¼ã®ä¹±æ•°ç”Ÿæˆå™¨
 		if constexpr (std::is_integral_v<T>)
 		{
 			std::uniform_int_distribution<T> dis(min, max);
@@ -35,14 +35,14 @@ struct Range
 		}
 		else
 		{
-			// T ‚ª®”Œ^‚Å‚à•‚“®¬”“_Œ^‚Å‚à‚È‚¢ê‡‚ÍArand() ‚ğg—p‚µ‚Ä’l‚ğ¶¬
+			// T ãŒæ•´æ•°å‹ã§ã‚‚æµ®å‹•å°æ•°ç‚¹å‹ã§ã‚‚ãªã„å ´åˆã¯ã€rand() ã‚’ä½¿ç”¨ã—ã¦å€¤ã‚’ç”Ÿæˆ
 			float t = static_cast<float>(rand()) / RAND_MAX;
 			return min + (max - min) * t;
 		}
 	}
 };
 
-// ƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹
+// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«
 typedef int EffectHandle;
 
 class EffectManager
@@ -52,234 +52,234 @@ public:
 	~EffectManager() = default;
 public:
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^ƒNƒŠƒA
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢
 	static void ClearAll();
 
-	// V‚µ‚¢ƒGƒtƒFƒNƒgƒf[ƒ^’Ç‰Á—p‚Ìƒnƒ“ƒhƒ‹æ“¾
+	// æ–°ã—ã„ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿è¿½åŠ ç”¨ã®ãƒãƒ³ãƒ‰ãƒ«å–å¾—
 	static EffectHandle CreateEffectData();
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^“Ç‚İ‚İ
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 	static EffectHandle LoadEffectData(const std::string& filePath);
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^“Ç‚İ‚İiƒ_ƒCƒAƒƒO•\¦j
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿ï¼ˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤ºï¼‰
 	static EffectHandle LoadEffectDataWithDialog();
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^•Û‘¶
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ä¿å­˜
 	static void SaveEffectData(EffectHandle handle, const std::string& filePath);
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^•Û‘¶iƒ_ƒCƒAƒƒO•\¦j
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ä¿å­˜ï¼ˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤ºï¼‰
 	static void SaveEffectDataWithDialog(EffectHandle handle);
 
-	// ƒGƒtƒFƒNƒgÄ¶ (return: Ä¶ƒCƒ“ƒXƒ^ƒ“ƒXID)
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ (return: å†ç”Ÿã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ID)
 	static int Play(EffectHandle handle, const Vector3& position = {}, const Vector3& rotationEulerDegree = {});
 
-	// ƒGƒtƒFƒNƒg’â~
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåœæ­¢
 	static void Stop(EffectHandle handle);
 
-	// ƒGƒtƒFƒNƒg’â~iƒCƒ“ƒXƒ^ƒ“ƒXIDw’èj
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåœæ­¢ï¼ˆã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDæŒ‡å®šï¼‰
 	static void StopImmediate(int instanceID);
 
-	// ƒGƒtƒFƒNƒgÄ¶’†‚©
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿä¸­ã‹
 	static bool IsPlaying(EffectHandle handle);
 
-	// ‘SƒGƒtƒFƒNƒg’â~
+	// å…¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåœæ­¢
 	static void StopAll();
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^ƒRƒs[
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚³ãƒ”ãƒ¼
 	static EffectHandle CopyEffectData(EffectHandle srcHandle);
 
-	// ƒGƒtƒFƒNƒgƒf[ƒ^æ“¾
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿å–å¾—
 	struct EffectData;
 	static EffectData& GetEffectData(EffectHandle handle);
 
 public:
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	static void Initialize();
 
-	//XV
+	//æ›´æ–°
 	static void Update(float deltaTime);
 
-	//•`‰æ
+	//æç”»
 	static void Render(RenderContext* rtx);
 
-	//ƒGƒfƒBƒ^GUI•`‰æ
+	//ã‚¨ãƒ‡ã‚£ã‚¿GUIæç”»
 	//static void DrawGUI();
 
 private:
 
-	static void ClearEffectData(); // ƒGƒtƒFƒNƒgƒf[ƒ^ƒNƒŠƒA
+	static void ClearEffectData(); // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢
 
-	static void ReInitializeParticleSystem(); // ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€Ä‰Šú‰»
+	static void ReInitializeParticleSystem(); // ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ å†åˆæœŸåŒ–
 
-	// ƒGƒ~ƒbƒgˆ—
+	// ã‚¨ãƒŸãƒƒãƒˆå‡¦ç†
 	struct EmitterPlayState;
 	static void EmitOnce(const EmitterPlayState& state);
 
-	// Œ`óƒGƒ~ƒbƒ^İ’è“K—p
+	// å½¢çŠ¶ã‚¨ãƒŸãƒƒã‚¿è¨­å®šé©ç”¨
 	struct EmitterShapeData;
 	static void ApplyShapeEmitterSettings(const EmitterShapeData& settings, ComputeParticleSystem::EmitParticleData& emitData, int index, int emitCount);
 
 	
-	// ƒ‰ƒ“ƒ_ƒ€’læ“¾
+	// ãƒ©ãƒ³ãƒ€ãƒ å€¤å–å¾—
 	static float Random(float min, float max);
 
-	// ƒ‰ƒ“ƒ_ƒ€‚Èƒ{ƒbƒNƒX“àˆÊ’uæ“¾
+	// ãƒ©ãƒ³ãƒ€ãƒ ãªãƒœãƒƒã‚¯ã‚¹å†…ä½ç½®å–å¾—
 	static Vector3 RandomBoxPosition(const Vector3& size);
 
-	// ƒ‰ƒ“ƒ_ƒ€•ûŒüƒxƒNƒgƒ‹æ“¾
+	// ãƒ©ãƒ³ãƒ€ãƒ æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«å–å¾—
 	static Vector3 RandomDirection();
 
-	// ƒ‰ƒ“ƒ_ƒ€ã”¼‹…•ûŒüƒxƒNƒgƒ‹æ“¾
+	// ãƒ©ãƒ³ãƒ€ãƒ ä¸ŠåŠçƒæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«å–å¾—
 	static Vector3 RandomHemisphereDirection(const Vector3& normal);
 
-	// w’èŠp“x“à‚Ìƒ‰ƒ“ƒ_ƒ€•ûŒüƒxƒNƒgƒ‹æ“¾
+	// æŒ‡å®šè§’åº¦å†…ã®ãƒ©ãƒ³ãƒ€ãƒ æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«å–å¾—
 	static Vector3 RandomConeDirection(const Vector3& dir, float coneAngle);
 public:
-	// •`‰æƒ‚[ƒh
+	// æç”»ãƒ¢ãƒ¼ãƒ‰
 	enum class RenderingMode : uint8_t
 	{
-		Billboard = 0,		// ƒrƒ‹ƒ{[ƒh
-		StretchedBillboard,	// ƒXƒgƒŒƒbƒ`ƒhƒrƒ‹ƒ{[ƒh
-		FixedRotation,		// ŒÅ’è‰ñ“]
-		ScreenSpace,		// ƒXƒNƒŠ[ƒ“ƒXƒy[ƒX
+		Billboard = 0,		// ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰
+		StretchedBillboard,	// ã‚¹ãƒˆãƒ¬ãƒƒãƒãƒ‰ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰
+		FixedRotation,		// å›ºå®šå›è»¢
+		ScreenSpace,		// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¹ãƒšãƒ¼ã‚¹
 	};
-	// Œ`ó’è‹`
+	// å½¢çŠ¶å®šç¾©
 	enum class ShapeType : uint8_t
 	{
-		Point = 0,			// “_
-		Ring,				// ƒŠƒ“ƒO
-		Sphere,				// ‹…
-		Cylinder,			// ‰~’Œ
+		Point = 0,			// ç‚¹
+		Ring,				// ãƒªãƒ³ã‚°
+		Sphere,				// çƒ
+		Cylinder,			// å††æŸ±
 	};
-	// •ûŒü¶¬ƒ‚[ƒh
+	// æ–¹å‘ç”Ÿæˆãƒ¢ãƒ¼ãƒ‰
 	enum class DirectionMode : uint8_t
 	{
-		Default = 0,   // EmitterMotionData::velocity ‚É]‚¤
-		Axis,          // w’è²•ûŒü
-		Random,        // ƒ‰ƒ“ƒ_ƒ€•ûŒü
-		Outward,       // ’†S‚©‚çŠO‚Ö
-		Inward,        // ’†S‚ÉŒü‚©‚¤
-		Normal,        // Œ`ó–@ü•ûŒü
+		Default = 0,   // EmitterMotionData::velocity ã«å¾“ã†
+		Axis,          // æŒ‡å®šè»¸æ–¹å‘
+		Random,        // ãƒ©ãƒ³ãƒ€ãƒ æ–¹å‘
+		Outward,       // ä¸­å¿ƒã‹ã‚‰å¤–ã¸
+		Inward,        // ä¸­å¿ƒã«å‘ã‹ã†
+		Normal,        // å½¢çŠ¶æ³•ç·šæ–¹å‘
 	};
-	// ƒGƒ~ƒbƒgİ’è\‘¢‘Ì
+	// ã‚¨ãƒŸãƒƒãƒˆè¨­å®šæ§‹é€ ä½“
 	struct EmitterEmitData
 	{
-		int maxParticles{ 1000 };						// Å‘åƒp[ƒeƒBƒNƒ‹”
-		::Range<int> emitCount{ 10,10 };				// ƒGƒ~ƒbƒg”
-		::Range<float> initialDelay{ 0,0 };				// ‰Šú’x‰„ŠÔ
-		::Range<float> emitInterval{ 0,0 };				// ƒGƒ~ƒbƒgŠÔŠu
-		Vector3 positionOffset;							// ¶¬ˆÊ’u
-		::Range<Vector3> rotationEuler;					// ‰ñ“]
-		::Range<Vector3> endRotationEuler;				// I—¹‰ñ“]
-		::Range<float> rotationEasingTime{ 0.0f,0.0f };	// ‰ñ“]ƒC[ƒWƒ“ƒOŠÔ
-		int rotationEasingType{ 0 };					// ‰ñ“]ƒC[ƒWƒ“ƒOƒ^ƒCƒviComputeParticleUpdateCS.hlsl‚ÌEaseŠÖ”QÆj
-		bool loop{ false };								// ƒ‹[ƒvƒtƒ‰ƒO
-		float duration{ 1.0f };							// ƒGƒ~ƒbƒg‘±ŠÔiƒ‹[ƒv‚·‚éê‡‚Í1ƒTƒCƒNƒ‹‚ÌŠÔjTODO: duration‚Íƒ‹[ƒv‚·‚éê‡‚Ì1ƒTƒCƒNƒ‹‚ÌŠÔ‚É‚·‚é‚©Aƒ‹[ƒvƒtƒ‰ƒO‚Æ•ª‚¯‚ÄƒGƒ~ƒbƒg‘±ŠÔ‚ğ•Ê“rİ‚¯‚é‚©—vŒŸ“¢
+		int maxParticles{ 1000 };						// æœ€å¤§ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ•°
+		::Range<int> emitCount{ 10,10 };				// ã‚¨ãƒŸãƒƒãƒˆæ•°
+		::Range<float> initialDelay{ 0,0 };				// åˆæœŸé…å»¶æ™‚é–“
+		::Range<float> emitInterval{ 0,0 };				// ã‚¨ãƒŸãƒƒãƒˆé–“éš”
+		Vector3 positionOffset;							// ç”Ÿæˆä½ç½®
+		::Range<Vector3> rotationEuler;					// å›è»¢
+		::Range<Vector3> endRotationEuler;				// çµ‚äº†å›è»¢
+		::Range<float> rotationEasingTime{ 0.0f,0.0f };	// å›è»¢ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“
+		int rotationEasingType{ 0 };					// å›è»¢ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—ï¼ˆComputeParticleUpdateCS.hlslã®Easeé–¢æ•°å‚ç…§ï¼‰
+		bool loop{ false };								// ãƒ«ãƒ¼ãƒ—ãƒ•ãƒ©ã‚°
+		float duration{ 1.0f };							// ã‚¨ãƒŸãƒƒãƒˆæŒç¶šæ™‚é–“ï¼ˆãƒ«ãƒ¼ãƒ—ã™ã‚‹å ´åˆã¯1ã‚µã‚¤ã‚¯ãƒ«ã®æ™‚é–“ï¼‰TODO: durationã¯ãƒ«ãƒ¼ãƒ—ã™ã‚‹å ´åˆã®1ã‚µã‚¤ã‚¯ãƒ«ã®æ™‚é–“ã«ã™ã‚‹ã‹ã€ãƒ«ãƒ¼ãƒ—ãƒ•ãƒ©ã‚°ã¨åˆ†ã‘ã¦ã‚¨ãƒŸãƒƒãƒˆæŒç¶šæ™‚é–“ã‚’åˆ¥é€”è¨­ã‘ã‚‹ã‹è¦æ¤œè¨
 	};
-	// Œ`óƒGƒ~ƒbƒ^İ’è\‘¢‘Ì
+	// å½¢çŠ¶ã‚¨ãƒŸãƒƒã‚¿è¨­å®šæ§‹é€ ä½“
 	struct EmitterShapeData
 	{
-		ShapeType shape = ShapeType::Point;						// Œ`óƒ^ƒCƒv
-		DirectionMode directionMode = DirectionMode::Default;	// •ûŒü¶¬ƒ‚[ƒh
-		Vector3 directionAxis{ 0,1,0 };							// •ûŒü²iDirectionMode::Axis‚Åg—pj
-		::Range<float> speed = { 1.0f,1.0f };					// ‘¬“xiDirectionMode‚Åg—pj
-		::Range<float> endSpeed = { 1.0f,1.0f };				// I—¹‘¬“xiDirectionMode‚Åg—pj
-		::Range<float> speedEasingTime{ 0.0f, 0.0f };			// ‘¬“xƒC[ƒWƒ“ƒOŠÔ
-		int speedEasingType{ 0 };								// ‘¬“xƒC[ƒWƒ“ƒOƒ^ƒCƒviComputeParticleUpdateCS.hlsl‚ÌEaseŠÖ”QÆj
-		float radius = 1.0f;									// ‰~/‹…‚Åg—p
-		float height = 1.0f;									// Cylinder‚Åg—p
+		ShapeType shape = ShapeType::Point;						// å½¢çŠ¶ã‚¿ã‚¤ãƒ—
+		DirectionMode directionMode = DirectionMode::Default;	// æ–¹å‘ç”Ÿæˆãƒ¢ãƒ¼ãƒ‰
+		Vector3 directionAxis{ 0,1,0 };							// æ–¹å‘è»¸ï¼ˆDirectionMode::Axisã§ä½¿ç”¨ï¼‰
+		::Range<float> speed = { 1.0f,1.0f };					// é€Ÿåº¦ï¼ˆDirectionModeã§ä½¿ç”¨ï¼‰
+		::Range<float> endSpeed = { 1.0f,1.0f };				// çµ‚äº†é€Ÿåº¦ï¼ˆDirectionModeã§ä½¿ç”¨ï¼‰
+		::Range<float> speedEasingTime{ 0.0f, 0.0f };			// é€Ÿåº¦ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“
+		int speedEasingType{ 0 };								// é€Ÿåº¦ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—ï¼ˆComputeParticleUpdateCS.hlslã®Easeé–¢æ•°å‚ç…§ï¼‰
+		float radius = 1.0f;									// å††/çƒã§ä½¿ç”¨
+		float height = 1.0f;									// Cylinderã§ä½¿ç”¨
 	};
-	// “®ìİ’è\‘¢‘Ì
+	// å‹•ä½œè¨­å®šæ§‹é€ ä½“
 	struct EmitterMotionData
 	{
-		::Range<Vector3> velocity;					// ‰‘¬
-		::Range<Vector3> acceleration;				// ‰Á‘¬“x
-		::Range<float> lifeTime{ 1.0f, 1.0f };		// ¶‘¶ŠÔ
-		bool useGravity{ false };					// d—Íg—pƒtƒ‰ƒO
+		::Range<Vector3> velocity;					// åˆé€Ÿ
+		::Range<Vector3> acceleration;				// åŠ é€Ÿåº¦
+		::Range<float> lifeTime{ 1.0f, 1.0f };		// ç”Ÿå­˜æ™‚é–“
+		bool useGravity{ false };					// é‡åŠ›ä½¿ç”¨ãƒ•ãƒ©ã‚°
 	};
-	// ƒrƒWƒ…ƒAƒ‹İ’è\‘¢‘Ì
+	// ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«è¨­å®šæ§‹é€ ä½“
 	struct EmitterVisualData
 	{
-		RenderingMode renderingMode = RenderingMode::Billboard; // •`‰æƒ‚[ƒh
-		std::string texturePath;								// ƒeƒNƒXƒ`ƒƒƒpƒX
-		DirectX::XMUINT2 textureSplitCount{ 1, 1 };				// ƒeƒNƒXƒ`ƒƒ•ªŠ„”
-		BlendState blendState = BlendState::Transparency;		// ƒuƒŒƒ“ƒhƒXƒe[ƒg
-		::Range<Vector2> startSize{ { 1,1 }, { 1,1 } };			// ŠJnƒTƒCƒY
-		::Range<Vector2> endSize{ { 1,1 }, { 1,1 } };			// I—¹ƒTƒCƒY
-		::Range<float> sizeEasingTime{ 0.0f,0.0f };				// ƒTƒCƒYƒC[ƒWƒ“ƒOŠÔ
-		int sizeEasingType{ 0 };								// ƒTƒCƒYƒC[ƒWƒ“ƒOƒ^ƒCƒviComputeParticleUpdateCS.hlsl‚ÌEaseŠÖ”QÆj
-		bool useGradient{ false };								// ƒOƒ‰ƒf[ƒVƒ‡ƒ“g—pƒtƒ‰ƒO
-		::Range<Color> startColor;								// ŠJnF
-		::Range<Color> endColor;								// I—¹F
-		bool enableFadeIn{ false };								// ƒtƒF[ƒhƒCƒ“—LŒøƒtƒ‰ƒO
-		bool enableFadeOut{ false };							// ƒtƒF[ƒhƒAƒEƒg—LŒøƒtƒ‰ƒO
-		::Range<float> fadeInTime{ 0.0f, 0.0f };				// ƒtƒF[ƒhƒCƒ“ŠÔ
-		::Range<float> fadeOutTime{ 0.0f, 0.0f };				// ƒtƒF[ƒhƒAƒEƒgŠÔ
+		RenderingMode renderingMode = RenderingMode::Billboard; // æç”»ãƒ¢ãƒ¼ãƒ‰
+		std::string texturePath;								// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹
+		DirectX::XMUINT2 textureSplitCount{ 1, 1 };				// ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ†å‰²æ•°
+		BlendState blendState = BlendState::Transparency;		// ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
+		::Range<Vector2> startSize{ { 1,1 }, { 1,1 } };			// é–‹å§‹ã‚µã‚¤ã‚º
+		::Range<Vector2> endSize{ { 1,1 }, { 1,1 } };			// çµ‚äº†ã‚µã‚¤ã‚º
+		::Range<float> sizeEasingTime{ 0.0f,0.0f };				// ã‚µã‚¤ã‚ºã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ™‚é–“
+		int sizeEasingType{ 0 };								// ã‚µã‚¤ã‚ºã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—ï¼ˆComputeParticleUpdateCS.hlslã®Easeé–¢æ•°å‚ç…§ï¼‰
+		bool useGradient{ false };								// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ä½¿ç”¨ãƒ•ãƒ©ã‚°
+		::Range<Color> startColor;								// é–‹å§‹è‰²
+		::Range<Color> endColor;								// çµ‚äº†è‰²
+		bool enableFadeIn{ false };								// ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³æœ‰åŠ¹ãƒ•ãƒ©ã‚°
+		bool enableFadeOut{ false };							// ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆæœ‰åŠ¹ãƒ•ãƒ©ã‚°
+		::Range<float> fadeInTime{ 0.0f, 0.0f };				// ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³æ™‚é–“
+		::Range<float> fadeOutTime{ 0.0f, 0.0f };				// ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆæ™‚é–“
 
-		ImGradientHDRState gradientState{};						// ƒOƒ‰ƒf[ƒVƒ‡ƒ“ó‘Ô
-		ImGradientHDRTemporaryState gradientTempState{};		// ƒOƒ‰ƒf[ƒVƒ‡ƒ“ˆêó‘Ô(ƒGƒfƒBƒ^—pA•Û‘¶‚µ‚È‚¢)
+		ImGradientHDRState gradientState{};						// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³çŠ¶æ…‹
+		ImGradientHDRTemporaryState gradientTempState{};		// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ä¸€æ™‚çŠ¶æ…‹(ã‚¨ãƒ‡ã‚£ã‚¿ç”¨ã€ä¿å­˜ã—ãªã„)
 
 		EmitterVisualData()
 		{
-			// ƒfƒtƒHƒ‹ƒg‚ÌƒOƒ‰ƒf[ƒVƒ‡ƒ“İ’è
+			// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³è¨­å®š
 			gradientState.AddColorMarker(0.0f, { 1.0f,1.0f,1.0f }, 1.0f);
 			gradientState.AddColorMarker(1.0f, { 1.0f,1.0f,1.0f }, 1.0f);
 			gradientState.AddAlphaMarker(0.0f, 1.0f);
 			gradientState.AddAlphaMarker(1.0f, 1.0f);
 		}
 	};
-	// ƒGƒ~ƒbƒ^ƒf[ƒ^\‘¢‘Ì
+	// ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ParticleEmitterData
 	{
-		std::string name;				// ƒGƒ~ƒbƒ^–¼
-		bool isEnabled{ true };			// —LŒøƒtƒ‰ƒO
+		std::string name;				// ã‚¨ãƒŸãƒƒã‚¿å
+		bool isEnabled{ true };			// æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 		
-		EmitterEmitData emitData;		// ƒGƒ~ƒbƒgİ’è
-		EmitterShapeData shapeData;		// Œ`óƒGƒ~ƒbƒ^İ’è
-		EmitterMotionData motionData;	// “®ìİ’è
-		EmitterVisualData visualData;	// ƒrƒWƒ…ƒAƒ‹İ’è
+		EmitterEmitData emitData;		// ã‚¨ãƒŸãƒƒãƒˆè¨­å®š
+		EmitterShapeData shapeData;		// å½¢çŠ¶ã‚¨ãƒŸãƒƒã‚¿è¨­å®š
+		EmitterMotionData motionData;	// å‹•ä½œè¨­å®š
+		EmitterVisualData visualData;	// ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«è¨­å®š
 	};
-	// ƒGƒtƒFƒNƒgƒf[ƒ^\‘¢‘Ì
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct EffectData
 	{
-		std::string name; // ƒGƒtƒFƒNƒg–¼
-		std::vector<ParticleEmitterData> emitters; // ƒGƒ~ƒbƒ^ƒf[ƒ^ƒŠƒXƒg
+		std::string name; // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå
+		std::vector<ParticleEmitterData> emitters; // ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆ
 	private:
 		friend class EffectManager;
-		EffectHandle handle = -1; // ƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹
-		std::string filePath; // ƒGƒtƒFƒNƒgƒf[ƒ^ƒtƒ@ƒCƒ‹ƒpƒX
+		EffectHandle handle = -1; // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«
+		std::string filePath; // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 	};
-	static inline std::unordered_map<EffectHandle, EffectData> effectData; // ƒGƒtƒFƒNƒgƒf[ƒ^ƒŠƒXƒg
+	static inline std::unordered_map<EffectHandle, EffectData> effectData; // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆ
 
 private:
 	friend class EffectEditor;
-	//ƒGƒfƒBƒ^‚ªŠJ‚¢‚Ä‚¢‚é‚©
+	//ã‚¨ãƒ‡ã‚£ã‚¿ãŒé–‹ã„ã¦ã„ã‚‹ã‹
 	static inline bool isOpen = false;
 
-	// ƒGƒtƒFƒNƒgÄ¶ŠÇ——p‚Ìƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€ƒŠƒXƒg
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿç®¡ç†ç”¨ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãƒªã‚¹ãƒˆ
 	using ParticleSystems = std::unordered_map<int/*emitterIndex*/, std::unique_ptr<ComputeParticleSystem>>;
 	static inline std::unordered_map<EffectHandle,
 		std::unordered_map<int/*playInstanceId*/, ParticleSystems>> particleSystems;
 
-	// playInstanceIdƒJƒEƒ“ƒ^’Ç‰Á
+	// playInstanceIdã‚«ã‚¦ãƒ³ã‚¿è¿½åŠ 
 	static inline int nextPlayInstanceId = 0;
 
 private:
 
 	struct EmitterPlayState
 	{
-		EffectHandle handle;			// ƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹
-		int emitterIndex;				// ƒGƒ~ƒbƒ^ƒCƒ“ƒfƒbƒNƒX
-		int playInstanceId;				// Ä¶ƒCƒ“ƒXƒ^ƒ“ƒXIDi“¯ˆêƒGƒ~ƒbƒ^‚Ì•¡”Ä¶‚ğ‹æ•Ê‚·‚é‚½‚ßj
-		ParticleEmitterData emitterData;	// ƒGƒ~ƒbƒ^ƒf[ƒ^
-		float elapsedTime;				// Œo‰ßŠÔ
-		float nextEmitTime;				// Ÿ‚ÌƒGƒ~ƒbƒgŠÔ
-		bool isPlaying;					// Ä¶’†ƒtƒ‰ƒO
+		EffectHandle handle;			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«
+		int emitterIndex;				// ã‚¨ãƒŸãƒƒã‚¿ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		int playInstanceId;				// å†ç”Ÿã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDï¼ˆåŒä¸€ã‚¨ãƒŸãƒƒã‚¿ã®è¤‡æ•°å†ç”Ÿã‚’åŒºåˆ¥ã™ã‚‹ãŸã‚ï¼‰
+		ParticleEmitterData emitterData;	// ã‚¨ãƒŸãƒƒã‚¿ãƒ‡ãƒ¼ã‚¿
+		float elapsedTime;				// çµŒéæ™‚é–“
+		float nextEmitTime;				// æ¬¡ã®ã‚¨ãƒŸãƒƒãƒˆæ™‚é–“
+		bool isPlaying;					// å†ç”Ÿä¸­ãƒ•ãƒ©ã‚°
 
-		Vector3 position;				// ƒGƒtƒFƒNƒgˆÊ’u
-		Vector3 rotationEuler;			// ƒGƒtƒFƒNƒg‰ñ“]iƒIƒCƒ‰[Špj
+		Vector3 position;				// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆä½ç½®
+		Vector3 rotationEuler;			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå›è»¢ï¼ˆã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼‰
 	};
 
-	static inline std::vector<EmitterPlayState> playingEmitters; // Ä¶’†ƒGƒ~ƒbƒ^ƒŠƒXƒg
+	static inline std::vector<EmitterPlayState> playingEmitters; // å†ç”Ÿä¸­ã‚¨ãƒŸãƒƒã‚¿ãƒªã‚¹ãƒˆ
 };

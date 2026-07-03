@@ -1,25 +1,25 @@
 #pragma once
 
-// ƒXƒe[ƒg‘JˆÚğŒ‚Ì’è‹`
+// ã‚¹ãƒ†ãƒ¼ãƒˆé·ç§»æ¡ä»¶ã®å®šç¾©
 enum class ConditionType : uint8_t
 {
-	None,       // ğŒ‚È‚µ
-	Trigger,    // ƒgƒŠƒK[
-	Bool,		// ƒu[ƒ‹
-	Int,	    // ®”
-	Float       // •‚“®¬”“_”
+	None,       // æ¡ä»¶ãªã—
+	Trigger,    // ãƒˆãƒªã‚¬ãƒ¼
+	Bool,		// ãƒ–ãƒ¼ãƒ«
+	Int,	    // æ•´æ•°
+	Float       // æµ®å‹•å°æ•°ç‚¹æ•°
 };
 
-// ƒXƒe[ƒg‘JˆÚğŒ
+// ã‚¹ãƒ†ãƒ¼ãƒˆé·ç§»æ¡ä»¶
 struct StateTransitionCondition
 {
 	ConditionType type = ConditionType::None;
 	std::string parameterName;
-	// ŠeíğŒ’l
+	// å„ç¨®æ¡ä»¶å€¤
 	bool boolValue = false;
 	int intValue = 0;
 	float floatValue = 0.0f;
-	// ”äŠr‰‰ZqiInt, Float—pj
+	// æ¯”è¼ƒæ¼”ç®—å­ï¼ˆInt, Floatç”¨ï¼‰
 	enum class ComparisonOperator : uint8_t
 	{
 		Equal,
@@ -32,13 +32,13 @@ struct StateTransitionCondition
 	ComparisonOperator comparisonOperator = ComparisonOperator::Equal;
 };
 
-// ƒXƒe[ƒg‘JˆÚ‚Ì’è‹`
+// ã‚¹ãƒ†ãƒ¼ãƒˆé·ç§»ã®å®šç¾©
 struct StateTransition
 {
-	std::string fromState; // ‘JˆÚŒ³ƒXƒe[ƒg–¼
-	std::string toState;   // ‘JˆÚæƒXƒe[ƒg–¼
-	std::vector<StateTransitionCondition> conditions; // ‘JˆÚğŒƒŠƒXƒg
-	float exitTime = 0.0f; // ƒXƒe[ƒg‚ÌI—¹ŠÔi0.0`1.0A0.0‚Ìê‡‚Í–³Œøj
-	bool hasExitTime = false; // I—¹ŠÔ‚ğg—p‚·‚é‚©
-	bool interruptible = true; // Š„‚è‚İ‰Â”\‚©
+	std::string fromState; // é·ç§»å…ƒã‚¹ãƒ†ãƒ¼ãƒˆå
+	std::string toState;   // é·ç§»å…ˆã‚¹ãƒ†ãƒ¼ãƒˆå
+	std::vector<StateTransitionCondition> conditions; // é·ç§»æ¡ä»¶ãƒªã‚¹ãƒˆ
+	float exitTime = 0.0f; // ã‚¹ãƒ†ãƒ¼ãƒˆã®çµ‚äº†æ™‚é–“ï¼ˆ0.0ã€œ1.0ã€0.0ã®å ´åˆã¯ç„¡åŠ¹ï¼‰
+	bool hasExitTime = false; // çµ‚äº†æ™‚é–“ã‚’ä½¿ç”¨ã™ã‚‹ã‹
+	bool interruptible = true; // å‰²ã‚Šè¾¼ã¿å¯èƒ½ã‹
 };

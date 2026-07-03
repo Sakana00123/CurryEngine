@@ -15,39 +15,39 @@ namespace CurryEngine
 		{
 		public:
 			/**
-			 * @brief ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚ğ‰Šú‰»‚µ‚Ü‚·B
-			 * @param assetRootDir ƒAƒZƒbƒg‚Ìƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX
+			 * @brief ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
+			 * @param assetRootDir ã‚¢ã‚»ãƒƒãƒˆã®ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹
 			 */
 			static void Initialize(const std::filesystem::path& assetRootDir);
 
 			/**
-			 * @brief ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚ğI—¹‚µ‚Ü‚·B
+			 * @brief ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’çµ‚äº†ã—ã¾ã™ã€‚
 			 */
 			static void Finalize();
 
 			/**
-			 * @brief ƒAƒZƒbƒg‚Ìƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ‚ğæ“¾‚µ‚Ü‚·B
-			 * @return ƒAƒZƒbƒg‚Ìƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX
+			 * @brief ã‚¢ã‚»ãƒƒãƒˆã®ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å–å¾—ã—ã¾ã™ã€‚
+			 * @return ã‚¢ã‚»ãƒƒãƒˆã®ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹
 			 */
 			static const std::filesystem::path& GetAssetRootDir();
 
 			/**
-			 * @brief Šù‘¶‚Ì.metaƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İAƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚ğ\’z‚µ‚Ü‚·B
-			 * @details —á‚¦‚ÎAƒAƒZƒbƒgƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚Ì‚·‚×‚Ä‚Ì.metaƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚ÅAs_metaByPath‚âs_pathById‚È‚Ç‚Ìƒ}ƒbƒv‚ğXV‚µ‚Ü‚·B
+			 * @brief æ—¢å­˜ã®.metaãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã€ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’æ§‹ç¯‰ã—ã¾ã™ã€‚
+			 * @details ä¾‹ãˆã°ã€ã‚¢ã‚»ãƒƒãƒˆãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥ä¸‹ã®ã™ã¹ã¦ã®.metaãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§ã€s_metaByPathã‚„s_pathByIdãªã©ã®ãƒãƒƒãƒ—ã‚’æ›´æ–°ã—ã¾ã™ã€‚
 			 */
 			static void LoadExistingMetaFiles();
 
 			/**
-			 * @brief ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚Ì®‡«‚ğŒŸØ‚µ‚Ü‚·B•K—v‚É‰‚¶‚ÄAƒAƒZƒbƒg‚Ì‘¶İ‚âƒƒ^ƒf[ƒ^‚Ì³“–«‚ğƒ`ƒFƒbƒN‚µ‚Ü‚·B
-			 * @details —á‚¦‚ÎAƒAƒZƒbƒgƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡‚âAƒƒ^ƒf[ƒ^‚ª•s³‚Èê‡‚ÉŒx‚ğo‚·‚È‚Ç‚Ìˆ—‚ğs‚¢‚Ü‚·B
+			 * @brief ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æ•´åˆæ€§ã‚’æ¤œè¨¼ã—ã¾ã™ã€‚å¿…è¦ã«å¿œã˜ã¦ã€ã‚¢ã‚»ãƒƒãƒˆã®å­˜åœ¨ã‚„ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¾ã™ã€‚
+			 * @details ä¾‹ãˆã°ã€ã‚¢ã‚»ãƒƒãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã‚„ã€ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ãªå ´åˆã«è­¦å‘Šã‚’å‡ºã™ãªã©ã®å‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
 			 */
 			static void ValidateOnStartup();
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgID‚ÌƒAƒZƒbƒg‚ğƒ[ƒh‚µ‚Ü‚·B
-			 * @tparam T ƒ[ƒh‚·‚éƒAƒZƒbƒg‚ÌŒ^
-			 * @param id ƒ[ƒh‚·‚éƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
-			 * @return ƒ[ƒh‚µ‚½ƒAƒZƒbƒg‚Ì‹¤—Lƒ|ƒCƒ“ƒ^A‘¶İ‚µ‚È‚¢ê‡‚Ínullptr
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆIDã®ã‚¢ã‚»ãƒƒãƒˆã‚’ãƒ­ãƒ¼ãƒ‰ã—ã¾ã™ã€‚
+			 * @tparam T ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®å‹
+			 * @param id ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
+			 * @return ãƒ­ãƒ¼ãƒ‰ã—ãŸã‚¢ã‚»ãƒƒãƒˆã®å…±æœ‰ãƒã‚¤ãƒ³ã‚¿ã€å­˜åœ¨ã—ãªã„å ´åˆã¯nullptr
 			 */
 			template<typename T>
 			static std::shared_ptr<T> LoadAsset(const AssetId& id)
@@ -55,7 +55,7 @@ namespace CurryEngine
 				const AssetMeta* meta = Find(id);
 				if (meta)
 				{
-					// ƒAƒZƒbƒgƒ^ƒCƒv‚É‘Î‰‚·‚éƒCƒ“ƒ|[ƒ^[‚ğæ“¾
+					// ã‚¢ã‚»ãƒƒãƒˆã‚¿ã‚¤ãƒ—ã«å¯¾å¿œã™ã‚‹ã‚¤ãƒ³ãƒãƒ¼ã‚¿ãƒ¼ã‚’å–å¾—
 					if (IImporter* importer = ImporterRegistry::Find(meta->type))
 					{
 						auto resource = importer->Import(*meta);
@@ -65,98 +65,98 @@ namespace CurryEngine
 
 					std::string typeStr = std::to_string(static_cast<int>(meta->type));
 					std::u8string typeU8Str(typeStr.begin(), typeStr.end());
-					LOG_WARNING(u8"[AssetDatabase] ‚±‚ÌƒAƒZƒbƒgƒ^ƒCƒv‚É‘Î‰‚·‚éƒCƒ“ƒ|[ƒ^[‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½: " + typeU8Str + u8", Asset path: " + meta->path.u8string());
+					LOG_WARNING(u8"[AssetDatabase] ã“ã®ã‚¢ã‚»ãƒƒãƒˆã‚¿ã‚¤ãƒ—ã«å¯¾å¿œã™ã‚‹ã‚¤ãƒ³ãƒãƒ¼ã‚¿ãƒ¼ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ: " + typeU8Str + u8", Asset path: " + meta->path.u8string());
 					return nullptr;
 				}
 				else
 				{
 					std::u8string idU8Str(id.ToString().begin(), id.ToString().end());
-					LOG_ERROR(u8"[AssetDatabase] ƒAƒZƒbƒg‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½BAssetId ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB: " + idU8Str);
+					LOG_ERROR(u8"[AssetDatabase] ã‚¢ã‚»ãƒƒãƒˆã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚AssetId ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚: " + idU8Str);
 					return nullptr;
 				}
 			}
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgƒpƒX‚ÌƒAƒZƒbƒg‚ğƒCƒ“ƒ|[ƒg‚µ‚Ü‚·B
-			 * @param assetPath ƒCƒ“ƒ|[ƒg‚·‚éƒAƒZƒbƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ã‚¢ã‚»ãƒƒãƒˆã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã—ã¾ã™ã€‚
+			 * @param assetPath ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 			 */
 			static AssetMeta* Import(const std::filesystem::path& assetPath);
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgƒpƒX‚ÌƒAƒZƒbƒg‚ğæ“¾‚µ‚Ü‚·B‘¶İ‚µ‚È‚¢ê‡‚ÍƒCƒ“ƒ|[ƒg‚µ‚Ü‚·B
-			 * @param assetPath æ“¾‚Ü‚½‚ÍƒCƒ“ƒ|[ƒg‚·‚éƒAƒZƒbƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ã‚¢ã‚»ãƒƒãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¤ãƒ³ãƒãƒ¼ãƒˆã—ã¾ã™ã€‚
+			 * @param assetPath å–å¾—ã¾ãŸã¯ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 			 */
 			static AssetMeta* GetOrImport(const std::filesystem::path& assetPath);
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgID‚ÌƒAƒZƒbƒg‚ğæ“¾‚µ‚Ü‚·B‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚µ‚Ü‚·B
-			 * @param id æ“¾‚·‚éƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
-			 * @return ƒAƒZƒbƒg‚Ìƒƒ^ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^A‘¶İ‚µ‚È‚¢ê‡‚Ínullptr
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆIDã®ã‚¢ã‚»ãƒƒãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã—ã¾ã™ã€‚
+			 * @param id å–å¾—ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
+			 * @return ã‚¢ã‚»ãƒƒãƒˆã®ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€å­˜åœ¨ã—ãªã„å ´åˆã¯nullptr
 			 */
 			static const AssetMeta* Find(const AssetId& id);
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgID‚ÌƒAƒZƒbƒg‚ğæ“¾‚µ‚Ü‚·B‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚µ‚Ü‚·B
-			 * @param id æ“¾‚·‚éƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
-			 * @return ƒAƒZƒbƒg‚Ìƒƒ^ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^A‘¶İ‚µ‚È‚¢ê‡‚Ínullptr
-			 * @details Find‚ÆˆÙ‚È‚èA‚±‚¿‚ç‚Í‘‚«‚İ‰Â”\‚ÈAssetMeta*‚ğ•Ô‚µ‚Ü‚·BƒAƒZƒbƒg‚ÌƒCƒ“ƒ|[ƒgİ’è‚ğ•ÏX‚·‚éê‡‚È‚Ç‚Ég—p‚µ‚Ü‚·B
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆIDã®ã‚¢ã‚»ãƒƒãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã—ã¾ã™ã€‚
+			 * @param id å–å¾—ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
+			 * @return ã‚¢ã‚»ãƒƒãƒˆã®ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€å­˜åœ¨ã—ãªã„å ´åˆã¯nullptr
+			 * @details Findã¨ç•°ãªã‚Šã€ã“ã¡ã‚‰ã¯æ›¸ãè¾¼ã¿å¯èƒ½ãªAssetMeta*ã‚’è¿”ã—ã¾ã™ã€‚ã‚¢ã‚»ãƒƒãƒˆã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆè¨­å®šã‚’å¤‰æ›´ã™ã‚‹å ´åˆãªã©ã«ä½¿ç”¨ã—ã¾ã™ã€‚
 			 */
 			static AssetMeta* FindMutable(const AssetId& id);
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgƒpƒX‚ÌƒAƒZƒbƒg‚ğæ“¾‚µ‚Ü‚·B‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚µ‚Ü‚·B
-			 * @param assetPath æ“¾‚·‚éƒAƒZƒbƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-			 * @return ƒAƒZƒbƒg‚Ìƒƒ^ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^A‘¶İ‚µ‚È‚¢ê‡‚Ínullptr
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ã‚¢ã‚»ãƒƒãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã—ã¾ã™ã€‚
+			 * @param assetPath å–å¾—ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+			 * @return ã‚¢ã‚»ãƒƒãƒˆã®ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€å­˜åœ¨ã—ãªã„å ´åˆã¯nullptr
 			 */
 			static const AssetMeta* FindByPath(const std::filesystem::path& assetPath);
 
 			/**
-			 * @brief ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚ğÄ\’z‚µ‚Ü‚·B‚·‚×‚Ä‚ÌƒAƒZƒbƒg‚ğÄƒXƒLƒƒƒ“‚µ‚Äƒƒ^ƒf[ƒ^‚ğXV‚µ‚Ü‚·B
-			 * @details —á‚¦‚ÎAƒAƒZƒbƒg‚ÌˆÚ“®‚âíœ‚ª‚ ‚Á‚½ê‡‚ÉAƒf[ƒ^ƒx[ƒX‚Ì®‡«‚ğ•Û‚Â‚½‚ß‚ÉŒÄ‚Ño‚³‚ê‚Ü‚·B
+			 * @brief ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’å†æ§‹ç¯‰ã—ã¾ã™ã€‚ã™ã¹ã¦ã®ã‚¢ã‚»ãƒƒãƒˆã‚’å†ã‚¹ã‚­ãƒ£ãƒ³ã—ã¦ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°ã—ã¾ã™ã€‚
+			 * @details ä¾‹ãˆã°ã€ã‚¢ã‚»ãƒƒãƒˆã®ç§»å‹•ã‚„å‰Šé™¤ãŒã‚ã£ãŸå ´åˆã«ã€ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æ•´åˆæ€§ã‚’ä¿ã¤ãŸã‚ã«å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚
 			 */
 			static void ReBuild();
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgƒpƒX‚ÌƒAƒZƒbƒg‚ğƒŠƒl[ƒ€‚µ‚Ü‚·B
-			 * @param oldPath ‹ŒƒAƒZƒbƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-			 * @param newPath VƒAƒZƒbƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ã‚¢ã‚»ãƒƒãƒˆã‚’ãƒªãƒãƒ¼ãƒ ã—ã¾ã™ã€‚
+			 * @param oldPath æ—§ã‚¢ã‚»ãƒƒãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+			 * @param newPath æ–°ã‚¢ã‚»ãƒƒãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 			 */
 			static void Rename(const std::filesystem::path& oldPath, const std::filesystem::path& newPath);
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgƒpƒX‚ÌƒvƒŒƒtƒBƒbƒNƒX‚ğV‚µ‚¢ƒvƒŒƒtƒBƒbƒNƒX‚ÉƒŠƒ}ƒbƒv‚µ‚Ü‚·B
-			 * @param oldPrefix ‹ŒƒvƒŒƒtƒBƒbƒNƒX
-			 * @param newPrefix VƒvƒŒƒtƒBƒbƒNƒX
-			 * @details —á‚¦‚ÎAoldPrefix‚ª"Assets/Textures/"‚ÅnewPrefix‚ª"Assets/Images/"‚Ìê‡A"Assets/Textures/wood.png"‚Í"Assets/Images/wood.png"‚ÉƒŠƒ}ƒbƒv‚³‚ê‚Ü‚·B
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ãƒ—ãƒ¬ãƒ•ã‚£ãƒƒã‚¯ã‚¹ã‚’æ–°ã—ã„ãƒ—ãƒ¬ãƒ•ã‚£ãƒƒã‚¯ã‚¹ã«ãƒªãƒãƒƒãƒ—ã—ã¾ã™ã€‚
+			 * @param oldPrefix æ—§ãƒ—ãƒ¬ãƒ•ã‚£ãƒƒã‚¯ã‚¹
+			 * @param newPrefix æ–°ãƒ—ãƒ¬ãƒ•ã‚£ãƒƒã‚¯ã‚¹
+			 * @details ä¾‹ãˆã°ã€oldPrefixãŒ"Assets/Textures/"ã§newPrefixãŒ"Assets/Images/"ã®å ´åˆã€"Assets/Textures/wood.png"ã¯"Assets/Images/wood.png"ã«ãƒªãƒãƒƒãƒ—ã•ã‚Œã¾ã™ã€‚
 			 */
 			static void RemapPathPrefix(const std::filesystem::path& oldPrefix, const std::filesystem::path& newPrefix);
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgID‚ÌƒAƒZƒbƒg‚ğíœ‚µ‚Ü‚·B
-			 * @param id íœ‚·‚éƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆIDã®ã‚¢ã‚»ãƒƒãƒˆã‚’å‰Šé™¤ã—ã¾ã™ã€‚
+			 * @param id å‰Šé™¤ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
 			 */
 			static void Remove(const AssetId& id);
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgƒpƒX‚ÌƒAƒZƒbƒg‚ğíœ‚µ‚Ü‚·B
-			 * @param assetPath íœ‚·‚éƒAƒZƒbƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ã‚¢ã‚»ãƒƒãƒˆã‚’å‰Šé™¤ã—ã¾ã™ã€‚
+			 * @param assetPath å‰Šé™¤ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 			 */
 			static void RemoveByPath(const std::filesystem::path& assetPath);
 
 			/**
-			 * @brief w’è‚³‚ê‚½ƒAƒZƒbƒgƒpƒX‚ÌƒvƒŒƒtƒBƒbƒNƒX‚Éˆê’v‚·‚é‚·‚×‚Ä‚ÌƒAƒZƒbƒg‚ğíœ‚µ‚Ü‚·B
-			 * @param pathPrefix íœ‚·‚éƒAƒZƒbƒg‚ÌƒpƒX‚ÌƒvƒŒƒtƒBƒbƒNƒX
-			 * @details —á‚¦‚ÎApathPrefix‚ª"Assets/Textures/"‚Ìê‡A"Assets/Textures/wood.png"‚â"Assets/Textures/stone.png"‚È‚ÇA‚·‚×‚Ä‚Ìˆê’v‚·‚éƒAƒZƒbƒg‚ªíœ‚³‚ê‚Ü‚·B
+			 * @brief æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ãƒ—ãƒ¬ãƒ•ã‚£ãƒƒã‚¯ã‚¹ã«ä¸€è‡´ã™ã‚‹ã™ã¹ã¦ã®ã‚¢ã‚»ãƒƒãƒˆã‚’å‰Šé™¤ã—ã¾ã™ã€‚
+			 * @param pathPrefix å‰Šé™¤ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹ã®ãƒ—ãƒ¬ãƒ•ã‚£ãƒƒã‚¯ã‚¹
+			 * @details ä¾‹ãˆã°ã€pathPrefixãŒ"Assets/Textures/"ã®å ´åˆã€"Assets/Textures/wood.png"ã‚„"Assets/Textures/stone.png"ãªã©ã€ã™ã¹ã¦ã®ä¸€è‡´ã™ã‚‹ã‚¢ã‚»ãƒƒãƒˆãŒå‰Šé™¤ã•ã‚Œã¾ã™ã€‚
 			 */
 			static void RemoveByPathPrefix(const std::filesystem::path& pathPrefix);
 
 		private:
-			static std::unordered_map<std::filesystem::path, AssetMeta> s_metaByPath; ///< ƒAƒZƒbƒgƒpƒX‚ğƒL[‚Æ‚µ‚½ƒAƒZƒbƒgƒƒ^ƒf[ƒ^‚Ìƒ}ƒbƒv
-			static std::unordered_map<std::string, std::filesystem::path> s_pathById; ///< ƒAƒZƒbƒgID‚ğƒL[‚Æ‚µ‚½ƒAƒZƒbƒgƒpƒX‚Ìƒ}ƒbƒv
-			static std::filesystem::path s_assetRootDir; ///< ƒAƒZƒbƒg‚Ìƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX
-			static bool s_initialized; ///< ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+			static std::unordered_map<std::filesystem::path, AssetMeta> s_metaByPath; ///< ã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã‚’ã‚­ãƒ¼ã¨ã—ãŸã‚¢ã‚»ãƒƒãƒˆãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒãƒ—
+			static std::unordered_map<std::string, std::filesystem::path> s_pathById; ///< ã‚¢ã‚»ãƒƒãƒˆIDã‚’ã‚­ãƒ¼ã¨ã—ãŸã‚¢ã‚»ãƒƒãƒˆãƒ‘ã‚¹ã®ãƒãƒƒãƒ—
+			static std::filesystem::path s_assetRootDir; ///< ã‚¢ã‚»ãƒƒãƒˆã®ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹
+			static bool s_initialized; ///< ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 
-			static inline AssetWatcher s_assetWatcher; ///< ƒAƒZƒbƒg‚Ì•ÏX‚ğŠÄ‹‚·‚éAssetWatcher‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+			static inline AssetWatcher s_assetWatcher; ///< ã‚¢ã‚»ãƒƒãƒˆã®å¤‰æ›´ã‚’ç›£è¦–ã™ã‚‹AssetWatcherã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 		};
 	}
 }

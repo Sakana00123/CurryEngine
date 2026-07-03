@@ -32,7 +32,7 @@ void PointerEventData::SetPointerDrag(GameObject* obj)
 GameObject* PointerEventData::GetPointerEnter() const
 {
 	Scene* scene = SceneManager::GetCurrentScene();
-	if (scene == nullptr) return nullptr; // �V�[�������݂��Ȃ��ꍇ�� nullptr ��Ԃ�
+	if (scene == nullptr) return nullptr; // シーンが存在しない場合は nullptr を返す
 
 	if (pointerEnterId.IsValid()) {
 		GameObject* obj = scene->FindGameObjectById(pointerEnterId);
@@ -46,7 +46,7 @@ GameObject* PointerEventData::GetPointerEnter() const
 GameObject* PointerEventData::GetPointerPress() const
 {
 	Scene* scene = SceneManager::GetCurrentScene();
-	if (scene == nullptr) return nullptr; // �V�[�������݂��Ȃ��ꍇ�� nullptr ��Ԃ�
+	if (scene == nullptr) return nullptr; // シーンが存在しない場合は nullptr を返す
 	if (pointerPressId.IsValid()) {
 		GameObject* obj = scene->FindGameObjectById(pointerPressId);
 		if (obj != nullptr) {
@@ -59,7 +59,7 @@ GameObject* PointerEventData::GetPointerPress() const
 GameObject* PointerEventData::GetLastPress() const
 {
 	Scene* scene = SceneManager::GetCurrentScene();
-	if (scene == nullptr) return nullptr; // �V�[�������݂��Ȃ��ꍇ�� nullptr ��Ԃ�
+	if (scene == nullptr) return nullptr; // シーンが存在しない場合は nullptr を返す
 	if (lastPressId.IsValid()) {
 		GameObject* obj = scene->FindGameObjectById(lastPressId);
 		if (obj != nullptr) {
@@ -72,7 +72,7 @@ GameObject* PointerEventData::GetLastPress() const
 GameObject* PointerEventData::GetPointerDrag() const
 {
 	Scene* scene = SceneManager::GetCurrentScene();
-	if (scene == nullptr) return nullptr; // �V�[�������݂��Ȃ��ꍇ�� nullptr ��Ԃ�
+	if (scene == nullptr) return nullptr; // シーンが存在しない場合は nullptr を返す
 	if (pointerDragId.IsValid()) {
 		GameObject* obj = scene->FindGameObjectById(pointerDragId);
 		if (obj != nullptr) {

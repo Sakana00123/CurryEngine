@@ -2,10 +2,10 @@
 
 /**
  * @file
- * @brief UI/“ü—ÍŒnƒCƒxƒ“ƒg‚Ìƒnƒ“ƒhƒ‰ƒCƒ“ƒ^[ƒtƒF[ƒXŒQ‚ÌéŒ¾B
- * @details ŠeƒCƒ“ƒ^[ƒtƒF[ƒX‚Í‘Î‰ž‚·‚éƒCƒxƒ“ƒg”­¶Žž‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒN‚ðŽ‚¿A
- *          ‚³‚ç‚ÉˆÀ‘S‚ÉŒÄ‚Ño‚·‚½‚ß‚Ì `Execute` ƒwƒ‹ƒp‚ð’ñ‹Ÿ‚µ‚Ü‚·B
- *          `Execute` ‚Í `BaseEventData` ‚ð“KØ‚È”h¶Œ^‚É dynamic_cast ‚µ‚Ä“n‚µ‚Ü‚·B
+ * @brief UI/å…¥åŠ›ç³»ã‚¤ãƒ™ãƒ³ãƒˆã®ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ç¾¤ã®å®£è¨€ã€‚
+ * @details å„ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã¯å¯¾å¿œã™ã‚‹ã‚¤ãƒ™ãƒ³ãƒˆç™ºç”Ÿæ™‚ã«å‘¼ã°ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’æŒã¡ã€
+ *          ã•ã‚‰ã«å®‰å…¨ã«å‘¼ã³å‡ºã™ãŸã‚ã® `Execute` ãƒ˜ãƒ«ãƒ‘ã‚’æä¾›ã—ã¾ã™ã€‚
+ *          `Execute` ã¯ `BaseEventData` ã‚’é©åˆ‡ãªæ´¾ç”Ÿåž‹ã« dynamic_cast ã—ã¦æ¸¡ã—ã¾ã™ã€‚
  */
 
 #include "BaseEventData.h"
@@ -13,21 +13,21 @@
 #include "AxisEventData.h"
 
 /**
- * @brief ƒ|ƒCƒ“ƒ^‚ª‘ÎÛ‚Ö“ü‚Á‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ãƒã‚¤ãƒ³ã‚¿ãŒå¯¾è±¡ã¸å…¥ã£ãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IPointerEnterHandler
 {
 	C_REFLECT(IPointerEnterHandler)
 	/**
-	 * @brief ƒ|ƒCƒ“ƒ^‚ª‘ÎÛ‚É“ü‚Á‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ãƒã‚¤ãƒ³ã‚¿ãŒå¯¾è±¡ã«å…¥ã£ãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnPointerEnter(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IPointerEnterHandler* handler, BaseEventData* eventData) {
 		handler->OnPointerEnter(dynamic_cast<PointerEventData*>(eventData));
@@ -35,21 +35,21 @@ public:
 };
 
 /**
- * @brief ƒ|ƒCƒ“ƒ^‚ª‘ÎÛ‚©‚ço‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ãƒã‚¤ãƒ³ã‚¿ãŒå¯¾è±¡ã‹ã‚‰å‡ºãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IPointerExitHandler
 {
 	C_REFLECT(IPointerExitHandler)
 	/**
-	 * @brief ƒ|ƒCƒ“ƒ^‚ª‘ÎÛ‚©‚ç—£‚ê‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ãƒã‚¤ãƒ³ã‚¿ãŒå¯¾è±¡ã‹ã‚‰é›¢ã‚ŒãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnPointerExit(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IPointerExitHandler* handler, BaseEventData* eventData) {
 		handler->OnPointerExit(dynamic_cast<PointerEventData*>(eventData));
@@ -57,21 +57,21 @@ public:
 };
 
 /**
- * @brief ƒ|ƒCƒ“ƒ^‚Ìƒ{ƒ^ƒ“‚ª—£‚³‚ê‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ãƒã‚¤ãƒ³ã‚¿ã®ãƒœã‚¿ãƒ³ãŒé›¢ã•ã‚ŒãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IPointerUpHandler
 {
 	C_REFLECT(IPointerUpHandler)
 	/**
-	 * @brief ƒ|ƒCƒ“ƒ^‚Ìƒ{ƒ^ƒ“‚ª—£‚³‚ê‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ãƒã‚¤ãƒ³ã‚¿ã®ãƒœã‚¿ãƒ³ãŒé›¢ã•ã‚ŒãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnPointerUp(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IPointerUpHandler* handler, BaseEventData* eventData) {
 		handler->OnPointerUp(dynamic_cast<PointerEventData*>(eventData));
@@ -79,21 +79,21 @@ public:
 };
 
 /**
- * @brief ƒ|ƒCƒ“ƒ^‚Ìƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ãƒã‚¤ãƒ³ã‚¿ã®ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IPointerDownHandler
 {
 	C_REFLECT(IPointerDownHandler)
 	/**
-	 * @brief ƒ|ƒCƒ“ƒ^‚Ìƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ãƒã‚¤ãƒ³ã‚¿ã®ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnPointerDown(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IPointerDownHandler* handler, BaseEventData* eventData) {
 		handler->OnPointerDown(dynamic_cast<PointerEventData*>(eventData));
@@ -101,21 +101,21 @@ public:
 };
 
 /**
- * @brief ƒNƒŠƒbƒN‚³‚ê‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IPointerClickHandler
 {
 	C_REFLECT(IPointerClickHandler)
 	/**
-	 * @brief ƒNƒŠƒbƒNŽž‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ã‚¯ãƒªãƒƒã‚¯æ™‚ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnPointerClick(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IPointerClickHandler* handler, BaseEventData* eventData) {
 		handler->OnPointerClick(dynamic_cast<PointerEventData*>(eventData));
@@ -123,21 +123,21 @@ public:
 };
 
 /**
- * @brief ƒhƒ‰ƒbƒOŠJŽnŽž‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹æ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IBeginDragHandler
 {
 	C_REFLECT(IBeginDragHandler)
 	/**
-	 * @brief ƒhƒ‰ƒbƒOŠJŽnŽž‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹æ™‚ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnBeginDrag(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IBeginDragHandler* handler, BaseEventData* eventData) {
 		handler->OnBeginDrag(dynamic_cast<PointerEventData*>(eventData));
@@ -145,21 +145,21 @@ public:
 };
 
 /**
- * @brief ƒhƒ‰ƒbƒO’†‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IDragHandler
 {
 	C_REFLECT(IDragHandler)
 	/**
-	 * @brief ƒhƒ‰ƒbƒO’†‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnDrag(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IDragHandler* handler, BaseEventData* eventData) {
 		handler->OnDrag(dynamic_cast<PointerEventData*>(eventData));
@@ -167,21 +167,21 @@ public:
 };
 
 /**
- * @brief ƒhƒ‰ƒbƒOI—¹Žž‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ãƒ‰ãƒ©ãƒƒã‚°çµ‚äº†æ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IEndDragHandler
 {
 	C_REFLECT(IEndDragHandler)
 	/**
-	 * @brief ƒhƒ‰ƒbƒOI—¹Žž‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ãƒ‰ãƒ©ãƒƒã‚°çµ‚äº†æ™‚ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnEndDrag(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IEndDragHandler* handler, BaseEventData* eventData) {
 		handler->OnEndDrag(dynamic_cast<PointerEventData*>(eventData));
@@ -189,21 +189,21 @@ public:
 };
 
 /**
- * @brief ‘I‘ð’†‚ÌXVƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief é¸æŠžä¸­ã®æ›´æ–°ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IUpdateSelectedHandler
 {
 	C_REFLECT(IUpdateSelectedHandler)
 	/**
-	 * @brief ‘I‘ð’†‚É–ˆƒtƒŒ[ƒ€ŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief é¸æŠžä¸­ã«æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	virtual void OnUpdateSelected(BaseEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IUpdateSelectedHandler* handler, BaseEventData* eventData) {
 		handler->OnUpdateSelected(eventData);
@@ -211,21 +211,21 @@ public:
 };
 
 /**
- * @brief Ž²•ûŒüiƒiƒrƒQ[ƒVƒ‡ƒ“j“ü—Í‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief è»¸æ–¹å‘ï¼ˆãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰å…¥åŠ›ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IMoveHandler
 {
 	C_REFLECT(IMoveHandler)
 	/**
-	 * @brief ˆÚ“®“ü—Í‚ª‚ ‚Á‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData Ž²ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ç§»å‹•å…¥åŠ›ãŒã‚ã£ãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData è»¸ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnMove(AxisEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IMoveHandler* handler, BaseEventData* eventData) {
 		handler->OnMove(dynamic_cast<AxisEventData*>(eventData));
@@ -233,21 +233,21 @@ public:
 };
 
 /**
- * @brief ‘I‘ðŽž‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief é¸æŠžæ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class ISelectHandler
 {
 	C_REFLECT(ISelectHandler)
 	/**
-	 * @brief ‘I‘ð‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief é¸æŠžã•ã‚ŒãŸã¨ãã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	virtual void OnSelect(BaseEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(ISelectHandler* handler, BaseEventData* eventData) {
 		handler->OnSelect(eventData);
@@ -255,21 +255,21 @@ public:
 };
 
 /**
- * @brief ”ñ‘I‘ðŽž‚ÌƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief éžé¸æŠžæ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IDeselectHandler
 {
 	C_REFLECT(IDeselectHandler)
 	/**
-	 * @brief ”ñ‘I‘ð‚É‚È‚Á‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief éžé¸æŠžã«ãªã£ãŸã¨ãã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	virtual void OnDeselect(BaseEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IDeselectHandler* handler, BaseEventData* eventData) {
 		handler->OnDeselect(eventData);
@@ -277,21 +277,21 @@ public:
 };
 
 /**
- * @brief Œˆ’è/‘—MiSubmitjƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief æ±ºå®š/é€ä¿¡ï¼ˆSubmitï¼‰ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class ISubmitHandler
 {
 	C_REFLECT(ISubmitHandler)
 	/**
-	 * @brief Submit “ü—Í‚ª‚ ‚Á‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief Submit å…¥åŠ›ãŒã‚ã£ãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	virtual void OnSubmit(BaseEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(ISubmitHandler* handler, BaseEventData* eventData) {
 		handler->OnSubmit(eventData);
@@ -299,21 +299,21 @@ public:
 };
 
 /**
- * @brief ƒLƒƒƒ“ƒZƒ‹iCanceljƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼ˆCancelï¼‰ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class ICancelHandler
 {
 	C_REFLECT(ICancelHandler)
 	/**
-	 * @brief Cancel “ü—Í‚ª‚ ‚Á‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief Cancel å…¥åŠ›ãŒã‚ã£ãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	virtual void OnCancel(BaseEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(ICancelHandler* handler, BaseEventData* eventData) {
 		handler->OnCancel(eventData);
@@ -321,21 +321,21 @@ public:
 };
 
 /**
- * @brief ƒXƒNƒ[ƒ‹ƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IScrollHandler
 {
 	C_REFLECT(IScrollHandler)
 	/**
-	 * @brief ƒXƒNƒ[ƒ‹“ü—Í‚ª‚ ‚Á‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«å…¥åŠ›ãŒã‚ã£ãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnScroll(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IScrollHandler* handler, BaseEventData* eventData) {
 		handler->OnScroll(dynamic_cast<PointerEventData*>(eventData));
@@ -343,21 +343,21 @@ public:
 };
 
 /**
- * @brief ƒhƒƒbƒviDropjƒCƒxƒ“ƒg‚ðŽó‚¯Žæ‚éƒCƒ“ƒ^[ƒtƒF[ƒXB
+ * @brief ãƒ‰ãƒ­ãƒƒãƒ—ï¼ˆDropï¼‰ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
  */
 class IDropHandler
 {
 	C_REFLECT(IDropHandler)
 	/**
-	 * @brief ƒhƒƒbƒv‚³‚ê‚½Û‚ÉŒÄ‚Î‚ê‚Ü‚·B
-	 * @param eventData ƒ|ƒCƒ“ƒ^ƒCƒxƒ“ƒgƒf[ƒ^inullptr ‚Ì‰Â”\«‚ ‚èj
+	 * @brief ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸéš›ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+	 * @param eventData ãƒã‚¤ãƒ³ã‚¿ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ï¼ˆnullptr ã®å¯èƒ½æ€§ã‚ã‚Šï¼‰
 	 */
 	virtual void OnDrop(PointerEventData* eventData) {}
 public:
 	/**
-	 * @brief ƒnƒ“ƒhƒ‰‚ÉƒCƒxƒ“ƒg‚ð”z‘—‚µ‚Ü‚·B
-	 * @param handler ŽóMæƒnƒ“ƒhƒ‰
-	 * @param eventData Šî’êƒCƒxƒ“ƒgƒf[ƒ^
+	 * @brief ãƒãƒ³ãƒ‰ãƒ©ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é…é€ã—ã¾ã™ã€‚
+	 * @param handler å—ä¿¡å…ˆãƒãƒ³ãƒ‰ãƒ©
+	 * @param eventData åŸºåº•ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 	 */
 	static void Execute(IDropHandler* handler, BaseEventData* eventData) {
 		handler->OnDrop(dynamic_cast<PointerEventData*>(eventData));

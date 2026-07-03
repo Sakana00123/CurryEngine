@@ -13,10 +13,10 @@ class Text : public Graphic
     C_REFLECT(Text)
 
     // -----------------------------------------------------------------------
-    // “à•”Œ^
+    // å†…éƒ¨å‹
     // -----------------------------------------------------------------------
 private:
-    /// @brief .fntƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚ñ‚¾1•¶š•ª‚Ìî•ñ
+    /// @brief .fntãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚“ã 1æ–‡å­—åˆ†ã®æƒ…å ±
     struct Character
     {
         int x, y, width, height;
@@ -25,17 +25,17 @@ private:
         int page, chnl;
     };
 
-    /// @brief ƒŒƒCƒAƒEƒgŒvZÏ‚İƒOƒŠƒtî•ñiƒXƒNƒŠ[ƒ“À•WŒn: +x‰E / +y‰ºj
+    /// @brief ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨ˆç®—æ¸ˆã¿ã‚°ãƒªãƒ•æƒ…å ±ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»: +xå³ / +yä¸‹ï¼‰
     struct GlyphLayout
     {
-        float x;                ///< UnrotatedTopLeft‚©‚ç‚Ì‘Š‘ÎX
-        float y;                ///< UnrotatedTopLeft‚©‚ç‚Ì‘Š‘ÎY
+        float x;                ///< UnrotatedTopLeftã‹ã‚‰ã®ç›¸å¯¾X
+        float y;                ///< UnrotatedTopLeftã‹ã‚‰ã®ç›¸å¯¾Y
         wchar_t ch;
         const Character* glyph;
-        size_t charIndex;       ///< text[] ã‚ÌƒCƒ“ƒfƒbƒNƒXiCharModifierQÆ—pj
+        size_t charIndex;       ///< text[] ä¸Šã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆCharModifierå‚ç…§ç”¨ï¼‰
     };
 
-    /// @brief ’¸“_ƒoƒbƒtƒ@‚Ì1’¸“_
+    /// @brief é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®1é ‚ç‚¹
     struct Vertex
     {
         DirectX::XMFLOAT3 position;
@@ -44,10 +44,10 @@ private:
     };
 
     // -----------------------------------------------------------------------
-    // ŒöŠJŒ^
+    // å…¬é–‹å‹
     // -----------------------------------------------------------------------
 public:
-    /// @brief ƒeƒLƒXƒg‚Ì”z’uŠî€
+    /// @brief ãƒ†ã‚­ã‚¹ãƒˆã®é…ç½®åŸºæº–
     enum class Alignment
     {
         TopLeft,    TopCenter,    TopRight,
@@ -56,7 +56,7 @@ public:
         COUNT
     };
 
-    /// @brief ‰¡•ûŒü‚Ì‚Í‚İo‚µ“®ì
+    /// @brief æ¨ªæ–¹å‘ã®ã¯ã¿å‡ºã—å‹•ä½œ
     enum class HorizontalOverflow
     {
         Wrap,
@@ -65,27 +65,27 @@ public:
     };
 
     // -----------------------------------------------------------------------
-    //  CharModifier \ •¶š‚²‚Æ‚Ì‰‰oƒpƒ‰ƒ[ƒ^
+    //  CharModifier â€” æ–‡å­—ã”ã¨ã®æ¼”å‡ºãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
     // -----------------------------------------------------------------------
 
     /**
-     * @brief 1•¶š‚É“K—p‚·‚é‰‰oƒIƒtƒZƒbƒgî•ñB
+     * @brief 1æ–‡å­—ã«é©ç”¨ã™ã‚‹æ¼”å‡ºã‚ªãƒ•ã‚»ãƒƒãƒˆæƒ…å ±ã€‚
      *
-     * ‚·‚×‚Ä‚ÌƒtƒB[ƒ‹ƒh‚Íƒx[ƒX’l‚Ö‚Ì**‰ÁZ / æZ**‚Æ‚µ‚Äˆµ‚í‚ê‚Ü‚·B
-     * ƒfƒtƒHƒ‹ƒg’l‚Íu‰½‚à•Ï‰»‚µ‚È‚¢vó‘Ô‚ğ•\‚µ‚Ü‚·B
+     * ã™ã¹ã¦ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã¯ãƒ™ãƒ¼ã‚¹å€¤ã¸ã®**åŠ ç®— / ä¹—ç®—**ã¨ã—ã¦æ‰±ã‚ã‚Œã¾ã™ã€‚
+     * ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã¯ã€Œä½•ã‚‚å¤‰åŒ–ã—ãªã„ã€çŠ¶æ…‹ã‚’è¡¨ã—ã¾ã™ã€‚
      *
-     * @note À•WŒn‚Í +x ‰E / +y ‰º ‚ÌƒXƒNƒŠ[ƒ“À•WŒn‚Å‚·B
-     * @note rotation ‚Í•¶šƒNƒƒbƒh‚Ì’†S‚ğ²‚ÉAText ‘S‘Ì‚Ì worldAngle ‚É‰ÁZ‚³‚ê‚Ü‚·B
-     * @note colorMul ‚Í Text::color ‚É¬•ª‚²‚Æ‚ÉæZ‚³‚ê‚Ü‚·B
+     * @note åº§æ¨™ç³»ã¯ +x å³ / +y ä¸‹ ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã§ã™ã€‚
+     * @note rotation ã¯æ–‡å­—ã‚¯ãƒ¯ãƒƒãƒ‰ã®ä¸­å¿ƒã‚’è»¸ã«ã€Text å…¨ä½“ã® worldAngle ã«åŠ ç®—ã•ã‚Œã¾ã™ã€‚
+     * @note colorMul ã¯ Text::color ã«æˆåˆ†ã”ã¨ã«ä¹—ç®—ã•ã‚Œã¾ã™ã€‚
      */
     struct CharModifier
     {
-        Vector2 posOffset = { 0.0f, 0.0f };             ///< ˆÊ’uƒIƒtƒZƒbƒgiƒsƒNƒZƒ‹j
-        Vector2 scale     = { 1.0f, 1.0f };             ///< ƒXƒP[ƒ‹æ”i1,1 = •Ï‰»‚È‚µj
-        float   rotation  =   0.0f;                     ///< ’Ç‰Á‰ñ“]i“xA•¶šƒNƒƒbƒh’†SŠî€j
-        Color   colorMul  = { 1.0f, 1.0f, 1.0f, 1.0f };///< FæZi1,1,1,1 = •Ï‰»‚È‚µj
+        Vector2 posOffset = { 0.0f, 0.0f };             ///< ä½ç½®ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
+        Vector2 scale     = { 1.0f, 1.0f };             ///< ã‚¹ã‚±ãƒ¼ãƒ«ä¹—æ•°ï¼ˆ1,1 = å¤‰åŒ–ãªã—ï¼‰
+        float   rotation  =   0.0f;                     ///< è¿½åŠ å›è»¢ï¼ˆåº¦ã€æ–‡å­—ã‚¯ãƒ¯ãƒƒãƒ‰ä¸­å¿ƒåŸºæº–ï¼‰
+        Color   colorMul  = { 1.0f, 1.0f, 1.0f, 1.0f };///< è‰²ä¹—ç®—ï¼ˆ1,1,1,1 = å¤‰åŒ–ãªã—ï¼‰
 
-        /// @brief ƒfƒtƒHƒ‹ƒgó‘Ôi•Ï‰»‚È‚µj‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é
+        /// @brief ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆçŠ¶æ…‹ï¼ˆå¤‰åŒ–ãªã—ï¼‰ã‹ã©ã†ã‹ã‚’åˆ¤å®šã™ã‚‹
         bool IsIdentity() const
         {
             return posOffset.x == 0.0f && posOffset.y == 0.0f
@@ -97,7 +97,7 @@ public:
     };
 
     // -----------------------------------------------------------------------
-    // ŒöŠJƒƒ“ƒo
+    // å…¬é–‹ãƒ¡ãƒ³ãƒ
     // -----------------------------------------------------------------------
 public:
     std::string  fontFilePath  = "./Assets/Fonts/madoufmg.fnt";
@@ -105,9 +105,9 @@ public:
     float        fontSize      = 64.0f;
     float        lineSpacing   = 1.0f;
     Color        color         { 1, 1, 1, 1 };
-    int          characterLimit = 256;  ///< 0 = –³§ŒÀ
-    bool         autoSize      = false; ///< ƒTƒCƒY‚ğƒeƒLƒXƒg‚É©“®ƒtƒBƒbƒg
-    bool         bestFit       = false; ///< ƒtƒHƒ“ƒgƒTƒCƒY‚ğ‹éŒ`‚ÉƒtƒBƒbƒg
+    int          characterLimit = 256;  ///< 0 = ç„¡åˆ¶é™
+    bool         autoSize      = false; ///< ã‚µã‚¤ã‚ºã‚’ãƒ†ã‚­ã‚¹ãƒˆã«è‡ªå‹•ãƒ•ã‚£ãƒƒãƒˆ
+    bool         bestFit       = false; ///< ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã‚’çŸ©å½¢ã«ãƒ•ã‚£ãƒƒãƒˆ
 
     Alignment          alignment         = Alignment::TopLeft;
     HorizontalOverflow horizontalOverflow = HorizontalOverflow::Overflow;
@@ -117,79 +117,79 @@ public:
     // -----------------------------------------------------------------------
 public:
     /**
-     * @brief w’èƒCƒ“ƒfƒbƒNƒX‚Ì•¶š‚É CharModifier ‚ğİ’è‚·‚éB
+     * @brief æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ–‡å­—ã« CharModifier ã‚’è¨­å®šã™ã‚‹ã€‚
      *
-     * –ˆƒtƒŒ[ƒ€ã‘‚«‚·‚é‰‰o—p“r‚ğ‘z’è‚µ‚Ä‚¢‚Ü‚·i—á: Update() “à‚ÅŒÄ‚ÔjB
-     * ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Ìê‡‚Í‰½‚à‚µ‚Ü‚¹‚ñB
+     * æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ä¸Šæ›¸ãã™ã‚‹æ¼”å‡ºç”¨é€”ã‚’æƒ³å®šã—ã¦ã„ã¾ã™ï¼ˆä¾‹: Update() å†…ã§å‘¼ã¶ï¼‰ã€‚
+     * ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã®å ´åˆã¯ä½•ã‚‚ã—ã¾ã›ã‚“ã€‚
      *
-     * @param index text[] ã‚ÌƒCƒ“ƒfƒbƒNƒX
-     * @param mod   İ’è‚·‚é CharModifier
+     * @param index text[] ä¸Šã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+     * @param mod   è¨­å®šã™ã‚‹ CharModifier
      */
     void SetCharModifier(size_t index, const CharModifier& mod);
 
     /**
-     * @brief w’èƒCƒ“ƒfƒbƒNƒX‚Ì CharModifier ‚ğæ“¾‚·‚éB
-     * @param index text[] ã‚ÌƒCƒ“ƒfƒbƒNƒX
-     * @return ‘Î‰‚·‚é CharModifier ‚Ì const QÆi”ÍˆÍŠO‚Í identity ‚ğ•Ô‚·j
+     * @brief æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã® CharModifier ã‚’å–å¾—ã™ã‚‹ã€‚
+     * @param index text[] ä¸Šã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+     * @return å¯¾å¿œã™ã‚‹ CharModifier ã® const å‚ç…§ï¼ˆç¯„å›²å¤–ã¯ identity ã‚’è¿”ã™ï¼‰
      */
     const CharModifier& GetCharModifier(size_t index) const;
 
     /**
-     * @brief ‚·‚×‚Ä‚Ì CharModifier ‚ğ identityi•Ï‰»‚È‚µj‚ÉƒŠƒZƒbƒg‚·‚éB
+     * @brief ã™ã¹ã¦ã® CharModifier ã‚’ identityï¼ˆå¤‰åŒ–ãªã—ï¼‰ã«ãƒªã‚»ãƒƒãƒˆã™ã‚‹ã€‚
      */
     void ResetCharModifiers();
 
     /**
-     * @brief modifiers ‚ğ text ‚Ì’·‚³‚É‡‚í‚¹‚ÄƒŠƒTƒCƒY‚·‚éB
+     * @brief modifiers ã‚’ text ã®é•·ã•ã«åˆã‚ã›ã¦ãƒªã‚µã‚¤ã‚ºã™ã‚‹ã€‚
      *
-     * SetText() Œã‚Í©“®“I‚ÉŒÄ‚Î‚ê‚Ü‚·B
-     * text ‚ğ’¼Ú‘‚«Š·‚¦‚½ê‡‚Íè“®‚ÅŒÄ‚ñ‚Å‚­‚¾‚³‚¢B
+     * SetText() å¾Œã¯è‡ªå‹•çš„ã«å‘¼ã°ã‚Œã¾ã™ã€‚
+     * text ã‚’ç›´æ¥æ›¸ãæ›ãˆãŸå ´åˆã¯æ‰‹å‹•ã§å‘¼ã‚“ã§ãã ã•ã„ã€‚
      */
     void ResizeModifiers();
 
     // -----------------------------------------------------------------------
-    // ŒöŠJAPI
+    // å…¬é–‹API
     // -----------------------------------------------------------------------
 public:
     Text()          = default;
     ~Text() override = default;
 
-    // --- ƒeƒLƒXƒg ---
+    // --- ãƒ†ã‚­ã‚¹ãƒˆ ---
     void                SetText(const std::wstring& newText);
     const std::wstring& GetText() const { return text; }
 
 	void InsertText(size_t index, const std::wstring& newText);
 	void EraseText(size_t index, size_t count);
 
-    // --- ƒtƒHƒ“ƒgƒTƒCƒY ---
+    // --- ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º ---
     void  SetFontSize(float newSize)   { fontSize = newSize; }
     float GetFontSize() const          { return fontSize; }
 
-    // --- F ---
+    // --- è‰² ---
     void         SetColor(const Color& newColor) { color = newColor; }
     const Color& GetColor() const                { return color; }
 
-    // --- ”z’u ---
+    // --- é…ç½® ---
     void      SetAlignment(Alignment newAlignment)  { alignment = newAlignment; }
     Alignment GetAlignment() const                   { return alignment; }
 
-    // --- ƒI[ƒo[ƒtƒ[ ---
+    // --- ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ ---
     void               SetHorizontalOverflow(HorizontalOverflow v) { horizontalOverflow = v; }
     HorizontalOverflow GetHorizontalOverflow() const               { return horizontalOverflow; }
 
-    // --- ©“®ƒTƒCƒY ---
+    // --- è‡ªå‹•ã‚µã‚¤ã‚º ---
     void SetAutoSize(bool enable) { autoSize = enable; }
     bool GetAutoSize() const      { return autoSize; }
 
-    // --- ƒxƒXƒgƒtƒBƒbƒg ---
+    // --- ãƒ™ã‚¹ãƒˆãƒ•ã‚£ãƒƒãƒˆ ---
     void SetBestFit(bool enable) { bestFit = enable; }
     bool GetBestFit() const      { return bestFit; }
 
-    // --- •¶š”ãŒÀ ---
+    // --- æ–‡å­—æ•°ä¸Šé™ ---
     void SetCharacterLimit(int limit);
     int  GetCharacterLimit() const { return characterLimit; }
 
-    // --- Graphic ƒCƒ“ƒ^ƒtƒF[ƒX ---
+    // --- Graphic ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ ---
     void Initialize() override;
     void Begin(RenderContext* rtx) override;
     void Draw(RenderContext* rtx) override;
@@ -198,96 +198,96 @@ public:
     void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
-    // --- ƒVƒŠƒAƒ‰ƒCƒY ---
+    // --- ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º ---
     json Serialize()  const override;
     void Deserialize(const json& j) override;
 
-    // --- ƒJ[ƒ\ƒ‹ ---
-    /// @brief ƒJ[ƒ\ƒ‹ˆÊ’u‚ÌƒXƒNƒŠ[ƒ“À•W‚ğæ“¾‚·‚éiƒ[ƒ‹ƒhÀ•Wj
+    // --- ã‚«ãƒ¼ã‚½ãƒ« ---
+    /// @brief ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’å–å¾—ã™ã‚‹ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ï¼‰
     void GetCursorPos(size_t cursorPos, _Out_ float& x, _Out_ float& y);
 
-	/// @brief ƒXƒNƒŠ[ƒ“À•W‚©‚çƒJ[ƒ\ƒ‹ˆÊ’u‚ğæ“¾‚·‚éiƒ[ƒ‹ƒhÀ•Wj
+	/// @brief ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‹ã‚‰ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’å–å¾—ã™ã‚‹ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ï¼‰
     size_t GetCursorIndexFromPoint(float screenX, float screenY);
 
-    // --- ƒŒƒCƒAƒEƒg ---
+    // --- ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ ---
     void  PerformLayout(float maxWidth);
     float ComputeLineWidth(const std::wstring& line);
     float ComputeLineHeight();
     float CalcAlignedX(float lineWidth);
     float CalcAlignedY();
 
-    /// @brief ƒeƒLƒXƒg‚ğs‚²‚Æ‚É•ªŠ„iL"\n"‚Ì‚İ‰üsj
+    /// @brief ãƒ†ã‚­ã‚¹ãƒˆã‚’è¡Œã”ã¨ã«åˆ†å‰²ï¼ˆL"\n"ã®ã¿æ”¹è¡Œï¼‰
     std::vector<std::wstring> SplitTextToLines() const;
-    /// @brief ƒeƒLƒXƒg‚ğs‚²‚Æ‚É•ªŠ„iL"\n" + Wrap‘Î‰j
+    /// @brief ãƒ†ã‚­ã‚¹ãƒˆã‚’è¡Œã”ã¨ã«åˆ†å‰²ï¼ˆL"\n" + Wrapå¯¾å¿œï¼‰
     std::vector<std::wstring> SplitTextToLines(float maxWidth);
 
     // -----------------------------------------------------------------------
-    // “à•”À‘•
+    // å†…éƒ¨å®Ÿè£…
     // -----------------------------------------------------------------------
 private:
-    /// @brief .fntƒtƒ@ƒCƒ‹‚ÆƒVƒF[ƒ_[‚ğ“Ç‚İ‚ŞiDeserialize/‰Šú‰»‚©‚çŒÄ‚Ôj
+    /// @brief .fntãƒ•ã‚¡ã‚¤ãƒ«ã¨ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã‚€ï¼ˆDeserialize/åˆæœŸåŒ–ã‹ã‚‰å‘¼ã¶ï¼‰
     void Setup(const std::string& fontFilePath,
                const char* customPsName = nullptr,
                const char* customVsName = nullptr);
 
-    /// @brief ’¸“_ƒoƒbƒtƒ@‚ğŠm•Û‚·‚é
+    /// @brief é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿ã™ã‚‹
     void SetupBuffer(size_t vertexCapacity);
 
     /**
-     * @brief 1•¶š•ª‚Ì’¸“_‚ğ vertices ‚É’Ç‰Á‚·‚éB
-     * @param c     ƒtƒHƒ“ƒg‚Ì•¶šî•ñ
-     * @param x     •`‰æŠî“_XiƒXƒNƒŠ[ƒ“À•WA+x‰Ej
-     * @param y     •`‰æŠî“_YiƒXƒNƒŠ[ƒ“À•WA+y‰ºj
-     * @param mod   ‚±‚Ì•¶š‚É“K—p‚·‚é CharModifier
-	 * @param ref   Canvas‚ÌQÆ‰ğ‘œ“xiƒXƒP[ƒ‹Zo—pj
-     * @param ctx   D3D11ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
+     * @brief 1æ–‡å­—åˆ†ã®é ‚ç‚¹ã‚’ vertices ã«è¿½åŠ ã™ã‚‹ã€‚
+     * @param c     ãƒ•ã‚©ãƒ³ãƒˆã®æ–‡å­—æƒ…å ±
+     * @param x     æç”»åŸºç‚¹Xï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€+xå³ï¼‰
+     * @param y     æç”»åŸºç‚¹Yï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã€+yä¸‹ï¼‰
+     * @param mod   ã“ã®æ–‡å­—ã«é©ç”¨ã™ã‚‹ CharModifier
+	 * @param ref   Canvasã®å‚ç…§è§£åƒåº¦ï¼ˆã‚¹ã‚±ãƒ¼ãƒ«ç®—å‡ºç”¨ï¼‰
+     * @param ctx   D3D11ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
      */
     void DrawCharacter(const Character& c, float x, float y,
                        const CharModifier& mod,
 		               Vector2 ref,
                        ID3D11DeviceContext* ctx);
 
-    /// @brief ƒXƒNƒŠ[ƒ“À•WŒn‚Å‚Ì2D‰ñ“]i+x‰E / +y‰ºj
+    /// @brief ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã§ã®2Då›è»¢ï¼ˆ+xå³ / +yä¸‹ï¼‰
     void Rotate(float& x, float& y, float cx, float cy, float angleDeg);
 
-	/// @brief Canvas‚ÌQÆ‰ğ‘œ“x‚ğæ“¾‚·‚é
+	/// @brief Canvasã®å‚ç…§è§£åƒåº¦ã‚’å–å¾—ã™ã‚‹
 	Vector2 GetReferenceResolution() const;
 
 
-    // --- •¶š‚²‚Æ‚Ì‰‰oƒf[ƒ^ ---
-    // text[i] ‚É‘Î‰‚·‚é CharModifier ‚ğ•Û‚·‚éB
-    // text ‚Æí‚É“¯‚¶’·‚³‚ğ•Û‚ÂiSetText / ResizeModifiers ‚ÅŠÇ—jB
+    // --- æ–‡å­—ã”ã¨ã®æ¼”å‡ºãƒ‡ãƒ¼ã‚¿ ---
+    // text[i] ã«å¯¾å¿œã™ã‚‹ CharModifier ã‚’ä¿æŒã™ã‚‹ã€‚
+    // text ã¨å¸¸ã«åŒã˜é•·ã•ã‚’ä¿ã¤ï¼ˆSetText / ResizeModifiers ã§ç®¡ç†ï¼‰ã€‚
     std::vector<CharModifier> modifiers;
 
-    /// @brief ”ÍˆÍŠOƒAƒNƒZƒX—p‚Ì identityiGetCharModifier ‚Ì•Ô‹p’lj
+    /// @brief ç¯„å›²å¤–ã‚¢ã‚¯ã‚»ã‚¹ç”¨ã® identityï¼ˆGetCharModifier ã®è¿”å´å€¤ï¼‰
     static const CharModifier kIdentityModifier;
 
-    // --- ƒtƒHƒ“ƒgƒf[ƒ^ ---
+    // --- ãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ ---
     struct FontData
     {
         std::map<wchar_t, Character> characters;
-        std::wstring faceName;          ///< ƒtƒHƒ“ƒg–¼iface=j¦dangling‰ñ”ğ‚Ì‚½‚ßwstring•Û
-		std::wstring texturePath;       ///< ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒXipage=j
-        float        fntSize = 1.0f;   ///< .fnt‚Ìsize’liƒXƒP[ƒ‹Zo‚ÌŠî€j
+        std::wstring faceName;          ///< ãƒ•ã‚©ãƒ³ãƒˆåï¼ˆface=ï¼‰â€»danglingå›é¿ã®ãŸã‚wstringä¿æŒ
+		std::wstring texturePath;       ///< ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ï¼ˆpage=ï¼‰
+        float        fntSize = 1.0f;   ///< .fntã®sizeå€¤ï¼ˆã‚¹ã‚±ãƒ¼ãƒ«ç®—å‡ºã®åŸºæº–ï¼‰
         int          bold = 0;
         int          italic = 0;
         int          lineHeight = 0;
     };
-	static inline std::map<std::string, FontData> fontDataCache; ///< ƒtƒHƒ“ƒgƒtƒ@ƒCƒ‹ƒpƒX‚²‚Æ‚ÌƒLƒƒƒbƒVƒ…
+	static inline std::map<std::string, FontData> fontDataCache; ///< ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã”ã¨ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥
 
     std::map<wchar_t, Character> characters;
-    std::wstring faceName;          ///< ƒtƒHƒ“ƒg–¼iface=j¦dangling‰ñ”ğ‚Ì‚½‚ßwstring•Û
-    float        fntSize  = 1.0f;   ///< .fnt‚Ìsize’liƒXƒP[ƒ‹Zo‚ÌŠî€j
+    std::wstring faceName;          ///< ãƒ•ã‚©ãƒ³ãƒˆåï¼ˆface=ï¼‰â€»danglingå›é¿ã®ãŸã‚wstringä¿æŒ
+    float        fntSize  = 1.0f;   ///< .fntã®sizeå€¤ï¼ˆã‚¹ã‚±ãƒ¼ãƒ«ç®—å‡ºã®åŸºæº–ï¼‰
     int          bold     = 0;
     int          italic   = 0;
     int          lineHeight = 0;
 
-    // --- ƒŒƒCƒAƒEƒgƒLƒƒƒbƒVƒ… ---
+    // --- ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚­ãƒ£ãƒƒã‚·ãƒ¥ ---
     std::vector<GlyphLayout> layoutedGlyphs;
     float layoutWidth  = 0.0f;
     float layoutHeight = 0.0f;
 
-    // --- D3D11ƒŠƒ\[ƒX ---
+    // --- D3D11ãƒªã‚½ãƒ¼ã‚¹ ---
     std::wstring filePath;
     D3D11_TEXTURE2D_DESC texture2dDesc{};
     size_t maxVertices = 0;
@@ -299,7 +299,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11InputLayout>         inputLayout;
     Microsoft::WRL::ComPtr<ID3D11Buffer>              vertexBuffer;
 
-    // --- ImGui—p ---
+    // --- ImGuiç”¨ ---
     static constexpr const char* kAlignmentStr[] = {
         "TopLeft",    "TopCenter",    "TopRight",
         "MiddleLeft", "MiddleCenter", "MiddleRight",

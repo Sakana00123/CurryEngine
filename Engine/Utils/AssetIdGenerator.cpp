@@ -10,18 +10,18 @@ namespace CurryEngine
 		{
 			std::string GenerateAssetId()
 			{
-				// ƒOƒ[ƒoƒ‹‚ÈˆêˆÓ‚ÌID‚ğ¶¬‚·‚é
+				// ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªä¸€æ„ã®IDã‚’ç”Ÿæˆã™ã‚‹
 				static std::random_device rd;
 				static std::mt19937 gen(rd());
 				static std::uniform_int_distribution<> dis(0, 15);
 				
-				// 32Œ…‚Ì16i”‚ÌID‚ğ¶¬
+				// 32æ¡ã®16é€²æ•°ã®IDã‚’ç”Ÿæˆ
 				std::string id;
 				for (int i = 0; i < 32; ++i) {
 					id += "0123456789abcdef"[dis(gen)];
 				}
 
-				// ¶¬‚³‚ê‚½ID‚ğ•Ô‚·
+				// ç”Ÿæˆã•ã‚ŒãŸIDã‚’è¿”ã™
 				return id;
 			}
 		}

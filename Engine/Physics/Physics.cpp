@@ -12,7 +12,7 @@
 
 #include "Engine/Rendering/Camera/EditorCamera.h"
 
-// ƒV[ƒ“‚ÌƒŒƒCƒLƒƒƒXƒg‚É•K—v‚ÈƒCƒ“ƒNƒ‹[ƒh
+// ã‚·ãƒ¼ãƒ³ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã«å¿…è¦ãªã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "Engine/Rendering/Camera/CameraSystem.h"
 #include "Engine/Rendering/Camera/CameraComponent.h"
 #include "Engine/Scenes/SceneManager.h"
@@ -20,7 +20,7 @@
 std::vector<Rigidbody*> Physics::s_pendingRigidbodies;
 std::vector<Collider*> Physics::s_pendingColliders;
 
-// --- ƒwƒ‹ƒp[ŠÖ” ---
+// --- ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•° ---
 
 static physx::PxVec3 ToPxVec3(const Vector3& vec)
 {
@@ -42,7 +42,7 @@ static Quaternion ToQuaternion(const physx::PxQuat& quat)
 	return Quaternion(quat.x, quat.y, quat.z, quat.w);
 }
 
-// --- SimulationEventCallback ƒNƒ‰ƒX‚ÌÀ‘• ---
+// --- SimulationEventCallback ã‚¯ãƒ©ã‚¹ã®å®Ÿè£… ---
 
 void SimulationEventCallback::ClearTriggerStayPairs()
 {
@@ -56,7 +56,7 @@ void SimulationEventCallback::ClearTriggerStayPairs()
 
 void SimulationEventCallback::ClearTriggerStayPairsForShape(physx::PxShape* shape)
 {
-	// shape ‚ÉŠÖ˜A‚·‚éƒyƒA‚ğ‚·‚×‚Äíœ
+	// shape ã«é–¢é€£ã™ã‚‹ãƒšã‚¢ã‚’ã™ã¹ã¦å‰Šé™¤
 	for (auto it = pxTriggerStayPairs.begin(); it != pxTriggerStayPairs.end(); )
 	{
 		const ShapePair& pair = it->first;
@@ -64,7 +64,7 @@ void SimulationEventCallback::ClearTriggerStayPairsForShape(physx::PxShape* shap
 		physx::PxShape* shapeB = pair.second;
 		if (shapeA == shape || shapeB == shape)
 		{
-			// íœ‚·‚é‘O‚ÉƒgƒŠƒK[‚ÌŒp‘±ƒCƒxƒ“ƒg‚ªI—¹‚µ‚½‚Æ‚«‚Ìˆ—‚ğŒÄ‚Ño‚·
+			// å‰Šé™¤ã™ã‚‹å‰ã«ãƒˆãƒªã‚¬ãƒ¼ã®ç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆãŒçµ‚äº†ã—ãŸã¨ãã®å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 			Collider* colliderA = static_cast<Collider*>(shapeA->userData);
 			Collider* colliderB = static_cast<Collider*>(shapeB->userData);
 			if (colliderA != nullptr)
@@ -87,14 +87,14 @@ void SimulationEventCallback::ClearTriggerStayPairsForShape(physx::PxShape* shap
 			}
 			if (shapeA != nullptr)
 			{
-				shapeA->userData = nullptr; // userData ‚ğƒNƒŠƒA
+				shapeA->userData = nullptr; // userData ã‚’ã‚¯ãƒªã‚¢
 			}
 			if (shapeB != nullptr)
 			{
-				shapeB->userData = nullptr; // userData ‚ğƒNƒŠƒA
+				shapeB->userData = nullptr; // userData ã‚’ã‚¯ãƒªã‚¢
 			}
 
-			// shape ‚ÉŠÖ˜A‚·‚éƒyƒA‚ğíœ
+			// shape ã«é–¢é€£ã™ã‚‹ãƒšã‚¢ã‚’å‰Šé™¤
 			it = pxTriggerStayPairs.erase(it);
 		}
 		else
@@ -106,18 +106,18 @@ void SimulationEventCallback::ClearTriggerStayPairsForShape(physx::PxShape* shap
 
 void SimulationEventCallback::Update()
 {
-	// ƒgƒŠƒK[‚ÌŒp‘±ƒCƒxƒ“ƒg‚ğˆ—
+	// ãƒˆãƒªã‚¬ãƒ¼ã®ç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†
 	for (auto& item : pxTriggerStayPairs)
 	{
 		physx::PxTriggerPair& pair = item.second;
-		//if (pair.status == physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS) // eNOTIFY_TOUCH_PERSISTS ‚Í PhysX ‚Å‚ÍƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢‚½‚ßAí‚ÉŒp‘±ƒCƒxƒ“ƒg‚Æ‚µ‚Äˆ—‚·‚é
+		//if (pair.status == physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS) // eNOTIFY_TOUCH_PERSISTS ã¯ PhysX ã§ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ãŸã‚ã€å¸¸ã«ç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆã¨ã—ã¦å‡¦ç†ã™ã‚‹
 		{
-			// ƒgƒŠƒK[‚ªŒp‘±‚µ‚Ä‚¢‚é‚Æ‚«‚Ìˆ—
+			// ãƒˆãƒªã‚¬ãƒ¼ãŒç¶™ç¶šã—ã¦ã„ã‚‹ã¨ãã®å‡¦ç†
 			auto a = static_cast<Collider*>(pair.triggerShape->userData);
 			auto b = static_cast<Collider*>(pair.otherShape->userData);
 			if (a != nullptr)
 			{
-				// a ‚É‘Î‚·‚éˆ—
+				// a ã«å¯¾ã™ã‚‹å‡¦ç†
 				TriggerInfo info;
 				info.self = a->GetOwner();
 				info.other = b != nullptr ? b->GetOwner() : nullptr;
@@ -127,7 +127,7 @@ void SimulationEventCallback::Update()
 			}
 			if (b != nullptr)
 			{
-				// b ‚É‘Î‚·‚éˆ—
+				// b ã«å¯¾ã™ã‚‹å‡¦ç†
 				TriggerInfo info;
 				info.self = b->GetOwner();
 				info.other = a != nullptr ? a->GetOwner() : nullptr;
@@ -141,7 +141,7 @@ void SimulationEventCallback::Update()
 
 void SimulationEventCallback::CallCollisionEvents()
 {
-	// Õ“ËƒCƒxƒ“ƒg‚ğˆ—
+	// è¡çªã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†
 	for (auto& event : collisionEnterEvents)
 	{
 		Collider* collider = event.first;
@@ -167,15 +167,15 @@ void SimulationEventCallback::CallCollisionEvents()
 
 void SimulationEventCallback::CallTriggerEvents()
 {
-	// ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ğˆ—
+	// ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†
 	for (auto& event : triggerEnterEvents)
 	{
 		Collider* collider = event.first;
 		const TriggerInfo& info = event.second;
 		collider->OnTriggerEnter(info);
 	}
-	// TODO: ‘‚«•ûƒLƒ‚‚¢‚Ì‚ÅŒã‚Å’¼‚·
-	Update(); // ƒgƒŠƒK[‚ÌŒp‘±ƒCƒxƒ“ƒg‚ğˆ—
+	// TODO: æ›¸ãæ–¹ã‚­ãƒ¢ã„ã®ã§å¾Œã§ç›´ã™
+	Update(); // ãƒˆãƒªã‚¬ãƒ¼ã®ç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†
 	for (auto& event : triggerExitEvents)
 	{
 		Collider* collider = event.first;
@@ -191,11 +191,11 @@ void SimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHe
 	physx::PxActor* actorA = pairHeader.actors[0];
 	physx::PxActor* actorB = pairHeader.actors[1];
 
-	// ƒAƒNƒ^[‚ª‚·‚Å‚Éíœ‚³‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN‚µA•s³‚ÈƒAƒNƒZƒX‚ğ–h~‚·‚é
+	// ã‚¢ã‚¯ã‚¿ãƒ¼ãŒã™ã§ã«å‰Šé™¤ã•ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã—ã€ä¸æ­£ãªã‚¢ã‚¯ã‚»ã‚¹ã‚’é˜²æ­¢ã™ã‚‹
 	bool removedActorA = pairHeader.flags & physx::PxContactPairHeaderFlag::eREMOVED_ACTOR_0;
 	bool removedActorB = pairHeader.flags & physx::PxContactPairHeaderFlag::eREMOVED_ACTOR_1;
 
-	// TODO: userData‚É“ü‚ê‚éƒf[ƒ^‚ª•ÏX‚³‚ê‚½‚ç‚±‚±‚à•ÏX‚·‚é•K—v‚ª‚ ‚é
+	// TODO: userDataã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ã“ã“ã‚‚å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
 	auto actorDataA = removedActorA ? nullptr : static_cast<Transform*>(actorA->userData);
 	auto actorDataB = removedActorB ? nullptr : static_cast<Transform*>(actorB->userData);
 
@@ -217,25 +217,25 @@ void SimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHe
 		physx::PxShape* shapeA = pair.shapes[0];
 		physx::PxShape* shapeB = pair.shapes[1];
 
-		// TODO: userData‚É“ü‚ê‚éƒf[ƒ^‚ª•ÏX‚³‚ê‚½‚ç‚±‚±‚à•ÏX‚·‚é•K—v‚ª‚ ‚é
+		// TODO: userDataã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ã“ã“ã‚‚å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
 		auto a = static_cast<Collider*>(shapeA->userData);
 		auto b = static_cast<Collider*>(shapeB->userData);
 		
 		if (pair.flags & physx::PxContactPairFlag::eREMOVED_SHAPE_0)
 		{
-			// shapeA ‚Í‚·‚Å‚Éíœ‚³‚ê‚Ä‚¢‚é‚½‚ßAa ‚É‘Î‚·‚éˆ—‚Ís‚í‚È‚¢
+			// shapeA ã¯ã™ã§ã«å‰Šé™¤ã•ã‚Œã¦ã„ã‚‹ãŸã‚ã€a ã«å¯¾ã™ã‚‹å‡¦ç†ã¯è¡Œã‚ãªã„
 			a = nullptr;
 		}
 		if (pair.flags & physx::PxContactPairFlag::eREMOVED_SHAPE_1)
 		{
-			// shapeB ‚Í‚·‚Å‚Éíœ‚³‚ê‚Ä‚¢‚é‚½‚ßAb ‚É‘Î‚·‚éˆ—‚Ís‚í‚È‚¢
+			// shapeB ã¯ã™ã§ã«å‰Šé™¤ã•ã‚Œã¦ã„ã‚‹ãŸã‚ã€b ã«å¯¾ã™ã‚‹å‡¦ç†ã¯è¡Œã‚ãªã„
 			b = nullptr;
 		}
 
-		physx::PxContactPairPoint contactPoints[MAX_CONTACTS_PER_PAIR]; // Õ“Ë“_‚Ìî•ñ‚ğŠi”[‚·‚é”z—ñ
+		physx::PxContactPairPoint contactPoints[MAX_CONTACTS_PER_PAIR]; // è¡çªç‚¹ã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹é…åˆ—
 		physx::PxU32 contactCount = pair.extractContacts(contactPoints, _countof(contactPoints));
 
-		// infoA,infoB ‚ÉÕ“Ë“_‚Ìî•ñ‚ğŠi”[
+		// infoA,infoB ã«è¡çªç‚¹ã®æƒ…å ±ã‚’æ ¼ç´
 		{
 			infoA.selfCollider = a;
 			infoA.otherCollider = b;
@@ -245,7 +245,7 @@ void SimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHe
 			infoB.otherCollider = a;
 			infoB.impulse = 0.f;
 
-			// 1‚Â‚Ìƒ‹[ƒv‚Å—¼•ûˆ—‚·‚é
+			// 1ã¤ã®ãƒ«ãƒ¼ãƒ—ã§ä¸¡æ–¹å‡¦ç†ã™ã‚‹
 			for (physx::PxU32 j = 0; j < contactCount; ++j)
 			{
 				const physx::PxContactPairPoint& contactPoint = contactPoints[j];
@@ -253,7 +253,7 @@ void SimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHe
 				Vector3 normal = ToVector3(contactPoint.normal);
 				Vector3 impulse = ToVector3(contactPoint.impulse);
 
-				// infoA —p
+				// infoA ç”¨
 				ContactPoint& contactInfoA = infoA.contacts.emplace_back();
 				contactInfoA.point = point;
 				contactInfoA.normal = normal;
@@ -262,7 +262,7 @@ void SimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHe
 				contactInfoA.otherCollider = b;
 				infoA.impulse += impulse;
 
-				// infoB —p (–@ü‚ÆÕŒ‚—Ê‚Ì”½“])
+				// infoB ç”¨ (æ³•ç·šã¨è¡æ’ƒé‡ã®åè»¢)
 				ContactPoint& contactInfoB = infoB.contacts.emplace_back();
 				contactInfoB.point = point;
 				contactInfoB.normal = -normal;
@@ -273,46 +273,46 @@ void SimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHe
 			}
 		}
 
-		// pair.events ‚ÍAÕ“ËƒCƒxƒ“ƒg‚Ìí—Ş‚ğ¦‚·ƒtƒ‰ƒO‚Ì‘g‚İ‡‚í‚¹‚Å‚·B‚±‚ê‚ğƒ`ƒFƒbƒN‚µ‚ÄA‚Ç‚ÌƒCƒxƒ“ƒg‚ª”­¶‚µ‚½‚©‚ğ”»’f‚µ‚Ü‚·B
+		// pair.events ã¯ã€è¡çªã‚¤ãƒ™ãƒ³ãƒˆã®ç¨®é¡ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã®çµ„ã¿åˆã‚ã›ã§ã™ã€‚ã“ã‚Œã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ã€ã©ã®ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ãŸã‹ã‚’åˆ¤æ–­ã—ã¾ã™ã€‚
 		if (pair.events & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{
-			// Õ“Ë‚ªŠJn‚µ‚½‚Æ‚«‚Ìˆ—
+			// è¡çªãŒé–‹å§‹ã—ãŸã¨ãã®å‡¦ç†
 			if (a != nullptr)
 			{
-				// a ‚É‘Î‚·‚éˆ—
+				// a ã«å¯¾ã™ã‚‹å‡¦ç†
 				collisionEnterEvents.push_back({ a, std::move(infoA) });
 			}
 			if (b != nullptr)
 			{
-				// b ‚É‘Î‚·‚éˆ—
+				// b ã«å¯¾ã™ã‚‹å‡¦ç†
 				collisionEnterEvents.push_back({ b, std::move(infoB) });
 			}
 		}
 		else if (pair.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 		{
-			// Õ“Ë‚ªŒp‘±‚µ‚Ä‚¢‚é‚Æ‚«‚Ìˆ—
+			// è¡çªãŒç¶™ç¶šã—ã¦ã„ã‚‹ã¨ãã®å‡¦ç†
 			if (a != nullptr)
 			{
-				// a ‚É‘Î‚·‚éˆ—
+				// a ã«å¯¾ã™ã‚‹å‡¦ç†
 				collisionStayEvents.push_back({ a, std::move(infoA) });
 			}
 			if (b != nullptr)
 			{
-				// b ‚É‘Î‚·‚éˆ—
+				// b ã«å¯¾ã™ã‚‹å‡¦ç†
 				collisionStayEvents.push_back({ b, std::move(infoB) });
 			}
 		}
 		else if (pair.events & physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
 		{
-			// Õ“Ë‚ªI—¹‚µ‚½‚Æ‚«‚Ìˆ—
+			// è¡çªãŒçµ‚äº†ã—ãŸã¨ãã®å‡¦ç†
 			if (a != nullptr)
 			{
-				// a ‚É‘Î‚·‚éˆ—
+				// a ã«å¯¾ã™ã‚‹å‡¦ç†
 				collisionExitEvents.push_back({ a, std::move(infoA) });
 			}
 			if (b != nullptr)
 			{
-				// b ‚É‘Î‚·‚éˆ—
+				// b ã«å¯¾ã™ã‚‹å‡¦ç†
 				collisionExitEvents.push_back({ b, std::move(infoB) });
 			}
 		}
@@ -321,17 +321,17 @@ void SimulationEventCallback::onContact(const physx::PxContactPairHeader& pairHe
 
 void SimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
 {
-	// ‚·‚Å‚Éˆ—‚³‚ê‚½ƒyƒA‚ğ’ÇÕ‚·‚é‚½‚ß‚ÌƒZƒbƒg
+	// ã™ã§ã«å‡¦ç†ã•ã‚ŒãŸãƒšã‚¢ã‚’è¿½è·¡ã™ã‚‹ãŸã‚ã®ã‚»ãƒƒãƒˆ
 	std::set<std::pair<void*, void*>> processedPairs;
 
-	// pairs ”z—ñ‚É‚ÍAƒgƒŠƒK[ƒCƒxƒ“ƒg‚ª”­¶‚µ‚½‚·‚×‚Ä‚ÌƒyƒA‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·B‚±‚ê‚ğƒ‹[ƒv‚µ‚Äˆ—‚µ‚Ü‚·B
+	// pairs é…åˆ—ã«ã¯ã€ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ãŸã™ã¹ã¦ã®ãƒšã‚¢ãŒå«ã¾ã‚Œã¦ã„ã¾ã™ã€‚ã“ã‚Œã‚’ãƒ«ãƒ¼ãƒ—ã—ã¦å‡¦ç†ã—ã¾ã™ã€‚
 	for (physx::PxU32 i = 0; i < count; ++i)
 	{
 		const physx::PxTriggerPair& pair = pairs[i];
 
 		if (pair.flags & physx::PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER || pair.flags & physx::PxTriggerPairFlag::eREMOVED_SHAPE_OTHER)
 		{
-			// ‚Ç‚¿‚ç‚©‚ÌŒ`ó‚ª‚·‚Å‚Éíœ‚³‚ê‚Ä‚¢‚éê‡‚ÍAƒgƒŠƒK[ƒCƒxƒ“ƒg‚ğˆ—‚µ‚È‚¢
+			// ã©ã¡ã‚‰ã‹ã®å½¢çŠ¶ãŒã™ã§ã«å‰Šé™¤ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†ã—ãªã„
 			continue;
 		}
 
@@ -342,14 +342,14 @@ void SimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU3
 
 		if (processedPairs.contains(pairKey))
 		{
-			// ‚·‚Å‚Éˆ—‚³‚ê‚½ƒyƒA‚Ìê‡‚ÍƒXƒLƒbƒv
+			// ã™ã§ã«å‡¦ç†ã•ã‚ŒãŸãƒšã‚¢ã®å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 			Console::LogWarning(std::format("Duplicate trigger event detected for actors: {} and {}. Skipping duplicate event.", triggerActorPtr, otherActorPtr));
 			continue;
 		}
-		// ƒyƒA‚ğˆ—‚µ‚½ŒãAƒZƒbƒg‚É’Ç‰Á‚µ‚Äd•¡ˆ—‚ğ–h~
+		// ãƒšã‚¢ã‚’å‡¦ç†ã—ãŸå¾Œã€ã‚»ãƒƒãƒˆã«è¿½åŠ ã—ã¦é‡è¤‡å‡¦ç†ã‚’é˜²æ­¢
 		processedPairs.insert(pairKey);
 
-		// ƒyƒA‚ğˆ—‚·‚é
+		// ãƒšã‚¢ã‚’å‡¦ç†ã™ã‚‹
 		TriggerInfo triggerInfo, otherInfo;
 		auto trigger = static_cast<Collider*>(pair.triggerShape->userData);
 		auto other = static_cast<Collider*>(pair.otherShape->userData);
@@ -369,10 +369,10 @@ void SimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU3
 		}
 
 
-		// ‚±‚±‚ÅƒgƒŠƒK[ƒCƒxƒ“ƒg‚ğˆ—‚·‚éƒR[ƒh‚ğ’Ç‰Á‚Å‚«‚Ü‚·
+		// ã“ã“ã§ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†ã™ã‚‹ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã§ãã¾ã™
 		if (pair.status & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{
-			// ƒgƒŠƒK[‚É“ü‚Á‚½‚Æ‚«‚Ìˆ—
+			// ãƒˆãƒªã‚¬ãƒ¼ã«å…¥ã£ãŸã¨ãã®å‡¦ç†
 			ShapePair shapePair = { pair.triggerShape, pair.otherShape };
 
 			if (trigger != nullptr)
@@ -384,12 +384,12 @@ void SimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU3
 				triggerEnterEvents.push_back({ other, otherInfo });
 			}
 
-			// ƒgƒŠƒK[‚ÌŒp‘±ƒCƒxƒ“ƒg‚ğŠÇ—‚·‚é‚½‚ß‚Ìƒ}ƒbƒv‚É’Ç‰Á
+			// ãƒˆãƒªã‚¬ãƒ¼ã®ç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã®ãƒãƒƒãƒ—ã«è¿½åŠ 
 			pxTriggerStayPairs[shapePair] = pair;
 		}
 		else if (pair.status & physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
 		{
-			// ƒgƒŠƒK[‚©‚ço‚½‚Æ‚«‚Ìˆ—
+			// ãƒˆãƒªã‚¬ãƒ¼ã‹ã‚‰å‡ºãŸã¨ãã®å‡¦ç†
 			if (trigger != nullptr)
 			{
 				triggerExitEvents.push_back({ trigger, triggerInfo });
@@ -399,42 +399,42 @@ void SimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU3
 				triggerExitEvents.push_back({ other, otherInfo });
 			}
 
-			// ƒgƒŠƒK[‚ÌŒp‘±ƒCƒxƒ“ƒg‚ğŠÇ—‚·‚é‚½‚ß‚Ìƒ}ƒbƒv‚©‚çíœ
+			// ãƒˆãƒªã‚¬ãƒ¼ã®ç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã®ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤
 			ShapePair shapePair = { pair.triggerShape, pair.otherShape };
 			pxTriggerStayPairs.erase(shapePair);
 		}
 	}
 }
 
-// --- FilterShader ƒNƒ‰ƒX‚ÌÀ‘• ---
+// --- FilterShader ã‚¯ãƒ©ã‚¹ã®å®Ÿè£… ---
 
 physx::PxFilterFlags FilterShader::SimulationFilter(
 	physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
 	physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
 	physx::PxPairFlags& pairFlags, const void* constantBlock, physx::PxU32 constantBlockSize)
 {
-	// ƒŒƒCƒ„[‚É‚æ‚éÕ“Ë”»’è
-	// filterData.word0 ‚É‚ÍA©g‚ÌƒŒƒCƒ„[ID‚ªŠi”[‚³‚ê‚Ä‚¢‚éB
-	// filterData.word1 ‚É‚ÍAÕ“Ë‚³‚¹‚½‚¢ƒŒƒCƒ„[‚Ìƒrƒbƒgƒtƒ‰ƒO‚ªŠi”[‚³‚ê‚Ä‚¢‚éB
-	bool ab = (filterData0.word1 & filterData1.word0) == 0; // filterData0 ‚ÌÕ“Ë‚³‚¹‚½‚¢ƒŒƒCƒ„[‚É filterData1 ‚ÌƒŒƒCƒ„[ID ‚ªŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAÕ“Ë”»’è‚ğs‚í‚È‚¢‚æ‚¤‚É‚·‚é
-	bool ba = (filterData1.word1 & filterData0.word0) == 0; // filterData1 ‚ÌÕ“Ë‚³‚¹‚½‚¢ƒŒƒCƒ„[‚É filterData0 ‚ÌƒŒƒCƒ„[ID ‚ªŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAÕ“Ë”»’è‚ğs‚í‚È‚¢‚æ‚¤‚É‚·‚é
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã‚ˆã‚‹è¡çªåˆ¤å®š
+	// filterData.word0 ã«ã¯ã€è‡ªèº«ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼IDãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ã€‚
+	// filterData.word1 ã«ã¯ã€è¡çªã•ã›ãŸã„ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ“ãƒƒãƒˆãƒ•ãƒ©ã‚°ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ã€‚
+	bool ab = (filterData0.word1 & filterData1.word0) == 0; // filterData0 ã®è¡çªã•ã›ãŸã„ãƒ¬ã‚¤ãƒ¤ãƒ¼ã« filterData1 ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ID ãŒå«ã¾ã‚Œã¦ã„ãªã„å ´åˆã¯ã€è¡çªåˆ¤å®šã‚’è¡Œã‚ãªã„ã‚ˆã†ã«ã™ã‚‹
+	bool ba = (filterData1.word1 & filterData0.word0) == 0; // filterData1 ã®è¡çªã•ã›ãŸã„ãƒ¬ã‚¤ãƒ¤ãƒ¼ã« filterData0 ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ID ãŒå«ã¾ã‚Œã¦ã„ãªã„å ´åˆã¯ã€è¡çªåˆ¤å®šã‚’è¡Œã‚ãªã„ã‚ˆã†ã«ã™ã‚‹
 
 	if (ab || ba)
 	{
-		return physx::PxFilterFlag::eSUPPRESS; // ‚Ç‚¿‚ç‚©ˆê•û‚ÌƒŒƒCƒ„[‚ª‚à‚¤ˆê•û‚ÌÕ“Ë‚³‚¹‚½‚¢ƒŒƒCƒ„[‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAÕ“Ë”»’è‚ğs‚í‚È‚¢‚æ‚¤‚É‚·‚é
+		return physx::PxFilterFlag::eSUPPRESS; // ã©ã¡ã‚‰ã‹ä¸€æ–¹ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚‚ã†ä¸€æ–¹ã®è¡çªã•ã›ãŸã„ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å«ã¾ã‚Œã¦ã„ãªã„å ´åˆã¯ã€è¡çªåˆ¤å®šã‚’è¡Œã‚ãªã„ã‚ˆã†ã«ã™ã‚‹
 	}
 
-	// •Ğ•û‚ªƒgƒŠƒK[‚Ìê‡‚ÍAƒgƒŠƒK[ƒCƒxƒ“ƒg‚ğ”­¶‚³‚¹‚é‚½‚ß‚Ìƒtƒ‰ƒO‚ğİ’è‚µ‚ÄI—¹
+	// ç‰‡æ–¹ãŒãƒˆãƒªã‚¬ãƒ¼ã®å ´åˆã¯ã€ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ã‚’è¨­å®šã—ã¦çµ‚äº†
 	if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 	{
 		pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
 		return physx::PxFilterFlag::eDEFAULT;
 	}
 
-	// Õ“ËƒCƒxƒ“ƒg‚ğ”­¶‚³‚¹‚é‚½‚ß‚Ìƒtƒ‰ƒO‚ğİ’è
+	// è¡çªã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 
-	pairFlags |= physx::PxPairFlag::eDETECT_CCD_CONTACT; // CCD‚ğg—p‚µ‚Ä‚¢‚éê‡‚ÉAÕ“ËƒCƒxƒ“ƒg‚ğ”­¶‚³‚¹‚é‚½‚ß‚Ìƒtƒ‰ƒO‚ğ’Ç‰Á
+	pairFlags |= physx::PxPairFlag::eDETECT_CCD_CONTACT; // CCDã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã«ã€è¡çªã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ã‚’è¿½åŠ 
 
 	pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND | physx::PxPairFlag::eNOTIFY_TOUCH_LOST | physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS | physx::PxPairFlag::eNOTIFY_CONTACT_POINTS;
 	
@@ -444,19 +444,19 @@ physx::PxFilterFlags FilterShader::SimulationFilter(
 physx::PxQueryHitType::Enum FilterShader::preFilter(const physx::PxFilterData& filterData, const physx::PxShape* shape, const physx::PxRigidActor* actor, physx::PxHitFlags& queryFlags)
 {
 	physx::PxFilterData shapeFilterData = shape->getQueryFilterData();
-	// ƒŒƒCƒ„[‚É‚æ‚éƒNƒGƒŠ”»’è
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã‚ˆã‚‹ã‚¯ã‚¨ãƒªåˆ¤å®š
 	if ((shapeFilterData.word0 & filterData.word0) == 0)
 	{
 		return physx::PxQueryHitType::eNONE;
 	}
-	// IgnoreRaycast ƒŒƒCƒ„[‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚ÍAƒŒƒCƒLƒƒƒXƒg‚ÌƒNƒGƒŠ‚É‘Î‚µ‚Äƒqƒbƒg‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+	// IgnoreRaycast ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ã€ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã®ã‚¯ã‚¨ãƒªã«å¯¾ã—ã¦ãƒ’ãƒƒãƒˆã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 	if ((shapeFilterData.word0 & LayerMasks::IgnoreRaycast) != 0)
 	{
 		return physx::PxQueryHitType::eNONE;
 	}
 
 	//return physx::PxQueryHitType::eTOUCH;
-	return physx::PxQueryHitType::eBLOCK; // ƒuƒƒbƒN‚É‚·‚é‚±‚Æ‚ÅAƒNƒGƒŠ‚ªƒqƒbƒg‚µ‚½ˆÊ’u‚Å~‚Ü‚é‚æ‚¤‚É‚·‚éBeTOUCH ‚É‚·‚é‚ÆAƒNƒGƒŠ‚ªƒqƒbƒg‚µ‚Ä‚à‚»‚Ì‚Ü‚Üi‚İ‘±‚¯‚Ä‚µ‚Ü‚¤‚½‚ßAƒuƒƒbƒN‚É‚·‚é‚Ì‚ª“KØB
+	return physx::PxQueryHitType::eBLOCK; // ãƒ–ãƒ­ãƒƒã‚¯ã«ã™ã‚‹ã“ã¨ã§ã€ã‚¯ã‚¨ãƒªãŒãƒ’ãƒƒãƒˆã—ãŸä½ç½®ã§æ­¢ã¾ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚eTOUCH ã«ã™ã‚‹ã¨ã€ã‚¯ã‚¨ãƒªãŒãƒ’ãƒƒãƒˆã—ã¦ã‚‚ãã®ã¾ã¾é€²ã¿ç¶šã‘ã¦ã—ã¾ã†ãŸã‚ã€ãƒ–ãƒ­ãƒƒã‚¯ã«ã™ã‚‹ã®ãŒé©åˆ‡ã€‚
 }
 
 physx::PxQueryHitType::Enum FilterShader::postFilter(const physx::PxFilterData& filterData, const physx::PxQueryHit& hit, const physx::PxShape* shape, const physx::PxRigidActor* actor)
@@ -464,30 +464,30 @@ physx::PxQueryHitType::Enum FilterShader::postFilter(const physx::PxFilterData& 
 	return physx::PxQueryHitType::eBLOCK;
 }
 
-// --- “à•”‚Åg—p‚·‚éƒ†[ƒeƒBƒŠƒeƒBŠÖ” ---
+// --- å†…éƒ¨ã§ä½¿ç”¨ã™ã‚‹ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•° ---
 static physx::PxRigidDynamic* GetRigidDynamic(const ActorHandle& handle)
 {
 	if (physx::PxRigidActor* actor = Physics::GetActor(handle))
 	{
 		if (actor->getType() == physx::PxActorType::eRIGID_DYNAMIC)
 		{
-			return actor->is<physx::PxRigidDynamic>(); // Actor‚ª“®“I‚Èê‡‚ÍPxRigidDynamic*‚ğ•Ô‚·
+			return actor->is<physx::PxRigidDynamic>(); // ActorãŒå‹•çš„ãªå ´åˆã¯PxRigidDynamic*ã‚’è¿”ã™
 		}
 	}
-	return nullptr; // Actor‚ª‘¶İ‚µ‚È‚¢‚©A“®“I‚ÈActor‚Å‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·
+	return nullptr; // ActorãŒå­˜åœ¨ã—ãªã„ã‹ã€å‹•çš„ãªActorã§ãªã„å ´åˆã¯nullptrã‚’è¿”ã™
 }
 
 static MaterialHandle CreateMaterialHandle()
 {
-	static MaterialHandle nextHandle = 1; // ƒnƒ“ƒhƒ‹‚Ì‰Šú’l‚ğ1‚Éİ’è
-	while (Physics::GetMaterial(nextHandle) != nullptr) // ‚·‚Å‚É‘¶İ‚·‚éƒnƒ“ƒhƒ‹‚Æd•¡‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+	static MaterialHandle nextHandle = 1; // ãƒãƒ³ãƒ‰ãƒ«ã®åˆæœŸå€¤ã‚’1ã«è¨­å®š
+	while (Physics::GetMaterial(nextHandle) != nullptr) // ã™ã§ã«å­˜åœ¨ã™ã‚‹ãƒãƒ³ãƒ‰ãƒ«ã¨é‡è¤‡ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 	{
-		++nextHandle; // ƒnƒ“ƒhƒ‹‚ğƒCƒ“ƒNƒŠƒƒ“ƒg‚µ‚ÄŸ‚Ì’l‚ğ‚·
+		++nextHandle; // ãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã—ã¦æ¬¡ã®å€¤ã‚’è©¦ã™
 	}
-	return nextHandle++; // Œ»İ‚Ìƒnƒ“ƒhƒ‹‚ğ•Ô‚µAŸ‚Ìƒnƒ“ƒhƒ‹‚ÉƒCƒ“ƒNƒŠƒƒ“ƒg
+	return nextHandle++; // ç¾åœ¨ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã—ã€æ¬¡ã®ãƒãƒ³ãƒ‰ãƒ«ã«ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 }
 
-// --- Physics ƒNƒ‰ƒX‚ÌÀ‘• ---
+// --- Physics ã‚¯ãƒ©ã‚¹ã®å®Ÿè£… ---
 
 Physics::Physics()
 {
@@ -499,12 +499,12 @@ Physics::~Physics()
 
 void Physics::Initialize()
 {
-	// Šî”Õ¶¬
+	// åŸºç›¤ç”Ÿæˆ
 	{
 		pxFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, pxAllocator, pxErrorCallback);
 		_ASSERT_EXPR(pxFoundation != nullptr, "PxCreateFoundation failed!");
 	}
-	// PVD ¶¬
+	// PVD ç”Ÿæˆ
 	{
 		pxPvd = PxCreatePvd(*pxFoundation);
 		_ASSERT_EXPR(pxPvd != nullptr, "PxCreatePvd failed!");
@@ -516,37 +516,37 @@ void Physics::Initialize()
 		Console::LogWarning(connected ? "Connected to PhysX Visual Debugger." : "Failed to connect to PhysX Visual Debugger.");
 	}
 
-	// •¨—ƒGƒ“ƒWƒ“¶¬
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ç”Ÿæˆ
 	{
-		// •¨—ƒGƒ“ƒWƒ“‚Ì¶¬
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®ç”Ÿæˆ
 		pxPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *pxFoundation, physx::PxTolerancesScale(), true, pxPvd);
 		_ASSERT_EXPR(pxPhysics != nullptr, "PxCreatePhysics failed!");
 
-		// •¨—ƒGƒ“ƒWƒ“‚ÌŠg’£‹@”\‚ğ‰Šú‰»
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®æ‹¡å¼µæ©Ÿèƒ½ã‚’åˆæœŸåŒ–
 		PxInitExtensions(*pxPhysics, pxPvd);
 	}
 
-	// ƒfƒBƒXƒpƒbƒ`ƒƒ[¶¬
+	// ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒãƒ£ãƒ¼ç”Ÿæˆ
 	{
-		pxDispatcher = physx::PxDefaultCpuDispatcherCreate(2); // ƒXƒŒƒbƒh”‚Í“K‹X’²®
+		pxDispatcher = physx::PxDefaultCpuDispatcherCreate(2); // ã‚¹ãƒ¬ãƒƒãƒ‰æ•°ã¯é©å®œèª¿æ•´
 		_ASSERT_EXPR(pxDispatcher != nullptr, "PxDefaultCpuDispatcherCreate failed!");
 	}
 
-	// ƒV[ƒ“¶¬
+	// ã‚·ãƒ¼ãƒ³ç”Ÿæˆ
 	{
 		physx::PxSceneDesc sceneDesc(pxPhysics->getTolerancesScale());
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f); // d—Í‚ğİ’è(•K—v‚É‰‚¶‚Ä•ÏX)
-		sceneDesc.bounceThresholdVelocity = 0.05f; // Õ“Ë‚ÌƒoƒEƒ“ƒX‚Ìè‡’l‚ğİ’è(•K—v‚É‰‚¶‚Ä•ÏX)
-		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD; // CCD‚ğ—LŒø‚É‚·‚éƒtƒ‰ƒO‚ğİ’è
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f); // é‡åŠ›ã‚’è¨­å®š(å¿…è¦ã«å¿œã˜ã¦å¤‰æ›´)
+		sceneDesc.bounceThresholdVelocity = 0.05f; // è¡çªã®ãƒã‚¦ãƒ³ã‚¹ã®é–¾å€¤ã‚’è¨­å®š(å¿…è¦ã«å¿œã˜ã¦å¤‰æ›´)
+		sceneDesc.flags |= physx::PxSceneFlag::eENABLE_CCD; // CCDã‚’æœ‰åŠ¹ã«ã™ã‚‹ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 		sceneDesc.cpuDispatcher = pxDispatcher;
-		sceneDesc.simulationEventCallback = &m_simulationEventCallback; // Õ“ËƒCƒxƒ“ƒgƒR[ƒ‹ƒoƒbƒN‚ğİ’è
-		sceneDesc.filterShader = FilterShader::SimulationFilter; // ƒRƒŠƒWƒ‡ƒ“ƒtƒBƒ‹ƒ^ƒŠƒ“ƒOŠÖ”‚ğİ’è
+		sceneDesc.simulationEventCallback = &m_simulationEventCallback; // è¡çªã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’è¨­å®š
+		sceneDesc.filterShader = FilterShader::SimulationFilter; // ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°é–¢æ•°ã‚’è¨­å®š
 
 		pxScene = pxPhysics->createScene(sceneDesc);
 		_ASSERT_EXPR(pxScene != nullptr, "createScene failed!");
 	}
 
-	// PVDƒV[ƒ“ƒNƒ‰ƒCƒAƒ“ƒgİ’è
+	// PVDã‚·ãƒ¼ãƒ³ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆè¨­å®š
 	{
 		physx::PxPvdSceneClient* pvdClient = pxScene->getScenePvdClient();
 		if (pvdClient != nullptr)
@@ -557,14 +557,14 @@ void Physics::Initialize()
 		}
 	}
 
-	// ƒRƒ“ƒgƒ[ƒ‰[ƒ}ƒl[ƒWƒƒ[¶¬
+	// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆ
 	{
 		pxControllerManager = PxCreateControllerManager(*pxScene);
 		_ASSERT_EXPR(pxControllerManager != nullptr, "PxCreateControllerManager failed!");
-		pxControllerManager->setDebugRenderingFlags(physx::PxControllerDebugRenderFlag::eALL); // ƒRƒ“ƒgƒ[ƒ‰[‚ÌƒfƒoƒbƒO•`‰æ‚ğ—LŒø‚É‚·‚é
+		pxControllerManager->setDebugRenderingFlags(physx::PxControllerDebugRenderFlag::eALL); // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒ‡ãƒãƒƒã‚°æç”»ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 	}
 
-	// ƒfƒtƒHƒ‹ƒgƒ}ƒeƒŠƒAƒ‹¶¬
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ†ãƒªã‚¢ãƒ«ç”Ÿæˆ
 	{
 		PhysicsMaterialData defaultMaterialData;
 		defaultMaterialData.name = "DefaultMaterial";
@@ -576,10 +576,10 @@ void Physics::Initialize()
 		PhysicsMaterial defaultMaterial = CreateAndRegisterMaterial(defaultMaterialData, DEFAULT_MATERIAL_HANDLE);
 	}
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY‚³‚ê‚½ƒf[ƒ^‚Ì•œŒ³
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã®å¾©å…ƒ
 	{
 		json serializedData;
-		// ‚±‚±‚Å serializedData ‚ÉƒfƒVƒŠƒAƒ‰ƒCƒY‚³‚ê‚½ƒf[ƒ^‚ğ“Ç‚İ‚Şˆ—‚ğÀ‘•
+		// ã“ã“ã§ serializedData ã«ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€å‡¦ç†ã‚’å®Ÿè£…
 #ifdef _DEBUG
 		JsonFileHandler::LoadJsonFromFile(serializedData, "./ProjectSettings/Physics.json");
 #else
@@ -594,15 +594,15 @@ void Physics::Initialize()
 void Physics::Terminate()
 {
 #ifdef _DEBUG
-	// ƒf[ƒ^‚ÌƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ãƒ¼ã‚¿ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	SaveSettings();
 #endif // _DEBUG
 
 
-	// •¨—ƒGƒ“ƒWƒ“‚ÌƒNƒŠ[ƒ“ƒAƒbƒv
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
 	Clean();
 
-	// ‚·‚×‚Ä‚Ìƒ}ƒeƒŠƒAƒ‹‚Ì‰ğ•ú
+	// ã™ã¹ã¦ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®è§£æ”¾
 	for (auto& pair : m_materialMap)
 	{
 		if (physx::PxMaterial* material = pair.second.pxMaterial)
@@ -610,19 +610,19 @@ void Physics::Terminate()
 			PX_RELEASE(material);
 		}
 	}
-	m_materialMap.clear(); // ƒ}ƒeƒŠƒAƒ‹ƒ}ƒbƒv‚ğƒNƒŠƒA
-	m_materialNameMap.clear(); // ƒ}ƒeƒŠƒAƒ‹–¼ƒ}ƒbƒv‚ğƒNƒŠƒA
+	m_materialMap.clear(); // ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
+	m_materialNameMap.clear(); // ãƒãƒ†ãƒªã‚¢ãƒ«åãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
 
-	// Šg’£‹@”\‚ÌƒNƒŠ[ƒ“ƒAƒbƒv
+	// æ‹¡å¼µæ©Ÿèƒ½ã®ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
 	PxCloseExtensions();
 
-	// ¶¬‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
+	// ç”Ÿæˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾
 	PX_RELEASE(pxControllerManager);
 	PX_RELEASE(pxScene);
 	PX_RELEASE(pxDispatcher);
 	PX_RELEASE(pxPhysics);
 
-	// PVD‚ÌØ’f‚Æ‰ğ•ú
+	// PVDã®åˆ‡æ–­ã¨è§£æ”¾
 	if (pxPvd)
 	{
 		physx::PxPvdTransport* transport = pxPvd->getTransport();
@@ -631,16 +631,16 @@ void Physics::Terminate()
 		PX_RELEASE(transport);
 	}
 
-	// Šî”Õ‚Ì‰ğ•ú
+	// åŸºç›¤ã®è§£æ”¾
 	PX_RELEASE(pxFoundation);
 }
 
 void Physics::SaveSettings()
 {
-	// ƒf[ƒ^‚ÌƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ãƒ¼ã‚¿ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	{
 		json serializedData = Serialize();
-		// ‚±‚±‚Å serializedData ‚ğƒtƒ@ƒCƒ‹‚È‚Ç‚É•Û‘¶‚·‚éˆ—‚ğÀ‘•
+		// ã“ã“ã§ serializedData ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ãªã©ã«ä¿å­˜ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 #ifdef _DEBUG
 		JsonFileHandler::SaveJsonToFile(serializedData, "./ProjectSettings/Physics.json");
 		JsonFileHandler::SaveJsonToFile(serializedData, "./Settings/Physics.bin");
@@ -650,16 +650,16 @@ void Physics::SaveSettings()
 
 void Physics::Clean()
 {
-	// “o˜^‚³‚ê‚½Actor‚ğ‚·‚×‚ÄƒV[ƒ“‚©‚çíœ‚µ‚Ä‰ğ•ú
-	GetScene()->lockWrite(); // ƒV[ƒ“‚Ö‚Ì‘‚«‚İ‚ğƒƒbƒN
+	// ç™»éŒ²ã•ã‚ŒãŸActorã‚’ã™ã¹ã¦ã‚·ãƒ¼ãƒ³ã‹ã‚‰å‰Šé™¤ã—ã¦è§£æ”¾
+	GetScene()->lockWrite(); // ã‚·ãƒ¼ãƒ³ã¸ã®æ›¸ãè¾¼ã¿ã‚’ãƒ­ãƒƒã‚¯
 
 	for (auto& [key, value] : m_actorMap)
 	{
 		if (physx::PxRigidActor* actor = value.actor)
 		{
-			actor->userData = nullptr; // userData ‚ğƒNƒŠƒA‚µ‚ÄAíœ‚³‚ê‚½Actor‚Ö‚ÌƒAƒNƒZƒX‚ğ–h~‚·‚é
+			actor->userData = nullptr; // userData ã‚’ã‚¯ãƒªã‚¢ã—ã¦ã€å‰Šé™¤ã•ã‚ŒãŸActorã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã‚’é˜²æ­¢ã™ã‚‹
 
-			// Actor‚ÉƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚é‚·‚×‚Ä‚ÌShape‚ÌuserData‚ğƒNƒŠƒA‚µ‚ÄAíœ‚³‚ê‚½Actor‚Ö‚ÌƒAƒNƒZƒX‚ğ–h~‚·‚é
+			// Actorã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã™ã¹ã¦ã®Shapeã®userDataã‚’ã‚¯ãƒªã‚¢ã—ã¦ã€å‰Šé™¤ã•ã‚ŒãŸActorã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã‚’é˜²æ­¢ã™ã‚‹
 			physx::PxU32 numShapes = actor->getNbShapes();
 			if (numShapes > 0)
 			{
@@ -669,41 +669,41 @@ void Physics::Clean()
 				{
 					if (physx::PxShape* shape = shapes[i])
 					{
-						shape->userData = nullptr; // userData ‚ğƒNƒŠƒA
+						shape->userData = nullptr; // userData ã‚’ã‚¯ãƒªã‚¢
 					}
 				}
 			}
 
-			GetScene()->removeActor(*actor); // ƒV[ƒ“‚©‚çActor‚ğíœ
-			PX_RELEASE(actor); // Actor‚ğ‰ğ•ú
+			GetScene()->removeActor(*actor); // ã‚·ãƒ¼ãƒ³ã‹ã‚‰Actorã‚’å‰Šé™¤
+			PX_RELEASE(actor); // Actorã‚’è§£æ”¾
 		}
-		value.transform = nullptr; // Transform‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğƒNƒŠƒA
+		value.transform = nullptr; // Transformã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚¯ãƒªã‚¢
 	}
-	m_actorMap.clear(); // ƒ}ƒbƒv‚ğƒNƒŠƒA
+	m_actorMap.clear(); // ãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
 
 	for (auto& [handle, shape] : m_shapeMap)
 	{
 		if (shape)
 		{
-			shape->userData = nullptr; // userData ‚ğƒNƒŠƒA‚µ‚ÄAíœ‚³‚ê‚½Shape‚Ö‚ÌƒAƒNƒZƒX‚ğ–h~‚·‚é
-			PX_RELEASE(shape); // Shape‚ğ‰ğ•ú
+			shape->userData = nullptr; // userData ã‚’ã‚¯ãƒªã‚¢ã—ã¦ã€å‰Šé™¤ã•ã‚ŒãŸShapeã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã‚’é˜²æ­¢ã™ã‚‹
+			PX_RELEASE(shape); // Shapeã‚’è§£æ”¾
 		}
 	}
-	m_shapeMap.clear(); // ƒVƒFƒCƒvƒ}ƒbƒv‚ğƒNƒŠƒA
+	m_shapeMap.clear(); // ã‚·ã‚§ã‚¤ãƒ—ãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
 
-	m_simulationEventCallback.ClearTriggerStayPairs(); // ƒgƒŠƒK[‚ÌŒp‘±ƒCƒxƒ“ƒg‚ÌƒyƒA‚ğƒNƒŠƒA
+	m_simulationEventCallback.ClearTriggerStayPairs(); // ãƒˆãƒªã‚¬ãƒ¼ã®ç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆã®ãƒšã‚¢ã‚’ã‚¯ãƒªã‚¢
 
-	GetScene()->unlockWrite(); // ƒV[ƒ“‚Ö‚Ì‘‚«‚İ‚ÌƒƒbƒN‚ğ‰ğœ
+	GetScene()->unlockWrite(); // ã‚·ãƒ¼ãƒ³ã¸ã®æ›¸ãè¾¼ã¿ã®ãƒ­ãƒƒã‚¯ã‚’è§£é™¤
 }
 
-// --- ƒVƒŠƒAƒ‰ƒCƒYEƒfƒVƒŠƒAƒ‰ƒCƒY ---
+// --- ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºãƒ»ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º ---
 
 json Physics::Serialize()
 {
 	json j;
-	// ‚±‚±‚Å•Û‘¶‚·‚éƒf[ƒ^‚ğƒVƒŠƒAƒ‰ƒCƒY‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ä¿å­˜ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 
-	// “o˜^‚³‚ê‚½ƒ}ƒeƒŠƒAƒ‹‚Ìƒf[ƒ^‚ğƒVƒŠƒAƒ‰ƒCƒY‚·‚é
+	// ç™»éŒ²ã•ã‚ŒãŸãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã™ã‚‹
 	json materialsJson = json::array();
 	for (const auto& pair : m_materialMap)
 	{
@@ -711,21 +711,21 @@ json Physics::Serialize()
 		const PhysicsMaterial& material = pair.second;
 		if (handle == DEFAULT_MATERIAL_HANDLE)
 		{
-			continue; // ƒfƒtƒHƒ‹ƒgƒ}ƒeƒŠƒAƒ‹‚Í•Û‘¶‚µ‚È‚¢
+			continue; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ†ãƒªã‚¢ãƒ«ã¯ä¿å­˜ã—ãªã„
 		}
 		json materialJson;
-		materialJson["handle"] = handle; // ƒnƒ“ƒhƒ‹‚ğ•Û‘¶
-		materialJson["name"] = material.data.name; // ƒ}ƒeƒŠƒAƒ‹–¼‚ğ•Û‘¶
-		materialJson["staticFriction"] = material.data.staticFriction; // Ã~–€CŒW”‚ğ•Û‘¶
-		materialJson["dynamicFriction"] = material.data.dynamicFriction; // “®–€CŒW”‚ğ•Û‘¶
-		materialJson["bounciness"] = material.data.bounciness; // ”½”­ŒW”‚ğ•Û‘¶
-		materialJson["frictionCombineMode"] = static_cast<size_t>(material.data.frictionCombineMode); // –€C‚ÌŒ‹‡ƒ‚[ƒh‚ğ•Û‘¶
-		materialJson["bounceCombineMode"] = static_cast<size_t>(material.data.bounceCombineMode); // ”½”­‚ÌŒ‹‡ƒ‚[ƒh‚ğ•Û‘¶
+		materialJson["handle"] = handle; // ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜
+		materialJson["name"] = material.data.name; // ãƒãƒ†ãƒªã‚¢ãƒ«åã‚’ä¿å­˜
+		materialJson["staticFriction"] = material.data.staticFriction; // é™æ­¢æ‘©æ“¦ä¿‚æ•°ã‚’ä¿å­˜
+		materialJson["dynamicFriction"] = material.data.dynamicFriction; // å‹•æ‘©æ“¦ä¿‚æ•°ã‚’ä¿å­˜
+		materialJson["bounciness"] = material.data.bounciness; // åç™ºä¿‚æ•°ã‚’ä¿å­˜
+		materialJson["frictionCombineMode"] = static_cast<size_t>(material.data.frictionCombineMode); // æ‘©æ“¦ã®çµåˆãƒ¢ãƒ¼ãƒ‰ã‚’ä¿å­˜
+		materialJson["bounceCombineMode"] = static_cast<size_t>(material.data.bounceCombineMode); // åç™ºã®çµåˆãƒ¢ãƒ¼ãƒ‰ã‚’ä¿å­˜
 		materialsJson.push_back(materialJson);
 	}
-	j["materials"] = materialsJson; // ƒ}ƒeƒŠƒAƒ‹‚Ì”z—ñ‚ğ•Û‘¶
+	j["materials"] = materialsJson; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®é…åˆ—ã‚’ä¿å­˜
 
-	// ƒŒƒCƒ„[‚Ìƒf[ƒ^‚ğ layersJson ‚É’Ç‰Á‚·‚é
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ‡ãƒ¼ã‚¿ã‚’ layersJson ã«è¿½åŠ ã™ã‚‹
 	j["layerManager"] = LayerManager::Get().Serialize();
 
 	return j;
@@ -733,9 +733,9 @@ json Physics::Serialize()
 
 void Physics::Deserialize(const json& j)
 {
-	// ‚±‚±‚Å•Û‘¶‚³‚ê‚½ƒf[ƒ^‚ğƒfƒVƒŠƒAƒ‰ƒCƒY‚µ‚Ä•œŒ³‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ä¿å­˜ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã—ã¦å¾©å…ƒã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 
-	// ƒ}ƒeƒŠƒAƒ‹‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	if (j.contains("materials") && j["materials"].is_array())
 	{
 		for (const auto& materialJson : j["materials"])
@@ -752,13 +752,13 @@ void Physics::Deserialize(const json& j)
 				materialData.frictionCombineMode = static_cast<PhysicMaterialCombineMode>(frictionCombineMode);
 				size_t bounceCombineMode = (materialJson.contains("bounceCombineMode") ? materialJson["bounceCombineMode"].get<size_t>() : 0);
 				materialData.bounceCombineMode = static_cast<PhysicMaterialCombineMode>(bounceCombineMode);
-				// ƒ}ƒeƒŠƒAƒ‹‚ğì¬‚µ‚Äƒ}ƒbƒv‚É“o˜^
+				// ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ä½œæˆã—ã¦ãƒãƒƒãƒ—ã«ç™»éŒ²
 				CreateAndRegisterMaterial(materialData, handle);
 			}
 		}
 	}
 
-	// ƒŒƒCƒ„[‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	if (j.contains("layerManager"))
 	{
 		LayerManager::Get().Deserialize(j["layerManager"]);
@@ -766,33 +766,33 @@ void Physics::Deserialize(const json& j)
 
 }
 
-// --- •¨—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ÌXV‚ÆƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ö‚Ì”½‰f ---
+// --- ç‰©ç†ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°ã¨ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®åæ˜  ---
 
 void Physics::FixedUpdate(float fixedDeltaTime)
 {
-	// •¨—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ÌXV‚ÆƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ö‚Ì”½‰f
+	// ç‰©ç†ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°ã¨ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®åæ˜ 
 	
-	FlushPendingRegistrations(); // •Û—¯’†‚Ì“o˜^‚ğƒtƒ‰ƒbƒVƒ…‚µ‚ÄAƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚É”½‰f‚·‚é
+	FlushPendingRegistrations(); // ä¿ç•™ä¸­ã®ç™»éŒ²ã‚’ãƒ•ãƒ©ãƒƒã‚·ãƒ¥ã—ã¦ã€ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã«åæ˜ ã™ã‚‹
 
-	// ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ÌXV‘O‚ÉA•K—v‚É‰‚¶‚ÄƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚ğ•¨—ƒGƒ“ƒWƒ“‚É”½‰f‚·‚éˆ—‚ğÀ‘•
+	// ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°å‰ã«ã€å¿…è¦ã«å¿œã˜ã¦ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çŠ¶æ…‹ã‚’ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åæ˜ ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	for (const auto& [handle, data] : m_actorMap)
 	{
 		if (physx::PxRigidActor* actor = data.actor)
 		{
-			// ActorHandle‚É‘Î‰‚·‚éTransform‚ğæ“¾
+			// ActorHandleã«å¯¾å¿œã™ã‚‹Transformã‚’å–å¾—
 			if (Transform* transform = data.transform)
 			{
 				if (!transform->IsChangedThisFrame())
 				{
-					// Transform‚ª‚±‚ÌƒtƒŒ[ƒ€‚Å•ÏX‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍˆÊ’u‚Æ‰ñ“]‚ğXV‚µ‚È‚¢
+					// TransformãŒã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§å¤‰æ›´ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ä½ç½®ã¨å›è»¢ã‚’æ›´æ–°ã—ãªã„
 					continue;
 				}
 
-				// Transform‚©‚çƒ[ƒ‹ƒhˆÊ’u‚Æ‰ñ“]‚ğæ“¾
+				// Transformã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰ä½ç½®ã¨å›è»¢ã‚’å–å¾—
 				Vector3 worldPos = transform->GetWorldPosition();
 				Quaternion worldRot = transform->GetWorldRotation();
 				physx::PxVec3 pxWorldPos = ToPxVec3(worldPos);
-				physx::PxQuat pxWorldRot = ToPxQuat(worldRot).getNormalized(); // PhysX‚Ì‰ñ“]‚Í³‹K‰»‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚é‚½‚ßA³‹K‰»‚µ‚Ä‚©‚çg—p‚·‚é
+				physx::PxQuat pxWorldRot = ToPxQuat(worldRot).getNormalized(); // PhysXã®å›è»¢ã¯æ­£è¦åŒ–ã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹ãŸã‚ã€æ­£è¦åŒ–ã—ã¦ã‹ã‚‰ä½¿ç”¨ã™ã‚‹
 				physx::PxTransform pxTransform(pxWorldPos, pxWorldRot);
 
 				bool isKinematic = false;
@@ -803,19 +803,19 @@ void Physics::FixedUpdate(float fixedDeltaTime)
 					{
 						if (dynamic->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION)
 						{
-							continue; // ƒLƒlƒ}ƒeƒBƒbƒN‚ÈActor‚ªƒXƒŠ[ƒv’†‚Ìê‡‚ÍˆÊ’u‚Æ‰ñ“]‚ğXV‚µ‚È‚¢
+							continue; // ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãªActorãŒã‚¹ãƒªãƒ¼ãƒ—ä¸­ã®å ´åˆã¯ä½ç½®ã¨å›è»¢ã‚’æ›´æ–°ã—ãªã„
 						}
-						isKinematic = true; // Actor‚ªƒLƒlƒ}ƒeƒBƒbƒN‚Èê‡‚Íƒtƒ‰ƒO‚ğ—§‚Ä‚é
+						isKinematic = true; // ActorãŒã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãªå ´åˆã¯ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 					}
 				}
 				if (isKinematic)
 				{
-					// ƒLƒlƒ}ƒeƒBƒbƒN‚ÈActor‚Ìê‡‚ÍsetKinematicTarget‚ğg—p‚µ‚ÄˆÊ’u‚Æ‰ñ“]‚ğXV
+					// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãªActorã®å ´åˆã¯setKinematicTargetã‚’ä½¿ç”¨ã—ã¦ä½ç½®ã¨å›è»¢ã‚’æ›´æ–°
 					dynamic->setKinematicTarget(pxTransform);
 				}
 				else
 				{
-					// Actor‚ÌƒOƒ[ƒoƒ‹ƒ|[ƒY‚ğXV
+					// Actorã®ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒ¼ã‚ºã‚’æ›´æ–°
 					actor->setGlobalPose(pxTransform);
 				}
 			}
@@ -823,19 +823,19 @@ void Physics::FixedUpdate(float fixedDeltaTime)
 	}
 
 
-	// •¨—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ÌXV
+	// ç‰©ç†ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°
 	if (fixedDeltaTime > 0.0f)
 	{
 		pxScene->simulate(fixedDeltaTime);
 		pxScene->fetchResults(true);
 	}
 
-	// ‚±‚±‚Å•¨—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ÌŒ‹‰Ê‚ğƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚É”½‰f‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ç‰©ç†ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®çµæœã‚’ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«åæ˜ ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 
-	m_simulationEventCallback.CallCollisionEvents(); // Õ“ËƒCƒxƒ“ƒg‚ğŒÄ‚Ño‚·
-	m_simulationEventCallback.CallTriggerEvents(); // ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ğŒÄ‚Ño‚·
+	m_simulationEventCallback.CallCollisionEvents(); // è¡çªã‚¤ãƒ™ãƒ³ãƒˆã‚’å‘¼ã³å‡ºã™
+	m_simulationEventCallback.CallTriggerEvents(); // ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‘¼ã³å‡ºã™
 
-	// “o˜^‚³‚ê‚½Actor‚ÌˆÊ’u‚Æ‰ñ“]‚ğ‘Î‰‚·‚éTransform‚É”½‰f
+	// ç™»éŒ²ã•ã‚ŒãŸActorã®ä½ç½®ã¨å›è»¢ã‚’å¯¾å¿œã™ã‚‹Transformã«åæ˜ 
 	for (const auto& [handle, data] : m_actorMap)
 	{
 		if (physx::PxRigidActor* actor = data.actor)
@@ -844,19 +844,19 @@ void Physics::FixedUpdate(float fixedDeltaTime)
 			{
 				if (dynamic->isSleeping())
 				{
-					continue; // “®“I‚ÈActor‚ªƒXƒŠ[ƒv’†‚Ìê‡‚ÍˆÊ’u‚Æ‰ñ“]‚ğXV‚µ‚È‚¢
+					continue; // å‹•çš„ãªActorãŒã‚¹ãƒªãƒ¼ãƒ—ä¸­ã®å ´åˆã¯ä½ç½®ã¨å›è»¢ã‚’æ›´æ–°ã—ãªã„
 				}
 				if (dynamic->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC)
 				{
-					continue; // ƒLƒlƒ}ƒeƒBƒbƒN‚ÈActor‚Ìê‡‚ÍˆÊ’u‚Æ‰ñ“]‚ğXV‚µ‚È‚¢
+					continue; // ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãªActorã®å ´åˆã¯ä½ç½®ã¨å›è»¢ã‚’æ›´æ–°ã—ãªã„
 				}
 
-				// Actor‚ÌƒOƒ[ƒoƒ‹ƒ|[ƒY‚ğæ“¾
+				// Actorã®ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒ¼ã‚ºã‚’å–å¾—
 				physx::PxTransform globalPose = actor->getGlobalPose();
-				// ActorHandle‚É‘Î‰‚·‚éTransform‚ğæ“¾
+				// ActorHandleã«å¯¾å¿œã™ã‚‹Transformã‚’å–å¾—
 				if (Transform* transform = data.transform)
 				{
-					// Transform‚ÉˆÊ’u‚Æ‰ñ“]‚ğ”½‰f
+					// Transformã«ä½ç½®ã¨å›è»¢ã‚’åæ˜ 
 					transform->SetWorldPosition(ToVector3(globalPose.p));
 					transform->SetWorldRotation(ToQuaternion(globalPose.q));
 				}
@@ -868,8 +868,8 @@ void Physics::FixedUpdate(float fixedDeltaTime)
 
 void Physics::RenderDebug(RenderContext* renderContext)
 {
-	// ‚±‚±‚Å•¨—ƒGƒ“ƒWƒ“‚ÉŠÖ˜A‚·‚éƒfƒoƒbƒO•`‰æ‚ğs‚¤ˆ—‚ğÀ‘•
-	// PhysX‚ÌƒfƒoƒbƒO•`‰æ‚ğŒÄ‚Ño‚·
+	// ã“ã“ã§ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«é–¢é€£ã™ã‚‹ãƒ‡ãƒãƒƒã‚°æç”»ã‚’è¡Œã†å‡¦ç†ã‚’å®Ÿè£…
+	// PhysXã®ãƒ‡ãƒãƒƒã‚°æç”»ã‚’å‘¼ã³å‡ºã™
 	if (pxScene)
 	{
 
@@ -892,20 +892,20 @@ void Physics::RenderDebug(RenderContext* renderContext)
 
 				if (physx::PxRigidActor* rigidActor = pxShape->getActor())
 				{
-					// Actor‚Ìƒ^ƒCƒv‚É‰‚¶‚ÄF‚ğ•ÏX
+					// Actorã®ã‚¿ã‚¤ãƒ—ã«å¿œã˜ã¦è‰²ã‚’å¤‰æ›´
 					switch (rigidActor->getType())
 					{
 					case physx::PxActorType::eRIGID_STATIC:
-						color = Color(0.0f, 1.0f, 0.0f, 0.3f); // Ã“I‚ÈActor‚Í—ÎF
+						color = Color(0.0f, 1.0f, 0.0f, 0.3f); // é™çš„ãªActorã¯ç·‘è‰²
 						break;
 					case physx::PxActorType::eRIGID_DYNAMIC:
-						color = Color(0.0f, 0.0f, 1.0f, 0.3f); // “®“I‚ÈActor‚ÍÂF
+						color = Color(0.0f, 0.0f, 1.0f, 0.3f); // å‹•çš„ãªActorã¯é’è‰²
 						break;
 					case physx::PxActorType::eSOFTBODY:
-						color = Color(1.0f, 0.0f, 0.0f, 0.3f); // ƒ\ƒtƒgƒ{ƒfƒB‚ÌActor‚ÍÔF
+						color = Color(1.0f, 0.0f, 0.0f, 0.3f); // ã‚½ãƒ•ãƒˆãƒœãƒ‡ã‚£ã®Actorã¯èµ¤è‰²
 						break;
 					default:
-						color = Color(1.0f, 1.0f, 1.0f, 0.3f); // ‚»‚Ì‘¼‚ÌActor‚Í”’F
+						color = Color(1.0f, 1.0f, 1.0f, 0.3f); // ãã®ä»–ã®Actorã¯ç™½è‰²
 						break;
 					};
 				}
@@ -1151,7 +1151,7 @@ void Physics::RenderDebug(RenderContext* renderContext)
 				}
 			};
 
-		// ƒAƒNƒ^[
+		// ã‚¢ã‚¯ã‚¿ãƒ¼
 		{
 			physx::PxActorTypeFlags pxActorTypeFlags = physx::PxActorTypeFlag::eRIGID_DYNAMIC | physx::PxActorTypeFlag::eRIGID_STATIC;
 			physx::PxU32 pxNumActors = pxScene->getNbActors(pxActorTypeFlags);
@@ -1163,12 +1163,12 @@ void Physics::RenderDebug(RenderContext* renderContext)
 				for (physx::PxU32 pxActorIndex = 0; pxActorIndex < pxNumActors; ++pxActorIndex)
 				{
 					physx::PxRigidActor* pxActor = pxActors.at(pxActorIndex);
-					// TODO: contactOffset‚ğl—¶‚µ‚Ä•`‰æ‚·‚é
+					// TODO: contactOffsetã‚’è€ƒæ…®ã—ã¦æç”»ã™ã‚‹
 					drawActor(pxActor, 0.0f);
 				}
 			}
 		}
-		// ƒRƒ“ƒgƒ[ƒ‰[
+		// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼
 		{
 			physx::PxU32 pxNumControllers = pxControllerManager->getNbControllers();
 			if (pxNumControllers > 0)
@@ -1224,7 +1224,7 @@ void Physics::RenderDebug(RenderContext* renderContext)
 void Physics::DrawGUI()
 {
 #ifdef USE_IMGUI
-	// ‚±‚±‚Å•¨—ƒGƒ“ƒWƒ“‚ÉŠÖ˜A‚·‚éGUI‚ğ•`‰æ‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«é–¢é€£ã™ã‚‹GUIã‚’æç”»ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 
 	{
 		ImGui::Begin("Physics");
@@ -1236,19 +1236,19 @@ void Physics::DrawGUI()
 			ImGui::Text("Raycasts are enabled. Click to perform raycasts.");
 			if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 			{
-				// ƒ}ƒEƒXƒNƒŠƒbƒN‚ÉƒŒƒCƒLƒƒƒXƒg‚ğs‚¤ˆ—
-				Vector2 rayStartScreen = InputSystem::GetMousePosition(); // ƒ}ƒEƒX‚ÌƒXƒNƒŠ[ƒ“À•W‚ğæ“¾
+				// ãƒã‚¦ã‚¹ã‚¯ãƒªãƒƒã‚¯æ™‚ã«ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã‚’è¡Œã†å‡¦ç†
+				Vector2 rayStartScreen = InputSystem::GetMousePosition(); // ãƒã‚¦ã‚¹ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’å–å¾—
 				Vector3 rayStart, rayDir;
-				// ƒJƒƒ‰‚ÌƒXƒNƒŠ[ƒ“À•W‚©‚çƒ[ƒ‹ƒhÀ•W‚Ö‚Ì•ÏŠ·‚ğs‚¤ŠÖ”‚ğŒÄ‚Ño‚µ‚ÄArayStart‚ÆrayDir‚ğŒvZ‚·‚é
+				// ã‚«ãƒ¡ãƒ©ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã¸ã®å¤‰æ›ã‚’è¡Œã†é–¢æ•°ã‚’å‘¼ã³å‡ºã—ã¦ã€rayStartã¨rayDirã‚’è¨ˆç®—ã™ã‚‹
 				//EditorCamera::ScreenPointToRay(rayStartScreen, rayStart, rayDir);
 
-				// ƒV[ƒ“‚Ìæ“¾‚âƒJƒƒ‰‚Ìæ“¾•û–@‚ÍƒvƒƒWƒFƒNƒg‚É‚æ‚Á‚ÄˆÙ‚È‚é‚½‚ßAˆÈ‰º‚Íˆê—á‚Å‚·BÀÛ‚ÌƒvƒƒWƒFƒNƒg‚Ì\‘¢‚É‡‚í‚¹‚Ä“KØ‚ÉC³‚µ‚Ä‚­‚¾‚³‚¢B
-				// Component‚©‚çæ“¾‚·‚é‚Æ‚«‚ÍAGetOwner()->GetScene()‚È‚Ç‚ğŒo—R‚µ‚ÄƒV[ƒ“‚ğæ“¾‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B
-				SceneManager::GetLoadingSceneOrCurrentScene()->GetCameraSystem()->GetMainCamera()->ScreenPointToRay(rayStartScreen, rayStart, rayDir); // Œ»İ‚ÌƒV[ƒ“‚ÌƒJƒƒ‰ƒVƒXƒeƒ€‚©‚çƒXƒNƒŠ[ƒ“À•W‚©‚çƒŒƒC‚ğŒvZ‚·‚é
+				// ã‚·ãƒ¼ãƒ³ã®å–å¾—ã‚„ã‚«ãƒ¡ãƒ©ã®å–å¾—æ–¹æ³•ã¯ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«ã‚ˆã£ã¦ç•°ãªã‚‹ãŸã‚ã€ä»¥ä¸‹ã¯ä¸€ä¾‹ã§ã™ã€‚å®Ÿéš›ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®æ§‹é€ ã«åˆã‚ã›ã¦é©åˆ‡ã«ä¿®æ­£ã—ã¦ãã ã•ã„ã€‚
+				// Componentã‹ã‚‰å–å¾—ã™ã‚‹ã¨ãã¯ã€GetOwner()->GetScene()ãªã©ã‚’çµŒç”±ã—ã¦ã‚·ãƒ¼ãƒ³ã‚’å–å¾—ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚
+				SceneManager::GetLoadingSceneOrCurrentScene()->GetCameraSystem()->GetMainCamera()->ScreenPointToRay(rayStartScreen, rayStart, rayDir); // ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®ã‚«ãƒ¡ãƒ©ã‚·ã‚¹ãƒ†ãƒ ã‹ã‚‰ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‹ã‚‰ãƒ¬ã‚¤ã‚’è¨ˆç®—ã™ã‚‹
 
 				Console::Log(std::format("Ray Start: ({}, {}, {}), Ray Dir: ({}, {}, {})", rayStart.x, rayStart.y, rayStart.z, rayDir.x, rayDir.y, rayDir.z));
 
-				float rayLength = 1000.0f; // ƒŒƒC‚Ì’·‚³
+				float rayLength = 1000.0f; // ãƒ¬ã‚¤ã®é•·ã•
 				RaycastHit hitInfo;
 				if (Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything))
 				{
@@ -1264,7 +1264,7 @@ void Physics::DrawGUI()
 			}
 		}
 
-		// d—Í‚Ì•ÒW
+		// é‡åŠ›ã®ç·¨é›†
 		ImGui::Separator();
 		/*{
 			Vector3 gravity = GetGravity();
@@ -1278,32 +1278,32 @@ void Physics::DrawGUI()
 			}
 		}*/
 
-		// •¨—ƒ}ƒeƒŠƒAƒ‹‚Ìˆê——‚ğ•\¦
+		// ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®ä¸€è¦§ã‚’è¡¨ç¤º
 		if (ImGui::CollapsingHeader("Materials", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			// íœ—\’è‚Ìƒ}ƒeƒŠƒAƒ‹‚Ìƒnƒ“ƒhƒ‹‚ğ’ÇÕ‚·‚é‚½‚ß‚Ì•Ï”
+			// å‰Šé™¤äºˆå®šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿½è·¡ã™ã‚‹ãŸã‚ã®å¤‰æ•°
 			MaterialHandle materialToRemove = INVALID_MATERIAL_HANDLE;
 			
-			// “o˜^‚³‚ê‚½ƒ}ƒeƒŠƒAƒ‹‚ğƒ‹[ƒv‚µ‚Ä•\¦
+			// ç™»éŒ²ã•ã‚ŒãŸãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ãƒ«ãƒ¼ãƒ—ã—ã¦è¡¨ç¤º
 			for (auto& pair : m_materialMap)
 			{
 				MaterialHandle handle = pair.first;
 				PhysicsMaterial& material = pair.second;
-				ImGui::PushID(handle); // ƒ†ƒj[ƒN‚ÈID‚ğƒvƒbƒVƒ…
+				ImGui::PushID(handle); // ãƒ¦ãƒ‹ãƒ¼ã‚¯ãªIDã‚’ãƒ—ãƒƒã‚·ãƒ¥
 
-				// ƒ}ƒeƒŠƒAƒ‹ƒGƒfƒBƒ^‚Ì•`‰æ
+				// ãƒãƒ†ãƒªã‚¢ãƒ«ã‚¨ãƒ‡ã‚£ã‚¿ã®æç”»
 				{
 					bool isDefaultMaterial = (handle == DEFAULT_MATERIAL_HANDLE);
-					bool isEditable = !isDefaultMaterial; // ƒfƒtƒHƒ‹ƒgƒ}ƒeƒŠƒAƒ‹‚Í•ÒW•s‰Â‚É‚·‚é
-					bool isDeletable = !isDefaultMaterial; // ƒfƒtƒHƒ‹ƒgƒ}ƒeƒŠƒAƒ‹‚Ííœ•s‰Â‚É‚·‚é
+					bool isEditable = !isDefaultMaterial; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ†ãƒªã‚¢ãƒ«ã¯ç·¨é›†ä¸å¯ã«ã™ã‚‹
+					bool isDeletable = !isDefaultMaterial; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ†ãƒªã‚¢ãƒ«ã¯å‰Šé™¤ä¸å¯ã«ã™ã‚‹
 
-					// •ÒW•s‰Â‚Èê‡‚ÍGUI‚ğƒOƒŒ[ƒAƒEƒg‚·‚é
+					// ç·¨é›†ä¸å¯ãªå ´åˆã¯GUIã‚’ã‚°ãƒ¬ãƒ¼ã‚¢ã‚¦ãƒˆã™ã‚‹
 					ImGui::BeginDisabled(!isEditable);
 
-					// ƒ}ƒeƒŠƒAƒ‹‚ÌƒvƒƒpƒeƒB‚ğ•ÒW‚·‚éGUI‚ğ•`‰æ
+					// ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ç·¨é›†ã™ã‚‹GUIã‚’æç”»
 					//ImGui::Text("Material Handle: %d", handle);
 					
-					// –¼‘O‚Ì•ÒW
+					// åå‰ã®ç·¨é›†
 					char nameBuffer[256];
 					if (!ImGui::IsItemEdited())
 					{
@@ -1312,15 +1312,15 @@ void Physics::DrawGUI()
 					ImGui::InputText("Name", nameBuffer, sizeof(nameBuffer));
 					if (ImGui::IsItemDeactivatedAfterEdit())
 					{
-						material.data.name = nameBuffer; // –¼‘O‚ğXV
-						m_materialNameMapDirty = true; // ƒ}ƒeƒŠƒAƒ‹–¼ƒ}ƒbƒv‚ªŒÃ‚­‚È‚Á‚½‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+						material.data.name = nameBuffer; // åå‰ã‚’æ›´æ–°
+						m_materialNameMapDirty = true; // ãƒãƒ†ãƒªã‚¢ãƒ«åãƒãƒƒãƒ—ãŒå¤ããªã£ãŸã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 					}
 
-					// •¨—ƒ}ƒeƒŠƒAƒ‹‚ÌƒvƒƒpƒeƒB‚ğ•ÒW‚·‚éGUI‚ğ•`‰æ
-					const char* format = "%.2f"; // ¬”“_ˆÈ‰º2Œ…‚ÌƒtƒH[ƒ}ƒbƒg
-					ImGuiSliderFlags sliderFlags = 0; // ImGui‚Ìƒo[ƒWƒ‡ƒ“‚É‚æ‚Á‚Ä‚Í ImGuiSliderFlags_ReadOnly ‚ª‘¶İ‚µ‚È‚¢‚½‚ßAƒtƒ‰ƒO‚Íg—p‚µ‚È‚¢‚±‚Æ‚É‚·‚é
+					// ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ç·¨é›†ã™ã‚‹GUIã‚’æç”»
+					const char* format = "%.2f"; // å°æ•°ç‚¹ä»¥ä¸‹2æ¡ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
+					ImGuiSliderFlags sliderFlags = 0; // ImGuiã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã«ã‚ˆã£ã¦ã¯ ImGuiSliderFlags_ReadOnly ãŒå­˜åœ¨ã—ãªã„ãŸã‚ã€ãƒ•ãƒ©ã‚°ã¯ä½¿ç”¨ã—ãªã„ã“ã¨ã«ã™ã‚‹
 
-					bool propertyChanged = false; // ƒvƒƒpƒeƒB‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+					bool propertyChanged = false; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 					propertyChanged |= ImGui::DragFloat("Static Friction", &material.data.staticFriction, 0.01f, 0.0f, 10.0f, format, sliderFlags);
 					propertyChanged |= ImGui::DragFloat("Dynamic Friction", &material.data.dynamicFriction, 0.01f, 0.0f, 10.0f, format, sliderFlags);
 					propertyChanged |= ImGui::DragFloat("Bounciness", &material.data.bounciness, 0.01f, 0.0f, 1.0f, format, sliderFlags);
@@ -1330,7 +1330,7 @@ void Physics::DrawGUI()
 
 					if (propertyChanged)
 					{
-						// ƒvƒƒpƒeƒB‚ª•ÏX‚³‚ê‚½ê‡‚ÍAPhysX‚Ìƒ}ƒeƒŠƒAƒ‹‚àXV‚·‚é
+						// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ã€PhysXã®ãƒãƒ†ãƒªã‚¢ãƒ«ã‚‚æ›´æ–°ã™ã‚‹
 						if (physx::PxMaterial* pxMaterial = material.pxMaterial)
 						{
 							pxMaterial->setStaticFriction(material.data.staticFriction);
@@ -1341,12 +1341,12 @@ void Physics::DrawGUI()
 						}
 					}
 
-					// ƒ}ƒeƒŠƒAƒ‹‚Ìíœƒ{ƒ^ƒ“
+					// ãƒãƒ†ãƒªã‚¢ãƒ«ã®å‰Šé™¤ãƒœã‚¿ãƒ³
 					if (isDeletable)
 					{
 						if (ImGui::Button("Delete Material"))
 						{
-							// íœ—\’è‚Ìƒ}ƒeƒŠƒAƒ‹‚Ìƒnƒ“ƒhƒ‹‚ğƒŠƒXƒg‚É’Ç‰Á
+							// å‰Šé™¤äºˆå®šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
 							materialToRemove = handle;
 						}
 					}
@@ -1354,20 +1354,20 @@ void Physics::DrawGUI()
 					ImGui::EndDisabled();
 				}
 
-				ImGui::Separator(); // ‹æØ‚èü
-				ImGui::PopID(); // ID‚ğƒ|ƒbƒv
+				ImGui::Separator(); // åŒºåˆ‡ã‚Šç·š
+				ImGui::PopID(); // IDã‚’ãƒãƒƒãƒ—
 			}
 
-			// íœ—\’è‚Ìƒ}ƒeƒŠƒAƒ‹‚ğƒ‹[ƒv‚ÌŠO‚Åíœ‚·‚é
+			// å‰Šé™¤äºˆå®šã®ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ãƒ«ãƒ¼ãƒ—ã®å¤–ã§å‰Šé™¤ã™ã‚‹
 			if (materialToRemove != INVALID_MATERIAL_HANDLE)
 			{
 				RemoveMaterial(materialToRemove);
 			}
 
-			// ƒ}ƒeƒŠƒAƒ‹‚Ì’Ç‰Áƒ{ƒ^ƒ“
+			// ãƒãƒ†ãƒªã‚¢ãƒ«ã®è¿½åŠ ãƒœã‚¿ãƒ³
 			if (ImGui::Button("Add Material"))
 			{
-				// ƒ}ƒeƒŠƒAƒ‹‚ğ’Ç‰Á‚·‚éˆ—‚ğÀ‘•
+				// ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¿½åŠ ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 				PhysicsMaterialData newMaterialData{
 					.name = "New Material",
 					.staticFriction = DEFAULT_STATIC_FRICTION,
@@ -1380,9 +1380,9 @@ void Physics::DrawGUI()
 			}
 		}
 
-		ImGui::Separator(); // ‹æØ‚èü
+		ImGui::Separator(); // åŒºåˆ‡ã‚Šç·š
 
-		// ƒŒƒCƒ„[ŠÇ—‚ÌGUI‚ğ•\¦‚·‚éƒ{ƒ^ƒ“
+		// ãƒ¬ã‚¤ãƒ¤ãƒ¼ç®¡ç†ã®GUIã‚’è¡¨ç¤ºã™ã‚‹ãƒœã‚¿ãƒ³
 		if (ImGui::Button("Open Layer Settings"))
 		{
 			LayerManager::Get().OpenLayerSettingsGUI();
@@ -1397,32 +1397,32 @@ void Physics::DrawGUI()
 
 void Physics::RegisterPendingRigidbody(Rigidbody* rigidbody)
 {
-	// Rigidbody‚ğ•Û—¯’†‚ÌƒŠƒXƒg‚É’Ç‰Á‚·‚éˆ—‚ğÀ‘•
+	// Rigidbodyã‚’ä¿ç•™ä¸­ã®ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	s_pendingRigidbodies.push_back(rigidbody);
 }
 
 void Physics::UnregisterPendingRigidbody(Rigidbody* rigidbody)
 {
-	// Rigidbody‚ğ•Û—¯’†‚ÌƒŠƒXƒg‚©‚çíœ‚·‚éˆ—‚ğÀ‘•
+	// Rigidbodyã‚’ä¿ç•™ä¸­ã®ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	s_pendingRigidbodies.erase(std::remove(s_pendingRigidbodies.begin(), s_pendingRigidbodies.end(), rigidbody), s_pendingRigidbodies.end());
 }
 
 void Physics::RegisterPendingCollider(Collider* collider)
 {
-	// Collider‚ğ•Û—¯’†‚ÌƒŠƒXƒg‚É’Ç‰Á‚·‚éˆ—‚ğÀ‘•
+	// Colliderã‚’ä¿ç•™ä¸­ã®ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	s_pendingColliders.push_back(collider);
 }
 
 void Physics::UnregisterPendingCollider(Collider* collider)
 {
-	// Collider‚ğ•Û—¯’†‚ÌƒŠƒXƒg‚©‚çíœ‚·‚éˆ—‚ğÀ‘•
+	// Colliderã‚’ä¿ç•™ä¸­ã®ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	s_pendingColliders.erase(std::remove(s_pendingColliders.begin(), s_pendingColliders.end(), collider), s_pendingColliders.end());
 }
 
 void Physics::FlushPendingRegistrations()
 {
-	// •Û—¯’†‚ÌRigidbody‚ÆCollider‚ğ•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—‚ğÀ‘•
-	// Rigidbody‚Ì“o˜^
+	// ä¿ç•™ä¸­ã®Rigidbodyã¨Colliderã‚’ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	// Rigidbodyã®ç™»éŒ²
 	for (Rigidbody* rigidbody : s_pendingRigidbodies)
 	{
 		if (rigidbody != nullptr)
@@ -1430,7 +1430,7 @@ void Physics::FlushPendingRegistrations()
 			rigidbody->Register();
 		}
 	}
-	// Collider‚Ì“o˜^
+	// Colliderã®ç™»éŒ²
 	for (Collider* collider : s_pendingColliders)
 	{
 		if (collider != nullptr)
@@ -1438,171 +1438,171 @@ void Physics::FlushPendingRegistrations()
 			collider->Register();
 		}
 	}
-	// Collider‚Ì“o˜^Œã‚ÉŒÄ‚Ño‚·ˆ—
+	// Colliderã®ç™»éŒ²å¾Œã«å‘¼ã³å‡ºã™å‡¦ç†
 	for (Rigidbody* rigidbody : s_pendingRigidbodies)
 	{
 		if (rigidbody != nullptr)
 		{
-			rigidbody->PostColliderRegister(); // Rigidbody‚Ì“o˜^Œã‚ÉŒÄ‚Ño‚·ˆ—
+			rigidbody->PostColliderRegister(); // Rigidbodyã®ç™»éŒ²å¾Œã«å‘¼ã³å‡ºã™å‡¦ç†
 		}
 	}
 
-	s_pendingRigidbodies.clear(); // “o˜^‚ªŠ®—¹‚µ‚½‚çƒŠƒXƒg‚ğƒNƒŠƒA
-	s_pendingColliders.clear(); // “o˜^‚ªŠ®—¹‚µ‚½‚çƒŠƒXƒg‚ğƒNƒŠƒA
+	s_pendingRigidbodies.clear(); // ç™»éŒ²ãŒå®Œäº†ã—ãŸã‚‰ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
+	s_pendingColliders.clear(); // ç™»éŒ²ãŒå®Œäº†ã—ãŸã‚‰ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
 }
 
 ActorHandle Physics::RegisterBody(Transform* transform, bool isDynamic)
 {
-	// ‚±‚±‚Å•K—v‚É‰‚¶‚ÄActor‚ğ¶¬‚µAƒRƒ‰ƒCƒ_[‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§å¿…è¦ã«å¿œã˜ã¦Actorã‚’ç”Ÿæˆã—ã€ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	physx::PxRigidActor* actor = nullptr;
 	ActorHandle handle = GetActorHandle(transform);
 
-	// ‚·‚Å‚ÉActor‚ª‘¶İ‚·‚é‚©Šm”F
+	// ã™ã§ã«ActorãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèª
 	if (handle != INVALID_ACTOR_HANDLE)
 	{
-		// ‚·‚Å‚ÉActor‚ª‘¶İ‚·‚éê‡‚Í‚»‚ê‚ğæ“¾
+		// ã™ã§ã«ActorãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ãã‚Œã‚’å–å¾—
 		actor = m_actorMap[handle].actor;
 
 		if (actor != nullptr)
 		{
-			// ‚·‚Å‚É“®“I‚ÈActor‚ª‘¶İ‚·‚éê‡‚ÍV‚½‚É¶¬‚·‚é•K—v‚Í‚È‚¢(‚½‚¾‚µA“®“I‚©‚çÃ“I‚Ö‚Ì•ÏX‚Íl—¶‚µ‚Ä‚¢‚È‚¢)
+			// ã™ã§ã«å‹•çš„ãªActorãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯æ–°ãŸã«ç”Ÿæˆã™ã‚‹å¿…è¦ã¯ãªã„(ãŸã ã—ã€å‹•çš„ã‹ã‚‰é™çš„ã¸ã®å¤‰æ›´ã¯è€ƒæ…®ã—ã¦ã„ãªã„)
 			if (isDynamic && actor->is<physx::PxRigidDynamic>())
 			{
-				return handle; // ‚·‚Å‚É“®“I‚ÈActor‚ª‘¶İ‚·‚éê‡‚Í‚»‚Ìƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+				return handle; // ã™ã§ã«å‹•çš„ãªActorãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ãã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 			}
 
-			// Static ‚©‚ç Dynamic ‚Ö‚Ì•ÏX‚Íˆê“x Static Actor ‚ğíœ‚µ‚Ä‚©‚ç Dynamic Actor ‚ğ¶¬‚·‚é•K—v‚ª‚ ‚é‚½‚ßAŠù‘¶‚Ì Actor ‚ğíœ
+			// Static ã‹ã‚‰ Dynamic ã¸ã®å¤‰æ›´ã¯ä¸€åº¦ Static Actor ã‚’å‰Šé™¤ã—ã¦ã‹ã‚‰ Dynamic Actor ã‚’ç”Ÿæˆã™ã‚‹å¿…è¦ãŒã‚ã‚‹ãŸã‚ã€æ—¢å­˜ã® Actor ã‚’å‰Šé™¤
 			if (isDynamic && actor->is<physx::PxRigidStatic>())
 			{
-				// V‚µ‚¢ Dynamic Actor ‚ğì¬
+				// æ–°ã—ã„ Dynamic Actor ã‚’ä½œæˆ
 				physx::PxRigidDynamic* dynamicActor = pxPhysics->createRigidDynamic(actor->getGlobalPose());
 
-				// Šù‘¶‚Ì Static Actor ‚©‚çƒVƒFƒCƒv‚ğˆÚs
+				// æ—¢å­˜ã® Static Actor ã‹ã‚‰ã‚·ã‚§ã‚¤ãƒ—ã‚’ç§»è¡Œ
 				physx::PxU32 numShapes = actor->getNbShapes();
 				std::vector<physx::PxShape*> shapes(numShapes);
 				actor->getShapes(shapes.data(), numShapes);
 				for (physx::PxShape* shape : shapes)
 				{
-					shape->acquireReference(); // QÆƒJƒEƒ“ƒg‚ğã‚°‚Ä•ÛŒì
-					actor->detachShape(*shape); // Static Actor ‚©‚çƒVƒFƒCƒv‚ğíœ
-					dynamicActor->attachShape(*shape); // ƒVƒFƒCƒv‚ğ Dynamic Actor ‚ÉˆÚs
-					shape->release(); // QÆƒJƒEƒ“ƒg‚ğ‰º‚°‚Ä‰ğ•ú
+					shape->acquireReference(); // å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆã‚’ä¸Šã’ã¦ä¿è­·
+					actor->detachShape(*shape); // Static Actor ã‹ã‚‰ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤
+					dynamicActor->attachShape(*shape); // ã‚·ã‚§ã‚¤ãƒ—ã‚’ Dynamic Actor ã«ç§»è¡Œ
+					shape->release(); // å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆã‚’ä¸‹ã’ã¦è§£æ”¾
 				}
 
-				// Šù‘¶‚Ì Static Actor ‚ğíœ
+				// æ—¢å­˜ã® Static Actor ã‚’å‰Šé™¤
 				GetScene()->removeActor(*actor);
-				PX_RELEASE(actor); // Šù‘¶‚Ì Static Actor ‚ğíœ
+				PX_RELEASE(actor); // æ—¢å­˜ã® Static Actor ã‚’å‰Šé™¤
 
-				// ƒ}ƒbƒv‚ğXV
+				// ãƒãƒƒãƒ—ã‚’æ›´æ–°
 				ActorData data{
 					.actor = dynamicActor,
 					.transform = transform
 				};
-				m_actorMap[handle] = data; // Actor ƒ}ƒbƒv‚ğXV
-				GetScene()->addActor(*dynamicActor); // Dynamic Actor ‚ğƒV[ƒ“‚É’Ç‰Á
+				m_actorMap[handle] = data; // Actor ãƒãƒƒãƒ—ã‚’æ›´æ–°
+				GetScene()->addActor(*dynamicActor); // Dynamic Actor ã‚’ã‚·ãƒ¼ãƒ³ã«è¿½åŠ 
 
 
-				return handle; // V‚µ‚¢ Dynamic Actor ‚Ìƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+				return handle; // æ–°ã—ã„ Dynamic Actor ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 			}
 		}
 	}
 
-	// Actor‚ª•K—v‚Èê‡‚ÍV‹Kì¬
+	// ActorãŒå¿…è¦ãªå ´åˆã¯æ–°è¦ä½œæˆ
 	{
-		// ActorHandle ‚ğV‹Kì¬
+		// ActorHandle ã‚’æ–°è¦ä½œæˆ
 		handle = CreateActorHandle();
 
-		// Transform‚©‚çƒ[ƒ‹ƒhˆÊ’u‚ğæ“¾
+		// Transformã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰ä½ç½®ã‚’å–å¾—
 		Vector3 worldPos = Vector3(transform->GetWorldPosition());
 		Quaternion worldRot = Quaternion(transform->GetWorldRotation());
 		physx::PxVec3 pxWorldPos = ToPxVec3(worldPos);
 		physx::PxQuat pxWorldRot = ToPxQuat(worldRot);
-		pxWorldRot.normalize(); // ƒNƒH[ƒ^ƒjƒIƒ“‚ğ³‹K‰»‚µ‚Ä‰ñ“]‚Ì˜c‚İ‚ğ–h~
+		pxWorldRot.normalize(); // ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’æ­£è¦åŒ–ã—ã¦å›è»¢ã®æ­ªã¿ã‚’é˜²æ­¢
 		physx::PxTransform pxTransform(pxWorldPos, pxWorldRot);
 
 		if (isDynamic)
 		{
-			// “®“I‚ÈƒRƒ‰ƒCƒ_[‚Ìê‡‚ÍPxRigidDynamic‚ğ¶¬
+			// å‹•çš„ãªã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å ´åˆã¯PxRigidDynamicã‚’ç”Ÿæˆ
 			actor = pxPhysics->createRigidDynamic(pxTransform);
 		}
 		else
 		{
-			// Ã“I‚ÈƒRƒ‰ƒCƒ_[‚Ìê‡‚ÍPxRigidStatic‚ğ¶¬
+			// é™çš„ãªã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å ´åˆã¯PxRigidStaticã‚’ç”Ÿæˆ
 			actor = pxPhysics->createRigidStatic(pxTransform);
 		}
 
 		_ASSERT_EXPR(actor != nullptr, "Failed to create actor!");
 
-		// ƒV[ƒ“‚ÉActor‚ğ’Ç‰Á
+		// ã‚·ãƒ¼ãƒ³ã«Actorã‚’è¿½åŠ 
 		if (GetScene()->addActor(*actor))
 		{
-			// TODO: Actor‚ÌuserData‚É“ü‚ê‚éƒf[ƒ^‚ª•ÏX‚³‚ê‚½‚ç‚±‚±‚à•ÏX‚·‚é•K—v‚ª‚ ‚é
-			actor->userData = transform; // Actor‚Ìƒ†[ƒU[ƒf[ƒ^‚ÉTransform‚ğİ’è
+			// TODO: Actorã®userDataã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ã“ã“ã‚‚å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+			actor->userData = transform; // Actorã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«Transformã‚’è¨­å®š
 
-			// Actor‚ğƒ}ƒbƒv‚É•Û‘¶
+			// Actorã‚’ãƒãƒƒãƒ—ã«ä¿å­˜
 			ActorData data{
 				.actor = actor,
 				.transform = transform
 			};
 			m_actorMap[handle] = data;
 
-			return handle; // V‚µ‚­ì¬‚µ‚½Actor‚Ìƒnƒ“ƒhƒ‹‚ğ•Ô‚·
+			return handle; // æ–°ã—ãä½œæˆã—ãŸActorã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™
 		}
 	}
 
-	return INVALID_ACTOR_HANDLE; // “o˜^‚É¸”s‚µ‚½ê‡‚ÍINVALID_ACTOR_HANDLE‚ğ•Ô‚·
+	return INVALID_ACTOR_HANDLE; // ç™»éŒ²ã«å¤±æ•—ã—ãŸå ´åˆã¯INVALID_ACTOR_HANDLEã‚’è¿”ã™
 }
 
 void Physics::UnregisterBody(Transform* transform)
 {
-	// ‚±‚±‚ÅƒRƒ‰ƒCƒ_[‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ•¨—ƒGƒ“ƒWƒ“‚©‚ç“o˜^‰ğœ‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ç™»éŒ²è§£é™¤ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 
-	// Transform* ‚É‘Î‰‚·‚é ActorHandle ‚ğæ“¾
+	// Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ã‚’å–å¾—
 	ActorHandle handle = GetActorHandle(transform);
 	if (handle != INVALID_ACTOR_HANDLE)
 	{
-		// ActorHandle ‚É‘Î‰‚·‚é Actor ‚ğæ“¾
+		// ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor ã‚’å–å¾—
 		if (physx::PxRigidActor* actor = GetActor(handle))
 		{
 			physx::PxU32 numShapes = actor->getNbShapes();
-			// Actor‚ÉƒVƒFƒCƒv‚ª‘¶İ‚·‚éê‡‚ÍStatic Actor‚ÉˆÚs
+			// Actorã«ã‚·ã‚§ã‚¤ãƒ—ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯Static Actorã«ç§»è¡Œ
 			if (numShapes > 0)
 			{
-				// V‚µ‚¢ Static Actor ‚ğì¬
+				// æ–°ã—ã„ Static Actor ã‚’ä½œæˆ
 				physx::PxTransform currentPose = actor->getGlobalPose();
 				physx::PxRigidStatic* staticActor = pxPhysics->createRigidStatic(currentPose);
 
-				// Šù‘¶‚Ì Actor ‚©‚çƒVƒFƒCƒv‚ğˆÚs
+				// æ—¢å­˜ã® Actor ã‹ã‚‰ã‚·ã‚§ã‚¤ãƒ—ã‚’ç§»è¡Œ
 				std::vector<physx::PxShape*> shapes(numShapes);
 				actor->getShapes(shapes.data(), numShapes);
 
 				for (physx::PxShape* shape : shapes)
 				{
-					shape->acquireReference(); // QÆƒJƒEƒ“ƒg‚ğã‚°‚Ä•ÛŒì
-					actor->detachShape(*shape); // Šù‘¶‚Ì Actor ‚©‚çƒVƒFƒCƒv‚ğíœ
-					staticActor->attachShape(*shape); // ƒVƒFƒCƒv‚ğ Static Actor ‚ÉˆÚs
-					shape->release(); // QÆƒJƒEƒ“ƒg‚ğ‰º‚°‚Ä‰ğ•ú
+					shape->acquireReference(); // å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆã‚’ä¸Šã’ã¦ä¿è­·
+					actor->detachShape(*shape); // æ—¢å­˜ã® Actor ã‹ã‚‰ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤
+					staticActor->attachShape(*shape); // ã‚·ã‚§ã‚¤ãƒ—ã‚’ Static Actor ã«ç§»è¡Œ
+					shape->release(); // å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆã‚’ä¸‹ã’ã¦è§£æ”¾
 				}
 
-				// ƒnƒ“ƒhƒ‹‚Ìƒ}ƒbƒv‚ğXV
+				// ãƒãƒ³ãƒ‰ãƒ«ã®ãƒãƒƒãƒ—ã‚’æ›´æ–°
 				ActorData data{
 					.actor = staticActor,
 					.transform = transform
 				};
-				m_actorMap[handle] = data; // Actor ƒ}ƒbƒv‚ğXV
+				m_actorMap[handle] = data; // Actor ãƒãƒƒãƒ—ã‚’æ›´æ–°
 
-				// Static Actor ‚ğƒV[ƒ“‚É’Ç‰Á
-				staticActor->userData = transform; // Static Actor‚Ìƒ†[ƒU[ƒf[ƒ^‚ÉTransform‚ğİ’è
+				// Static Actor ã‚’ã‚·ãƒ¼ãƒ³ã«è¿½åŠ 
+				staticActor->userData = transform; // Static Actorã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«Transformã‚’è¨­å®š
 				GetScene()->addActor(*staticActor);
 				
-				// ƒV[ƒ“‚©‚çActor‚ğíœ
+				// ã‚·ãƒ¼ãƒ³ã‹ã‚‰Actorã‚’å‰Šé™¤
 				actor->userData = nullptr;
 				GetScene()->removeActor(*actor);
-				PX_RELEASE(actor); // Šù‘¶‚Ì Actor ‚ğíœ
+				PX_RELEASE(actor); // æ—¢å­˜ã® Actor ã‚’å‰Šé™¤
 			}
 			else
 			{
-				// Actor‚ÉƒVƒFƒCƒv‚ª‘¶İ‚µ‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Üíœ
+				// Actorã«ã‚·ã‚§ã‚¤ãƒ—ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ãã®ã¾ã¾å‰Šé™¤
 				RemoveActor(handle);
 			}
 		}
@@ -1611,12 +1611,12 @@ void Physics::UnregisterBody(Transform* transform)
 
 void Physics::OnTrnasformDestroyed(Transform* transform)
 {
-	// Transform‚ª”jŠü‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Ño‚³‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
-	// Transform* ‚É‘Î‰‚·‚é ActorHandle ‚ğæ“¾
+	// TransformãŒç ´æ£„ã•ã‚ŒãŸã¨ãã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+	// Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ã‚’å–å¾—
 	ActorHandle handle = GetActorHandle(transform);
 	if (handle != INVALID_ACTOR_HANDLE)
 	{
-		// ActorHandle ‚É‘Î‰‚·‚é Actor ‚ğæ“¾
+		// ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor ã‚’å–å¾—
 		if (physx::PxRigidActor* actor = GetActor(handle))
 		{
 			RemoveActor(handle);
@@ -1626,158 +1626,158 @@ void Physics::OnTrnasformDestroyed(Transform* transform)
 
 bool Physics::AddBoxShape(Transform* transform, const BoxColliderData& data, ShapeHandle& outHandle)
 {
-	// ‚±‚±‚ÅBoxCollider‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÉBoxCollider‚ğ’Ç‰Á‚µA•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§BoxColliderã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«BoxColliderã‚’è¿½åŠ ã—ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 
-	// Transform* ‚É‘Î‰‚·‚é ActorHandle ‚ğæ“¾
+	// Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ã‚’å–å¾—
 	ActorHandle handle = GetActorHandle(transform);
 
-	// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
+	// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
 	if (handle == INVALID_ACTOR_HANDLE)
 	{
-		// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
-		handle = RegisterBody(transform, false); // Ã“I‚ÈActor‚ğì¬
+		// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
+		handle = RegisterBody(transform, false); // é™çš„ãªActorã‚’ä½œæˆ
 	}
 	
-	// Actor‚ª‘¶İ‚·‚éê‡‚ÍBoxCollider‚ğ’Ç‰Á
+	// ActorãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯BoxColliderã‚’è¿½åŠ 
 	if (physx::PxRigidActor* actor = GetActor(handle))
 	{
-		// BoxCollider‚ÌƒTƒCƒY‚ğİ’è‚µ‚ÄPxBoxGeometry‚ğ¶¬
+		// BoxColliderã®ã‚µã‚¤ã‚ºã‚’è¨­å®šã—ã¦PxBoxGeometryã‚’ç”Ÿæˆ
 		physx::PxBoxGeometry boxGeometry(data.halfExtents.x, data.halfExtents.y, data.halfExtents.z);
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, boxGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, "Failed to create shape!");
 
-		// ’Ç‰Á‚³‚ê‚½BoxCollider‚ÌShapeHandle‚ğ¶¬(AddShapeŠÖ”“à‚ÅƒV[ƒ“‚É’Ç‰Á‚às‚í‚ê‚é)
+		// è¿½åŠ ã•ã‚ŒãŸBoxColliderã®ShapeHandleã‚’ç”Ÿæˆ(AddShapeé–¢æ•°å†…ã§ã‚·ãƒ¼ãƒ³ã«è¿½åŠ ã‚‚è¡Œã‚ã‚Œã‚‹)
 		ShapeHandle shapeHandle = CreateShapeHandle();
 		_ASSERT_EXPR(shapeHandle != INVALID_SHAPE_HANDLE, "Failed to AddShape!");
-		RegisterShape(shapeHandle, shape); // ShapeHandle‚ÆPxShape*‚Ìƒ}ƒbƒsƒ“ƒO‚ğ•Û‘¶
+		RegisterShape(shapeHandle, shape); // ShapeHandleã¨PxShape*ã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ä¿å­˜
 
-		// BoxCollider‚Ìƒ[ƒJƒ‹ˆÊ’u‚ğİ’è
+		// BoxColliderã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã‚’è¨­å®š
 		SetLocalPose(shapeHandle, data.center, Quaternion(0,0,0,1));
 
-		// ƒgƒŠƒK[‚©‚Ç‚¤‚©‚ğİ’è
+		// ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã‚’è¨­å®š
 		SetTrigger(shapeHandle, data.isTrigger);
 
-		// ÚGƒIƒtƒZƒbƒg‚ğİ’è
+		// æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 		SetContactOffset(shapeHandle, data.contactOffset);
 
-		// TODO: userData‚É“ü‚ê‚éƒf[ƒ^‚ª•ÏX‚³‚ê‚½‚ç‚±‚±‚à•ÏX‚·‚é•K—v‚ª‚ ‚é
-		shape->userData = data.collider; // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚ÉCollider‚ğİ’è
+		// TODO: userDataã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ã“ã“ã‚‚å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+		shape->userData = data.collider; // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«Colliderã‚’è¨­å®š
 
-		// ’Ç‰Á‚³‚ê‚½BoxCollider‚ÌShapeHandle‚ğ•Ô‚·
+		// è¿½åŠ ã•ã‚ŒãŸBoxColliderã®ShapeHandleã‚’è¿”ã™
 		outHandle = shapeHandle;
-		return true; // ’Ç‰Á‚É¬Œ÷‚µ‚½ê‡‚Ítrue‚ğ•Ô‚·
+		return true; // è¿½åŠ ã«æˆåŠŸã—ãŸå ´åˆã¯trueã‚’è¿”ã™
 	}
 
-	outHandle = INVALID_SHAPE_HANDLE; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÍINVALID_SHAPE_HANDLE‚ğ•Ô‚·
-	return false; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚Ífalse‚ğ•Ô‚·
+	outHandle = INVALID_SHAPE_HANDLE; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯INVALID_SHAPE_HANDLEã‚’è¿”ã™
+	return false; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯falseã‚’è¿”ã™
 }
 
 bool Physics::AddSphereShape(Transform* transform, const SphereColliderData& data, ShapeHandle& outHandle)
 {
-	// ‚±‚±‚ÅSphereCollider‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÉSphereCollider‚ğ’Ç‰Á‚µA•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—‚ğÀ‘•
-	// Transform* ‚É‘Î‰‚·‚é ActorHandle ‚ğæ“¾
+	// ã“ã“ã§SphereColliderã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«SphereColliderã‚’è¿½åŠ ã—ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	// Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ã‚’å–å¾—
 	ActorHandle handle = GetActorHandle(transform);
-	// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
+	// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
 	if (handle == INVALID_ACTOR_HANDLE)
 	{
-		// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
-		handle = RegisterBody(transform, false); // Ã“I‚ÈActor‚ğì¬
+		// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
+		handle = RegisterBody(transform, false); // é™çš„ãªActorã‚’ä½œæˆ
 	}
-	// Actor‚ª‘¶İ‚·‚éê‡‚ÍSphereCollider‚ğ’Ç‰Á
+	// ActorãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯SphereColliderã‚’è¿½åŠ 
 	if (physx::PxRigidActor* actor = GetActor(handle))
 	{
-		// SphereCollider‚Ì”¼Œa‚ğİ’è‚µ‚ÄPxSphereGeometry‚ğ¶¬
+		// SphereColliderã®åŠå¾„ã‚’è¨­å®šã—ã¦PxSphereGeometryã‚’ç”Ÿæˆ
 		physx::PxSphereGeometry sphereGeometry(data.radius);
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, sphereGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, "Failed to create shape!");
 		
-		// ’Ç‰Á‚³‚ê‚½SphereCollider‚ÌShapeHandle‚ğ¶¬(AddShapeŠÖ”“à‚ÅƒV[ƒ“‚É’Ç‰Á‚às‚í‚ê‚é)
+		// è¿½åŠ ã•ã‚ŒãŸSphereColliderã®ShapeHandleã‚’ç”Ÿæˆ(AddShapeé–¢æ•°å†…ã§ã‚·ãƒ¼ãƒ³ã«è¿½åŠ ã‚‚è¡Œã‚ã‚Œã‚‹)
 		ShapeHandle shapeHandle = CreateShapeHandle();
 		_ASSERT_EXPR(shapeHandle != INVALID_SHAPE_HANDLE, "Failed to AddShape!");
-		RegisterShape(shapeHandle, shape); // ShapeHandle‚ÆPxShape*‚Ìƒ}ƒbƒsƒ“ƒO‚ğ•Û‘¶
+		RegisterShape(shapeHandle, shape); // ShapeHandleã¨PxShape*ã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ä¿å­˜
 
-		// SphereCollider‚Ìƒ[ƒJƒ‹ˆÊ’u‚ğİ’è
+		// SphereColliderã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã‚’è¨­å®š
 		SetLocalPose(shapeHandle, data.center, Quaternion(0,0,0,1));
 
-		// ƒgƒŠƒK[‚©‚Ç‚¤‚©‚ğİ’è
+		// ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã‚’è¨­å®š
 		SetTrigger(shapeHandle, data.isTrigger);
 
-		// ÚGƒIƒtƒZƒbƒg‚ğİ’è
+		// æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 		SetContactOffset(shapeHandle, data.contactOffset);
 
-		// TODO: userData‚É“ü‚ê‚éƒf[ƒ^‚ª•ÏX‚³‚ê‚½‚ç‚±‚±‚à•ÏX‚·‚é•K—v‚ª‚ ‚é
-		shape->userData = data.collider; // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚ÉCollider‚ğİ’è
+		// TODO: userDataã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ã“ã“ã‚‚å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+		shape->userData = data.collider; // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«Colliderã‚’è¨­å®š
 
-		outHandle = shapeHandle; // ’Ç‰Á‚³‚ê‚½SphereCollider‚ÌShapeHandle‚ğ•Ô‚·
-		return true; // ’Ç‰Á‚É¬Œ÷‚µ‚½ê‡‚Ítrue‚ğ•Ô‚·
+		outHandle = shapeHandle; // è¿½åŠ ã•ã‚ŒãŸSphereColliderã®ShapeHandleã‚’è¿”ã™
+		return true; // è¿½åŠ ã«æˆåŠŸã—ãŸå ´åˆã¯trueã‚’è¿”ã™
 	}
 
-	outHandle = INVALID_SHAPE_HANDLE; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÍINVALID_SHAPE_HANDLE‚ğ•Ô‚·
-	return false; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚Ífalse‚ğ•Ô‚·
+	outHandle = INVALID_SHAPE_HANDLE; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯INVALID_SHAPE_HANDLEã‚’è¿”ã™
+	return false; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯falseã‚’è¿”ã™
 }
 
 bool Physics::AddCapsuleShape(Transform* transform, const CapsuleColliderData& data, ShapeHandle& outHandle)
 {
-	// ‚±‚±‚ÅCapsuleCollider‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÉCapsuleCollider‚ğ’Ç‰Á‚µA•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—‚ğÀ‘•
-	// Transform* ‚É‘Î‰‚·‚é ActorHandle ‚ğæ“¾
+	// ã“ã“ã§CapsuleColliderã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«CapsuleColliderã‚’è¿½åŠ ã—ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	// Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ã‚’å–å¾—
 	ActorHandle handle = GetActorHandle(transform);
-	// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
+	// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
 	if (handle == INVALID_ACTOR_HANDLE)
 	{
-		// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
-		handle = RegisterBody(transform, false); // Ã“I‚ÈActor‚ğì¬
+		// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
+		handle = RegisterBody(transform, false); // é™çš„ãªActorã‚’ä½œæˆ
 	}
-	// Actor‚ª‘¶İ‚·‚éê‡‚ÍCapsuleCollider‚ğ’Ç‰Á
+	// ActorãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯CapsuleColliderã‚’è¿½åŠ 
 	if (physx::PxRigidActor* actor = GetActor(handle))
 	{
-		// CapsuleCollider‚Ì”¼Œa‚Æ‚‚³‚ğİ’è‚µ‚ÄPxCapsuleGeometry‚ğ¶¬
-		physx::PxCapsuleGeometry capsuleGeometry(data.radius, data.height * 0.5f); // PhysX‚ÌƒJƒvƒZƒ‹‚Í”¼•ª‚Ì‚‚³‚ğw’è‚·‚é•K—v‚ª‚ ‚é
+		// CapsuleColliderã®åŠå¾„ã¨é«˜ã•ã‚’è¨­å®šã—ã¦PxCapsuleGeometryã‚’ç”Ÿæˆ
+		physx::PxCapsuleGeometry capsuleGeometry(data.radius, data.height * 0.5f); // PhysXã®ã‚«ãƒ—ã‚»ãƒ«ã¯åŠåˆ†ã®é«˜ã•ã‚’æŒ‡å®šã™ã‚‹å¿…è¦ãŒã‚ã‚‹
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, capsuleGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, "Failed to create shape!");
 
-		// ’Ç‰Á‚³‚ê‚½CapsuleCollider‚ÌShapeHandle‚ğ¶¬(AddShapeŠÖ”“à‚ÅƒV[ƒ“‚É’Ç‰Á‚às‚í‚ê‚é)
+		// è¿½åŠ ã•ã‚ŒãŸCapsuleColliderã®ShapeHandleã‚’ç”Ÿæˆ(AddShapeé–¢æ•°å†…ã§ã‚·ãƒ¼ãƒ³ã«è¿½åŠ ã‚‚è¡Œã‚ã‚Œã‚‹)
 		ShapeHandle shapeHandle = CreateShapeHandle();
 		_ASSERT_EXPR(shapeHandle != INVALID_SHAPE_HANDLE, "Failed to AddShape!");
-		RegisterShape(shapeHandle, shape); // ShapeHandle‚ÆPxShape*‚Ìƒ}ƒbƒsƒ“ƒO‚ğ•Û‘¶
-		// CapsuleCollider‚Ìƒ[ƒJƒ‹ˆÊ’u‚ğİ’è
-		Quaternion localRot = Quaternion::FromEuler({ 0.0f, 0.0f, 90.0f }); // ƒJƒvƒZƒ‹‚Ìƒ[ƒJƒ‹‰ñ“]‚ğİ’èiZ²‰ñ“]‚Å—§‚Ä‚éj
+		RegisterShape(shapeHandle, shape); // ShapeHandleã¨PxShape*ã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ä¿å­˜
+		// CapsuleColliderã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã‚’è¨­å®š
+		Quaternion localRot = Quaternion::FromEuler({ 0.0f, 0.0f, 90.0f }); // ã‚«ãƒ—ã‚»ãƒ«ã®ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã‚’è¨­å®šï¼ˆZè»¸å›è»¢ã§ç«‹ã¦ã‚‹ï¼‰
 		SetLocalPose(shapeHandle, data.center, localRot);
-		// ƒgƒŠƒK[‚©‚Ç‚¤‚©‚ğİ’è
+		// ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã‚’è¨­å®š
 		SetTrigger(shapeHandle, data.isTrigger);
 
-		// ÚGƒIƒtƒZƒbƒg‚ğİ’è
+		// æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 		SetContactOffset(shapeHandle, data.contactOffset);
 
-		// TODO: userData‚É“ü‚ê‚éƒf[ƒ^‚ª•ÏX‚³‚ê‚½‚ç‚±‚±‚à•ÏX‚·‚é•K—v‚ª‚ ‚é
-		shape->userData = data.collider; // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚ÉCollider‚ğİ’è
+		// TODO: userDataã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ã“ã“ã‚‚å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+		shape->userData = data.collider; // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«Colliderã‚’è¨­å®š
 
-		// ’Ç‰Á‚³‚ê‚½CapsuleCollider‚ÌShapeHandle‚ğ•Ô‚·
+		// è¿½åŠ ã•ã‚ŒãŸCapsuleColliderã®ShapeHandleã‚’è¿”ã™
 		outHandle = shapeHandle;
-		return true; // ’Ç‰Á‚É¬Œ÷‚µ‚½ê‡‚Ítrue‚ğ•Ô‚·
+		return true; // è¿½åŠ ã«æˆåŠŸã—ãŸå ´åˆã¯trueã‚’è¿”ã™
 	}
 
-	outHandle = INVALID_SHAPE_HANDLE; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÍINVALID_SHAPE_HANDLE‚ğ•Ô‚·
-	return false; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚Ífalse‚ğ•Ô‚·
+	outHandle = INVALID_SHAPE_HANDLE; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯INVALID_SHAPE_HANDLEã‚’è¿”ã™
+	return false; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯falseã‚’è¿”ã™
 }
 
 bool Physics::AddTriangleMeshShape(Transform* transform, const MeshColliderData& data, ShapeHandle& outHandle)
 {
-	// ‚±‚±‚ÅTriangleMeshCollider‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÉTriangleMeshCollider‚ğ’Ç‰Á‚µA•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—‚ğÀ‘•
-	// Transform* ‚É‘Î‰‚·‚é ActorHandle ‚ğæ“¾
+	// ã“ã“ã§TriangleMeshColliderã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«TriangleMeshColliderã‚’è¿½åŠ ã—ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	// Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ã‚’å–å¾—
 	ActorHandle handle = GetActorHandle(transform);
-	// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
+	// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
 	if (handle == INVALID_ACTOR_HANDLE)
 	{
-		// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
-		handle = RegisterBody(transform, false); // Ã“I‚ÈActor‚ğì¬
+		// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
+		handle = RegisterBody(transform, false); // é™çš„ãªActorã‚’ä½œæˆ
 	}
-	// Actor‚ª‘¶İ‚·‚éê‡‚ÍTriangleMeshCollider‚ğ’Ç‰Á
+	// ActorãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯TriangleMeshColliderã‚’è¿½åŠ 
 	if (physx::PxRigidActor* actor = GetActor(handle))
 	{
-		// TriangleMeshCollider‚Ì’¸“_‚ÆƒCƒ“ƒfƒbƒNƒX‚ğİ’è‚µ‚ÄPxTriangleMeshGeometry‚ğ¶¬
+		// TriangleMeshColliderã®é ‚ç‚¹ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¨­å®šã—ã¦PxTriangleMeshGeometryã‚’ç”Ÿæˆ
 		std::vector<physx::PxVec3> vertices(data.vertices.size());
 		for (size_t i = 0; i < data.vertices.size(); ++i)
 		{
@@ -1805,7 +1805,7 @@ bool Physics::AddTriangleMeshShape(Transform* transform, const MeshColliderData&
 		physx::PxTriangleMesh* triangleMesh = PxCreateTriangleMesh(cookingParams, meshDesc);
 		_ASSERT_EXPR(triangleMesh != nullptr, L"PxCreateTriangleMesh failed!");
 
-		//physx::PxMeshScale meshScale(ToPxVec3(transform->GetWorldScale())); // ƒƒbƒVƒ…‚ÌƒXƒP[ƒ‹‚ğİ’è
+		//physx::PxMeshScale meshScale(ToPxVec3(transform->GetWorldScale())); // ãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’è¨­å®š
 		Vector3 worldScale = transform->GetWorldScale();
 
 		_ASSERT_EXPR(std::isfinite(worldScale.x), "scale.x invalid!");
@@ -1816,52 +1816,52 @@ bool Physics::AddTriangleMeshShape(Transform* transform, const MeshColliderData&
 		_ASSERT_EXPR(worldScale.y > 0.0001f, L"scale y <= 0");
 		_ASSERT_EXPR(worldScale.z > 0.0001f, L"scale z <= 0");
 
-		physx::PxMeshScale meshScale(ToPxVec3(worldScale)); // ƒƒbƒVƒ…‚ÌƒXƒP[ƒ‹‚ğİ’è
+		physx::PxMeshScale meshScale(ToPxVec3(worldScale)); // ãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’è¨­å®š
 		physx::PxTriangleMeshGeometry triangleMeshGeometry(triangleMesh, meshScale);
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, triangleMeshGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, L"Failed to create shape!");
 
-		triangleMesh->release(); // TriangleMesh‚ÍShape‚ÉƒRƒs[‚³‚ê‚é‚½‚ßATriangleMesh‚Í‰ğ•ú‚µ‚Ä‚à–â‘è‚È‚¢
+		triangleMesh->release(); // TriangleMeshã¯Shapeã«ã‚³ãƒ”ãƒ¼ã•ã‚Œã‚‹ãŸã‚ã€TriangleMeshã¯è§£æ”¾ã—ã¦ã‚‚å•é¡Œãªã„
 
-		// ’Ç‰Á‚³‚ê‚½TriangleMeshCollider‚ÌShapeHandle‚ğ¶¬(AddShapeŠÖ”“à‚ÅƒV[ƒ“‚É’Ç‰Á‚às‚í‚ê‚é)
+		// è¿½åŠ ã•ã‚ŒãŸTriangleMeshColliderã®ShapeHandleã‚’ç”Ÿæˆ(AddShapeé–¢æ•°å†…ã§ã‚·ãƒ¼ãƒ³ã«è¿½åŠ ã‚‚è¡Œã‚ã‚Œã‚‹)
 		ShapeHandle shapeHandle = CreateShapeHandle();
 		_ASSERT_EXPR(shapeHandle != INVALID_SHAPE_HANDLE, L"Failed to AddShape!");
-		RegisterShape(shapeHandle, shape); // ShapeHandle‚ÆPxShape*‚Ìƒ}ƒbƒsƒ“ƒO‚ğ•Û‘¶
-		// TriangleMeshCollider‚Ìƒ[ƒJƒ‹ˆÊ’u‚ğİ’è
+		RegisterShape(shapeHandle, shape); // ShapeHandleã¨PxShape*ã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ä¿å­˜
+		// TriangleMeshColliderã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã‚’è¨­å®š
 		//SetLocalPose(shapeHandle, data.center, Quaternion(0, 0, 0, 1));
-		// ƒgƒŠƒK[‚©‚Ç‚¤‚©‚ğİ’è
+		// ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã‚’è¨­å®š
 		SetTrigger(shapeHandle, data.isTrigger);
 
-		// ÚGƒIƒtƒZƒbƒg‚ğİ’è
+		// æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 		SetContactOffset(shapeHandle, data.contactOffset);
 
-		// TODO: userData‚É“ü‚ê‚éƒf[ƒ^‚ª•ÏX‚³‚ê‚½‚ç‚±‚±‚à•ÏX‚·‚é•K—v‚ª‚ ‚é
-		shape->userData = data.collider; // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚ÉCollider‚ğİ’è
-		// ’Ç‰Á‚³‚ê‚½TriangleMeshCollider‚ÌShapeHandle‚ğ•Ô‚·
+		// TODO: userDataã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ã“ã“ã‚‚å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+		shape->userData = data.collider; // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«Colliderã‚’è¨­å®š
+		// è¿½åŠ ã•ã‚ŒãŸTriangleMeshColliderã®ShapeHandleã‚’è¿”ã™
 		outHandle = shapeHandle;
-		return true; // ’Ç‰Á‚É¬Œ÷‚µ‚½ê‡‚Ítrue‚ğ•Ô‚·
+		return true; // è¿½åŠ ã«æˆåŠŸã—ãŸå ´åˆã¯trueã‚’è¿”ã™
 	}
 
-	outHandle = INVALID_SHAPE_HANDLE; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÍINVALID_SHAPE_HANDLE‚ğ•Ô‚·
-	return false; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚Ífalse‚ğ•Ô‚·
+	outHandle = INVALID_SHAPE_HANDLE; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯INVALID_SHAPE_HANDLEã‚’è¿”ã™
+	return false; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯falseã‚’è¿”ã™
 }
 
 bool Physics::AddConvexMeshShape(Transform* transform, const MeshColliderData& data, ShapeHandle& outHandle)
 {
-	// ‚±‚±‚ÅConvexMeshCollider‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÉConvexMeshCollider‚ğ’Ç‰Á‚µA•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—
-	// Transform* ‚É‘Î‰‚·‚é ActorHandle ‚ğæ“¾
+	// ã“ã“ã§ConvexMeshColliderã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ConvexMeshColliderã‚’è¿½åŠ ã—ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†
+	// Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ã‚’å–å¾—
 	ActorHandle handle = GetActorHandle(transform);
-	// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
+	// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
 	if (handle == INVALID_ACTOR_HANDLE)
 	{
-		// Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
-		handle = RegisterBody(transform, false); // Ã“I‚ÈActor‚ğì¬
+		// ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
+		handle = RegisterBody(transform, false); // é™çš„ãªActorã‚’ä½œæˆ
 	}
-	// Actor‚ª‘¶İ‚·‚éê‡‚ÍConvexMeshCollider‚ğ’Ç‰Á
+	// ActorãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ConvexMeshColliderã‚’è¿½åŠ 
 	if (physx::PxRigidActor* actor = GetActor(handle))
 	{
-		// ConvexMeshCollider‚Ì’¸“_‚ğİ’è‚µ‚ÄPxConvexMeshGeometry‚ğ¶¬
+		// ConvexMeshColliderã®é ‚ç‚¹ã‚’è¨­å®šã—ã¦PxConvexMeshGeometryã‚’ç”Ÿæˆ
 		std::vector<physx::PxVec3> vertices(data.vertices.size());
 		for (size_t i = 0; i < data.vertices.size(); ++i)
 		{
@@ -1872,7 +1872,7 @@ bool Physics::AddConvexMeshShape(Transform* transform, const MeshColliderData& d
 		meshDesc.points.count = static_cast<physx::PxU32>(vertices.size());
 		meshDesc.points.stride = sizeof(physx::PxVec3);
 		meshDesc.points.data = vertices.data();
-		meshDesc.flags = physx::PxConvexFlag::eCOMPUTE_CONVEX; // ConvexMesh‚ğ©“®¶¬‚·‚é‚½‚ß‚Ìƒtƒ‰ƒO‚ğİ’è
+		meshDesc.flags = physx::PxConvexFlag::eCOMPUTE_CONVEX; // ConvexMeshã‚’è‡ªå‹•ç”Ÿæˆã™ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 		_ASSERT_EXPR(meshDesc.isValid(), L"PxConvexMeshDesc is invalid!");
 
 		physx::PxCookingParams cookingParams(pxPhysics->getTolerancesScale());
@@ -1889,306 +1889,306 @@ bool Physics::AddConvexMeshShape(Transform* transform, const MeshColliderData& d
 		_ASSERT_EXPR(worldScale.y > 0.0001f, L"scale y <= 0");
 		_ASSERT_EXPR(worldScale.z > 0.0001f, L"scale z <= 0");
 
-		physx::PxMeshScale meshScale(ToPxVec3(worldScale)); // ƒƒbƒVƒ…‚ÌƒXƒP[ƒ‹‚ğİ’è
+		physx::PxMeshScale meshScale(ToPxVec3(worldScale)); // ãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’è¨­å®š
 		physx::PxConvexMeshGeometry convexMeshGeometry(convexMesh, meshScale);
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, convexMeshGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, L"Failed to create shape!");
 
-		convexMesh->release(); // ConvexMesh‚ÍShape‚ÉƒRƒs[‚³‚ê‚é‚½‚ßAConvexMesh‚Í‰ğ•ú‚µ‚Ä‚à–â‘è‚È‚¢
+		convexMesh->release(); // ConvexMeshã¯Shapeã«ã‚³ãƒ”ãƒ¼ã•ã‚Œã‚‹ãŸã‚ã€ConvexMeshã¯è§£æ”¾ã—ã¦ã‚‚å•é¡Œãªã„
 
-		// ’Ç‰Á‚³‚ê‚½ConvexMeshCollider‚ÌShapeHandle‚ğ¶¬(AddShapeŠÖ”“à‚ÅƒV[ƒ“‚É’Ç‰Á‚às‚í‚ê‚é)
+		// è¿½åŠ ã•ã‚ŒãŸConvexMeshColliderã®ShapeHandleã‚’ç”Ÿæˆ(AddShapeé–¢æ•°å†…ã§ã‚·ãƒ¼ãƒ³ã«è¿½åŠ ã‚‚è¡Œã‚ã‚Œã‚‹)
 		ShapeHandle shapeHandle = CreateShapeHandle();
 		_ASSERT_EXPR(shapeHandle != INVALID_SHAPE_HANDLE, L"Failed to AddShape!");
-		RegisterShape(shapeHandle, shape); // ShapeHandle‚ÆPxShape*‚Ìƒ}ƒbƒsƒ“ƒO‚ğ•Û‘¶
-		// ConvexMeshCollider‚Ìƒ[ƒJƒ‹ˆÊ’u‚ğİ’è
+		RegisterShape(shapeHandle, shape); // ShapeHandleã¨PxShape*ã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ä¿å­˜
+		// ConvexMeshColliderã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã‚’è¨­å®š
 		//SetLocalPose(shapeHandle, data.center, Quaternion(0, 0, 0, 1));
-		// ƒgƒŠƒK[‚©‚Ç‚¤‚©‚ğİ’è
+		// ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã‚’è¨­å®š
 		SetTrigger(shapeHandle, data.isTrigger);
 
-		// ÚGƒIƒtƒZƒbƒg‚ğİ’è
+		// æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 		SetContactOffset(shapeHandle, data.contactOffset);
 
-		// TODO: userData‚É“ü‚ê‚éƒf[ƒ^‚ª•ÏX‚³‚ê‚½‚ç‚±‚±‚à•ÏX‚·‚é•K—v‚ª‚ ‚é
-		shape->userData = data.collider; // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚ÉCollider‚ğİ’è
-		// ’Ç‰Á‚³‚ê‚½ConvexMeshCollider‚ÌShapeHandle‚ğ•Ô‚·
+		// TODO: userDataã«å…¥ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ã“ã“ã‚‚å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+		shape->userData = data.collider; // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«Colliderã‚’è¨­å®š
+		// è¿½åŠ ã•ã‚ŒãŸConvexMeshColliderã®ShapeHandleã‚’è¿”ã™
 		outHandle = shapeHandle;
-		return true; // ’Ç‰Á‚É¬Œ÷‚µ‚½ê‡‚Ítrue‚ğ•Ô‚·
+		return true; // è¿½åŠ ã«æˆåŠŸã—ãŸå ´åˆã¯trueã‚’è¿”ã™
 	}
 
-	outHandle = INVALID_SHAPE_HANDLE; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÍINVALID_SHAPE_HANDLE‚ğ•Ô‚·
-	return false; // ’Ç‰Á‚É¸”s‚µ‚½ê‡‚Ífalse‚ğ•Ô‚·
+	outHandle = INVALID_SHAPE_HANDLE; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯INVALID_SHAPE_HANDLEã‚’è¿”ã™
+	return false; // è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã¯falseã‚’è¿”ã™
 }
 
-// --- Œ`ó (Collider) ‚Ìî•ñæ“¾ ---
+// --- å½¢çŠ¶ (Collider) ã®æƒ…å ±å–å¾— ---
 
-// --- Œ`ó (Collider) ‚Ìî•ñİ’è ---
+// --- å½¢çŠ¶ (Collider) ã®æƒ…å ±è¨­å®š ---
 
 
-// --- ƒV[ƒ“‚Ìİ’è ---
+// --- ã‚·ãƒ¼ãƒ³ã®è¨­å®š ---
 
 void Physics::SetGravity(const Vector3& gravity)
 {
-	// ‚±‚±‚ÅƒV[ƒ“‚Ìd—Í‚ğİ’è‚·‚éˆ—‚ğÀ‘•
-	GetScene()->setGravity(ToPxVec3(gravity)); // PhysX‚ÌƒV[ƒ“‚Éd—Í‚ğİ’è
+	// ã“ã“ã§ã‚·ãƒ¼ãƒ³ã®é‡åŠ›ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	GetScene()->setGravity(ToPxVec3(gravity)); // PhysXã®ã‚·ãƒ¼ãƒ³ã«é‡åŠ›ã‚’è¨­å®š
 }
 
 Vector3 Physics::GetGravity()
 {
-	// ‚±‚±‚ÅƒV[ƒ“‚Ìd—Í‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
-	physx::PxVec3 gravity = GetScene()->getGravity(); // PhysX‚ÌƒV[ƒ“‚©‚çd—Í‚ğæ“¾
-	return ToVector3(gravity); // Vector3‚É•ÏŠ·‚µ‚Ä•Ô‚·
+	// ã“ã“ã§ã‚·ãƒ¼ãƒ³ã®é‡åŠ›ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	physx::PxVec3 gravity = GetScene()->getGravity(); // PhysXã®ã‚·ãƒ¼ãƒ³ã‹ã‚‰é‡åŠ›ã‚’å–å¾—
+	return ToVector3(gravity); // Vector3ã«å¤‰æ›ã—ã¦è¿”ã™
 }
 
-// --- ƒŒƒCƒLƒƒƒXƒg ---
+// --- ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆ ---
 
 bool Physics::Raycast(const Vector3& origin, const Vector3& direction, float maxDistance, RaycastHit& outHitInfo, LayerMask layerMask)
 {
-	// ‚±‚±‚ÅƒŒƒCƒLƒƒƒXƒg‚ğÀs‚µAÕ“Ë‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ìî•ñ‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
-	physx::PxQueryFilterData filterData(physx::PxQueryFlag::eSTATIC | physx::PxQueryFlag::eDYNAMIC | physx::PxQueryFlag::ePREFILTER | physx::PxQueryFlag::ePOSTFILTER); // ƒNƒGƒŠƒtƒBƒ‹ƒ^ƒf[ƒ^‚ğİ’èiÃ“I‚Æ“®“I‚Ì—¼•û‚ğƒNƒGƒŠ‚·‚éj
-	filterData.data.word0 = layerMask; // ƒNƒGƒŠƒtƒBƒ‹ƒ^ƒf[ƒ^‚Ìword0‚ÉƒŒƒCƒ„[ƒ}ƒXƒN‚ğİ’è
+	// ã“ã“ã§ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã‚’å®Ÿè¡Œã—ã€è¡çªã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	physx::PxQueryFilterData filterData(physx::PxQueryFlag::eSTATIC | physx::PxQueryFlag::eDYNAMIC | physx::PxQueryFlag::ePREFILTER | physx::PxQueryFlag::ePOSTFILTER); // ã‚¯ã‚¨ãƒªãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šï¼ˆé™çš„ã¨å‹•çš„ã®ä¸¡æ–¹ã‚’ã‚¯ã‚¨ãƒªã™ã‚‹ï¼‰
+	filterData.data.word0 = layerMask; // ã‚¯ã‚¨ãƒªãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã®word0ã«ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’è¨­å®š
 
 	physx::PxVec3 pxOrigin = ToPxVec3(origin);
 	physx::PxVec3 pxDirection = ToPxVec3(direction);
 	physx::PxRaycastBufferN<1> hitInfo;
 	bool hit = GetScene()->raycast(pxOrigin, pxDirection, maxDistance, hitInfo, physx::PxHitFlag::eDEFAULT, filterData, &m_filterShader);
-	if (hit && hitInfo.hasBlock) // ƒŒƒC‚ª‰½‚©‚ÉÕ“Ë‚µ‚½ê‡‚ÍAÕ“Ëî•ñ‚ğoutHitInfo‚Éİ’è
+	if (hit && hitInfo.hasBlock) // ãƒ¬ã‚¤ãŒä½•ã‹ã«è¡çªã—ãŸå ´åˆã¯ã€è¡çªæƒ…å ±ã‚’outHitInfoã«è¨­å®š
 	{
 		outHitInfo.point = ToVector3(hitInfo.block.position);
 		outHitInfo.normal = ToVector3(hitInfo.block.normal);
 		outHitInfo.distance = hitInfo.block.distance;
-		outHitInfo.collider = reinterpret_cast<Collider*>(hitInfo.block.shape->userData); // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚©‚çCollider‚ğæ“¾
+		outHitInfo.collider = reinterpret_cast<Collider*>(hitInfo.block.shape->userData); // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰Colliderã‚’å–å¾—
 	}
-	return hit; // ƒŒƒC‚ª‰½‚©‚ÉÕ“Ë‚µ‚½ê‡‚ÍtrueA‚»‚¤‚Å‚È‚¢ê‡‚Ífalse‚ğ•Ô‚·
+	return hit; // ãƒ¬ã‚¤ãŒä½•ã‹ã«è¡çªã—ãŸå ´åˆã¯trueã€ãã†ã§ãªã„å ´åˆã¯falseã‚’è¿”ã™
 }
 
 
-// Œ`ó‚ÌƒŒƒCƒ„[‚ÆƒŒƒCƒ„[ƒ}ƒXƒN‚Ìİ’è
+// å½¢çŠ¶ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã®è¨­å®š
 void Physics::SetLayer(const ShapeHandle& shapeHandle, Layer layer)
 {
-	// ‚±‚±‚ÅŒ`ó‚ÌƒŒƒCƒ„[‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§å½¢çŠ¶ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
 		physx::PxFilterData filterData = shape->getSimulationFilterData();
-		filterData.word0 = static_cast<physx::PxU32>(ToMask(layer)); // ƒŒƒCƒ„[‚ğƒtƒBƒ‹ƒ^ƒf[ƒ^‚Ìword0‚Éİ’è
-		//filterData.word1 = LayerManager::Get().GetCollisionMask(layer); // ƒŒƒCƒ„[‚ÌÕ“Ëƒ}ƒXƒN‚ğƒtƒBƒ‹ƒ^ƒf[ƒ^‚Ìword1‚Éİ’è
-		shape->setSimulationFilterData(filterData); // ƒtƒBƒ‹ƒ^ƒf[ƒ^‚ğƒVƒFƒCƒv‚Éİ’è
-		shape->setQueryFilterData(filterData); // ƒNƒGƒŠƒtƒBƒ‹ƒ^ƒf[ƒ^‚à“¯‚¶‚Éİ’è(Raycast‚É‚àƒŒƒCƒ„[‚ğ“K—p‚·‚é‚½‚ß)
+		filterData.word0 = static_cast<physx::PxU32>(ToMask(layer)); // ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã®word0ã«è¨­å®š
+		//filterData.word1 = LayerManager::Get().GetCollisionMask(layer); // ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡çªãƒã‚¹ã‚¯ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã®word1ã«è¨­å®š
+		shape->setSimulationFilterData(filterData); // ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’ã‚·ã‚§ã‚¤ãƒ—ã«è¨­å®š
+		shape->setQueryFilterData(filterData); // ã‚¯ã‚¨ãƒªãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚‚åŒã˜ã«è¨­å®š(Raycastã«ã‚‚ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’é©ç”¨ã™ã‚‹ãŸã‚)
 	}
 }
 
 void Physics::SetLayerMask(const ShapeHandle& shapeHandle, LayerMask layerMask)
 {
-	// ‚±‚±‚ÅŒ`ó‚ÌƒŒƒCƒ„[ƒ}ƒXƒN‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§å½¢çŠ¶ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
 		physx::PxFilterData filterData = shape->getSimulationFilterData();
-		filterData.word1 = layerMask; // ƒŒƒCƒ„[ƒ}ƒXƒN‚ğƒtƒBƒ‹ƒ^ƒf[ƒ^‚Ìword1‚Éİ’è
-		shape->setSimulationFilterData(filterData); // ƒtƒBƒ‹ƒ^ƒf[ƒ^‚ğƒVƒFƒCƒv‚Éİ’è
-		shape->setQueryFilterData(filterData); // ƒNƒGƒŠƒtƒBƒ‹ƒ^ƒf[ƒ^‚à“¯‚¶‚Éİ’è(Raycast‚É‚àƒŒƒCƒ„[ƒ}ƒXƒN‚ğ“K—p‚·‚é‚½‚ß)
+		filterData.word1 = layerMask; // ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã®word1ã«è¨­å®š
+		shape->setSimulationFilterData(filterData); // ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’ã‚·ã‚§ã‚¤ãƒ—ã«è¨­å®š
+		shape->setQueryFilterData(filterData); // ã‚¯ã‚¨ãƒªãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚‚åŒã˜ã«è¨­å®š(Raycastã«ã‚‚ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’é©ç”¨ã™ã‚‹ãŸã‚)
 	}
 }
 
 void Physics::UpdateFilterData(const ShapeHandle& shapeHandle, Layer layer, LayerMask layerMask)
 {
-	// ‚±‚±‚ÅŒ`ó‚ÌƒtƒBƒ‹ƒ^ƒf[ƒ^‚ğXV‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§å½¢çŠ¶ã®ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
 		physx::PxFilterData filterData;
-		filterData.word0 = static_cast<physx::PxU32>(ToMask(layer)); // ƒŒƒCƒ„[‚ğƒtƒBƒ‹ƒ^ƒf[ƒ^‚Ìword0‚Éİ’è
-		filterData.word1 = layerMask; // ƒŒƒCƒ„[ƒ}ƒXƒN‚ğƒtƒBƒ‹ƒ^ƒf[ƒ^‚Ìword1‚Éİ’è
+		filterData.word0 = static_cast<physx::PxU32>(ToMask(layer)); // ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã®word0ã«è¨­å®š
+		filterData.word1 = layerMask; // ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã®word1ã«è¨­å®š
 
-		shape->setSimulationFilterData(filterData); // ƒtƒBƒ‹ƒ^ƒf[ƒ^‚ğƒVƒFƒCƒv‚Éİ’è
-		shape->setQueryFilterData(filterData); // ƒNƒGƒŠƒtƒBƒ‹ƒ^ƒf[ƒ^‚à“¯‚¶‚Éİ’è(Raycast‚É‚àƒŒƒCƒ„[‚ÆƒŒƒCƒ„[ƒ}ƒXƒN‚ğ“K—p‚·‚é‚½‚ß)
+		shape->setSimulationFilterData(filterData); // ãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’ã‚·ã‚§ã‚¤ãƒ—ã«è¨­å®š
+		shape->setQueryFilterData(filterData); // ã‚¯ã‚¨ãƒªãƒ•ã‚£ãƒ«ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚‚åŒã˜ã«è¨­å®š(Raycastã«ã‚‚ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒã‚¹ã‚¯ã‚’é©ç”¨ã™ã‚‹ãŸã‚)
 	}
 }
 
 LayerMask Physics::GetCollisionMask(Layer layer)
 {
-	// ƒŒƒCƒ„[‚ÌÕ“Ëƒ}ƒXƒN‚ğæ“¾‚·‚é
-	return LayerManager::Get().GetCollisionMask(layer); // LayerManager‚ğ’Ê‚¶‚ÄƒŒƒCƒ„[‚ÌÕ“Ëƒ}ƒXƒN‚ğæ“¾‚µ‚Ä•Ô‚·
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡çªãƒã‚¹ã‚¯ã‚’å–å¾—ã™ã‚‹
+	return LayerManager::Get().GetCollisionMask(layer); // LayerManagerã‚’é€šã˜ã¦ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡çªãƒã‚¹ã‚¯ã‚’å–å¾—ã—ã¦è¿”ã™
 }
 
 bool Physics::GetIgnoreLayerCollision(Layer layer1, Layer layer2)
 {
-	// ƒŒƒCƒ„[“¯m‚ÌÕ“Ë‚ğ–³‹‚·‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
-	return !LayerManager::Get().GetLayerCollision(layer1, layer2); // LayerManager‚ğ’Ê‚¶‚ÄƒŒƒCƒ„[‚ÌÕ“Ëİ’è‚ğæ“¾‚µA–³‹‚·‚é‚©‚Ç‚¤‚©‚ğ•Ô‚·
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼åŒå£«ã®è¡çªã‚’ç„¡è¦–ã™ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹
+	return !LayerManager::Get().GetLayerCollision(layer1, layer2); // LayerManagerã‚’é€šã˜ã¦ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡çªè¨­å®šã‚’å–å¾—ã—ã€ç„¡è¦–ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¿”ã™
 }
 
 void Physics::SetIgnoreLayerCollision(Layer layer1, Layer layer2, bool ignore)
 {
-	// ƒŒƒCƒ„[“¯m‚ÌÕ“Ë‚ğ–³‹‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
-	LayerManager::Get().SetLayerCollision(layer1, layer2, !ignore); // LayerManager‚ğ’Ê‚¶‚ÄƒŒƒCƒ„[‚ÌÕ“Ëİ’è‚ğXV
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼åŒå£«ã®è¡çªã‚’ç„¡è¦–ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
+	LayerManager::Get().SetLayerCollision(layer1, layer2, !ignore); // LayerManagerã‚’é€šã˜ã¦ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡çªè¨­å®šã‚’æ›´æ–°
 }
 
-// --- •¨—ƒ}ƒeƒŠƒAƒ‹‚Ì’Ç‰Á ---
+// --- ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®è¿½åŠ  ---
 
 PhysicsMaterial Physics::CreateAndRegisterMaterial(const PhysicsMaterialData& data, MaterialHandle overrideHandle)
 {
-	// ‚±‚±‚Å•¨—ƒ}ƒeƒŠƒAƒ‹‚ğ’Ç‰Á‚µA•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¿½åŠ ã—ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	PhysicsMaterial newMaterial;
-	newMaterial.handle = overrideHandle != INVALID_MATERIAL_HANDLE ? overrideHandle : CreateMaterialHandle(); // ƒnƒ“ƒhƒ‹‚ğ¶¬
+	newMaterial.handle = overrideHandle != INVALID_MATERIAL_HANDLE ? overrideHandle : CreateMaterialHandle(); // ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆ
 	newMaterial.data = data;
 	newMaterial.pxMaterial = pxPhysics->createMaterial(data.staticFriction, data.dynamicFriction, data.bounciness);
 	newMaterial.pxMaterial->setFrictionCombineMode(static_cast<physx::PxCombineMode::Enum>(data.frictionCombineMode));
 	newMaterial.pxMaterial->setRestitutionCombineMode(static_cast<physx::PxCombineMode::Enum>(data.bounceCombineMode));
 	_ASSERT_EXPR(newMaterial.pxMaterial != nullptr, "Failed to create material!");
-	// ƒ}ƒeƒŠƒAƒ‹ƒ}ƒbƒv‚É•Û‘¶
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒƒãƒ—ã«ä¿å­˜
 	m_materialMap[newMaterial.handle] = newMaterial;
-	m_materialNameMapDirty = true; // ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚Æƒnƒ“ƒhƒ‹‚Ìƒ}ƒbƒsƒ“ƒO‚ªÅV‚Å‚È‚¢‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO‚ğ—§‚Ä‚é
-	return newMaterial; // ì¬‚³‚ê‚½•¨—ƒ}ƒeƒŠƒAƒ‹‚ğ•Ô‚·
+	m_materialNameMapDirty = true; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã¨ãƒãƒ³ãƒ‰ãƒ«ã®ãƒãƒƒãƒ”ãƒ³ã‚°ãŒæœ€æ–°ã§ãªã„ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
+	return newMaterial; // ä½œæˆã•ã‚ŒãŸç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¿”ã™
 }
 
-// --- •¨—ƒ}ƒeƒŠƒAƒ‹‚Ìíœ ---
+// --- ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®å‰Šé™¤ ---
 
 void Physics::RemoveMaterial(MaterialHandle handle)
 {
-	// ‚±‚±‚Å•¨—ƒ}ƒeƒŠƒAƒ‹‚ğíœ‚µA•¨—ƒGƒ“ƒWƒ“‚©‚ç“o˜^‰ğœ‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’å‰Šé™¤ã—ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ç™»éŒ²è§£é™¤ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (m_materialMap.contains(handle))
 	{
 		physx::PxMaterial* material = m_materialMap[handle].pxMaterial;
-		PX_RELEASE(material); // ƒ}ƒeƒŠƒAƒ‹‚ğ‰ğ•ú
-		m_materialMap.erase(handle); // ƒ}ƒeƒŠƒAƒ‹ƒ}ƒbƒv‚©‚çíœ
-		m_materialNameMapDirty = true; // ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚Æƒnƒ“ƒhƒ‹‚Ìƒ}ƒbƒsƒ“ƒO‚ªÅV‚Å‚È‚¢‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+		PX_RELEASE(material); // ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è§£æ”¾
+		m_materialMap.erase(handle); // ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤
+		m_materialNameMapDirty = true; // ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã¨ãƒãƒ³ãƒ‰ãƒ«ã®ãƒãƒƒãƒ”ãƒ³ã‚°ãŒæœ€æ–°ã§ãªã„ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	}
 }
 
-// --- •¨—ƒ}ƒeƒŠƒAƒ‹‚Ìî•ñæ“¾ ---
+// --- ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®æƒ…å ±å–å¾— ---
 
 bool Physics::GetMaterialData(MaterialHandle handle, PhysicsMaterialData& outMaterial)
 {
-	// ‚±‚±‚Å•¨—ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (m_materialMap.contains(handle))
 	{
-		// æ“¾‚µ‚½•¨—ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚ğoutMaterial‚ÉƒRƒs[
+		// å–å¾—ã—ãŸç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’outMaterialã«ã‚³ãƒ”ãƒ¼
 		outMaterial = m_materialMap[handle].data;
-		return true; // æ“¾‚É¬Œ÷
+		return true; // å–å¾—ã«æˆåŠŸ
 	}
-	return false; // æ“¾‚É¸”s
+	return false; // å–å¾—ã«å¤±æ•—
 }
 
-// --- •¨—ƒ}ƒeƒŠƒAƒ‹‚Ìî•ñİ’è ---
+// --- ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®æƒ…å ±è¨­å®š ---
 
 bool Physics::SetMaterialData(MaterialHandle handle, const PhysicsMaterialData& material)
 {
-	// ‚±‚±‚Å•¨—ƒ}ƒeƒŠƒAƒ‹‚Ì“Á«‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç‰¹æ€§ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (m_materialMap.contains(handle))
 	{
-		// ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚ğXV
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°
 		PhysicsMaterialData& materialData = m_materialMap[handle].data;
 		materialData.staticFriction = material.staticFriction;
 		materialData.dynamicFriction = material.dynamicFriction;
 		materialData.bounciness = material.bounciness;
 		materialData.frictionCombineMode = material.frictionCombineMode;
 		materialData.bounceCombineMode = material.bounceCombineMode;
-		// PhysX‚Ìƒ}ƒeƒŠƒAƒ‹‚àXV
+		// PhysXã®ãƒãƒ†ãƒªã‚¢ãƒ«ã‚‚æ›´æ–°
 		physx::PxMaterial* pxMat = m_materialMap[handle].pxMaterial;
 		pxMat->setStaticFriction(material.staticFriction);
 		pxMat->setDynamicFriction(material.dynamicFriction);
 		pxMat->setRestitution(material.bounciness);
 		pxMat->setFrictionCombineMode(static_cast<physx::PxCombineMode::Enum>(material.frictionCombineMode));
 		pxMat->setRestitutionCombineMode(static_cast<physx::PxCombineMode::Enum>(material.bounceCombineMode));
-		return true; // İ’è‚É¬Œ÷
+		return true; // è¨­å®šã«æˆåŠŸ
 	}
-	return false; // İ’è‚É¸”s
+	return false; // è¨­å®šã«å¤±æ•—
 }
 
-// --- •¨—ƒ}ƒeƒŠƒAƒ‹ƒ}ƒbƒvŠÖ˜A ---
+// --- ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒƒãƒ—é–¢é€£ ---
 
 void Physics::UpdateMaterialNameMap()
 {
-	// ‚±‚±‚Å•¨—ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚Æƒnƒ“ƒhƒ‹‚Ìƒ}ƒbƒsƒ“ƒO‚ğXV‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã¨ãƒãƒ³ãƒ‰ãƒ«ã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’æ›´æ–°ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 
-	// ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚Æƒnƒ“ƒhƒ‹‚Ìƒ}ƒbƒsƒ“ƒO‚ªÅV‚Å‚È‚¢ê‡‚É‚Ì‚İXV‚ğs‚¤
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã¨ãƒãƒ³ãƒ‰ãƒ«ã®ãƒãƒƒãƒ”ãƒ³ã‚°ãŒæœ€æ–°ã§ãªã„å ´åˆã«ã®ã¿æ›´æ–°ã‚’è¡Œã†
 	if (m_materialNameMapDirty)
 	{
-		m_materialNameMap.clear(); // Šù‘¶‚Ìƒ}ƒbƒsƒ“ƒO‚ğƒNƒŠƒA
+		m_materialNameMap.clear(); // æ—¢å­˜ã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ã‚¯ãƒªã‚¢
 		for (const auto& pair : m_materialMap)
 		{
 			MaterialHandle handle = pair.first;
 			const std::string& name = pair.second.data.name;
-			// ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚Æƒnƒ“ƒhƒ‹‚ÌƒyƒA‚ğƒ}ƒbƒsƒ“ƒO‚É’Ç‰Á
+			// ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã¨ãƒãƒ³ãƒ‰ãƒ«ã®ãƒšã‚¢ã‚’ãƒãƒƒãƒ”ãƒ³ã‚°ã«è¿½åŠ 
 			m_materialNameMap.emplace_back(std::make_pair(name, handle));
 		}
-		m_materialNameMapDirty = false; // ƒ}ƒbƒsƒ“ƒO‚ªÅV‚É‚È‚Á‚½‚Ì‚Åƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		m_materialNameMapDirty = false; // ãƒãƒƒãƒ”ãƒ³ã‚°ãŒæœ€æ–°ã«ãªã£ãŸã®ã§ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	}
 }
 
 bool Physics::GetMaterialHandleByName(const std::string& name, MaterialHandle& outHandle)
 {
-	// ‚±‚±‚Å•¨—ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚©‚çƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
-	// ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚Æƒnƒ“ƒhƒ‹‚Ìƒ}ƒbƒsƒ“ƒO‚ªÅV‚Å‚È‚¢ê‡‚ÍXV‚·‚é
+	// ã“ã“ã§ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã‹ã‚‰ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã¨ãƒãƒ³ãƒ‰ãƒ«ã®ãƒãƒƒãƒ”ãƒ³ã‚°ãŒæœ€æ–°ã§ãªã„å ´åˆã¯æ›´æ–°ã™ã‚‹
 	UpdateMaterialNameMap();
 
 	for (const auto& pair : m_materialNameMap)
 	{
 		if (pair.first == name)
 		{
-			outHandle = pair.second; // –¼‘O‚É‘Î‰‚·‚éƒnƒ“ƒhƒ‹‚ğoutHandle‚Éİ’è
-			return true; // æ“¾‚É¬Œ÷
+			outHandle = pair.second; // åå‰ã«å¯¾å¿œã™ã‚‹ãƒãƒ³ãƒ‰ãƒ«ã‚’outHandleã«è¨­å®š
+			return true; // å–å¾—ã«æˆåŠŸ
 		}
 	}
-	outHandle = INVALID_MATERIAL_HANDLE; // æ“¾‚É¸”s‚µ‚½ê‡‚ÍINVALID_MATERIAL_HANDLE‚ğ•Ô‚·
-	return false; // æ“¾‚É¸”s
+	outHandle = INVALID_MATERIAL_HANDLE; // å–å¾—ã«å¤±æ•—ã—ãŸå ´åˆã¯INVALID_MATERIAL_HANDLEã‚’è¿”ã™
+	return false; // å–å¾—ã«å¤±æ•—
 }
 
 void Physics::GetAllMaterialNamesAndHandles(std::vector<const char*>& outNames, std::vector<MaterialHandle>& outHandles)
 {
-	// ‚±‚±‚Å•¨—ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚Æƒnƒ“ƒhƒ‹‚Ìˆê——‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
-	// ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O‚Æƒnƒ“ƒhƒ‹‚Ìƒ}ƒbƒsƒ“ƒO‚ªÅV‚Å‚È‚¢ê‡‚ÍXV‚·‚é
+	// ã“ã“ã§ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã¨ãƒãƒ³ãƒ‰ãƒ«ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰ã¨ãƒãƒ³ãƒ‰ãƒ«ã®ãƒãƒƒãƒ”ãƒ³ã‚°ãŒæœ€æ–°ã§ãªã„å ´åˆã¯æ›´æ–°ã™ã‚‹
 	UpdateMaterialNameMap();
 	outNames.clear();
 	outHandles.clear();
 	for (const auto& pair : m_materialNameMap)
 	{
-		outNames.push_back(pair.first.c_str()); // –¼‘O‚ğoutNames‚É’Ç‰Á
-		outHandles.push_back(pair.second); // ƒnƒ“ƒhƒ‹‚ğoutHandles‚É’Ç‰Á
+		outNames.push_back(pair.first.c_str()); // åå‰ã‚’outNamesã«è¿½åŠ 
+		outHandles.push_back(pair.second); // ãƒãƒ³ãƒ‰ãƒ«ã‚’outHandlesã«è¿½åŠ 
 	}
 }
 
-// --- •¨—‘€ì (Rigidbody) ‚Ì‘‹Œû ---
+// --- ç‰©ç†æ“ä½œ (Rigidbody) ã®çª“å£ ---
 
 void Physics::SetMass(const ActorHandle& handle, float mass)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì¿—Ê‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è³ªé‡ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		if (std::isinf(mass) || std::isnan(mass))
 		{
-			mass = 0.0001f; // ¿—Ê‚ª–³ŒÀ‘å‚Ü‚½‚ÍNaN‚Ìê‡‚ÍÅ¬’l‚ÉƒNƒ‰ƒ“ƒv‚µ‚Äİ’è‚·‚é
+			mass = 0.0001f; // è³ªé‡ãŒç„¡é™å¤§ã¾ãŸã¯NaNã®å ´åˆã¯æœ€å°å€¤ã«ã‚¯ãƒ©ãƒ³ãƒ—ã—ã¦è¨­å®šã™ã‚‹
 			Console::LogWarning("Invalid mass value! Mass must be finite and non-NaN. Mass has been clamped to 0.0001.");
 		}
 		if (dynamicActor->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION)
 		{
-			// ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ª–³Œø‚ÈActor‚Ìê‡‚Í¿—Ê‚ğİ’è‚µ‚Ä‚àˆÓ–¡‚ª‚È‚¢‚½‚ßA¿—Ê‚ğİ’è‚¹‚¸‚ÉI—¹‚·‚é
+			// ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãŒç„¡åŠ¹ãªActorã®å ´åˆã¯è³ªé‡ã‚’è¨­å®šã—ã¦ã‚‚æ„å‘³ãŒãªã„ãŸã‚ã€è³ªé‡ã‚’è¨­å®šã›ãšã«çµ‚äº†ã™ã‚‹
 			Console::LogWarning("Attempted to set mass on an actor with simulation disabled! Mass will not be set.");
 			return;
 		}
 		if (dynamicActor->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC)
 		{
-			// ƒLƒlƒ}ƒeƒBƒbƒN‚ÈActor‚Ìê‡‚Í¿—Ê‚ğİ’è‚µ‚Ä‚àˆÓ–¡‚ª‚È‚¢‚½‚ßA¿—Ê‚ğİ’è‚¹‚¸‚ÉI—¹‚·‚é
+			// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãªActorã®å ´åˆã¯è³ªé‡ã‚’è¨­å®šã—ã¦ã‚‚æ„å‘³ãŒãªã„ãŸã‚ã€è³ªé‡ã‚’è¨­å®šã›ãšã«çµ‚äº†ã™ã‚‹
 			Console::LogWarning("Attempted to set mass on a kinematic actor! Mass will not be set.");
 			return;
 		}
 
-		// ¿—Ê‚ğİ’è‚µ‚ÄŠµ«‚ğXV‚·‚é
+		// è³ªé‡ã‚’è¨­å®šã—ã¦æ…£æ€§ã‚’æ›´æ–°ã™ã‚‹
 		{
 			//dynamicActor->setMass(mass);
-			physx::PxRigidBodyExt::setMassAndUpdateInertia(*dynamicActor, mass); // ¿—Ê‚ğİ’è‚µ‚ÄŠµ«‚ğXV
+			physx::PxRigidBodyExt::setMassAndUpdateInertia(*dynamicActor, mass); // è³ªé‡ã‚’è¨­å®šã—ã¦æ…£æ€§ã‚’æ›´æ–°
 		}
 	}
 }
 
 void Physics::SetInertiaTensor(const ActorHandle& handle, const Vector3& inertiaTensor)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠµ«ƒeƒ“ƒ\ƒ‹‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ…£æ€§ãƒ†ãƒ³ã‚½ãƒ«ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		if (std::isinf(inertiaTensor.x) || std::isnan(inertiaTensor.x) ||
 			std::isinf(inertiaTensor.y) || std::isnan(inertiaTensor.y) ||
 			std::isinf(inertiaTensor.z) || std::isnan(inertiaTensor.z))
 		{
-			// Šµ«ƒeƒ“ƒ\ƒ‹‚Ì‚¢‚¸‚ê‚©‚Ì¬•ª‚ª–³ŒÀ‘å‚Ü‚½‚ÍNaN‚Ìê‡‚ÍAŠµ«ƒeƒ“ƒ\ƒ‹‚ğİ’è‚¹‚¸‚ÉI—¹‚·‚é
+			// æ…£æ€§ãƒ†ãƒ³ã‚½ãƒ«ã®ã„ãšã‚Œã‹ã®æˆåˆ†ãŒç„¡é™å¤§ã¾ãŸã¯NaNã®å ´åˆã¯ã€æ…£æ€§ãƒ†ãƒ³ã‚½ãƒ«ã‚’è¨­å®šã›ãšã«çµ‚äº†ã™ã‚‹
 			Console::LogError("Invalid inertia tensor value! Inertia tensor components must be finite and non-NaN. Inertia tensor will not be set.");
 			return;
 		}
@@ -2199,7 +2199,7 @@ void Physics::SetInertiaTensor(const ActorHandle& handle, const Vector3& inertia
 
 void Physics::WakeUp(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ‹N‚±‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’èµ·ã“ã™å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->wakeUp();
@@ -2208,7 +2208,7 @@ void Physics::WakeUp(const ActorHandle& handle)
 
 void Physics::PutToSleep(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ‹x‚Ü‚¹‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¼‘ã¾ã›ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->putToSleep();
@@ -2217,54 +2217,54 @@ void Physics::PutToSleep(const ActorHandle& handle)
 
 bool Physics::IsSleeping(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ª‹x~ó‘Ô‚©‚Ç‚¤‚©‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒä¼‘æ­¢çŠ¶æ…‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		return dynamicActor->isSleeping();
 	}
-	return false; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Ífalse‚ğ•Ô‚·
+	return false; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯falseã‚’è¿”ã™
 }
 
 void Physics::SetMaterial(const ShapeHandle& shapeHandle, const MaterialHandle& materialHandle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì•¨—ƒ}ƒeƒŠƒAƒ‹‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
-		shape->setMaterials(&m_materialMap[materialHandle].pxMaterial, 1); // V‚µ‚¢•¨—ƒ}ƒeƒŠƒAƒ‹‚ğİ’è
+		shape->setMaterials(&m_materialMap[materialHandle].pxMaterial, 1); // æ–°ã—ã„ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®š
 	}
 }
 
 void Physics::SetTrigger(const ShapeHandle& shapeHandle, bool isTrigger)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒVƒFƒCƒv‚ğƒgƒŠƒK[‚Éİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚·ã‚§ã‚¤ãƒ—ã‚’ãƒˆãƒªã‚¬ãƒ¼ã«è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
-		// ˆê’UƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒVƒFƒCƒvƒtƒ‰ƒO‚ÆƒgƒŠƒK[ƒVƒFƒCƒvƒtƒ‰ƒO‚ğ—¼•û‚Æ‚àƒŠƒZƒbƒg‚µ‚Ä‚©‚çAisTrigger‚Ì’l‚É‰‚¶‚Äƒtƒ‰ƒO‚ğİ’è‚·‚é
-		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false); // ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒVƒFƒCƒvƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
-		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false); // ƒgƒŠƒK[ƒVƒFƒCƒvƒtƒ‰ƒO‚ğƒŠƒZƒbƒg	
+		// ä¸€æ—¦ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã¨ãƒˆãƒªã‚¬ãƒ¼ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’ä¸¡æ–¹ã¨ã‚‚ãƒªã‚»ãƒƒãƒˆã—ã¦ã‹ã‚‰ã€isTriggerã®å€¤ã«å¿œã˜ã¦ãƒ•ãƒ©ã‚°ã‚’è¨­å®šã™ã‚‹
+		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false); // ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
+		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false); // ãƒˆãƒªã‚¬ãƒ¼ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ	
 
-		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, !isTrigger); // ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒVƒFƒCƒvƒtƒ‰ƒO‚ğİ’è
-		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, isTrigger); // ƒgƒŠƒK[ƒVƒFƒCƒvƒtƒ‰ƒO‚ğİ’è
+		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, !isTrigger); // ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, isTrigger); // ãƒˆãƒªã‚¬ãƒ¼ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	}
 }
 
 void Physics::SetContactOffset(const ShapeHandle& shapeHandle, float offset)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒVƒFƒCƒv‚ÌÚGƒIƒtƒZƒbƒg‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚·ã‚§ã‚¤ãƒ—ã®æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
 		shape->setContactOffset(offset);
-		// TODO: Physx‚Ìd—l‚ğŠm”F‚µ‚ÄAÚGƒIƒtƒZƒbƒg‚ğ•ÏX‚µ‚½‚Æ‚«‚É‹x~ƒIƒtƒZƒbƒg‚à“KØ‚ÉXV‚·‚é•K—v‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é•K—v‚ª‚ ‚é
+		// TODO: Physxã®ä»•æ§˜ã‚’ç¢ºèªã—ã¦ã€æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’å¤‰æ›´ã—ãŸã¨ãã«ä¼‘æ­¢ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚‚é©åˆ‡ã«æ›´æ–°ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤æ–­ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
 		if (offset < shape->getRestOffset())
 		{
-			shape->setRestOffset(offset); // ÚGƒIƒtƒZƒbƒg‚ªŒ»İ‚Ì‹x~ƒIƒtƒZƒbƒg‚æ‚è¬‚³‚¢ê‡‚ÍA‹x~ƒIƒtƒZƒbƒg‚àXV‚·‚é
+			shape->setRestOffset(offset); // æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆãŒç¾åœ¨ã®ä¼‘æ­¢ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚ˆã‚Šå°ã•ã„å ´åˆã¯ã€ä¼‘æ­¢ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚‚æ›´æ–°ã™ã‚‹
 		}
 	}
 }
 
 void Physics::SetUseGravity(const ActorHandle& handle, bool useGravity)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìd—Í‚Ì‰e‹¿‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é‡åŠ›ã®å½±éŸ¿ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, !useGravity);
@@ -2273,7 +2273,7 @@ void Physics::SetUseGravity(const ActorHandle& handle, bool useGravity)
 
 void Physics::SetUseCCD(const ActorHandle& handle, bool useCCD)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì˜A‘±“I‚ÈÕ“ËŒŸ’m‚Ìg—p‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é€£ç¶šçš„ãªè¡çªæ¤œçŸ¥ã®ä½¿ç”¨ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, useCCD);
@@ -2282,7 +2282,7 @@ void Physics::SetUseCCD(const ActorHandle& handle, bool useCCD)
 
 void Physics::SetConstraints(const ActorHandle& handle, physx::PxRigidDynamicLockFlags constraints)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒLƒlƒ}ƒeƒBƒbƒNó‘Ô‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setRigidDynamicLockFlags(constraints);
@@ -2291,17 +2291,17 @@ void Physics::SetConstraints(const ActorHandle& handle, physx::PxRigidDynamicLoc
 
 physx::PxRigidDynamicLockFlags Physics::GetConstraints(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒLƒlƒ}ƒeƒBƒbƒNó‘Ô‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		return dynamicActor->getRigidDynamicLockFlags();
 	}
-	return physx::PxRigidDynamicLockFlags(0); // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Í§–ñ‚È‚µ‚ğ•Ô‚·
+	return physx::PxRigidDynamicLockFlags(0); // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯åˆ¶ç´„ãªã—ã‚’è¿”ã™
 }
 
 void Physics::SetLinearDamping(const ActorHandle& handle, float linearDamping)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌüŒ`Œ¸Š‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç·šå½¢æ¸›è¡°ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setLinearDamping(linearDamping);
@@ -2310,36 +2310,36 @@ void Physics::SetLinearDamping(const ActorHandle& handle, float linearDamping)
 
 float Physics::GetLinearDamping(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌüŒ`Œ¸Š‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç·šå½¢æ¸›è¡°ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		return dynamicActor->getLinearDamping();
 	}
-	return 0.0f; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0.0f; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 void Physics::SetLinearDrag(const ActorHandle& handle, float linearDrag)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌüŒ`’ïR‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç·šå½¢æŠµæŠ—ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
-		dynamicActor->setLinearDamping(linearDrag); // PhysX‚ÍüŒ`’ïR‚ğüŒ`Œ¸Š‚Æ‚µ‚Äˆµ‚¤‚½‚ßAsetLinearDamping‚ğŒÄ‚Ño‚·
+		dynamicActor->setLinearDamping(linearDrag); // PhysXã¯ç·šå½¢æŠµæŠ—ã‚’ç·šå½¢æ¸›è¡°ã¨ã—ã¦æ‰±ã†ãŸã‚ã€setLinearDampingã‚’å‘¼ã³å‡ºã™
 	}
 }
 
 float Physics::GetLinearDrag(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌüŒ`’ïR‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç·šå½¢æŠµæŠ—ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
-		return dynamicActor->getLinearDamping(); // PhysX‚ÍüŒ`’ïR‚ğüŒ`Œ¸Š‚Æ‚µ‚Äˆµ‚¤‚½‚ßAgetLinearDamping‚ğŒÄ‚Ño‚·
+		return dynamicActor->getLinearDamping(); // PhysXã¯ç·šå½¢æŠµæŠ—ã‚’ç·šå½¢æ¸›è¡°ã¨ã—ã¦æ‰±ã†ãŸã‚ã€getLinearDampingã‚’å‘¼ã³å‡ºã™
 	}
-	return 0.0f; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0.0f; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 void Physics::SetMaxLinearVelocity(const ActorHandle& handle, float maxLinearVelocity)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌÅ‘åüŒ`‘¬“x‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ€å¤§ç·šå½¢é€Ÿåº¦ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setMaxLinearVelocity(maxLinearVelocity);
@@ -2348,17 +2348,17 @@ void Physics::SetMaxLinearVelocity(const ActorHandle& handle, float maxLinearVel
 
 float Physics::GetMaxLinearVelocity(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌÅ‘åüŒ`‘¬“x‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ€å¤§ç·šå½¢é€Ÿåº¦ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		return dynamicActor->getMaxLinearVelocity();
 	}
-	return 0.0f; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0.0f; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 void Physics::SetAngularDamping(const ActorHandle& handle, float angularDamping)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠpŒ¸Š‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§’æ¸›è¡°ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setAngularDamping(angularDamping);
@@ -2367,36 +2367,36 @@ void Physics::SetAngularDamping(const ActorHandle& handle, float angularDamping)
 
 float Physics::GetAngularDamping(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠpŒ¸Š‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§’æ¸›è¡°ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		return dynamicActor->getAngularDamping();
 	}
-	return 0.0f; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0.0f; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 void Physics::SetAngularDrag(const ActorHandle& handle, float angularDrag)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠp’ïR‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§’æŠµæŠ—ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
-		dynamicActor->setAngularDamping(angularDrag); // PhysX‚ÍŠp’ïR‚ğŠpŒ¸Š‚Æ‚µ‚Äˆµ‚¤‚½‚ßAsetAngularDamping‚ğŒÄ‚Ño‚·
+		dynamicActor->setAngularDamping(angularDrag); // PhysXã¯è§’æŠµæŠ—ã‚’è§’æ¸›è¡°ã¨ã—ã¦æ‰±ã†ãŸã‚ã€setAngularDampingã‚’å‘¼ã³å‡ºã™
 	}
 }
 
 float Physics::GetAngularDrag(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠp’ïR‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§’æŠµæŠ—ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
-		return dynamicActor->getAngularDamping(); // PhysX‚ÍŠp’ïR‚ğŠpŒ¸Š‚Æ‚µ‚Äˆµ‚¤‚½‚ßAgetAngularDamping‚ğŒÄ‚Ño‚·
+		return dynamicActor->getAngularDamping(); // PhysXã¯è§’æŠµæŠ—ã‚’è§’æ¸›è¡°ã¨ã—ã¦æ‰±ã†ãŸã‚ã€getAngularDampingã‚’å‘¼ã³å‡ºã™
 	}
-	return 0.0f; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0.0f; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 void Physics::SetMaxAngularVelocity(const ActorHandle& handle, float maxAngularVelocity)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌÅ‘åŠp‘¬“x‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ€å¤§è§’é€Ÿåº¦ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setMaxAngularVelocity(maxAngularVelocity);
@@ -2405,17 +2405,17 @@ void Physics::SetMaxAngularVelocity(const ActorHandle& handle, float maxAngularV
 
 float Physics::GetMaxAngularVelocity(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌÅ‘åŠp‘¬“x‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ€å¤§è§’é€Ÿåº¦ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		return dynamicActor->getMaxAngularVelocity();
 	}
-	return 0.0f; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0.0f; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 void Physics::SetSleepThreshold(const ActorHandle& handle, float sleepThreshold)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì‹x~ƒXƒŒƒbƒVƒ‡ƒ‹ƒh‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä¼‘æ­¢ã‚¹ãƒ¬ãƒƒã‚·ãƒ§ãƒ«ãƒ‰ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setSleepThreshold(sleepThreshold);
@@ -2424,17 +2424,17 @@ void Physics::SetSleepThreshold(const ActorHandle& handle, float sleepThreshold)
 
 float Physics::GetSleepThreshold(const ActorHandle& handle)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì‹x~ƒXƒŒƒbƒVƒ‡ƒ‹ƒh‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä¼‘æ­¢ã‚¹ãƒ¬ãƒƒã‚·ãƒ§ãƒ«ãƒ‰ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		return dynamicActor->getSleepThreshold();
 	}
-	return 0.0f; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Í0‚ğ•Ô‚·
+	return 0.0f; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯0ã‚’è¿”ã™
 }
 
 void Physics::AddForce(const ActorHandle& handle, const Vector3& force, physx::PxForceMode::Enum mode)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚É—Í‚ğ‰Á‚¦‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«åŠ›ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->addForce(ToPxVec3(force), mode, true);
@@ -2443,55 +2443,55 @@ void Physics::AddForce(const ActorHandle& handle, const Vector3& force, physx::P
 
 void Physics::AddLocalForceAtLocalPosition(const ActorHandle& handle, const Vector3& localForce, const Vector3& localPosition, physx::PxForceMode::Enum mode)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìƒ[ƒJƒ‹ˆÊ’u‚É—Í‚ğ‰Á‚¦‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		physx::PxVec3 physxLocalForce = ToPxVec3(localForce);
 		physx::PxVec3 physxLocalPosition = ToPxVec3(localPosition);
-		// •¨—ƒGƒ“ƒWƒ“‚ÌŠg’£‹@”\‚ğg—p‚µ‚ÄAƒ[ƒJƒ‹ˆÊ’u‚É—Í‚ğ‰Á‚¦‚é
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®æ‹¡å¼µæ©Ÿèƒ½ã‚’ä½¿ç”¨ã—ã¦ã€ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹
 		physx::PxRigidBodyExt::addLocalForceAtLocalPos(*dynamicActor, physxLocalForce, physxLocalPosition, mode, true);
 	}
 }
 
 void Physics::AddLocalForceAtPosition(const ActorHandle& handle, const Vector3& localForce, const Vector3& position, physx::PxForceMode::Enum mode)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì“Á’è‚ÌˆÊ’u‚É—Í‚ğ‰Á‚¦‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç‰¹å®šã®ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		physx::PxVec3 physxLocalForce = ToPxVec3(localForce);
 		physx::PxVec3 physxPosition = ToPxVec3(position);
-		// •¨—ƒGƒ“ƒWƒ“‚ÌŠg’£‹@”\‚ğg—p‚µ‚ÄA“Á’è‚ÌˆÊ’u‚É—Í‚ğ‰Á‚¦‚é
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®æ‹¡å¼µæ©Ÿèƒ½ã‚’ä½¿ç”¨ã—ã¦ã€ç‰¹å®šã®ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹
 		physx::PxRigidBodyExt::addLocalForceAtPos(*dynamicActor, physxLocalForce, physxPosition, mode, true);
 	}
 }
 
 void Physics::AddForceAtLocalPosition(const ActorHandle& handle, const Vector3& force, const Vector3& localPosition, physx::PxForceMode::Enum mode)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìƒ[ƒJƒ‹ˆÊ’u‚É—Í‚ğ‰Á‚¦‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		physx::PxVec3 physxForce = ToPxVec3(force);
 		physx::PxVec3 physxLocalPosition = ToPxVec3(localPosition);
-		// •¨—ƒGƒ“ƒWƒ“‚ÌŠg’£‹@”\‚ğg—p‚µ‚ÄAƒ[ƒJƒ‹ˆÊ’u‚É—Í‚ğ‰Á‚¦‚é
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®æ‹¡å¼µæ©Ÿèƒ½ã‚’ä½¿ç”¨ã—ã¦ã€ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹
 		physx::PxRigidBodyExt::addForceAtLocalPos(*dynamicActor, physxForce, physxLocalPosition, mode, true);
 	}
 }
 
 void Physics::AddForceAtPosition(const ActorHandle& handle, const Vector3& force, const Vector3& position, physx::PxForceMode::Enum mode)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì“Á’è‚ÌˆÊ’u‚É—Í‚ğ‰Á‚¦‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç‰¹å®šã®ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		physx::PxVec3 physxForce = ToPxVec3(force);
 		physx::PxVec3 physxPosition = ToPxVec3(position);
-		// •¨—ƒGƒ“ƒWƒ“‚ÌŠg’£‹@”\‚ğg—p‚µ‚ÄA“Á’è‚ÌˆÊ’u‚É—Í‚ğ‰Á‚¦‚é
+		// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®æ‹¡å¼µæ©Ÿèƒ½ã‚’ä½¿ç”¨ã—ã¦ã€ç‰¹å®šã®ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹
 		physx::PxRigidBodyExt::addForceAtPos(*dynamicActor, physxForce, physxPosition, mode, true);
 	}
 }
 
 void Physics::AddTorque(const ActorHandle& handle, const Vector3& torque, physx::PxForceMode::Enum mode)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Éƒgƒ‹ƒN‚ğ‰Á‚¦‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒˆãƒ«ã‚¯ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->addTorque(ToPxVec3(torque), mode, true);
@@ -2500,7 +2500,7 @@ void Physics::AddTorque(const ActorHandle& handle, const Vector3& torque, physx:
 
 void Physics::SetVelocity(const ActorHandle& handle, const Vector3& velocity)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì‘¬“x‚ğ’¼Úİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é€Ÿåº¦ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setLinearVelocity(ToPxVec3(velocity));
@@ -2509,20 +2509,20 @@ void Physics::SetVelocity(const ActorHandle& handle, const Vector3& velocity)
 
 void Physics::GetVelocity(const ActorHandle& handle, Vector3& outVelocity)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì‘¬“x‚ğ’¼Úæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é€Ÿåº¦ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		outVelocity = ToVector3(dynamicActor->getLinearVelocity());
 	}
 	else
 	{
-		outVelocity = Vector3(0, 0, 0); // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Íƒ[ƒƒxƒNƒgƒ‹‚ğ•Ô‚·
+		outVelocity = Vector3(0, 0, 0); // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
 	}
 }
 
 void Physics::SetAngularVelocity(const ActorHandle& handle, const Vector3& angularVelocity)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠp‘¬“x‚ğ’¼Úİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§’é€Ÿåº¦ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setAngularVelocity(ToPxVec3(angularVelocity));
@@ -2531,20 +2531,20 @@ void Physics::SetAngularVelocity(const ActorHandle& handle, const Vector3& angul
 
 void Physics::GetAngularVelocity(const ActorHandle& handle, Vector3& outAngularVelocity)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌŠp‘¬“x‚ğ’¼Úæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§’é€Ÿåº¦ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		outAngularVelocity = ToVector3(dynamicActor->getAngularVelocity());
 	}
 	else
 	{
-		outAngularVelocity = Vector3(0, 0, 0); // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Íƒ[ƒƒxƒNƒgƒ‹‚ğ•Ô‚·
+		outAngularVelocity = Vector3(0, 0, 0); // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
 	}
 }
 
 void Physics::SetKinematic(const ActorHandle& handle, bool isKinematic)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒLƒlƒ}ƒeƒBƒbƒNó‘Ô‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		dynamicActor->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, isKinematic);
@@ -2553,32 +2553,32 @@ void Physics::SetKinematic(const ActorHandle& handle, bool isKinematic)
 
 void Physics::SetKinematicTarget(const ActorHandle& handle, const Vector3& pos, const Quaternion& rot)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğ’¼Úİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 	{
 		if (dynamicActor->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION)
 		{
 			Console::LogWarning("Attempting to set kinematic target on an actor that is disabled for simulation. This will have no effect.");
-			return; // ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ª–³Œø‚ÈActor‚É‘Î‚µ‚ÄƒLƒlƒ}ƒeƒBƒbƒNƒ^[ƒQƒbƒg‚ğİ’è‚µ‚æ‚¤‚Æ‚µ‚½ê‡‚ÍŒx‚ğo‚µ‚Äˆ—‚ğƒXƒLƒbƒv‚·‚é
+			return; // ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãŒç„¡åŠ¹ãªActorã«å¯¾ã—ã¦ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®šã—ã‚ˆã†ã¨ã—ãŸå ´åˆã¯è­¦å‘Šã‚’å‡ºã—ã¦å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹
 		}
 		physx::PxQuat quat = ToPxQuat(rot);
-		quat.normalize(); // ƒNƒH[ƒ^ƒjƒIƒ“‚ğ³‹K‰»‚µ‚Ä‰ñ“]‚ÌˆÀ’è«‚ğ•Û‚Â
+		quat.normalize(); // ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’æ­£è¦åŒ–ã—ã¦å›è»¢ã®å®‰å®šæ€§ã‚’ä¿ã¤
 		dynamicActor->setKinematicTarget(physx::PxTransform(ToPxVec3(pos), quat));
 	}
 }
 
 void Physics::SetGlobalPose(const ActorHandle& handle, const Vector3& pos, const Quaternion& rot)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğ’¼Úİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidActor* actor = GetActor(handle))
 	{
 		physx::PxVec3 position = ToPxVec3(pos);
 		physx::PxQuat rotation = ToPxQuat(rot);
-		rotation.normalize(); // ƒNƒH[ƒ^ƒjƒIƒ“‚ğ³‹K‰»‚µ‚Ä‰ñ“]‚ÌˆÀ’è«‚ğ•Û‚Â
-		// Actor‚ÌƒOƒ[ƒoƒ‹ƒ|[ƒY‚ğİ’è
+		rotation.normalize(); // ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’æ­£è¦åŒ–ã—ã¦å›è»¢ã®å®‰å®šæ€§ã‚’ä¿ã¤
+		// Actorã®ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒ¼ã‚ºã‚’è¨­å®š
 		if (physx::PxRigidDynamic* dynamicActor = GetRigidDynamic(handle))
 		{
-			// ˆÊ’u‚ğ’¼Úİ’è‚·‚é‘O‚É‘¬“x‚ğƒ[ƒ‚É‚µ‚ÄA•¨—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚É‚æ‚é—\Šú‚¹‚Ê“®‚«‚ğ–h~‚·‚é
+			// ä½ç½®ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‰ã«é€Ÿåº¦ã‚’ã‚¼ãƒ­ã«ã—ã¦ã€ç‰©ç†ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã«ã‚ˆã‚‹äºˆæœŸã›ã¬å‹•ãã‚’é˜²æ­¢ã™ã‚‹
 			dynamicActor->setLinearVelocity({ 0,0,0 });
 			dynamicActor->setAngularVelocity({ 0,0,0 });
 		}
@@ -2588,7 +2588,7 @@ void Physics::SetGlobalPose(const ActorHandle& handle, const Vector3& pos, const
 
 void Physics::GetGlobalPose(const ActorHandle& handle, Vector3& outPos, Quaternion& outRot)
 {
-	// ‚±‚±‚ÅRigidbody‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğ’¼Úİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§Rigidbodyã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidActor* actor = GetActor(handle))
 	{
 		physx::PxTransform globalPose = actor->getGlobalPose();
@@ -2599,7 +2599,7 @@ void Physics::GetGlobalPose(const ActorHandle& handle, Vector3& outPos, Quaterni
 
 void Physics::GetLocalPose(const ShapeHandle& shapeHandle, Vector3& outLocalPos, Quaternion& outLocalRot)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor “à‚Ì ShapeHandle ‚É‘Î‰‚·‚éShape‚Ìƒ[ƒJƒ‹ˆÊ’u‚Æ‰ñ“]‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor å†…ã® ShapeHandle ã«å¯¾å¿œã™ã‚‹Shapeã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã¨å›è»¢ã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
 		physx::PxTransform localPose = shape->getLocalPose();
@@ -2610,31 +2610,31 @@ void Physics::GetLocalPose(const ShapeHandle& shapeHandle, Vector3& outLocalPos,
 
 void Physics::SetLocalPose(const ShapeHandle& shapeHandle, const Vector3& localPos, const Quaternion& localRot)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor “à‚Ì ShapeHandle ‚É‘Î‰‚·‚éShape‚Ìƒ[ƒJƒ‹ˆÊ’u‚Æ‰ñ“]‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor å†…ã® ShapeHandle ã«å¯¾å¿œã™ã‚‹Shapeã®ãƒ­ãƒ¼ã‚«ãƒ«ä½ç½®ã¨å›è»¢ã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
-		// Shape‚ªActor‚ÉƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚é‚©Šm”F
+		// ShapeãŒActorã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª
 		if (shape->getActor() && shape->getActor()->is<physx::PxRigidActor>())
 		{
-			// Shape‚Ìƒ[ƒJƒ‹ƒ|[ƒY‚ğİ’è
+			// Shapeã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒ¼ã‚ºã‚’è¨­å®š
 			physx::PxVec3 pos = ToPxVec3(localPos);
 			physx::PxQuat quat = ToPxQuat(localRot);
-			quat.normalize(); // ƒNƒH[ƒ^ƒjƒIƒ“‚ğ³‹K‰»‚µ‚Ä‰ñ“]‚ÌˆÀ’è«‚ğ•Û‚Â
+			quat.normalize(); // ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’æ­£è¦åŒ–ã—ã¦å›è»¢ã®å®‰å®šæ€§ã‚’ä¿ã¤
 			physx::PxTransform localPose = physx::PxTransform(pos, quat);
 			if (!localPose.isValid())
 			{
 				_ASSERT_EXPR(false, "Invalid local pose! Position and rotation must be finite and rotation must be normalized.");
-				return; // ƒ[ƒJƒ‹ƒ|[ƒY‚ª–³Œø‚Èê‡‚Íİ’è‚ğƒXƒLƒbƒv
+				return; // ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒ¼ã‚ºãŒç„¡åŠ¹ãªå ´åˆã¯è¨­å®šã‚’ã‚¹ã‚­ãƒƒãƒ—
 			}
 			shape->setLocalPose(localPose);
 		}
 
-		// ƒ[ƒJƒ‹ƒ|[ƒY‚ğ•ÏX‚µ‚½Œã‚ÍA“®“I‚ÈActor‚ğ‹N‚±‚·•K—v‚ª‚ ‚éê‡‚ª‚ ‚é‚½‚ßAwakeUp‚ğŒÄ‚Ño‚·
+		// ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒ¼ã‚ºã‚’å¤‰æ›´ã—ãŸå¾Œã¯ã€å‹•çš„ãªActorã‚’èµ·ã“ã™å¿…è¦ãŒã‚ã‚‹å ´åˆãŒã‚ã‚‹ãŸã‚ã€wakeUpã‚’å‘¼ã³å‡ºã™
 		if (physx::PxRigidDynamic* dynamic = shape->getActor()->is<physx::PxRigidDynamic>())
 		{
 			if (dynamic->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC)
 			{
-				// ƒLƒlƒ}ƒeƒBƒbƒN‚ÈActor‚Ìê‡‚ÍˆÊ’u‚ğ’¼Úİ’è‚µ‚Ä‚¢‚é‚½‚ßAwakeUp‚Í•K—v‚È‚¢
+				// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãªActorã®å ´åˆã¯ä½ç½®ã‚’ç›´æ¥è¨­å®šã—ã¦ã„ã‚‹ãŸã‚ã€wakeUpã¯å¿…è¦ãªã„
 			}
 			else
 			{
@@ -2646,114 +2646,114 @@ void Physics::SetLocalPose(const ShapeHandle& shapeHandle, const Vector3& localP
 
 void Physics::GetGeometry(const ShapeHandle& shapeHandle, physx::PxGeometry& outGeometry)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor “à‚Ì ShapeHandle ‚É‘Î‰‚·‚éShape‚ÌƒWƒIƒƒgƒŠ‚ğæ“¾‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor å†…ã® ShapeHandle ã«å¯¾å¿œã™ã‚‹Shapeã®ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’å–å¾—ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
-		outGeometry = shape->getGeometry(); // Shape‚ÌƒWƒIƒƒgƒŠ‚ğæ“¾
+		outGeometry = shape->getGeometry(); // Shapeã®ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’å–å¾—
 	}
 }
 
 void Physics::SetGeometry(const ShapeHandle& shapeHandle, const physx::PxGeometry& geometry)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor “à‚Ì ShapeHandle ‚É‘Î‰‚·‚éShape‚ÌƒWƒIƒƒgƒŠ‚ğİ’è‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor å†…ã® ShapeHandle ã«å¯¾å¿œã™ã‚‹Shapeã®ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’è¨­å®šã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
-		shape->setGeometry(geometry); // Shape‚ÌƒWƒIƒƒgƒŠ‚ğİ’è
+		shape->setGeometry(geometry); // Shapeã®ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚’è¨­å®š
 	}
 }
 
 void Physics::SetActorEnable(const ActorHandle& actorHandle, bool enable)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor ‚ğ—LŒø/–³Œø‚É‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor ã‚’æœ‰åŠ¹/ç„¡åŠ¹ã«ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidActor* actor = GetActor(actorHandle))
 	{
-		actor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !enable); // ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒtƒ‰ƒO‚ğİ’è
+		actor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !enable); // ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	}
 }
 
 bool Physics::IsActorEnabled(const ActorHandle& actorHandle)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor ‚ª—LŒø‚©‚Ç‚¤‚©‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor ãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxRigidActor* actor = GetActor(actorHandle))
 	{
-		return !(actor->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION); // ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“–³Œøƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚È‚¢ê‡‚Í—LŒø‚Æ‚İ‚È‚·
+		return !(actor->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION); // ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ç„¡åŠ¹ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ãªã„å ´åˆã¯æœ‰åŠ¹ã¨ã¿ãªã™
 	}
-	return false; // Actor‚ª‘¶İ‚µ‚È‚¢ê‡‚Ífalse‚ğ•Ô‚·
+	return false; // ActorãŒå­˜åœ¨ã—ãªã„å ´åˆã¯falseã‚’è¿”ã™
 }
 
 void Physics::SetShapeEnable(const ShapeHandle& shapeHandle, bool enable, const ColliderData& colliderData)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor “à‚Ì ShapeHandle ‚É‘Î‰‚·‚éShape‚ğ—LŒø/–³Œø‚É‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor å†…ã® ShapeHandle ã«å¯¾å¿œã™ã‚‹Shapeã‚’æœ‰åŠ¹/ç„¡åŠ¹ã«ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
-		// ˆê’UƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒVƒFƒCƒvƒtƒ‰ƒO‚ÆƒgƒŠƒK[ƒVƒFƒCƒvƒtƒ‰ƒO‚ğ—¼•û‚Æ‚àƒŠƒZƒbƒg‚µ‚Ä‚©‚çAisTrigger‚Ì’l‚É‰‚¶‚Äƒtƒ‰ƒO‚ğİ’è‚·‚é
-		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false); // ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒVƒFƒCƒvƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
-		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false); // ƒgƒŠƒK[ƒVƒFƒCƒvƒtƒ‰ƒO‚ğƒŠƒZƒbƒg	
+		// ä¸€æ—¦ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã¨ãƒˆãƒªã‚¬ãƒ¼ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’ä¸¡æ–¹ã¨ã‚‚ãƒªã‚»ãƒƒãƒˆã—ã¦ã‹ã‚‰ã€isTriggerã®å€¤ã«å¿œã˜ã¦ãƒ•ãƒ©ã‚°ã‚’è¨­å®šã™ã‚‹
+		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false); // ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
+		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, false); // ãƒˆãƒªã‚¬ãƒ¼ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ	
 
-		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, colliderData.isTrigger ? false : enable); // ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒVƒFƒCƒvƒtƒ‰ƒO‚ğİ’è
-		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, enable ? colliderData.isTrigger : false); // ƒgƒŠƒK[ƒVƒFƒCƒvƒtƒ‰ƒO‚ğİ’è
-		shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, enable); // ƒV[ƒ“ƒNƒGƒŠ[ƒVƒFƒCƒvƒtƒ‰ƒO‚ğİ’è
-		//shape->setFlag(physx::PxShapeFlag::eVISUALIZATION, enable); // ƒrƒWƒ…ƒAƒ‰ƒCƒ[[ƒVƒ‡ƒ“ƒtƒ‰ƒO‚ğİ’è(ƒfƒoƒbƒO—p)
-		shape->userData = enable ? colliderData.collider : nullptr; // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚ÉCollider‚ğİ’è(—LŒø‚Èê‡‚ÍCollider‚ğA–³Œø‚Èê‡‚Ínullptr‚ğİ’è)
+		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, colliderData.isTrigger ? false : enable); // ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, enable ? colliderData.isTrigger : false); // ãƒˆãƒªã‚¬ãƒ¼ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+		shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, enable); // ã‚·ãƒ¼ãƒ³ã‚¯ã‚¨ãƒªãƒ¼ã‚·ã‚§ã‚¤ãƒ—ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+		//shape->setFlag(physx::PxShapeFlag::eVISUALIZATION, enable); // ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ©ã‚¤ã‚¼ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ãƒ©ã‚°ã‚’è¨­å®š(ãƒ‡ãƒãƒƒã‚°ç”¨)
+		shape->userData = enable ? colliderData.collider : nullptr; // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã«Colliderã‚’è¨­å®š(æœ‰åŠ¹ãªå ´åˆã¯Colliderã‚’ã€ç„¡åŠ¹ãªå ´åˆã¯nullptrã‚’è¨­å®š)
 	}
 }
 
 bool Physics::IsShapeEnabled(const ShapeHandle& shapeHandle)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor “à‚Ì ShapeHandle ‚É‘Î‰‚·‚éShape‚ª—LŒø‚©‚Ç‚¤‚©‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor å†…ã® ShapeHandle ã«å¯¾å¿œã™ã‚‹ShapeãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	if (physx::PxShape* shape = GetShape(shapeHandle))
 	{
 		bool isSimulationShape = shape->getFlags() & physx::PxShapeFlag::eSIMULATION_SHAPE;
 		bool isTriggerShape = shape->getFlags() & physx::PxShapeFlag::eTRIGGER_SHAPE;
 		bool isSceneQueryShape = shape->getFlags() & physx::PxShapeFlag::eSCENE_QUERY_SHAPE;
-		//bool isVisualizationShape = shape->getFlags() & physx::PxShapeFlag::eVISUALIZATION; // ƒfƒoƒbƒO—p‚ÌƒrƒWƒ…ƒAƒ‰ƒCƒ[[ƒVƒ‡ƒ“ƒtƒ‰ƒO‚àl—¶‚·‚éê‡
-		bool isUserDataCond = shape->userData != nullptr; // ƒ†[ƒU[ƒf[ƒ^‚ªnullptr‚Å‚È‚¢‚±‚Æ‚à—LŒø‚ÌğŒ‚É‚·‚éê‡
-		bool isEnabled = isSimulationShape || isTriggerShape || isSceneQueryShape; // ‚¢‚¸‚ê‚©‚Ìƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚ê‚Î—LŒø‚Æ‚İ‚È‚·
-		return isEnabled && isUserDataCond; // ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚ÄAƒ†[ƒU[ƒf[ƒ^‚à—LŒø‚Èê‡‚Étrue‚ğ•Ô‚·
+		//bool isVisualizationShape = shape->getFlags() & physx::PxShapeFlag::eVISUALIZATION; // ãƒ‡ãƒãƒƒã‚°ç”¨ã®ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ©ã‚¤ã‚¼ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ãƒ©ã‚°ã‚‚è€ƒæ…®ã™ã‚‹å ´åˆ
+		bool isUserDataCond = shape->userData != nullptr; // ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ãŒnullptrã§ãªã„ã“ã¨ã‚‚æœ‰åŠ¹ã®æ¡ä»¶ã«ã™ã‚‹å ´åˆ
+		bool isEnabled = isSimulationShape || isTriggerShape || isSceneQueryShape; // ã„ãšã‚Œã‹ã®ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚Œã°æœ‰åŠ¹ã¨ã¿ãªã™
+		return isEnabled && isUserDataCond; // ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã¦ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚‚æœ‰åŠ¹ãªå ´åˆã«trueã‚’è¿”ã™
 	}
-	return false; // Shape‚ª‘¶İ‚µ‚È‚¢ê‡‚Ífalse‚ğ•Ô‚·
+	return false; // ShapeãŒå­˜åœ¨ã—ãªã„å ´åˆã¯falseã‚’è¿”ã™
 }
 
 ActorHandle Physics::GetActorHandle(Transform* transform)
 {
-	// ‚±‚±‚ÅTransform* ‚É‘Î‰‚·‚é ActorHandle ‚ğæ“¾A‘¶İ‚µ‚È‚¢ê‡‚Í-1‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ã‚’å–å¾—ã€å­˜åœ¨ã—ãªã„å ´åˆã¯-1ã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	for (const auto& [key, value] : m_actorMap)
 	{
 		if (value.transform == transform)
 		{
-			return key; // ‘Î‰‚·‚éActorHandle‚ğ•Ô‚·
+			return key; // å¯¾å¿œã™ã‚‹ActorHandleã‚’è¿”ã™
 		}
 	}
-	return INVALID_ACTOR_HANDLE; // ‘¶İ‚µ‚È‚¢ê‡‚Í-1‚ğ•Ô‚·
+	return INVALID_ACTOR_HANDLE; // å­˜åœ¨ã—ãªã„å ´åˆã¯-1ã‚’è¿”ã™
 }
 
 ActorHandle Physics::CreateActorHandle()
 {
-	// ‚±‚±‚Å ActorHandle ‚ğV‹Kì¬‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§ ActorHandle ã‚’æ–°è¦ä½œæˆã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	ActorHandle newHandle = nextActorHandle++;
-	m_actorMap[newHandle] = ActorData{ nullptr, nullptr }; // V‚µ‚¢ActorHandle‚ğƒ}ƒbƒv‚É’Ç‰Á(‰Šú’l‚Ínullptr)
+	m_actorMap[newHandle] = ActorData{ nullptr, nullptr }; // æ–°ã—ã„ActorHandleã‚’ãƒãƒƒãƒ—ã«è¿½åŠ (åˆæœŸå€¤ã¯nullptr)
 	return newHandle;
 }
 
 Transform* Physics::GetTransform(ActorHandle actorHandle)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Transform* ‚ğæ“¾A‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Transform* ã‚’å–å¾—ã€å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	if (m_actorMap.contains(actorHandle))
 	{
-		return m_actorMap[actorHandle].transform; // ‘Î‰‚·‚éTransform*‚ğ•Ô‚·
+		return m_actorMap[actorHandle].transform; // å¯¾å¿œã™ã‚‹Transform*ã‚’è¿”ã™
 	}
-	return nullptr; // ‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·
+	return nullptr; // å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã™
 }
 
 bool Physics::HasActor(Transform* transform)
 {
-	// ‚±‚±‚ÅTransform* ‚É‘Î‰‚·‚é ActorHandle ‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§Transform* ã«å¯¾å¿œã™ã‚‹ ActorHandle ãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	return GetActorHandle(transform) != INVALID_ACTOR_HANDLE;
 }
 
 bool Physics::HasShape(ShapeHandle shapeHandle)
 {
-	// ‚±‚±‚ÅShapeHandle ‚É‘Î‰‚·‚éShape‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§ShapeHandle ã«å¯¾å¿œã™ã‚‹ShapeãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	const auto& shapes = m_shapeMap;
 	return shapes.contains(shapeHandle);
 }
@@ -2761,17 +2761,17 @@ bool Physics::HasShape(ShapeHandle shapeHandle)
 
 physx::PxRigidActor* Physics::GetActor(ActorHandle actorHandle)
 {
-	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é PxRigidActor* ‚ğæ“¾A‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ PxRigidActor* ã‚’å–å¾—ã€å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	if (m_actorMap.contains(actorHandle))
 	{
 		return m_actorMap[actorHandle].actor;
 	}
-	return nullptr; // ‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·
+	return nullptr; // å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã™
 }
 
 physx::PxShape* Physics::GetShape(ShapeHandle shapeHandle)
 {
-	// ‚±‚±‚ÅShapeHandle ‚É‘Î‰‚·‚é PxShape* ‚ğæ“¾A‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§ShapeHandle ã«å¯¾å¿œã™ã‚‹ PxShape* ã‚’å–å¾—ã€å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	const auto& shapes = m_shapeMap;
 	if (shapes.contains(shapeHandle))
 	{
@@ -2779,34 +2779,34 @@ physx::PxShape* Physics::GetShape(ShapeHandle shapeHandle)
 		if (shape)
 			return shape;
 	}
-	return nullptr; // ‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·
+	return nullptr; // å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrã‚’è¿”ã™
 }
 
 ShapeHandle Physics::GetShapeHandle(physx::PxShape* shape)
 {
-	// ‚±‚±‚ÅPxShape* ‚É‘Î‰‚·‚é ShapeHandle ‚ğæ“¾A‘¶İ‚µ‚È‚¢ê‡‚Í-1‚ğ•Ô‚·ˆ—‚ğÀ‘•
+	// ã“ã“ã§PxShape* ã«å¯¾å¿œã™ã‚‹ ShapeHandle ã‚’å–å¾—ã€å­˜åœ¨ã—ãªã„å ´åˆã¯-1ã‚’è¿”ã™å‡¦ç†ã‚’å®Ÿè£…
 	const auto& shapes = m_shapeMap;
 	for (const auto& pair : shapes)
 	{
 		if (pair.second == shape)
 		{
-			return pair.first; // ‘Î‰‚·‚éShapeHandle‚ğ•Ô‚·
+			return pair.first; // å¯¾å¿œã™ã‚‹ShapeHandleã‚’è¿”ã™
 		}
 	}
-	return INVALID_SHAPE_HANDLE; // ‘¶İ‚µ‚È‚¢ê‡‚Í-1‚ğ•Ô‚·
+	return INVALID_SHAPE_HANDLE; // å­˜åœ¨ã—ãªã„å ´åˆã¯-1ã‚’è¿”ã™
 }
 
 ShapeHandle Physics::CreateShapeHandle()
 {
-	m_shapeMap[nextShapeHandle] = nullptr; // V‚µ‚¢ShapeHandle‚ğƒ}ƒbƒv‚É’Ç‰Á(‰Šú’l‚Ínullptr)
-	return nextShapeHandle++; // V‚µ‚¢ShapeHandle‚ğ•Ô‚µAŸ‚ÌShapeHandle‚ÉƒCƒ“ƒNƒŠƒƒ“ƒg
+	m_shapeMap[nextShapeHandle] = nullptr; // æ–°ã—ã„ShapeHandleã‚’ãƒãƒƒãƒ—ã«è¿½åŠ (åˆæœŸå€¤ã¯nullptr)
+	return nextShapeHandle++; // æ–°ã—ã„ShapeHandleã‚’è¿”ã—ã€æ¬¡ã®ShapeHandleã«ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 }
 
 void Physics::RegisterShape(ShapeHandle shapeHandle, physx::PxShape* shape)
 {
 	if (shapeHandle != INVALID_SHAPE_HANDLE && shape)
 	{
-		m_shapeMap[shapeHandle] = shape; // ShapeHandle‚ÆPxShape*‚Ìƒ}ƒbƒsƒ“ƒO‚ğ•Û‘¶
+		m_shapeMap[shapeHandle] = shape; // ShapeHandleã¨PxShape*ã®ãƒãƒƒãƒ”ãƒ³ã‚°ã‚’ä¿å­˜
 	}
 }
 
@@ -2816,9 +2816,9 @@ void Physics::RemoveActor(ActorHandle actorHandle)
 	{
 		if (physx::PxRigidActor* actor = m_actorMap[actorHandle].actor)
 		{
-			actor->userData = nullptr; // Actor‚Ìƒ†[ƒU[ƒf[ƒ^‚ğnullptr‚Éİ’è‚µ‚ÄATransform‚Ö‚ÌQÆ‚ğØ‚é
+			actor->userData = nullptr; // Actorã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’nullptrã«è¨­å®šã—ã¦ã€Transformã¸ã®å‚ç…§ã‚’åˆ‡ã‚‹
 
-			// ƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éShape‚Ìƒ†[ƒU[ƒf[ƒ^‚ànullptr‚Éİ’è‚µ‚ÄACollider‚Ö‚ÌQÆ‚ğØ‚é
+			// ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹Shapeã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚‚nullptrã«è¨­å®šã—ã¦ã€Colliderã¸ã®å‚ç…§ã‚’åˆ‡ã‚‹
 			physx::PxU32 numShapes = actor->getNbShapes();
 			if (numShapes > 0)
 			{
@@ -2828,62 +2828,62 @@ void Physics::RemoveActor(ActorHandle actorHandle)
 				{
 					if (shape)
 					{
-						shape->userData = nullptr; // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚ğnullptr‚Éİ’è‚µ‚ÄACollider‚Ö‚ÌQÆ‚ğØ‚é
-						m_shapeMap.erase(GetShapeHandle(shape)); // ƒ}ƒbƒv‚©‚çíœ
+						shape->userData = nullptr; // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’nullptrã«è¨­å®šã—ã¦ã€Colliderã¸ã®å‚ç…§ã‚’åˆ‡ã‚‹
+						m_shapeMap.erase(GetShapeHandle(shape)); // ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤
 					}
 				}
 			}
 
-			GetScene()->removeActor(*actor); // ƒV[ƒ“‚©‚çActor‚ğíœ
-			PX_RELEASE(actor); // Actor‚ğ‰ğ•ú
-			m_actorMap.erase(actorHandle); // ƒ}ƒbƒv‚©‚çíœ
+			GetScene()->removeActor(*actor); // ã‚·ãƒ¼ãƒ³ã‹ã‚‰Actorã‚’å‰Šé™¤
+			PX_RELEASE(actor); // Actorã‚’è§£æ”¾
+			m_actorMap.erase(actorHandle); // ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤
 		}
 	}
 }
 
 void Physics::RemoveShape(ShapeHandle shapeHandle)
 {
-	if (physx::PxShape* shape = GetShape(shapeHandle)) // ƒVƒFƒCƒv‚ª‘¶İ‚·‚é‚©Šm”F(‘¶İ‚µ‚È‚¢ê‡‚Ínullptr‚ª•Ô‚³‚ê‚é)
+	if (physx::PxShape* shape = GetShape(shapeHandle)) // ã‚·ã‚§ã‚¤ãƒ—ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèª(å­˜åœ¨ã—ãªã„å ´åˆã¯nullptrãŒè¿”ã•ã‚Œã‚‹)
 	{
 		if (physx::PxRigidActor* actor = shape->getActor())
 		{
-			// ƒgƒŠƒK[‚Ìê‡‚ÍACollider‚ÌOnTriggerExit‚ªŒÄ‚Ño‚³‚ê‚é‚æ‚¤‚É‚·‚é‚½‚ß‚ÉAƒVƒFƒCƒv‚ğíœ‚·‚é‘O‚ÉƒgƒŠƒK[ƒCƒxƒ“ƒg‚ğ”­¶‚³‚¹‚é•K—v‚ª‚ ‚é
+			// ãƒˆãƒªã‚¬ãƒ¼ã®å ´åˆã¯ã€Colliderã®OnTriggerExitãŒå‘¼ã³å‡ºã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã«ã€ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤ã™ã‚‹å‰ã«ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹å¿…è¦ãŒã‚ã‚‹
 			if (shape->getFlags() & physx::PxShapeFlag::eTRIGGER_SHAPE)
 			{
-				// ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ğ”­¶‚³‚¹‚é‚½‚ß‚ÉACollider‚ÌOnTriggerExit‚ğŒÄ‚Ño‚·
+				// ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹ãŸã‚ã«ã€Colliderã®OnTriggerExitã‚’å‘¼ã³å‡ºã™
 				m_simulationEventCallback.ClearTriggerStayPairsForShape(shape);
 			}
-			else // ƒgƒŠƒK[‚Å‚È‚¢ê‡‚ÍACollider‚ÌOnCollisionExit‚ªŒÄ‚Ño‚³‚ê‚é‚æ‚¤‚É‚·‚é‚½‚ß‚ÉAƒVƒFƒCƒv‚ğíœ‚·‚é‘O‚ÉÕ“ËƒCƒxƒ“ƒg‚ğ”­¶‚³‚¹‚é•K—v‚ª‚ ‚é
+			else // ãƒˆãƒªã‚¬ãƒ¼ã§ãªã„å ´åˆã¯ã€Colliderã®OnCollisionExitãŒå‘¼ã³å‡ºã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã«ã€ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤ã™ã‚‹å‰ã«è¡çªã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹å¿…è¦ãŒã‚ã‚‹
 			{
 				CollisionInfo collisionInfo{};
-				collisionInfo.selfCollider = static_cast<Collider*>(shape->userData); // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚©‚çCollider‚ğæ“¾
-				collisionInfo.otherCollider = nullptr; // ‘¼‚ÌCollider‚Ínullptr‚Éİ’è(ƒVƒFƒCƒv‚ğíœ‚·‚é‘O‚ÉÕ“ËƒCƒxƒ“ƒg‚ğ”­¶‚³‚¹‚é‚½‚ßA‘¼‚ÌCollider‚Í“Á’è‚Å‚«‚È‚¢‚½‚ßnullptr‚Éİ’è)
+				collisionInfo.selfCollider = static_cast<Collider*>(shape->userData); // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰Colliderã‚’å–å¾—
+				collisionInfo.otherCollider = nullptr; // ä»–ã®Colliderã¯nullptrã«è¨­å®š(ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤ã™ã‚‹å‰ã«è¡çªã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹ãŸã‚ã€ä»–ã®Colliderã¯ç‰¹å®šã§ããªã„ãŸã‚nullptrã«è¨­å®š)
 				if (collisionInfo.selfCollider)
 				{
-					collisionInfo.selfCollider->OnCollisionExit(collisionInfo); // Collider‚ÌOnCollisionExit‚ğŒÄ‚Ño‚·
+					collisionInfo.selfCollider->OnCollisionExit(collisionInfo); // Colliderã®OnCollisionExitã‚’å‘¼ã³å‡ºã™
 				}
 			}
 
-			// Shape‚ªActor‚ÉƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚Ü‚¸Actor‚©‚çƒVƒFƒCƒv‚ğíœ‚µ‚Ä‚©‚çƒVƒFƒCƒv‚ğ‰ğ•ú‚·‚é•K—v‚ª‚ ‚é
-			shape->userData = nullptr; // ƒVƒFƒCƒv‚Ìƒ†[ƒU[ƒf[ƒ^‚ğnullptr‚Éİ’è‚µ‚ÄACollider‚Ö‚ÌQÆ‚ğØ‚é
-			shape->acquireReference(); // ƒVƒFƒCƒv‚ÌQÆ‚ğæ“¾‚µ‚ÄAƒVƒFƒCƒv‚ª‰ğ•ú‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
-			actor->detachShape(*shape); // Actor‚©‚çƒVƒFƒCƒv‚ğíœ
-			PX_RELEASE(shape); // ƒVƒFƒCƒv‚ğ‰ğ•ú
+			// ShapeãŒActorã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ã¾ãšActorã‹ã‚‰ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤ã—ã¦ã‹ã‚‰ã‚·ã‚§ã‚¤ãƒ—ã‚’è§£æ”¾ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+			shape->userData = nullptr; // ã‚·ã‚§ã‚¤ãƒ—ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’nullptrã«è¨­å®šã—ã¦ã€Colliderã¸ã®å‚ç…§ã‚’åˆ‡ã‚‹
+			shape->acquireReference(); // ã‚·ã‚§ã‚¤ãƒ—ã®å‚ç…§ã‚’å–å¾—ã—ã¦ã€ã‚·ã‚§ã‚¤ãƒ—ãŒè§£æ”¾ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
+			actor->detachShape(*shape); // Actorã‹ã‚‰ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤
+			PX_RELEASE(shape); // ã‚·ã‚§ã‚¤ãƒ—ã‚’è§£æ”¾
 
-			// TODO: ƒ}ƒbƒv‚©‚çíœ‚·‚é‚Ì‚Íƒ‹[ƒv‚ÌŠO‚Ås‚¤•K—v‚ª‚ ‚é‚©‚à‚µ‚ê‚È‚¢(ƒ‹[ƒv“à‚Åƒ}ƒbƒv‚ğ•ÏX‚·‚é‚ÆƒCƒeƒŒ[ƒ^‚ª–³Œø‚É‚È‚é‰Â”\«‚ª‚ ‚é‚½‚ß)
-			m_shapeMap.erase(shapeHandle); // ƒ}ƒbƒv‚©‚çíœ
+			// TODO: ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤ã™ã‚‹ã®ã¯ãƒ«ãƒ¼ãƒ—ã®å¤–ã§è¡Œã†å¿…è¦ãŒã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„(ãƒ«ãƒ¼ãƒ—å†…ã§ãƒãƒƒãƒ—ã‚’å¤‰æ›´ã™ã‚‹ã¨ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ãŒç„¡åŠ¹ã«ãªã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚)
+			m_shapeMap.erase(shapeHandle); // ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤
 
-			// ƒVƒFƒCƒv‚ğíœ‚µ‚½Œã‚ÉAActor‚ÉƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éƒVƒFƒCƒv‚ª‚È‚­‚È‚Á‚½ê‡‚ÍAActor©‘Ì‚àíœ‚·‚é
+			// ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤ã—ãŸå¾Œã«ã€Actorã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã‚·ã‚§ã‚¤ãƒ—ãŒãªããªã£ãŸå ´åˆã¯ã€Actorè‡ªä½“ã‚‚å‰Šé™¤ã™ã‚‹
 			physx::PxU32 numShapes = actor->getNbShapes();
 			if (numShapes == 0)
 			{
-				// Actor‚ÉƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éƒVƒFƒCƒv‚ª‚È‚­‚È‚Á‚½ê‡‚ÍAActor©‘Ì‚àíœ‚·‚é
+				// Actorã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã‚·ã‚§ã‚¤ãƒ—ãŒãªããªã£ãŸå ´åˆã¯ã€Actorè‡ªä½“ã‚‚å‰Šé™¤ã™ã‚‹
 				for (auto& [key, value] : m_actorMap)
 				{
 					if (value.actor == actor)
 					{
-						RemoveActor(key); // Actor‚ğíœ
-						break; // ƒ}ƒbƒv‚ğƒ‹[ƒv‚µ‚Ä‚¢‚é‚Ì‚ÅA‘Î‰‚·‚éActorHandle‚ªŒ©‚Â‚©‚Á‚½‚çƒ‹[ƒv‚ğ”²‚¯‚é
+						RemoveActor(key); // Actorã‚’å‰Šé™¤
+						break; // ãƒãƒƒãƒ—ã‚’ãƒ«ãƒ¼ãƒ—ã—ã¦ã„ã‚‹ã®ã§ã€å¯¾å¿œã™ã‚‹ActorHandleãŒè¦‹ã¤ã‹ã£ãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 					}
 				}
 			}
@@ -2893,12 +2893,12 @@ void Physics::RemoveShape(ShapeHandle shapeHandle)
 
 //void Physics::ClearShapes(ActorHandle actorHandle)
 //{
-//	// ‚±‚±‚ÅActorHandle ‚É‘Î‰‚·‚é Actor ‚©‚ç‚·‚×‚Ä‚ÌShape‚ğíœ‚·‚éˆ—‚ğÀ‘•
+//	// ã“ã“ã§ActorHandle ã«å¯¾å¿œã™ã‚‹ Actor ã‹ã‚‰ã™ã¹ã¦ã®Shapeã‚’å‰Šé™¤ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 //	if (physx::PxRigidActor* actor = GetActor(actorHandle))
 //	{
 //		auto& shapes = m_shapeMap;
 //
-//		// íœ‚·‚éShapeHandle‚ğˆê“I‚É•Û‘¶‚·‚éƒxƒNƒ^[
+//		// å‰Šé™¤ã™ã‚‹ShapeHandleã‚’ä¸€æ™‚çš„ã«ä¿å­˜ã™ã‚‹ãƒ™ã‚¯ã‚¿ãƒ¼
 //		std::vector<ShapeHandle> shapeHandlesToRemove;
 //
 //		for (auto& [shapeHandle, shape] : shapes)
@@ -2907,19 +2907,19 @@ void Physics::RemoveShape(ShapeHandle shapeHandle)
 //			{
 //				if (shape->getActor() == actor)
 //				{
-//					shape->acquireReference(); // ƒVƒFƒCƒv‚ÌQÆ‚ğæ“¾‚µ‚ÄAƒVƒFƒCƒv‚ª‰ğ•ú‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
-//					actor->detachShape(*shape); // Actor‚©‚çƒVƒFƒCƒv‚ğíœ
-//					PX_RELEASE(shape); // ƒVƒFƒCƒv‚ğ‰ğ•ú
+//					shape->acquireReference(); // ã‚·ã‚§ã‚¤ãƒ—ã®å‚ç…§ã‚’å–å¾—ã—ã¦ã€ã‚·ã‚§ã‚¤ãƒ—ãŒè§£æ”¾ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
+//					actor->detachShape(*shape); // Actorã‹ã‚‰ã‚·ã‚§ã‚¤ãƒ—ã‚’å‰Šé™¤
+//					PX_RELEASE(shape); // ã‚·ã‚§ã‚¤ãƒ—ã‚’è§£æ”¾
 //
-//					// TODO: ƒ}ƒbƒv‚©‚çíœ‚·‚é‚Ì‚Íƒ‹[ƒv‚ÌŠO‚Ås‚¤•K—v‚ª‚ ‚é‚©‚à‚µ‚ê‚È‚¢(ƒ‹[ƒv“à‚Åƒ}ƒbƒv‚ğ•ÏX‚·‚é‚ÆƒCƒeƒŒ[ƒ^‚ª–³Œø‚É‚È‚é‰Â”\«‚ª‚ ‚é‚½‚ß)
-//					shapeHandlesToRemove.push_back(shapeHandle); // íœ‚·‚éShapeHandle‚ğ•Û‘¶
+//					// TODO: ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤ã™ã‚‹ã®ã¯ãƒ«ãƒ¼ãƒ—ã®å¤–ã§è¡Œã†å¿…è¦ãŒã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„(ãƒ«ãƒ¼ãƒ—å†…ã§ãƒãƒƒãƒ—ã‚’å¤‰æ›´ã™ã‚‹ã¨ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ãŒç„¡åŠ¹ã«ãªã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚)
+//					shapeHandlesToRemove.push_back(shapeHandle); // å‰Šé™¤ã™ã‚‹ShapeHandleã‚’ä¿å­˜
 //				}
 //			}
 //		}
 //
 //		for (ShapeHandle shapeHandle : shapeHandlesToRemove)
 //		{
-//			shapes.erase(shapeHandle); // ƒ}ƒbƒv‚©‚çíœ
+//			shapes.erase(shapeHandle); // ãƒãƒƒãƒ—ã‹ã‚‰å‰Šé™¤
 //		}
 //	}
 //}

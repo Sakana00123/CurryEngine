@@ -9,7 +9,7 @@ namespace CurryEngine::Resources
 
 	void ImportSettingsDrawerRegistry::Initialize()
 	{
-		// �K�v�ɉ����āA�����Ńf�t�H���g�̕`��N���X��o�^���邱�Ƃ��ł��܂��B
+		// 必要に応じて、ここでデフォルトの描画クラスを登録することができます。
 		Register(AssetType::Texture, std::make_unique<TextureImportSettingsDrawer>());
 		Register(AssetType::Model, std::make_unique<ModelImportSettingsDrawer>());
 	}

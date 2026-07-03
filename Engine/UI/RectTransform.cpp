@@ -8,23 +8,23 @@ REGISTER_COMPONENT_WITH_ATTRIBUTES(RectTransform, "UI", ComponentAttributes::Dis
 
 void RectTransform::Start()
 {
-	// ¶¬’¼Œã‚Ì1ƒtƒŒ[ƒ€‚ÍUpdate‚ªŒÄ‚Î‚ê‚È‚¢‚½‚ßA‚±‚±‚ÅUpdate‚ğŒÄ‚Ño‚µ‚Ä‰Šú’l‚ğŒvZ‚·‚é
+	// ç”Ÿæˆç›´å¾Œã®1ãƒ•ãƒ¬ãƒ¼ãƒ ã¯UpdateãŒå‘¼ã°ã‚Œãªã„ãŸã‚ã€ã“ã“ã§Updateã‚’å‘¼ã³å‡ºã—ã¦åˆæœŸå€¤ã‚’è¨ˆç®—ã™ã‚‹
 	Update(0.0f);
 }
 
 RectTransform* RectTransform::GetParent() const 
 {
-	//e‚ª‚¢‚È‚©‚Á‚½‚çnull‚ğ•Ô‚·
+	//è¦ªãŒã„ãªã‹ã£ãŸã‚‰nullã‚’è¿”ã™
 	if (!gameObject->parent)
 		return nullptr;
-	//eƒIƒuƒWƒFƒNƒg‚ÌTransform‚©‚çARectTransformŒ^‚ÉƒLƒƒƒXƒg‚·‚é
+	//è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Transformã‹ã‚‰ã€RectTransformå‹ã«ã‚­ãƒ£ã‚¹ãƒˆã™ã‚‹
 	return dynamic_cast<RectTransform*>(gameObject->parent->transform);
 }
 
 void RectTransform::Update(float elapsedTime)
 {
 
-	//’†SÀ•W‚ÆƒTƒCƒYŒvZ
+	//ä¸­å¿ƒåº§æ¨™ã¨ã‚µã‚¤ã‚ºè¨ˆç®—
 	if (RectTransform* p = GetParent()) {
 
 		XMVECTOR AnchorMin = XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&anchorMin));
@@ -37,14 +37,14 @@ void RectTransform::Update(float elapsedTime)
 		XMVECTOR worldPosVec;
 
 		if (!XMVector2Equal(AnchorMin, AnchorMax)) {
-			// ƒXƒgƒŒƒbƒ`ianchorMin ‚ anchorMaxj
+			// ã‚¹ãƒˆãƒ¬ãƒƒãƒï¼ˆanchorMin â‰  anchorMaxï¼‰
 			XMVECTOR rectMin = anchorRectMin + XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&offsetMin));
 			XMVECTOR rectMax = anchorRectMax + XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&offsetMax));
 			worldSizeVec = rectMax - rectMin;
 			worldPosVec = rectMin;
 		}
 		else {
-			// ŒÅ’èƒAƒ“ƒJ[ianchorMin == anchorMaxj
+			// å›ºå®šã‚¢ãƒ³ã‚«ãƒ¼ï¼ˆanchorMin == anchorMaxï¼‰
 			worldSizeVec = XMLoadFloat2(reinterpret_cast<const XMFLOAT2*>(&size));
 			XMVECTOR anchorPos = anchorRectMin + (anchorRectMax - anchorRectMin) * AnchorMin; // AnchorMin == AnchorMax
 
@@ -61,7 +61,7 @@ void RectTransform::Update(float elapsedTime)
 		worldAngle = angle;
 	}
 
-	//‚S“_‚ÌÀ•W‚ğ‹‚ß‚é
+	//ï¼”ç‚¹ã®åº§æ¨™ã‚’æ±‚ã‚ã‚‹
 	{
 		Vector2 min = { worldPos.x - worldSize.x * pivot.x, worldPos.y - worldSize.y * pivot.y };
 		Vector2 max = { worldPos.x + worldSize.x * (1.f - pivot.x), worldPos.y + worldSize.y * (1.f - pivot.y) };
@@ -111,7 +111,7 @@ void RectTransform::DrawProperty(const PropertyDrawContext& context)
 		ImGui::DragFloat2("Size", &size.x);
 	}*/
 
-	// ƒfƒtƒHƒ‹ƒg‚ÌƒvƒƒpƒeƒB•`‰æ‚ğŒÄ‚Ño‚·i•K—v‚É‰‚¶‚Ä‡˜‚ğ’²®j
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚’å‘¼ã³å‡ºã™ï¼ˆå¿…è¦ã«å¿œã˜ã¦é †åºã‚’èª¿æ•´ï¼‰
 	Component::DrawProperty(context);
 
 
@@ -141,7 +141,7 @@ void RectTransform::DrawProperty(const PropertyDrawContext& context)
 	//ImGui::DragFloat("WorldAngle", &worldAngle);
 	//ImGui::EndDisabled();
 
-	//// Sorting Order ‚Í Canvas ‚Ì Sorting Order + localSortingOrder ‚ÅŒˆ‚Ü‚é‚½‚ßAlocalSortingOrder ‚Ì‚İ‚ğ•ÒW‰Â”\‚É‚·‚é
+	//// Sorting Order ã¯ Canvas ã® Sorting Order + localSortingOrder ã§æ±ºã¾ã‚‹ãŸã‚ã€localSortingOrder ã®ã¿ã‚’ç·¨é›†å¯èƒ½ã«ã™ã‚‹
 	//
 	//ImGui::DragInt("SortingOrder", &localSortingOrder);
 
@@ -213,7 +213,7 @@ bool RectTransform::DrawAnchorPreset()
 		}
 		ImGui::PopID();
 
-		// s‚²‚Æ‚É‰üs
+		// è¡Œã”ã¨ã«æ”¹è¡Œ
 		if (i % 3 == 2) {
 			ImGui::NewLine();
 		}
@@ -228,7 +228,7 @@ bool RectTransform::DrawAnchorPreset()
 
 bool RectTransform::Contains(const Vector2& point)
 {
-	//Šp“x‚Â‚«‘Î‰
+	//è§’åº¦ã¤ãå¯¾å¿œ
 	if (worldAngle != 0)
 		return PointInQuad(point, TopLeft(), TopRight(), BottomRight(), BottomLeft());
 
@@ -248,7 +248,7 @@ bool RectTransform::PointInQuad(Vector2 p, Vector2 a, Vector2 b, Vector2 c, Vect
 	auto Sub = [](Vector2 u, Vector2 v) {
 		return Vector2{ u.x - v.x, u.y - v.y };
 		};
-	// “_p‚ª abcd ‚Å\¬‚³‚ê‚élŠpŒ`“à‚É‚ ‚é‚©‚ğ”»’è
+	// ç‚¹pãŒ abcd ã§æ§‹æˆã•ã‚Œã‚‹å››è§’å½¢å†…ã«ã‚ã‚‹ã‹ã‚’åˆ¤å®š
 	bool ab = Cross(Sub(b, a), Sub(p, a)) >= 0;
 	bool bc = Cross(Sub(c, b), Sub(p, b)) >= 0;
 	bool cd = Cross(Sub(d, c), Sub(p, c)) >= 0;
@@ -305,12 +305,12 @@ void RectTransform::SetAnchoredPositionByAnchor(const Vector2& targetAnchor, con
 	Vector2 parentSize = Vector2(parentRect->GetWorldSize());
 	Vector2 parentPos = Vector2(parentRect->GetWorldPosition());
 
-	// ‡@ V‚µ‚¢Šî€ƒAƒ“ƒJ[‚Å‚Ìƒ[ƒ‹ƒhÀ•W‚ğZo
+	// â‘  æ–°ã—ã„åŸºæº–ã‚¢ãƒ³ã‚«ãƒ¼ã§ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ç®—å‡º
 	Vector2 newWorldPos = parentPos
-		+ parentSize * Vector2(targetAnchor)     // e‚ÌƒAƒ“ƒJ[Šî€ˆÊ’u
-		+ Vector2(targetAnchoredPos);            // ‚»‚ÌƒAƒ“ƒJ[‚©‚ç‚ÌƒIƒtƒZƒbƒg
+		+ parentSize * Vector2(targetAnchor)     // è¦ªã®ã‚¢ãƒ³ã‚«ãƒ¼åŸºæº–ä½ç½®
+		+ Vector2(targetAnchoredPos);            // ãã®ã‚¢ãƒ³ã‚«ãƒ¼ã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 
-	// ‡A Œ»İ‚ÌƒAƒ“ƒJ[İ’è‚ÅA“¯‚¶ƒ[ƒ‹ƒhˆÊ’u‚É‚È‚éanchoredPosition‚ğÄŒvZ
+	// â‘¡ ç¾åœ¨ã®ã‚¢ãƒ³ã‚«ãƒ¼è¨­å®šã§ã€åŒã˜ãƒ¯ãƒ¼ãƒ«ãƒ‰ä½ç½®ã«ãªã‚‹anchoredPositionã‚’å†è¨ˆç®—
 	Vector2 myAnchorCenter = (Vector2(anchorMin) + Vector2(anchorMax)) * 0.5f;
 	Vector2 myPivotOffset = Vector2(size) * (Vector2(pivot) - Vector2(0.5f, 0.5f));
 	anchoredPosition = newWorldPos - (parentPos + parentSize * myAnchorCenter) - myPivotOffset;
@@ -319,7 +319,7 @@ void RectTransform::SetAnchoredPositionByAnchor(const Vector2& targetAnchor, con
 
 void RectTransform::SetAnchoredPositionByTransform(Transform* transform)
 {
-	// 3D Transform‚ÌˆÊ’u‚ÉŠî‚Ã‚¢‚ÄARectTransform‚ÌƒAƒ“ƒJ[ƒ|ƒWƒVƒ‡ƒ“‚ğİ’è
+	// 3D Transformã®ä½ç½®ã«åŸºã¥ã„ã¦ã€RectTransformã®ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
 	RectTransformUtils::SetAnchordPositionBy3DTransform(this, transform);
 }
 

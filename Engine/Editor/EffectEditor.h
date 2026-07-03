@@ -12,59 +12,59 @@ public:
 	EffectEditor() = default;
 	~EffectEditor() = default;
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	static void Initialize();
 
-	//ƒGƒfƒBƒ^•\¦
+	//ã‚¨ãƒ‡ã‚£ã‚¿è¡¨ç¤º
 	static void Show();
-	//ƒGƒfƒBƒ^‚ªŠJ‚¢‚Ä‚¢‚é‚©
+	//ã‚¨ãƒ‡ã‚£ã‚¿ãŒé–‹ã„ã¦ã„ã‚‹ã‹
 	static bool IsOpen();
-	//ƒvƒŒƒrƒ…[ƒEƒBƒ“ƒhƒE‚ªƒtƒH[ƒJƒX‚³‚ê‚Ä‚¢‚é‚©
+	//ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚Œã¦ã„ã‚‹ã‹
 	static bool IsPreviewFocused();
 
-	//ƒGƒfƒBƒ^GUI•`‰æ
+	//ã‚¨ãƒ‡ã‚£ã‚¿GUIæç”»
 	static void DrawGUI(RenderContext* context);
 
 private:
 #ifdef USE_IMGUI
-	// ”ÍˆÍw’èƒXƒ‰ƒCƒ_[•`‰æ ( int —p )
+	// ç¯„å›²æŒ‡å®šã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( int ç”¨ )
 	static bool DrawRangeInt(const char* label, ::Range<int>& range, int speed = 1, int min = 0, int max = 0);
-	// ”ÍˆÍw’èƒXƒ‰ƒCƒ_[•`‰æ ( unsigned int —p )
+	// ç¯„å›²æŒ‡å®šã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( unsigned int ç”¨ )
 	static bool DrawRangeUInt(const char* label, ::Range<unsigned int>& range, unsigned int speed = 1, unsigned int min = 0, unsigned int max = 0);
-	// ”ÍˆÍw’èƒXƒ‰ƒCƒ_[•`‰æ ( float —p )
+	// ç¯„å›²æŒ‡å®šã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( float ç”¨ )
 	static bool DrawRangeFloat(const char* label, ::Range<float>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
-	// ”ÍˆÍw’èƒXƒ‰ƒCƒ_[•`‰æ ( Vector2 —p )
+	// ç¯„å›²æŒ‡å®šã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( Vector2 ç”¨ )
 	static bool DrawRangeVector2(const char* label, ::Range<Vector2>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
-	// ”ÍˆÍw’èƒXƒ‰ƒCƒ_[•`‰æ ( Vector3 —p )
+	// ç¯„å›²æŒ‡å®šã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( Vector3 ç”¨ )
 	static bool DrawRangeVector3(const char* label, ::Range<Vector3>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
-	// ”ÍˆÍw’èƒXƒ‰ƒCƒ_[•`‰æ ( Color —p )
+	// ç¯„å›²æŒ‡å®šã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( Color ç”¨ )
 	static bool DrawRangeColor(const char* label, ::Range<Color>& range);
 
-	// ƒXƒ‰ƒCƒ_[•`‰æ ( int —p )
+	// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( int ç”¨ )
 	static bool DrawInt(const char* label, int& value, int speed = 1, int min = 0, int max = 0);
-	// ƒXƒ‰ƒCƒ_[•`‰æ ( unsigned int —p )
+	// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( unsigned int ç”¨ )
 	static bool DrawUInt(const char* label, unsigned int& value, unsigned int speed = 1, unsigned int min = 0, unsigned int max = 0);
-	// ƒXƒ‰ƒCƒ_[•`‰æ ( float —p )
+	// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( float ç”¨ )
 	static bool DrawFloat(const char* label, float& value, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
-	// ƒXƒ‰ƒCƒ_[•`‰æ ( Vector2 —p )
+	// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( Vector2 ç”¨ )
 	static bool DrawVector2(const char* label, Vector2& value, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
-	// ƒxƒNƒgƒ‹ƒXƒ‰ƒCƒ_[•`‰æ ( Vector3 —p )
+	// ãƒ™ã‚¯ãƒˆãƒ«ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼æç”» ( Vector3 ç”¨ )
 	static bool DrawVector3(const char* label, Vector3& value, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
-	// ƒJƒ‰[ƒsƒbƒJ[•`‰æ ( Color —p )
+	// ã‚«ãƒ©ãƒ¼ãƒ”ãƒƒã‚«ãƒ¼æç”» ( Color ç”¨ )
 	static bool DrawColor(const char* label, Color& value);
-	// ƒ`ƒFƒbƒNƒ{ƒbƒNƒX•`‰æ
+	// ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹æç”»
 	static bool DrawCheckbox(const char* label, bool& value);
-	// ƒRƒ“ƒ{ƒ{ƒbƒNƒX•`‰æ
+	// ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹æç”»
 	static bool DrawCombo(const char* label, int& currentItem, const char* const items[], int itemCount, std::function<void(int)> setter);
 
-	// ƒOƒ‰ƒf[ƒVƒ‡ƒ“ƒGƒfƒBƒ^•`‰æ
+	// ã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒ‡ã‚£ã‚¿æç”»
 	static bool DrawGradient(uint32_t gradientId, ImGradientHDRState* state, ImGradientHDRTemporaryState* tempState);
 	
 #endif // USE_IMGUI
 
 private:
-	//ƒGƒfƒBƒ^‚ªŠJ‚¢‚Ä‚¢‚é‚©
+	//ã‚¨ãƒ‡ã‚£ã‚¿ãŒé–‹ã„ã¦ã„ã‚‹ã‹
 	static inline bool isOpen = false;
-	static inline bool isPreviewFocused = false; // ƒvƒŒƒrƒ…[ƒEƒBƒ“ƒhƒE‚ªƒtƒH[ƒJƒX‚³‚ê‚Ä‚¢‚é‚©
-	static inline EffectHandle currentEffectHandle = -1; // Œ»İ•ÒW’†‚ÌƒGƒtƒFƒNƒgƒnƒ“ƒhƒ‹
+	static inline bool isPreviewFocused = false; // ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã•ã‚Œã¦ã„ã‚‹ã‹
+	static inline EffectHandle currentEffectHandle = -1; // ç¾åœ¨ç·¨é›†ä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒ³ãƒ‰ãƒ«
 };

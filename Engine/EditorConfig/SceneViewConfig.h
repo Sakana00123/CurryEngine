@@ -2,30 +2,30 @@
 #include "IEditorConfig.h"
 #include "Engine/Core/Math/Vector3.h"
 
-/** @brief ƒXƒiƒbƒvİ’è\‘¢‘ÌB*/
+/** @brief ã‚¹ãƒŠãƒƒãƒ—è¨­å®šæ§‹é€ ä½“ã€‚*/
 struct SnapParameters
 {
-	bool enabled = true; //!< ƒXƒiƒbƒv‚Ì—LŒø‰»ƒtƒ‰ƒO
-	bool snapAllAxes = false; //!< ƒXƒiƒbƒv‚ğ‘S²‚É“K—p‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-	Vector3 snapValue = { 1,1,1 }; //!< ƒXƒiƒbƒv’l
+	bool enabled = true; //!< ã‚¹ãƒŠãƒƒãƒ—ã®æœ‰åŠ¹åŒ–ãƒ•ãƒ©ã‚°
+	bool snapAllAxes = false; //!< ã‚¹ãƒŠãƒƒãƒ—ã‚’å…¨è»¸ã«é©ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+	Vector3 snapValue = { 1,1,1 }; //!< ã‚¹ãƒŠãƒƒãƒ—å€¤
 };
 
-/** @brief ƒV[ƒ“ƒrƒ…[‚Ìİ’è\‘¢‘ÌB*/
+/** @brief ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šæ§‹é€ ä½“ã€‚*/
 struct SceneViewConfig : public IEditorConfig
 {
-	int guizmoPivotMode{ 1 }; //!< ƒMƒYƒ‚‚Ìƒsƒ{ƒbƒgƒ‚[ƒhi0: ƒIƒuƒWƒFƒNƒg’†SA1: ƒ[ƒ‹ƒhŒ´“_j
-	SnapParameters translationSnap; //!< ƒMƒYƒ‚‚ÌˆÚ“®ƒXƒiƒbƒvİ’è
-	SnapParameters rotationSnap; //!< ƒMƒYƒ‚‚Ì‰ñ“]ƒXƒiƒbƒvİ’è
-	SnapParameters scaleSnap; //!< ƒMƒYƒ‚‚ÌƒXƒP[ƒ‹ƒXƒiƒbƒvİ’è
+	int guizmoPivotMode{ 1 }; //!< ã‚®ã‚ºãƒ¢ã®ãƒ”ãƒœãƒƒãƒˆãƒ¢ãƒ¼ãƒ‰ï¼ˆ0: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä¸­å¿ƒã€1: ãƒ¯ãƒ¼ãƒ«ãƒ‰åŸç‚¹ï¼‰
+	SnapParameters translationSnap; //!< ã‚®ã‚ºãƒ¢ã®ç§»å‹•ã‚¹ãƒŠãƒƒãƒ—è¨­å®š
+	SnapParameters rotationSnap; //!< ã‚®ã‚ºãƒ¢ã®å›è»¢ã‚¹ãƒŠãƒƒãƒ—è¨­å®š
+	SnapParameters scaleSnap; //!< ã‚®ã‚ºãƒ¢ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚¹ãƒŠãƒƒãƒ—è¨­å®š
 
 	SceneViewConfig() = default;
 
-	/** @brief ƒfƒtƒHƒ‹ƒgİ’è‚ÉƒŠƒZƒbƒg‚µ‚Ü‚·B*/
+	/** @brief ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¨­å®šã«ãƒªã‚»ãƒƒãƒˆã—ã¾ã™ã€‚*/
 	void ResetToDefault() override;
 
-	/** @brief İ’è‚ğ•Û‘¶‚µ‚Ü‚·B*/
+	/** @brief è¨­å®šã‚’ä¿å­˜ã—ã¾ã™ã€‚*/
 	json Serialize() const override;
 
-	/** @brief İ’è‚ğ“Ç‚İ‚İ‚Ü‚·B*/
+	/** @brief è¨­å®šã‚’èª­ã¿è¾¼ã¿ã¾ã™ã€‚*/
 	void Deserialize(const json& j) override;
 };

@@ -10,31 +10,31 @@
 
 /**
  * @file
- * @brief ƒI[ƒfƒBƒIiBGM/SEj‚ÌÄ¶EŠÇ—‚ğs‚¤ƒ†[ƒeƒBƒŠƒeƒBB
- * @details XAudio2 ‚ğ—p‚¢‚½‰Šú‰»Aƒ}ƒXƒ^[/ƒTƒuƒ~ƒbƒNƒX‚Ì‰¹—Ê§ŒäAƒƒ“ƒVƒ‡ƒbƒgÄ¶A
- *          ƒI[ƒfƒBƒIƒ\[ƒX‚Ìõ–½ŠÇ—‚È‚Ç‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªï¼ˆBGM/SEï¼‰ã®å†ç”Ÿãƒ»ç®¡ç†ã‚’è¡Œã†ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã€‚
+ * @details XAudio2 ã‚’ç”¨ã„ãŸåˆæœŸåŒ–ã€ãƒã‚¹ã‚¿ãƒ¼/ã‚µãƒ–ãƒŸãƒƒã‚¯ã‚¹ã®éŸ³é‡åˆ¶å¾¡ã€ãƒ¯ãƒ³ã‚·ãƒ§ãƒƒãƒˆå†ç”Ÿã€
+ *          ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚½ãƒ¼ã‚¹ã®å¯¿å‘½ç®¡ç†ãªã©ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 
 /**
- * @brief ƒTƒEƒ“ƒhí•ÊB
+ * @brief ã‚µã‚¦ãƒ³ãƒ‰ç¨®åˆ¥ã€‚
  */
 enum SoundType
 {
-	BGM,       //!< Šy‹ÈiBGMj
-	SE,        //!< Œø‰Ê‰¹iSEj
-	EnumCount  //!< —ñ‹“”
+	BGM,       //!< æ¥½æ›²ï¼ˆBGMï¼‰
+	SE,        //!< åŠ¹æœéŸ³ï¼ˆSEï¼‰
+	EnumCount  //!< åˆ—æŒ™æ•°
 };
 class StandaloneAudioSource;
 
 /**
- * @brief ƒI[ƒfƒBƒIÄ¶‚Ì’†ŠjƒNƒ‰ƒXiÃ“Iƒ†[ƒeƒBƒŠƒeƒBjB
+ * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªå†ç”Ÿã®ä¸­æ ¸ã‚¯ãƒ©ã‚¹ï¼ˆé™çš„ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ï¼‰ã€‚
  */
 class Audio
 {
 public:
 	/**
-	 * @brief “Ç‚İ‚İÏ‚İ‚Ì‰¹ºƒf[ƒ^‚ğ•Û‚·‚éƒoƒbƒtƒ@B
-	 * @details WaveFormat ‚Æ XAudio2 ‚Ìƒoƒbƒtƒ@‚ğ‚Ü‚Æ‚ß‚ÄŠÇ—‚µ‚Ü‚·B
+	 * @brief èª­ã¿è¾¼ã¿æ¸ˆã¿ã®éŸ³å£°ãƒ‡ãƒ¼ã‚¿ã‚’ä¿æŒã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã€‚
+	 * @details WaveFormat ã¨ XAudio2 ã®ãƒãƒƒãƒ•ã‚¡ã‚’ã¾ã¨ã‚ã¦ç®¡ç†ã—ã¾ã™ã€‚
 	 */
 	class AudioBuffer
 	{
@@ -44,80 +44,80 @@ public:
 			delete[] buffer.pAudioData;
 		}
 
-		WAVEFORMATEXTENSIBLE wfx = { 0 }; //!< ƒtƒH[ƒ}ƒbƒgî•ñ
-		XAUDIO2_BUFFER buffer = { 0 };    //!< XAudio2 Ä¶—pƒoƒbƒtƒ@
+		WAVEFORMATEXTENSIBLE wfx = { 0 }; //!< ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæƒ…å ±
+		XAUDIO2_BUFFER buffer = { 0 };    //!< XAudio2 å†ç”Ÿç”¨ãƒãƒƒãƒ•ã‚¡
 
 		/**
-		 * @brief ƒI[ƒfƒBƒI‚Ì‘Ä¶ŠÔ‚ğæ“¾‚µ‚Ü‚·B
-		 * @return Ä¶ŠÔi•bjB
+		 * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã®ç·å†ç”Ÿæ™‚é–“ã‚’å–å¾—ã—ã¾ã™ã€‚
+		 * @return å†ç”Ÿæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 		 */
 		float GetDuration() const;
 	public:
 		/**
-		 * @brief ƒI[ƒfƒBƒIƒŠƒ\[ƒX‚ğæ“¾i‹¤—LjB
-		 * @param filePath “Ç‚İ‚Ş‰¹ºƒtƒ@ƒCƒ‹ƒpƒXB
-		 * @return “Ç‚İ‚İÏ‚İ/V‹K“Ç‚İ‚İ‚³‚ê‚½ `AudioBuffer` ‚Ì‹¤—Lƒ|ƒCƒ“ƒ^B
+		 * @brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—ï¼ˆå…±æœ‰ï¼‰ã€‚
+		 * @param filePath èª­ã¿è¾¼ã‚€éŸ³å£°ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
+		 * @return èª­ã¿è¾¼ã¿æ¸ˆã¿/æ–°è¦èª­ã¿è¾¼ã¿ã•ã‚ŒãŸ `AudioBuffer` ã®å…±æœ‰ãƒã‚¤ãƒ³ã‚¿ã€‚
 		 */
 		static std::shared_ptr<AudioBuffer> GetResource(const std::wstring& filePath);
 	private:
 		friend class Audio;
 		/**
-		 * @brief QÆÏ‚İƒŠƒ\[ƒX‚ÌãQÆƒLƒƒƒbƒVƒ…B
-		 * @note ƒL[‚ª `const wchar_t*` ‚Ì‚½‚ßA“¯ˆêƒpƒX‚Å‚àƒ|ƒCƒ“ƒ^’l‚ªˆÙ‚È‚é‚Æ•ÊƒL[‚Æ‚È‚è‚Ü‚·B
+		 * @brief å‚ç…§æ¸ˆã¿ãƒªã‚½ãƒ¼ã‚¹ã®å¼±å‚ç…§ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã€‚
+		 * @note ã‚­ãƒ¼ãŒ `const wchar_t*` ã®ãŸã‚ã€åŒä¸€ãƒ‘ã‚¹ã§ã‚‚ãƒã‚¤ãƒ³ã‚¿å€¤ãŒç•°ãªã‚‹ã¨åˆ¥ã‚­ãƒ¼ã¨ãªã‚Šã¾ã™ã€‚
 		 */
 		static inline std::map<std::wstring, std::weak_ptr<AudioBuffer>> resources;
 	};
 
-	/** @brief ‰Šú‰»ˆ—iXAudio2 ‚ÌƒZƒbƒgƒAƒbƒvjB*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ï¼ˆXAudio2 ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ï¼‰ã€‚*/
 	static void Initialize();
 
-	/** @brief ƒ}ƒXƒ^[ƒ{ƒŠƒ…[ƒ€İ’èB*/
+	/** @brief ãƒã‚¹ã‚¿ãƒ¼ãƒœãƒªãƒ¥ãƒ¼ãƒ è¨­å®šã€‚*/
 	static void SetMasterVolume(float volume) { masterVoice->SetVolume(volume); }
 
-	/** @brief ƒ}ƒXƒ^[ƒ{ƒŠƒ…[ƒ€æ“¾B*/
+	/** @brief ãƒã‚¹ã‚¿ãƒ¼ãƒœãƒªãƒ¥ãƒ¼ãƒ å–å¾—ã€‚*/
 	static void GetMasterVolume(float& volume) { masterVoice->GetVolume(&volume); }
 
-	/** @brief BGM ‘S‘Ì‚Ìƒ{ƒŠƒ…[ƒ€İ’èB*/
+	/** @brief BGM å…¨ä½“ã®ãƒœãƒªãƒ¥ãƒ¼ãƒ è¨­å®šã€‚*/
 	static void SetBgmVolume(float volume) { submixVoices[BGM]->SetVolume(volume); }
 
-	/** @brief BGM ‘S‘Ì‚Ìƒ{ƒŠƒ…[ƒ€æ“¾B*/
+	/** @brief BGM å…¨ä½“ã®ãƒœãƒªãƒ¥ãƒ¼ãƒ å–å¾—ã€‚*/
 	static void GetBgmVolume(float& volume) { submixVoices[BGM]->GetVolume(&volume); }
 
-	/** @brief SE ‘S‘Ì‚Ìƒ{ƒŠƒ…[ƒ€İ’èB*/
+	/** @brief SE å…¨ä½“ã®ãƒœãƒªãƒ¥ãƒ¼ãƒ è¨­å®šã€‚*/
 	static void SetSeVolume(float volume) { submixVoices[SE]->SetVolume(volume); }
 
-	/** @brief SE ‘S‘Ì‚Ìƒ{ƒŠƒ…[ƒ€æ“¾B*/
+	/** @brief SE å…¨ä½“ã®ãƒœãƒªãƒ¥ãƒ¼ãƒ å–å¾—ã€‚*/
 	static void GetSeVolume(float& volume) { submixVoices[SE]->GetVolume(&volume); }
 
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^BƒŠƒ\[ƒX‚ğ‰ğ•ú‚µ‚Ü‚·B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚ãƒªã‚½ãƒ¼ã‚¹ã‚’è§£æ”¾ã—ã¾ã™ã€‚*/
 	virtual ~Audio();
 
 public:
 
 	/**
-	 * @brief ’P”­‚ÌŒø‰Ê‰¹i‚Ü‚½‚Í BGMj‚ğÄ¶‚µ‚Ü‚·B
-	 * @param filePath ‰¹ºƒtƒ@ƒCƒ‹ƒpƒXB
-	 * @param volume Ä¶‰¹—Êi0-1 –ÚˆÀjB
+	 * @brief å˜ç™ºã®åŠ¹æœéŸ³ï¼ˆã¾ãŸã¯ BGMï¼‰ã‚’å†ç”Ÿã—ã¾ã™ã€‚
+	 * @param filePath éŸ³å£°ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
+	 * @param volume å†ç”ŸéŸ³é‡ï¼ˆ0-1 ç›®å®‰ï¼‰ã€‚
 	 */
 	static void PlayOneShot(const wchar_t* filePath, float volume = 1.0f);
 
 	/**
-	 * @brief ƒtƒŒ[ƒ€XVB
-	 * @param deltaTime Œo‰ßŠÔi•bjB
-	 * @details Ä¶Š®—¹‚µ‚½ˆêƒ\[ƒX‚Ì”jŠü‚È‚Ç‚ğs‚¢‚Ü‚·B
+	 * @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
+	 * @details å†ç”Ÿå®Œäº†ã—ãŸä¸€æ™‚ã‚½ãƒ¼ã‚¹ã®ç ´æ£„ãªã©ã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	static void Update(float deltaTime);
 	/**
-	 * @brief ‚·‚×‚Ä‚Ìˆêƒ\[ƒX‚ğ”jŠü‚µ‚Ü‚·B
+	 * @brief ã™ã¹ã¦ã®ä¸€æ™‚ã‚½ãƒ¼ã‚¹ã‚’ç ´æ£„ã—ã¾ã™ã€‚
 	 */
 	static void ClearAll() {
 		audioSources.clear();
 		erases.clear();
 	}
 private:
-	/** @brief ƒAƒNƒeƒBƒu‚Èˆêƒ\[ƒXŒQB*/
+	/** @brief ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªä¸€æ™‚ã‚½ãƒ¼ã‚¹ç¾¤ã€‚*/
 	static inline std::vector<std::shared_ptr<StandaloneAudioSource>> audioSources;
-	/** @brief ”jŠü—\’è‚Ìˆêƒ\[ƒXŒQB*/
+	/** @brief ç ´æ£„äºˆå®šã®ä¸€æ™‚ã‚½ãƒ¼ã‚¹ç¾¤ã€‚*/
 	static inline std::vector<std::shared_ptr<StandaloneAudioSource>> erases;
 
 private:
@@ -125,72 +125,72 @@ private:
 	friend class AudioSource;
 	friend class StandaloneAudioSource;
 	/**
-	 * @brief XAudio2 ‚Ìƒ\[ƒXƒ{ƒCƒX‚ğì¬‚µ‚Ü‚·B
-	 * @param buffer Ä¶Œ³‚ÌƒI[ƒfƒBƒIƒoƒbƒtƒ@B
-	 * @param sourceVoice ¶¬Œ‹‰Ê‚Ìo—ÍæB
-	 * @param type ƒTƒEƒ“ƒhí•ÊiBGM/SEjB
+	 * @brief XAudio2 ã®ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param buffer å†ç”Ÿå…ƒã®ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒƒãƒ•ã‚¡ã€‚
+	 * @param sourceVoice ç”Ÿæˆçµæœã®å‡ºåŠ›å…ˆã€‚
+	 * @param type ã‚µã‚¦ãƒ³ãƒ‰ç¨®åˆ¥ï¼ˆBGM/SEï¼‰ã€‚
 	 */
 	static void CreateAudioSource(std::shared_ptr<AudioBuffer> buffer, IXAudio2SourceVoice** sourceVoice, SoundType type);
 
 private:
 //#ifdef X3DAUDIO
-//	/** @brief X3DAudio ‚Ìƒnƒ“ƒhƒ‹B*/
+//	/** @brief X3DAudio ã®ãƒãƒ³ãƒ‰ãƒ«ã€‚*/
 //	static inline BYTE x3dAudioHandle;
 //#endif // X3DAUDIO
 private:
 	friend class AudioListener;
 	friend class C3DAudio;
-	/** @brief XAudio2 ƒCƒ“ƒXƒ^ƒ“ƒXB*/
+	/** @brief XAudio2 ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã€‚*/
 	static inline Microsoft::WRL::ComPtr<IXAudio2> xaudio2;
-	/** @brief ƒ}ƒXƒ^[ƒ{ƒCƒXB*/
+	/** @brief ãƒã‚¹ã‚¿ãƒ¼ãƒœã‚¤ã‚¹ã€‚*/
 	static inline IXAudio2MasteringVoice* masterVoice = nullptr;
-	/** @brief ƒTƒuƒ~ƒbƒNƒXƒ{ƒCƒXiBGM/SEjB*/
+	/** @brief ã‚µãƒ–ãƒŸãƒƒã‚¯ã‚¹ãƒœã‚¤ã‚¹ï¼ˆBGM/SEï¼‰ã€‚*/
 	static inline IXAudio2SubmixVoice* submixVoices[SoundType::EnumCount];
 };
 
 /**
- * @brief ’P‘Ì‚Å“®ì‚·‚éŠÈˆÕƒI[ƒfƒBƒIƒ\[ƒXB
- * @details ƒtƒ@ƒCƒ‹‚ğw’è‚µ‚ÄÄ¶E’â~E‰¹—Ê‘€ì‚ğs‚¢‚Ü‚·B
+ * @brief å˜ä½“ã§å‹•ä½œã™ã‚‹ç°¡æ˜“ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚½ãƒ¼ã‚¹ã€‚
+ * @details ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã—ã¦å†ç”Ÿãƒ»åœæ­¢ãƒ»éŸ³é‡æ“ä½œã‚’è¡Œã„ã¾ã™ã€‚
  */
 class StandaloneAudioSource
 {
 public:
 	/**
-	 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B
-	 * @param filePath ‰¹ºƒtƒ@ƒCƒ‹ƒpƒXB
+	 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	 * @param filePath éŸ³å£°ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
 	 */
 	StandaloneAudioSource(const wchar_t* filePath);
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	~StandaloneAudioSource();
 
-	/** @brief Ä¶‚ğŠJn‚µ‚Ü‚·B*/
+	/** @brief å†ç”Ÿã‚’é–‹å§‹ã—ã¾ã™ã€‚*/
 	void Play(bool loop = false);
-	/** @brief Ä¶‚ğ’â~‚µ‚Ü‚·B*/
+	/** @brief å†ç”Ÿã‚’åœæ­¢ã—ã¾ã™ã€‚*/
 	void Stop(bool playTails = true);
-	/** @brief ‰¹—Ê‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief éŸ³é‡ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	void SetVolume(float volume);
-	/** @brief Œ»İ‚Ì‰¹—Ê‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ç¾åœ¨ã®éŸ³é‡ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	float GetVolume();
 
-	/** @brief Ä¶’†‚©‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief å†ç”Ÿä¸­ã‹ã‚’è¿”ã—ã¾ã™ã€‚*/
 	bool IsPlaying();
 
-	/** @brief ƒfƒoƒbƒO GUI •`‰æB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚° GUI æç”»ã€‚*/
 	void DrawGUI();
 
 private:
-	/** @brief ƒTƒEƒ“ƒhí•ÊB*/
+	/** @brief ã‚µã‚¦ãƒ³ãƒ‰ç¨®åˆ¥ã€‚*/
 	SoundType type;
 
-	/** @brief Ä¶‘ÎÛ‚ÌƒI[ƒfƒBƒIƒoƒbƒtƒ@B*/
+	/** @brief å†ç”Ÿå¯¾è±¡ã®ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒƒãƒ•ã‚¡ã€‚*/
 	std::shared_ptr<Audio::AudioBuffer> sptrBuffer;
-	/** @brief XAudio2 ‚Ìƒ\[ƒXƒ{ƒCƒXB*/
+	/** @brief XAudio2 ã®ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ã€‚*/
 	IXAudio2SourceVoice* sourceVoice;
 
-	/** @brief ƒ}ƒXƒ^[‰¹—ÊB*/
+	/** @brief ãƒã‚¹ã‚¿ãƒ¼éŸ³é‡ã€‚*/
 	static inline float masterVolume = 1.0f;
-	/** @brief BGM ‰¹—ÊB*/
+	/** @brief BGM éŸ³é‡ã€‚*/
 	static inline float bgmVolume = 1.0f;
-	/** @brief SE ‰¹—ÊB*/
+	/** @brief SE éŸ³é‡ã€‚*/
 	static inline float seVolume = 1.0f;
 };

@@ -14,12 +14,12 @@ namespace CurryEngine
         float value = std::any_cast<float>(prop.getter(context.Primary()));
         bool mixed = PropertyDrawHelper::HasMixedValues<float>(context, prop);
 
-		float vSpeed = 0.1f; // ƒhƒ‰ƒbƒO‚Ì‘¬“xB•K—v‚É‰‚¶‚Ä‘®«‚©‚çæ“¾‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B
-		float vMin = 0.0f;   // Å¬’lB•K—v‚É‰‚¶‚Ä‘®«‚©‚çæ“¾‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B
-		float vMax = 0.0f;   // Å‘å’lB•K—v‚É‰‚¶‚Ä‘®«‚©‚çæ“¾‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B
-		const char* format = "%.3f"; // •\¦ƒtƒH[ƒ}ƒbƒgB•K—v‚É‰‚¶‚Ä‘®«‚©‚çæ“¾‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B
+		float vSpeed = 0.1f; // ãƒ‰ãƒ©ãƒƒã‚°ã®é€Ÿåº¦ã€‚å¿…è¦ã«å¿œã˜ã¦å±æ€§ã‹ã‚‰å–å¾—ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚
+		float vMin = 0.0f;   // æœ€å°å€¤ã€‚å¿…è¦ã«å¿œã˜ã¦å±æ€§ã‹ã‚‰å–å¾—ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚
+		float vMax = 0.0f;   // æœ€å¤§å€¤ã€‚å¿…è¦ã«å¿œã˜ã¦å±æ€§ã‹ã‚‰å–å¾—ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚
+		const char* format = "%.3f"; // è¡¨ç¤ºãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã€‚å¿…è¦ã«å¿œã˜ã¦å±æ€§ã‹ã‚‰å–å¾—ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚
 
-		// ‘®«‚©‚ç vSpeedAvMinAvMaxAformat ‚ğæ“¾‚·‚éB
+		// å±æ€§ã‹ã‚‰ vSpeedã€vMinã€vMaxã€format ã‚’å–å¾—ã™ã‚‹ã€‚
 		{
 			const AttributeInfo* rangeAttr = prop.GetAttribute("Range");
 			if (rangeAttr && rangeAttr->args.size() >= 2)
@@ -43,24 +43,24 @@ namespace CurryEngine
         bool edited = ImGui::DragFloat("##float", &value, vSpeed, vMin, vMax, mixed ? "---" : format);
         if (edited)
         {
-            // ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—B•¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚·‚×‚Ä‚Ì‘ÎÛ‚É‘Î‚µ‚ÄV‚µ‚¢’l‚ğ“K—p‚µ‚Ü‚·B
+            // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã€‚è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ã™ã¹ã¦ã®å¯¾è±¡ã«å¯¾ã—ã¦æ–°ã—ã„å€¤ã‚’é©ç”¨ã—ã¾ã™ã€‚
             PropertyDrawHelper::ApplyToAll<float>(context, prop, value);
         }
 
-        // ’l‚ÌƒRƒ~ƒbƒgˆ—Bƒ†[ƒU[‚ª•ÒW‚ğŠ®—¹‚µ‚½‚Æ‚«‚ÉAUndo/Redo ƒRƒ}ƒ“ƒh‚ğ”­s‚µ‚Ü‚·B
+        // å€¤ã®ã‚³ãƒŸãƒƒãƒˆå‡¦ç†ã€‚ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç·¨é›†ã‚’å®Œäº†ã—ãŸã¨ãã«ã€Undo/Redo ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œã—ã¾ã™ã€‚
         PropertyDrawHelper::CommitEdit<float>(prop, context, m_state, value,
             [](const float& v) {
                 return std::to_string(v);
             },
             [](const float& a, const float& b) {
-                return std::abs(a - b) < 1e-6f; // •‚“®¬”“_”‚Ì”äŠr‚ÍAâ‘Î’l‚Ì·‚ª¬‚³‚¢‚©‚Ç‚¤‚©‚Å”»’è
+                return std::abs(a - b) < 1e-6f; // æµ®å‹•å°æ•°ç‚¹æ•°ã®æ¯”è¼ƒã¯ã€çµ¶å¯¾å€¤ã®å·®ãŒå°ã•ã„ã‹ã©ã†ã‹ã§åˆ¤å®š
             },
             []() {
-                // •ÒWŠJn‘O‚Ìó‘Ô‚ğ•Û‘¶‚·‚éŠÖ”B‚±‚±‚Å‚ÍAŒ»İ‚Ì float ’l‚ğ m_state ‚É•Û‘¶‚µ‚Ä‚¢‚Ü‚·B
+                // ç·¨é›†é–‹å§‹å‰ã®çŠ¶æ…‹ã‚’ä¿å­˜ã™ã‚‹é–¢æ•°ã€‚ã“ã“ã§ã¯ã€ç¾åœ¨ã® float å€¤ã‚’ m_state ã«ä¿å­˜ã—ã¦ã„ã¾ã™ã€‚
                 return ImGui::IsItemActivated();
             },
             []() {
-                // ƒRƒ~ƒbƒg‚µ‚Ä‚à‚¢‚¢‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚éŠÖ”B‚±‚±‚Å‚Íí‚É true ‚ğ•Ô‚µ‚Ä‚¢‚Ü‚·‚ªA•K—v‚É‰‚¶‚ÄğŒ‚ğ’Ç‰Á‚Å‚«‚Ü‚·B
+                // ã‚³ãƒŸãƒƒãƒˆã—ã¦ã‚‚ã„ã„ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹é–¢æ•°ã€‚ã“ã“ã§ã¯å¸¸ã« true ã‚’è¿”ã—ã¦ã„ã¾ã™ãŒã€å¿…è¦ã«å¿œã˜ã¦æ¡ä»¶ã‚’è¿½åŠ ã§ãã¾ã™ã€‚
                 return ImGui::IsItemDeactivatedAfterEdit();
 			}
         );

@@ -9,9 +9,9 @@ namespace CurryEngine
 		namespace IdGenerator
 		{
 			/**
-			 * @brief ƒAƒZƒbƒgID‚ğ¶¬‚·‚éŠÖ”B
-			 * @details ‚±‚ÌŠÖ”‚ÍAƒAƒZƒbƒg‚ÌˆêˆÓ‚ÈID‚ğ¶¬‚µ‚Ü‚·B
-			 * @return ¶¬‚³‚ê‚½ƒAƒZƒbƒgIDB
+			 * @brief ã‚¢ã‚»ãƒƒãƒˆIDã‚’ç”Ÿæˆã™ã‚‹é–¢æ•°ã€‚
+			 * @details ã“ã®é–¢æ•°ã¯ã€ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªIDã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+			 * @return ç”Ÿæˆã•ã‚ŒãŸã‚¢ã‚»ãƒƒãƒˆIDã€‚
 			 */
 			std::string GenerateAssetId();
 		}

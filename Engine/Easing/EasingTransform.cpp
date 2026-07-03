@@ -82,7 +82,7 @@ void EasingPosition::DrawProperty(const PropertyDrawContext& context)
 		{
 			handler.AddEasing(easeItem.second);
 		}
-		//PropertyÉAÉNÉZÉXê›íË
+		//Property„Ç¢„ÇØ„Çª„ÇπË®≠ÂÆö
 		PropertyAccessor<float> accessor;
 		accessor.getter = [&]()-> float {
 			return GetOwner()->transform->position.x;
@@ -181,7 +181,7 @@ void EasingScale::DrawProperty(const PropertyDrawContext& context)
 		{
 			handler.AddEasing(easeItem.second);
 		}
-		//PropertyÉAÉNÉZÉXê›íË
+		//Property„Ç¢„ÇØ„Çª„ÇπË®≠ÂÆö
 		PropertyAccessor<float> accessor;
 		accessor.getter = [&]()-> float {
 			return GetOwner()->transform->scale.x;

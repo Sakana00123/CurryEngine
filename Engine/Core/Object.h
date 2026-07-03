@@ -10,62 +10,62 @@ using json = nlohmann::json;
 
 /**
  * @file
- * @brief ‘S‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚Ì‹¤’ÊŠî’êƒNƒ‰ƒXB
- * @details ˆêˆÓ¯•ÊqA–¼‘OA—Dæ“xAƒVƒŠƒAƒ‰ƒCƒY/ƒfƒVƒŠƒAƒ‰ƒCƒY‹@”\‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief å…¨ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å…±é€šåŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details ä¸€æ„è­˜åˆ¥å­ã€åå‰ã€å„ªå…ˆåº¦ã€ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º/ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºæ©Ÿèƒ½ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class Object
 {
 	C_REFLECT(Object)
 public:
-	/** @brief ˆêˆÓ¯•ÊqB*/
-	ObjectId id = ObjectId::Generate(); // ƒIƒuƒWƒFƒNƒg¶¬‚ÉˆêˆÓ‚ÈID‚ğŠ„‚è“–‚Ä
-	/** @brief ƒIƒuƒWƒFƒNƒg–¼B*/
+	/** @brief ä¸€æ„è­˜åˆ¥å­ã€‚*/
+	ObjectId id = ObjectId::Generate(); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆæ™‚ã«ä¸€æ„ãªIDã‚’å‰²ã‚Šå½“ã¦
+	/** @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
 	std::string name;
-	/** @brief XV‚â•`‰æ‚Ì—Dæ“xB”’l‚ª¬‚³‚¢‚Ù‚Çæ‚Éˆ—‚³‚ê‚é‚±‚Æ‚ğ‘z’èB*/
+	/** @brief æ›´æ–°ã‚„æç”»ã®å„ªå…ˆåº¦ã€‚æ•°å€¤ãŒå°ã•ã„ã»ã©å…ˆã«å‡¦ç†ã•ã‚Œã‚‹ã“ã¨ã‚’æƒ³å®šã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::ReadOnly)
 	int priority = 0;
 	
 public:
 	//static void Destroy(Object* obj) {}
 
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	virtual json Serialize() const { return json::object(); }
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	virtual void Deserialize(const json& j) {}
 
-	/** @brief –¼‘O‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief åå‰ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	virtual void SetName(const std::string& newName) { name = newName; }
 
-	/** @brief ƒIƒuƒWƒFƒNƒg‚Ì•¶š—ñ•\Œ»‚ğæ“¾‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚Å‚Í–¼‘O‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ–‡å­—åˆ—è¡¨ç¾ã‚’å–å¾—ã—ã¾ã™ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯åå‰ã‚’è¿”ã—ã¾ã™ã€‚*/
 	virtual std::string ToString() const { return name; }
 
-	/** @brief ID ‚ğİ’è‚µ‚Ü‚·B’Êí‚Íg—p‚µ‚Ü‚¹‚ñ‚ªA“Á’è‚ÌID‚ğ’¼Úw’è‚µ‚½‚¢ê‡‚É•Ö—˜‚Å‚·B*/
+	/** @brief ID ã‚’è¨­å®šã—ã¾ã™ã€‚é€šå¸¸ã¯ä½¿ç”¨ã—ã¾ã›ã‚“ãŒã€ç‰¹å®šã®IDã‚’ç›´æ¥æŒ‡å®šã—ãŸã„å ´åˆã«ä¾¿åˆ©ã§ã™ã€‚*/
 	void SetId(const ObjectId& newId) { id = newId; }
 
-	/** @brief ©g‚Ì ID ‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief è‡ªèº«ã® ID ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	ObjectId GetId() const { return id; }
 
-	/** @brief —Dæ“x‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief å„ªå…ˆåº¦ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	int GetPriority() const { return priority; }
 
-	/** @brief —Dæ“x‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief å„ªå…ˆåº¦ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	void SetPriority(int p) { priority = p; }
 
-	/** @brief –¼‘O‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief åå‰ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	std::string GetName() const { return name; }
 
-	/** @brief ƒIƒuƒWƒFƒNƒg‚ÌŒ^–¼‚ğæ“¾‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚Å‚ÍƒNƒ‰ƒX–¼‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‹åã‚’å–å¾—ã—ã¾ã™ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ã‚¯ãƒ©ã‚¹åã‚’è¿”ã—ã¾ã™ã€‚*/
 	virtual std::string GetTypeName() const { return name; }
 
-	/** @brief ƒNƒ‰ƒXƒƒ^ƒf[ƒ^‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚¯ãƒ©ã‚¹ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	const ClassMeta* GetClassMeta() const
 	{
 		return ReflectionRegistry::FindClass(GetTypeName());
 	}
 
-	/** @brief ƒvƒƒpƒeƒB‚ÌƒAƒhƒŒƒX‚ğæ“¾‚µ‚Ü‚·BƒvƒƒpƒeƒB‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã—ã¾ã™ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã—ã¾ã™ã€‚*/
 	char* GetPropertyAddress(const std::string& propertyName)
 	{
 		if (auto* meta = GetClassMeta())
@@ -78,6 +78,6 @@ public:
 				}
 			}
 		}
-		return nullptr; // ƒvƒƒpƒeƒB‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·
+		return nullptr; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™
 	}
 };

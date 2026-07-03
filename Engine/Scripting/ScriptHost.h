@@ -6,7 +6,7 @@
 #include <coreclr_delegates.h>
 #include "Engine/Scripting/Exports/ScriptBridgeTypes.h"
 
-// C++‚©‚çŒÄ‚ÔC#ƒƒ\ƒbƒh‚ÌŠÖ”ƒ|ƒCƒ“ƒ^Œ^
+// C++ã‹ã‚‰å‘¼ã¶C#ãƒ¡ã‚½ãƒƒãƒ‰ã®é–¢æ•°ãƒã‚¤ãƒ³ã‚¿å‹
 using ManagedUpdateFunc = void(__stdcall*)(void* gcHandle);
 using ManagedAwakeFunc = void(__stdcall*)(void* gcHandle);
 using ManagedStartFunc = void(__stdcall*)(void* gcHandle);
@@ -46,7 +46,7 @@ struct ScriptCallbacks
 	ReloadScriptsFunc ReloadScripts = nullptr;
 
 
-	// ------------ PhysicsƒCƒxƒ“ƒg—pƒR[ƒ‹ƒoƒbƒN ------------
+	// ------------ Physicsã‚¤ãƒ™ãƒ³ãƒˆç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ ------------
 	ManagedCollisionCallbackFunc OnCollisionEnter = nullptr;
 	ManagedCollisionCallbackFunc OnCollisionStay = nullptr;
 	ManagedCollisionCallbackFunc OnCollisionExit = nullptr;
@@ -59,28 +59,28 @@ struct ScriptCallbacks
 
 };
 
-// .NETƒzƒXƒg‚Ì‰Šú‰»‚É•K—v‚Èî•ñ‚ğ•\‚·\‘¢‘Ì
+// .NETãƒ›ã‚¹ãƒˆã®åˆæœŸåŒ–ã«å¿…è¦ãªæƒ…å ±ã‚’è¡¨ã™æ§‹é€ ä½“
 struct ScriptHostDesc
 {
-	std::wstring runtimeConfigPath; // .NETƒ‰ƒ“ƒ^ƒCƒ€‚ÌƒpƒX
-	std::wstring engineApiPath; // ƒGƒ“ƒWƒ“‚ÌAPI‚ğ’è‹`‚µ‚½DLL‚ÌƒpƒX
-	get_hostfxr_parameters parameters; // hostfxr‚Ì‰Šú‰»‚É•K—v‚Èƒpƒ‰ƒ[ƒ^(“à•”‚Åg—p)
+	std::wstring runtimeConfigPath; // .NETãƒ©ãƒ³ã‚¿ã‚¤ãƒ ã®ãƒ‘ã‚¹
+	std::wstring engineApiPath; // ã‚¨ãƒ³ã‚¸ãƒ³ã®APIã‚’å®šç¾©ã—ãŸDLLã®ãƒ‘ã‚¹
+	get_hostfxr_parameters parameters; // hostfxrã®åˆæœŸåŒ–ã«å¿…è¦ãªãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿(å†…éƒ¨ã§ä½¿ç”¨)
 };
 
 struct ScriptHostConfig
 {
-	ScriptCallbacks callbacks; // C#‚©‚çŒÄ‚Ño‚·ŠÖ”‚ÌƒR[ƒ‹ƒoƒbƒN
+	ScriptCallbacks callbacks; // C#ã‹ã‚‰å‘¼ã³å‡ºã™é–¢æ•°ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 };
 
-// C#ƒAƒZƒ“ƒuƒŠ“à‚ÌŠÖ”‚ğ•\‚·\‘¢‘Ì
+// C#ã‚¢ã‚»ãƒ³ãƒ–ãƒªå†…ã®é–¢æ•°ã‚’è¡¨ã™æ§‹é€ ä½“
 struct FunctionDesc
 {
-	std::wstring assemblyPath; // C#ƒAƒZƒ“ƒuƒŠ‚ÌƒpƒX
-	std::wstring typeName;     // C#ƒNƒ‰ƒX‚ÌŠ®‘SCü–¼i—á: "MyNamespace.MyClass"j
-	std::wstring methodName;   // C#ƒNƒ‰ƒX“à‚Ìƒƒ\ƒbƒh–¼i—á: "MyMethod"j
+	std::wstring assemblyPath; // C#ã‚¢ã‚»ãƒ³ãƒ–ãƒªã®ãƒ‘ã‚¹
+	std::wstring typeName;     // C#ã‚¯ãƒ©ã‚¹ã®å®Œå…¨ä¿®é£¾åï¼ˆä¾‹: "MyNamespace.MyClass"ï¼‰
+	std::wstring methodName;   // C#ã‚¯ãƒ©ã‚¹å†…ã®ãƒ¡ã‚½ãƒƒãƒ‰åï¼ˆä¾‹: "MyMethod"ï¼‰
 };
 
-// .NET Core ƒzƒXƒgƒNƒ‰ƒX
+// .NET Core ãƒ›ã‚¹ãƒˆã‚¯ãƒ©ã‚¹
 class ScriptHost
 {
 public:
@@ -90,7 +90,7 @@ public:
 
 	const ScriptCallbacks& GetCallbacks() { return m_callbacks; }
 
-	// C#ƒAƒZƒ“ƒuƒŠ‚©‚çŠÖ”ƒ|ƒCƒ“ƒ^‚ğæ“¾‚·‚é‚½‚ß‚ÌŠÖ”
+	// C#ã‚¢ã‚»ãƒ³ãƒ–ãƒªã‹ã‚‰é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®é–¢æ•°
 	template<typename TFunc>
 	TFunc GetFunction(const FunctionDesc& desc)
 	{
@@ -117,7 +117,7 @@ private:
 	VoidFunc m_initFunc = nullptr;
 	VoidFunc m_shutdownFunc = nullptr;
 	ScriptCallbacks m_callbacks;
-	// hostfxr‚ÌŠÖ”ƒ|ƒCƒ“ƒ^
+	// hostfxrã®é–¢æ•°ãƒã‚¤ãƒ³ã‚¿
 	hostfxr_handle m_hostContext = nullptr;
 	load_assembly_and_get_function_pointer_fn m_loadFunc = nullptr;
 };

@@ -5,94 +5,94 @@
 
 /**
  * @file
- * @brief OlÌ‹“_ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[ƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details `ThirdPersonCamera` ‚ğ—˜—p‚µ‚ÄAOlÌ‹“_ƒJƒƒ‰§Œä‚ğs‚¢‚Ü‚·B
+ * @brief ä¸‰äººç§°è¦–ç‚¹ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details `ThirdPersonCamera` ã‚’åˆ©ç”¨ã—ã¦ã€ä¸‰äººç§°è¦–ç‚¹ã‚«ãƒ¡ãƒ©åˆ¶å¾¡ã‚’è¡Œã„ã¾ã™ã€‚
  */
 class ThirdPersonCameraController : public Component
 {
 	C_REFLECT(ThirdPersonCameraController)
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	ThirdPersonCameraController() = default;
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	~ThirdPersonCameraController() override = default;
 
-	/** @brief ‰Šú‰»ˆ—B*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ã€‚*/
 	void Initialize() override;
 
-	/** @brief ŠJnˆ—B*/
+	/** @brief é–‹å§‹å‡¦ç†ã€‚*/
 	void Start() override;
 
-	/** @brief XVˆ—B*/
+	/** @brief æ›´æ–°å‡¦ç†ã€‚*/
 	void Update(float deltaTime) override;
 
 #ifdef USE_IMGUI
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^—p‚ÌƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json Serialize() const override;
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	void Deserialize(const json& j) override;
 
 private:
 	
-	//Transform* targetTransform = nullptr; // ’Ç]ƒ^[ƒQƒbƒg‚ÌTransform
-	//Transform* lookAtTransform = nullptr; // ’‹ƒ^[ƒQƒbƒg‚ÌTransform
+	//Transform* targetTransform = nullptr; // è¿½å¾“ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®Transform
+	//Transform* lookAtTransform = nullptr; // æ³¨è¦–ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®Transform
 
 	C_PROPERTY(ObjectReference("Transform"))
-	ObjectId targetTransformId = ObjectId::Invalid(); // ’Ç]ƒ^[ƒQƒbƒg‚ÌTransform‚ÌƒIƒuƒWƒFƒNƒgID
+	ObjectId targetTransformId = ObjectId::Invalid(); // è¿½å¾“ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®Transformã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆID
 	C_PROPERTY(ObjectReference("Transform"))
-	ObjectId lookAtTransformId = ObjectId::Invalid(); // ’‹ƒ^[ƒQƒbƒg‚ÌTransform‚ÌƒIƒuƒWƒFƒNƒgID
+	ObjectId lookAtTransformId = ObjectId::Invalid(); // æ³¨è¦–ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®Transformã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆID
 
 	//C_PROPERTY(ObjectReference("GameObject"))
-	//ObjectId targetObjectId = ObjectId::Invalid(); // ’Ç]ƒ^[ƒQƒbƒg‚ÌƒIƒuƒWƒFƒNƒgID
+	//ObjectId targetObjectId = ObjectId::Invalid(); // è¿½å¾“ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆID
 	//C_PROPERTY(ObjectReference("GameObject"))
-	//ObjectId lookAtObjectId = ObjectId::Invalid(); // ’‹ƒ^[ƒQƒbƒg‚ÌƒIƒuƒWƒFƒNƒgID
+	//ObjectId lookAtObjectId = ObjectId::Invalid(); // æ³¨è¦–ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆID
 
 	C_PROPERTY()
-	bool isEnableAxisInput = true; // “ü—ÍiAxisj‚ğ—LŒø‰»‚·‚é‚©
+	bool isEnableAxisInput = true; // å…¥åŠ›ï¼ˆAxisï¼‰ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹ã‹
 	C_PROPERTY()
-	bool isEnableZoomInput = true; // ƒY[ƒ€“ü—Í‚ğ—LŒø‰»‚·‚é‚©
+	bool isEnableZoomInput = true; // ã‚ºãƒ¼ãƒ å…¥åŠ›ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹ã‹
 	
 	C_PROPERTY()
-	bool invertX = false; // X²”½“]
+	bool invertX = false; // Xè»¸åè»¢
 	C_PROPERTY()
-	bool invertY = false; // Y²”½“]
+	bool invertY = false; // Yè»¸åè»¢
 	C_PROPERTY()
-	bool invertZoom = false; // ƒY[ƒ€”½“]
+	bool invertZoom = false; // ã‚ºãƒ¼ãƒ åè»¢
 
 	C_PROPERTY()
-	bool useSmoothMovement = false; // ƒXƒ€[ƒYˆÚ“®‚ğg—p‚·‚é‚©
+	bool useSmoothMovement = false; // ã‚¹ãƒ ãƒ¼ã‚ºç§»å‹•ã‚’ä½¿ç”¨ã™ã‚‹ã‹
 	C_PROPERTY()
-	bool useSmoothZoom = true; // ƒXƒ€[ƒYƒY[ƒ€‚ğg—p‚·‚é‚©
+	bool useSmoothZoom = true; // ã‚¹ãƒ ãƒ¼ã‚ºã‚ºãƒ¼ãƒ ã‚’ä½¿ç”¨ã™ã‚‹ã‹
 
 	C_PROPERTY(Range(1, 500))
-	float rotationSpeed = 10.f; // ‰ñ“]‘¬“x
+	float rotationSpeed = 10.f; // å›è»¢é€Ÿåº¦
 
 	C_PROPERTY(Speed(0.1f), Range(0.1f,10.f))
-	float zoomAmount = 3.f; // ƒY[ƒ€—Ê
+	float zoomAmount = 3.f; // ã‚ºãƒ¼ãƒ é‡
 	C_PROPERTY(Range(1,20))
-	float zoomSpeed = 10.f; // ƒY[ƒ€‘¬“x(ƒXƒ€[ƒY)
+	float zoomSpeed = 10.f; // ã‚ºãƒ¼ãƒ é€Ÿåº¦(ã‚¹ãƒ ãƒ¼ã‚ºæ™‚)
 
 	C_PROPERTY(ReadOnly)
-	float distance = 25.f; // ƒJƒƒ‰‹——£(Œ»İ’l)
+	float distance = 25.f; // ã‚«ãƒ¡ãƒ©è·é›¢(ç¾åœ¨å€¤)
 	C_PROPERTY(ReadOnly)
-	float targetDistance = 25.f; // –Ú•W‹——£(ƒY[ƒ€æ)
+	float targetDistance = 25.f; // ç›®æ¨™è·é›¢(ã‚ºãƒ¼ãƒ å…ˆ)
 	C_PROPERTY(ReadOnly)
-	float minDistance = 2.f; // Å¬‹——£
+	float minDistance = 2.f; // æœ€å°è·é›¢
 	C_PROPERTY(ReadOnly)
-	float maxDistance = 50.f; // Å‘å‹——£
+	float maxDistance = 50.f; // æœ€å¤§è·é›¢
 
 	C_PROPERTY(Speed(0.1f), Range(1.0f, 20.0f))
-	float followSpeed = 10.f; // ’Ç]‘¬“x
+	float followSpeed = 10.f; // è¿½å¾“é€Ÿåº¦
 	C_PROPERTY(Speed(0.1f), Range(1.0f, 20.0f))
-	float lookAtSpeed = 10.f; // ’‹‘¬“x
+	float lookAtSpeed = 10.f; // æ³¨è¦–é€Ÿåº¦
 	C_PROPERTY()
-	float minAngleX = 0.f; // X²Å¬Šp“x
+	float minAngleX = 0.f; // Xè»¸æœ€å°è§’åº¦
 	C_PROPERTY()
-	float maxAngleX = 45.f; // X²Å‘åŠp“x
+	float maxAngleX = 45.f; // Xè»¸æœ€å¤§è§’åº¦
 };

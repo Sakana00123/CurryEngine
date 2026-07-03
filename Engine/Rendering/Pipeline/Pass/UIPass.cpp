@@ -13,13 +13,13 @@ void UIPass::Execute(RenderContext* rtx, Scene* scene)
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 	
-	// [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgÝ’è
+	// æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	renderState->BindDepthStencilState(immediateContext, DepthStencilState::NoTestNoWrite);
-	// ƒ‰ƒXƒ^ƒ‰ƒCƒUÝ’è
+	// ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶è¨­å®š
 	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
-	// ƒuƒŒƒ“ƒhƒXƒe[ƒgÝ’è
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	renderState->BindBlendState(immediateContext, BlendState::Transparency);
 
-	// UI‚Ì•`‰æ
+	// UIã®æç”»
 	scene->objectManager->Draw(rtx);
 }

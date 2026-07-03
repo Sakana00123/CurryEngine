@@ -10,127 +10,127 @@
 
 /**
  * @file
- * @brief ƒVƒF[ƒ_‚Ì“Ç‚İ‚İ/”½‰f/ƒŠƒtƒŒƒNƒVƒ‡ƒ“î•ñ‚ğˆµ‚¤ƒwƒbƒ_B
- * @details HLSL ‚©‚ç‚Ì“Ç‚İ‚İACSO ‚©‚ç‚Ì¶¬AƒXƒe[ƒW•Ê‚Ìİ’è‚â
- *          ’è”ƒoƒbƒtƒ@ƒŒƒCƒAƒEƒg‚ÌƒŠƒtƒŒƒNƒVƒ‡ƒ“æ“¾‚È‚Ç‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief ã‚·ã‚§ãƒ¼ãƒ€ã®èª­ã¿è¾¼ã¿/åæ˜ /ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’æ‰±ã†ãƒ˜ãƒƒãƒ€ã€‚
+ * @details HLSL ã‹ã‚‰ã®èª­ã¿è¾¼ã¿ã€CSO ã‹ã‚‰ã®ç”Ÿæˆã€ã‚¹ãƒ†ãƒ¼ã‚¸åˆ¥ã®è¨­å®šã‚„
+ *          å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³å–å¾—ãªã©ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 
 /**
- * @brief ƒVƒF[ƒ_ƒoƒCƒiƒŠiCSO ‚È‚Çj‚ğƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚İ‚Ü‚·B
- * @param filePath ƒtƒ@ƒCƒ‹ƒpƒXB
- * @param data “Ç‚İ‚ñ‚¾ƒoƒCƒg—ñ‚Ìo—ÍæB
+ * @brief ã‚·ã‚§ãƒ¼ãƒ€ãƒã‚¤ãƒŠãƒªï¼ˆCSO ãªã©ï¼‰ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã¿ã¾ã™ã€‚
+ * @param filePath ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
+ * @param data èª­ã¿è¾¼ã‚“ã ãƒã‚¤ãƒˆåˆ—ã®å‡ºåŠ›å…ˆã€‚
  */
 void LoadShaderFile(const char* filePath, std::vector<BYTE>& data);
 
 /**
- * @brief CSO ‚©‚ç’¸“_ƒVƒF[ƒ_‚ğ¶¬‚µ‚Ü‚·B
- * @param device D3D11 ƒfƒoƒCƒXB
- * @param cso_name CSO ƒtƒ@ƒCƒ‹ƒpƒXB
- * @param vertex_shader ¶¬‚³‚ê‚½ VS ‚Ìo—ÍæB
- * @param input_layout “ü—ÍƒŒƒCƒAƒEƒg‚Ìo—ÍæB
- * @param input_element_desc “ü—ÍƒŒƒCƒAƒEƒg’è‹`B
- * @param num_elements —v‘f”B
- * @return ¬Œ÷ S_OKA¸”s‚Í DirectX ƒGƒ‰[ƒR[ƒhB
+ * @brief CSO ã‹ã‚‰é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+ * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
+ * @param cso_name CSO ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
+ * @param vertex_shader ç”Ÿæˆã•ã‚ŒãŸ VS ã®å‡ºåŠ›å…ˆã€‚
+ * @param input_layout å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®å‡ºåŠ›å…ˆã€‚
+ * @param input_element_desc å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå®šç¾©ã€‚
+ * @param num_elements è¦ç´ æ•°ã€‚
+ * @return æˆåŠŸæ™‚ S_OKã€å¤±æ•—æ™‚ã¯ DirectX ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã€‚
  */
 HRESULT CreateVertexShaderFromCSO(ID3D11Device* device, const char* cso_name, ID3D11VertexShader** vertex_shader,
 	ID3D11InputLayout** input_layout, D3D11_INPUT_ELEMENT_DESC* input_element_desc, UINT num_elements);
 
 /**
- * @brief CSO ‚©‚çƒsƒNƒZƒ‹ƒVƒF[ƒ_‚ğ¶¬‚µ‚Ü‚·B
+ * @brief CSO ã‹ã‚‰ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
  */
 HRESULT CreatePixelShaderFromCSO(ID3D11Device* device, const char* cso_name, ID3D11PixelShader** pixel_shader);
 
 /**
- * @brief CSO ‚©‚çƒWƒIƒƒgƒŠƒVƒF[ƒ_‚ğ¶¬‚µ‚Ü‚·B
+ * @brief CSO ã‹ã‚‰ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
  */
 HRESULT CreateGeometryShaderFromCSO(ID3D11Device* device, const char* cso_name, ID3D11GeometryShader** geometryShader);
 
 /**
- * @brief CSO ‚©‚çƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_‚ğ¶¬‚µ‚Ü‚·B
+ * @brief CSO ã‹ã‚‰ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
  */
 HRESULT CreateComputeShaderFromCSO(ID3D11Device* device, const char* cso_name, ID3D11ComputeShader** computeShader);
 
 /**
- * @brief ƒVƒF[ƒ_‚Ìí—ŞB
+ * @brief ã‚·ã‚§ãƒ¼ãƒ€ã®ç¨®é¡ã€‚
  */
 enum class ShaderType
 {
-	Pixel,    //!< ƒsƒNƒZƒ‹ƒVƒF[ƒ_
-	Vertex,   //!< ’¸“_ƒVƒF[ƒ_
-	Geometry, //!< ƒWƒIƒƒgƒŠƒVƒF[ƒ_
-	Hull,     //!< ƒnƒ‹ƒVƒF[ƒ_
-	Domain,   //!< ƒhƒƒCƒ“ƒVƒF[ƒ_
-	Compute,  //!< ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_
+	Pixel,    //!< ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
+	Vertex,   //!< é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
+	Geometry, //!< ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€
+	Hull,     //!< ãƒãƒ«ã‚·ã‚§ãƒ¼ãƒ€
+	Domain,   //!< ãƒ‰ãƒ¡ã‚¤ãƒ³ã‚·ã‚§ãƒ¼ãƒ€
+	Compute,  //!< ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€
 	EnumCount,
 };
 
 /**
- * @brief ƒVƒF[ƒ_ƒXƒe[ƒW‚²‚Æ‚Ì‹Lqî•ñB
+ * @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚¹ãƒ†ãƒ¼ã‚¸ã”ã¨ã®è¨˜è¿°æƒ…å ±ã€‚
  */
 struct ShaderStageDesc
 {
-	std::string filePath;   // HLSLƒtƒ@ƒCƒ‹
+	std::string filePath;   // HLSLãƒ•ã‚¡ã‚¤ãƒ«
 	std::string entryPoint; // "main"
-	std::string target;     // "vs_5_0", "ps_5_0" c
+	std::string target;     // "vs_5_0", "ps_5_0" â€¦
 };
 
 /**
- * @brief ƒVƒF[ƒ_‚ÌƒŠƒtƒŒƒNƒVƒ‡ƒ“î•ñB
+ * @brief ã‚·ã‚§ãƒ¼ãƒ€ã®ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã€‚
  */
 struct ShaderReflectionData
 {
 	/**
-	 * @brief ’è”ƒoƒbƒtƒ@“à‚Ì•Ï”î•ñB
+	 * @brief å®šæ•°ãƒãƒƒãƒ•ã‚¡å†…ã®å¤‰æ•°æƒ…å ±ã€‚
 	 */
 	struct ShaderVariable
 	{
-		std::string name;           //!< •Ï”–¼
-		size_t offset;              //!< cbuffer “àƒIƒtƒZƒbƒgiƒoƒCƒgj
-		size_t size;                //!< ƒTƒCƒYiƒoƒCƒgj
-		D3D11_SHADER_TYPE_DESC typeDesc;//!< Œ^î•ñ
-		void* defaultValue;        //!< ƒfƒtƒHƒ‹ƒg’liŒ^‚Í typeDesc ‚ÉŠî‚Ã‚­j
+		std::string name;           //!< å¤‰æ•°å
+		size_t offset;              //!< cbuffer å†…ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆãƒã‚¤ãƒˆï¼‰
+		size_t size;                //!< ã‚µã‚¤ã‚ºï¼ˆãƒã‚¤ãƒˆï¼‰
+		D3D11_SHADER_TYPE_DESC typeDesc;//!< å‹æƒ…å ±
+		void* defaultValue;        //!< ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ï¼ˆå‹ã¯ typeDesc ã«åŸºã¥ãï¼‰
 	};
 	/**
-	 * @brief ’è”ƒoƒbƒtƒ@‚ÌƒŒƒCƒAƒEƒgî•ñB
+	 * @brief å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ã€‚
 	 */
 	struct ConstantBufferLayout
 	{
-		std::string name;                  //!< ’è”ƒoƒbƒtƒ@–¼
-		UINT slot;                         //!< ƒoƒCƒ“ƒhƒXƒƒbƒg
-		size_t size;                       //!< ‘ƒoƒCƒgƒTƒCƒY
-		std::vector<ShaderVariable> variables; //!< “à•ï‚·‚é•Ï”ˆê——
+		std::string name;                  //!< å®šæ•°ãƒãƒƒãƒ•ã‚¡å
+		UINT slot;                         //!< ãƒã‚¤ãƒ³ãƒ‰ã‚¹ãƒ­ãƒƒãƒˆ
+		size_t size;                       //!< ç·ãƒã‚¤ãƒˆã‚µã‚¤ã‚º
+		std::vector<ShaderVariable> variables; //!< å†…åŒ…ã™ã‚‹å¤‰æ•°ä¸€è¦§
 	};
 	/**
-	 * @brief ƒeƒNƒXƒ`ƒƒ‚ÌƒŠƒtƒŒƒNƒVƒ‡ƒ“î•ñB
+	 * @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã€‚
 	 */
 	struct TextureInfo
 	{
-		std::string name;				// !< ƒeƒNƒXƒ`ƒƒ–¼
-		UINT bindPoint;					// !< ƒoƒCƒ“ƒhƒXƒƒbƒg
-		UINT bindCount;					// !< ƒoƒCƒ“ƒh”
-		D3D_SRV_DIMENSION dimension;	// !< ƒeƒNƒXƒ`ƒƒ‚ÌŸŒ³iD3D_SRV_DIMENSIONj
+		std::string name;				// !< ãƒ†ã‚¯ã‚¹ãƒãƒ£å
+		UINT bindPoint;					// !< ãƒã‚¤ãƒ³ãƒ‰ã‚¹ãƒ­ãƒƒãƒˆ
+		UINT bindCount;					// !< ãƒã‚¤ãƒ³ãƒ‰æ•°
+		D3D_SRV_DIMENSION dimension;	// !< ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æ¬¡å…ƒï¼ˆD3D_SRV_DIMENSIONï¼‰
 	};
 	/**
-	 * @brief ƒTƒ“ƒvƒ‰[‚ÌƒŠƒtƒŒƒNƒVƒ‡ƒ“î•ñB
+	 * @brief ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã€‚
 	 */
 	struct SamplerInfo
 	{
-		std::string name;			// !< ƒTƒ“ƒvƒ‰[–¼	
-		UINT bindPoint; 			// !< ƒoƒCƒ“ƒhƒXƒƒbƒg
-		UINT bindCount; 			// !< ƒoƒCƒ“ƒh”
+		std::string name;			// !< ã‚µãƒ³ãƒ—ãƒ©ãƒ¼å	
+		UINT bindPoint; 			// !< ãƒã‚¤ãƒ³ãƒ‰ã‚¹ãƒ­ãƒƒãƒˆ
+		UINT bindCount; 			// !< ãƒã‚¤ãƒ³ãƒ‰æ•°
 	};
 
-	std::vector<ConstantBufferLayout> constantBufferLayouts; // ’è”ƒoƒbƒtƒ@ƒŒƒCƒAƒEƒgˆê——
-	std::vector<TextureInfo> textureInfos; 			  // ƒeƒNƒXƒ`ƒƒƒoƒCƒ“ƒhî•ñˆê——
-	std::vector<SamplerInfo> samplerInfos; 			  // ƒTƒ“ƒvƒ‰ƒoƒCƒ“ƒhî•ñˆê——
+	std::vector<ConstantBufferLayout> constantBufferLayouts; // å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆä¸€è¦§
+	std::vector<TextureInfo> textureInfos; 			  // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒã‚¤ãƒ³ãƒ‰æƒ…å ±ä¸€è¦§
+	std::vector<SamplerInfo> samplerInfos; 			  // ã‚µãƒ³ãƒ—ãƒ©ãƒã‚¤ãƒ³ãƒ‰æƒ…å ±ä¸€è¦§
 };
 
-class Material; // ‘O•ûéŒ¾
+class Material; // å‰æ–¹å®£è¨€
 
 /**
- * @brief ƒVƒF[ƒ_‘Œ¹ŠÇ—ƒNƒ‰ƒXB
- * @details HLSL/CSO ‚Ì“Ç‚İ‚İAƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚Æ“ü—ÍƒŒƒCƒAƒEƒg¶¬A
- *          ’è”ƒoƒbƒtƒ@ƒŒƒCƒAƒEƒg‚Ìæ“¾A•`‰æƒRƒ“ƒeƒLƒXƒg‚Ö‚ÌƒoƒCƒ“ƒh“™‚ğs‚¢‚Ü‚·B
+ * @brief ã‚·ã‚§ãƒ¼ãƒ€è³‡æºç®¡ç†ã‚¯ãƒ©ã‚¹ã€‚
+ * @details HLSL/CSO ã®èª­ã¿è¾¼ã¿ã€ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆç”Ÿæˆã€
+ *          å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®å–å¾—ã€æç”»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã¸ã®ãƒã‚¤ãƒ³ãƒ‰ç­‰ã‚’è¡Œã„ã¾ã™ã€‚
  */
 class Shader : public Resource
 {
@@ -138,98 +138,98 @@ public:
 	Shader(ShaderType type);
 	virtual ~Shader() override = default;
 
-	/** @brief ƒpƒX‚©‚çƒVƒF[ƒ_‚ğ“Ç‚İ‚İ‚Ü‚·iÀ‘•ˆË‘¶A•¡”ƒXƒe[ƒW‘Î‰jB*/
+	/** @brief ãƒ‘ã‚¹ã‹ã‚‰ã‚·ã‚§ãƒ¼ãƒ€ã‚’èª­ã¿è¾¼ã¿ã¾ã™ï¼ˆå®Ÿè£…ä¾å­˜ã€è¤‡æ•°ã‚¹ãƒ†ãƒ¼ã‚¸å¯¾å¿œï¼‰ã€‚*/
 	bool LoadFromFile(const std::string& path) override;
-	/** @brief ƒVƒF[ƒ_‚ğÄ“Ç‚İ‚İ‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’å†èª­ã¿è¾¼ã¿ã—ã¾ã™ã€‚*/
 	bool Reload() override;
 	/**
-	 * @brief w’è‚Ì HLSL ‚ğƒRƒ“ƒpƒCƒ‹‚µ‚ÄƒXƒe[ƒW‚Éƒ[ƒh‚µ‚Ü‚·B
-	 * @param device D3D11 ƒfƒoƒCƒXB
-	 * @param filePath HLSL ƒtƒ@ƒCƒ‹ƒpƒXB
-	 * @param entryPoint ƒGƒ“ƒgƒŠƒ|ƒCƒ“ƒg–¼i—á: "main"jB
-	 * @param shaderTarget ƒ^[ƒQƒbƒgi—á: "vs_5_0"jB
+	 * @brief æŒ‡å®šã® HLSL ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ã¦ã‚¹ãƒ†ãƒ¼ã‚¸ã«ãƒ­ãƒ¼ãƒ‰ã—ã¾ã™ã€‚
+	 * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
+	 * @param filePath HLSL ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚
+	 * @param entryPoint ã‚¨ãƒ³ãƒˆãƒªãƒã‚¤ãƒ³ãƒˆåï¼ˆä¾‹: "main"ï¼‰ã€‚
+	 * @param shaderTarget ã‚¿ãƒ¼ã‚²ãƒƒãƒˆï¼ˆä¾‹: "vs_5_0"ï¼‰ã€‚
 	 */
 	bool LoadFromFile(ID3D11Device* device, const std::string& filePath, const std::string& entryPoint/* = main*/, const std::string& shaderTarget);
 
-	/** @brief Šù‘¶‚Ì CBuffer ƒŒƒCƒAƒEƒg‚ğ”jŠü‚µ‚Ü‚·B*/
+	/** @brief æ—¢å­˜ã® CBuffer ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’ç ´æ£„ã—ã¾ã™ã€‚*/
 	void ClearConstantBufferLayouts();
-	/** @brief w’è–¼‚Ì CBuffer ƒŒƒCƒAƒEƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief æŒ‡å®šåã® CBuffer ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	const ShaderReflectionData::ConstantBufferLayout* GetConstantBufferLayout(const std::string& name) const;
-	/** @brief ‚·‚×‚Ä‚Ì CBuffer ƒŒƒCƒAƒEƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã™ã¹ã¦ã® CBuffer ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	const std::vector<ShaderReflectionData::ConstantBufferLayout>& GetAllConstantBufferLayouts() const;
 
-	/** @brief ƒVƒF[ƒ_‚ğƒRƒ“ƒeƒLƒXƒg‚ÉƒoƒCƒ“ƒh‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚*/
 	virtual void Bind(ID3D11DeviceContext* immediateContext) = 0;
-	/** @brief ‚·‚×‚Ä‚ÌƒVƒF[ƒ_‚ğƒAƒ“ƒoƒCƒ“ƒh‚µ‚Ü‚·B*/
+	/** @brief ã™ã¹ã¦ã®ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚¢ãƒ³ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚*/
 	static void SetNullShader(ID3D11DeviceContext* immediateContext);
 
-	/** @brief ƒVƒF[ƒ_ƒXƒe[ƒW‚Ì‹Lqî•ñ‚ğæ“¾B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨˜è¿°æƒ…å ±ã‚’å–å¾—ã€‚*/
 	const ShaderStageDesc& GetDesc() const { return m_Desc; }
 
-	/** @brief ƒVƒF[ƒ_ƒXƒe[ƒW‚Ì‹Lqî•ñ‚ğİ’èB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨˜è¿°æƒ…å ±ã‚’è¨­å®šã€‚*/
 	void SetDesc(const ShaderStageDesc& desc) { m_Desc = desc; }
 
-	/** @brief ƒVƒF[ƒ_‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©‚ğİ’èiƒzƒbƒgƒŠƒ[ƒh—pjB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¨­å®šï¼ˆãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ç”¨ï¼‰ã€‚*/
 	void SetDirty(bool dirty) { m_IsDirty = dirty; }
 
-	/** @brief ƒVƒF[ƒ_‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾iƒzƒbƒgƒŠƒ[ƒh—pjB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ï¼ˆãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ç”¨ï¼‰ã€‚*/
 	bool IsDirty() const { return m_IsDirty; }
 
-	/** @brief ƒVƒF[ƒ_‚ÌƒŠƒtƒŒƒNƒVƒ‡ƒ“î•ñ‚ğæ“¾B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã®ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’å–å¾—ã€‚*/
 	const ShaderReflectionData& GetReflectionData() const { return m_ReflectionData; }
 
-	/** @brief ƒVƒF[ƒ_‚Ìí—Ş‚ğæ“¾B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã®ç¨®é¡ã‚’å–å¾—ã€‚*/
 	ShaderType GetType() const { return m_Type; }
 
-	/** @brief ‚±‚ÌƒVƒF[ƒ_‚ğŠ—L‚·‚é `Material` ‚ğæ“¾B*/
+	/** @brief ã“ã®ã‚·ã‚§ãƒ¼ãƒ€ã‚’æ‰€æœ‰ã™ã‚‹ `Material` ã‚’å–å¾—ã€‚*/
 	Material* GetOwner() const { return m_Owner; }
 
-	/** @brief ‚±‚ÌƒVƒF[ƒ_‚ÌŠ—LÒ‚ğİ’èB*/
+	/** @brief ã“ã®ã‚·ã‚§ãƒ¼ãƒ€ã®æ‰€æœ‰è€…ã‚’è¨­å®šã€‚*/
 	void SetOwner(Material* owner) { m_Owner = owner; }
 
 protected:
 	/**
-	 * @brief ƒVƒF[ƒ_‚ğƒRƒ“ƒpƒCƒ‹‚µ‚Ü‚·B
-	 * @return ¬Œ÷‚Å trueB
+	 * @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ã¾ã™ã€‚
+	 * @return æˆåŠŸã§ trueã€‚
 	 */
 	bool CompileShader(const std::string& filePath, const std::string& entryPoint, const std::string& shaderTarget,	ID3DBlob** outBlob);
 
 	/**
-	 * @brief ƒŠƒtƒŒƒNƒVƒ‡ƒ“‚ÆƒVƒF[ƒ_¶¬‚ğs‚¢‚Ü‚·B
+	 * @brief ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã¨ã‚·ã‚§ãƒ¼ãƒ€ç”Ÿæˆã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	bool ReflectAndCreateShader(ID3D11Device* device, const std::string& filePath, const std::string& entryPoint, const std::string& shaderTarget,
 		ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, const void* pShaderBytecode, size_t BytecodeLength);
-	/** @brief “ü—ÍƒŒƒCƒAƒEƒg‚ÌƒŠƒtƒŒƒNƒVƒ‡ƒ“Œ‹‰Ê‚ğæ“¾B*/
+	/** @brief å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³çµæœã‚’å–å¾—ã€‚*/
 	void ReflectInputLayoutDesc(ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, std::vector<D3D11_INPUT_ELEMENT_DESC>& inputLayoutDesc);
-	/** @brief ’è”ƒoƒbƒtƒ@ƒŒƒCƒAƒEƒg‚ğƒŠƒtƒŒƒNƒgB*/
+	/** @brief å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’ãƒªãƒ•ãƒ¬ã‚¯ãƒˆã€‚*/
 	void ReflectConstantBufferLayouts(ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc);
-	/** @brief ƒeƒNƒXƒ`ƒƒ‚ÆƒTƒ“ƒvƒ‰‚ÌƒoƒCƒ“ƒfƒBƒ“ƒOî•ñ‚ğƒŠƒtƒŒƒNƒgB*/
+	/** @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨ã‚µãƒ³ãƒ—ãƒ©ã®ãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°æƒ…å ±ã‚’ãƒªãƒ•ãƒ¬ã‚¯ãƒˆã€‚*/
 	void ReflectTextureAndSamplerBindings(ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc);
 
 
-	/** @brief ƒŠƒtƒŒƒNƒVƒ‡ƒ“‚©‚çƒVƒF[ƒ_ƒ^[ƒQƒbƒg‚ğæ“¾B*/
+	/** @brief ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‹ã‚‰ã‚·ã‚§ãƒ¼ãƒ€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å–å¾—ã€‚*/
 	std::string GetShaderTarget(ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc);
-	/** @brief ƒpƒX‚©‚çƒVƒF[ƒ_ƒ^[ƒQƒbƒg‚ğ„’èB*/
+	/** @brief ãƒ‘ã‚¹ã‹ã‚‰ã‚·ã‚§ãƒ¼ãƒ€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ¨å®šã€‚*/
 	std::string GetShaderTarget(const std::string& path);
 
 private:
-	/** @brief ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·i”h¶ƒNƒ‰ƒX‚ÅÀ‘•jB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ï¼ˆæ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§å®Ÿè£…ï¼‰ã€‚*/
 	virtual bool CreateShader(ID3D11Device* device, ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, const void* pShaderBytecode, size_t BytecodeLength) = 0;
 
 protected:
-	/** @brief ‚±‚ÌƒVƒF[ƒ_‚ğg—p‚µ‚Ä‚¢‚éƒ}ƒeƒŠƒAƒ‹iƒI[ƒi[jB*/
+	/** @brief ã“ã®ã‚·ã‚§ãƒ¼ãƒ€ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹ãƒãƒ†ãƒªã‚¢ãƒ«ï¼ˆã‚ªãƒ¼ãƒŠãƒ¼ï¼‰ã€‚*/
 	Material* m_Owner = nullptr;
 
-	/** @brief ƒVƒF[ƒ_‚Ìí—ŞB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã®ç¨®é¡ã€‚*/
 	ShaderType m_Type;
 
-	/** @brief ƒVƒF[ƒ_ƒXƒe[ƒW‚Ì‹Lqî•ñB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨˜è¿°æƒ…å ±ã€‚*/
 	ShaderStageDesc m_Desc;
 
-	/** @brief ƒVƒF[ƒ_‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©iƒzƒbƒgƒŠƒ[ƒh—pjB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹ï¼ˆãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ç”¨ï¼‰ã€‚*/
 	bool m_IsDirty = false;
 
-	/** @brief ƒVƒF[ƒ_ƒŠƒtƒŒƒNƒVƒ‡ƒ“î•ñB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã€‚*/
 	ShaderReflectionData m_ReflectionData;
 };
 
@@ -239,14 +239,14 @@ public:
 	PixelShader();
 	~PixelShader() override = default;
 
-	/** @brief ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚ğæ“¾B*/
+	/** @brief ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã‚’å–å¾—ã€‚*/
 	ID3D11PixelShader* GetPS() { return m_PixelShader.Get(); }
 
-	/** @brief ƒVƒF[ƒ_‚ğƒRƒ“ƒeƒLƒXƒg‚ÉƒoƒCƒ“ƒh‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚*/
 	void Bind(ID3D11DeviceContext* immediateContext) override;
 
 protected:
-	/** @brief ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	bool CreateShader(ID3D11Device* device, ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, const void* pShaderBytecode, size_t BytecodeLength) override;
 
 private:
@@ -259,16 +259,16 @@ public:
 	VertexShader();
 	~VertexShader() override = default;
 
-	/** @brief ’¸“_ƒVƒF[ƒ_‚ğæ“¾B*/
+	/** @brief é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã‚’å–å¾—ã€‚*/
 	ID3D11VertexShader* GetVS() { return m_VertexShader.Get(); }
-	/** @brief “ü—ÍƒŒƒCƒAƒEƒg‚ğæ“¾B*/
+	/** @brief å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’å–å¾—ã€‚*/
 	ID3D11InputLayout* GetInputLayout() { return m_InputLayout.Get(); }
 
-	/** @brief ƒVƒF[ƒ_‚ğƒRƒ“ƒeƒLƒXƒg‚ÉƒoƒCƒ“ƒh‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚*/
 	void Bind(ID3D11DeviceContext* immediateContext) override;
 
 protected:
-	/** @brief ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	bool CreateShader(ID3D11Device* device, ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, const void* pShaderBytecode, size_t BytecodeLength) override;
 
 private:
@@ -282,14 +282,14 @@ public:
 	ComputeShader();
 	~ComputeShader() override = default;
 
-	/** @brief ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_‚ğæ“¾B*/
+	/** @brief ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ã‚’å–å¾—ã€‚*/
 	ID3D11ComputeShader* GetCS() { return m_ComputeShader.Get(); }
 
-	/** @brief ƒVƒF[ƒ_‚ğƒRƒ“ƒeƒLƒXƒg‚ÉƒoƒCƒ“ƒh‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚*/
 	void Bind(ID3D11DeviceContext* immediateContext) override;
 
 protected:
-	/** @brief ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	bool CreateShader(ID3D11Device* device, ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, const void* pShaderBytecode, size_t BytecodeLength) override;
 
 private:
@@ -302,14 +302,14 @@ public:
 	GeometryShader();
 	~GeometryShader() override = default;
 
-	/** @brief ƒWƒIƒƒgƒŠƒVƒF[ƒ_‚ğæ“¾B*/
+	/** @brief ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã‚’å–å¾—ã€‚*/
 	ID3D11GeometryShader* GetGS() { return m_GeometryShader.Get(); }
 
-	/** @brief ƒVƒF[ƒ_‚ğƒRƒ“ƒeƒLƒXƒg‚ÉƒoƒCƒ“ƒh‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚*/
 	void Bind(ID3D11DeviceContext* immediateContext) override;
 
 protected:
-	/** @brief ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	bool CreateShader(ID3D11Device* device, ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, const void* pShaderBytecode, size_t BytecodeLength) override;
 
 private:
@@ -322,14 +322,14 @@ public:
 	HullShader();
 	~HullShader() override = default;
 
-	/** @brief ƒnƒ‹ƒVƒF[ƒ_‚ğæ“¾B*/
+	/** @brief ãƒãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã‚’å–å¾—ã€‚*/
 	ID3D11HullShader* GetHS() { return m_HullShader.Get(); }
 
-	/** @brief ƒVƒF[ƒ_‚ğƒRƒ“ƒeƒLƒXƒg‚ÉƒoƒCƒ“ƒh‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚*/
 	void Bind(ID3D11DeviceContext* immediateContext) override;
 
 protected:
-	/** @brief ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	bool CreateShader(ID3D11Device* device, ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, const void* pShaderBytecode, size_t BytecodeLength) override;
 
 private:
@@ -342,14 +342,14 @@ public:
 	DomainShader();
 	~DomainShader() override = default;
 
-	/** @brief ƒhƒƒCƒ“ƒVƒF[ƒ_‚ğæ“¾B*/
+	/** @brief ãƒ‰ãƒ¡ã‚¤ãƒ³ã‚·ã‚§ãƒ¼ãƒ€ã‚’å–å¾—ã€‚*/
 	ID3D11DomainShader* GetDS() { return m_DomainShader.Get(); }
 
-	/** @brief ƒVƒF[ƒ_‚ğƒRƒ“ƒeƒLƒXƒg‚ÉƒoƒCƒ“ƒh‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ãƒã‚¤ãƒ³ãƒ‰ã—ã¾ã™ã€‚*/
 	void Bind(ID3D11DeviceContext* immediateContext) override;
 
 protected:
-	/** @brief ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™ã€‚*/
 	bool CreateShader(ID3D11Device* device, ID3D11ShaderReflection* pReflection, D3D11_SHADER_DESC* shaderDesc, const void* pShaderBytecode, size_t BytecodeLength) override;
 
 private:

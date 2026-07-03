@@ -5,7 +5,7 @@
 
 void BuildSettings::Load(const std::string& path)
 {
-	// ƒrƒ‹ƒhİ’è‚Ì“Ç‚İ‚İ
+	// ãƒ“ãƒ«ãƒ‰è¨­å®šã®èª­ã¿è¾¼ã¿
 	json j;
 	if (JsonFileHandler::LoadJsonFromFile(j, path))
 	{
@@ -42,7 +42,7 @@ void BuildSettings::Load(const std::string& path)
 
 void BuildSettings::Save(const std::string& path) const
 {
-	// ƒrƒ‹ƒhİ’è‚Ì•Û‘¶
+	// ãƒ“ãƒ«ãƒ‰è¨­å®šã®ä¿å­˜
 	json j;
 	j["appName"] = appName;
 	j["iconPath"] = iconPath;

@@ -17,39 +17,39 @@ public:
 	static bool Intersect(BoxCollider* b0, BoxCollider* b1);
 	static bool Intersect(BoxCollider* boxCollider, SphereCollider* sphereCollider);
 	static bool Intersect(SphereCollider* s0, SphereCollider* s1);
-	//ƒŒƒCƒLƒƒƒXƒgiã–Ê‚Ì‚İ”»’èj
+	//ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆï¼ˆä¸Šé¢ã®ã¿åˆ¤å®šï¼‰
 	static bool Raycast(BoxCollider* collider, HitResult& hitResult);
 	static bool Raycast(BoxCollider* collider, float& distance);
 
 	/*
-	 * @brief ƒŒƒCƒLƒƒƒXƒg
-	 * @param origin ƒŒƒC‚Ìn“_
-	 * @param direction ƒŒƒC‚Ì•ûŒüi³‹K‰»Ï‚İj
-	 * @param collider ”»’è‘ÎÛ‚Ì BoxCollider
-	 * @param hitResult ƒqƒbƒgî•ñ‚ÌŠi”[æ
-	 * @return ƒqƒbƒg‚µ‚½‚©‚Ç‚¤‚©
-	 * @note ã–Ê‚Ì‚İ”»’è
+	 * @brief ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆ
+	 * @param origin ãƒ¬ã‚¤ã®å§‹ç‚¹
+	 * @param direction ãƒ¬ã‚¤ã®æ–¹å‘ï¼ˆæ­£è¦åŒ–æ¸ˆã¿ï¼‰
+	 * @param collider åˆ¤å®šå¯¾è±¡ã® BoxCollider
+	 * @param hitResult ãƒ’ãƒƒãƒˆæƒ…å ±ã®æ ¼ç´å…ˆ
+	 * @return ãƒ’ãƒƒãƒˆã—ãŸã‹ã©ã†ã‹
+	 * @note ä¸Šé¢ã®ã¿åˆ¤å®š
 	 */
 	static bool Raycast(const XMFLOAT3& origin, const XMFLOAT3& direction, BoxCollider* collider, HitResult& hitResult);
 
 	/*
-	 * @brief ƒŒƒCƒLƒƒƒXƒg(‰~Œ`•½–Ê‚Æ‚ÌŒğ·”»’è)
-	 * @param origin ƒŒƒC‚Ìn“_
-	 * @param direction ƒŒƒC‚Ì•ûŒüi³‹K‰»Ï‚İj
-	 * @param collider ”»’è‘ÎÛ‚Ì BoxCollider
-	 * @param radius ‰~Œ`•½–Ê‚Ì”¼Œa
-	 * @param hitResult ƒqƒbƒgî•ñ‚ÌŠi”[æ
-	 * @return ƒqƒbƒg‚µ‚½‚©‚Ç‚¤‚©
+	 * @brief ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆ(å††å½¢å¹³é¢ã¨ã®äº¤å·®åˆ¤å®š)
+	 * @param origin ãƒ¬ã‚¤ã®å§‹ç‚¹
+	 * @param direction ãƒ¬ã‚¤ã®æ–¹å‘ï¼ˆæ­£è¦åŒ–æ¸ˆã¿ï¼‰
+	 * @param collider åˆ¤å®šå¯¾è±¡ã® BoxCollider
+	 * @param radius å††å½¢å¹³é¢ã®åŠå¾„
+	 * @param hitResult ãƒ’ãƒƒãƒˆæƒ…å ±ã®æ ¼ç´å…ˆ
+	 * @return ãƒ’ãƒƒãƒˆã—ãŸã‹ã©ã†ã‹
 	 */
 	static bool Raycast(const XMFLOAT3& origin, const XMFLOAT3& direction, BoxCollider* collider, float radius, HitResult& hitResult);
 
 	/*
-	 * @brief ƒŒƒCƒLƒƒƒXƒg(‰~Œ`•½–Ê‚Æ‚ÌŒğ·”»’èBƒŒƒC‚Ì•ûŒü‚Í‰º•ûŒüŒÅ’è)
-	 * @param origin ƒŒƒC‚Ìn“_
-	 * @param center ‰~Œ`•½–Ê‚Ì’†SˆÊ’u
-	 * @param radius ‰~Œ`•½–Ê‚Ì”¼Œa
-	 * @param hitResult ƒqƒbƒgî•ñ‚ÌŠi”[æ
-	 * @return ƒqƒbƒg‚µ‚½‚©‚Ç‚¤‚©
+	 * @brief ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆ(å††å½¢å¹³é¢ã¨ã®äº¤å·®åˆ¤å®šã€‚ãƒ¬ã‚¤ã®æ–¹å‘ã¯ä¸‹æ–¹å‘å›ºå®š)
+	 * @param origin ãƒ¬ã‚¤ã®å§‹ç‚¹
+	 * @param center å††å½¢å¹³é¢ã®ä¸­å¿ƒä½ç½®
+	 * @param radius å††å½¢å¹³é¢ã®åŠå¾„
+	 * @param hitResult ãƒ’ãƒƒãƒˆæƒ…å ±ã®æ ¼ç´å…ˆ
+	 * @return ãƒ’ãƒƒãƒˆã—ãŸã‹ã©ã†ã‹
 	 */
 	static bool Raycast(const XMFLOAT3& origin, const XMFLOAT3& center, float radius, HitResult& hitResult);
 };

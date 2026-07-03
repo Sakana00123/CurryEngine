@@ -6,18 +6,18 @@
 
 void TransitionPass::Initialize()
 {
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Ì‰Šú‰»
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®åˆæœŸåŒ–
 	auto device = Graphics::GetDevice();
 	m_renderTexture.Create(device, 1920, 1080);
 
-	// ƒ|ƒXƒgƒvƒƒZƒXƒ}ƒeƒŠƒAƒ‹‚Ì‰Šú‰»
+	// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒãƒ†ãƒªã‚¢ãƒ«ã®åˆæœŸåŒ–
 	m_material = std::make_shared<Material>();
-	m_material->SetShader(device, ResourceManager::Load<PixelShader>("./Shader/TransitionPS.hlsl")); // ‚±‚±‚Åg—p‚·‚éƒVƒF[ƒ_[‚ğw’è
+	m_material->SetShader(device, ResourceManager::Load<PixelShader>("./Shader/TransitionPS.hlsl")); // ã“ã“ã§ä½¿ç”¨ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’æŒ‡å®š
 }
 
 void TransitionPass::Finalize()
 {
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÌI—¹‰»ˆ—
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®çµ‚äº†åŒ–å‡¦ç†
 	m_renderTexture.Release();
 }
 
@@ -26,33 +26,33 @@ void TransitionPass::Execute(RenderContext* rtx, Scene* scene)
 	auto renderTexture = static_cast<RenderTexture*>(rtx->GetSharedResource("PostProcessPass_RenderTexture"));
 	if (renderTexture)
 	{
-		// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒZƒbƒg
+		// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚»ãƒƒãƒˆ
 		rtx->SetRenderTarget(m_renderTexture);
 		rtx->ClearCurrentRenderTarget(Color::Black);
 
-		// ‚±‚Ì•”•ª‚ÅArenderTexture‚ğg—p‚µ‚Äƒ|ƒXƒgƒvƒƒZƒXƒGƒtƒFƒNƒg‚ğ“K—p‚·‚éˆ—‚ğÀ‘•‚µ‚Ü‚·B
+		// ã“ã®éƒ¨åˆ†ã§ã€renderTextureã‚’ä½¿ç”¨ã—ã¦ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’é©ç”¨ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…ã—ã¾ã™ã€‚
 		RawTexture2D* colorTexture = renderTexture->GetColorTexture();
 		std::shared_ptr<RawTexture2D> sharedColorTexture = std::make_shared<RawTexture2D>(*colorTexture);
-		// •¡”ƒeƒNƒXƒ`ƒƒ“n‚µ‚½‚¢‚Æ‚«‚ÍAª‚Ìˆ—‚ğŠeƒeƒNƒXƒ`ƒƒ‚É‘Î‚µ‚Äs‚¤B
+		// è¤‡æ•°ãƒ†ã‚¯ã‚¹ãƒãƒ£æ¸¡ã—ãŸã„ã¨ãã¯ã€â†‘ã®å‡¦ç†ã‚’å„ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«å¯¾ã—ã¦è¡Œã†ã€‚
 
-		// ‘æˆêˆø”‚É‚Éhlsl‘¤‚Ì–¼‘O“ü‚ê‚éB(ˆê‰”z—ñ‹Ö~)
+		// ç¬¬ä¸€å¼•æ•°ã«ã«hlslå´ã®åå‰å…¥ã‚Œã‚‹ã€‚(ä¸€å¿œé…åˆ—ç¦æ­¢)
 		m_material->SetTexture("textureMap", sharedColorTexture);
 
-		// SharedResource‚©‚ç’l‚ğó‚¯æ‚é‚±‚Æ‚à‚Å‚«‚éB—á‚¦‚ÎA‘JˆÚ‚Ìis“x‚âƒtƒF[ƒhƒCƒ“/ƒAƒEƒg‚ÌØ‚è‘Ö‚¦‚È‚ÇB
+		// SharedResourceã‹ã‚‰å€¤ã‚’å—ã‘å–ã‚‹ã“ã¨ã‚‚ã§ãã‚‹ã€‚ä¾‹ãˆã°ã€é·ç§»ã®é€²è¡Œåº¦ã‚„ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³/ã‚¢ã‚¦ãƒˆã®åˆ‡ã‚Šæ›¿ãˆãªã©ã€‚
 		if (void* progressPtr = rtx->GetSharedResource("SceneTransitionFadeValue"))
 			transitionProgress = *static_cast<float*>(progressPtr);
 		if (void* fadeInPtr = rtx->GetSharedResource("SceneTransitionIsFading"))
 			isFadeIn = static_cast<int>(*static_cast<bool*>(fadeInPtr));
 
 
-		//int testValue = 42; // —á‚Æ‚µ‚Ä®”’l‚ğİ’è
-		//m_material->SetValue<int>("testValue", testValue); // ‚±‚ñ‚ÈŠ´‚¶‚Å•Ï”‚à“n‚¹‚é
+		//int testValue = 42; // ä¾‹ã¨ã—ã¦æ•´æ•°å€¤ã‚’è¨­å®š
+		//m_material->SetValue<int>("testValue", testValue); // ã“ã‚“ãªæ„Ÿã˜ã§å¤‰æ•°ã‚‚æ¸¡ã›ã‚‹
 		m_material->SetValue<float>("transitionProgress", transitionProgress);
 		m_material->SetValue<int>("isFadeIn", isFadeIn);
-		// ƒ|ƒXƒgƒvƒƒZƒXƒ}ƒeƒŠƒAƒ‹‚ğg—p‚µ‚Ä‘S‰æ–ÊƒNƒƒbƒh‚ğ•`‰æ
+		// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ä½¿ç”¨ã—ã¦å…¨ç”»é¢ã‚¯ãƒ¯ãƒƒãƒ‰ã‚’æç”»
 		rtx->DrawFullScreenQuad(m_material.get());
 
-		// SharedResource‚Éƒ|ƒXƒgƒvƒƒZƒXŒã‚ÌƒeƒNƒXƒ`ƒƒ‚ğ•Û‘¶‚µ‚ÄAŸ‚ÌƒpƒX‚Åg—p‚Å‚«‚é‚æ‚¤‚É‚·‚é
+		// SharedResourceã«ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹å¾Œã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä¿å­˜ã—ã¦ã€æ¬¡ã®ãƒ‘ã‚¹ã§ä½¿ç”¨ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 		rtx->SetSharedResource("PostProcessPass_RenderTexture", &m_renderTexture);
 	}
 }
@@ -60,14 +60,14 @@ void TransitionPass::Execute(RenderContext* rtx, Scene* scene)
 void TransitionPass::DrawProperty()
 {
 #ifdef USE_IMGUI
-	// ƒ|ƒXƒgƒvƒƒZƒXƒpƒX‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒ‘ã‚¹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	ImGui::Text("TransitionPass Properties");
-	// ‚±‚±‚ÉImGui‚ğg‚Á‚½ƒvƒƒpƒeƒB•`‰æƒR[ƒh‚ğ’Ç‰Á‚µ‚Ü‚·B 
+	// ã“ã“ã«ImGuiã‚’ä½¿ã£ãŸãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¾ã™ã€‚ 
 
-	ImGui::Image(m_renderTexture.GetColorBuffer(), ImVec2(256, 144)); // •`‰æŒ‹‰Ê‚ğ•\¦
+	ImGui::Image(m_renderTexture.GetColorBuffer(), ImVec2(256, 144)); // æç”»çµæœã‚’è¡¨ç¤º
 
-	ImGui::SliderFloat("Transition Progress", &transitionProgress, 0.0f, 1.0f); // ‘JˆÚ‚Ìis“x‚ğ’²®‚·‚éƒXƒ‰ƒCƒ_[
-	ImGui::Checkbox("Fade In", &reinterpret_cast<bool&>(isFadeIn)); // ƒtƒF[ƒhƒCƒ“/ƒAƒEƒg‚ğØ‚è‘Ö‚¦‚éƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+	ImGui::SliderFloat("Transition Progress", &transitionProgress, 0.0f, 1.0f); // é·ç§»ã®é€²è¡Œåº¦ã‚’èª¿æ•´ã™ã‚‹ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼
+	ImGui::Checkbox("Fade In", &reinterpret_cast<bool&>(isFadeIn)); // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³/ã‚¢ã‚¦ãƒˆã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 
 
 #endif // USE_IMGUI

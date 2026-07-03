@@ -4,19 +4,19 @@
 class PostProcessPass : public RenderPass
 {
 public:
-	// PostProcessPass‚Ì‰Šú‰»ˆ—
+	// PostProcessPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// PostProcessPass‚ÌI—¹‰»ˆ—
+	// PostProcessPassã®çµ‚äº†åŒ–å‡¦ç†
 	void Finalize() override;
 
-	// PostProcessPass‚ÌŽÀ‘•
+	// PostProcessPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
-	// PostProcessPass‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// PostProcessPassã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	void DrawProperty() override;
 
 private:
-	std::shared_ptr<Material> m_postProcessMaterial; // ƒ|ƒXƒgƒvƒƒZƒXƒ}ƒeƒŠƒAƒ‹
-	RenderTexture m_postProcessTexture; // ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðƒƒ“ƒo•Ï”‚Æ‚µ‚Ä•ÛŽ
+	std::shared_ptr<Material> m_postProcessMaterial; // ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒžãƒ†ãƒªã‚¢ãƒ«
+	RenderTexture m_postProcessTexture; // ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ãƒ¡ãƒ³ãƒå¤‰æ•°ã¨ã—ã¦ä¿æŒ
 };

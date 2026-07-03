@@ -11,31 +11,31 @@ void CameraSystem::Initialize(Scene* scene)
 
 void CameraSystem::ResolveMainCamera()
 {
-	// ƒV[ƒ““à‚ÌƒJƒƒ‰ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğŒŸõ‚µ‚ÄƒƒCƒ“ƒJƒƒ‰‚ğİ’è
+	// ã‚·ãƒ¼ãƒ³å†…ã®ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æ¤œç´¢ã—ã¦ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã‚’è¨­å®š
 	mainCamera = nullptr;
 
 	const auto& cameras = scene->FindComponents<CameraComponent>();
 	
-	// ƒJƒƒ‰‚ªˆê‚Â‚à‘¶İ‚µ‚È‚¢ê‡‚ÍI—¹
+	// ã‚«ãƒ¡ãƒ©ãŒä¸€ã¤ã‚‚å­˜åœ¨ã—ãªã„å ´åˆã¯çµ‚äº†
 	if (cameras.empty())
 	{
 		return;
 	}
 
-	CameraComponent* firstEnabledCamera = nullptr; // Å‰‚Ì—LŒø‚ÈƒJƒƒ‰‚ğ‹L˜^‚·‚é•Ï”
+	CameraComponent* firstEnabledCamera = nullptr; // æœ€åˆã®æœ‰åŠ¹ãªã‚«ãƒ¡ãƒ©ã‚’è¨˜éŒ²ã™ã‚‹å¤‰æ•°
 
 	for (auto* cam : cameras)
 	{
 		if (!cam->IsEnabled())
 		{
-			continue; // –³Œø‚ÈƒJƒƒ‰‚ÍƒXƒLƒbƒv
+			continue; // ç„¡åŠ¹ãªã‚«ãƒ¡ãƒ©ã¯ã‚¹ã‚­ãƒƒãƒ—
 		}
-		// Å‰‚Ì—LŒø‚ÈƒJƒƒ‰‚ğ‹L˜^
+		// æœ€åˆã®æœ‰åŠ¹ãªã‚«ãƒ¡ãƒ©ã‚’è¨˜éŒ²
 		if (!firstEnabledCamera)
 		{
 			firstEnabledCamera = cam;
 		}
-		// ƒƒCƒ“ƒJƒƒ‰‚ªŒ©‚Â‚©‚Á‚½‚çİ’è‚µ‚Äƒ‹[ƒv‚ğ”²‚¯‚é
+		// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ãŒè¦‹ã¤ã‹ã£ãŸã‚‰è¨­å®šã—ã¦ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 		if (cam->IsMainCamera())
 		{
 			mainCamera = cam;
@@ -43,18 +43,18 @@ void CameraSystem::ResolveMainCamera()
 		}
 	}
 
-	// ƒƒCƒ“ƒJƒƒ‰‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡AÅ‰‚Ì—LŒø‚ÈƒJƒƒ‰‚ğƒƒCƒ“ƒJƒƒ‰‚Æ‚µ‚Äİ’è
+	// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã€æœ€åˆã®æœ‰åŠ¹ãªã‚«ãƒ¡ãƒ©ã‚’ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã¨ã—ã¦è¨­å®š
 	if (!mainCamera)
 	{
 		mainCamera = firstEnabledCamera;
 	}
 
-	// ƒƒCƒ“ƒJƒƒ‰‚Ìƒtƒ‰ƒO‚ğXV
+	// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã®ãƒ•ãƒ©ã‚°ã‚’æ›´æ–°
 	for (auto* cam : cameras)
 	{
 		if (cam)
 		{
-			cam->isMainCamera = (cam == mainCamera); // ƒƒCƒ“ƒJƒƒ‰‚Å‚ ‚ê‚Î trueA‚»‚¤‚Å‚È‚¯‚ê‚Î false ‚ğİ’è
+			cam->isMainCamera = (cam == mainCamera); // ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã§ã‚ã‚Œã° trueã€ãã†ã§ãªã‘ã‚Œã° false ã‚’è¨­å®š
 		}
 	}
 }
@@ -64,7 +64,7 @@ CameraComponent* CameraSystem::GetMainCamera()
 	if (needsMainCameraResolve)
 	{
 		ResolveMainCamera();
-		needsMainCameraResolve = false; // ‰ğŒˆ‚ğs‚Á‚½‚Ì‚Åƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		needsMainCameraResolve = false; // è§£æ±ºã‚’è¡Œã£ãŸã®ã§ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	}
 	return mainCamera;
 }

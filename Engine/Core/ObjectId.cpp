@@ -14,11 +14,11 @@ ObjectId ObjectId::FromLegacy(int legacyId)
 {
 	if (legacyId == -1)
 	{
-		return ObjectId::Invalid(); // �Â�ID��-1�͖�����ID�Ƃ��Ĉ���
+		return ObjectId::Invalid(); // 古いIDの-1は無効なIDとして扱う
 	}
 	else if (legacyId <= 0 || static_cast<uint64_t>(legacyId) > IdRange::LEGACY_MAX)
 	{
-		// ��ID���L���Ȕ͈͊O�̏ꍇ�̓G���[���O���o�͂��Ė�����ID��Ԃ�
+		// 旧IDが有効な範囲外の場合はエラーログを出力して無効なIDを返す
 		Console::LogError("Invalid legacy ID: " + std::to_string(legacyId) + ". Must be between 1 and " + std::to_string(IdRange::LEGACY_MAX) + ".");
 	}
 	return ObjectId(static_cast<uint64_t>(legacyId));

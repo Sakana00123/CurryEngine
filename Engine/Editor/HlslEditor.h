@@ -24,7 +24,7 @@ class HlslEditor
 	static inline const char* m_FilePath;
 
 	static inline std::string shaderSource;
-	static inline char shaderBuffer[65536]; //64KB‚Ü‚Å
+	static inline char shaderBuffer[65536]; //64KBã¾ã§
 public:
 	static void SetEditShader(const char* filePath, std::shared_ptr<Shader> shader) {
 		m_FilePath = filePath;
@@ -71,7 +71,7 @@ public:
 	static void Show() { isOpen = true; }
 
 private:
-	//ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 	static void LoadShaderSource(const char* path) {
 		std::ifstream ifs(path);
 		std::stringstream ss;
@@ -79,19 +79,19 @@ private:
 		shaderSource = ss.str();
 		strncpy_s(shaderBuffer, shaderSource.c_str(), sizeof(shaderBuffer));
 	}
-	//ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹•Û‘¶
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜
 	static void SaveShaderSource(const char* path) {
 		std::ofstream ofs(path);
 		ofs << shaderBuffer;
 	}
 
 	/// <summary>
-	/// ƒVƒF[ƒ_[‚ğƒRƒ“ƒpƒCƒ‹
+	/// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 	/// </summary>
-	/// <param name="filePath">ƒRƒ“ƒpƒCƒ‹‘ÎÛ‚ÌHLSLƒtƒ@ƒCƒ‹ƒpƒX</param>
-	/// <param name="entryPoint">HLSL‚ÌƒGƒ“ƒgƒŠƒ|ƒCƒ“ƒgŠÖ”–¼</param>
-	/// <param name="shaderModel">ƒRƒ“ƒpƒCƒ‹‚·‚éƒVƒF[ƒ_[ƒvƒƒtƒ@ƒCƒ‹(example: vs_5_0, ps_5_1)</param>
-	/// <param name="blobOut">ƒRƒ“ƒpƒCƒ‹Ï‚İƒVƒF[ƒ_[ƒoƒCƒiƒŠ</param>
+	/// <param name="filePath">ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«å¯¾è±¡ã®HLSLãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹</param>
+	/// <param name="entryPoint">HLSLã®ã‚¨ãƒ³ãƒˆãƒªãƒã‚¤ãƒ³ãƒˆé–¢æ•°å</param>
+	/// <param name="shaderModel">ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«(example: vs_5_0, ps_5_1)</param>
+	/// <param name="blobOut">ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«æ¸ˆã¿ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒã‚¤ãƒŠãƒª</param>
 	/// <returns></returns>
 	static inline bool CompileShader(
 		const std::wstring& filePath,

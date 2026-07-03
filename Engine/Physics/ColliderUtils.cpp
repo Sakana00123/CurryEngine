@@ -118,7 +118,7 @@ bool ColliderUtils::Raycast(BoxCollider* collider, HitResult& hitResult) {
 	XMFLOAT3 max = collider->Max();
 	XMFLOAT3 min = collider->Min();
 	float y = min.y = max.y;
-	//¶ãAA‰EãBA¶‰ºCA‰E‰ºD
+	//å·¦ä¸ŠAã€å³ä¸ŠBã€å·¦ä¸‹Cã€å³ä¸‹D
 	XMVECTOR A = { min.x, y, max.z, 0 };
 	XMVECTOR B = { max.x, max.y, max.z, 0 };
 	XMVECTOR C = { min.x, min.y, min.z, 0 };
@@ -127,16 +127,16 @@ bool ColliderUtils::Raycast(BoxCollider* collider, HitResult& hitResult) {
 	float distance = 10000.f;
 	if (DirectX::TriangleTests::Intersects(Start, Direction, A, B, C, distance) ||
 		DirectX::TriangleTests::Intersects(Start, Direction, C, B, D, distance)) {
-		//Œ‹‰Ê‚ğŠi”[
+		//çµæœã‚’æ ¼ç´
 		XMStoreFloat3(&hitResult.hitPosition, Start + (Direction * distance));
-		//ã–Ê‚Ì‚İ”»’è‚È‚Ì‚Åã•ûŒü‚ğ‚¢‚ê‚é
+		//ä¸Šé¢ã®ã¿åˆ¤å®šãªã®ã§ä¸Šæ–¹å‘ã‚’ã„ã‚Œã‚‹
 		hitResult.hitNormal = { 0,1,0 };
 		return true;
 	}
 	return false;
 }
 
-//‰º–ÊˆÈŠO”»’è
+//ä¸‹é¢ä»¥å¤–åˆ¤å®š
 bool ColliderUtils::Raycast(BoxCollider* collider, float& distance) {
 	XMFLOAT3 mousePos{};
 	UINT num{ 1 };
@@ -180,31 +180,31 @@ bool ColliderUtils::Raycast(BoxCollider* collider, float& distance) {
 	XMFLOAT3 max = collider->Max();
 	XMFLOAT3 min = collider->Min();
 
-	//ãF¶ãT0A‰EãT1A¶‰ºT2A‰E‰ºT3
+	//ä¸Šï¼šå·¦ä¸ŠT0ã€å³ä¸ŠT1ã€å·¦ä¸‹T2ã€å³ä¸‹T3
 	XMVECTOR T0 = { min.x, max.y, max.z, 0 };
 	XMVECTOR T1 = { max.x, max.y, max.z, 0 };
 	XMVECTOR T2 = { min.x, max.y, min.z, 0 };
 	XMVECTOR T3 = { max.x, max.y, min.z, 0 };
 
-	//‘OF¶ãF0A‰EãF1A¶‰ºF2A‰E‰ºF3
+	//å‰ï¼šå·¦ä¸ŠF0ã€å³ä¸ŠF1ã€å·¦ä¸‹F2ã€å³ä¸‹F3
 	XMVECTOR F0 = { min.x, max.y, min.z, 0 };
 	XMVECTOR F1 = { max.x, max.y, min.z, 0 };
 	XMVECTOR F2 = { min.x, min.y, min.z, 0 };
 	XMVECTOR F3 = { max.x, min.y, min.z, 0 };
 
-	//Œã‚ëF¶ãB0A‰EãB1A¶‰ºB2A‰E‰ºB3
+	//å¾Œã‚ï¼šå·¦ä¸ŠB0ã€å³ä¸ŠB1ã€å·¦ä¸‹B2ã€å³ä¸‹B3
 	XMVECTOR B0 = { max.x, max.y, max.z, 0 };
 	XMVECTOR B1 = { min.x, max.y, max.z, 0 };
 	XMVECTOR B2 = { max.x, min.y, max.z, 0 };
 	XMVECTOR B3 = { min.x, min.y, max.z, 0 };
 
-	//¶F¶ãL0A‰EãL1A¶‰ºL2A‰E‰ºL3
+	//å·¦ï¼šå·¦ä¸ŠL0ã€å³ä¸ŠL1ã€å·¦ä¸‹L2ã€å³ä¸‹L3
 	XMVECTOR L0 = { min.x, max.y, max.z, 0 };
 	XMVECTOR L1 = { min.x, max.y, min.z, 0 };
 	XMVECTOR L2 = { min.x, min.y, max.z, 0 };
 	XMVECTOR L3 = { min.x, min.y, min.z, 0 };
 
-	//‰EF¶ãR0A‰EãR1A¶‰ºR2A‰E‰ºR3
+	//å³ï¼šå·¦ä¸ŠR0ã€å³ä¸ŠR1ã€å·¦ä¸‹R2ã€å³ä¸‹R3
 	XMVECTOR R0 = { max.x, max.y, min.z, 0 };
 	XMVECTOR R1 = { max.x, max.y, max.z, 0 };
 	XMVECTOR R2 = { max.x, min.y, min.z, 0 };
@@ -233,7 +233,7 @@ bool ColliderUtils::Raycast(const XMFLOAT3& origin, const XMFLOAT3& direction, B
 	XMFLOAT3 max = collider->Max();
 	XMFLOAT3 min = collider->Min();
 	float y = min.y = max.y;
-	//¶ãAA‰EãBA¶‰ºCA‰E‰ºD
+	//å·¦ä¸ŠAã€å³ä¸ŠBã€å·¦ä¸‹Cã€å³ä¸‹D
 	XMVECTOR A = { min.x, y, max.z, 0 };
 	XMVECTOR B = { max.x, max.y, max.z, 0 };
 	XMVECTOR C = { min.x, min.y, min.z, 0 };
@@ -242,9 +242,9 @@ bool ColliderUtils::Raycast(const XMFLOAT3& origin, const XMFLOAT3& direction, B
 	float distance = 10000.f;
 	if (DirectX::TriangleTests::Intersects(Start, Direction, A, B, C, distance) ||
 		DirectX::TriangleTests::Intersects(Start, Direction, C, B, D, distance)) {
-		//Œ‹‰Ê‚ğŠi”[
+		//çµæœã‚’æ ¼ç´
 		XMStoreFloat3(&hitResult.hitPosition, Start + (Direction * distance));
-		//ã–Ê‚Ì‚İ”»’è‚È‚Ì‚Åã•ûŒü‚ğ‚¢‚ê‚é
+		//ä¸Šé¢ã®ã¿åˆ¤å®šãªã®ã§ä¸Šæ–¹å‘ã‚’ã„ã‚Œã‚‹
 		hitResult.hitNormal = { 0,1,0 };
 		return true;
 	}
@@ -256,7 +256,7 @@ bool ColliderUtils::Raycast(const XMFLOAT3& origin, const XMFLOAT3& direction, B
 	XMVECTOR Start = XMLoadFloat3(&origin);
 	XMVECTOR Direction = XMLoadFloat3(&direction);
 
-	// ‰~‚Ì”ÍˆÍ“à‚É‚¢‚é‚©”»’è(Y¬•ª‚Í–³‹)
+	// å††ã®ç¯„å›²å†…ã«ã„ã‚‹ã‹åˆ¤å®š(Yæˆåˆ†ã¯ç„¡è¦–)
 	{
 		XMFLOAT3 center = collider->gameObject->transform->GetWorldPosition();
 		XMFLOAT2 origin2D = { origin.x, origin.z };
@@ -264,7 +264,7 @@ bool ColliderUtils::Raycast(const XMFLOAT3& origin, const XMFLOAT3& direction, B
 		XMVECTOR toCenter2D = XMLoadFloat2(&origin2D) - XMLoadFloat2(&center2D);
 		float distSq2D = XMVectorGetX(XMVector3LengthSq(toCenter2D));
 		if (distSq2D > radius * radius) {
-			return false; // ‰~‚Ì”ÍˆÍŠO
+			return false; // å††ã®ç¯„å›²å¤–
 		}
 	}
 	Vector3 preSize = collider->size;
@@ -277,7 +277,7 @@ bool ColliderUtils::Raycast(const XMFLOAT3& origin, const XMFLOAT3& direction, B
 	collider->size = preSize;
 
 	float y = min.y = max.y;
-	//¶ãAA‰EãBA¶‰ºCA‰E‰ºD
+	//å·¦ä¸ŠAã€å³ä¸ŠBã€å·¦ä¸‹Cã€å³ä¸‹D
 	XMVECTOR A = { min.x, y, max.z, 0 };
 	XMVECTOR B = { max.x, max.y, max.z, 0 };
 	XMVECTOR C = { min.x, min.y, min.z, 0 };
@@ -286,9 +286,9 @@ bool ColliderUtils::Raycast(const XMFLOAT3& origin, const XMFLOAT3& direction, B
 	float distance = 10000.f;
 	if (DirectX::TriangleTests::Intersects(Start, Direction, A, B, C, distance) ||
 		DirectX::TriangleTests::Intersects(Start, Direction, C, B, D, distance)) {
-		//Œ‹‰Ê‚ğŠi”[
+		//çµæœã‚’æ ¼ç´
 		XMStoreFloat3(&hitResult.hitPosition, Start + (Direction * distance));
-		//ã–Ê‚Ì‚İ”»’è‚È‚Ì‚Åã•ûŒü‚ğ‚¢‚ê‚é
+		//ä¸Šé¢ã®ã¿åˆ¤å®šãªã®ã§ä¸Šæ–¹å‘ã‚’ã„ã‚Œã‚‹
 		hitResult.hitNormal = { 0,1,0 };
 		return true;
 	}
@@ -300,36 +300,36 @@ bool ColliderUtils::Raycast(const XMFLOAT3& origin, const XMFLOAT3& center, floa
 	XMVECTOR Direction = XMVectorSet(0, -1, 0, 0);
 	XMVECTOR Center = XMLoadFloat3(&center);
 
-	// ‰~‚Ì”ÍˆÍ“à‚É‚¢‚é‚©”»’è(Y¬•ª‚Í–³‹)
+	// å††ã®ç¯„å›²å†…ã«ã„ã‚‹ã‹åˆ¤å®š(Yæˆåˆ†ã¯ç„¡è¦–)
 	{
 		XMFLOAT2 origin2D = { origin.x, origin.z };
 		XMFLOAT2 center2D = { center.x, center.z };
 		XMVECTOR toCenter2D = XMLoadFloat2(&origin2D) - XMLoadFloat2(&center2D);
 		float distSq2D = XMVectorGetX(XMVector3LengthSq(toCenter2D));
 		if (distSq2D > radius * radius) {
-			return false; // ‰~‚Ì”ÍˆÍŠO
+			return false; // å††ã®ç¯„å›²å¤–
 		}
 	}
 	
-	// •½–Ê‚Ì–@üƒxƒNƒgƒ‹
+	// å¹³é¢ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	XMVECTOR PlaneNormal = { 0.f, 1.f, 0.f, 0.f };
-	// ƒŒƒC‚Æ•½–Ê‚ÌŒğ“_‚Ü‚Å‚Ì‹——£‚ğŒvZ
+	// ãƒ¬ã‚¤ã¨å¹³é¢ã®äº¤ç‚¹ã¾ã§ã®è·é›¢ã‚’è¨ˆç®—
 	float denom = XMVectorGetX(XMVector3Dot(Direction, PlaneNormal));
-	// •½s‚Ìê‡‚ÍŒğ·‚µ‚È‚¢
+	// å¹³è¡Œã®å ´åˆã¯äº¤å·®ã—ãªã„
 	if (fabs(denom) > 1e-6f) {
 		XMVECTOR diff = Center - Start;
 		float t = XMVectorGetX(XMVector3Dot(diff, PlaneNormal)) / denom;
-		// Œğ“_‚ªƒŒƒC‚Ìn“_‚æ‚è‘O‚É‚ ‚éê‡‚ÍŒğ·‚µ‚È‚¢
+		// äº¤ç‚¹ãŒãƒ¬ã‚¤ã®å§‹ç‚¹ã‚ˆã‚Šå‰ã«ã‚ã‚‹å ´åˆã¯äº¤å·®ã—ãªã„
 		if (t >= 0.f) {
 			XMVECTOR IntersectionPoint = Start + Direction * t;
-			// ‰~Œ`•½–Ê“à‚ÉŒğ“_‚ª‚ ‚é‚©Šm”F
+			// å††å½¢å¹³é¢å†…ã«äº¤ç‚¹ãŒã‚ã‚‹ã‹ç¢ºèª
 			XMVECTOR toCenter = IntersectionPoint - Center;
-			toCenter = XMVectorSetY(toCenter, 0.f); // Y¬•ª‚ğ–³‹
+			toCenter = XMVectorSetY(toCenter, 0.f); // Yæˆåˆ†ã‚’ç„¡è¦–
 			float distSq = XMVectorGetX(XMVector3LengthSq(toCenter));
 			if (distSq <= radius * radius) {
-				// Œ‹‰Ê‚ğŠi”[
+				// çµæœã‚’æ ¼ç´
 				XMStoreFloat3(&hitResult.hitPosition, IntersectionPoint);
-				hitResult.hitNormal = { 0.f, 1.f, 0.f }; // •½–Ê‚Ì–@ü
+				hitResult.hitNormal = { 0.f, 1.f, 0.f }; // å¹³é¢ã®æ³•ç·š
 				return true;
 			}
 		}

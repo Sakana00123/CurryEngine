@@ -7,7 +7,7 @@ REGISTER_COMPONENT(RhythmAnimationController, "Animation")
 
 void RhythmAnimationController::Start()
 {
-	// ƒXƒe[ƒgƒ}ƒVƒ“‚ğ‰Šú‰»
+	// ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³ã‚’åˆæœŸåŒ–
 	if (!stateMachine.currentStateName.empty())
 	{
 		stateMachine.Reset(stateMachine.currentStateName);
@@ -16,28 +16,28 @@ void RhythmAnimationController::Start()
 	{
 		stateMachine.Reset(stateMachine.states[0].name);
 	}
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	elapsedTime = 0.0f;
 	currentBeat = 0;
 	previousBeat = -1;
 
-	// GltfModelRenderer ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾
+	// GltfModelRenderer ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—
 	modelRenderer = GetOwner()->GetComponent<GltfModelRenderer>();
 }
 
 void RhythmAnimationController::Update(float deltaTime)
 {
-	// ƒr[ƒg‚ÌisŠÔ‚ğXV
+	// ãƒ“ãƒ¼ãƒˆã®é€²è¡Œæ™‚é–“ã‚’æ›´æ–°
 	elapsedTime += deltaTime;
-	// 1ƒr[ƒg‚ ‚½‚è‚Ì•b”‚ğŒvZ
+	// 1ãƒ“ãƒ¼ãƒˆã‚ãŸã‚Šã®ç§’æ•°ã‚’è¨ˆç®—
 	secondsPerBeat = 60.0f / bpm;
-	// Œ»İ‚Ìƒr[ƒg‚ğŒvZ
+	// ç¾åœ¨ã®ãƒ“ãƒ¼ãƒˆã‚’è¨ˆç®—
 	currentBeat = static_cast<int>(elapsedTime / secondsPerBeat);
 
 	{
 		stateMachine.Update();
 		previousBeat = currentBeat;
-		// Œ»İ‚ÌƒXƒe[ƒg‚ÉŠî‚Ã‚¢‚ÄƒAƒjƒ[ƒVƒ‡ƒ“‚ğİ’è
+		// ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ãƒˆã«åŸºã¥ã„ã¦ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
 		RhythmAnimState* currentState = stateMachine.GetState(stateMachine.currentStateName);
 		if (currentState && modelRenderer && currentState->clip.sourceAnimation)
 		{
@@ -47,30 +47,30 @@ void RhythmAnimationController::Update(float deltaTime)
 			modelRenderer->SetLoop(currentState->loop);
 		}
 	}
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìis‚ğXV
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é€²è¡Œã‚’æ›´æ–°
 	if (modelRenderer)
 	{
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚ğè“®§Œä‚Éİ’è
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ‰‹å‹•åˆ¶å¾¡ã«è¨­å®š
 		modelRenderer->animationEnable = false;
 
 		if (RhythmAnimState* currentState = stateMachine.GetState(stateMachine.currentStateName))
 		{
-			// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌisŠÔ‚ğŒvZ
+			// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é€²è¡Œæ™‚é–“ã‚’è¨ˆç®—
 			float animationDeltaTime = deltaTime * animationSpeed;
 
 			if (currentState->syncToBeat)
 			{
-				// ƒr[ƒg‚É“¯Šú‚³‚¹‚éê‡Aƒr[ƒg‚²‚Æ‚ÌŠÔ‚ÅƒAƒjƒ[ƒVƒ‡ƒ“‚ğis
+				// ãƒ“ãƒ¼ãƒˆã«åŒæœŸã•ã›ã‚‹å ´åˆã€ãƒ“ãƒ¼ãƒˆã”ã¨ã®æ™‚é–“ã§ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’é€²è¡Œ
 				animationDeltaTime = secondsPerBeat;
 			}
 			int currentAnimationIndex = modelRenderer->GetAnimationIndex(currentState->clip.sourceAnimation->name);
 			float animationDuration = modelRenderer->GetAnimationDuration(currentAnimationIndex);
-			float currentTime = fmodf(modelRenderer->time + animationDeltaTime, animationDuration); // ƒ‹[ƒv‚³‚¹‚éê‡
+			float currentTime = fmodf(modelRenderer->time + animationDeltaTime, animationDuration); // ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹å ´åˆ
 			if (!currentState->loop && (modelRenderer->time + animationDeltaTime) >= animationDuration)
 			{
-				currentTime = animationDuration; // ƒ‹[ƒv‚µ‚È‚¢ê‡AI—¹ŠÔ‚ÉŒÅ’è
+				currentTime = animationDuration; // ãƒ«ãƒ¼ãƒ—ã—ãªã„å ´åˆã€çµ‚äº†æ™‚é–“ã«å›ºå®š
 			}
-			// ƒAƒjƒ[ƒVƒ‡ƒ“‚ğis
+			// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’é€²è¡Œ
 			modelRenderer->Animate(currentAnimationIndex, currentTime, modelRenderer->GetModelAsset()->nodes);
 		}
 	}

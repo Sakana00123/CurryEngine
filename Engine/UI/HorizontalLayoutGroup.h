@@ -10,27 +10,27 @@ public:
 
 public:
 
-	//Component �̃��C�t�T�C�N���C�x���g��K�v�ɉ����ăI�[�o�[���C�h���Ď������܂��B
+	//Component のライフサイクルイベントを必要に応じてオーバーライドして実装します。
 	void Start() override;
 
 protected:
 
-	// �z�u���X�V����֐��B�q�v�f�̈ʒu���v�Z���Ĕz�u���܂��B
+	// 配置を更新する関数。子要素の位置を計算して配置します。
 	void UpdateLayout() override;
 
 
 private:
 
 	C_PROPERTY()
-	bool childForceExpandWidth = false; // �q�v�f�̕��������I�ɐe�̕��ɍ��킹�邩�ǂ���
+	bool childForceExpandWidth = false; // 子要素の幅を強制的に親の幅に合わせるかどうか
 
 	C_PROPERTY()
-	bool childForceExpandHeight = false; // �q�v�f�̍����������I�ɐe�̍����ɍ��킹�邩�ǂ���
+	bool childForceExpandHeight = false; // 子要素の高さを強制的に親の高さに合わせるかどうか
 
 	C_PROPERTY()
-	bool childControlWidth = true; // �q�v�f�̕������C�A�E�g�O���[�v�����䂷�邩�ǂ���
+	bool childControlWidth = true; // 子要素の幅をレイアウトグループが制御するかどうか
 
 	C_PROPERTY()
-	bool childControlHeight = true; // �q�v�f�̍��������C�A�E�g�O���[�v�����䂷�邩�ǂ���
+	bool childControlHeight = true; // 子要素の高さをレイアウトグループが制御するかどうか
 
 };

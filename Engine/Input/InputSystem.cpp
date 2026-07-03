@@ -12,7 +12,7 @@ static float ApplyLinearDeadzone(float value, float maxValue, float deadZoneSize
 	if (value < -deadZoneSize) value += deadZoneSize;
 	else if (value > deadZoneSize) value -= deadZoneSize;
 	else return 0;
-	//‚O`‚P‚ÉƒXƒP[ƒŠƒ“ƒO
+	//ï¼ã€œï¼‘ã«ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
 	float scaledValue = value / (maxValue - deadZoneSize);
 	return std::max<float>(-1.f, std::min<float>(scaledValue, 1.f));
 }
@@ -66,13 +66,13 @@ void GamePad::Update(float elapsedTime)
 }
 
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 InputSystem::InputSystem()
 {
 
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void InputSystem::Initialize()
 {
 	directionKeys[static_cast<size_t>(Side::Left)][static_cast<size_t>(Direction::Up)] = std::make_unique<Keybord>('W');
@@ -107,29 +107,29 @@ void InputSystem::Initialize()
 
 	inputKeys.clear();
 
-	// ‘SVK‚ğ–‘O“o˜^
+	// å…¨VKã‚’äº‹å‰ç™»éŒ²
 	auto registerVKey = [&](int vk) {
 		if (!vKeyMap.contains(vk)) {
 			auto key = std::make_unique<Keybord>(vk);
 			vKeyMap[vk] = key.get();
-			// ƒAƒNƒVƒ‡ƒ“‚É‚Í•R•t‚¯‚¸Aê—pƒŠƒXƒg‚ÅŠÇ—
+			// ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã«ã¯ç´ä»˜ã‘ãšã€å°‚ç”¨ãƒªã‚¹ãƒˆã§ç®¡ç†
 			rawKeys.push_back(std::move(key));
 		}
 		};
 
-	// ƒAƒ‹ƒtƒ@ƒxƒbƒg
+	// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ
 	for (int vk = 'A'; vk <= 'Z'; ++vk) {
 		registerVKey(vk);
 	}
-	// ”š
+	// æ•°å­—
 	for (int vk = '0'; vk <= '9'; ++vk) {
 		registerVKey(vk);
 	}
-	// ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“ƒL[
+	// ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‚­ãƒ¼
 	for (int vk = VK_F1; vk <= VK_F12; ++vk) {
 		registerVKey(vk);
 	}
-	// ‚æ‚­g‚¤ƒL[
+	// ã‚ˆãä½¿ã†ã‚­ãƒ¼
 	registerVKey(VK_SPACE);
 	registerVKey(VK_RETURN);
 	registerVKey(VK_ESCAPE);
@@ -145,13 +145,13 @@ void InputSystem::Initialize()
 	registerVKey(VK_LMENU);
 	registerVKey(VK_RMENU);
 
-	// –îˆóƒL[
+	// çŸ¢å°ã‚­ãƒ¼
 	registerVKey(VK_UP);
 	registerVKey(VK_DOWN);
 	registerVKey(VK_LEFT);
 	registerVKey(VK_RIGHT);
 
-	// ‚»‚Ì‘¼
+	// ãã®ä»–
 	registerVKey(VK_INSERT);
 	registerVKey(VK_DELETE);
 	registerVKey(VK_HOME);
@@ -159,13 +159,13 @@ void InputSystem::Initialize()
 	registerVKey(VK_PRIOR);      // Page Up
 	registerVKey(VK_NEXT);       // Page Down
 
-	// ƒ}ƒEƒXƒ{ƒ^ƒ“
+	// ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³
 	registerVKey(VK_LBUTTON);
 	registerVKey(VK_RBUTTON);
 	registerVKey(VK_MBUTTON);
 
 
-	//ƒAƒNƒVƒ‡ƒ“‚ÆƒL[‚Ì“o˜^
+	//ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã¨ã‚­ãƒ¼ã®ç™»éŒ²
 	inputKeys["attack"].emplace_back(std::make_unique<Mouse>(VK_RBUTTON));
 
 	//inputKeys["test0"].emplace_back(std::make_unique<Mouse>(VK_LBUTTON));
@@ -202,41 +202,41 @@ void InputSystem::Initialize()
 
 }
 
-//I—¹‰»
+//çµ‚äº†åŒ–
 void InputSystem::Finalize()
 {
 
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 void InputSystem::Update(float elapsedTime)
 {
 	DWORD xinputResult = XInputGetState(static_cast<DWORD>(slot), &state);
 	isGamePadConnected = (xinputResult == ERROR_SUCCESS);
 
-	//“ü—Íî•ñ‚ÌXV
+	//å…¥åŠ›æƒ…å ±ã®æ›´æ–°
 	{
 		if(isGamePadConnected)
 		{
-			//ƒQ[ƒ€ƒpƒbƒh‚ÌAxisLeftXV
+			//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®AxisLeftæ›´æ–°
 			ApplyStickDeadzone(static_cast<float>(state.Gamepad.sThumbLX), static_cast<float>(state.Gamepad.sThumbLY),
 				deadZoneMode, 32767.f, static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE),
 				m_axis[static_cast<size_t>(Side::Left)][static_cast<size_t>(Axis::X)], m_axis[static_cast<size_t>(Side::Left)][static_cast<size_t>(Axis::Y)]);
-			//ƒQ[ƒ€ƒpƒbƒh‚ÌAxisRightXV
+			//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®AxisRightæ›´æ–°
 			ApplyStickDeadzone(static_cast<float>(state.Gamepad.sThumbRX), static_cast<float>(state.Gamepad.sThumbRY),
 				deadZoneMode, 32767.f, static_cast<float>(XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE),
 				m_axis[static_cast<size_t>(Side::Right)][static_cast<size_t>(Axis::X)], m_axis[static_cast<size_t>(Side::Right)][static_cast<size_t>(Axis::Y)]);
 		}
 		else
 		{
-			//ˆÚ“®ƒL[XVˆ—
+			//ç§»å‹•ã‚­ãƒ¼æ›´æ–°å‡¦ç†
 			for (auto& keys : directionKeys) {
 				for (auto& key : keys) {
 					key->Update(elapsedTime);
 				}
 			}
 			
-			//’lXV
+			//å€¤æ›´æ–°
 #if 0
 			ApplyStickDeadzone(
 				static_cast<float>(directionKeys[static_cast<size_t>(Side::Left)][static_cast<size_t>(Direction::Right)]->IsPressed()) -
@@ -291,23 +291,23 @@ void InputSystem::Update(float elapsedTime)
 				deadZoneMode, 1.f, 0.f,
 				m_axis[static_cast<size_t>(Side::Right)][static_cast<size_t>(Axis::X)], m_axis[static_cast<size_t>(Side::Right)][static_cast<size_t>(Axis::Y)]);
 		}
-		//ƒ{ƒ^ƒ“‚Ì“ü—ÍXVˆ—
+		//ãƒœã‚¿ãƒ³ã®å…¥åŠ›æ›´æ–°å‡¦ç†
 		for (auto& actionKeys : inputKeys) {
 			for (auto& key : actionKeys.second)	{
 				key->Update(elapsedTime);
 			}
 		}
-		// ‘SƒL[‚ÌXVˆ—
+		// å…¨ã‚­ãƒ¼ã®æ›´æ–°å‡¦ç†
 		for (auto& key : rawKeys) {
 			key->Update(elapsedTime);
 		}
 	}
-	// ƒJ[ƒ\ƒ‹ˆÊ’u‚Ìæ“¾
+	// ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®å–å¾—
 	POINT cursor;
 	::GetCursorPos(&cursor);
 	ScreenToClient(Graphics::GetHwnd(), &cursor);
 
-	// ƒ}ƒEƒXÀ•WXV
+	// ãƒã‚¦ã‚¹åº§æ¨™æ›´æ–°
 	mousePositionX[1] = mousePositionX[0];
 	mousePositionY[1] = mousePositionY[0];
 #ifdef USE_IMGUI
@@ -319,26 +319,26 @@ void InputSystem::Update(float elapsedTime)
 	mousePositionX[0] = static_cast<int>(static_cast<float>(cursor.x - left) / (right - left) * x);
 	mousePositionY[0] = static_cast<int>(static_cast<float>(cursor.y - top) / (bottom - top) * y);
 #else
-	// 1920x1080‚Éû‚Ü‚é‚æ‚¤‚ÉƒXƒP[ƒŠƒ“ƒO‚µ‚ÄÀ•W‚ğXV
+	// 1920x1080ã«åã¾ã‚‹ã‚ˆã†ã«ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã—ã¦åº§æ¨™ã‚’æ›´æ–°
 	float screenWidth, screenHeight;
 	Graphics::GetScreenSize(screenWidth, screenHeight);
 	mousePositionX[0] = static_cast<int>(static_cast<float>(cursor.x) / screenWidth * 1920.f);
 	mousePositionY[0] = static_cast<int>(static_cast<float>(cursor.y) / screenHeight * 1080.f);
 #endif // USE_IMGUI
 
-	//ƒAƒNƒeƒBƒuƒfƒoƒCƒX”»’è
+	//ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ‡ãƒã‚¤ã‚¹åˆ¤å®š
 
-	//ƒRƒ“ƒgƒ[ƒ‰[
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼
 	{
 		auto buttons = state.Gamepad.wButtons;
 		auto lx = state.Gamepad.sThumbLX;
 		auto ly = state.Gamepad.sThumbLY;
-		// ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½ or ƒXƒeƒBƒbƒN‚ª“®‚¢‚½‚çƒAƒNƒeƒBƒuƒfƒoƒCƒX‚ğØ‚è‘Ö‚¦
+		// ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸ or ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãŒå‹•ã„ãŸã‚‰ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ‡ãƒã‚¤ã‚¹ã‚’åˆ‡ã‚Šæ›¿ãˆ
 		if (buttons != 0 || abs(lx) > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || abs(ly) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) {
 			activeDevice = InputDevice::GamePad;
 		}
 	}
-	//ƒL[ƒ{[ƒh
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
 	{
 		for (int vk = 0x08; vk <= 0xFE; ++vk) {
 			if (GetAsyncKeyState(vk) & 0x8000) {
@@ -346,7 +346,7 @@ void InputSystem::Update(float elapsedTime)
 			}
 		}
 	}
-	//ƒ}ƒEƒX
+	//ãƒã‚¦ã‚¹
 	{
 		if (GetAsyncKeyState(VK_LBUTTON) & 0x8000 ||
 			GetAsyncKeyState(VK_RBUTTON) & 0x8000 ||
@@ -359,7 +359,7 @@ void InputSystem::Update(float elapsedTime)
 
 void InputSystem::EndFrame()
 {
-	//“ü—Íî•ñƒNƒŠƒA
+	//å…¥åŠ›æƒ…å ±ã‚¯ãƒªã‚¢
 	inputChar = {};
 	inputKeyDown = {};
 	inputString.clear();
@@ -395,7 +395,7 @@ LRESULT InputSystem::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 
 bool InputSystem::GetInputState(const std::string& action, InputStateMask state, DeviceFlags flag)
 {
-	// “ü—Í–³Œø‚Íí‚É false
+	// å…¥åŠ›ç„¡åŠ¹æ™‚ã¯å¸¸ã« false
 	if (!inputEnabled) return false;
 
 	auto it = inputKeys.find(action);
@@ -444,10 +444,10 @@ bool InputSystem::GetInputState(const std::string& action, InputStateMask state,
 void InputSystem::RegisterKey(const std::string& action, std::unique_ptr<InputKey> key)
 {
 	int vKey = key->GetVKey();
-	// Šù‚É“¯‚¶ vKey ‚ÌƒL[‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚¢‚©ƒ`ƒFƒbƒN
+	// æ—¢ã«åŒã˜ vKey ã®ã‚­ãƒ¼ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯
 	if (!vKeyMap.contains(vKey)) {
-		vKeyMap[vKey] = key.get(); // vKey ‚Æ InputKey* ‚ğƒ}ƒbƒsƒ“ƒO‚É“o˜^
-		rawKeys.push_back(std::move(key)); // “o˜^‚³‚ê‚½ƒL[‚ğ rawKeys ‚É•Û
+		vKeyMap[vKey] = key.get(); // vKey ã¨ InputKey* ã‚’ãƒãƒƒãƒ”ãƒ³ã‚°ã«ç™»éŒ²
+		rawKeys.push_back(std::move(key)); // ç™»éŒ²ã•ã‚ŒãŸã‚­ãƒ¼ã‚’ rawKeys ã«ä¿æŒ
 	}
 	inputKeys[action].emplace_back(std::move(key));
 }

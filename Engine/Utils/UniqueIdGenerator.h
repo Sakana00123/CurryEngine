@@ -4,21 +4,21 @@
 
 /**
  * @file
- * @brief GUID����уC���X�^���XID�𐶐����郆�[�e�B���e�B�֐��Q�B
- * @details GUID��COM��CoCreateGuid�𗘗p���Đ������܂��B
- * @note GUID�̓O���[�o���Ɉ�ӂ�ID�A�C���X�^���XID�̓A�v���P�[�V�������s���Ɉ�ӂ�ID�ł��B
- * @warning �C���X�^���XID�����֐��̓X���b�h�Z�[�t�ł͂���܂���B�K�v�ɉ����ČĂяo�����œ������s���Ă��������B
- * @warning �C���X�^���XID�̓A�v���P�[�V�����̎��s���ɂ݈̂�ӂł���A�ċN����ɂ̓��Z�b�g����܂��B
- * @warning �C���X�^���XID�͈̔͂�int�^�͈͓̔��ɐ�������܂��B���ɑ�����ID�𐶐�����ƃI�[�o�[�t���[����\��������܂��B
+ * @brief GUIDおよびインスタンスIDを生成するユーティリティ関数群。
+ * @details GUIDはCOMのCoCreateGuidを利用して生成します。
+ * @note GUIDはグローバルに一意なID、インスタンスIDはアプリケーション実行中に一意なIDです。
+ * @warning インスタンスID生成関数はスレッドセーフではありません。必要に応じて呼び出し元で同期を行ってください。
+ * @warning インスタンスIDはアプリケーションの実行中にのみ一意であり、再起動後にはリセットされます。
+ * @warning インスタンスIDの範囲はint型の範囲内に制限されます。非常に多くのIDを生成するとオーバーフローする可能性があります。
  * @see https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cocreateguid
  * @see https://en.cppreference.com/w/cpp/language/storage_duration
  * @see https://en.cppreference.com/w/cpp/language/types
- * @note ��O�̓X���[���܂���B
+ * @note 例外はスローしません。
  */
 
 /**
- * @brief �V����GUID�𐶐����A������Ƃ��ĕԂ��B
- * @return �������ꂽGUID������i��: "3F2504E0-4F89-11D3-9A0C-0305E82C3301"�j�B
+ * @brief 新しいGUIDを生成し、文字列として返す。
+ * @return 生成されたGUID文字列（例: "3F2504E0-4F89-11D3-9A0C-0305E82C3301"）。
  */
 inline std::string GenerateGUID() {
     GUID guid;
@@ -34,14 +34,14 @@ inline std::string GenerateGUID() {
 }
 
 /**
- * @brief �V�����C���X�^���XID�𐶐����A�Ԃ��B
- * @return �������ꂽ�C���X�^���XID�i0����n�܂�A�ԁj�B
+ * @brief 新しいインスタンスIDを生成し、返す。
+ * @return 生成されたインスタンスID（0から始まる連番）。
  */
 int GenerateInstanceID();
 
 int GetCurrentInstanceID();
 
 /**
- * @brief �C���X�^���XID�J�E���^�����Z�b�g����B����GenerateInstanceID���Ăяo���ꂽ�Ƃ��A0����n�܂�ID�����������B
+ * @brief インスタンスIDカウンタをリセットする。次にGenerateInstanceIDが呼び出されたとき、0から始まるIDが生成される。
  */
 void ResetInstanceID(int id);

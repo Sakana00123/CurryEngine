@@ -7,50 +7,50 @@ class LayoutGroup : public Component
 	C_REFLECT(LayoutGroup)
 public:
 
-	//Component ‚Ìƒ‰ƒCƒtƒTƒCƒNƒ‹ƒCƒxƒ“ƒg‚ğ•K—v‚É‰‚¶‚ÄƒI[ƒo[ƒ‰ƒCƒh‚µ‚ÄÀ‘•‚µ‚Ü‚·B
+	//Component ã®ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«ã‚¤ãƒ™ãƒ³ãƒˆã‚’å¿…è¦ã«å¿œã˜ã¦ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¦å®Ÿè£…ã—ã¾ã™ã€‚
 	void Start() override;
 	void Update(float deltaTime) override;
 
 #ifdef USE_IMGUI
-	// ƒGƒfƒBƒ^‚ÅƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒI[ƒo[ƒ‰ƒCƒhŠÖ”
+	// ã‚¨ãƒ‡ã‚£ã‚¿ã§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰é–¢æ•°
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
 protected:
 
-	// ”z’u‚ğXV‚·‚éŠÖ”Bq—v‘f‚ÌˆÊ’u‚ğŒvZ‚µ‚Ä”z’u‚µ‚Ü‚·B
+	// é…ç½®ã‚’æ›´æ–°ã™ã‚‹é–¢æ•°ã€‚å­è¦ç´ ã®ä½ç½®ã‚’è¨ˆç®—ã—ã¦é…ç½®ã—ã¾ã™ã€‚
 	virtual void UpdateLayout() {};
 	
-	// q—v‘f‚Ì RectTransform ‚ğæ“¾‚·‚éŠÖ”B
+	// å­è¦ç´ ã® RectTransform ã‚’å–å¾—ã™ã‚‹é–¢æ•°ã€‚
 	std::vector<std::shared_ptr<RectTransform>> GetChildRects() const;
 
-	// Š‘®‚·‚é GameObject ‚Ì RectTransform ‚ğæ“¾‚·‚éŠÖ”B
+	// æ‰€å±ã™ã‚‹ GameObject ã® RectTransform ã‚’å–å¾—ã™ã‚‹é–¢æ•°ã€‚
 	std::shared_ptr<RectTransform> GetRectTransform() const;
 
-	// ƒŒƒCƒAƒEƒg‚ğXV‚·‚é•K—v‚ª‚ ‚é‚±‚Æ‚ğ¦‚·ŠÖ”
+	// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’æ›´æ–°ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã“ã¨ã‚’ç¤ºã™é–¢æ•°
 	void SetLayoutDirty() { m_layoutDirty = true; }
 
-	bool m_layoutDirty = true; // ƒŒƒCƒAƒEƒg‚ªXV‚³‚ê‚é•K—v‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
+	bool m_layoutDirty = true; // ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãŒæ›´æ–°ã•ã‚Œã‚‹å¿…è¦ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
 private:
 
 	C_PROPERTY()
-	float paddingLeft = 0.0f; // ¶‚Ì—]”’
+	float paddingLeft = 0.0f; // å·¦ã®ä½™ç™½
 
 	C_PROPERTY()
-	float paddingRight = 0.0f; // ‰E‚Ì—]”’
+	float paddingRight = 0.0f; // å³ã®ä½™ç™½
 
 	C_PROPERTY()
-	float paddingTop = 0.0f; // ã‚Ì—]”’
+	float paddingTop = 0.0f; // ä¸Šã®ä½™ç™½
 
 	C_PROPERTY()
-	float paddingBottom = 0.0f; // ‰º‚Ì—]”’
+	float paddingBottom = 0.0f; // ä¸‹ã®ä½™ç™½
 
 	C_PROPERTY()
-	float spacing = 4.0f; // q—v‘fŠÔ‚ÌƒXƒy[ƒX
+	float spacing = 4.0f; // å­è¦ç´ é–“ã®ã‚¹ãƒšãƒ¼ã‚¹
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
-	int layoutAlignment = 0; // ”z’u•û–@i—á: 0=¶‘µ‚¦A1=’†‰›‘µ‚¦A2=‰E‘µ‚¦j
+	int layoutAlignment = 0; // é…ç½®æ–¹æ³•ï¼ˆä¾‹: 0=å·¦æƒãˆã€1=ä¸­å¤®æƒãˆã€2=å³æƒãˆï¼‰
 
 
 

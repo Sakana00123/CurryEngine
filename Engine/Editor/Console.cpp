@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Console.h"
 
-// OpenInVisualStudio ‚Åg—p
+// OpenInVisualStudio ã§ä½¿ç”¨
 #ifdef _WIN32
 #include <windows.h>
 #include <shellapi.h>
 #include <shlobj.h>   // SHGetFolderPathW
-#include <thread>     // OpenInVisualStudio ‚Ì”ñ“¯Šú‰»
+#include <thread>     // OpenInVisualStudio ã®éåŒæœŸåŒ–
 #include <mutex>      // std::once_flag / std::call_once
 #pragma comment(lib, "shell32.lib")
 #endif
@@ -14,7 +14,7 @@
 std::vector<Console::LogEntry> Console::logs;
 bool Console::isOpen = true;
 bool Console::isLogSizeIncreasedInCurrentFrame = false;
-uint8_t Console::s_logLevelFlags = 0b111; // ƒfƒtƒHƒ‹ƒg‚Í‘SƒŒƒxƒ‹•\¦
+uint8_t Console::s_logLevelFlags = 0b111; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯å…¨ãƒ¬ãƒ™ãƒ«è¡¨ç¤º
 char Console::s_filterBuffer[256] = {};
 
 static std::mutex s_logMutex;
@@ -26,7 +26,7 @@ void Console::Initialize()
 }
 
 void Console::Log(const std::string& message, const std::string& file, int line) {
-	std::lock_guard<std::mutex> lock(s_logMutex); // ƒƒO‚Ì’Ç‰Á‚Í”r‘¼§Œä‚·‚é
+	std::lock_guard<std::mutex> lock(s_logMutex); // ãƒ­ã‚°ã®è¿½åŠ ã¯æ’ä»–åˆ¶å¾¡ã™ã‚‹
 #ifdef USE_IMGUI
 	logs.push_back({ LogLevel::Info, message, file, line });
 	isLogSizeIncreasedInCurrentFrame = true;
@@ -34,7 +34,7 @@ void Console::Log(const std::string& message, const std::string& file, int line)
 }
 
 void Console::Log(const std::u8string& message, const std::string& file, int line) {
-	std::lock_guard<std::mutex> lock(s_logMutex); // ƒƒO‚Ì’Ç‰Á‚Í”r‘¼§Œä‚·‚é
+	std::lock_guard<std::mutex> lock(s_logMutex); // ãƒ­ã‚°ã®è¿½åŠ ã¯æ’ä»–åˆ¶å¾¡ã™ã‚‹
 #ifdef USE_IMGUI
 	logs.push_back({ LogLevel::Info, reinterpret_cast<const char*>(message.c_str()), file, line });
 	isLogSizeIncreasedInCurrentFrame = true;
@@ -42,7 +42,7 @@ void Console::Log(const std::u8string& message, const std::string& file, int lin
 }
 
 void Console::LogWarning(const std::string& message, const std::string& file, int line) {
-	std::lock_guard<std::mutex> lock(s_logMutex); // ƒƒO‚Ì’Ç‰Á‚Í”r‘¼§Œä‚·‚é
+	std::lock_guard<std::mutex> lock(s_logMutex); // ãƒ­ã‚°ã®è¿½åŠ ã¯æ’ä»–åˆ¶å¾¡ã™ã‚‹
 #ifdef USE_IMGUI
 	logs.push_back({ LogLevel::Warning, message, file, line });
 	isLogSizeIncreasedInCurrentFrame = true;
@@ -50,7 +50,7 @@ void Console::LogWarning(const std::string& message, const std::string& file, in
 }
 
 void Console::LogWarning(const std::u8string& message, const std::string& file, int line) {
-	std::lock_guard<std::mutex> lock(s_logMutex); // ƒƒO‚Ì’Ç‰Á‚Í”r‘¼§Œä‚·‚é
+	std::lock_guard<std::mutex> lock(s_logMutex); // ãƒ­ã‚°ã®è¿½åŠ ã¯æ’ä»–åˆ¶å¾¡ã™ã‚‹
 #ifdef USE_IMGUI
 	logs.push_back({ LogLevel::Warning, reinterpret_cast<const char*>(message.c_str()), file, line });
 	isLogSizeIncreasedInCurrentFrame = true;
@@ -58,7 +58,7 @@ void Console::LogWarning(const std::u8string& message, const std::string& file, 
 }
 
 void Console::LogError(const std::string& message, const std::string& file, int line) {
-	std::lock_guard<std::mutex> lock(s_logMutex); // ƒƒO‚Ì’Ç‰Á‚Í”r‘¼§Œä‚·‚é
+	std::lock_guard<std::mutex> lock(s_logMutex); // ãƒ­ã‚°ã®è¿½åŠ ã¯æ’ä»–åˆ¶å¾¡ã™ã‚‹
 #ifdef USE_IMGUI
 	logs.push_back({ LogLevel::Error, message, file, line });
 	isLogSizeIncreasedInCurrentFrame = true;
@@ -66,7 +66,7 @@ void Console::LogError(const std::string& message, const std::string& file, int 
 }
 
 void Console::LogError(const std::u8string& message, const std::string& file, int line) {
-	std::lock_guard<std::mutex> lock(s_logMutex); // ƒƒO‚Ì’Ç‰Á‚Í”r‘¼§Œä‚·‚é
+	std::lock_guard<std::mutex> lock(s_logMutex); // ãƒ­ã‚°ã®è¿½åŠ ã¯æ’ä»–åˆ¶å¾¡ã™ã‚‹
 #ifdef USE_IMGUI
 	logs.push_back({ LogLevel::Error, reinterpret_cast<const char*>(message.c_str()), file, line });
 	isLogSizeIncreasedInCurrentFrame = true;
@@ -75,7 +75,7 @@ void Console::LogError(const std::u8string& message, const std::string& file, in
 
 void Console::CustomLog(LogLevel level, const std::string& message, const std::string& file, int line)
 {
-	std::lock_guard<std::mutex> lock(s_logMutex); // ƒƒO‚Ì’Ç‰Á‚Í”r‘¼§Œä‚·‚é
+	std::lock_guard<std::mutex> lock(s_logMutex); // ãƒ­ã‚°ã®è¿½åŠ ã¯æ’ä»–åˆ¶å¾¡ã™ã‚‹
 #ifdef USE_IMGUI
 	logs.push_back({ level,message,file,line });
 	isLogSizeIncreasedInCurrentFrame = true;
@@ -84,7 +84,7 @@ void Console::CustomLog(LogLevel level, const std::string& message, const std::s
 
 void Console::CustomLog(LogLevel level, const std::u8string& message, const std::string& file, int line)
 {
-	std::lock_guard<std::mutex> lock(s_logMutex); // ƒƒO‚Ì’Ç‰Á‚Í”r‘¼§Œä‚·‚é
+	std::lock_guard<std::mutex> lock(s_logMutex); // ãƒ­ã‚°ã®è¿½åŠ ã¯æ’ä»–åˆ¶å¾¡ã™ã‚‹
 #ifdef USE_IMGUI
 	logs.push_back({ level, reinterpret_cast<const char*>(message.c_str()), file, line });
 	isLogSizeIncreasedInCurrentFrame = true;
@@ -105,12 +105,12 @@ void Console::Shutdown() {
 
 // ---------------------------------------------------------------------------
 //  OpenInVisualStudio
-//    vswhere ‚Å devenv.exe ‚ÌƒpƒX‚ğæ“¾‚µA
-//    /Edit <file> /command "Edit.GoTo <line>" ‚ÅŠY“–s‚ğŠJ‚­B
-//    “ú–{ŒêƒpƒX‚É‘Î‰‚·‚é‚½‚ßA‘Sˆ—‚ğ UTF-16 (W Œn API) ‚Ås‚¤B
+//    vswhere ã§ devenv.exe ã®ãƒ‘ã‚¹ã‚’å–å¾—ã—ã€
+//    /Edit <file> /command "Edit.GoTo <line>" ã§è©²å½“è¡Œã‚’é–‹ãã€‚
+//    æ—¥æœ¬èªãƒ‘ã‚¹ã«å¯¾å¿œã™ã‚‹ãŸã‚ã€å…¨å‡¦ç†ã‚’ UTF-16 (W ç³» API) ã§è¡Œã†ã€‚
 // ---------------------------------------------------------------------------
 
-// UTF-8 std::string ¨ UTF-16 std::wstring •ÏŠ·ƒwƒ‹ƒp[
+// UTF-8 std::string â†’ UTF-16 std::wstring å¤‰æ›ãƒ˜ãƒ«ãƒ‘ãƒ¼
 static std::wstring Utf8ToWide(const std::string& utf8)
 {
 	if (utf8.empty()) return {};
@@ -122,7 +122,7 @@ static std::wstring Utf8ToWide(const std::string& utf8)
 	return result;
 }
 
-// UTF-16 std::wstring ¨ UTF-8 std::string •ÏŠ·ƒwƒ‹ƒp[
+// UTF-16 std::wstring â†’ UTF-8 std::string å¤‰æ›ãƒ˜ãƒ«ãƒ‘ãƒ¼
 static std::string WideToUtf8(const std::wstring& wide)
 {
 	if (wide.empty()) return {};
@@ -138,16 +138,16 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 {
 	if (file.empty() || line <= 0) return;
 
-	// vswhere ‚ÌŒŸõEShellExecuteW ‚ÍƒuƒƒbƒLƒ“ƒOˆ—‚É‚È‚é‚½‚ß
-	// •ÊƒXƒŒƒbƒh‚ÅÀs‚µ‚Ä UI ƒXƒŒƒbƒh‚ğ~‚ß‚È‚¢B
-	// detach() ‚ÅƒXƒŒƒbƒh‚ğØ‚è—£‚µAŠ®—¹‚ğ‘Ò‚½‚¸‚É–ß‚éB
+	// vswhere ã®æ¤œç´¢ãƒ»ShellExecuteW ã¯ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°å‡¦ç†ã«ãªã‚‹ãŸã‚
+	// åˆ¥ã‚¹ãƒ¬ãƒƒãƒ‰ã§å®Ÿè¡Œã—ã¦ UI ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’æ­¢ã‚ãªã„ã€‚
+	// detach() ã§ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’åˆ‡ã‚Šé›¢ã—ã€å®Œäº†ã‚’å¾…ãŸãšã«æˆ»ã‚‹ã€‚
 	std::thread([file, line]()
 		{
 #ifdef _WIN32
 
-			// --- 1. devenvPath ‚ÌƒLƒƒƒbƒVƒ… ---
-			//        call_once ‚É‚æ‚è‰‰ñ‚Ì‚İ vswhere ‚ğÀs‚µAˆÈ~‚Í‘¦À‚É•Ô‚·B
-			//        •¡”ƒXƒŒƒbƒh‚ª“¯‚ÉŒÄ‚ñ‚Å‚à once_flag ‚ª”r‘¼‚ğ•ÛØ‚·‚éB
+			// --- 1. devenvPath ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ ---
+			//        call_once ã«ã‚ˆã‚Šåˆå›ã®ã¿ vswhere ã‚’å®Ÿè¡Œã—ã€ä»¥é™ã¯å³åº§ã«è¿”ã™ã€‚
+			//        è¤‡æ•°ã‚¹ãƒ¬ãƒƒãƒ‰ãŒåŒæ™‚ã«å‘¼ã‚“ã§ã‚‚ once_flag ãŒæ’ä»–ã‚’ä¿è¨¼ã™ã‚‹ã€‚
 			static std::wstring s_devenvPath;
 			static std::once_flag s_devenvOnce;
 
@@ -184,7 +184,7 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 						}
 					}
 
-					// vswhere ‚ªg‚¦‚È‚©‚Á‚½ê‡‚Í PATH ã‚Ì devenv ‚ğg‚¤
+					// vswhere ãŒä½¿ãˆãªã‹ã£ãŸå ´åˆã¯ PATH ä¸Šã® devenv ã‚’ä½¿ã†
 					if (s_devenvPath.empty() ||
 						GetFileAttributesW(s_devenvPath.c_str()) == INVALID_FILE_ATTRIBUTES)
 					{
@@ -194,12 +194,12 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 
 			const std::wstring& devenvPath = s_devenvPath;
 
-			// --- 2. __FILE__ ‚ÌƒGƒ“ƒR[ƒfƒBƒ“ƒO‚ğ”»’è‚µ‚Ä wstring ‚É•ÏŠ· ---
-			//        /utf-8 ƒRƒ“ƒpƒCƒ‹ƒIƒvƒVƒ‡ƒ“‚ª•t‚¢‚Ä‚¢‚é ¨ UTF-8 ‚Æ‚µ‚Ä•ÏŠ·
-			//        •t‚¢‚Ä‚¢‚È‚¢ŠÂ‹« (CP_ACP) ‚ÌƒtƒH[ƒ‹ƒoƒbƒN‚à—pˆÓ‚·‚é
+			// --- 2. __FILE__ ã®ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚’åˆ¤å®šã—ã¦ wstring ã«å¤‰æ› ---
+			//        /utf-8 ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä»˜ã„ã¦ã„ã‚‹ â†’ UTF-8 ã¨ã—ã¦å¤‰æ›
+			//        ä»˜ã„ã¦ã„ãªã„ç’°å¢ƒ (CP_ACP) ã®ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚‚ç”¨æ„ã™ã‚‹
 			std::wstring wfile;
 			{
-				// ‚Ü‚¸ UTF-8 ‚Æ‚µ‚Ä•ÏŠ·‚ğ‚İ‚é
+				// ã¾ãš UTF-8 ã¨ã—ã¦å¤‰æ›ã‚’è©¦ã¿ã‚‹
 				int wlen = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS,
 					file.c_str(), static_cast<int>(file.size()), nullptr, 0);
 				if (wlen > 0)
@@ -210,7 +210,7 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 				}
 				else
 				{
-					// UTF-8 ‚Æ‚µ‚Ä•s³‚ÈƒoƒCƒg—ñ ¨ ƒVƒXƒeƒ€‚ÌƒfƒtƒHƒ‹ƒgƒR[ƒhƒy[ƒW‚Å•ÏŠ·
+					// UTF-8 ã¨ã—ã¦ä¸æ­£ãªãƒã‚¤ãƒˆåˆ— â†’ ã‚·ã‚¹ãƒ†ãƒ ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã§å¤‰æ›
 					wlen = MultiByteToWideChar(CP_ACP, 0,
 						file.c_str(), static_cast<int>(file.size()), nullptr, 0);
 					wfile.resize(wlen);
@@ -219,19 +219,19 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 				}
 			}
 
-			// --- 3. devenv /Edit <file> /command "Edit.GoTo <line>" ‚ğ CreateProcess ‚ÅÀs ---
+			// --- 3. devenv /Edit <file> /command "Edit.GoTo <line>" ã‚’ CreateProcess ã§å®Ÿè¡Œ ---
 			//
-			//   ShellExecuteW ‚ÍƒRƒ}ƒ“ƒhƒ‰ƒCƒ“•¶š—ñ‚ğ“à•”‚Åƒp[ƒX‚·‚é‚½‚ßA
-			//   ƒNƒH[ƒg‚â (line) ƒTƒtƒBƒbƒNƒX‚ªŒë‰ğß‚³‚ê‚éB
-			//   CreateProcessW ‚Í lpCommandLine ‚ğ‚»‚Ì‚Ü‚Ü“n‚·‚½‚ßŠmÀB
+			//   ShellExecuteW ã¯ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³æ–‡å­—åˆ—ã‚’å†…éƒ¨ã§ãƒ‘ãƒ¼ã‚¹ã™ã‚‹ãŸã‚ã€
+			//   ã‚¯ã‚©ãƒ¼ãƒˆã‚„ (line) ã‚µãƒ•ã‚£ãƒƒã‚¯ã‚¹ãŒèª¤è§£é‡ˆã•ã‚Œã‚‹ã€‚
+			//   CreateProcessW ã¯ lpCommandLine ã‚’ãã®ã¾ã¾æ¸¡ã™ãŸã‚ç¢ºå®Ÿã€‚
 			//
-			//   ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“Œ`®:
+			//   ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å½¢å¼:
 			//     "devenv.exe" /Edit "file.cs" /command "Edit.GoTo line"
 			//
-			//   /Edit    : Šù‘¶ƒCƒ“ƒXƒ^ƒ“ƒX‚ª‚ ‚ê‚Î‚»‚±‚Ö“n‚·i‚È‚¯‚ê‚ÎV‹K‹N“®j
-			//   Edit.GoTo: VS ‚Ì IDE ƒRƒ}ƒ“ƒhBs”Ô†‚ğó‚¯æ‚èƒJ[ƒ\ƒ‹‚ğƒWƒƒƒ“ƒv‚³‚¹‚é
+			//   /Edit    : æ—¢å­˜ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒã‚ã‚Œã°ãã“ã¸æ¸¡ã™ï¼ˆãªã‘ã‚Œã°æ–°è¦èµ·å‹•ï¼‰
+			//   Edit.GoTo: VS ã® IDE ã‚³ãƒãƒ³ãƒ‰ã€‚è¡Œç•ªå·ã‚’å—ã‘å–ã‚Šã‚«ãƒ¼ã‚½ãƒ«ã‚’ã‚¸ãƒ£ãƒ³ãƒ—ã•ã›ã‚‹
 			{
-				// CreateProcessW ‚Ì lpCommandLine ‚Íæ“ª‚É‚àÀsƒtƒ@ƒCƒ‹ƒpƒX‚ª•K—v
+				// CreateProcessW ã® lpCommandLine ã¯å…ˆé ­ã«ã‚‚å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ãŒå¿…è¦
 				std::wstring cmdLine =
 					L"\"" + devenvPath + L"\""
 					+ L" /Edit "
@@ -244,12 +244,12 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 				si.cb = sizeof(si);
 				PROCESS_INFORMATION pi = {};
 
-				// lpCommandLine ‚Í‘‚«Š·‚¦‚ç‚ê‚é‰Â”\«‚ª‚ ‚é‚½‚ß”ñ const ƒoƒbƒtƒ@‚É“n‚·
+				// lpCommandLine ã¯æ›¸ãæ›ãˆã‚‰ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚é const ãƒãƒƒãƒ•ã‚¡ã«æ¸¡ã™
 				std::vector<wchar_t> cmdBuf(cmdLine.begin(), cmdLine.end());
 				cmdBuf.push_back(L'\0');
 
 				CreateProcessW(
-					nullptr,        // lpApplicationName  (cmdLine æ“ª‚©‚çæ“¾)
+					nullptr,        // lpApplicationName  (cmdLine å…ˆé ­ã‹ã‚‰å–å¾—)
 					cmdBuf.data(),  // lpCommandLine
 					nullptr,        // lpProcessAttributes
 					nullptr,        // lpThreadAttributes
@@ -261,34 +261,34 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 					&pi
 				);
 
-				// ƒnƒ“ƒhƒ‹‚Í•s—v‚È‚Ì‚Å‘¦•Â‚¶‚é
+				// ãƒãƒ³ãƒ‰ãƒ«ã¯ä¸è¦ãªã®ã§å³é–‰ã˜ã‚‹
 				if (pi.hProcess) CloseHandle(pi.hProcess);
 				if (pi.hThread)  CloseHandle(pi.hThread);
 			}
-			//// --- 3. devenv /Edit "file(line)" ‚ğÀs ---
-			//// "file(line)" Œ`®‚Í VS ‚ªŒö®ƒTƒ|[ƒg‚·‚ésƒWƒƒƒ“ƒv‹L–@B
-			//// /command "Edit.GoTo N" ‚Íˆø”‚Ì‰ğß‚ª•sˆÀ’è‚È‚½‚ßg—p‚µ‚È‚¢B
+			//// --- 3. devenv /Edit "file(line)" ã‚’å®Ÿè¡Œ ---
+			//// "file(line)" å½¢å¼ã¯ VS ãŒå…¬å¼ã‚µãƒãƒ¼ãƒˆã™ã‚‹è¡Œã‚¸ãƒ£ãƒ³ãƒ—è¨˜æ³•ã€‚
+			//// /command "Edit.GoTo N" ã¯å¼•æ•°ã®è§£é‡ˆãŒä¸å®‰å®šãªãŸã‚ä½¿ç”¨ã—ãªã„ã€‚
 			//std::wstring args = L"\""
 			//	+ wfile
 			//	+ L"("
 			//	+ std::to_wstring(line)
 			//	+ L")\"";
 			//
-			//// „Ÿ„Ÿ ƒfƒoƒbƒO—pFÀÛ‚É“n‚· devenv ƒpƒX‚Æˆø”‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í „Ÿ„Ÿ
-			//// –â‘è‚ª‰ğŒˆ‚µ‚½‚ç‚±‚ÌƒuƒƒbƒN‚ğíœ‚µ‚Ä‚­‚¾‚³‚¢
+			//// â”€â”€ ãƒ‡ãƒãƒƒã‚°ç”¨ï¼šå®Ÿéš›ã«æ¸¡ã™ devenv ãƒ‘ã‚¹ã¨å¼•æ•°ã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ› â”€â”€
+			//// å•é¡ŒãŒè§£æ±ºã—ãŸã‚‰ã“ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’å‰Šé™¤ã—ã¦ãã ã•ã„
 			//{
 			//	OutputDebugStringW((L"[Console] devenv : " + devenvPath + L"\n").c_str());
 			//	OutputDebugStringW((L"[Console] args   : " + args + L"\n").c_str());
 			//}
 			//
 
-			//// --- 4. ShellExecuteW ‚Å devenv ‚ğ‹N“® ---
+			//// --- 4. ShellExecuteW ã§ devenv ã‚’èµ·å‹• ---
 			//ShellExecuteW(
-			//	nullptr,            // eƒEƒBƒ“ƒhƒE
-			//	L"open",            // “®Œ
-			//	devenvPath.c_str(), // Àsƒtƒ@ƒCƒ‹
-			//	args.c_str(),       // ˆø”
-			//	nullptr,            // ì‹ÆƒfƒBƒŒƒNƒgƒŠ
+			//	nullptr,            // è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+			//	L"open",            // å‹•è©
+			//	devenvPath.c_str(), // å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«
+			//	args.c_str(),       // å¼•æ•°
+			//	nullptr,            // ä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 			//	SW_SHOWNORMAL
 			//);
 #endif // _WIN32
@@ -304,13 +304,13 @@ void Console::DrawGUI()
 	std::lock_guard<std::mutex> lock(s_logMutex);
 	ImGui::Begin("Console", &isOpen);
 
-	// ---- ƒNƒŠƒAƒ{ƒ^ƒ“ ----
+	// ---- ã‚¯ãƒªã‚¢ãƒœã‚¿ãƒ³ ----
 	if (ImGui::Button("Clear"))
 	{
 		ClearLog();
 	}
 
-	// --- ƒŒƒxƒ‹•ÊƒJƒEƒ“ƒg ---
+	// --- ãƒ¬ãƒ™ãƒ«åˆ¥ã‚«ã‚¦ãƒ³ãƒˆ ---
 	int countInfo = 0, countWarning = 0, countError = 0;
 	for (const LogEntry& e : logs)
 	{
@@ -319,7 +319,7 @@ void Console::DrawGUI()
 		else if (e.level == LogLevel::Error)   ++countError;
 	}
 
-	// --- Info ƒgƒOƒ‹ ---
+	// --- Info ãƒˆã‚°ãƒ« ---
 	ImGui::SameLine();
 	{
 		if (s_logLevelFlags & (1 << static_cast<int>(LogLevel::Info)))
@@ -331,11 +331,11 @@ void Console::DrawGUI()
 		ImGui::PushStyleColor(ImGuiCol_Text, textColor);
 		std::string labelInfo = "Info " + std::to_string(countInfo);
 		if (ImGui::Button(labelInfo.c_str()))
-			s_logLevelFlags ^= (1 << static_cast<int>(LogLevel::Info)); // ƒgƒOƒ‹
+			s_logLevelFlags ^= (1 << static_cast<int>(LogLevel::Info)); // ãƒˆã‚°ãƒ«
 		ImGui::PopStyleColor(2);
 	}
 
-	// --- Warning ƒgƒOƒ‹ ---
+	// --- Warning ãƒˆã‚°ãƒ« ---
 	ImGui::SameLine();
 	{
 		if (s_logLevelFlags & (1 << static_cast<int>(LogLevel::Warning)))
@@ -347,11 +347,11 @@ void Console::DrawGUI()
 		ImGui::PushStyleColor(ImGuiCol_Text, textColor);
 		std::string labelWarn = "Warning " + std::to_string(countWarning);
 		if (ImGui::Button(labelWarn.c_str()))
-			s_logLevelFlags ^= (1 << static_cast<int>(LogLevel::Warning)); // ƒgƒOƒ‹
+			s_logLevelFlags ^= (1 << static_cast<int>(LogLevel::Warning)); // ãƒˆã‚°ãƒ«
 		ImGui::PopStyleColor(2);
 	}
 
-	// --- Error ƒgƒOƒ‹ ---
+	// --- Error ãƒˆã‚°ãƒ« ---
 	ImGui::SameLine();
 	{
 		if (s_logLevelFlags & (1 << static_cast<int>(LogLevel::Error)))
@@ -363,11 +363,11 @@ void Console::DrawGUI()
 		ImGui::PushStyleColor(ImGuiCol_Text, textColor);
 		std::string labelErr = "Error " + std::to_string(countError);
 		if (ImGui::Button(labelErr.c_str()))
-			s_logLevelFlags ^= (1 << static_cast<int>(LogLevel::Error)); // ƒgƒOƒ‹
+			s_logLevelFlags ^= (1 << static_cast<int>(LogLevel::Error)); // ãƒˆã‚°ãƒ«
 		ImGui::PopStyleColor(2);
 	}
 
-	// --- ŒŸõƒ{ƒbƒNƒXic‚è•‚¢‚Á‚Ï‚¢‚ÉL‚°‚éj ---
+	// --- æ¤œç´¢ãƒœãƒƒã‚¯ã‚¹ï¼ˆæ®‹ã‚Šå¹…ã„ã£ã±ã„ã«åºƒã’ã‚‹ï¼‰ ---
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1.0f);
 	ImGui::InputText("##search", s_filterBuffer, sizeof(s_filterBuffer));
@@ -376,7 +376,7 @@ void Console::DrawGUI()
 
 	if (!logs.empty())
 	{
-		// ƒƒO‚ÌÅ‘å”‚ğ§ŒÀ
+		// ãƒ­ã‚°ã®æœ€å¤§æ•°ã‚’åˆ¶é™
 		{
 			const size_t maxLogs = 1000;
 			if (logs.size() > maxLogs)
@@ -385,16 +385,16 @@ void Console::DrawGUI()
 			}
 		}
 
-		// ƒƒO•\¦
+		// ãƒ­ã‚°è¡¨ç¤º
 		for (size_t i = 0; i < logs.size(); ++i)
 		{
-			const LogEntry& entry = logs[i]; // QÆ‚Ì‚İ
+			const LogEntry& entry = logs[i]; // å‚ç…§ã®ã¿
 			ImGui::PushID(&entry);
 
-			// --- ƒŒƒxƒ‹ƒtƒBƒ‹ƒ^ƒŠƒ“ƒO ---
+			// --- ãƒ¬ãƒ™ãƒ«ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚° ---
 			bool levelVisible = s_logLevelFlags & (1 << static_cast<int>(entry.level));
 
-			// --- ƒeƒLƒXƒgƒtƒBƒ‹ƒ^ƒŠƒ“ƒO ---
+			// --- ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚° ---
 			bool textVisible = true;
 			if (s_filterBuffer[0] != '\0')
 			{
@@ -408,13 +408,13 @@ void Console::DrawGUI()
 					(fileLower.find(filterLower) != std::string::npos);
 			}
 
-			if (!levelVisible || !textVisible) // ‚Ç‚¿‚ç‚©‚ÌğŒ‚ğ–‚½‚³‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+			if (!levelVisible || !textVisible) // ã©ã¡ã‚‰ã‹ã®æ¡ä»¶ã‚’æº€ãŸã•ãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 			{
 				ImGui::PopID();
 				continue;
 			}
 
-			// --- F‚Ìİ’è ---
+			// --- è‰²ã®è¨­å®š ---
 			ImVec4 col;
 			switch (entry.level) {
 			case LogLevel::Info:    col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f); break;
@@ -424,32 +424,32 @@ void Console::DrawGUI()
 			}
 			ImGui::PushStyleColor(ImGuiCol_Text, col);
 
-			// --- ƒtƒ@ƒCƒ‹–¼iƒpƒX‚ÌÅŒã‚Ì•”•ª‚¾‚¯j‚Æs”Ô†‚ğì¬ ---
+			// --- ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆãƒ‘ã‚¹ã®æœ€å¾Œã®éƒ¨åˆ†ã ã‘ï¼‰ã¨è¡Œç•ªå·ã‚’ä½œæˆ ---
 			std::string shortFile;
 			if (!entry.file.empty())
 			{
-				// '\\' ‚Æ '/' ‚Ì—¼•û‚É‘Î‰‚µ‚ÄÅŒã‚ÌƒZƒpƒŒ[ƒ^ˆÈ~‚ğæ“¾
+				// '\\' ã¨ '/' ã®ä¸¡æ–¹ã«å¯¾å¿œã—ã¦æœ€å¾Œã®ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ä»¥é™ã‚’å–å¾—
 				size_t pos = entry.file.find_last_of("/\\");
 				shortFile = (pos != std::string::npos)
 					? entry.file.substr(pos + 1)
 					: entry.file;
 			}
 
-			// --- ƒƒbƒZ[ƒW–{•¶‚Ì•\¦ ---
+			// --- ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æœ¬æ–‡ã®è¡¨ç¤º ---
 			ImGui::TextUnformatted(entry.message.c_str());
 
-			// ƒVƒ“ƒOƒ‹ƒNƒŠƒbƒNFƒƒbƒZ[ƒW‚ğƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[iŠù‘¶“®ìj
+			// ã‚·ãƒ³ã‚°ãƒ«ã‚¯ãƒªãƒƒã‚¯ï¼šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼ï¼ˆæ—¢å­˜å‹•ä½œï¼‰
 			if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 			{
 				ImGui::SetClipboardText(entry.message.c_str());
 			}
 
-			// --- ƒtƒ@ƒCƒ‹–¼:s”Ô† ‚ğƒOƒŒ[‚Å‰EŠñ‚¹•\¦ ---
+			// --- ãƒ•ã‚¡ã‚¤ãƒ«å:è¡Œç•ªå· ã‚’ã‚°ãƒ¬ãƒ¼ã§å³å¯„ã›è¡¨ç¤º ---
 			if (!shortFile.empty() && entry.line > 0)
 			{
 				std::string location = shortFile + ":" + std::to_string(entry.line);
 
-				// ‰EŠñ‚¹FƒEƒBƒ“ƒhƒE•‚©‚çƒeƒLƒXƒg•‚ğˆø‚¢‚ÄƒJ[ƒ\ƒ‹‚ğˆÚ“®
+				// å³å¯„ã›ï¼šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¹…ã‹ã‚‰ãƒ†ã‚­ã‚¹ãƒˆå¹…ã‚’å¼•ã„ã¦ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç§»å‹•
 				float textWidth = ImGui::CalcTextSize(location.c_str()).x;
 				float windowWidth = ImGui::GetContentRegionAvail().x;
 				float cursorX = windowWidth - textWidth;
@@ -460,14 +460,14 @@ void Console::DrawGUI()
 				ImGui::TextLink(location.c_str());
 				ImGui::PopStyleColor();
 
-				// ƒ_ƒuƒ‹ƒNƒŠƒbƒNFVisual Studio ‚ÅŠY“–s‚ğŠJ‚­
+				// ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ï¼šVisual Studio ã§è©²å½“è¡Œã‚’é–‹ã
 				if (ImGui::IsItemHovered() &&
 					ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
 					OpenInVisualStudio(entry.file, entry.line);
 				}
 
-				// ƒzƒo[‚Ìƒc[ƒ‹ƒ`ƒbƒviƒtƒ‹ƒpƒX‚ğ•\¦j
+				// ãƒ›ãƒãƒ¼æ™‚ã®ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ï¼ˆãƒ•ãƒ«ãƒ‘ã‚¹ã‚’è¡¨ç¤ºï¼‰
 				if (ImGui::IsItemHovered())
 				{
 					ImGui::SetTooltip("Double-click to open in Visual Studio\n%s:%d",
@@ -478,11 +478,11 @@ void Console::DrawGUI()
 			ImGui::PopStyleColor(); // PushStyleColor(ImGuiCol_Text, col)
 			ImGui::PopID();
 
-			// ƒƒOƒGƒ“ƒgƒŠŠÔ‚Ì‹æØ‚èüi”–‚ßj
+			// ãƒ­ã‚°ã‚¨ãƒ³ãƒˆãƒªé–“ã®åŒºåˆ‡ã‚Šç·šï¼ˆè–„ã‚ï¼‰
 			ImGui::Separator();
 		}
 
-		// ƒƒO‚ª‘‚¦‚½‚Æ‚«‚ÉÅV‚ÌƒƒO‚ªŒ©‚¦‚é‚æ‚¤‚ÉƒXƒNƒ[ƒ‹
+		// ãƒ­ã‚°ãŒå¢—ãˆãŸã¨ãã«æœ€æ–°ã®ãƒ­ã‚°ãŒè¦‹ãˆã‚‹ã‚ˆã†ã«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«
 		if (isLogSizeIncreasedInCurrentFrame)
 		{
 			ImGui::SetScrollHereY(1.0f);

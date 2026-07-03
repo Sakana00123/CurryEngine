@@ -11,19 +11,19 @@ EventSystem EventSystem::current;
 
 void EventSystem::SetSelectedGameObject(GameObject* obj)
 {
-	currentSelectedGameObject = GetSelectedGameObject(); // Œ»İ‚Ì‘I‘ğƒIƒuƒWƒFƒNƒg‚ğXV
+	currentSelectedGameObject = GetSelectedGameObject(); // ç¾åœ¨ã®é¸æŠã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ›´æ–°
 
 	if (currentSelectedGameObject != obj) {
 		if (auto inputModule = activeModule.lock())
 		{
 			if (currentSelectedGameObject)
 			{
-				// ‘I‘ğ‰ğœƒCƒxƒ“ƒg‚ğ”­s
+				// é¸æŠè§£é™¤ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºè¡Œ
 				inputModule->ExecuteEvent<IDeselectHandler>(currentSelectedGameObject, nullptr, &IDeselectHandler::Execute);
 			}
 			if (obj)
 			{
-				// ‘I‘ğƒCƒxƒ“ƒg‚ğ”­s
+				// é¸æŠã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºè¡Œ
 				inputModule->ExecuteEvent<ISelectHandler>(obj, nullptr, &ISelectHandler::Execute);
 			}
 		}
@@ -35,7 +35,7 @@ void EventSystem::SetSelectedGameObject(GameObject* obj)
 GameObject* EventSystem::GetSelectedGameObject()
 {
 	Scene* scene = SceneManager::GetCurrentScene();
-	if (scene == nullptr) return nullptr; // ƒV[ƒ“‚ª‘¶İ‚µ‚È‚¢ê‡‚Í nullptr ‚ğ•Ô‚·
+	if (scene == nullptr) return nullptr; // ã‚·ãƒ¼ãƒ³ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ nullptr ã‚’è¿”ã™
 
 	if (currentSelectedGameObjectId.IsValid()) {
 		GameObject* obj = scene->FindGameObjectById(currentSelectedGameObjectId);
@@ -47,7 +47,7 @@ GameObject* EventSystem::GetSelectedGameObject()
 }
 
 void EventSystem::Update(float elapsedTime) {
-	//”jŠüˆ—
+	//ç ´æ£„å‡¦ç†
 	auto& erases = GetCurrent()->erases;
 	auto& raycasters = GetCurrent()->raycasters;
 	auto& activeModule = GetCurrent()->activeModule;
@@ -62,7 +62,7 @@ void EventSystem::Update(float elapsedTime) {
 			raycasters.end());
 		erases.clear();
 	}
-	//InputModule‚ÌXV
+	//InputModuleã®æ›´æ–°
 	if (!activeModule.expired()) {
 		activeModule.lock()->Process(elapsedTime);
 	}
@@ -88,7 +88,7 @@ RaycastResult EventSystem::RaycastAll() {
 	}
 
 	if (results.size() > 0) {
-		result = results.back();//ˆê”ÔÅŒã‚É•`‰æ‚³‚ê‚éUI‚ªƒqƒbƒg‘ÎÛ
+		result = results.back();//ä¸€ç•ªæœ€å¾Œã«æç”»ã•ã‚Œã‚‹UIãŒãƒ’ãƒƒãƒˆå¯¾è±¡
 	}
 	return result;
 }

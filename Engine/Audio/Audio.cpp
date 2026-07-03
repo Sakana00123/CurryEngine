@@ -86,7 +86,7 @@ HRESULT ReadChunkData(HANDLE hfile, LPVOID buffer, DWORD bufferSize, DWORD buffe
 void Audio::CreateAudioSource(std::shared_ptr<AudioBuffer> buffer,
 	IXAudio2SourceVoice** sourceVoice, SoundType type)
 {
-	// BGM,SE‚Ì‘—‚èæİ’è
+	// BGM,SEã®é€ã‚Šå…ˆè¨­å®š
 	XAUDIO2_SEND_DESCRIPTOR send[SoundType::EnumCount] = { { 0, submixVoices[BGM] }, { 0, submixVoices[SE] } };
 	XAUDIO2_VOICE_SENDS sends[SoundType::EnumCount] = { {1, &send[BGM]}, {1, &send[SE]} };
 
@@ -98,24 +98,24 @@ void Audio::Initialize()
 {
 	HRESULT hr;
 
-	//XAudio2‚Ì‰Šú‰»
+	//XAudio2ã®åˆæœŸåŒ–
 	hr = XAudio2Create(xaudio2.GetAddressOf(), 0, XAUDIO2_DEFAULT_PROCESSOR);
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 	hr = xaudio2->CreateMasteringVoice(&masterVoice);
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// BGM‚ÆSE—p‚ÌƒTƒuƒ~ƒLƒT[Eƒ{ƒCƒX‚ğì¬iƒXƒeƒŒƒI: 2ƒ`ƒƒƒ“ƒlƒ‹j
+	// BGMã¨SEç”¨ã®ã‚µãƒ–ãƒŸã‚­ã‚µãƒ¼ãƒ»ãƒœã‚¤ã‚¹ã‚’ä½œæˆï¼ˆã‚¹ãƒ†ãƒ¬ã‚ª: 2ãƒãƒ£ãƒ³ãƒãƒ«ï¼‰
 	hr = xaudio2->CreateSubmixVoice(&submixVoices[BGM], 2, 44100);
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 	hr = xaudio2->CreateSubmixVoice(&submixVoices[SE], 2, 44100);
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// X3DAudio ‚Ì‰Šú‰»
+	// X3DAudio ã®åˆæœŸåŒ–
 	C3DAudio::Initialize();
 
-	// ƒ{ƒŠƒ…[ƒ€‚Ì‰Šú’l‚ğİ’è
+	// ãƒœãƒªãƒ¥ãƒ¼ãƒ ã®åˆæœŸå€¤ã‚’è¨­å®š
 	SetSeVolume(0.5f);
 }
 
@@ -129,35 +129,35 @@ Audio::~Audio()
 
 float Audio::AudioBuffer::GetDuration() const
 {
-	// Ä¶ŠÔ = ƒoƒbƒtƒ@ƒTƒCƒY(ƒoƒCƒg) / 1•b‚ ‚½‚è‚ÌƒoƒCƒg”
+	// å†ç”Ÿæ™‚é–“ = ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º(ãƒã‚¤ãƒˆ) / 1ç§’ã‚ãŸã‚Šã®ãƒã‚¤ãƒˆæ•°
 	const uint32_t byteRate = wfx.Format.nAvgBytesPerSec;
-	// byteRate ‚ª 0 ‚Ìê‡A–³ŒÀƒ‹[ƒv‚È‚Ç‚ÅÄ¶ŠÔ‚ª’è‹`‚Å‚«‚È‚¢ê‡‚ª‚ ‚é‚½‚ßƒK[ƒh
+	// byteRate ãŒ 0 ã®å ´åˆã€ç„¡é™ãƒ«ãƒ¼ãƒ—ãªã©ã§å†ç”Ÿæ™‚é–“ãŒå®šç¾©ã§ããªã„å ´åˆãŒã‚ã‚‹ãŸã‚ã‚¬ãƒ¼ãƒ‰
 	if (byteRate == 0) return 0.0;
-	// •b”‚ğ•Ô‚·
+	// ç§’æ•°ã‚’è¿”ã™
 	return static_cast<float>(buffer.AudioBytes) / static_cast<float>(byteRate);
 }
 
 std::shared_ptr<Audio::AudioBuffer> Audio::AudioBuffer::GetResource(const std::wstring& filePath)
 {
-	//‚·‚Å‚É‘¶İ‚µ‚Ä‚¢‚½‚çƒŠƒ\[ƒX‚ğ•Ô‚·
+	//ã™ã§ã«å­˜åœ¨ã—ã¦ã„ãŸã‚‰ãƒªã‚½ãƒ¼ã‚¹ã‚’è¿”ã™
 	if (resources.contains(filePath) && !resources.at(filePath).expired())
 	{
 		return resources.at(filePath).lock();
 	}
 
-	// ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍƒGƒ‰[ƒƒO‚ğo‚µ‚Ä nullptr ‚ğ•Ô‚·
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ãƒ­ã‚°ã‚’å‡ºã—ã¦ nullptr ã‚’è¿”ã™
 	if (!std::filesystem::exists(filePath))
 	{
-		LOG_ERROR("ƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: " + std::string(filePath.begin(), filePath.end()));
+		LOG_ERROR("ãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: " + std::string(filePath.begin(), filePath.end()));
 		return nullptr;
 	}
 
-	//‘¶İ‚µ‚Ä‚¢‚È‚¯‚ê‚ÎV‹K‚ÅƒI[ƒfƒBƒIƒoƒbƒtƒ@‚ğì¬
+	//å­˜åœ¨ã—ã¦ã„ãªã‘ã‚Œã°æ–°è¦ã§ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆ
 	{
 		HRESULT hr;
 		std::shared_ptr<AudioBuffer> audioBuffer = std::make_shared<AudioBuffer>();
 
-		//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“
+		//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³
 		HANDLE hfile = CreateFileW(filePath.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 		if (INVALID_HANDLE_VALUE == hfile)
 		{
@@ -206,7 +206,7 @@ void Audio::PlayOneShot(const wchar_t* filePath, float volume)
 
 void Audio::Update(float deltaTime)
 {
-	//íœˆ—
+	//å‰Šé™¤å‡¦ç†
 	for (auto& source : audioSources)
 	{
 		if (!source->IsPlaying())
@@ -244,7 +244,7 @@ StandaloneAudioSource::~StandaloneAudioSource()
 
 void StandaloneAudioSource::Play(bool loop)
 {
-	_ASSERT_EXPR(sourceVoice, L"ƒ\[ƒX‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+	_ASSERT_EXPR(sourceVoice, L"ã‚½ãƒ¼ã‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
 
 	HRESULT hr;
 

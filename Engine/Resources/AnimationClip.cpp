@@ -20,15 +20,15 @@ void ValueTrack::Sort()
 
 void EventTrack::Evaluate(float prevTime, float currentTime, AnimationContext& context)
 {
-	// ƒCƒxƒ“ƒgƒgƒ‰ƒbƒN‚Ì•]‰¿ƒƒWƒbƒN‚ð‚±‚±‚ÉŽÀ‘•
+	// ã‚¤ãƒ™ãƒ³ãƒˆãƒˆãƒ©ãƒƒã‚¯ã®è©•ä¾¡ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 }
 
 void CurveTrack::Evaluate(float prevTime, float currentTime, AnimationContext& context)
 {
-	// ƒJ[ƒuƒgƒ‰ƒbƒN‚Ì•]‰¿ƒƒWƒbƒN‚ð‚±‚±‚ÉŽÀ‘•
+	// ã‚«ãƒ¼ãƒ–ãƒˆãƒ©ãƒƒã‚¯ã®è©•ä¾¡ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 }
 
 void StateTrack::Evaluate(float prevTime, float currentTime, AnimationContext& context)
 {
-	// ƒXƒe[ƒgƒgƒ‰ƒbƒN‚Ì•]‰¿ƒƒWƒbƒN‚ð‚±‚±‚ÉŽÀ‘•
+	// ã‚¹ãƒ†ãƒ¼ãƒˆãƒˆãƒ©ãƒƒã‚¯ã®è©•ä¾¡ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«å®Ÿè£…
 }

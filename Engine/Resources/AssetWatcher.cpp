@@ -57,15 +57,15 @@ namespace CurryEngine
 			return;
 		}
 
-		// Å‰‚ÌƒŠƒNƒGƒXƒg‚ğ”­s
+		// æœ€åˆã®ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ç™ºè¡Œ
 		bool isPending = false;
 
 		while (m_running) {
 
-			// ‚Ü‚¾”ñ“¯ŠúƒŠƒNƒGƒXƒg‚ª”­s‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î”­s‚·‚é
+			// ã¾ã éåŒæœŸãƒªã‚¯ã‚¨ã‚¹ãƒˆãŒç™ºè¡Œã•ã‚Œã¦ã„ãªã‘ã‚Œã°ç™ºè¡Œã™ã‚‹
 			if (!isPending) {
 				ResetEvent(overlapped.hEvent);
-				DWORD bytesReturned = 0; // ”ñ“¯Šú‚Å‚Í‚±‚Ì•Ï”‚Íg‚í‚ê‚Ü‚¹‚ñ‚ªˆø”‚Æ‚µ‚Ä•K—v
+				DWORD bytesReturned = 0; // éåŒæœŸã§ã¯ã“ã®å¤‰æ•°ã¯ä½¿ã‚ã‚Œã¾ã›ã‚“ãŒå¼•æ•°ã¨ã—ã¦å¿…è¦
 
 				BOOL result = ReadDirectoryChangesW(
 					hDir,
@@ -84,15 +84,15 @@ namespace CurryEngine
 				isPending = true;
 			}
 
-			// 500ms ‘Ò‹@
+			// 500ms å¾…æ©Ÿ
 			DWORD waitResult = WaitForSingleObject(overlapped.hEvent, 500);
 
 			if (waitResult == WAIT_OBJECT_0) {
-				// ”ñ“¯Šúˆ—‚ªŠ®—¹‚µ‚½‚½‚ßAÀÛ‚É‘‚«‚Ü‚ê‚½ƒoƒCƒg”‚ğæ“¾‚·‚é
+				// éåŒæœŸå‡¦ç†ãŒå®Œäº†ã—ãŸãŸã‚ã€å®Ÿéš›ã«æ›¸ãè¾¼ã¾ã‚ŒãŸãƒã‚¤ãƒˆæ•°ã‚’å–å¾—ã™ã‚‹
 				DWORD bytesTransferred = 0;
 				if (GetOverlappedResult(hDir, &overlapped, &bytesTransferred, FALSE)) {
 
-					// ÀÛ‚Éƒf[ƒ^‚ª‘‚«‚Ü‚ê‚Ä‚¢‚ê‚Îƒp[ƒX‚·‚é
+					// å®Ÿéš›ã«ãƒ‡ãƒ¼ã‚¿ãŒæ›¸ãè¾¼ã¾ã‚Œã¦ã„ã‚Œã°ãƒ‘ãƒ¼ã‚¹ã™ã‚‹
 					if (bytesTransferred > 0) {
 						auto* info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(buffer);
 						while (true)
@@ -113,22 +113,22 @@ namespace CurryEngine
 				}
 				else {
 					DWORD err = GetLastError();
-					// ƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒOiƒoƒbƒtƒ@ƒI[ƒo[ƒtƒ[‚È‚Çj
+					// ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°ï¼ˆãƒãƒƒãƒ•ã‚¡ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ãªã©ï¼‰
 					if (err == ERROR_NOTIFY_ENUM_DIR) {
 						LOG_WARNING("[AssetWatcher] Buffer overflow. Some changes might be lost.");
 					}
 				}
 
-				// ˆ—‚ªŠ®—¹‚µ‚½‚Ì‚ÅAŸ‚Ìƒ‹[ƒv‚ÅV‚µ‚¢ƒŠƒNƒGƒXƒg‚ğ”­s‚Å‚«‚é‚æ‚¤‚Éƒtƒ‰ƒO‚ğ‰º‚°‚é
+				// å‡¦ç†ãŒå®Œäº†ã—ãŸã®ã§ã€æ¬¡ã®ãƒ«ãƒ¼ãƒ—ã§æ–°ã—ã„ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ç™ºè¡Œã§ãã‚‹ã‚ˆã†ã«ãƒ•ãƒ©ã‚°ã‚’ä¸‹ã’ã‚‹
 				isPending = false;
 			}
 			else if (waitResult == WAIT_TIMEOUT) {
-				// ƒ^ƒCƒ€ƒAƒEƒg‚µ‚½ê‡‚ÍAƒŠƒNƒGƒXƒg‚ªŠ®—¹‚µ‚Ä‚¢‚È‚¢‚Ì‚Å
-				// ReadDirectoryChangesW ‚ğÄ”­s‚¹‚¸A‚»‚Ì‚Ü‚ÜŸ‚Ì‘Ò‹@‚Éi‚Ş (isPending = true ‚Ì‚Ü‚Ü)
+				// ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã—ãŸå ´åˆã¯ã€ãƒªã‚¯ã‚¨ã‚¹ãƒˆãŒå®Œäº†ã—ã¦ã„ãªã„ã®ã§
+				// ReadDirectoryChangesW ã‚’å†ç™ºè¡Œã›ãšã€ãã®ã¾ã¾æ¬¡ã®å¾…æ©Ÿã«é€²ã‚€ (isPending = true ã®ã¾ã¾)
 				continue;
 			}
 			else {
-				// ‰½‚ç‚©‚ÌƒGƒ‰[
+				// ä½•ã‚‰ã‹ã®ã‚¨ãƒ©ãƒ¼
 				DWORD err = GetLastError();
 				char buf[256];
 				sprintf_s(buf, "[AssetWatcher] WaitForSingleObject failed. error=%lu", err);
@@ -138,7 +138,7 @@ namespace CurryEngine
 			}
 		}
 
-		// ƒXƒŒƒbƒh‚ªI—¹‚·‚éÛA–¢Š®—¹‚Ì”ñ“¯Šú“üo—Í‚ğƒLƒƒƒ“ƒZƒ‹‚·‚é
+		// ã‚¹ãƒ¬ãƒƒãƒ‰ãŒçµ‚äº†ã™ã‚‹éš›ã€æœªå®Œäº†ã®éåŒæœŸå…¥å‡ºåŠ›ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹
 		CancelIo(hDir);
 
 		if (overlapped.hEvent != NULL) {
@@ -149,11 +149,11 @@ namespace CurryEngine
 
 	void AssetWatcher::OnFileAction(DWORD action, const std::filesystem::path& path)
 	{
-		// ‚±‚±‚Åƒtƒ@ƒCƒ‹‚Ì•ÏXƒCƒxƒ“ƒg‚ğˆ—‚·‚é
+		// ã“ã“ã§ãƒ•ã‚¡ã‚¤ãƒ«ã®å¤‰æ›´ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†ã™ã‚‹
 		std::filesystem::path replacedPath = path;
 
 		if (std::filesystem::path(replacedPath).extension() == ".meta") {
-			// .metaƒtƒ@ƒCƒ‹‚Ì•ÏX‚Í–³‹‚·‚é
+			// .metaãƒ•ã‚¡ã‚¤ãƒ«ã®å¤‰æ›´ã¯ç„¡è¦–ã™ã‚‹
 			return;
 		}
 
@@ -162,21 +162,21 @@ namespace CurryEngine
 		case FILE_ACTION_ADDED:
 		{
 			LOG_INFO(u8"[AssetWatcher] File added: " + replacedPath.u8string());
-			CurryEngine::Resources::AssetDatabase::Import(replacedPath); // V‚µ‚¢ƒAƒZƒbƒg‚ğƒCƒ“ƒ|[ƒg
+			CurryEngine::Resources::AssetDatabase::Import(replacedPath); // æ–°ã—ã„ã‚¢ã‚»ãƒƒãƒˆã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 			break;
 		}
 		case FILE_ACTION_REMOVED:
 			LOG_INFO(u8"[AssetWatcher] File removed: " + replacedPath.u8string());
-			CurryEngine::Resources::AssetDatabase::RemoveByPath(replacedPath); // ƒAƒZƒbƒg‚ğíœ
+			CurryEngine::Resources::AssetDatabase::RemoveByPath(replacedPath); // ã‚¢ã‚»ãƒƒãƒˆã‚’å‰Šé™¤
 			break;
 		case FILE_ACTION_MODIFIED:
 			LOG_INFO(u8"[AssetWatcher] File modified: " + replacedPath.u8string());
-			AssetBrowser::Refresh(); // ƒAƒZƒbƒgƒuƒ‰ƒEƒU‚ğƒŠƒtƒŒƒbƒVƒ…‚µ‚Ä•ÏX‚ğ”½‰f
+			AssetBrowser::Refresh(); // ã‚¢ã‚»ãƒƒãƒˆãƒ–ãƒ©ã‚¦ã‚¶ã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã—ã¦å¤‰æ›´ã‚’åæ˜ 
 			break;
 		case FILE_ACTION_RENAMED_OLD_NAME:
 		{
 			LOG_INFO(u8"[AssetWatcher] File renamed (old name): " + replacedPath.u8string());
-			m_pendingRenameOldPath = replacedPath; // ƒŠƒl[ƒ€‚Ì‹ŒƒpƒX‚ğ•Û—¯
+			m_pendingRenameOldPath = replacedPath; // ãƒªãƒãƒ¼ãƒ ã®æ—§ãƒ‘ã‚¹ã‚’ä¿ç•™
 			break;
 		}
 		case FILE_ACTION_RENAMED_NEW_NAME:
@@ -184,13 +184,13 @@ namespace CurryEngine
 				LOG_INFO(u8"[AssetWatcher] File renamed from " + m_pendingRenameOldPath.value().u8string() + u8" to " + replacedPath.u8string());
 				if (std::filesystem::is_regular_file(replacedPath))
 				{
-					CurryEngine::Resources::AssetDatabase::Rename(m_pendingRenameOldPath.value(), replacedPath); // ƒAƒZƒbƒg‚ğƒŠƒl[ƒ€
+					CurryEngine::Resources::AssetDatabase::Rename(m_pendingRenameOldPath.value(), replacedPath); // ã‚¢ã‚»ãƒƒãƒˆã‚’ãƒªãƒãƒ¼ãƒ 
 				}
 				else if (std::filesystem::is_directory(replacedPath))
 				{
-					CurryEngine::Resources::AssetDatabase::RemapPathPrefix(m_pendingRenameOldPath.value(), replacedPath); // ƒtƒHƒ‹ƒ_‚ğƒŠƒl[ƒ€
+					CurryEngine::Resources::AssetDatabase::RemapPathPrefix(m_pendingRenameOldPath.value(), replacedPath); // ãƒ•ã‚©ãƒ«ãƒ€ã‚’ãƒªãƒãƒ¼ãƒ 
 				}
-				m_pendingRenameOldPath.reset(); // •Û—¯‚ğƒNƒŠƒA
+				m_pendingRenameOldPath.reset(); // ä¿ç•™ã‚’ã‚¯ãƒªã‚¢
 			}
 			else {
 				LOG_WARNING(u8"[AssetWatcher] Received new name without old name: " + replacedPath.u8string());

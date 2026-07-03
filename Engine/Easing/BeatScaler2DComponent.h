@@ -6,42 +6,42 @@ class BeatScaler2DComponent : public Component
 {
 	C_REFLECT(BeatScaler2DComponent)
 public:
-	/** @brief ƒXƒP[ƒ‹‚Ì‹­‚³B*/
+	/** @brief ã‚¹ã‚±ãƒ¼ãƒ«ã®å¼·ã•ã€‚*/
 	C_PROPERTY()
 	float scaleIntensity = 0.2f;
-	/** @brief ƒXƒP[ƒ‹‚Ì‘¬“xB*/
+	/** @brief ã‚¹ã‚±ãƒ¼ãƒ«ã®é€Ÿåº¦ã€‚*/
 	C_PROPERTY()
 	float scaleSpeed = 10.0f;
-	/** @brief ƒXƒP[ƒ‹‚Ì•p“xi‰½ƒr[ƒg‚Éˆê‰ñƒXƒP[ƒŠƒ“ƒO‚·‚é‚©jB*/
+	/** @brief ã‚¹ã‚±ãƒ¼ãƒ«ã®é »åº¦ï¼ˆä½•ãƒ“ãƒ¼ãƒˆã«ä¸€å›ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã™ã‚‹ã‹ï¼‰ã€‚*/
 	C_PROPERTY()
 	int scaleFrequency = 1;
 
 private:
-	/** @brief ‰ŠúƒTƒCƒYB*/
+	/** @brief åˆæœŸã‚µã‚¤ã‚ºã€‚*/
 	Vector2 initialSize = { 0,0 };
-	/** @brief Šî–{ƒXƒP[ƒ‹B*/
+	/** @brief åŸºæœ¬ã‚¹ã‚±ãƒ¼ãƒ«ã€‚*/
 	float baseScale = 1.0f;
-	/** @brief Œ»İ‚ÌƒXƒP[ƒ‹B*/
+	/** @brief ç¾åœ¨ã®ã‚¹ã‚±ãƒ¼ãƒ«ã€‚*/
 	float currentScale = 1.0f;
-	/** @brief ƒ^[ƒQƒbƒgƒXƒP[ƒ‹B*/
+	/** @brief ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«ã€‚*/
 	float targetScale = 1.0f;
-	/** @brief ƒr[ƒgƒJƒEƒ“ƒgB*/
+	/** @brief ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã€‚*/
 	int beatCount = 0;
 public:
-	/** @brief ŠJnˆ—B*/
+	/** @brief é–‹å§‹å‡¦ç†ã€‚*/
 	virtual void Start() override;
 	/**
-	 * @brief XVˆ—B
-	 * @param deltaTime ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bjB
+	 * @brief æ›´æ–°å‡¦ç†ã€‚
+	 * @param deltaTime å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	virtual void Update(float deltaTime) override;
 
 #ifdef USE_IMGUI
-	/** @brief ƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	virtual void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 private:
-	/** @brief ƒr[ƒg‚Ìˆ—B*/
+	/** @brief ãƒ“ãƒ¼ãƒˆæ™‚ã®å‡¦ç†ã€‚*/
 	void OnBeat();
 };

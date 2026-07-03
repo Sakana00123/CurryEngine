@@ -6,19 +6,19 @@
 
 void PostProcessPass::Initialize()
 {
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Ì‰Šú‰»
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®åˆæœŸåŒ–
 	auto device = Graphics::GetDevice();
 	m_postProcessTexture.Create(device, 1920, 1080);
-	RegisterResizableRenderTexture(&m_postProcessTexture); // ƒŠƒTƒCƒY‚ª•K—v‚ÈƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Æ‚µ‚Ä“o˜^(¦‚±‚ê‚ğŒÄ‚Ño‚³‚È‚¢‚ÆAƒEƒBƒ“ƒhƒEƒTƒCƒY•ÏX‚ÉƒŠƒTƒCƒY‚³‚ê‚È‚¢‚Ì‚Å’ˆÓ)
+	RegisterResizableRenderTexture(&m_postProcessTexture); // ãƒªã‚µã‚¤ã‚ºãŒå¿…è¦ãªãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦ç™»éŒ²(â€»ã“ã‚Œã‚’å‘¼ã³å‡ºã•ãªã„ã¨ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¤‰æ›´æ™‚ã«ãƒªã‚µã‚¤ã‚ºã•ã‚Œãªã„ã®ã§æ³¨æ„)
 
-	// ƒ|ƒXƒgƒvƒƒZƒXƒ}ƒeƒŠƒAƒ‹‚Ì‰Šú‰»
+	// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒãƒ†ãƒªã‚¢ãƒ«ã®åˆæœŸåŒ–
 	m_postProcessMaterial = std::make_shared<Material>();
-	m_postProcessMaterial->SetShader(device, ResourceManager::LoadShader<PixelShader>("FinalPassPS")); // ‚±‚±‚Åg—p‚·‚éƒVƒF[ƒ_[‚ğw’è
+	m_postProcessMaterial->SetShader(device, ResourceManager::LoadShader<PixelShader>("FinalPassPS")); // ã“ã“ã§ä½¿ç”¨ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’æŒ‡å®š
 }
 
 void PostProcessPass::Finalize()
 {
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÌI—¹‰»ˆ—
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®çµ‚äº†åŒ–å‡¦ç†
 	m_postProcessTexture.Release();
 }
 
@@ -27,25 +27,25 @@ void PostProcessPass::Execute(RenderContext* rtx, Scene* scene)
 	auto renderTexture = static_cast<RenderTexture*>(rtx->GetSharedResource("ShadowApplyPass_RenderTexture"));
 	if (renderTexture)
 	{
-		// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒZƒbƒg
+		// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚»ãƒƒãƒˆ
 		rtx->SetRenderTarget(m_postProcessTexture);
 		rtx->ClearCurrentRenderTarget(Color::Black);
 
-		// ‚±‚Ì•”•ª‚ÅArenderTexture‚ğg—p‚µ‚Äƒ|ƒXƒgƒvƒƒZƒXƒGƒtƒFƒNƒg‚ğ“K—p‚·‚éˆ—‚ğÀ‘•‚µ‚Ü‚·B
+		// ã“ã®éƒ¨åˆ†ã§ã€renderTextureã‚’ä½¿ç”¨ã—ã¦ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’é©ç”¨ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…ã—ã¾ã™ã€‚
 		RawTexture2D* colorTexture = renderTexture->GetColorTexture();
 		std::shared_ptr<RawTexture2D> sharedColorTexture = std::make_shared<RawTexture2D>(*colorTexture);
-		// •¡”ƒeƒNƒXƒ`ƒƒ“n‚µ‚½‚¢‚Æ‚«‚ÍAª‚Ìˆ—‚ğŠeƒeƒNƒXƒ`ƒƒ‚É‘Î‚µ‚Äs‚¤B
+		// è¤‡æ•°ãƒ†ã‚¯ã‚¹ãƒãƒ£æ¸¡ã—ãŸã„ã¨ãã¯ã€â†‘ã®å‡¦ç†ã‚’å„ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«å¯¾ã—ã¦è¡Œã†ã€‚
 
-		// TODO_MARUMO: ‘æˆêˆø”‚É‚Éhlsl‘¤‚Ì–¼‘O“ü‚ê‚éB(ˆê‰”z—ñ‹Ö~)
+		// TODO_MARUMO: ç¬¬ä¸€å¼•æ•°ã«ã«hlslå´ã®åå‰å…¥ã‚Œã‚‹ã€‚(ä¸€å¿œé…åˆ—ç¦æ­¢)
 		m_postProcessMaterial->SetTexture("textureMap", sharedColorTexture);
 
-		//int testValue = 42; // —á‚Æ‚µ‚Ä®”’l‚ğİ’è
-		//m_postProcessMaterial->SetValue<int>("testValue", testValue); // ‚±‚ñ‚ÈŠ´‚¶‚Å•Ï”‚à“n‚¹‚é
+		//int testValue = 42; // ä¾‹ã¨ã—ã¦æ•´æ•°å€¤ã‚’è¨­å®š
+		//m_postProcessMaterial->SetValue<int>("testValue", testValue); // ã“ã‚“ãªæ„Ÿã˜ã§å¤‰æ•°ã‚‚æ¸¡ã›ã‚‹
 
-		// ƒ|ƒXƒgƒvƒƒZƒXƒ}ƒeƒŠƒAƒ‹‚ğg—p‚µ‚Ä‘S‰æ–ÊƒNƒƒbƒh‚ğ•`‰æ
+		// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ä½¿ç”¨ã—ã¦å…¨ç”»é¢ã‚¯ãƒ¯ãƒƒãƒ‰ã‚’æç”»
 		rtx->DrawFullScreenQuad(m_postProcessMaterial.get());
 
-		// SharedResource‚Éƒ|ƒXƒgƒvƒƒZƒXŒã‚ÌƒeƒNƒXƒ`ƒƒ‚ğ•Û‘¶‚µ‚ÄAŸ‚ÌƒpƒX‚Åg—p‚Å‚«‚é‚æ‚¤‚É‚·‚é
+		// SharedResourceã«ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹å¾Œã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä¿å­˜ã—ã¦ã€æ¬¡ã®ãƒ‘ã‚¹ã§ä½¿ç”¨ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 		rtx->SetSharedResource("PostProcessPass_RenderTexture", &m_postProcessTexture);
 	}
 }
@@ -53,11 +53,11 @@ void PostProcessPass::Execute(RenderContext* rtx, Scene* scene)
 void PostProcessPass::DrawProperty()
 {
 #ifdef USE_IMGUI
-	// ƒ|ƒXƒgƒvƒƒZƒXƒpƒX‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒ‘ã‚¹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	ImGui::Text("PostProcessPass Properties");
-	// ‚±‚±‚ÉImGui‚ğg‚Á‚½ƒvƒƒpƒeƒB•`‰æƒR[ƒh‚ğ’Ç‰Á‚µ‚Ü‚·B 
+	// ã“ã“ã«ImGuiã‚’ä½¿ã£ãŸãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¾ã™ã€‚ 
 	
-	ImGui::Image(m_postProcessTexture.GetColorBuffer(), ImVec2(256, 144)); // ƒ|ƒXƒgƒvƒƒZƒXŒã‚ÌƒeƒNƒXƒ`ƒƒ‚ğ•\¦
+	ImGui::Image(m_postProcessTexture.GetColorBuffer(), ImVec2(256, 144)); // ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹å¾Œã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¡¨ç¤º
 
 
 #endif // USE_IMGUI

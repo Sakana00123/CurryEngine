@@ -8,7 +8,7 @@
 
 void DebugRenderer::Initialize()
 {
-	// ƒfƒoƒbƒO•`‰æ‚Ì‰Šú‰»ˆ—‚ğÀ‘•
+	// ãƒ‡ãƒãƒƒã‚°æç”»ã®åˆæœŸåŒ–å‡¦ç†ã‚’å®Ÿè£…
 	D3D11_INPUT_ELEMENT_DESC inputElementDesc[] =
 	{
 		{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -20,7 +20,7 @@ void DebugRenderer::Initialize()
 		inputLayout.ReleaseAndGetAddressOf(), inputElementDesc, _countof(inputElementDesc));
 	CreatePixelShaderFromCSO(device, (dir + "DebugRendererPS.cso").c_str(), pixelShader.ReleaseAndGetAddressOf());
 
-	// ’¸“_ƒoƒbƒtƒ@‚Ìì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	D3D11_BUFFER_DESC bufferDesc = {};
 	bufferDesc.ByteWidth = sizeof(Vertex) * VertexCapacity;
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -29,7 +29,7 @@ void DebugRenderer::Initialize()
 	HRESULT hr = device->CreateBuffer(&bufferDesc, nullptr, vertexBuffer.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	// ’è”ƒoƒbƒtƒ@‚Ìì¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	bufferDesc.ByteWidth = sizeof(ConstantBufferData);
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -40,43 +40,43 @@ void DebugRenderer::Initialize()
 
 void DebugRenderer::Finalize()
 {
-	// ƒfƒoƒbƒO•`‰æ‚ÌI—¹ˆ—‚ğÀ‘•
+	// ãƒ‡ãƒãƒƒã‚°æç”»ã®çµ‚äº†å‡¦ç†ã‚’å®Ÿè£…
 }
 
 
 void DebugRenderer::DrawAll(RenderContext* rtx, D3D11_PRIMITIVE_TOPOLOGY topology)
 {
-	// ƒfƒoƒbƒO•`‰æ‚ÌÀsˆ—‚ğÀ‘•
+	// ãƒ‡ãƒãƒƒã‚°æç”»ã®å®Ÿè¡Œå‡¦ç†ã‚’å®Ÿè£…
 	auto dc = rtx->immediateContext;
 	auto& view = rtx->view;
 	auto& projection = rtx->projection;
 
-	// ƒVƒF[ƒ_[İ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¨­å®š
 	dc->VSSetShader(vertexShader.Get(), nullptr, 0);
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
 	dc->IASetInputLayout(inputLayout.Get());
 
-	// ’è”ƒoƒbƒtƒ@İ’è
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	dc->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
 
-	// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñì¬
+	// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ä½œæˆ
 	DirectX::XMMATRIX V = DirectX::XMLoadFloat4x4(&view);
 	DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&projection);
 	DirectX::XMMATRIX VP = V * P;
 
-	// ’è”ƒoƒbƒtƒ@XV
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡æ›´æ–°
 	ConstantBufferData data;
 	DirectX::XMStoreFloat4x4(&data.viewProjection, VP);
 	dc->UpdateSubresource(constantBuffer.Get(), 0, 0, &data, 0, 0);
 
-	// ’¸“_ƒoƒbƒtƒ@İ’è
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 	dc->IASetPrimitiveTopology(topology);
 	dc->IASetIndexBuffer(nullptr, DXGI_FORMAT_R32_UINT, 0);
 	dc->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 
-	// •`‰æ
+	// æç”»
 	UINT totalVertexCount = static_cast<UINT>(vertices.size());
 	UINT start = 0;
 	UINT count = (totalVertexCount < VertexCapacity) ? totalVertexCount : VertexCapacity;
@@ -106,7 +106,7 @@ void DebugRenderer::DrawAll(RenderContext* rtx, D3D11_PRIMITIVE_TOPOLOGY topolog
 
 void DebugRenderer::AddVertex(const Vector3& position, const Color& color)
 {
-	// ’¸“_‚ğ’Ç‰Á‚·‚éˆ—‚ğÀ‘•
+	// é ‚ç‚¹ã‚’è¿½åŠ ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	if (vertices.size() < VertexCapacity)
 	{
 		vertices.push_back({ position, color });
@@ -116,7 +116,7 @@ void DebugRenderer::AddVertex(const Vector3& position, const Color& color)
 
 void DebugRenderer::DrawLine(const Vector3& start, const Vector3& end, const Color& color)
 {
-	// ü•ª‚ğ•`‰æ‚·‚éˆ—‚ğÀ‘•
+	// ç·šåˆ†ã‚’æç”»ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	AddVertex(start, color);
 	AddVertex(end, color);
 }
@@ -124,15 +124,15 @@ void DebugRenderer::DrawLine(const Vector3& start, const Vector3& end, const Col
 
 void DebugRenderer::DrawGrid(const Vector3& center, float size, int divisions, const Color& color)
 {
-	// ƒOƒŠƒbƒh‚ğ•`‰æ‚·‚éˆ—‚ğÀ‘•
+	// ã‚°ãƒªãƒƒãƒ‰ã‚’æç”»ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	float halfSize = size * 0.5f;
 	float step = size / divisions;
 	for (int i = 0; i <= divisions; ++i)
 	{
 		float offset = -halfSize + i * step;
-		// X²•ûŒü‚Ìü
+		// Xè»¸æ–¹å‘ã®ç·š
 		DrawLine({ center.x + offset, center.y, center.z - halfSize }, { center.x + offset, center.y, center.z + halfSize }, color);
-		// Z²•ûŒü‚Ìü
+		// Zè»¸æ–¹å‘ã®ç·š
 		DrawLine({ center.x - halfSize, center.y, center.z + offset }, { center.x + halfSize, center.y, center.z + offset }, color);
 	}
 }

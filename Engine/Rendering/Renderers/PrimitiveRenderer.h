@@ -10,19 +10,19 @@
 
 /**
  * @file
- * @brief Šî–{“I‚È}Œ`‚ğ•`‰æ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details ƒLƒ…[ƒuA‰~’ŒA‹…‚Ì‚¢‚¸‚ê‚©‚ğ•`‰æ‚µ‚Ü‚·Bƒ}ƒeƒŠƒAƒ‹‚ğg—p‚µ‚È‚¢ê‡‚Í
- *          F‚ğw’è‚Å‚«‚Ü‚·B
+ * @brief åŸºæœ¬çš„ãªå›³å½¢ã‚’æç”»ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details ã‚­ãƒ¥ãƒ¼ãƒ–ã€å††æŸ±ã€çƒã®ã„ãšã‚Œã‹ã‚’æç”»ã—ã¾ã™ã€‚ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ä½¿ç”¨ã—ãªã„å ´åˆã¯
+ *          è‰²ã‚’æŒ‡å®šã§ãã¾ã™ã€‚
  */
 
 /*
- * @brief Šî–{“I‚È}Œ`‚ğ•`‰æ‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB
+ * @brief åŸºæœ¬çš„ãªå›³å½¢ã‚’æç”»ã™ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
  */
 class PrimitiveRenderer : public Renderer
 {
 	C_REFLECT(PrimitiveRenderer)
 public:
-	/** @brief ’¸“_ƒtƒH[ƒ}ƒbƒgB*/
+	/** @brief é ‚ç‚¹ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã€‚*/
 	struct Vertex
 	{
 		DirectX::XMFLOAT3 position;
@@ -47,74 +47,74 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
 #endif
 public:
-	/** @brief }Œ`‚Ìí—ŞB*/
+	/** @brief å›³å½¢ã®ç¨®é¡ã€‚*/
 	enum class Shape { Cube, Cylinder, Sphere };
 	
-	/** @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	PrimitiveRenderer();
 	virtual ~PrimitiveRenderer() = default;
 
 	/*
-	 * @brief }Œ`‚Ìí—Ş‚ğİ’è
+	 * @brief å›³å½¢ã®ç¨®é¡ã‚’è¨­å®š
 	 */
 	void SetShape(const Shape& shape);
 
 	/*
-	 * @brief ƒLƒ…[ƒu¶¬
+	 * @brief ã‚­ãƒ¥ãƒ¼ãƒ–ç”Ÿæˆ
 	 */
 	void CreateCube(ID3D11Device* device);
 
 	/*
-	 * @brief ‰~’Œ¶¬
+	 * @brief å††æŸ±ç”Ÿæˆ
 	 */
 	void CreateCylinder(ID3D11Device* device, int segmentCount = 30);
 
 	/*
-	 * @brief ‹…¶¬
+	 * @brief çƒç”Ÿæˆ
 	 */
 	void CreateSphere(ID3D11Device* device, int stackCount = 10, int sliceCount = 10);
 
 	/**
-	 * @brief •`‰æˆ—B
-	 * @param rtx •`‰æƒRƒ“ƒeƒLƒXƒgB
+	 * @brief æç”»å‡¦ç†ã€‚
+	 * @param rtx æç”»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	void Render(RenderContext* rtx) override;
 
 #ifdef USE_IMGUI
 	/**
-	 * @brief ƒfƒoƒbƒO GUI ‚Ì•`‰æiƒCƒ“ƒXƒyƒNƒ^‚È‚ÇjB
+	 * @brief ãƒ‡ãƒãƒƒã‚° GUI ã®æç”»ï¼ˆã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãªã©ï¼‰ã€‚
 	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
 	/**
-	 * @brief AABB‚ğŒvZ‚µ‚Ä•Ô‚·
-	 * @return AABB (ƒ[ƒ‹ƒhÀ•WŒn)
+	 * @brief AABBã‚’è¨ˆç®—ã—ã¦è¿”ã™
+	 * @return AABB (ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»)
 	 */
 	Math::BoundingBox CalculateAABB() const override;
 	
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json Serialize() const override;
 
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	void Deserialize(const json& j) override;
 
 protected:
 	/*
-	 * @brief ’¸“_ƒoƒbƒtƒ@AƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ì¶¬
-	 * @param device D3D11 ƒfƒoƒCƒX
-	 * @param vertices ’¸“_”z—ñ
-	 * @param vertexCount ’¸“_”
-	 * @param indices ƒCƒ“ƒfƒbƒNƒX”z—ñ
-	 * @param indexCount ƒCƒ“ƒfƒbƒNƒX”
-	 * @details ’¸“_ƒoƒbƒtƒ@AƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğ¶¬‚µ‚Ü‚·B
+	 * @brief é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
+	 * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹
+	 * @param vertices é ‚ç‚¹é…åˆ—
+	 * @param vertexCount é ‚ç‚¹æ•°
+	 * @param indices ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
+	 * @param indexCount ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°
+	 * @details é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 	 */
 	void CreateComBuffers(ID3D11Device* device, Vertex* vertices, size_t vertexCount,
 		uint32_t* indices, size_t indexCount);
 
 public:
-	Shape shape = Shape::Cube; //!< }Œ`‚Ìí—Ş
+	Shape shape = Shape::Cube; //!< å›³å½¢ã®ç¨®é¡
 
 	Color color;
 };

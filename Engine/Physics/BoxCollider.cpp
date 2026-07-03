@@ -5,7 +5,7 @@ REGISTER_COMPONENT(BoxCollider, "Physics")
 
 void BoxCollider::Initialize()
 {
-	// ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu‚Ì€”õ‚È‚ÇA•K—v‚È‰Šú‰»ˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®æº–å‚™ãªã©ã€å¿…è¦ãªåˆæœŸåŒ–å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 	ID3D11Device* device = Graphics::GetDevice();
 	Collider::Initialize();
 	primitive->CreateCube(device);
@@ -16,17 +16,17 @@ void BoxCollider::Register()
 	Vector3 worldScale = Vector3(GetTransform()->GetWorldScale());
 
 	BoxColliderData data;
-	data.halfExtents = Vector3(size) * 0.5f; // ”¼ƒTƒCƒY‚ğw’è
-	data.center = Vector3(center); // ƒIƒtƒZƒbƒg‚ğ’†SˆÊ’u‚Æ‚µ‚Äİ’èiƒ[ƒ‹ƒhƒXƒP[ƒ‹‚Í BoxColliderData “à‚Ål—¶‚³‚ê‚é‚½‚ßA‚±‚±‚Å‚Í“K—p‚µ‚È‚¢j
-	data.materialHandle = m_materialHandle; // ƒ}ƒeƒŠƒAƒ‹ƒnƒ“ƒhƒ‹‚ğİ’è
-	data.isTrigger = isTrigger; // ƒgƒŠƒK[‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ğİ’è
-	data.contactOffset = contactOffset; // ÚGƒIƒtƒZƒbƒg‚ğİ’è
-	data.collider = this; // ƒRƒ‰ƒCƒ_‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğİ’èi•K—v‚É‰‚¶‚Äj
+	data.halfExtents = Vector3(size) * 0.5f; // åŠã‚µã‚¤ã‚ºã‚’æŒ‡å®š
+	data.center = Vector3(center); // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ä¸­å¿ƒä½ç½®ã¨ã—ã¦è¨­å®šï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã¯ BoxColliderData å†…ã§è€ƒæ…®ã•ã‚Œã‚‹ãŸã‚ã€ã“ã“ã§ã¯é©ç”¨ã—ãªã„ï¼‰
+	data.materialHandle = m_materialHandle; // ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’è¨­å®š
+	data.isTrigger = isTrigger; // ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+	data.contactOffset = contactOffset; // æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
+	data.collider = this; // ã‚³ãƒ©ã‚¤ãƒ€ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¨­å®šï¼ˆå¿…è¦ã«å¿œã˜ã¦ï¼‰
 
-	// •¨—ƒGƒ“ƒWƒ“‚ÉƒRƒ‰ƒCƒ_[‚ğ“o˜^
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ç™»éŒ²
 	if (!Physics::AddBoxShape(GetTransform(), data, m_shapeHandle))
 	{
-		// ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+		// è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
 		Console::LogError("Failed to add BoxCollider shape to physics engine.");
 	}
 }
@@ -35,21 +35,21 @@ void BoxCollider::FitToBoundingBox(const Vector3& newCenter, const Vector3& newS
 {
 	if (center == newCenter && size == newSize)
 	{
-		return; // •ÏX‚ª‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+		return; // å¤‰æ›´ãŒãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	}
 	center = newCenter;
 	size = newSize;
-	SetNeedSync(); // ƒTƒCƒY‚âƒIƒtƒZƒbƒg‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ’Ê’m‚µ‚ÄA•¨—ƒGƒ“ƒWƒ“‚É“¯Šú‚·‚é•K—v‚ª‚ ‚é‚±‚Æ‚ğ¦‚µ‚Ü‚·B
+	SetNeedSync(); // ã‚µã‚¤ã‚ºã‚„ã‚ªãƒ•ã‚»ãƒƒãƒˆãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’é€šçŸ¥ã—ã¦ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŒæœŸã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã“ã¨ã‚’ç¤ºã—ã¾ã™ã€‚
 }
 
 void BoxCollider::SyncWithPhysics()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Éƒ[ƒJƒ‹ƒ|[ƒY‚ğXV
-	Vector3 position = Vector3(center); // ƒIƒtƒZƒbƒg‚ğƒ[ƒ‹ƒhƒXƒP[ƒ‹‚Å’²®‚µ‚Äƒ[ƒJƒ‹À•W‚É•ÏŠ·
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒ¼ã‚ºã‚’æ›´æ–°
+	Vector3 position = Vector3(center); // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã§èª¿æ•´ã—ã¦ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã«å¤‰æ›
 	Quaternion rotation = Quaternion(0, 0, 0, 1);
 	Physics::SetLocalPose(m_shapeHandle, position, rotation);
-	// ƒTƒCƒY‚Ì•ÏX‚à”½‰f
-	physx::PxBoxGeometry geometry(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f); // ”¼ƒTƒCƒY‚ğw’è
+	// ã‚µã‚¤ã‚ºã®å¤‰æ›´ã‚‚åæ˜ 
+	physx::PxBoxGeometry geometry(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f); // åŠã‚µã‚¤ã‚ºã‚’æŒ‡å®š
 	if (!geometry.isValid())
 	{
 		Console::LogError("Invalid box geometry for BoxCollider. Size must be positive.");
@@ -60,13 +60,13 @@ void BoxCollider::SyncWithPhysics()
 
 void BoxCollider::Render(RenderContext* rtx)
 {
-	// ƒfƒoƒbƒO•`‰æ—p‚ÌƒƒCƒ„[ƒtƒŒ[ƒ€ƒ{ƒbƒNƒX‚ğ•`‰æ(‚¢‚¸‚ê‚ÍƒfƒoƒbƒO•`‰æ—p‚Ìê—pƒNƒ‰ƒX‚ğì‚é‚×‚«‚©‚à‚µ‚ê‚Ü‚¹‚ñ)
+	// ãƒ‡ãƒãƒƒã‚°æç”»ç”¨ã®ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ãƒœãƒƒã‚¯ã‚¹ã‚’æç”»(ã„ãšã‚Œã¯ãƒ‡ãƒãƒƒã‚°æç”»ç”¨ã®å°‚ç”¨ã‚¯ãƒ©ã‚¹ã‚’ä½œã‚‹ã¹ãã‹ã‚‚ã—ã‚Œã¾ã›ã‚“)
 #ifdef _DEBUG
 	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
-	// ƒ[ƒ‹ƒhs—ñ‚ğŒvZ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¨ˆç®—
 	XMFLOAT4X4 world = CalculateColliderWorldTransform(center, size);
 
-	// ƒƒCƒ„[ƒtƒŒ[ƒ€‚Å•`‰æ
+	// ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã§æç”»
 	RenderState* renderState = Graphics::GetRenderState();
 	renderState->BindRasterizerState(immediateContext, RasterizerState::WireCullBack);
 	primitive->Render(immediateContext, world, color);
@@ -92,7 +92,7 @@ void BoxCollider::Render(RenderContext* rtx)
 //	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
 //	IMGUI_PROPERTY_VECTOR3("Size", size, isChanged);
 //
-//	// ƒTƒCƒY‚âƒIƒtƒZƒbƒg‚ª•ÏX‚³‚ê‚½ê‡‚ÍA•¨—ƒGƒ“ƒWƒ“‚É“¯Šú‚·‚é•K—v‚ª‚ ‚é‚½‚ßAƒtƒ‰ƒO‚ğƒZƒbƒg‚µ‚Ü‚·B
+//	// ã‚µã‚¤ã‚ºã‚„ã‚ªãƒ•ã‚»ãƒƒãƒˆãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŒæœŸã™ã‚‹å¿…è¦ãŒã‚ã‚‹ãŸã‚ã€ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™ã€‚
 //	if (isChanged)
 //	{
 //		SetNeedSync();
@@ -112,18 +112,18 @@ json BoxCollider::Serialize() const
 void BoxCollider::Deserialize(const json& j)
 {
 	Collider::Deserialize(j);
-	// "center" ƒvƒƒpƒeƒB‚ª‘¶İ‚µA”z—ñ‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚©‚ç“Ç‚İæ‚è‚Ü‚·B
+	// "center" ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã—ã€é…åˆ—ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ã‹ã‚‰èª­ã¿å–ã‚Šã¾ã™ã€‚
 	if (j.contains("center") && j["center"].is_array() && j["center"].size() == 3)
 	{
 		center = Vector3(j["center"][0].get<float>(), j["center"][1].get<float>(), j["center"][2].get<float>());
 	}
-	// "offset" ƒvƒƒpƒeƒB‚ª‘¶İ‚µA”z—ñ‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚©‚ç“Ç‚İæ‚è‚Ü‚·B(‹ŒƒvƒƒpƒeƒB‚ÌƒTƒ|[ƒg)
+	// "offset" ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã—ã€é…åˆ—ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ã‹ã‚‰èª­ã¿å–ã‚Šã¾ã™ã€‚(æ—§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚µãƒãƒ¼ãƒˆ)
 	if (j.contains("offset") && j["offset"].is_array() && j["offset"].size() == 3)
 	{
 		center = Vector3(j["offset"][0].get<float>(), j["offset"][1].get<float>(), j["offset"][2].get<float>());
 	}
 
-	// "size" ƒvƒƒpƒeƒB‚ª‘¶İ‚µA”z—ñ‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚©‚ç“Ç‚İæ‚è‚Ü‚·B
+	// "size" ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã—ã€é…åˆ—ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ã‹ã‚‰èª­ã¿å–ã‚Šã¾ã™ã€‚
 	if (j.contains("size") && j["size"].is_array() && j["size"].size() == 3)
 	{
 		size = Vector3(j["size"][0].get<float>(), j["size"][1].get<float>(), j["size"][2].get<float>());
@@ -139,10 +139,10 @@ void BoxCollider::SetCenter(const Vector3& newCenter)
 {
 	if (center == newCenter)
 	{
-		return; // •ÏX‚ª‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+		return; // å¤‰æ›´ãŒãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	}
 	center = newCenter;
-	SetNeedSync(); // ƒIƒtƒZƒbƒg‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ’Ê’m‚µ‚ÄA•¨—ƒGƒ“ƒWƒ“‚É“¯Šú‚·‚é•K—v‚ª‚ ‚é‚±‚Æ‚ğ¦‚µ‚Ü‚·B
+	SetNeedSync(); // ã‚ªãƒ•ã‚»ãƒƒãƒˆãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’é€šçŸ¥ã—ã¦ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŒæœŸã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã“ã¨ã‚’ç¤ºã—ã¾ã™ã€‚
 }
 
 Vector3 BoxCollider::GetSize() const
@@ -154,8 +154,8 @@ void BoxCollider::SetSize(const Vector3& newSize)
 {
 	if (size == newSize)
 	{
-		return; // •ÏX‚ª‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+		return; // å¤‰æ›´ãŒãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 	}
 	size = newSize;
-	SetNeedSync(); // ƒTƒCƒY‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ’Ê’m‚µ‚ÄA•¨—ƒGƒ“ƒWƒ“‚É“¯Šú‚·‚é•K—v‚ª‚ ‚é‚±‚Æ‚ğ¦‚µ‚Ü‚·B
+	SetNeedSync(); // ã‚µã‚¤ã‚ºãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’é€šçŸ¥ã—ã¦ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŒæœŸã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã“ã¨ã‚’ç¤ºã—ã¾ã™ã€‚
 }

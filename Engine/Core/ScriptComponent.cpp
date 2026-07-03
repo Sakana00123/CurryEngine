@@ -74,19 +74,19 @@ void ScriptComponent::OnTriggerExit(const TriggerInfo& info)
 
 void ScriptComponent::Initialize()
 {
-    if (scriptName.empty()) return; // ƒXƒNƒŠƒvƒg–¼‚ª‹ó‚Ìê‡‚Í‰½‚à‚µ‚È‚¢
+    if (scriptName.empty()) return; // ã‚¹ã‚¯ãƒªãƒ—ãƒˆåãŒç©ºã®å ´åˆã¯ä½•ã‚‚ã—ãªã„
 
-    // Šù‘¶ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ”jŠü
+    // æ—¢å­˜ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç ´æ£„
     OnScriptUnload();
 
-    // C# Behaviour ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+    // C# Behaviour ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
     uint64_t ownerId = GetOwner()->GetId().Value();
     uint64_t componentId = GetId().Value();
     m_gcHandle = ScriptSystem::CreateScript(scriptName, ownerId, componentId);
 
     if (m_gcHandle)
     {
-        // •Û‚µ‚Ä‚¢‚éƒtƒB[ƒ‹ƒh’l‚ğ“K—p
+        // ä¿æŒã—ã¦ã„ã‚‹ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å€¤ã‚’é©ç”¨
         if (!m_pendingFields.empty())
         {
             for (auto& [fieldName, value] : m_pendingFields.items())
@@ -98,12 +98,12 @@ void ScriptComponent::Initialize()
             m_pendingFields.clear();
         }
 
-        // Awake ‚ğŒÄ‚Ño‚·
+        // Awake ã‚’å‘¼ã³å‡ºã™
         ScriptSystem::AwakeScript(m_gcHandle);
-        //m_isStartCalled = false; // Start ‚Í‚Ü‚¾ŒÄ‚Ño‚³‚ê‚Ä‚¢‚È‚¢ó‘Ô‚É‚·‚é(Update “à‚ÅŒÄ‚Ño‚·‚½‚ß)
+        //m_isStartCalled = false; // Start ã¯ã¾ã å‘¼ã³å‡ºã•ã‚Œã¦ã„ãªã„çŠ¶æ…‹ã«ã™ã‚‹(Update å†…ã§å‘¼ã³å‡ºã™ãŸã‚)
 
-        // TODO:ˆê“I‚È‘[’uBƒXƒNƒŠƒvƒg‚ª—LŒø‰»‚³‚ê‚½‚Æ‚«‚É OnEnable ‚ğŒÄ‚Ño‚·BC++‚Ìƒ‰ƒCƒtƒTƒCƒNƒ‹‚ğŠ®‘S‚É—‰ğ‚µ‚Ä‚©‚çŒ©’¼‚·‚±‚ÆB
-        OnEnable(); // ‚±‚±‚É—ˆ‚Ä‚é“_‚ÅƒXƒNƒŠƒvƒg‚ª—LŒø‰»‚³‚ê‚Ä‚é‚Ì‚Å‚±‚±‚Å‹­§“I‚ÉŒÄ‚Ño‚·
+        // TODO:ä¸€æ™‚çš„ãªæªç½®ã€‚ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒæœ‰åŠ¹åŒ–ã•ã‚ŒãŸã¨ãã« OnEnable ã‚’å‘¼ã³å‡ºã™ã€‚C++ã®ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«ã‚’å®Œå…¨ã«ç†è§£ã—ã¦ã‹ã‚‰è¦‹ç›´ã™ã“ã¨ã€‚
+        OnEnable(); // ã“ã“ã«æ¥ã¦ã‚‹æ™‚ç‚¹ã§ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒæœ‰åŠ¹åŒ–ã•ã‚Œã¦ã‚‹ã®ã§ã“ã“ã§å¼·åˆ¶çš„ã«å‘¼ã³å‡ºã™
         Console::Log("[ScriptComponent] Created: " + scriptName);
     }
     else
@@ -124,8 +124,8 @@ void ScriptComponent::Start()
 
 void ScriptComponent::Update(float deltaTime)
 {
-	if (!m_gcHandle) return; // GCHandle ‚ª—LŒø‚Å‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
-	// Update ‚ğŒÄ‚Ño‚·
+	if (!m_gcHandle) return; // GCHandle ãŒæœ‰åŠ¹ã§ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
+	// Update ã‚’å‘¼ã³å‡ºã™
 	ScriptSystem::UpdateScript(m_gcHandle);
 }
 
@@ -138,11 +138,11 @@ void ScriptComponent::Update(float deltaTime)
 
 void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 {
-	// ƒXƒNƒŠƒvƒg‚Ì•ÒWƒ{ƒ^ƒ“
-	// TODO: ƒXƒNƒŠƒvƒgƒAƒZƒbƒg‚ÌŠÇ—•û–@‚ªŒˆ‚Ü‚Á‚½‚çAƒtƒ@ƒCƒ‹–¼‚©‚çƒXƒNƒŠƒvƒgƒAƒZƒbƒg‚ğŒŸõ‚µ‚ÄŠJ‚­‚æ‚¤‚É‚·‚éBŒ»ó‚ÍUserScriptsƒtƒHƒ‹ƒ_‚ğÄ‹A“I‚ÉŒŸõ‚µ‚ÄÅ‰‚ÉŒ©‚Â‚©‚Á‚½‚à‚Ì‚ğŠJ‚­B
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ç·¨é›†ãƒœã‚¿ãƒ³
+	// TODO: ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¢ã‚»ãƒƒãƒˆã®ç®¡ç†æ–¹æ³•ãŒæ±ºã¾ã£ãŸã‚‰ã€ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¢ã‚»ãƒƒãƒˆã‚’æ¤œç´¢ã—ã¦é–‹ãã‚ˆã†ã«ã™ã‚‹ã€‚ç¾çŠ¶ã¯UserScriptsãƒ•ã‚©ãƒ«ãƒ€ã‚’å†å¸°çš„ã«æ¤œç´¢ã—ã¦æœ€åˆã«è¦‹ã¤ã‹ã£ãŸã‚‚ã®ã‚’é–‹ãã€‚
     if (ImGui::Button("Edit Script"))
     {
-		// ƒtƒ@ƒCƒ‹–¼‚Éˆê’v‚·‚éƒXƒNƒŠƒvƒgƒAƒZƒbƒg‚ğŒŸõ
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã«ä¸€è‡´ã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¢ã‚»ãƒƒãƒˆã‚’æ¤œç´¢
 		std::vector<fs::directory_entry> results;
 		fs::path rootDir = "./UserScripts";
         if (fs::exists(rootDir) && fs::is_directory(rootDir))
@@ -161,7 +161,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
             {
                 Console::LogWarning("[ScriptComponent] Multiple script assets found with name: " + scriptName + ". Opening the first one.");
             }
-            // Å‰‚Ìˆê’v‚ğŠJ‚­
+            // æœ€åˆã®ä¸€è‡´ã‚’é–‹ã
             AssetBrowser::OpenAsset(results[0].path());
         }
         else
@@ -170,22 +170,22 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
         }
 	}
 
-	if (!m_gcHandle) return; // GCHandle ‚ª—LŒø‚Å‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+	if (!m_gcHandle) return; // GCHandle ãŒæœ‰åŠ¹ã§ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 
-	// C# ‚©‚çƒtƒB[ƒ‹ƒhî•ñ‚ğ Json Œ`®‚Åæ“¾
+	// C# ã‹ã‚‰ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰æƒ…å ±ã‚’ Json å½¢å¼ã§å–å¾—
 	auto* jsonPtr = static_cast<char*>(ScriptSystem::GetScriptFields(m_gcHandle));
 	if (!jsonPtr) return;
 	std::string jsonStr = jsonPtr;
-	CoTaskMemFree(jsonPtr); // C# ‘¤‚Å StringToCoTaskMemUTF8 ‚ÅŠm•Û‚µ‚½ƒƒ‚ƒŠ‚ğ‰ğ•ú
+	CoTaskMemFree(jsonPtr); // C# å´ã§ StringToCoTaskMemUTF8 ã§ç¢ºä¿ã—ãŸãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾
 
-	// Json ‚ğƒp[ƒX‚µ‚Ä ImGui ‚Å•`‰æ
+	// Json ã‚’ãƒ‘ãƒ¼ã‚¹ã—ã¦ ImGui ã§æç”»
 	json j = json::parse(jsonStr, nullptr,false);
     if (j.is_discarded())
     {
         Console::LogError("[ScriptComponent] Failed to parse script fields JSON: " + jsonStr);
         return;
 	}
-	// ƒtƒB[ƒ‹ƒh’l‚ğƒ}ƒbƒv‚ÉŠi”[
+	// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å€¤ã‚’ãƒãƒƒãƒ—ã«æ ¼ç´
 	m_fieldValues.clear();
     for (const auto& field : j)
     {
@@ -204,7 +204,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
         float rangeMax = field.value("rangeMax", 0.0f);
 		bool  hasRange = field.contains("rangeMin") && field.contains("rangeMax");
 
-        // ƒtƒB[ƒ‹ƒh‚ÌŒ^‚É‰‚¶‚Ä•`‰æ
+        // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®å‹ã«å¿œã˜ã¦æç”»
         PropertyInfo prop;
         prop.type = typeName;
         prop.name = name;
@@ -282,7 +282,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                 {
                     std::string v = std::any_cast<std::string>(value);
                     ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
-						"\"" + v + "\""); // •¶š—ñ‚ğƒ_ƒuƒ‹ƒNƒH[ƒg‚ÅˆÍ‚Ş
+						"\"" + v + "\""); // æ–‡å­—åˆ—ã‚’ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã§å›²ã‚€
                     comp->m_fieldValues[name]["value"] = v;
 				}
 				};
@@ -404,8 +404,8 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 		}
         else if (typeName == "GameObject")
         {
-			prop.attributes.push_back({ "ObjectReference", { "GameObject" } }); // GameObject QÆ—p‚Ì‘®«‚ğ’Ç‰Á
-			prop.type = "ObjectId"; // GameObject ‚Í ObjectId ‚Æ‚µ‚Äˆµ‚¤
+			prop.attributes.push_back({ "ObjectReference", { "GameObject" } }); // GameObject å‚ç…§ç”¨ã®å±æ€§ã‚’è¿½åŠ 
+			prop.type = "ObjectId"; // GameObject ã¯ ObjectId ã¨ã—ã¦æ‰±ã†
             prop.getter = [name](void* instance) -> std::any {
                 auto comp = static_cast<ScriptComponent*>(instance);
                 if (!comp || !comp->GetGCHandle()) return std::any();
@@ -451,15 +451,15 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 					uint64_t goId = id.Value();
 					std::string valueStr = "GameObject(objectId: " + std::to_string(goId) + ")";
                     ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
-						valueStr.c_str()); // GameObject ‚ÌQÆ‚ğ•¶š—ñ‚Æ‚µ‚Ä“n‚·
+						valueStr.c_str()); // GameObject ã®å‚ç…§ã‚’æ–‡å­—åˆ—ã¨ã—ã¦æ¸¡ã™
                     comp->m_fieldValues[name]["value"] = valueStr;
                 }
                 };
 		}
         else if (isComponentReference)
         {
-			prop.attributes.push_back({ "ObjectReference", {typeName} }); // Component QÆ—p‚Ì‘®«‚ğ’Ç‰Á
-			prop.type = "ObjectId"; // Component ‚Í ObjectId ‚Æ‚µ‚Äˆµ‚¤
+			prop.attributes.push_back({ "ObjectReference", {typeName} }); // Component å‚ç…§ç”¨ã®å±æ€§ã‚’è¿½åŠ 
+			prop.type = "ObjectId"; // Component ã¯ ObjectId ã¨ã—ã¦æ‰±ã†
             prop.getter = [name](void* instance) -> std::any {
                 auto comp = static_cast<ScriptComponent*>(instance);
                 if (!comp || !comp->GetGCHandle()) return std::any();
@@ -500,7 +500,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                                 try
                                 {
                                     uint64_t ownerId = std::stoull(ownerIdStr);
-                                    // ‚±‚±‚Å•K—v‚É‰‚¶‚Ä ownerId ‚ğg—p‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·
+                                    // ã“ã“ã§å¿…è¦ã«å¿œã˜ã¦ ownerId ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™
                                 }
                                 catch (const std::exception& e)
                                 {
@@ -524,7 +524,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 					uint64_t compId = c.Value();
 					std::string valueStr = "Component(objectId: " + std::to_string(compId) + ", ownerId: " + std::to_string(comp->GetOwner()->GetId().Value()) + ")";
                     ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
-						valueStr.c_str()); // Component ‚ÌQÆ‚ğ•¶š—ñ‚Æ‚µ‚Ä“n‚·
+						valueStr.c_str()); // Component ã®å‚ç…§ã‚’æ–‡å­—åˆ—ã¨ã—ã¦æ¸¡ã™
 					comp->m_fieldValues[name]["value"] = valueStr;
                     }
 				};
@@ -536,7 +536,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 		}
 		prop.hasCustomGetter = true;
 		prop.hasCustomSetter = true;
-		CurryEngine::PropertyEditor::DrawProperty(&prop, &context); // ƒvƒƒpƒeƒB‚Ì•`‰æ
+		CurryEngine::PropertyEditor::DrawProperty(&prop, &context); // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®æç”»
     }
 	IMGUI_PROPERTY_END();
 }
@@ -552,7 +552,7 @@ json ScriptComponent::Serialize() const
 		if (auto* fieldsJson = static_cast<char*>(ScriptSystem::GetScriptFields(m_gcHandle)))
 		{
 			std::string jsonStr = fieldsJson;
-			CoTaskMemFree(fieldsJson); // C# ‘¤‚Å StringToCoTaskMemUTF8 ‚ÅŠm•Û‚µ‚½ƒƒ‚ƒŠ‚ğ‰ğ•ú
+			CoTaskMemFree(fieldsJson); // C# å´ã§ StringToCoTaskMemUTF8 ã§ç¢ºä¿ã—ãŸãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾
 
 			json fields = json::parse(jsonStr, nullptr, false);
             if (!fields.is_discarded())
@@ -581,14 +581,14 @@ void ScriptComponent::Deserialize(const json& j)
 
     if (j.contains("fields") && j["fields"].is_object())
     {
-		// ƒtƒB[ƒ‹ƒh‚Ì’l‚ğˆê“I‚É•Û‚µ‚Ä‚¨‚­BƒXƒNƒŠƒvƒgƒCƒ“ƒXƒ^ƒ“ƒX‚ª¶¬‚³‚ê‚½Œã‚É“K—p‚·‚éB
+		// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®å€¤ã‚’ä¸€æ™‚çš„ã«ä¿æŒã—ã¦ãŠãã€‚ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒç”Ÿæˆã•ã‚ŒãŸå¾Œã«é©ç”¨ã™ã‚‹ã€‚
 		m_pendingFields = j["fields"];
 	}
 }
 
 void ScriptComponent::OnScriptUnload()
 {
-	if (!m_gcHandle) return; // GCHandle ‚ª—LŒø‚Å‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+	if (!m_gcHandle) return; // GCHandle ãŒæœ‰åŠ¹ã§ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 
 	ScriptSystem::OnDestroyScript(m_gcHandle);
 	ScriptSystem::ReleaseScript(m_gcHandle);
@@ -597,21 +597,21 @@ void ScriptComponent::OnScriptUnload()
 
 void ScriptComponent::OnPreScriptReload()
 {
-    if (!m_gcHandle) return; // GCHandle ‚ª—LŒø‚Å‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+    if (!m_gcHandle) return; // GCHandle ãŒæœ‰åŠ¹ã§ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 
-	// ƒXƒNƒŠƒvƒg‚ÌƒŠƒ[ƒh‘O‚ÉA•K—v‚É‰‚¶‚ÄŒ»İ‚ÌƒXƒNƒŠƒvƒgƒCƒ“ƒXƒ^ƒ“ƒX‚©‚çƒf[ƒ^‚ğ•Û‘¶‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒªãƒ­ãƒ¼ãƒ‰å‰ã«ã€å¿…è¦ã«å¿œã˜ã¦ç¾åœ¨ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 	m_pendingFields.clear();
-	json j = Serialize(); // Œ»İ‚Ìó‘Ô‚ğ JSON ‚ÉƒVƒŠƒAƒ‰ƒCƒY
+	json j = Serialize(); // ç¾åœ¨ã®çŠ¶æ…‹ã‚’ JSON ã«ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     if (j.contains("fields") && j["fields"].is_object())
     {
-        m_pendingFields = j["fields"]; // ƒtƒB[ƒ‹ƒh‚Ì’l‚ğ•Û‚µ‚Ä‚¨‚­
+        m_pendingFields = j["fields"]; // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®å€¤ã‚’ä¿æŒã—ã¦ãŠã
     }
 }
 
 void ScriptComponent::OnPostScriptReload()
 {
-    if (!m_gcHandle) return; // GCHandle ‚ª—LŒø‚Å‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
-    // ƒXƒNƒŠƒvƒg‚ÌƒŠƒ[ƒhŒã‚ÉAm_pendingFields ‚É•Û‚µ‚Ä‚¨‚¢‚½ƒtƒB[ƒ‹ƒh‚Ì’l‚ğƒXƒNƒŠƒvƒgƒCƒ“ƒXƒ^ƒ“ƒX‚É“K—p‚·‚é
+    if (!m_gcHandle) return; // GCHandle ãŒæœ‰åŠ¹ã§ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
+    // ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒªãƒ­ãƒ¼ãƒ‰å¾Œã«ã€m_pendingFields ã«ä¿æŒã—ã¦ãŠã„ãŸãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®å€¤ã‚’ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«é©ç”¨ã™ã‚‹
     for (auto& [name, value] : m_pendingFields.items())
     {
         ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), value.dump().c_str());
@@ -621,12 +621,12 @@ void ScriptComponent::OnPostScriptReload()
 
 void ScriptComponent::OnScriptReload()
 {
-	// ƒXƒNƒŠƒvƒg‚ÌƒŠƒ[ƒhˆ—
-	if (!m_gcHandle) return; // GCHandle ‚ª—LŒø‚Å‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒªãƒ­ãƒ¼ãƒ‰å‡¦ç†
+	if (!m_gcHandle) return; // GCHandle ãŒæœ‰åŠ¹ã§ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
 
-	// Šù‘¶‚ÌƒXƒNƒŠƒvƒgƒCƒ“ƒXƒ^ƒ“ƒX‚ğƒzƒbƒgƒXƒƒbƒv‚ÅXV‚·‚é
+	// æ—¢å­˜ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ãƒ›ãƒƒãƒˆã‚¹ãƒ¯ãƒƒãƒ—ã§æ›´æ–°ã™ã‚‹
     uint64_t ownerId = GetOwner()->GetId().Value();
     uint64_t componentId = GetId().Value();
 	ScriptSystem::HotSwapScript(m_gcHandle, ownerId, componentId);
-	OnPostScriptReload(); // ƒzƒbƒgƒXƒƒbƒvŒã‚ÉƒtƒB[ƒ‹ƒh‚Ì’l‚ğÄ“K—p
+	OnPostScriptReload(); // ãƒ›ãƒƒãƒˆã‚¹ãƒ¯ãƒƒãƒ—å¾Œã«ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®å€¤ã‚’å†é©ç”¨
 }

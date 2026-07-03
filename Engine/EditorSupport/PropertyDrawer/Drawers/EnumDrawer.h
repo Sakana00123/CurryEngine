@@ -5,7 +5,7 @@
 namespace CurryEngine
 {
 	/**
-	 * @brief —ñ‹“Œ^‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB
+	 * @brief åˆ—æŒ™å‹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
 	 */
 	class EnumDrawer : public IPropertyDrawer
 	{

@@ -18,31 +18,31 @@ void LayerManager::SetLayerCollision(Layer a, Layer b, bool enabled)
 {
     if (enabled)
     {
-		m_collisionMatrix[a] |= ToMask(b); // a‚ªb‚ÆÕ“Ë‚·‚é‚æ‚¤‚Éİ’è
-		m_collisionMatrix[b] |= ToMask(a); // b‚ªa‚ÆÕ“Ë‚·‚é‚æ‚¤‚Éİ’è
+		m_collisionMatrix[a] |= ToMask(b); // aãŒbã¨è¡çªã™ã‚‹ã‚ˆã†ã«è¨­å®š
+		m_collisionMatrix[b] |= ToMask(a); // bãŒaã¨è¡çªã™ã‚‹ã‚ˆã†ã«è¨­å®š
     }
     else
     {
-		m_collisionMatrix[a] &= ~ToMask(b); // a‚ªb‚ÆÕ“Ë‚µ‚È‚¢‚æ‚¤‚Éİ’è
-		m_collisionMatrix[b] &= ~ToMask(a); // b‚ªa‚ÆÕ“Ë‚µ‚È‚¢‚æ‚¤‚Éİ’è
+		m_collisionMatrix[a] &= ~ToMask(b); // aãŒbã¨è¡çªã—ãªã„ã‚ˆã†ã«è¨­å®š
+		m_collisionMatrix[b] &= ~ToMask(a); // bãŒaã¨è¡çªã—ãªã„ã‚ˆã†ã«è¨­å®š
 	}
 }
 
 bool LayerManager::GetLayerCollision(Layer a, Layer b) const
 {
-	// Õ“Ëƒ}ƒgƒŠƒNƒX‚Í‘ÎÌ‚È‚Ì‚ÅAa‚ªb‚ÆÕ“Ë‚·‚é‚©‚ğƒ`ƒFƒbƒN‚·‚ê‚Î\•ª
-	return (m_collisionMatrix[a] & ToMask(b)) != 0; // a‚ªb‚ÆÕ“Ë‚·‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+	// è¡çªãƒãƒˆãƒªã‚¯ã‚¹ã¯å¯¾ç§°ãªã®ã§ã€aãŒbã¨è¡çªã™ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚Œã°ååˆ†
+	return (m_collisionMatrix[a] & ToMask(b)) != 0; // aãŒbã¨è¡çªã™ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 }
 
 LayerMask LayerManager::GetCollisionMask(Layer layer) const
 {
-	return m_collisionMatrix[layer]; // w’è‚³‚ê‚½ƒŒƒCƒ„[‚ÌÕ“Ëƒ}ƒXƒN‚ğ•Ô‚·
+	return m_collisionMatrix[layer]; // æŒ‡å®šã•ã‚ŒãŸãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡çªãƒã‚¹ã‚¯ã‚’è¿”ã™
 }
 
 json LayerManager::Serialize() const
 {
     json j;
-	// ƒŒƒCƒ„[–¼‚ÌƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼åã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     for (int i = 0; i < MAX_LAYERS; ++i)
     {
 		json layerJson;
@@ -50,7 +50,7 @@ json LayerManager::Serialize() const
 		layerJson["name"] = m_layerNames[i];
 		j["layers"].push_back(layerJson);
     }
-	// Õ“Ëƒ}ƒgƒŠƒNƒX‚ÌƒVƒŠƒAƒ‰ƒCƒY
+	// è¡çªãƒãƒˆãƒªã‚¯ã‚¹ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     for (int i = 0; i < MAX_LAYERS; ++i)
     {
         json collisionJson;
@@ -64,7 +64,7 @@ json LayerManager::Serialize() const
 
 void LayerManager::Deserialize(const json& j)
 {
-	// ƒŒƒCƒ„[–¼‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼åã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     if (j.contains("layers"))
     {
         for (const auto& layerJson : j["layers"])
@@ -75,10 +75,10 @@ void LayerManager::Deserialize(const json& j)
                 m_layerNames[id] = name;
         }
 	}
-    // Õ“Ëƒ}ƒgƒŠƒNƒX‚ÌƒfƒVƒŠƒAƒ‰ƒCƒY
+    // è¡çªãƒãƒˆãƒªã‚¯ã‚¹ã®ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
     if (j.contains("collisionMatrix"))
     {
-		// Õ“Ëƒ}ƒgƒŠƒNƒX‚Í‘ÎÌ‚È‚Ì‚ÅA•Ğ•û‚¾‚¯“Ç‚İ‚ß‚Î\•ª
+		// è¡çªãƒãƒˆãƒªã‚¯ã‚¹ã¯å¯¾ç§°ãªã®ã§ã€ç‰‡æ–¹ã ã‘èª­ã¿è¾¼ã‚ã°ååˆ†
         for (const auto& collisionJson : j["collisionMatrix"])
         {
             int layer = collisionJson["layer"].get<int>();
@@ -92,8 +92,8 @@ void LayerManager::Deserialize(const json& j)
 
 void LayerManager::DrawLayerSettingsGUI()
 {
-    // ImGui‚ğg—p‚µ‚ÄƒŒƒCƒ„[İ’èGUI‚ğ•`‰æ‚·‚éƒR[ƒh‚ğ‚±‚±‚ÉÀ‘•
-    // ƒŒƒCƒ„[–¼‚Ì•ÒWAÕ“Ëƒ}ƒgƒŠƒNƒX‚Ì•ÒW‚È‚Ç
+    // ImGuiã‚’ä½¿ç”¨ã—ã¦ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šGUIã‚’æç”»ã™ã‚‹ã‚³ãƒ¼ãƒ‰ã‚’ã“ã“ã«å®Ÿè£…
+    // ãƒ¬ã‚¤ãƒ¤ãƒ¼åã®ç·¨é›†ã€è¡çªãƒãƒˆãƒªã‚¯ã‚¹ã®ç·¨é›†ãªã©
 #ifdef USE_IMGUI
 	if (m_isOpen)
     {
@@ -104,7 +104,7 @@ void LayerManager::DrawLayerSettingsGUI()
 #if 1
 		if (ImGui::CollapsingHeader("Edit Layer Names", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            // ƒŒƒCƒ„[–¼‚Ì•ÒW
+            // ãƒ¬ã‚¤ãƒ¤ãƒ¼åã®ç·¨é›†
             for (int i = 0; i < MAX_LAYERS; ++i)
             {
                 char buffer[64];
@@ -112,7 +112,7 @@ void LayerManager::DrawLayerSettingsGUI()
 
                 ImGui::Text(buffer);
                 ImGui::SameLine();
-                std::string label = "##LayerName" + std::to_string(i); // ƒ‰ƒxƒ‹‚Íƒ†ƒj[ƒN‚É‚·‚é•K—v‚ª‚ ‚é‚½‚ßAID‚ğ•t‰Á
+                std::string label = "##LayerName" + std::to_string(i); // ãƒ©ãƒ™ãƒ«ã¯ãƒ¦ãƒ‹ãƒ¼ã‚¯ã«ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ãŸã‚ã€IDã‚’ä»˜åŠ 
                 ImGui::InputText(label.c_str(), &m_layerNames[i][0], m_layerNames[i].capacity());
             }
         }
@@ -120,7 +120,7 @@ void LayerManager::DrawLayerSettingsGUI()
 #endif // 0
 
         // -------------------------------------------------------------------
-        // g—p’†‚ÌƒŒƒCƒ„[i–¼‘O‚ª‹ó‚Å‚È‚¢‚à‚Ìj‚ÌƒCƒ“ƒfƒbƒNƒX‚ğûW
+        // ä½¿ç”¨ä¸­ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼ˆåå‰ãŒç©ºã§ãªã„ã‚‚ã®ï¼‰ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’åé›†
         // -------------------------------------------------------------------
         std::vector<int> usedLayers;
         for (int i = 0; i < MAX_LAYERS; ++i)
@@ -132,7 +132,7 @@ void LayerManager::DrawLayerSettingsGUI()
 		if (ImGui::CollapsingHeader("Collision Matrix", ImGuiTreeNodeFlags_DefaultOpen))
         {
             // -------------------------------------------------------------------
-            // ƒc[ƒ‹ƒo[: Rename Layer
+            // ãƒ„ãƒ¼ãƒ«ãƒãƒ¼: Rename Layer
             // -------------------------------------------------------------------
             if (ImGui::Button("Rename Layer"))
             {
@@ -144,7 +144,7 @@ void LayerManager::DrawLayerSettingsGUI()
                 }
             }
 
-            // Rename ƒ|ƒbƒvƒAƒbƒv
+            // Rename ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—
             if (ImGui::BeginPopupModal("##RenamePopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
             {
                 ImGui::Text("New name:");
@@ -164,7 +164,7 @@ void LayerManager::DrawLayerSettingsGUI()
 
             ImGui::SameLine();
 
-            // Add Layer ƒ{ƒ^ƒ“
+            // Add Layer ãƒœã‚¿ãƒ³
             ImVec2 buttonSize(30, 30);
             if (ImGui::Button("+", buttonSize))
             {
@@ -173,8 +173,8 @@ void LayerManager::DrawLayerSettingsGUI()
                     if (m_layerNames[i].empty())
                     {
                         m_layerNames[i] = "Layer" + std::to_string(i);
-                        // V‚µ‚¢ƒŒƒCƒ„[‚ÍƒfƒtƒHƒ‹ƒg‚Å‘S‚Ä‚ÌƒŒƒCƒ„[‚ÆÕ“Ë‚·‚é‚æ‚¤‚Éİ’è
-                        m_collisionMatrix[i] = LayerMasks::Everything; // ‘S‚Ä‚Ìƒrƒbƒg‚ğ—§‚Ä‚éi‘SƒŒƒCƒ„[‚ÆÕ“Ëj
+                        // æ–°ã—ã„ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§å…¨ã¦ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨è¡çªã™ã‚‹ã‚ˆã†ã«è¨­å®š
+                        m_collisionMatrix[i] = LayerMasks::Everything; // å…¨ã¦ã®ãƒ“ãƒƒãƒˆã‚’ç«‹ã¦ã‚‹ï¼ˆå…¨ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨è¡çªï¼‰
                         break;
                     }
                 }
@@ -182,20 +182,20 @@ void LayerManager::DrawLayerSettingsGUI()
 
             ImGui::SameLine();
 
-            // Remove Layer ƒ{ƒ^ƒ“
+            // Remove Layer ãƒœã‚¿ãƒ³
             if (ImGui::Button("-", buttonSize))
             {
-                if (usedLayers.size() <= 4) // Å’á4ƒŒƒCƒ„[‚Íc‚·(ƒfƒtƒHƒ‹ƒg‚Ì4ƒŒƒCƒ„[‚ğíœ‚³‚¹‚È‚¢)
+                if (usedLayers.size() <= 4) // æœ€ä½4ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯æ®‹ã™(ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®4ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å‰Šé™¤ã•ã›ãªã„)
                     return;
 
-                // ÅŒã‚Ìg—p’†ƒŒƒCƒ„[‚ğíœ
+                // æœ€å¾Œã®ä½¿ç”¨ä¸­ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å‰Šé™¤
                 for (int i = MAX_LAYERS - 1; i >= 0; --i)
                 {
                     if (!m_layerNames[i].empty())
                     {
                         m_layerNames[i].clear();
-                        m_collisionMatrix[i] = 0; // Õ“Ëƒ}ƒgƒŠƒNƒX‚àƒNƒŠƒA
-                        if (m_selectedLayer == i) m_selectedLayer = -1; // ‘I‘ğ’†‚ÌƒŒƒCƒ„[‚ªíœ‚³‚ê‚½ê‡‚Í‘I‘ğ‰ğœ
+                        m_collisionMatrix[i] = 0; // è¡çªãƒãƒˆãƒªã‚¯ã‚¹ã‚‚ã‚¯ãƒªã‚¢
+                        if (m_selectedLayer == i) m_selectedLayer = -1; // é¸æŠä¸­ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå‰Šé™¤ã•ã‚ŒãŸå ´åˆã¯é¸æŠè§£é™¤
                         break;
                     }
                 }
@@ -204,30 +204,30 @@ void LayerManager::DrawLayerSettingsGUI()
             ImGui::Separator();
 
 
-            // Õ“Ëƒ}ƒgƒŠƒNƒX‚Ì•ÒW
+            // è¡çªãƒãƒˆãƒªã‚¯ã‚¹ã®ç·¨é›†
             // -------------------------------------------------------------------
-            // ƒRƒŠƒWƒ‡ƒ“ƒ}ƒgƒŠƒbƒNƒX
+            // ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒãƒˆãƒªãƒƒã‚¯ã‚¹
             // -------------------------------------------------------------------
             const float cellSize = 26.0f;
             const float labelWidth = 160.0f;
-            const float headerH = 76.0f; // —ñƒwƒbƒ_[‚Ì‚‚³ic‘‚«ƒeƒLƒXƒg•ªj
+            const float headerH = 76.0f; // åˆ—ãƒ˜ãƒƒãƒ€ãƒ¼ã®é«˜ã•ï¼ˆç¸¦æ›¸ããƒ†ã‚­ã‚¹ãƒˆåˆ†ï¼‰
 
-            // ƒXƒNƒ[ƒ‹—Ìˆæ
+            // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«é ˜åŸŸ
             ImGui::BeginChild("##MatrixScroll", ImVec2(0, 0), false,
                 ImGuiWindowFlags_HorizontalScrollbar);
 
             ImDrawList* draw = ImGui::GetWindowDrawList();
             ImVec2      origin = ImGui::GetCursorScreenPos();
 
-            // ---- —ñƒwƒbƒ_[•`‰æ -----------------------------------------------
-            // —ñƒwƒbƒ_[‚Íƒ‰ƒxƒ‹—ñ‚Ì‰E‚©‚çn‚Ü‚é
+            // ---- åˆ—ãƒ˜ãƒƒãƒ€ãƒ¼æç”» -----------------------------------------------
+            // åˆ—ãƒ˜ãƒƒãƒ€ãƒ¼ã¯ãƒ©ãƒ™ãƒ«åˆ—ã®å³ã‹ã‚‰å§‹ã¾ã‚‹
             for (int ci = 0; ci < numUsed; ++ci)
             {
                 int col = usedLayers[ci];
                 float x = origin.x + labelWidth + ci * cellSize;
                 float y = origin.y;
 
-                // ƒZƒ‹”wŒi
+                // ã‚»ãƒ«èƒŒæ™¯
                 draw->AddRectFilled(
                     ImVec2(x, y), ImVec2(x + cellSize, y + headerH),
                     IM_COL32(40, 40, 40, 255));
@@ -235,15 +235,15 @@ void LayerManager::DrawLayerSettingsGUI()
                     ImVec2(x, y), ImVec2(x + cellSize, y + headerH),
                     IM_COL32(70, 70, 70, 255));
 
-                // ƒeƒLƒXƒg‚ğ90“x‰ñ“]‚µ‚Ä•`‰æ
-                // ImGui‚Í•W€‰ñ“]ƒTƒ|[ƒg‚È‚µ ¨ AddText‚ÅY•ûŒü‚É1•¶š‚¸‚Â•`‚­‘ã‚í‚è‚É
-                // PushClipRect + ImFont•`‰æ‚Å‹[—c‘‚«‚·‚é
+                // ãƒ†ã‚­ã‚¹ãƒˆã‚’90åº¦å›è»¢ã—ã¦æç”»
+                // ImGuiã¯æ¨™æº–å›è»¢ã‚µãƒãƒ¼ãƒˆãªã— â†’ AddTextã§Yæ–¹å‘ã«1æ–‡å­—ãšã¤æãä»£ã‚ã‚Šã«
+                // PushClipRect + ImFontæç”»ã§æ“¬ä¼¼ç¸¦æ›¸ãã™ã‚‹
                 const std::string& name = m_layerNames[col];
                 ImVec2 textSize = ImGui::CalcTextSize(name.c_str());
 
-                // c‘‚«: ƒtƒHƒ“ƒg‚ğ‰ñ“]‚³‚¹‚é‚±‚Æ‚Í‚Å‚«‚È‚¢‚½‚ßA
-                // ‰¡‘‚«‚Ì‚Ü‚Ü clipRect ‚ÅØ‚èæ‚èAÎ‚ß”z’u‚Ì‚İs‚¤
-                // ¨ À—p“I‚È•û–@‚Æ‚µ‚ÄAƒeƒLƒXƒg‚ğˆê•¶š‚¸‚Âc‚É•À‚×‚é
+                // ç¸¦æ›¸ã: ãƒ•ã‚©ãƒ³ãƒˆã‚’å›è»¢ã•ã›ã‚‹ã“ã¨ã¯ã§ããªã„ãŸã‚ã€
+                // æ¨ªæ›¸ãã®ã¾ã¾ clipRect ã§åˆ‡ã‚Šå–ã‚Šã€æ–œã‚é…ç½®ã®ã¿è¡Œã†
+                // â†’ å®Ÿç”¨çš„ãªæ–¹æ³•ã¨ã—ã¦ã€ãƒ†ã‚­ã‚¹ãƒˆã‚’ä¸€æ–‡å­—ãšã¤ç¸¦ã«ä¸¦ã¹ã‚‹
                 float charY = y + 4.0f;
                 float charX = x + (cellSize - ImGui::GetFontSize()) * 0.5f;
                 for (char c : name)
@@ -251,10 +251,10 @@ void LayerManager::DrawLayerSettingsGUI()
                     char buf[2] = { c, '\0' };
                     draw->AddText(ImVec2(charX, charY), IM_COL32(220, 220, 220, 255), buf);
                     charY += ImGui::GetFontSize() - 1.0f;
-                    if (charY > y + headerH - ImGui::GetFontSize()) break; // ‚Í‚İo‚µ–h~
+                    if (charY > y + headerH - ImGui::GetFontSize()) break; // ã¯ã¿å‡ºã—é˜²æ­¢
                 }
 
-                //// ImPlot‚ğg‚Á‚Äc‘‚«ƒeƒLƒXƒg‚ğ•`‰æ
+                //// ImPlotã‚’ä½¿ã£ã¦ç¸¦æ›¸ããƒ†ã‚­ã‚¹ãƒˆã‚’æç”»
                 //{
                 //    if (ImPlot::BeginPlot("##MarkerStyles", ImVec2(-1, 0)))
                 //    {
@@ -268,7 +268,7 @@ void LayerManager::DrawLayerSettingsGUI()
                 //}
 
 
-                // ƒzƒo[‚Å‘S–¼‚ğƒc[ƒ‹ƒ`ƒbƒv•\¦
+                // ãƒ›ãƒãƒ¼ã§å…¨åã‚’ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—è¡¨ç¤º
                 ImGui::SetCursorScreenPos(ImVec2(x, y));
                 ImGui::InvisibleButton(("##hdr" + std::to_string(ci)).c_str(),
                     ImVec2(cellSize, headerH));
@@ -276,14 +276,14 @@ void LayerManager::DrawLayerSettingsGUI()
                     ImGui::SetTooltip("%s", name.c_str());
             }
 
-            // ---- sƒ‹[ƒv -------------------------------------------------------
+            // ---- è¡Œãƒ«ãƒ¼ãƒ— -------------------------------------------------------
             for (int ri = 0; ri < numUsed; ++ri)
             {
                 int row = usedLayers[ri];
 
                 float rowY = origin.y + headerH + ri * cellSize;
 
-                // s”wŒi
+                // è¡ŒèƒŒæ™¯
                 ImU32 rowBgCol = (ri % 2 == 0)
                     ? IM_COL32(35, 35, 35, 255)
                     : IM_COL32(42, 42, 42, 255);
@@ -292,7 +292,7 @@ void LayerManager::DrawLayerSettingsGUI()
                     ImVec2(origin.x + labelWidth + numUsed * cellSize, rowY + cellSize),
                     rowBgCol);
 
-                // ---- sƒ‰ƒxƒ‹ƒ{ƒ^ƒ“ --------------------------------------------
+                // ---- è¡Œãƒ©ãƒ™ãƒ«ãƒœã‚¿ãƒ³ --------------------------------------------
                 bool isSelected = (m_selectedLayer == row);
                 ImGui::PushID(row * 1000);
 
@@ -309,29 +309,29 @@ void LayerManager::DrawLayerSettingsGUI()
 
                 ImVec2 buttonSize(labelWidth - 4.0f, cellSize);
 
-                // sƒ‰ƒxƒ‹‚ÍƒNƒŠƒbƒN‚Å‘I‘ğAÄ“xƒNƒŠƒbƒN‚Å•ÒWƒ‚[ƒh‚É“ü‚é
+                // è¡Œãƒ©ãƒ™ãƒ«ã¯ã‚¯ãƒªãƒƒã‚¯ã§é¸æŠã€å†åº¦ã‚¯ãƒªãƒƒã‚¯ã§ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹
                 if (m_selectedLayer == row && m_layerNameEditMode)
                 {
-                    // •ÒWƒ‚[ƒh: InputText‚ğ•\¦‚µ‚Ä–¼‘O‚ğ•ÒW
+                    // ç·¨é›†ãƒ¢ãƒ¼ãƒ‰: InputTextã‚’è¡¨ç¤ºã—ã¦åå‰ã‚’ç·¨é›†
                     ImGui::SetCursorScreenPos(ImVec2(origin.x + 2.0f, rowY + 2.0f));
                     ImGui::SetNextItemWidth(buttonSize.x - 4.0f);
 
                     if (m_layerNameEditModeJustStarted)
                     {
-                        // •ÒWƒ‚[ƒh‚É“ü‚Á‚½’¼Œã‚ÍAInputText‚ÉƒtƒH[ƒJƒX‚ğ“–‚Ä‚é
+                        // ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã£ãŸç›´å¾Œã¯ã€InputTextã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’å½“ã¦ã‚‹
                         ImGui::SetKeyboardFocusHere();
-                        m_layerNameEditModeJustStarted = false; // ƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+                        m_layerNameEditModeJustStarted = false; // ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
                     }
 
-                    // InputText‚ÅƒŒƒCƒ„[–¼‚ğ•ÒW
+                    // InputTextã§ãƒ¬ã‚¤ãƒ¤ãƒ¼åã‚’ç·¨é›†
                     if (ImGui::InputText("##EditLayerName", m_renameBuffer, IM_ARRAYSIZE(m_renameBuffer), ImGuiInputTextFlags_AutoSelectAll))
                     {
-                        // “ü—Í’†‚ÍƒŠƒAƒ‹ƒ^ƒCƒ€‚ÅƒŒƒCƒ„[–¼‚ğXV
+                        // å…¥åŠ›ä¸­ã¯ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ã§ãƒ¬ã‚¤ãƒ¤ãƒ¼åã‚’æ›´æ–°
                         m_layerNames[row] = m_renameBuffer;
                     }
-                    if (ImGui::IsItemDeactivated()) // InputText‚©‚çƒtƒH[ƒJƒX‚ªŠO‚ê‚½‚Æ‚«
+                    if (ImGui::IsItemDeactivated()) // InputTextã‹ã‚‰ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒå¤–ã‚ŒãŸã¨ã
                     {
-                        m_layerNameEditMode = false; // •ÒWƒ‚[ƒh‚ğI—¹
+                        m_layerNameEditMode = false; // ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã‚’çµ‚äº†
                     }
                 }
                 else
@@ -341,22 +341,22 @@ void LayerManager::DrawLayerSettingsGUI()
 
                     if (ImGui::Button(m_layerNames[row].c_str(), buttonSize))
                     {
-                        // sƒ‰ƒxƒ‹‚ªƒNƒŠƒbƒN‚³‚ê‚½‚Æ‚«‚Ìˆ—
+                        // è¡Œãƒ©ãƒ™ãƒ«ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã¨ãã®å‡¦ç†
 
-                        // ƒfƒtƒHƒ‹ƒgƒŒƒCƒ„[‚Í‘I‘ğ•s‰Â‚É‚·‚é
+                        // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯é¸æŠä¸å¯ã«ã™ã‚‹
                         if (canSelect)
                         {
                             m_selectedLayer = row;
-                            m_layerNameEditMode = false; // •ÒWƒ‚[ƒh‚ğI—¹
+                            m_layerNameEditMode = false; // ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã‚’çµ‚äº†
                         }
                     }
                     if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsItemHovered() && canSelect)
                     {
-                        // sƒ‰ƒxƒ‹‚ªƒ_ƒuƒ‹ƒNƒŠƒbƒN‚³‚ê‚½‚Æ‚«‚Ìˆ—
-                        // ‚±‚±‚Å‚ÍAƒŒƒCƒ„[–¼‚Ì•ÒWƒ‚[ƒh‚É“ü‚é‚½‚ß‚Ìƒtƒ‰ƒO‚ğØ‚è‘Ö‚¦‚é‚¾‚¯‚É‚·‚é
+                        // è¡Œãƒ©ãƒ™ãƒ«ãŒãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã¨ãã®å‡¦ç†
+                        // ã“ã“ã§ã¯ã€ãƒ¬ã‚¤ãƒ¤ãƒ¼åã®ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ã ã‘ã«ã™ã‚‹
                         m_selectedLayer = row;
                         m_layerNameEditMode = true;
-                        m_layerNameEditModeJustStarted = true; // •ÒWƒ‚[ƒhŠJnƒtƒ‰ƒO‚ğƒZƒbƒg
+                        m_layerNameEditModeJustStarted = true; // ç·¨é›†ãƒ¢ãƒ¼ãƒ‰é–‹å§‹ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
                         strncpy_s(m_renameBuffer, m_layerNames[row].c_str(), sizeof(m_renameBuffer) - 1);
                         m_renameBuffer[sizeof(m_renameBuffer) - 1] = '\0';
                     }
@@ -364,7 +364,7 @@ void LayerManager::DrawLayerSettingsGUI()
 
                 ImGui::PopStyleColor(3);
 
-                // ---- ƒZƒ‹ƒ‹[ƒv ------------------------------------------------
+                // ---- ã‚»ãƒ«ãƒ«ãƒ¼ãƒ— ------------------------------------------------
                 for (int ci = 0; ci < numUsed; ++ci)
                 {
                     int col = usedLayers[ci];
@@ -378,14 +378,14 @@ void LayerManager::DrawLayerSettingsGUI()
                     bool checked = GetLayerCollision(static_cast<Layer>(row),
                         static_cast<Layer>(col));
 
-                    // ƒZƒ‹”wŒi
+                    // ã‚»ãƒ«èƒŒæ™¯
                     ImU32 cellBg = checked
                         ? IM_COL32(100, 72, 16, 255)
                         : rowBgCol;
                     draw->AddRectFilled(cellMin, cellMax, cellBg);
                     draw->AddRect(cellMin, cellMax, IM_COL32(60, 60, 60, 255));
 
-                    // ƒ`ƒFƒbƒNƒ{ƒbƒNƒX˜g
+                    // ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹æ 
                     const float half = 6.5f;
                     ImVec2 boxMin(center.x - half, center.y - half);
                     ImVec2 boxMax(center.x + half, center.y + half);
@@ -395,7 +395,7 @@ void LayerManager::DrawLayerSettingsGUI()
                         : IM_COL32(110, 110, 110, 255);
                     draw->AddRect(boxMin, boxMax, borderCol, 1.0f);
 
-                    // ƒ`ƒFƒbƒNƒ}[ƒN
+                    // ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯
                     if (checked)
                     {
                         ImVec2 p0(boxMin.x + 2.0f, center.y);
@@ -405,7 +405,7 @@ void LayerManager::DrawLayerSettingsGUI()
                         draw->AddLine(p1, p2, IM_COL32(255, 255, 255, 255), 1.5f);
                     }
 
-                    // ƒNƒŠƒbƒN”»’è
+                    // ã‚¯ãƒªãƒƒã‚¯åˆ¤å®š
                     ImGui::SetCursorScreenPos(cellMin);
                     std::string cellId = "##c" + std::to_string(ri) + "_" + std::to_string(ci);
                     ImGui::InvisibleButton(cellId.c_str(), ImVec2(cellSize, cellSize));
@@ -426,7 +426,7 @@ void LayerManager::DrawLayerSettingsGUI()
                 ImGui::PopID();
             }
 
-            // ImGui‚ÉƒXƒNƒ[ƒ‹—Ìˆæ‚ÌÀƒTƒCƒY‚ğ“`‚¦‚é
+            // ImGuiã«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«é ˜åŸŸã®å®Ÿã‚µã‚¤ã‚ºã‚’ä¼ãˆã‚‹
             ImGui::SetCursorScreenPos(ImVec2(
                 origin.x,
                 origin.y + headerH + numUsed * cellSize + 4.0f));
@@ -435,13 +435,13 @@ void LayerManager::DrawLayerSettingsGUI()
             ImGui::EndChild();
 
             // -------------------------------------------------------------------
-            // ƒtƒbƒ^[: Reset
+            // ãƒ•ãƒƒã‚¿ãƒ¼: Reset
             // -------------------------------------------------------------------
             ImGui::Separator();
 
             if (ImGui::Button("Reset"))
             {
-                // ‘SƒŒƒCƒ„[‚ÌƒRƒŠƒWƒ‡ƒ“‚ğƒfƒtƒHƒ‹ƒgiEverythingj‚É–ß‚·
+                // å…¨ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆï¼ˆEverythingï¼‰ã«æˆ»ã™
                 for (int i = 0; i < MAX_LAYERS; ++i)
                     m_collisionMatrix[i] = LayerMasks::Everything;
             }
@@ -455,14 +455,14 @@ void LayerManager::DrawLayerSettingsGUI()
 
 LayerManager::LayerManager()
 {
-    // ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒCƒ„[–¼‚ğİ’è
+    // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ã‚¤ãƒ¤ãƒ¼åã‚’è¨­å®š
     m_layerNames[0] = "Default";
     m_layerNames[1] = "TransparentFX";
 	m_layerNames[2] = "Ignore Raycast";
 	m_layerNames[3] = "UI";
-	m_layerNames[4] = "Player"; // ˆÈ~‚Í•K—v‚É‰‚¶‚Äƒ†[ƒU[‚ª’Ç‰Á‚µ‚Ä‚¢‚­‘z’èiƒŒƒCƒ„[5ˆÈ~‚Í‰Šúó‘Ô‚Å‚Í‹ó‚Ì‚Ü‚Üj
+	m_layerNames[4] = "Player"; // ä»¥é™ã¯å¿…è¦ã«å¿œã˜ã¦ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒè¿½åŠ ã—ã¦ã„ãæƒ³å®šï¼ˆãƒ¬ã‚¤ãƒ¤ãƒ¼5ä»¥é™ã¯åˆæœŸçŠ¶æ…‹ã§ã¯ç©ºã®ã¾ã¾ï¼‰
 
-	// Õ“Ëƒ}ƒgƒŠƒNƒX‚Ì‰Šú‰»i‘S‚Ä‚ÌƒŒƒCƒ„[‚ªÕ“Ë‚·‚é‚æ‚¤‚Éİ’èj
+	// è¡çªãƒãƒˆãƒªã‚¯ã‚¹ã®åˆæœŸåŒ–ï¼ˆå…¨ã¦ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒè¡çªã™ã‚‹ã‚ˆã†ã«è¨­å®šï¼‰
     for (int i = 0; i < MAX_LAYERS; ++i)
 		m_collisionMatrix[i] = LayerMasks::Everything;
 }

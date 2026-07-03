@@ -8,15 +8,15 @@
 #include "Component.h"
 
 /**
- * @brief ƒIƒuƒWƒFƒNƒgQÆ‚ğ•\‚·ƒeƒ“ƒvƒŒ[ƒg\‘¢‘ÌB
- * @tparam T QÆ‚·‚éƒIƒuƒWƒFƒNƒg‚ÌŒ^BGameObject ‚Ü‚½‚Í Component ‚ğ‘z’èB
+ * @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‚ç…§ã‚’è¡¨ã™ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆæ§‹é€ ä½“ã€‚
+ * @tparam T å‚ç…§ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‹ã€‚GameObject ã¾ãŸã¯ Component ã‚’æƒ³å®šã€‚
  */
 template<typename T>
 struct Reference
 {
 	ObjectId id = ObjectId::Invalid();
 
-	// QÆæ‚ÌƒIƒuƒWƒFƒNƒg‚ª—LŒø‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚é
+	// å‚ç…§å…ˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	bool IsValid() const
 	{
 		return id.IsValid();
@@ -37,13 +37,13 @@ struct Reference
 	operator T* () const { return resolve(); }
 	explicit operator bool() const { return resolve() != nullptr; }
 
-	// ƒ|ƒCƒ“ƒ^‚©‚ç’¼Ú‘ã“ü‚·‚é‚½‚ß‚ÌƒI[ƒo[ƒ[ƒhB‚±‚ê‚É‚æ‚èAƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^‚ğ’¼ÚQÆ‚É‘ã“ü‚Å‚«‚é‚æ‚¤‚É‚È‚éB
+	// ãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰ç›´æ¥ä»£å…¥ã™ã‚‹ãŸã‚ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰ã€‚ã“ã‚Œã«ã‚ˆã‚Šã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿ã‚’ç›´æ¥å‚ç…§ã«ä»£å…¥ã§ãã‚‹ã‚ˆã†ã«ãªã‚‹ã€‚
 	Reference& operator=(T* ptr)
 	{
 		id = ptr ? ptr->GetId() : ObjectId::Invalid();
 		return *this;
 	}
-	// ObjectId‚©‚ç’¼Ú‘ã“ü‚·‚é‚½‚ß‚ÌƒI[ƒo[ƒ[ƒhB‚±‚ê‚É‚æ‚èAObjectId‚ğ’¼ÚQÆ‚É‘ã“ü‚Å‚«‚é‚æ‚¤‚É‚È‚éB
+	// ObjectIdã‹ã‚‰ç›´æ¥ä»£å…¥ã™ã‚‹ãŸã‚ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰ã€‚ã“ã‚Œã«ã‚ˆã‚Šã€ObjectIdã‚’ç›´æ¥å‚ç…§ã«ä»£å…¥ã§ãã‚‹ã‚ˆã†ã«ãªã‚‹ã€‚
 	Reference& operator=(ObjectId newId)
 	{
 		id = newId;
@@ -76,8 +76,8 @@ Reference<GameObject> FindGameObject(const std::string& name) { return Reference
 Reference<GameObject> FindGameObject(const ObjectId& id) { return Reference<GameObject>(ObjectManager::Find(id)->GetId()); }
 Reference<Component> FindComponent(const ObjectId& id) { return Reference<Component>(ObjectManager::FindComponent(id)->GetId()); }
 
-// Œ^ƒgƒŒƒCƒgƒƒ^ƒvƒƒOƒ‰ƒ~ƒ“ƒOFReference<T>‚ªQÆŒ^‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é‚½‚ß‚Ìis_reference_type\‘¢‘Ì
-// ƒfƒtƒHƒ‹ƒg‚Å‚Ífalse_type‚ğŒp³‚µAReference<T>‚É‘Î‚µ‚Ä‚Ítrue_type‚ğŒp³‚·‚é“Áê‰»‚ğ’è‹`‚·‚éB
+// å‹ãƒˆãƒ¬ã‚¤ãƒˆãƒ¡ã‚¿ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ï¼šReference<T>ãŒå‚ç…§å‹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã™ã‚‹ãŸã‚ã®is_reference_typeæ§‹é€ ä½“
+// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯false_typeã‚’ç¶™æ‰¿ã—ã€Reference<T>ã«å¯¾ã—ã¦ã¯true_typeã‚’ç¶™æ‰¿ã™ã‚‹ç‰¹æ®ŠåŒ–ã‚’å®šç¾©ã™ã‚‹ã€‚
 
 template<typename T>
 struct is_reference_type : std::false_type {};
@@ -85,7 +85,7 @@ struct is_reference_type : std::false_type {};
 template<typename T>
 struct is_reference_type<Reference<T>> : std::true_type {};
 
-// inner_typeæ“¾
+// inner_typeå–å¾—
 template<typename T>
 struct reference_inner_type {};
 

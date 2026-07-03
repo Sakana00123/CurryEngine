@@ -36,33 +36,33 @@ float EditorGUI::DrawMainMenu()
 {
 	float mainMenuBarHeight = 0.0f;
 #ifdef USE_IMGUI
-	//ã‚Ìƒƒjƒ…[ƒo[
+	//ä¸Šã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼
 	if (ImGui::BeginMainMenuBar())
 	{
-		// ƒƒCƒ“ƒƒjƒ…[ƒo[‚Ì‚‚³‚ğæ“¾
+		// ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼ã®é«˜ã•ã‚’å–å¾—
 		mainMenuBarHeight = ImGui::GetWindowHeight();
 #if 1
-		// ------------- ƒtƒ@ƒCƒ‹ƒƒjƒ…[ ---------------
+		// ------------- ãƒ•ã‚¡ã‚¤ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ---------------
 		if (ImGui::BeginMenu("File"))
 		{
 			DrawFileMenu();
 			ImGui::EndMenu();
 		}
 #endif
-		// ------------- ƒV[ƒ“ƒƒjƒ…[ ---------------
+		// ------------- ã‚·ãƒ¼ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ---------------
 		if (ImGui::BeginMenu("Scene"))
 		{
 			DrawSceneMenu();
 			ImGui::EndMenu();
 		}
 
-		// -------------- ¶¬ƒƒjƒ…[ ---------------
+		// -------------- ç”Ÿæˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ ---------------
 		if (ImGui::BeginMenu("GameObject"))
 		{
 			DrawGameObjectMenu();
 			ImGui::EndMenu();
 		}
-		// ------------ ƒEƒBƒ“ƒhƒE -----------
+		// ------------ ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ -----------
 		if (ImGui::BeginMenu("Window"))
 		{
 			DrawWindowMenu();
@@ -71,7 +71,7 @@ float EditorGUI::DrawMainMenu()
 		ImGui::EndMainMenuBar();
 	}
 	
-	// Fileƒƒjƒ…[‚ÌƒVƒ‡[ƒgƒJƒbƒgƒL[ˆ—
+	// Fileãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼å‡¦ç†
 	if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_N)) {
 		CreateNewScene();
 	}
@@ -91,7 +91,7 @@ float EditorGUI::DrawMainMenu()
 
 float EditorGUI::DrawToolbar(float offsetY)
 {
-	// ƒc[ƒ‹ƒo[
+	// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼
 	float toolbarHeight = 40.0f;
 #ifdef USE_IMGUI
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -110,14 +110,14 @@ float EditorGUI::DrawToolbar(float offsetY)
 
 	ImGui::Begin("##Toolbar", nullptr, flags);
 
-	// ƒ{ƒ^ƒ“‚Ì‡Œv•‚ğŒvZ
+	// ãƒœã‚¿ãƒ³ã®åˆè¨ˆå¹…ã‚’è¨ˆç®—
 	float buttonSize = 22.0f;
 	float padding = 8.0f;
 	float startY = (toolbarHeight - buttonSize) * 0.5f - 4.0f;
 	int buttonCount = 1;
 	float totalWidth = (static_cast<float>(buttonCount) * buttonSize) + 
 		static_cast<float>(buttonCount - 1) * padding;
-	// ƒEƒBƒ“ƒhƒE‚Ì’†‰›‚É”z’u
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä¸­å¤®ã«é…ç½®
 	float centerX = ImGui::GetWindowWidth() * 0.5f;
 	ImGui::SetCursorPosX(centerX - totalWidth * 0.5f);
 	ImGui::SetCursorPosY(startY);
@@ -135,7 +135,7 @@ float EditorGUI::DrawToolbar(float offsetY)
 	bool isTransitioning = SceneManager::IsTransition();
 	if (isTransitioning)
 	{
-		// ƒgƒ‰ƒ“ƒWƒVƒ‡ƒ“’†‚Íƒ{ƒ^ƒ“‚ğ–³Œø‰»
+		// ãƒˆãƒ©ãƒ³ã‚¸ã‚·ãƒ§ãƒ³ä¸­ã¯ãƒœã‚¿ãƒ³ã‚’ç„¡åŠ¹åŒ–
 		ImGui::BeginDisabled();
 	}
 
@@ -143,33 +143,33 @@ float EditorGUI::DrawToolbar(float offsetY)
 
 		if (ImGui::ImageButton("##play", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize), playIconUV0, playIconUV1, backGroundColor, tintColor))
 		{
-			// ƒvƒŒƒCˆ—
+			// ãƒ—ãƒ¬ã‚¤å‡¦ç†
 			SceneManager::EnterPlay();
 		}
 	}
 	else {
 		if (ImGui::ImageButton("##stop", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize), stopIconUV0, stopIconUV1, backGroundColor, tintColor))
 		{
-			// ƒXƒgƒbƒvˆ—
+			// ã‚¹ãƒˆãƒƒãƒ—å‡¦ç†
 			SceneManager::EnterEdit();
 		}
 	}
 
-	// ƒo[‚Ì¶’[‚ÉƒŠƒ[ƒhƒ{ƒ^ƒ“‚ğ”z’u
+	// ãƒãƒ¼ã®å·¦ç«¯ã«ãƒªãƒ­ãƒ¼ãƒ‰ãƒœã‚¿ãƒ³ã‚’é…ç½®
 	float reloadButtonX = 10.0f;
 	ImGui::SetCursorPosX(reloadButtonX);
 	ImGui::SetCursorPosY(startY);
 	if (ImGui::Button("Build Scripts"))
 	{
-		// ƒŠƒ[ƒhˆ—
+		// ãƒªãƒ­ãƒ¼ãƒ‰å‡¦ç†
 		ScriptSystem::RequestScriptBuildAndReload();
 	}
 
-	// ‰E’[‚ÉƒŠƒ[ƒhƒ{ƒ^ƒ“‚ğ”z’u
+	// å³ç«¯ã«ãƒªãƒ­ãƒ¼ãƒ‰ãƒœã‚¿ãƒ³ã‚’é…ç½®
 	ImGui::SameLine();
 	if (ImGui::Button("HotReload"))
 	{
-		// ƒŠƒ[ƒhˆ—
+		// ãƒªãƒ­ãƒ¼ãƒ‰å‡¦ç†
 		ResourceManager::UpdateHotReload();
 	}
 
@@ -188,11 +188,11 @@ float EditorGUI::DrawSceneViewToolbar()
 {
 	float toolbarHeight = 30.0f;
 #ifdef USE_IMGUI
-	// ƒc[ƒ‹ƒo[‚Ì“à—e‚ğ‚±‚±‚É•`‰æ
+	// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®å†…å®¹ã‚’ã“ã“ã«æç”»
 	ImGui::BeginChild("SceneToolbar", ImVec2(0, toolbarHeight), false);
 	{
-		// ‚±‚±‚ÉƒV[ƒ“ƒrƒ…[‚Ìƒc[ƒ‹ƒo[‚Ì“à—e‚ğ•`‰æ
-		// ƒMƒYƒ‚‚ÌLocal/WorldØ‚è‘Ö‚¦‚âAƒXƒiƒbƒvİ’è‚È‚Ç‚ğ”z’u
+		// ã“ã“ã«ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã®ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®å†…å®¹ã‚’æç”»
+		// ã‚®ã‚ºãƒ¢ã®Local/Worldåˆ‡ã‚Šæ›¿ãˆã‚„ã€ã‚¹ãƒŠãƒƒãƒ—è¨­å®šãªã©ã‚’é…ç½®
 		SceneViewConfig* config = EditorConfigManager::GetSceneViewConfig();
 		if (!config) {
 			ImGui::EndChild();
@@ -213,14 +213,14 @@ float EditorGUI::DrawSceneViewToolbar()
 		ImVec4 backGroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 		ImVec4 tintColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-		// ƒsƒ{ƒbƒgƒ‚[ƒh‚ÌØ‚è‘Ö‚¦
-		ImGui::SetNextItemWidth(75.0f); // ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì•‚ğw’è
+		// ãƒ”ãƒœãƒƒãƒˆãƒ¢ãƒ¼ãƒ‰ã®åˆ‡ã‚Šæ›¿ãˆ
+		ImGui::SetNextItemWidth(75.0f); // ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®å¹…ã‚’æŒ‡å®š
 		if (ImGui::Combo("##Pivot", &config->guizmoPivotMode, "Local\0World\0")) {
 
 		}
 		ImGui::SameLine();
 
-		// ƒXƒiƒbƒvİ’èƒ{ƒ^ƒ“
+		// ã‚¹ãƒŠãƒƒãƒ—è¨­å®šãƒœã‚¿ãƒ³
 		if (ImGui::ImageButton("##snap", iconTex->GetSRV(), ImVec2(buttonSize, buttonSize), snapIconUV0, snapIconUV1, backGroundColor, tintColor)) {
 			ImGui::OpenPopup("SnapSettingsPopup");
 		}
@@ -228,7 +228,7 @@ float EditorGUI::DrawSceneViewToolbar()
 		if (ImGui::BeginPopup("SnapSettingsPopup")) {
 			ImGui::Text("Snap Settings");
 
-			// ƒ|ƒbƒvƒAƒbƒv‚Ì‰Eã‚ÉÚ×İ’èƒ{ƒ^ƒ“‚ğ”z’u
+			// ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã®å³ä¸Šã«è©³ç´°è¨­å®šãƒœã‚¿ãƒ³ã‚’é…ç½®
 			{
 				float padding = ImGui::GetStyle().WindowPadding.x;
 				ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x - buttonSize - padding);
@@ -239,7 +239,7 @@ float EditorGUI::DrawSceneViewToolbar()
 				}
 				if (ImGui::BeginPopup("SnapSettingsDetailPopup"))
 				{
-					// Ú×İ’è‚Ì“à—e‚ğ‚±‚±‚É•`‰æ
+					// è©³ç´°è¨­å®šã®å†…å®¹ã‚’ã“ã“ã«æç”»
 					if (ImGui::MenuItem("Reset"))
 					{
 						config->ResetToDefault();
@@ -251,7 +251,7 @@ float EditorGUI::DrawSceneViewToolbar()
 
 			ImGui::Separator();
 
-			// ˆÚ“®ƒXƒiƒbƒvİ’è
+			// ç§»å‹•ã‚¹ãƒŠãƒƒãƒ—è¨­å®š
 			{
 				ImGui::Checkbox("Enable Translation Snap", &config->translationSnap.enabled);
 				ImGui::BeginDisabled(!config->translationSnap.enabled);
@@ -280,7 +280,7 @@ float EditorGUI::DrawSceneViewToolbar()
 				ImGui::EndDisabled();
 			}
 
-			// ‰ñ“]ƒXƒiƒbƒvİ’è
+			// å›è»¢ã‚¹ãƒŠãƒƒãƒ—è¨­å®š
 			{
 				ImGui::Checkbox("Enable Rotation Snap", &config->rotationSnap.enabled);
 				ImGui::BeginDisabled(!config->rotationSnap.enabled);
@@ -310,7 +310,7 @@ float EditorGUI::DrawSceneViewToolbar()
 				ImGui::EndDisabled();
 			}
 
-			// ƒXƒP[ƒ‹ƒXƒiƒbƒvİ’è
+			// ã‚¹ã‚±ãƒ¼ãƒ«ã‚¹ãƒŠãƒƒãƒ—è¨­å®š
 			{
 				ImGui::Checkbox("Enable Scale Snap", &config->scaleSnap.enabled);
 				ImGui::BeginDisabled(!config->scaleSnap.enabled);
@@ -353,23 +353,23 @@ float EditorGUI::DrawSceneViewToolbar()
 void EditorGUI::DrawFileMenu()
 {
 #ifdef USE_IMGUI
-	// ------------- ƒtƒ@ƒCƒ‹ƒƒjƒ…[ ---------------
-	// V‹KƒV[ƒ“
+	// ------------- ãƒ•ã‚¡ã‚¤ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ---------------
+	// æ–°è¦ã‚·ãƒ¼ãƒ³
 	if (ImGui::MenuItem("New Scene", "Ctrl+N")) {
-		// V‹KƒV[ƒ“ì¬
+		// æ–°è¦ã‚·ãƒ¼ãƒ³ä½œæˆ
 		CreateNewScene();
 	}
-	// ƒV[ƒ“‚Ì“Ç‚İ‚İE•Û‘¶
+	// ã‚·ãƒ¼ãƒ³ã®èª­ã¿è¾¼ã¿ãƒ»ä¿å­˜
 	if (ImGui::MenuItem("Open Scene", "Ctrl+O")) {
-		// ƒV[ƒ““Ç‚İ‚İ
+		// ã‚·ãƒ¼ãƒ³èª­ã¿è¾¼ã¿
 		OpenScene();
 	}
 	if (ImGui::MenuItem("Save", "Ctrl+S")) {
-		// ƒV[ƒ“•Û‘¶
+		// ã‚·ãƒ¼ãƒ³ä¿å­˜
 		SaveScene();
 	}
 	if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
-		// ƒV[ƒ“•Û‘¶
+		// ã‚·ãƒ¼ãƒ³ä¿å­˜
 		SaveSceneAs();
 	}
 	ImGui::Separator();
@@ -378,7 +378,7 @@ void EditorGUI::DrawFileMenu()
 	}
 	ImGui::Separator();
 	if (ImGui::MenuItem("Exit")) {
-		// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“I—¹
+		// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†
 		PostQuitMessage(0);
 	}
 
@@ -389,11 +389,11 @@ void EditorGUI::DrawFileMenu()
 void EditorGUI::DrawSceneMenu()
 {
 #ifdef USE_IMGUI
-	//ƒV[ƒ“•ÏXƒ{ƒ^ƒ“
+	//ã‚·ãƒ¼ãƒ³å¤‰æ›´ãƒœã‚¿ãƒ³
 
 	std::filesystem::directory_iterator directory("./Assets/Scenes");
 
-	// ƒV[ƒ“–¼‚ÌƒŠƒXƒg‚©‚ç“Á’è‚ÌƒV[ƒ“‚ğœŠO‚·‚é‚½‚ß‚ÌƒZƒbƒg
+	// ã‚·ãƒ¼ãƒ³åã®ãƒªã‚¹ãƒˆã‹ã‚‰ç‰¹å®šã®ã‚·ãƒ¼ãƒ³ã‚’é™¤å¤–ã™ã‚‹ãŸã‚ã®ã‚»ãƒƒãƒˆ
 	static const std::vector<std::string> ignoredScenes = { 
 		"EmptyScene",
 		"DefaultScene"
@@ -402,14 +402,14 @@ void EditorGUI::DrawSceneMenu()
 	for (auto& entry : directory)
 	{
 		if (entry.path().extension() != ".scene") {
-			continue; // sceneƒtƒ@ƒCƒ‹ˆÈŠO‚ÍƒXƒLƒbƒv
+			continue; // sceneãƒ•ã‚¡ã‚¤ãƒ«ä»¥å¤–ã¯ã‚¹ã‚­ãƒƒãƒ—
 		}
 		std::string name = entry.path().stem().string();
-		// ƒV[ƒ“–¼‚ªœŠOƒŠƒXƒg‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+		// ã‚·ãƒ¼ãƒ³åãŒé™¤å¤–ãƒªã‚¹ãƒˆã«å«ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 		if (std::ranges::find(ignoredScenes, name) != ignoredScenes.end()) {
 			continue;
 		}
-		// ƒƒjƒ…[ƒAƒCƒeƒ€‚ğì¬‚µAƒNƒŠƒbƒN‚³‚ê‚½‚çƒV[ƒ“‚ğØ‚è‘Ö‚¦‚é
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä½œæˆã—ã€ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‚‰ã‚·ãƒ¼ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 		if (ImGui::MenuItem(name.c_str())) {
 			SceneManager::ChangeScene(name);
 		}
@@ -451,7 +451,7 @@ void EditorGUI::DrawGameObjectMenu()
 		if (ImGui::MenuItem("Button")) {
 			createdObj = GameObjectFactory::CreateButton(scene, "Button", selectedCanvas ? selectedCanvas->GetOwner() : nullptr,
 				L"./Data/Default/button.png");
-			// ƒ{ƒ^ƒ“‚Ìq‚ÉƒeƒLƒXƒg‚ğì¬
+			// ãƒœã‚¿ãƒ³ã®å­ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’ä½œæˆ
 			GameObjectFactory::CreateText(scene, "Text", createdObj);
 		}
 		if (ImGui::MenuItem("Text")) {
@@ -528,13 +528,13 @@ void EditorGUI::DrawGameObjectMenu()
 
 	if (createdObj)
 	{
-		// UIƒIƒuƒWƒFƒNƒg‚Ìê‡‚ÍA‘I‘ğ’†‚ÌƒIƒuƒWƒFƒNƒg‚ªCanvas‚Ìq‚Å‚ ‚ê‚Î‚»‚Ìq‚É‚·‚éB‚»‚¤‚Å‚È‚¯‚ê‚ÎA‘I‘ğ’†‚ÌƒIƒuƒWƒFƒNƒg‚ªCanvas‚ğ‚Á‚Ä‚¢‚ê‚Î‚»‚ÌCanvas‚Ìq‚É‚·‚éB‚Ç‚¿‚ç‚à“–‚Ä‚Í‚Ü‚ç‚È‚¢ê‡‚Íƒ‹[ƒg‚É”z’u‚³‚ê‚éB
+		// UIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆã¯ã€é¸æŠä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒCanvasã®å­ã§ã‚ã‚Œã°ãã®å­ã«ã™ã‚‹ã€‚ãã†ã§ãªã‘ã‚Œã°ã€é¸æŠä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒCanvasã‚’æŒã£ã¦ã„ã‚Œã°ãã®Canvasã®å­ã«ã™ã‚‹ã€‚ã©ã¡ã‚‰ã‚‚å½“ã¦ã¯ã¾ã‚‰ãªã„å ´åˆã¯ãƒ«ãƒ¼ãƒˆã«é…ç½®ã•ã‚Œã‚‹ã€‚
 		if (createdObj->GetComponent<RectTransform>() && hasCanvas)
 		{
 			createdObj->SetParent(selectedObj);
 		}
 
-		// Hierarchy‚ÆInspector‚ğXV
+		// Hierarchyã¨Inspectorã‚’æ›´æ–°
 		createdObj->RefreshActiveInHierarchy();
 	}
 
@@ -578,39 +578,39 @@ void EditorGUI::DrawWindowMenu()
 
 void EditorGUI::CreateNewScene()
 {
-	// V‹KƒV[ƒ“ì¬‚Ì‚½‚ß‚Ìƒ‚[ƒ_ƒ‹‚ğ•\¦
+	// æ–°è¦ã‚·ãƒ¼ãƒ³ä½œæˆã®ãŸã‚ã®ãƒ¢ãƒ¼ãƒ€ãƒ«ã‚’è¡¨ç¤º
 	AssetBrowser::ShowNewSceneCreationModal("./Assets/Scenes");
 }
 
 void EditorGUI::OpenScene()
 {
-	// ƒV[ƒ““Ç‚İ‚İ
+	// ã‚·ãƒ¼ãƒ³èª­ã¿è¾¼ã¿
 	static const char* filter = "Scene Files(*.scene)\0*.scene\0All Files(*.*)\0*.*;\0\0";
 	char filePath[256] = { 0 };
 	HWND hwnd = Graphics::GetHwnd();
 	DialogResult result = Dialog::OpenFileName(filePath, sizeof(filePath), filter, nullptr, hwnd);
 	if (result == DialogResult::OK) {
 		std::filesystem::path path(filePath);
-		// ƒV[ƒ“‚ğJSONƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚İ
+		// ã‚·ãƒ¼ãƒ³ã‚’JSONãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã¿
 		SceneManager::ChangeScene(path.stem().string());
 	}
 }
 
 void EditorGUI::SaveScene()
 {
-	// ƒV[ƒ“•Û‘¶
+	// ã‚·ãƒ¼ãƒ³ä¿å­˜
 	Scene* scene = SceneManager::GetCurrentScene();
 	if (scene) {
 		std::filesystem::path sceneFilePath = "./Assets/Scenes/" + scene->name + ".scene";
-		// ƒV[ƒ“‚ğJSON‰»
+		// ã‚·ãƒ¼ãƒ³ã‚’JSONåŒ–
 		json j;
 		scene->Serialize(j);
-		// JSONƒtƒ@ƒCƒ‹‚É•Û‘¶
+		// JSONãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
 		JsonFileHandler::SaveJsonToFile(j, sceneFilePath.string());
-		// •Û‘¶Š®—¹‚ÌƒƒO‚ğo—Í
+		// ä¿å­˜å®Œäº†ã®ãƒ­ã‚°ã‚’å‡ºåŠ›
 		Console::Log("Scene saved: " + sceneFilePath.string());
 
-		// ƒoƒCƒiƒŠƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä‚à•Û‘¶
+		// ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦ã‚‚ä¿å­˜
 		{
 			sceneFilePath.replace_extension(".bin");
 			JsonFileHandler::SaveJsonToFile(j, sceneFilePath.string(), JsonIOFormat::Binary);
@@ -620,30 +620,30 @@ void EditorGUI::SaveScene()
 
 void EditorGUI::SaveSceneAs()
 {
-	// ƒV[ƒ“•Û‘¶
+	// ã‚·ãƒ¼ãƒ³ä¿å­˜
 	Scene* scene = SceneManager::GetCurrentScene();
 	if (scene) {
-		// ƒtƒ@ƒCƒ‹ƒ_ƒCƒAƒƒO•\¦
+		// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
 		const char* filter = "Scene Files(*.scene)\0*.scene\0All Files(*.*)\0*.*;\0\0";
 		char filePath[256] = { 0 };
 		DialogResult result = Dialog::SaveFileName(filePath, sizeof(filePath), filter);
-		if (result != DialogResult::OK) return; // ƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚Í•Û‘¶‚ğ’†~
+		if (result != DialogResult::OK) return; // ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸå ´åˆã¯ä¿å­˜ã‚’ä¸­æ­¢
 		std::filesystem::path sceneFilePath(filePath);
-		// Šg’£q‚ª.scene‚Å‚È‚¢ê‡A.scene‚ğ’Ç‰Á
+		// æ‹¡å¼µå­ãŒ.sceneã§ãªã„å ´åˆã€.sceneã‚’è¿½åŠ 
 		if (sceneFilePath.extension() != ".scene")
 		{
 			sceneFilePath.replace_extension(".scene");
 		}
-		// ƒV[ƒ“‚ğJSON‰»
+		// ã‚·ãƒ¼ãƒ³ã‚’JSONåŒ–
 		json j;
-		scene->name = sceneFilePath.stem().string(); // ƒV[ƒ“–¼‚ğƒtƒ@ƒCƒ‹–¼‚É‡‚í‚¹‚é
+		scene->name = sceneFilePath.stem().string(); // ã‚·ãƒ¼ãƒ³åã‚’ãƒ•ã‚¡ã‚¤ãƒ«åã«åˆã‚ã›ã‚‹
 		scene->Serialize(j);
-		// JSONƒtƒ@ƒCƒ‹‚É•Û‘¶
+		// JSONãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
 		JsonFileHandler::SaveJsonToFile(j, sceneFilePath.string());
-		// •Û‘¶Š®—¹‚ÌƒƒO‚ğo—Í
+		// ä¿å­˜å®Œäº†ã®ãƒ­ã‚°ã‚’å‡ºåŠ›
 		Console::Log("Scene saved: " + sceneFilePath.string());
 
-		// ƒoƒCƒiƒŠƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä‚à•Û‘¶
+		// ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦ã‚‚ä¿å­˜
 		{
 			sceneFilePath.replace_extension(".bin");
 			JsonFileHandler::SaveJsonToFile(j, sceneFilePath.string(), JsonIOFormat::Binary);

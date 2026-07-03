@@ -4,8 +4,8 @@
 class VSProjectReloader
 {
 public:
-	// �w�肳�ꂽ .vcxproj �t�@�C���� Visual Studio �Ƀ����[�h������
-	// ����ɂ��A�O���� .vcxproj ��ҏW�����ۂ� VS ���̕ύX�𔽉f�����邱�Ƃ��ł���
+	// 指定された .vcxproj ファイルを Visual Studio にリロードさせる
+	// これにより、外部で .vcxproj を編集した際に VS 側の変更を反映させることができる
 	static bool ReloadProject(const std::wstring& vcxprojPath);
 };
 

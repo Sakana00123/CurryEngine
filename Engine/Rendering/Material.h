@@ -12,75 +12,75 @@ using json = nlohmann::json;
 
 /**
  * @file
- * @brief ƒVƒF[ƒ_‚âƒeƒNƒXƒ`ƒƒA’è”ƒoƒbƒtƒ@‚ğ‘©‚Ë‚Ä•`‰æ‚É“K—p‚·‚éƒ}ƒeƒŠƒAƒ‹B
- * @details ƒVƒF[ƒ_İ’èAƒeƒNƒXƒ`ƒƒ‚ÌƒXƒƒbƒgŠ„‚è“–‚ÄAŠeí’l‚Ì’è”ƒoƒbƒtƒ@”½‰fA
- *          “K—piƒoƒCƒ“ƒhjˆ—‚âƒCƒ“ƒXƒyƒNƒ^•`‰æ‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚„ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’æŸã­ã¦æç”»ã«é©ç”¨ã™ã‚‹ãƒãƒ†ãƒªã‚¢ãƒ«ã€‚
+ * @details ã‚·ã‚§ãƒ¼ãƒ€è¨­å®šã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚¹ãƒ­ãƒƒãƒˆå‰²ã‚Šå½“ã¦ã€å„ç¨®å€¤ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡åæ˜ ã€
+ *          é©ç”¨ï¼ˆãƒã‚¤ãƒ³ãƒ‰ï¼‰å‡¦ç†ã‚„ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿æç”»ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class Material
 {
 public:
     /**
-     * @brief ƒVƒF[ƒ_‚ğİ’è‚µ‚Ü‚·B
-     * @param device D3D11 ƒfƒoƒCƒXB
-     * @param shader İ’è‚·‚éƒVƒF[ƒ_B
+     * @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’è¨­å®šã—ã¾ã™ã€‚
+     * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
+     * @param shader è¨­å®šã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ã€‚
      */
     void SetShader(ID3D11Device* device, std::shared_ptr<Shader> shader);
 
     /**
-     * @brief ƒVƒF[ƒ_ƒXƒe[ƒW•Ê‚ÌƒVƒF[ƒ_‚ğæ“¾‚µ‚Ü‚·B
-     * @param type ƒVƒF[ƒ_ƒ^ƒCƒvB
-     * @return w’èƒ^ƒCƒv‚ÌƒVƒF[ƒ_Bİ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í nullptrB
+     * @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚¹ãƒ†ãƒ¼ã‚¸åˆ¥ã®ã‚·ã‚§ãƒ¼ãƒ€ã‚’å–å¾—ã—ã¾ã™ã€‚
+     * @param type ã‚·ã‚§ãƒ¼ãƒ€ã‚¿ã‚¤ãƒ—ã€‚
+     * @return æŒ‡å®šã‚¿ã‚¤ãƒ—ã®ã‚·ã‚§ãƒ¼ãƒ€ã€‚è¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ nullptrã€‚
      */
     std::shared_ptr<Shader> GetShader(ShaderType type);
     
-	/** @brief ƒVƒF[ƒ_‚ğÄ“Ç‚İ‚İ‚µ‚Ü‚·B*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’å†èª­ã¿è¾¼ã¿ã—ã¾ã™ã€‚*/
     void Reload(ID3D11Device* device);
 
-	/** @brief ƒVƒF[ƒ_‚Ì‚İ“K—pƒ‚[ƒh‚ğİ’èB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã®ã¿é©ç”¨ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®šã€‚*/
 	void SetShaderOnly() { shaderOnly = true; }
 
 	/**
-	 * @brief w’è–¼‚Ì’è”ƒoƒbƒtƒ@‚ğƒoƒCƒ“ƒh‚µ‚È‚¢‚æ‚¤‚Éİ’è‚µ‚Ü‚·B
-	 * @param names ƒoƒCƒ“ƒh‚ğ—}§‚·‚é’è”ƒoƒbƒtƒ@–¼‚Ì”z—ñB
+	 * @brief æŒ‡å®šåã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’ãƒã‚¤ãƒ³ãƒ‰ã—ãªã„ã‚ˆã†ã«è¨­å®šã—ã¾ã™ã€‚
+	 * @param names ãƒã‚¤ãƒ³ãƒ‰ã‚’æŠ‘åˆ¶ã™ã‚‹å®šæ•°ãƒãƒƒãƒ•ã‚¡åã®é…åˆ—ã€‚
 	 */
 	void SetNotBindCBuffer(const std::vector<std::string>& names) { m_CBufferNotBindNames = names; }
 
-	/** @brief ƒoƒCƒ“ƒh‚µ‚È‚¢’è”ƒoƒbƒtƒ@İ’è‚ğƒNƒŠƒA‚µ‚Ü‚·B*/
+	/** @brief ãƒã‚¤ãƒ³ãƒ‰ã—ãªã„å®šæ•°ãƒãƒƒãƒ•ã‚¡è¨­å®šã‚’ã‚¯ãƒªã‚¢ã—ã¾ã™ã€‚*/
 	void ClearNotBindCBuffer() { m_CBufferNotBindNames.clear(); }
 
 	/**
-	 * @brief –¼‘O‚ÅƒeƒNƒXƒ`ƒƒ‚ğİ’è‚µ‚Ü‚·B
-	 * @param name ƒeƒNƒXƒ`ƒƒ•Ï”–¼B
-	 * @param texture İ’è‚·‚éƒeƒNƒXƒ`ƒƒB
+	 * @brief åå‰ã§ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param name ãƒ†ã‚¯ã‚¹ãƒãƒ£å¤‰æ•°åã€‚
+	 * @param texture è¨­å®šã™ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€‚
 	 */
 	void SetTexture(const std::string& name, std::shared_ptr<Texture> texture);
 
-	/** @brief –¼‘O‚ÅƒeƒNƒXƒ`ƒƒ‚ğæ“¾‚µ‚Ü‚·Bİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î nullptr ‚ğ•Ô‚·B*/
+	/** @brief åå‰ã§ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å–å¾—ã—ã¾ã™ã€‚è¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã° nullptr ã‚’è¿”ã™ã€‚*/
 	template<typename T = Texture>
 	std::weak_ptr<T> GetTexture(const std::string& name)
 	{
-		// Shader‚©‚ç•Ï”î•ñ‚ğ’T‚·
+		// Shaderã‹ã‚‰å¤‰æ•°æƒ…å ±ã‚’æ¢ã™
 		//for (ShaderBinding& binding : m_ShaderBindings)
 		{
-			// ‘ÎÛ‚ÌƒeƒNƒXƒ`ƒƒ•Ï”‚ğ’T‚·
+			// å¯¾è±¡ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£å¤‰æ•°ã‚’æ¢ã™
 			auto it = textures.find(name);
 			if (it != textures.end())
 			{
-				// Œ©‚Â‚©‚Á‚½‚ç•Ô‚·
+				// è¦‹ã¤ã‹ã£ãŸã‚‰è¿”ã™
 				return std::dynamic_pointer_cast<T>(it->second)/*.lock()*/;
 			}
 		}
-		// Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚ÌŒx
+		// è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã®è­¦å‘Š
 		//Console::LogWarning("Warning: Material::GetTexture failed. Texture variable " + name + " not found.");
 		return {};
 	}
 
 	/**
-	 * @brief ”CˆÓ‚Ì’l‚ğ–¼‘O‚Åİ’è‚µ‚Ü‚·i’è”ƒoƒbƒtƒ@‚Ö”½‰fjB
-	 * @tparam T ’l‚ÌŒ^B
-	 * @param name ’l‚Ì¯•Ê–¼B
-	 * @param value İ’è‚·‚é’lB
-	 * @details “à•”‚Å `SetValue(const std::string&, void*, size_t)` ‚ğŒÄ‚Ño‚µ‚ÄA’l‚ğ’è”ƒoƒbƒtƒ@‚É”½‰f‚µ‚Ü‚·B
+	 * @brief ä»»æ„ã®å€¤ã‚’åå‰ã§è¨­å®šã—ã¾ã™ï¼ˆå®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸åæ˜ ï¼‰ã€‚
+	 * @tparam T å€¤ã®å‹ã€‚
+	 * @param name å€¤ã®è­˜åˆ¥åã€‚
+	 * @param value è¨­å®šã™ã‚‹å€¤ã€‚
+	 * @details å†…éƒ¨ã§ `SetValue(const std::string&, void*, size_t)` ã‚’å‘¼ã³å‡ºã—ã¦ã€å€¤ã‚’å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«åæ˜ ã—ã¾ã™ã€‚
 	 */
 	template<typename T>
 	void SetValue(const std::string& name, const T& value) {
@@ -88,11 +88,11 @@ public:
 	}
 
 	/**
-	 * @brief ”CˆÓ‚Ì’l‚ğ–¼‘O‚Åæ“¾‚µ‚Ü‚·iCPU ‘¤ƒRƒs[‚©‚çjB
-	 * @tparam T ’l‚ÌŒ^B
-	 * @param name ’l‚Ì¯•Ê–¼B
-	 * @param value o—Íæ‚Ì’lB
-	 * @details “à•”‚Å `GetValue(const std::string&, void*, size_t)` ‚ğŒÄ‚Ño‚µ‚ÄACPU ‘¤ƒRƒs[‚©‚ç’l‚ğæ“¾‚µ‚Ü‚·B
+	 * @brief ä»»æ„ã®å€¤ã‚’åå‰ã§å–å¾—ã—ã¾ã™ï¼ˆCPU å´ã‚³ãƒ”ãƒ¼ã‹ã‚‰ï¼‰ã€‚
+	 * @tparam T å€¤ã®å‹ã€‚
+	 * @param name å€¤ã®è­˜åˆ¥åã€‚
+	 * @param value å‡ºåŠ›å…ˆã®å€¤ã€‚
+	 * @details å†…éƒ¨ã§ `GetValue(const std::string&, void*, size_t)` ã‚’å‘¼ã³å‡ºã—ã¦ã€CPU å´ã‚³ãƒ”ãƒ¼ã‹ã‚‰å€¤ã‚’å–å¾—ã—ã¾ã™ã€‚
 	 */
 	template<typename T>
 	void GetValue(const std::string& name, T& value) const {
@@ -100,133 +100,133 @@ public:
 	}
 
     /**
-     * @brief ”CˆÓ‚Ì’l‚ğ–¼‘O‚Åİ’è‚µ‚Ü‚·i’è”ƒoƒbƒtƒ@‚Ö”½‰fjB
-     * @param name ’l‚Ì¯•Ê–¼B
-     * @param value ’l‚Ìæ“ªƒ|ƒCƒ“ƒ^B
-     * @param size ƒoƒCƒgƒTƒCƒYB
+     * @brief ä»»æ„ã®å€¤ã‚’åå‰ã§è¨­å®šã—ã¾ã™ï¼ˆå®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸åæ˜ ï¼‰ã€‚
+     * @param name å€¤ã®è­˜åˆ¥åã€‚
+     * @param value å€¤ã®å…ˆé ­ãƒã‚¤ãƒ³ã‚¿ã€‚
+     * @param size ãƒã‚¤ãƒˆã‚µã‚¤ã‚ºã€‚
      */
     void SetValue(const std::string& name, void* value, size_t size);
     /**
-     * @brief ”CˆÓ‚Ì’l‚ğ–¼‘O‚Åæ“¾‚µ‚Ü‚·iCPU ‘¤ƒRƒs[‚©‚çjB
-     * @param name ’l‚Ì¯•Ê–¼B
-     * @param value o—Íæƒoƒbƒtƒ@B
-     * @param size ƒoƒCƒgƒTƒCƒYB
+     * @brief ä»»æ„ã®å€¤ã‚’åå‰ã§å–å¾—ã—ã¾ã™ï¼ˆCPU å´ã‚³ãƒ”ãƒ¼ã‹ã‚‰ï¼‰ã€‚
+     * @param name å€¤ã®è­˜åˆ¥åã€‚
+     * @param value å‡ºåŠ›å…ˆãƒãƒƒãƒ•ã‚¡ã€‚
+     * @param size ãƒã‚¤ãƒˆã‚µã‚¤ã‚ºã€‚
      */
 	void GetValue(const std::string& name, void* value, size_t size) const;
 
-	/** @brief ƒuƒŒƒ“ƒhƒXƒe[ƒg‚ğæ“¾B*/
+	/** @brief ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—ã€‚*/
 	BlendState GetBlendState() const { return blendState; }
 
-	/** @brief ƒuƒŒƒ“ƒhƒXƒe[ƒg‚ğİ’èB*/
+	/** @brief ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚’è¨­å®šã€‚*/
 	void SetBlendState(BlendState state) { blendState = state; }
 
-	/** @brief ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚ğæ“¾B*/
+	/** @brief ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—ã€‚*/
 	RasterizerState GetRasterizerState() const { return rasterizerState; }
 
-	/** @brief ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚ğİ’èB*/
+	/** @brief ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã‚’è¨­å®šã€‚*/
 	void SetRasterizerState(RasterizerState state) { rasterizerState = state; }
 
-	/** @brief [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg‚ğæ“¾B*/
+	/** @brief æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—ã€‚*/
 	DepthStencilState GetDepthStencilState() const { return depthStencilState; }
 
-	/** @brief [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg‚ğİ’èB*/
+	/** @brief æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã‚’è¨­å®šã€‚*/
 	void SetDepthStencilState(DepthStencilState state) { depthStencilState = state; }
 
 	/**
-	 * @brief ƒ}ƒeƒŠƒAƒ‹‚ğ•`‰æƒRƒ“ƒeƒLƒXƒg‚Ö“K—p‚µ‚Ü‚·iƒoƒCƒ“ƒhjB
-	 * @param rtx •`‰æƒRƒ“ƒeƒLƒXƒgB
+	 * @brief ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’æç”»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã¸é©ç”¨ã—ã¾ã™ï¼ˆãƒã‚¤ãƒ³ãƒ‰ï¼‰ã€‚
+	 * @param rtx æç”»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	void Apply(RenderContext* rtx);
 
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^—p‚ÌƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	void DrawProperty();
 
-	/** @brief ƒGƒfƒBƒ^ã‚ÅƒeƒNƒXƒ`ƒƒ‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾B*/
+	/** @brief ã‚¨ãƒ‡ã‚£ã‚¿ä¸Šã§ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ã€‚*/
 	bool IsTextureChanged() const { return m_IsTextureChanged; }
 
-	/** @brief ƒGƒfƒBƒ^ã‚ÅƒeƒNƒXƒ`ƒƒ‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©‚ğƒNƒŠƒAB*/
+	/** @brief ã‚¨ãƒ‡ã‚£ã‚¿ä¸Šã§ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’ã‚¯ãƒªã‚¢ã€‚*/
 	void ClearTextureChangedFlag() { m_IsTextureChanged = false; }
 
 	/**
-	 * @brief ƒ}ƒeƒŠƒAƒ‹‚Ìİ’è‚ğ JSON ‰»‚µ‚Ü‚·B
-	 * @return ƒ}ƒeƒŠƒAƒ‹İ’è‚Ì JSON ƒIƒuƒWƒFƒNƒgB
+	 * @brief ãƒãƒ†ãƒªã‚¢ãƒ«ã®è¨­å®šã‚’ JSON åŒ–ã—ã¾ã™ã€‚
+	 * @return ãƒãƒ†ãƒªã‚¢ãƒ«è¨­å®šã® JSON ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
 	 */
 	json Serialize() const;
 
 	/**
-	 * @brief JSON ‚©‚çƒ}ƒeƒŠƒAƒ‹‚Ìİ’è‚ğ•œŒ³‚µ‚Ü‚·B
-	 * @param j ƒ}ƒeƒŠƒAƒ‹İ’è‚Ì JSON ƒIƒuƒWƒFƒNƒgB
-	 * @return ¬Œ÷‚Å trueB
+	 * @brief JSON ã‹ã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«ã®è¨­å®šã‚’å¾©å…ƒã—ã¾ã™ã€‚
+	 * @param j ãƒãƒ†ãƒªã‚¢ãƒ«è¨­å®šã® JSON ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
+	 * @return æˆåŠŸã§ trueã€‚
 	 */
 	bool Deserialize(const json& j);
 
 private:
-	// ƒVƒF[ƒ_ƒZƒŒƒNƒ^‚Ì•`‰æ
+	// ã‚·ã‚§ãƒ¼ãƒ€ã‚»ãƒ¬ã‚¯ã‚¿ã®æç”»
 	void DrawShaderSelector(ID3D11Device* device, size_t type);
 
-	// ’è”ƒoƒbƒtƒ@•Ï”‚Ì•`‰æ
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡å¤‰æ•°ã®æç”»
 	void DrawCBufferVariables(size_t type);
 
-	// ƒeƒNƒXƒ`ƒƒƒXƒƒbƒg‚Ì•`‰æ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¹ãƒ­ãƒƒãƒˆã®æç”»
 	void DrawTextureSlots(size_t type);
 	
-	// ƒTƒ“ƒvƒ‰[ƒXƒƒbƒg‚Ì•`‰æ
+	// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ­ãƒƒãƒˆã®æç”»
 	void DrawSamplerSlots(size_t type);
 	
 	struct ShaderBinding;
-	// ’è”ƒoƒbƒtƒ@‚Ìİ’è‚ğXV
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®è¨­å®šã‚’æ›´æ–°
 	void UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& binding, const ShaderReflectionData& reflection);
 
-	// ƒeƒNƒXƒ`ƒƒ‚ÆƒTƒ“ƒvƒ‰[‚Ìİ’è‚ğXV
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®è¨­å®šã‚’æ›´æ–°
 	void UpdateTextureAndSamplerBindings(ID3D11Device* device, ShaderBinding& binding, const ShaderReflectionData& reflection);
 
 private:
     /**
-     * @brief ’è”ƒoƒbƒtƒ@‚ÌÀ‘Ì‚Æ CPU ‘¤ƒRƒs[‚ğ‚Ü‚Æ‚ß‚½\‘¢‘ÌB
+     * @brief å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®å®Ÿä½“ã¨ CPU å´ã‚³ãƒ”ãƒ¼ã‚’ã¾ã¨ã‚ãŸæ§‹é€ ä½“ã€‚
      */
     struct CBufferData
     {
-        Microsoft::WRL::ComPtr<ID3D11Buffer> buffer; //!< GPU ‘¤‚Ì’è”ƒoƒbƒtƒ@
-        std::vector<uint8_t> localData; // CPU ‘¤‚ÌƒRƒs[
-        bool dirty = false;             //!< •ÏXƒtƒ‰ƒOitrue ‚Ì‚Æ‚« GPU ‚ÖXVj
+        Microsoft::WRL::ComPtr<ID3D11Buffer> buffer; //!< GPU å´ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡
+        std::vector<uint8_t> localData; // CPU å´ã®ã‚³ãƒ”ãƒ¼
+        bool dirty = false;             //!< å¤‰æ›´ãƒ•ãƒ©ã‚°ï¼ˆtrue ã®ã¨ã GPU ã¸æ›´æ–°ï¼‰
     };
 
     /**
-     * @brief ƒVƒF[ƒ_‚Æ‚»‚Ì’è”ƒoƒbƒtƒ@ŒQ‚ğ‚Ü‚Æ‚ß‚½\‘¢‘ÌB
+     * @brief ã‚·ã‚§ãƒ¼ãƒ€ã¨ãã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ç¾¤ã‚’ã¾ã¨ã‚ãŸæ§‹é€ ä½“ã€‚
 	 */
     struct ShaderBinding
     {
-		std::shared_ptr<Shader> shader = nullptr; //!< ƒVƒF[ƒ_[
+		std::shared_ptr<Shader> shader = nullptr; //!< ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
     };
 
-	/** @brief ƒVƒF[ƒ_ƒXƒe[ƒW•Ê‚ÌƒVƒF[ƒ_‚Æ’è”ƒoƒbƒtƒ@ŒQB*/
+	/** @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚¹ãƒ†ãƒ¼ã‚¸åˆ¥ã®ã‚·ã‚§ãƒ¼ãƒ€ã¨å®šæ•°ãƒãƒƒãƒ•ã‚¡ç¾¤ã€‚*/
 	ShaderBinding m_ShaderBindings[static_cast<size_t>(ShaderType::EnumCount)];
 	
-	std::unordered_map<std::string, CBufferData> cbuffers; //!< –¼‘O‚ğƒL[‚Æ‚·‚é’è”ƒoƒbƒtƒ@ŒQ
-	std::unordered_map<std::string, std::shared_ptr<Texture>> textures; //!< –¼‘O‚ğƒL[‚Æ‚·‚éƒeƒNƒXƒ`ƒƒŒQ
-	std::unordered_map<std::string, std::vector<uint8_t>> values; //!< –¼‘O‚ğƒL[‚Æ‚·‚é”CˆÓ‚Ì’lŒQiCPU ‘¤ƒRƒs[j
-	//bool m_isValuesDirty = false; //!< ”CˆÓ‚Ì’l‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©
-	std::unordered_map<std::string, SamplerState> samplers; //!< –¼‘O‚ğƒL[‚Æ‚·‚éƒTƒ“ƒvƒ‰[ŒQ
+	std::unordered_map<std::string, CBufferData> cbuffers; //!< åå‰ã‚’ã‚­ãƒ¼ã¨ã™ã‚‹å®šæ•°ãƒãƒƒãƒ•ã‚¡ç¾¤
+	std::unordered_map<std::string, std::shared_ptr<Texture>> textures; //!< åå‰ã‚’ã‚­ãƒ¼ã¨ã™ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ç¾¤
+	std::unordered_map<std::string, std::vector<uint8_t>> values; //!< åå‰ã‚’ã‚­ãƒ¼ã¨ã™ã‚‹ä»»æ„ã®å€¤ç¾¤ï¼ˆCPU å´ã‚³ãƒ”ãƒ¼ï¼‰
+	//bool m_isValuesDirty = false; //!< ä»»æ„ã®å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹
+	std::unordered_map<std::string, SamplerState> samplers; //!< åå‰ã‚’ã‚­ãƒ¼ã¨ã™ã‚‹ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ç¾¤
 
-	/** @brief [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgB*/
+	/** @brief æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã€‚*/
     DepthStencilState depthStencilState = DepthStencilState::EnumCount;
-	/** @brief ƒuƒŒƒ“ƒhƒXƒe[ƒgB*/
+	/** @brief ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã€‚*/
     BlendState blendState = BlendState::EnumCount;
-	/** @brief ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgB*/
+	/** @brief ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã€‚*/
     RasterizerState rasterizerState = RasterizerState::EnumCount;
 
-	/** @brief Apply‚ÉƒoƒCƒ“ƒh‚µ‚È‚¢’è”ƒoƒbƒtƒ@–¼ˆê——B*/
+	/** @brief Applyæ™‚ã«ãƒã‚¤ãƒ³ãƒ‰ã—ãªã„å®šæ•°ãƒãƒƒãƒ•ã‚¡åä¸€è¦§ã€‚*/
 	std::vector<std::string> m_CBufferNotBindNames = {
 		"SCENE_CONSTANT_BUFFER", "LIGHT_CONSTANT_BUFFER"
 	};
 
 private:
-	bool m_IsTextureChanged = false; //!< ƒeƒNƒXƒ`ƒƒ‚ª•ÏX‚³‚ê‚½‚©‚Ç‚¤‚©
-	bool shaderOnly = false; //!< ƒVƒF[ƒ_‚Ì‚İ‚Ìƒ}ƒeƒŠƒAƒ‹‚©‚Ç‚¤‚©
-	//MaterialProperty m_Property; //!< ƒ}ƒeƒŠƒAƒ‹ƒvƒƒpƒeƒB
-	//ImGuiTextFilter m_Filter; //!< ƒCƒ“ƒXƒyƒNƒ^‚ÌƒtƒBƒ‹ƒ^
-	//bool m_IsOpen = true; //!< ƒCƒ“ƒXƒyƒNƒ^‚ªŠJ‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	//bool m_IsShaderSelectorOpen = false; //!< ƒVƒF[ƒ_ƒZƒŒƒNƒ^‚ªŠJ‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	//size_t m_CurrentShaderType = 0; //!< Œ»İ‘I‘ğ’†‚ÌƒVƒF[ƒ_ƒ^ƒCƒviƒCƒ“ƒXƒyƒNƒ^—pj
-	//static std::shared_ptr<Shader> s_NullShader; //!< ƒVƒF[ƒ_–¢İ’è‚Ég—p‚·‚éƒ_ƒ~[ƒVƒF[ƒ_
+	bool m_IsTextureChanged = false; //!< ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã©ã†ã‹
+	bool shaderOnly = false; //!< ã‚·ã‚§ãƒ¼ãƒ€ã®ã¿ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã‹ã©ã†ã‹
+	//MaterialProperty m_Property; //!< ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+	//ImGuiTextFilter m_Filter; //!< ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã®ãƒ•ã‚£ãƒ«ã‚¿
+	//bool m_IsOpen = true; //!< ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãŒé–‹ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹
+	//bool m_IsShaderSelectorOpen = false; //!< ã‚·ã‚§ãƒ¼ãƒ€ã‚»ãƒ¬ã‚¯ã‚¿ãŒé–‹ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹
+	//size_t m_CurrentShaderType = 0; //!< ç¾åœ¨é¸æŠä¸­ã®ã‚·ã‚§ãƒ¼ãƒ€ã‚¿ã‚¤ãƒ—ï¼ˆã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ï¼‰
+	//static std::shared_ptr<Shader> s_NullShader; //!< ã‚·ã‚§ãƒ¼ãƒ€æœªè¨­å®šæ™‚ã«ä½¿ç”¨ã™ã‚‹ãƒ€ãƒŸãƒ¼ã‚·ã‚§ãƒ¼ãƒ€
 };

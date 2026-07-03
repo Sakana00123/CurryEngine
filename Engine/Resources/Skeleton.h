@@ -6,17 +6,17 @@
 
 struct Bone
 {
-	std::string name; // ƒ{[ƒ“‚Ì–¼‘O
-	int parentIndex = -1; // eƒ{[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒXi-1‚Íƒ‹[ƒgƒ{[ƒ“j
-	DirectX::XMFLOAT4X4 offsetMatrix{}; // ƒIƒtƒZƒbƒgs—ñiƒ{[ƒ“‚Ì‰Šúp¨‚ğ•\‚·s—ñj
+	std::string name; // ãƒœãƒ¼ãƒ³ã®åå‰
+	int parentIndex = -1; // è¦ªãƒœãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆ-1ã¯ãƒ«ãƒ¼ãƒˆãƒœãƒ¼ãƒ³ï¼‰
+	DirectX::XMFLOAT4X4 offsetMatrix{}; // ã‚ªãƒ•ã‚»ãƒƒãƒˆè¡Œåˆ—ï¼ˆãƒœãƒ¼ãƒ³ã®åˆæœŸå§¿å‹¢ã‚’è¡¨ã™è¡Œåˆ—ï¼‰
 };
 
 class Skeleton
 {
 	public:
-	std::vector<Bone> bones; // ƒ{[ƒ“‚ÌƒŠƒXƒg
-	std::unordered_map<std::string, int> boneNameToIndex; // ƒ{[ƒ“–¼‚©‚çƒCƒ“ƒfƒbƒNƒX‚Ö‚Ìƒ}ƒbƒsƒ“ƒO
-	// ƒ{[ƒ“‚ğ’Ç‰Á‚·‚éŠÖ”
+	std::vector<Bone> bones; // ãƒœãƒ¼ãƒ³ã®ãƒªã‚¹ãƒˆ
+	std::unordered_map<std::string, int> boneNameToIndex; // ãƒœãƒ¼ãƒ³åã‹ã‚‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¸ã®ãƒãƒƒãƒ”ãƒ³ã‚°
+	// ãƒœãƒ¼ãƒ³ã‚’è¿½åŠ ã™ã‚‹é–¢æ•°
 	void AddBone(const std::string& name, int parentIndex, const DirectX::XMFLOAT4X4& offsetMatrix)
 	{
 		Bone bone;
@@ -26,7 +26,7 @@ class Skeleton
 		bones.push_back(bone);
 		boneNameToIndex[name] = static_cast<int>(bones.size() - 1);
 	}
-	// ƒ{[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾‚·‚éŠÖ”
+	// ãƒœãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹é–¢æ•°
 	int GetBoneIndex(const std::string& name) const
 	{
 		auto it = boneNameToIndex.find(name);
@@ -34,6 +34,6 @@ class Skeleton
 		{
 			return it->second;
 		}
-		return -1; // Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í-1‚ğ•Ô‚·
+		return -1; // è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯-1ã‚’è¿”ã™
 	}
 };

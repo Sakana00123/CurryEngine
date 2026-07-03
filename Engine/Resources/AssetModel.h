@@ -10,7 +10,7 @@
 #include <DirectXMath.h>
 #include "AssetMeta.h"
 
-// ‘O•ûéŒ¾
+// å‰æ–¹å®£è¨€
 class Material;
 class Texture;
 struct aiScene;
@@ -18,13 +18,13 @@ namespace fs = std::filesystem;
 
 /**
  * @file AssetModel.h
- * @brief ƒtƒH[ƒ}ƒbƒg”ñˆË‘¶‚Ìƒ‚ƒfƒ‹ƒAƒZƒbƒgB
+ * @brief ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆéä¾å­˜ã®ãƒ¢ãƒ‡ãƒ«ã‚¢ã‚»ãƒƒãƒˆã€‚
  *
- * assimp Œo—R‚Åƒ[ƒh‚³‚ê‚½ 3D ƒ‚ƒfƒ‹ƒf[ƒ^‚ğ•Û‚·‚éB
- * ƒGƒ“ƒWƒ“‹¤’Ê‚Ì Material / Texture ƒNƒ‰ƒX‚ğ’¼ÚQÆ‚·‚éB
+ * assimp çµŒç”±ã§ãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸ 3D ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’ä¿æŒã™ã‚‹ã€‚
+ * ã‚¨ãƒ³ã‚¸ãƒ³å…±é€šã® Material / Texture ã‚¯ãƒ©ã‚¹ã‚’ç›´æ¥å‚ç…§ã™ã‚‹ã€‚
  *
- * GPU ƒŠƒ\[ƒXi’¸“_ƒoƒbƒtƒ@EƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@j‚ÍŠe MeshData ‚ª’¼Ú•Û‚·‚éB
- * ƒVƒŠƒAƒ‰ƒCƒY‚Í«—ˆ AssetDatabase Œo—R‚Ì json ‰»‚É“ˆê—\’èB
+ * GPU ãƒªã‚½ãƒ¼ã‚¹ï¼ˆé ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ»ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ï¼‰ã¯å„ MeshData ãŒç›´æ¥ä¿æŒã™ã‚‹ã€‚
+ * ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã¯å°†æ¥ AssetDatabase çµŒç”±ã® json åŒ–ã«çµ±ä¸€äºˆå®šã€‚
  */
 class AssetModel : public Resource
 {
@@ -33,27 +33,27 @@ public:
     virtual ~AssetModel() = default;
 
     // -----------------------------------------------------------------------
-    // Resource ƒCƒ“ƒ^[ƒtƒF[ƒX
+    // Resource ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
     // -----------------------------------------------------------------------
 
     /**
-     * @brief ƒtƒ@ƒCƒ‹ƒpƒX‚©‚çƒ[ƒh‚·‚éiResource Œ_–ñã‚ÌÀ‘•jB
-     * @note «—ˆ‚Í AssetMeta ‚ğó‚¯æ‚éŒ`‚É•ÏX—\’èB
-     *       “à•”‚Å assimp ‚ğŒÄ‚Ño‚µ ImportFromScene() ‚ÉˆÏ÷‚·‚éB
+     * @brief ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ï¼ˆResource å¥‘ç´„ä¸Šã®å®Ÿè£…ï¼‰ã€‚
+     * @note å°†æ¥ã¯ AssetMeta ã‚’å—ã‘å–ã‚‹å½¢ã«å¤‰æ›´äºˆå®šã€‚
+     *       å†…éƒ¨ã§ assimp ã‚’å‘¼ã³å‡ºã— ImportFromScene() ã«å§”è­²ã™ã‚‹ã€‚
      */
     bool LoadFromFile(const std::string& path) override;
 
-    /** @brief ƒzƒbƒgƒŠƒ[ƒhB*/
+    /** @brief ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ã€‚*/
     bool Reload() override;
 
 	bool LoadFromMeta(const CurryEngine::Resources::AssetMeta& meta);
 
     // -----------------------------------------------------------------------
-    // ’¸“_ƒŒƒCƒAƒEƒg
+    // é ‚ç‚¹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
     // -----------------------------------------------------------------------
 
     /**
-     * @brief ƒXƒLƒjƒ“ƒO‚È‚µƒƒbƒVƒ…‚Ì’¸“_B
+     * @brief ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ãªã—ãƒ¡ãƒƒã‚·ãƒ¥ã®é ‚ç‚¹ã€‚
      * InputLayout: POSITION / NORMAL / TANGENT / TEXCOORD
      */
     struct StaticVertex
@@ -65,7 +65,7 @@ public:
     };
 
     /**
-     * @brief ƒXƒLƒjƒ“ƒO‚ ‚èiƒXƒPƒ‹ƒ^ƒ‹jƒƒbƒVƒ…‚Ì’¸“_B
+     * @brief ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ã‚ã‚Šï¼ˆã‚¹ã‚±ãƒ«ã‚¿ãƒ«ï¼‰ãƒ¡ãƒƒã‚·ãƒ¥ã®é ‚ç‚¹ã€‚
      * InputLayout: POSITION / NORMAL / TANGENT / TEXCOORD / JOINTS / WEIGHTS
      */
     struct SkinnedVertex
@@ -79,125 +79,125 @@ public:
     };
 
     // -----------------------------------------------------------------------
-    // ƒƒbƒVƒ…
+    // ãƒ¡ãƒƒã‚·ãƒ¥
     // -----------------------------------------------------------------------
 
     /**
-     * @brief 1 ‚Â‚Ìƒhƒ[ƒR[ƒ‹‚É‘Î‰‚·‚éƒƒbƒVƒ…ƒf[ƒ^B
+     * @brief 1 ã¤ã®ãƒ‰ãƒ­ãƒ¼ã‚³ãƒ¼ãƒ«ã«å¯¾å¿œã™ã‚‹ãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿ã€‚
      *
-     * ƒXƒLƒjƒ“ƒO‚Ì—L–³‚Å’¸“_ƒoƒbƒtƒ@‚Ì’†g‚ª•Ï‚í‚é‚ªA
-     * GPU ƒoƒbƒtƒ@‚Í‹¤’Ê‚Ìƒ|ƒCƒ“ƒ^‚Å•Û‚·‚éB
-     * ‚Ç‚¿‚ç‚Ì’¸“_Œ^‚ğg‚¤‚©‚Í isSkinned ‚Å”»’è‚·‚éB
+     * ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ã®æœ‰ç„¡ã§é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä¸­èº«ãŒå¤‰ã‚ã‚‹ãŒã€
+     * GPU ãƒãƒƒãƒ•ã‚¡ã¯å…±é€šã®ãƒã‚¤ãƒ³ã‚¿ã§ä¿æŒã™ã‚‹ã€‚
+     * ã©ã¡ã‚‰ã®é ‚ç‚¹å‹ã‚’ä½¿ã†ã‹ã¯ isSkinned ã§åˆ¤å®šã™ã‚‹ã€‚
      */
     struct MeshData
     {
         std::u8string name;
 
-        // --- CPU ‘¤ƒLƒƒƒbƒVƒ… ---
-        std::vector<StaticVertex>  staticVertices;  //!< isSkinned == false ‚Ì‚Æ‚«—LŒø
-        std::vector<SkinnedVertex> skinnedVertices; //!< isSkinned == true  ‚Ì‚Æ‚«—LŒø
+        // --- CPU å´ã‚­ãƒ£ãƒƒã‚·ãƒ¥ ---
+        std::vector<StaticVertex>  staticVertices;  //!< isSkinned == false ã®ã¨ãæœ‰åŠ¹
+        std::vector<SkinnedVertex> skinnedVertices; //!< isSkinned == true  ã®ã¨ãæœ‰åŠ¹
         std::vector<uint32_t>      indices;
 
-        // --- GPU ƒoƒbƒtƒ@ ---
+        // --- GPU ãƒãƒƒãƒ•ã‚¡ ---
         Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
         Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
         UINT vertexStride = 0; //!< sizeof(StaticVertex) or sizeof(SkinnedVertex)
         UINT indexCount = 0;
 
-        // --- ƒ}ƒeƒŠƒAƒ‹QÆ ---
-        int materialIndex = -1; //!< AssetModel::materials ‚Ö‚ÌƒCƒ“ƒfƒbƒNƒX
+        // --- ãƒãƒ†ãƒªã‚¢ãƒ«å‚ç…§ ---
+        int materialIndex = -1; //!< AssetModel::materials ã¸ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 
-        // --- ƒtƒ‰ƒO ---
-        bool isSkinned = false; //!< ƒXƒPƒ‹ƒ^ƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“‘ÎÛ‚©‚Ç‚¤‚©
-        bool hasTangent = false; //!< ƒ^ƒ“ƒWƒFƒ“ƒg‘®«‚ª‘¶İ‚·‚é‚©
+        // --- ãƒ•ãƒ©ã‚° ---
+        bool isSkinned = false; //!< ã‚¹ã‚±ãƒ«ã‚¿ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¯¾è±¡ã‹ã©ã†ã‹
+        bool hasTangent = false; //!< ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆå±æ€§ãŒå­˜åœ¨ã™ã‚‹ã‹
 
-        // --- ƒXƒLƒ“\’z—piImportSkins() ‚ªQÆŒã‚É•s—v‚É‚È‚éˆêƒf[ƒ^j ---
-        std::vector<std::u8string>               boneNames;          //!< ƒ{[ƒ“–¼iƒm[ƒh–¼‚Æ‘Î‰j
-        std::vector<DirectX::XMFLOAT4X4>      boneOffsetMatrices; //!< ƒCƒ“ƒo[ƒXƒoƒCƒ“ƒhƒ|[ƒYs—ñ
+        // --- ã‚¹ã‚­ãƒ³æ§‹ç¯‰ç”¨ï¼ˆImportSkins() ãŒå‚ç…§å¾Œã«ä¸è¦ã«ãªã‚‹ä¸€æ™‚ãƒ‡ãƒ¼ã‚¿ï¼‰ ---
+        std::vector<std::u8string>               boneNames;          //!< ãƒœãƒ¼ãƒ³åï¼ˆãƒãƒ¼ãƒ‰åã¨å¯¾å¿œï¼‰
+        std::vector<DirectX::XMFLOAT4X4>      boneOffsetMatrices; //!< ã‚¤ãƒ³ãƒãƒ¼ã‚¹ãƒã‚¤ãƒ³ãƒ‰ãƒãƒ¼ã‚ºè¡Œåˆ—
 
-        /** @brief GPU ƒoƒbƒtƒ@‚ªì¬Ï‚İ‚©‚Ç‚¤‚©B*/
+        /** @brief GPU ãƒãƒƒãƒ•ã‚¡ãŒä½œæˆæ¸ˆã¿ã‹ã©ã†ã‹ã€‚*/
         bool IsUploaded() const { return vertexBuffer != nullptr; }
     };
 
     // -----------------------------------------------------------------------
-    // ƒm[ƒh
+    // ãƒãƒ¼ãƒ‰
     // -----------------------------------------------------------------------
 
     /**
-     * @brief ƒV[ƒ“ƒOƒ‰ƒt‚Ìƒm[ƒhB
-     * ƒm[ƒh‚Í Mesh ‚ğ 0 ‚Ü‚½‚Í 1 ‚ÂQÆ‚µAqƒm[ƒh‚ğ‚Ä‚éB
-     * Skin / Animation ‚©‚çQÆ‚³‚ê‚éƒWƒ‡ƒCƒ“ƒg‚àƒm[ƒh‚Æ‚µ‚Ä•\Œ»‚³‚ê‚éB
+     * @brief ã‚·ãƒ¼ãƒ³ã‚°ãƒ©ãƒ•ã®ãƒãƒ¼ãƒ‰ã€‚
+     * ãƒãƒ¼ãƒ‰ã¯ Mesh ã‚’ 0 ã¾ãŸã¯ 1 ã¤å‚ç…§ã—ã€å­ãƒãƒ¼ãƒ‰ã‚’æŒã¦ã‚‹ã€‚
+     * Skin / Animation ã‹ã‚‰å‚ç…§ã•ã‚Œã‚‹ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚‚ãƒãƒ¼ãƒ‰ã¨ã—ã¦è¡¨ç¾ã•ã‚Œã‚‹ã€‚
      */
     struct Node
     {
         std::u8string name;
 
-        // --- ŠK‘w ---
-        int              parent = -1; //!< eƒm[ƒh‚ÌƒCƒ“ƒfƒbƒNƒXiƒ‹[ƒg‚Í -1j
-        std::vector<int> children;      //!< qƒm[ƒh‚ÌƒCƒ“ƒfƒbƒNƒX”z—ñ
+        // --- éšå±¤ ---
+        int              parent = -1; //!< è¦ªãƒãƒ¼ãƒ‰ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆãƒ«ãƒ¼ãƒˆã¯ -1ï¼‰
+        std::vector<int> children;      //!< å­ãƒãƒ¼ãƒ‰ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
 
-        // --- ƒ[ƒJƒ‹ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€ (TRS) ---
+        // --- ãƒ­ãƒ¼ã‚«ãƒ«ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ  (TRS) ---
         DirectX::XMFLOAT4 rotation = { 0, 0, 0, 1 };
         DirectX::XMFLOAT3 scale = { 1, 1, 1 };
         DirectX::XMFLOAT3 translation = { 0, 0, 0 };
 
-        // --- ƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€i—İÏÏ‚İj ---
+        // --- ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ï¼ˆç´¯ç©æ¸ˆã¿ï¼‰ ---
         DirectX::XMFLOAT4X4 globalTransform = {
             1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1
         };
 
-        // --- QÆ ---
-        // 1ƒm[ƒh‚ª•¡”ƒƒbƒVƒ…‚ğ‚ÂƒP[ƒXiaiNode::mNumMeshes > 1j‚É‘Î‰‚·‚é‚½‚ß vector ‚Å•Û‚·‚éB
-        // meshIndices[i] ‚É‘Î‰‚·‚éƒXƒLƒ“‚Í skinIndices[i]iƒXƒLƒ“–³‚µ‚Í -1jB
-        std::vector<int> meshIndices; //!< AssetModel::meshes ‚Ö‚ÌƒCƒ“ƒfƒbƒNƒX”z—ñ
-        std::vector<int> skinIndices; //!< AssetModel::skins  ‚Ö‚ÌƒCƒ“ƒfƒbƒNƒX”z—ñimeshIndices ‚Æ‘Î‰A—v‘f”‚Í“¯‚¶j
+        // --- å‚ç…§ ---
+        // 1ãƒãƒ¼ãƒ‰ãŒè¤‡æ•°ãƒ¡ãƒƒã‚·ãƒ¥ã‚’æŒã¤ã‚±ãƒ¼ã‚¹ï¼ˆaiNode::mNumMeshes > 1ï¼‰ã«å¯¾å¿œã™ã‚‹ãŸã‚ vector ã§ä¿æŒã™ã‚‹ã€‚
+        // meshIndices[i] ã«å¯¾å¿œã™ã‚‹ã‚¹ã‚­ãƒ³ã¯ skinIndices[i]ï¼ˆã‚¹ã‚­ãƒ³ç„¡ã—ã¯ -1ï¼‰ã€‚
+        std::vector<int> meshIndices; //!< AssetModel::meshes ã¸ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
+        std::vector<int> skinIndices; //!< AssetModel::skins  ã¸ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—ï¼ˆmeshIndices ã¨å¯¾å¿œã€è¦ç´ æ•°ã¯åŒã˜ï¼‰
     };
 
     // -----------------------------------------------------------------------
-    // ƒXƒLƒ“
+    // ã‚¹ã‚­ãƒ³
     // -----------------------------------------------------------------------
 
     /**
-     * @brief ƒXƒPƒ‹ƒ^ƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“—p‚ÌƒXƒLƒ“ƒf[ƒ^B
-     * joints ‚Í AssetModel::nodes ‚Ö‚ÌƒCƒ“ƒfƒbƒNƒX”z—ñB
+     * @brief ã‚¹ã‚±ãƒ«ã‚¿ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨ã®ã‚¹ã‚­ãƒ³ãƒ‡ãƒ¼ã‚¿ã€‚
+     * joints ã¯ AssetModel::nodes ã¸ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—ã€‚
      */
     struct Skin
     {
         std::u8string              name;
-        std::vector<int>         joints;               //!< ƒWƒ‡ƒCƒ“ƒgƒm[ƒh‚ÌƒCƒ“ƒfƒbƒNƒX
-        std::vector<DirectX::XMFLOAT4X4> inverseBindMatrices; //!< ƒWƒ‡ƒCƒ“ƒg‚²‚Æ‚Ì‹tƒoƒCƒ“ƒhs—ñ
+        std::vector<int>         joints;               //!< ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆãƒãƒ¼ãƒ‰ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+        std::vector<DirectX::XMFLOAT4X4> inverseBindMatrices; //!< ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã”ã¨ã®é€†ãƒã‚¤ãƒ³ãƒ‰è¡Œåˆ—
     };
 
     // -----------------------------------------------------------------------
-    // ƒAƒjƒ[ƒVƒ‡ƒ“
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     // -----------------------------------------------------------------------
 
     /**
-     * @brief 1 ‚Â‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒvB
+     * @brief 1 ã¤ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã€‚
      */
     struct Animation
     {
         std::u8string name;
-        float       duration = 0.0f; //!< ƒNƒŠƒbƒv‚Ì’·‚³i•bj
+        float       duration = 0.0f; //!< ã‚¯ãƒªãƒƒãƒ—ã®é•·ã•ï¼ˆç§’ï¼‰
 
-        /** @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ª‰e‹¿‚ğ—^‚¦‚éƒm[ƒh‚Æƒ`ƒƒƒ“ƒlƒ‹‚Ì‘Î‰B*/
+        /** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå½±éŸ¿ã‚’ä¸ãˆã‚‹ãƒãƒ¼ãƒ‰ã¨ãƒãƒ£ãƒ³ãƒãƒ«ã®å¯¾å¿œã€‚*/
         struct Channel
         {
-            int         nodeIndex = -1; //!< ‘ÎÛƒm[ƒh‚ÌƒCƒ“ƒfƒbƒNƒX
+            int         nodeIndex = -1; //!< å¯¾è±¡ãƒãƒ¼ãƒ‰ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
             std::string targetPath;      //!< "translation" / "rotation" / "scale"
             int         samplerIndex = -1;
         };
 
         /**
-         * @brief ƒL[ƒtƒŒ[ƒ€‚ÌƒTƒ“ƒvƒ‰[B
-         * timelines ‚Æ values ‚Í“¯‚¶’·‚³‚ÌƒyƒA‚Åg‚¤B
+         * @brief ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã€‚
+         * timelines ã¨ values ã¯åŒã˜é•·ã•ã®ãƒšã‚¢ã§ä½¿ã†ã€‚
          */
         struct Sampler
         {
             std::string              interpolation; //!< "LINEAR" / "STEP" / "CUBICSPLINE"
-            std::vector<float>       timelines;     //!< —ñi•bj
+            std::vector<float>       timelines;     //!< æ™‚åˆ»åˆ—ï¼ˆç§’ï¼‰
 
-            // ƒ`ƒƒƒ“ƒlƒ‹‚Ì targetPath ‚É‰‚¶‚Ä ‚Ç‚ê‚© 1 ‚Â‚ª—LŒø
+            // ãƒãƒ£ãƒ³ãƒãƒ«ã® targetPath ã«å¿œã˜ã¦ ã©ã‚Œã‹ 1 ã¤ãŒæœ‰åŠ¹
             std::vector<DirectX::XMFLOAT3> translations;
             std::vector<DirectX::XMFLOAT4> rotations;
             std::vector<DirectX::XMFLOAT3> scales;
@@ -208,58 +208,58 @@ public:
     };
 
     // -----------------------------------------------------------------------
-    // ƒAƒZƒbƒg‘S‘Ì‚Ìƒf[ƒ^
+    // ã‚¢ã‚»ãƒƒãƒˆå…¨ä½“ã®ãƒ‡ãƒ¼ã‚¿
     // -----------------------------------------------------------------------
 
-    /** @brief ƒV[ƒ“ƒOƒ‰ƒt‚Ìƒ‹[ƒgƒm[ƒhƒCƒ“ƒfƒbƒNƒXˆê——B*/
+    /** @brief ã‚·ãƒ¼ãƒ³ã‚°ãƒ©ãƒ•ã®ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ä¸€è¦§ã€‚*/
     std::vector<int>       rootNodes;
 
-    /** @brief ‘Sƒm[ƒhˆê——iƒCƒ“ƒfƒbƒNƒX‚ÅQÆjB*/
+    /** @brief å…¨ãƒãƒ¼ãƒ‰ä¸€è¦§ï¼ˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã§å‚ç…§ï¼‰ã€‚*/
     std::vector<Node>      nodes;
 
     /**
-     * @brief ‘SƒƒbƒVƒ…ˆê——B
-     * Node::meshIndices ‚©‚çQÆ‚³‚ê‚éB1 ƒƒbƒVƒ… = 1 ƒhƒ[ƒR[ƒ‹B
-     * i‹Œ Primitive ’PˆÊ‚Åƒtƒ‰ƒbƒg‰»‚µ‚Ä‚ÂİŒvj
+     * @brief å…¨ãƒ¡ãƒƒã‚·ãƒ¥ä¸€è¦§ã€‚
+     * Node::meshIndices ã‹ã‚‰å‚ç…§ã•ã‚Œã‚‹ã€‚1 ãƒ¡ãƒƒã‚·ãƒ¥ = 1 ãƒ‰ãƒ­ãƒ¼ã‚³ãƒ¼ãƒ«ã€‚
+     * ï¼ˆæ—§ Primitive å˜ä½ã§ãƒ•ãƒ©ãƒƒãƒˆåŒ–ã—ã¦æŒã¤è¨­è¨ˆï¼‰
      */
     std::vector<MeshData>  meshes;
 
     /**
-     * @brief ‘Sƒ}ƒeƒŠƒAƒ‹ˆê——B
-     * ƒGƒ“ƒWƒ“‹¤’Ê‚Ì Material ƒNƒ‰ƒX‚ğ’¼Ú•Û‚·‚éB
-     * MeshData::materialIndex ‚©‚çQÆ‚³‚ê‚éB
+     * @brief å…¨ãƒãƒ†ãƒªã‚¢ãƒ«ä¸€è¦§ã€‚
+     * ã‚¨ãƒ³ã‚¸ãƒ³å…±é€šã® Material ã‚¯ãƒ©ã‚¹ã‚’ç›´æ¥ä¿æŒã™ã‚‹ã€‚
+     * MeshData::materialIndex ã‹ã‚‰å‚ç…§ã•ã‚Œã‚‹ã€‚
      */
     std::vector<std::shared_ptr<Material>> materials;
 
     /**
-     * @brief ‘SƒeƒNƒXƒ`ƒƒˆê——B
-     * ƒGƒ“ƒWƒ“‹¤’Ê‚Ì Texture ƒNƒ‰ƒX‚ğ’¼Ú•Û‚·‚éB
-     * Material::SetTexture() ‚ÅŠeƒ}ƒeƒŠƒAƒ‹‚É“n‚µÏ‚İ‚Ì‚½‚ßA
-     * ‚±‚±‚Å‚ÍŠ—LŒ ‚ÌŠÇ—iƒ‰ƒCƒtƒ^ƒCƒ€‰„’·j‚Ì‚İ‚ğ–Ú“I‚Æ‚·‚éB
+     * @brief å…¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ä¸€è¦§ã€‚
+     * ã‚¨ãƒ³ã‚¸ãƒ³å…±é€šã® Texture ã‚¯ãƒ©ã‚¹ã‚’ç›´æ¥ä¿æŒã™ã‚‹ã€‚
+     * Material::SetTexture() ã§å„ãƒãƒ†ãƒªã‚¢ãƒ«ã«æ¸¡ã—æ¸ˆã¿ã®ãŸã‚ã€
+     * ã“ã“ã§ã¯æ‰€æœ‰æ¨©ã®ç®¡ç†ï¼ˆãƒ©ã‚¤ãƒ•ã‚¿ã‚¤ãƒ å»¶é•·ï¼‰ã®ã¿ã‚’ç›®çš„ã¨ã™ã‚‹ã€‚
      */
     std::vector<std::shared_ptr<Texture>> textures;
 
-    /** @brief ‘SƒXƒLƒ“ˆê——BNode::skinIndices ‚©‚çQÆ‚³‚ê‚éB*/
+    /** @brief å…¨ã‚¹ã‚­ãƒ³ä¸€è¦§ã€‚Node::skinIndices ã‹ã‚‰å‚ç…§ã•ã‚Œã‚‹ã€‚*/
     std::vector<Skin>      skins;
 
-    /** @brief ‘SƒAƒjƒ[ƒVƒ‡ƒ“ˆê——B*/
+    /** @brief å…¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ä¸€è¦§ã€‚*/
     std::vector<Animation> animations;
 
     // -----------------------------------------------------------------------
-    // Static Batchingi«—ˆ‘Î‰j
+    // Static Batchingï¼ˆå°†æ¥å¯¾å¿œï¼‰
     // -----------------------------------------------------------------------
 
     /**
-     * @brief ƒXƒ^ƒeƒBƒbƒNƒoƒbƒ`ƒ“ƒO‚ª—LŒø‚©‚Ç‚¤‚©B
-     * true ‚Ì‚Æ‚« batchedMesh ‚Éƒoƒbƒ`Œ‹‡Ï‚İƒf[ƒ^‚ª“ü‚éB
-     * ƒoƒbƒ`\’z‚Í ModelBatcher ‚È‚Ç•ÊƒNƒ‰ƒX‚ÉˆÏ÷—\’èB
-     * @todo ModelBatcher ‚ğÀ‘•‚µ‚½‚ç\’zˆ—‚ğ‚»‚¿‚ç‚ÖˆÚ‚·B
+     * @brief ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯ãƒãƒƒãƒãƒ³ã‚°ãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã€‚
+     * true ã®ã¨ã batchedMesh ã«ãƒãƒƒãƒçµåˆæ¸ˆã¿ãƒ‡ãƒ¼ã‚¿ãŒå…¥ã‚‹ã€‚
+     * ãƒãƒƒãƒæ§‹ç¯‰ã¯ ModelBatcher ãªã©åˆ¥ã‚¯ãƒ©ã‚¹ã«å§”è­²äºˆå®šã€‚
+     * @todo ModelBatcher ã‚’å®Ÿè£…ã—ãŸã‚‰æ§‹ç¯‰å‡¦ç†ã‚’ãã¡ã‚‰ã¸ç§»ã™ã€‚
      */
     bool staticBatching = false;
 
     /**
-     * @brief ƒoƒbƒ`Œ‹‡Ï‚İƒƒbƒVƒ…istaticBatching == true ‚Ì‚Æ‚«g—pjB
-     * ƒXƒLƒjƒ“ƒO‚È‚µEƒ}ƒeƒŠƒAƒ‹‚²‚Æ‚Éƒ}[ƒW‚³‚ê‚½’PˆêƒƒbƒVƒ…B
+     * @brief ãƒãƒƒãƒçµåˆæ¸ˆã¿ãƒ¡ãƒƒã‚·ãƒ¥ï¼ˆstaticBatching == true ã®ã¨ãä½¿ç”¨ï¼‰ã€‚
+     * ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ãªã—ãƒ»ãƒãƒ†ãƒªã‚¢ãƒ«ã”ã¨ã«ãƒãƒ¼ã‚¸ã•ã‚ŒãŸå˜ä¸€ãƒ¡ãƒƒã‚·ãƒ¥ã€‚
      */
     struct BatchedMesh
     {
@@ -276,38 +276,38 @@ public:
     std::vector<BatchedMesh> batchedMeshes;
 
     // -----------------------------------------------------------------------
-    // GPU ƒAƒbƒvƒ[ƒh
+    // GPU ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
     // -----------------------------------------------------------------------
 
     /**
-     * @brief ‘SƒƒbƒVƒ…‚Ì GPU ƒoƒbƒtƒ@‚ğì¬EƒAƒbƒvƒ[ƒh‚·‚éB
-     * SetModelAsset() ‚©‚çŒÄ‚Ño‚³‚ê‚é‘z’èB
-     * @param device D3D11 ƒfƒoƒCƒXB
+     * @brief å…¨ãƒ¡ãƒƒã‚·ãƒ¥ã® GPU ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆãƒ»ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã€‚
+     * SetModelAsset() ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹æƒ³å®šã€‚
+     * @param device D3D11 ãƒ‡ãƒã‚¤ã‚¹ã€‚
      */
     void UploadToGPU(ID3D11Device* device);
 
     /**
-     * @brief ƒm[ƒhƒcƒŠ[‚ğ‘–¸‚µ‚ÄglobalTransform ‚ğ—İÏŒvZ‚·‚éB
-     * ƒ[ƒhŒãEƒAƒjƒ[ƒVƒ‡ƒ““K—pŒã‚ÉŒÄ‚ÔB
+     * @brief ãƒãƒ¼ãƒ‰ãƒ„ãƒªãƒ¼ã‚’èµ°æŸ»ã—ã¦globalTransform ã‚’ç´¯ç©è¨ˆç®—ã™ã‚‹ã€‚
+     * ãƒ­ãƒ¼ãƒ‰å¾Œãƒ»ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é©ç”¨å¾Œã«å‘¼ã¶ã€‚
      */
     void CumulateTransforms();
 
 private:
     /**
-     * @brief assimp ‚Ì aiScene ‚©‚ç“à•”ƒf[ƒ^‚ğ\’z‚·‚éB
-     * LoadFromFile() ‚©‚çŒÄ‚Ño‚³‚ê‚éB
-     * @param scene assimp ‚ªƒp[ƒX‚µ‚½ƒV[ƒ“B
-     * @param baseDir ƒeƒNƒXƒ`ƒƒ‚Ì‘Š‘ÎƒpƒX‰ğŒˆ—pƒfƒBƒŒƒNƒgƒŠB
+     * @brief assimp ã® aiScene ã‹ã‚‰å†…éƒ¨ãƒ‡ãƒ¼ã‚¿ã‚’æ§‹ç¯‰ã™ã‚‹ã€‚
+     * LoadFromFile() ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚
+     * @param scene assimp ãŒãƒ‘ãƒ¼ã‚¹ã—ãŸã‚·ãƒ¼ãƒ³ã€‚
+     * @param baseDir ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç›¸å¯¾ãƒ‘ã‚¹è§£æ±ºç”¨ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã€‚
      */
     bool ImportFromScene(const aiScene* scene, const std::u8string& baseDir);
 
-    /** @brief ’Pˆêƒm[ƒh‚Ì globalTransform ‚ğÄ‹A“I‚É—İÏ‚·‚éB*/
+    /** @brief å˜ä¸€ãƒãƒ¼ãƒ‰ã® globalTransform ã‚’å†å¸°çš„ã«ç´¯ç©ã™ã‚‹ã€‚*/
     void CumulateTransforms(int nodeIndex, const DirectX::XMFLOAT4X4& parentTransform);
 
-    /** @brief MeshData 1 Œ•ª‚Ì GPU ƒoƒbƒtƒ@‚ğì¬‚·‚éB*/
+    /** @brief MeshData 1 ä»¶åˆ†ã® GPU ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆã™ã‚‹ã€‚*/
     void UploadMesh(ID3D11Device* device, MeshData& mesh);
 
-    // --- ImportFromScene ‚ÌƒTƒuƒ‹[ƒeƒBƒ“ ---
+    // --- ImportFromScene ã®ã‚µãƒ–ãƒ«ãƒ¼ãƒ†ã‚£ãƒ³ ---
     void ImportTextures(const aiScene* scene, const std::u8string& baseDir);
     void ImportMaterials(const aiScene* scene);
     void ImportMeshes(const aiScene* scene);
@@ -315,11 +315,11 @@ private:
     void ImportSkins(const aiScene* scene);
     void ImportAnimations(const aiScene* scene);
 
-    // --- ƒm[ƒh–¼EƒeƒNƒXƒ`ƒƒƒpƒX‰ğŒˆ—pƒLƒƒƒbƒVƒ…iƒ[ƒh’†‚Ì‚İ—LŒøj ---
+    // --- ãƒãƒ¼ãƒ‰åãƒ»ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹è§£æ±ºç”¨ã‚­ãƒ£ãƒƒã‚·ãƒ¥ï¼ˆãƒ­ãƒ¼ãƒ‰ä¸­ã®ã¿æœ‰åŠ¹ï¼‰ ---
 
-    /** @brief ƒm[ƒh–¼ ¨ nodes ƒCƒ“ƒfƒbƒNƒXiImportNodes / ImportSkins / ImportAnimations ‚Åg—pjB*/
+    /** @brief ãƒãƒ¼ãƒ‰å â†’ nodes ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆImportNodes / ImportSkins / ImportAnimations ã§ä½¿ç”¨ï¼‰ã€‚*/
     std::unordered_map<std::filesystem::path, int> m_nodeNameToIndex;
 
-    /** @brief ƒeƒNƒXƒ`ƒƒâ‘ÎƒpƒX ¨ textures ƒCƒ“ƒfƒbƒNƒXiImportTextures / ImportMaterials ‚Åg—pjB*/
+    /** @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£çµ¶å¯¾ãƒ‘ã‚¹ â†’ textures ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆImportTextures / ImportMaterials ã§ä½¿ç”¨ï¼‰ã€‚*/
     std::unordered_map<std::filesystem::path, int> m_texturePathToIndex;
 };

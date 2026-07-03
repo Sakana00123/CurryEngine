@@ -6,27 +6,27 @@ using namespace nlohmann;
 using SerializeFunc = std::function<void(const void*, json&)>;
 using DeserializeFunc = std::function<void(void*, const json&)>;
 
-// Œ^‚ÌƒVƒŠƒAƒ‰ƒCƒUî•ñ
+// å‹ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶æƒ…å ±
 struct TypeSerializerInfo
 {
 	SerializeFunc serialize;
 	DeserializeFunc deserialize;
 };
 
-// Œ^ƒVƒŠƒAƒ‰ƒCƒU‚ÌƒŒƒWƒXƒgƒŠ
+// å‹ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶ã®ãƒ¬ã‚¸ã‚¹ãƒˆãƒª
 class TypeSerializerRegistry
 {
 public:
-	// Œ^‚ÆƒVƒŠƒAƒ‰ƒCƒUî•ñ‚ğ“o˜^
+	// å‹ã¨ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶æƒ…å ±ã‚’ç™»éŒ²
 	static void Register(
 		const std::string& type,
 		const TypeSerializerInfo& info);
 
-	// Œ^‚É‘Î‰‚·‚éƒVƒŠƒAƒ‰ƒCƒUî•ñ‚ğæ“¾
+	// å‹ã«å¯¾å¿œã™ã‚‹ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶æƒ…å ±ã‚’å–å¾—
 	static const TypeSerializerInfo* Find(const std::string& type);
 
 private:
-	// ƒVƒŠƒAƒ‰ƒCƒUî•ñ‚ÌƒŒƒWƒXƒgƒŠ‚ğæ“¾
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶æƒ…å ±ã®ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚’å–å¾—
 	static std::unordered_map<std::string, TypeSerializerInfo>& GetRegistry() {
 		static std::unordered_map<std::string, TypeSerializerInfo> registry;
 		return registry;
@@ -54,7 +54,7 @@ private:
 	}
 
 
-// Œ^‚ÌƒVƒŠƒAƒ‰ƒCƒU‚ğ©“®“o˜^‚·‚éƒ}ƒNƒ
+// å‹ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¶ã‚’è‡ªå‹•ç™»éŒ²ã™ã‚‹ãƒã‚¯ãƒ­
 #define C_REGISTER_TYPE(Type) \
 	C_REGISTER_TYPE_IMPL(Type, __COUNTER__)
 

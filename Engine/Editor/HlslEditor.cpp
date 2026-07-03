@@ -88,7 +88,7 @@ void HlslEditor::DrawGUI()
 				}
 				else
 				{
-					//ÄƒRƒ“ƒpƒCƒ‹‚µ‚Ä·‚µ‘Ö‚¦
+					//å†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ã¦å·®ã—æ›¿ãˆ
 					ID3DBlob* blob = nullptr;
 					
 					if (CompileShader(std::wstring(m_FilePath, m_FilePath + strlen(m_FilePath)), entryPoint, shaderModel, &blob))

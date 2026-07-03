@@ -8,7 +8,7 @@
 
 void EditorCamera::Initialize()
 {
-	//ƒfƒtƒHƒ‹ƒg‹——£§ŒÀ
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè·é›¢åˆ¶é™
 	SetClampDistance(0.001f, 1000.0f);
 }
 
@@ -18,16 +18,16 @@ void EditorCamera::Update(float elapsedTime)
 #ifdef USE_IMGUI
 	if (updateFlagFunction ? updateFlagFunction() : false) {
 		if (float wheelDelta = InputSystem::GetWheelDelta()) {
-			distance -= wheelDelta * 0.1f; // ƒzƒC[ƒ‹‚Ì‰ñ“]—Ê‚É‰‚¶‚Ä‹——£‚ğ’²®
+			distance -= wheelDelta * 0.1f; // ãƒ›ã‚¤ãƒ¼ãƒ«ã®å›è»¢é‡ã«å¿œã˜ã¦è·é›¢ã‚’èª¿æ•´
 			distance = std::clamp(distance, minDistance, maxDistance);
 		}
 	}
 #endif // USE_IMGUI
 
-	//DebugCamera‚Íí‚ÉXV
+	//DebugCameraã¯å¸¸ã«æ›´æ–°
 	elapsedTime = Time::UnscaledDeltaTime();
 
-	//ƒJƒƒ‰‘€ì
+	//ã‚«ãƒ¡ãƒ©æ“ä½œ
 	if (GetAsyncKeyState(moveKey) || GetAsyncKeyState(rotateKey) || GetAsyncKeyState(panKey))
 	{
 		if (!isMoving)
@@ -36,13 +36,13 @@ void EditorCamera::Update(float elapsedTime)
 		}
 		else
 		{
-			//‰ñ“]ˆ—
+			//å›è»¢å‡¦ç†
 			float rx = InputSystem::GetAxis(Side::Right, Axis::X);
 			float ry = InputSystem::GetAxis(Side::Right, Axis::Y);
 			int dx{}, dy{};
 			InputSystem::GetMouseDelta(dx, dy);
 
-			// ‰Eƒ{ƒ^ƒ“‰Ÿ‰º’†‚É‰ñ“]
+			// å³ãƒœã‚¿ãƒ³æŠ¼ä¸‹ä¸­ã«å›è»¢
 			if (GetAsyncKeyState(rotateKey))
 			{
 				if (std::fabsf(rx) > 0.01f || std::fabsf(ry) > 0.01f ||
@@ -61,11 +61,11 @@ void EditorCamera::Update(float elapsedTime)
 				ry = 0;
 			}
 
-			//ƒJƒƒ‰ˆÚ“®
+			//ã‚«ãƒ¡ãƒ©ç§»å‹•
 			Vector3 move{};
-			// ‰ñ“]s—ñ‚Ìæ“¾
+			// å›è»¢è¡Œåˆ—ã®å–å¾—
 			XMMATRIX Rotation = DirectX::XMMatrixRotationQuaternion(XMLoadFloat4(&rotation));
-			// “ü—Í‚Ìæ“¾
+			// å…¥åŠ›ã®å–å¾—
 			float axisX = 0.0f;
 			float axisY = 0.0f;
 			float axisZ = 0.0f;
@@ -73,19 +73,19 @@ void EditorCamera::Update(float elapsedTime)
 			XMVECTOR Move{};
 			if (GetAsyncKeyState(moveKey))
 			{
-				// ƒL[ƒ{[ƒh“ü—Í
+				// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›
 				axisX = InputSystem::GetAxis(Side::Left, Axis::X);
 				axisZ = InputSystem::GetAxis(Side::Left, Axis::Y);
 
-				// ƒXƒs[ƒhƒAƒbƒv
+				// ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚¢ãƒƒãƒ—
 				float scale = GetAsyncKeyState(VK_LSHIFT) ? 2.0f : 1.0f;
 
-				// ã‰ºˆÚ“®
+				// ä¸Šä¸‹ç§»å‹•
 				int up = 0;
 				if (GetAsyncKeyState('E')) up++;
 				if (GetAsyncKeyState('Q')) up--;
 
-				// ˆÚ“®’l‚ÌŒvZ
+				// ç§»å‹•å€¤ã®è¨ˆç®—
 				{
 					if (std::fabsf(axisX) > 0.01f) {
 						XMVECTOR Right = Rotation.r[0];
@@ -111,11 +111,11 @@ void EditorCamera::Update(float elapsedTime)
 			}
 			else if (GetAsyncKeyState(panKey))
 			{
-				// ƒ}ƒEƒXƒzƒC[ƒ‹ƒ{ƒ^ƒ“‰Ÿ‰º’†‚Íƒ}ƒEƒXˆÚ“®‚Å•½sˆÚ“®
+				// ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«ãƒœã‚¿ãƒ³æŠ¼ä¸‹ä¸­ã¯ãƒã‚¦ã‚¹ç§»å‹•ã§å¹³è¡Œç§»å‹•
 				axisX = static_cast<float>(-dx) * 0.1f;
 				axisY = static_cast<float>(dy) * 0.1f;
 
-				// ˆÚ“®’l‚ÌŒvZ
+				// ç§»å‹•å€¤ã®è¨ˆç®—
 				{
 					if (std::fabsf(axisX) > 0.0001f) {
 						XMVECTOR Right = Rotation.r[0];
@@ -131,13 +131,13 @@ void EditorCamera::Update(float elapsedTime)
 					move = Vector3(m);
 				}
 			}
-			// ˆÚ“®‚Ì“K—p
+			// ç§»å‹•ã®é©ç”¨
 			position += move;
 		}
 	}
 	else
 	{
-		// ƒ{ƒ^ƒ“‚ª—£‚³‚ê‚½‚çˆÚ“®ƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		// ãƒœã‚¿ãƒ³ãŒé›¢ã•ã‚ŒãŸã‚‰ç§»å‹•ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 		isMoving = false;
 	}
 }
@@ -146,8 +146,8 @@ XMMATRIX EditorCamera::GetViewMatrix()
 {
 	XMVECTOR Quaternion = XMLoadFloat4(&rotation);
 	XMVECTOR Forward = XMVector3TransformNormal(
-		XMVectorSet(0, 0, -1, 0), // Unity‚Ìforward‚Æ”½‘Î (-Z)
-		XMMatrixRotationQuaternion(Quaternion) // ‰ñ“]‚ğ“K—p
+		XMVectorSet(0, 0, -1, 0), // Unityã®forwardã¨åå¯¾ (-Z)
+		XMMatrixRotationQuaternion(Quaternion) // å›è»¢ã‚’é©ç”¨
 	);
 	XMVECTOR Focus = XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&position)) + Forward;
 	XMVECTOR Eye = Focus + Forward * distance;
@@ -244,7 +244,7 @@ void EditorCamera::Deserialize(const json& j)
 	}
 	if (j.contains("minDistance")) {
 		minDistance = j["minDistance"].get<float>();
-		minDistance = 0.1f; // Å¬‹——£‚Í0.1f‚Éİ’è
+		minDistance = 0.1f; // æœ€å°è·é›¢ã¯0.1fã«è¨­å®š
 	}
 	if (j.contains("maxDistance")) {
 		maxDistance = j["maxDistance"].get<float>();

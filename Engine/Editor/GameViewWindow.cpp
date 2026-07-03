@@ -15,7 +15,7 @@ namespace CurryEngine
 		ImVec2 displaySize;
 		ImVec2 offset(0, 0);
 
-		// ƒAƒXƒyƒNƒg”ä‚É‰‚¶‚ÄƒTƒCƒY‚ğ’²®
+		// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã«å¿œã˜ã¦ã‚µã‚¤ã‚ºã‚’èª¿æ•´
 		float availAspect = avail.x / avail.y;
 		if (availAspect > targetAspect) {
 			displaySize.y = avail.y;
@@ -28,7 +28,7 @@ namespace CurryEngine
 			offset.y = (avail.y - displaySize.y) * 0.5f;
 		}
 
-		// ƒZƒ“ƒ^ƒŠƒ“ƒO
+		// ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°
 		ImGui::SetCursorPos(ImVec2(
 			ImGui::GetCursorPosX() + offset.x,
 			ImGui::GetCursorPosY() + offset.y
@@ -42,29 +42,29 @@ namespace CurryEngine
 			}
 		}
 		if (srv == nullptr) {
-			// ƒ_ƒ~[ƒeƒNƒXƒ`ƒƒ‚ğ•\¦
+			// ãƒ€ãƒŸãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¡¨ç¤º
 			static std::shared_ptr<AssetTexture> whiteTexture;
 			if (!whiteTexture) {
 				whiteTexture = std::make_shared<AssetTexture>();
 				whiteTexture->MakeDummy(Graphics::GetDevice(), 0xFFFFFFFF, 16);
 			}
-			srv = whiteTexture->GetSRV(); // ƒfƒtƒHƒ‹ƒg”’ƒeƒNƒXƒ`ƒƒ
+			srv = whiteTexture->GetSRV(); // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆç™½ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		}
 
 		ImGui::Image(srv, displaySize);
 
-		// ImGui::Image‚Ì•\¦‹éŒ`‚ğæ“¾‚µAİ’è
+		// ImGui::Imageã®è¡¨ç¤ºçŸ©å½¢ã‚’å–å¾—ã—ã€è¨­å®š
 		if (ImGui::IsWindowHovered())
 		{
-			ImVec2 imageMin = ImGui::GetItemRectMin(); // ¶ãƒXƒNƒŠ[ƒ“À•W
-			ImVec2 imageMax = ImGui::GetItemRectMax(); // ‰E‰ºƒXƒNƒŠ[ƒ“À•W
-			//”ÍˆÍİ’è
+			ImVec2 imageMin = ImGui::GetItemRectMin(); // å·¦ä¸Šã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
+			ImVec2 imageMax = ImGui::GetItemRectMax(); // å³ä¸‹ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
+			//ç¯„å›²è¨­å®š
 			Graphics::SetScreenRect(imageMin.x, imageMin.y, imageMax.x, imageMax.y);
 
 
-			// Image‚Ì”ÍˆÍ“à‚ÉƒJ[ƒ\ƒ‹‚ª‚ ‚é‚©‚ÅƒtƒH[ƒJƒX”»’è
+			// Imageã®ç¯„å›²å†…ã«ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã‚‹ã‹ã§ãƒ•ã‚©ãƒ¼ã‚«ã‚¹åˆ¤å®š
 			if (ImGui::IsMouseHoveringRect(imageMin, imageMax)) {
-				isGameWindowFocused = ImGui::IsItemActivated() || ImGui::IsItemHovered(); // ƒEƒBƒ“ƒhƒE‚ªƒAƒNƒeƒBƒu‚©A‚à‚µ‚­‚Íƒzƒo[‚³‚ê‚Ä‚¢‚éê‡‚ÉƒtƒH[ƒJƒX‚ğtrue‚É‚·‚é
+				isGameWindowFocused = ImGui::IsItemActivated() || ImGui::IsItemHovered(); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‹ã€ã‚‚ã—ãã¯ãƒ›ãƒãƒ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’trueã«ã™ã‚‹
 			}
 			else {
 				isGameWindowFocused = false;

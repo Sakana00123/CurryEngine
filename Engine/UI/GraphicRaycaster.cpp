@@ -10,14 +10,14 @@ REGISTER_COMPONENT_WITH_ATTRIBUTES(GraphicRaycaster, "UI", ComponentAttributes::
 
 void GraphicRaycaster::OnEnable()
 {
-	if (GetOwner() == nullptr) return; // Š‘® GameObject ‚ª–³Œø‚Èê‡‚Íˆ—‚µ‚È‚¢
+	if (GetOwner() == nullptr) return; // æ‰€å±ž GameObject ãŒç„¡åŠ¹ãªå ´åˆã¯å‡¦ç†ã—ãªã„
 	EventSystem::RegisterGraphicRaycaster(gameObject->GetComponentShared<GraphicRaycaster>());
 }
 
 void GraphicRaycaster::OnDisable()
 {
-	if (GetOwner() == nullptr) return; // Š‘® GameObject ‚ª–³Œø‚Èê‡‚Íˆ—‚µ‚È‚¢
-	// TODO: ‚±‚±’Ê‚Á‚Ä‚È‚¢‚©‚àiplayMode/editModeØ‚è‘Ö‚¦‚ÅŒÄ‚Î‚ê‚Ä‚È‚¢‚Ì‚Å¡ŒãUI‚Å–â‘è‚ª‹N‚«‚½‚ç—vŠm”Fj
+	if (GetOwner() == nullptr) return; // æ‰€å±ž GameObject ãŒç„¡åŠ¹ãªå ´åˆã¯å‡¦ç†ã—ãªã„
+	// TODO: ã“ã“é€šã£ã¦ãªã„ã‹ã‚‚ï¼ˆplayMode/editModeåˆ‡ã‚Šæ›¿ãˆã§å‘¼ã°ã‚Œã¦ãªã„ã®ã§ä»Šå¾ŒUIã§å•é¡ŒãŒèµ·ããŸã‚‰è¦ç¢ºèªï¼‰
 	EventSystem::UnregisterGraphicRaycaster(gameObject->GetComponentShared<GraphicRaycaster>());
 }
 
@@ -26,11 +26,11 @@ void GraphicRaycaster::Raycast(std::shared_ptr<PointerEventData> eventData, std:
 	if (Canvas* canvas = gameObject->GetComponent<Canvas>()) {
 
 		for (Graphic* graphic : canvas->GetGraphics()) {
-			if (graphic == nullptr) continue; // –³Œø‚È Graphic ‚ÍƒXƒLƒbƒv
-			if (graphic->IsEnabled() == false) continue; // –³Œø‚È Graphic ‚ÍƒXƒLƒbƒv
+			if (graphic == nullptr) continue; // ç„¡åŠ¹ãª Graphic ã¯ã‚¹ã‚­ãƒƒãƒ—
+			if (graphic->IsEnabled() == false) continue; // ç„¡åŠ¹ãª Graphic ã¯ã‚¹ã‚­ãƒƒãƒ—
 			if (!graphic->Raycast(eventData->position)) continue;
 
-			//ƒqƒbƒg‚µ‚½‚ç’Ç‰Á
+			//ãƒ’ãƒƒãƒˆã—ãŸã‚‰è¿½åŠ 
 			RaycastResult result;
 			result.gameObject = graphic->gameObject;
 			result.hitGraphicId = graphic->GetId();

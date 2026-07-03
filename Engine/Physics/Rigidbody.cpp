@@ -7,121 +7,121 @@ REGISTER_COMPONENT(Rigidbody, "Physics")
 
 void Rigidbody::Awake()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚É„‘Ì‚ğ“o˜^‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«å‰›ä½“ã‚’ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::RegisterPendingRigidbody(this);
 }
 
 void Rigidbody::Register()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚É„‘Ì‚ğ“o˜^‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«å‰›ä½“ã‚’ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	m_actorHandle = Physics::RegisterBody(GetTransform(), true);
 
-	// ƒLƒlƒ}ƒeƒBƒbƒNİ’è‚Ì“K—p
+	// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯è¨­å®šã®é©ç”¨
 	Physics::SetKinematic(m_actorHandle, isKinematic);
 
-	// d—Í‚Ìg—pİ’è‚Ì“K—p
+	// é‡åŠ›ã®ä½¿ç”¨è¨­å®šã®é©ç”¨
 	Physics::SetUseGravity(m_actorHandle, useGravity);
 
-	// CCD‚Ìİ’è‚Ì“K—p
+	// CCDã®è¨­å®šã®é©ç”¨
 	Physics::SetUseCCD(m_actorHandle, useCCD);
 
-	// ƒXƒŠ[ƒvè‡’l‚Ìİ’è‚Ì“K—p
+	// ã‚¹ãƒªãƒ¼ãƒ—é–¾å€¤ã®è¨­å®šã®é©ç”¨
 	Physics::SetSleepThreshold(m_actorHandle, sleepThreshold);
 
-	// §–ñ‚Ìİ’è‚Ì“K—p
+	// åˆ¶ç´„ã®è¨­å®šã®é©ç”¨
 	Physics::SetConstraints(m_actorHandle, physx::PxRigidDynamicLockFlags(static_cast<physx::PxU8>(constraints)));
 }
 
 void Rigidbody::PostColliderRegister()
 {
-	// ƒRƒ‰ƒCƒ_[‚Ì“o˜^Œã‚É„‘Ì‚ğXV‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	// —á‚¦‚ÎAƒRƒ‰ƒCƒ_[‚ÌŒ`ó‚âƒTƒCƒY‚ÉŠî‚Ã‚¢‚Ä¿—Ê‚âŠµ«‚ğÄŒvZ‚·‚é‚È‚Ç‚Ìˆ—‚ªl‚¦‚ç‚ê‚Ü‚·B
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ç™»éŒ²å¾Œã«å‰›ä½“ã‚’æ›´æ–°ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	// ä¾‹ãˆã°ã€ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å½¢çŠ¶ã‚„ã‚µã‚¤ã‚ºã«åŸºã¥ã„ã¦è³ªé‡ã‚„æ…£æ€§ã‚’å†è¨ˆç®—ã™ã‚‹ãªã©ã®å‡¦ç†ãŒè€ƒãˆã‚‰ã‚Œã¾ã™ã€‚
 	
-	// ¿—Ê‚Ìİ’è‚Ì“K—p
+	// è³ªé‡ã®è¨­å®šã®é©ç”¨
 	Physics::SetMass(m_actorHandle, mass);
 }
 
 void Rigidbody::OnDestroy()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚ç„‘Ì‚ğíœ‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰å‰›ä½“ã‚’å‰Šé™¤ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::UnregisterBody(GetTransform());
 }
 
 void Rigidbody::Finalize()
 {
-	Physics::UnregisterPendingRigidbody(this); // “o˜^•Û—¯ƒŠƒXƒg‚©‚çíœ
-	// •¨—ƒGƒ“ƒWƒ“‚©‚ç„‘Ì‚ğíœ‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	Physics::UnregisterPendingRigidbody(this); // ç™»éŒ²ä¿ç•™ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰å‰›ä½“ã‚’å‰Šé™¤ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::RemoveActor(m_actorHandle);
-	m_actorHandle = INVALID_ACTOR_HANDLE; // ƒnƒ“ƒhƒ‹‚ğ–³Œø‰»
+	m_actorHandle = INVALID_ACTOR_HANDLE; // ãƒãƒ³ãƒ‰ãƒ«ã‚’ç„¡åŠ¹åŒ–
 }
 
 void Rigidbody::OnEnable()
 {
-	//// •¨—ƒGƒ“ƒWƒ“‚É„‘Ì‚ğ“o˜^‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	//// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«å‰›ä½“ã‚’ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	//m_actorHandle = Physics::RegisterBody(GetTransform(), true);
 
-	//// ƒLƒlƒ}ƒeƒBƒbƒNİ’è‚Ì“K—p
+	//// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯è¨­å®šã®é©ç”¨
 	//Physics::SetKinematic(m_actorHandle, isKinematic);
 
-	//// d—Í‚Ìg—pİ’è‚Ì“K—p
+	//// é‡åŠ›ã®ä½¿ç”¨è¨­å®šã®é©ç”¨
 	//Physics::SetUseGravity(m_actorHandle, useGravity);
 
-	//// ¿—Ê‚Ìİ’è‚Ì“K—p
+	//// è³ªé‡ã®è¨­å®šã®é©ç”¨
 	//Physics::SetMass(m_actorHandle, mass);
 
-	//// §–ñ‚Ìİ’è‚Ì“K—p
+	//// åˆ¶ç´„ã®è¨­å®šã®é©ç”¨
 	//Physics::SetConstraints(m_actorHandle, physx::PxRigidDynamicLockFlags(static_cast<physx::PxU8>(constraints)));
 
-	// Actor‚ğ—LŒø‰»‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// Actorã‚’æœ‰åŠ¹åŒ–ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetActorEnable(m_actorHandle, true);
 }
 
 void Rigidbody::OnDisable()
 {
-	//// •¨—ƒGƒ“ƒWƒ“‚©‚ç„‘Ì‚ğíœ‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	//// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰å‰›ä½“ã‚’å‰Šé™¤ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	//Physics::UnregisterBody(GetTransform());
 
-	// Actor‚ğ–³Œø‰»‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// Actorã‚’ç„¡åŠ¹åŒ–ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetActorEnable(m_actorHandle, false);
 }
 
-// --- •¨—ƒGƒ“ƒWƒ“‚É‘Î‚·‚é‘€ì‚ÌÀ‘• ---
+// --- ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«å¯¾ã™ã‚‹æ“ä½œã®å®Ÿè£… ---
 
 void Rigidbody::AddForce(Vector3 force, ForceMode mode)
 {
 	//acceleration += force / mass;
 	if (isKinematic)
 	{
-		// ƒLƒlƒ}ƒeƒBƒbƒN‚ÈƒIƒuƒWƒFƒNƒg‚É‚Í—Í‚ğ‰Á‚¦‚È‚¢
+		// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã¯åŠ›ã‚’åŠ ãˆãªã„
 		Console::LogWarning(std::format("Cannot add force to a kinematic Rigidbody ({}).", GetOwner()->GetName()));
 		return;
 	}
 
-	// •¨—ƒGƒ“ƒWƒ“‚É—Í‚ğ‰Á‚¦‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŠ›ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::AddForce(m_actorHandle, force, static_cast<physx::PxForceMode::Enum>(mode));
 }
 
 void Rigidbody::AddForceAtPosition(Vector3 force, Vector3 position, ForceMode mode)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚É“Á’è‚ÌˆÊ’u‚É—Í‚ğ‰Á‚¦‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç‰¹å®šã®ä½ç½®ã«åŠ›ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::AddForceAtPosition(m_actorHandle, force, position, static_cast<physx::PxForceMode::Enum>(mode));
 }
 
 void Rigidbody::AddTorque(Vector3 torque, ForceMode mode)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Éƒgƒ‹ƒN‚ğ‰Á‚¦‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ãƒˆãƒ«ã‚¯ã‚’åŠ ãˆã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::AddTorque(m_actorHandle, torque, static_cast<physx::PxForceMode::Enum>(mode));
 }
 
 void Rigidbody::SetVelocity(Vector3 velocity)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚É‘¬“x‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«é€Ÿåº¦ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetVelocity(m_actorHandle, velocity);
 }
 
 Vector3 Rigidbody::GetVelocity() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚ç‘¬“x‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰é€Ÿåº¦ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Vector3 velocity;
 	Physics::GetVelocity(m_actorHandle, velocity);
 	return velocity;
@@ -129,13 +129,13 @@ Vector3 Rigidbody::GetVelocity() const
 
 void Rigidbody::SetAngularVelocity(Vector3 angularVelocity)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉŠp‘¬“x‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«è§’é€Ÿåº¦ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetAngularVelocity(m_actorHandle, angularVelocity);
 }
 
 Vector3 Rigidbody::GetAngularVelocity() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çŠp‘¬“x‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰è§’é€Ÿåº¦ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Vector3 angularVelocity;
 	Physics::GetAngularVelocity(m_actorHandle, angularVelocity);
 	return angularVelocity;
@@ -143,199 +143,199 @@ Vector3 Rigidbody::GetAngularVelocity() const
 
 void Rigidbody::SetMass(float mass)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚É¿—Ê‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	float clampedMass = (std::max)(mass, 0.0001f); // ¿—Ê‚ª0ˆÈ‰º‚É‚È‚ç‚È‚¢‚æ‚¤‚ÉÅ’á’l‚ğİ’è
-	this->mass = clampedMass; // “à•”‚Ì¿—ÊƒvƒƒpƒeƒB‚àXV
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«è³ªé‡ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	float clampedMass = (std::max)(mass, 0.0001f); // è³ªé‡ãŒ0ä»¥ä¸‹ã«ãªã‚‰ãªã„ã‚ˆã†ã«æœ€ä½å€¤ã‚’è¨­å®š
+	this->mass = clampedMass; // å†…éƒ¨ã®è³ªé‡ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚‚æ›´æ–°
 	Physics::SetMass(m_actorHandle, clampedMass);
 }
 
 float Rigidbody::GetMass() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚ç¿—Ê‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	return mass; // “à•”‚Ì¿—ÊƒvƒƒpƒeƒB‚ğ•Ô‚·
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰è³ªé‡ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	return mass; // å†…éƒ¨ã®è³ªé‡ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¿”ã™
 }
 
 void Rigidbody::SetInertiaTensor(const Vector3& inertiaTensor)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉŠµ«ƒeƒ“ƒ\ƒ‹‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«æ…£æ€§ãƒ†ãƒ³ã‚½ãƒ«ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetInertiaTensor(m_actorHandle, inertiaTensor);
 }
 
 void Rigidbody::SetKinematic(bool isKinematic)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉƒLƒlƒ}ƒeƒBƒbƒNİ’è‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	this->isKinematic = isKinematic; // “à•”‚ÌƒLƒlƒ}ƒeƒBƒbƒNƒvƒƒpƒeƒB‚àXV
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯è¨­å®šã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	this->isKinematic = isKinematic; // å†…éƒ¨ã®ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚‚æ›´æ–°
 	Physics::SetKinematic(m_actorHandle, isKinematic);
 }
 
 bool Rigidbody::IsKinematic() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çƒLƒlƒ}ƒeƒBƒbƒNİ’è‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	return isKinematic; // “à•”‚ÌƒLƒlƒ}ƒeƒBƒbƒNƒvƒƒpƒeƒB‚ğ•Ô‚·
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯è¨­å®šã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	return isKinematic; // å†…éƒ¨ã®ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¿”ã™
 }
 
 void Rigidbody::SetKinematicTarget(const Vector3& pos, const Quaternion& rot)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉƒLƒlƒ}ƒeƒBƒbƒNƒ^[ƒQƒbƒg‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetKinematicTarget(m_actorHandle, pos, rot);
-	// ƒLƒlƒ}ƒeƒBƒbƒNƒ^[ƒQƒbƒg‚ğİ’è‚µ‚½ŒãATransform‚ÌˆÊ’u‚Æ‰ñ“]‚àXV‚µ‚Ä‚¨‚«‚Ü‚·B
+	// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®šã—ãŸå¾Œã€Transformã®ä½ç½®ã¨å›è»¢ã‚‚æ›´æ–°ã—ã¦ãŠãã¾ã™ã€‚
 	GetTransform()->SetWorldPosition(pos);
 	GetTransform()->SetWorldRotation(rot);
 }
 
 void Rigidbody::SetGlobalPose(const Vector3& pos, const Quaternion& rot)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉƒOƒ[ƒoƒ‹ƒ|[ƒY‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒ¼ã‚ºã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetGlobalPose(m_actorHandle, pos, rot);
 }
 
 void Rigidbody::GetGlobalPose(Vector3& outPos, Quaternion& outRot)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çƒOƒ[ƒoƒ‹ƒ|[ƒY‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒ¼ã‚ºã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::GetGlobalPose(m_actorHandle, outPos, outRot);
 }
 
 void Rigidbody::WakeUp()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Ì„‘Ì‚ğ‹N‚±‚·ˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®å‰›ä½“ã‚’èµ·ã“ã™å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::WakeUp(m_actorHandle);
 }
 
 void Rigidbody::PutToSleep()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Ì„‘Ì‚ğQ‚©‚¹‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®å‰›ä½“ã‚’å¯ã‹ã›ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::PutToSleep(m_actorHandle);
 }
 
 bool Rigidbody::IsSleeping() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Ì„‘Ì‚ªƒXƒŠ[ƒvó‘Ô‚©‚Ç‚¤‚©‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®å‰›ä½“ãŒã‚¹ãƒªãƒ¼ãƒ—çŠ¶æ…‹ã‹ã©ã†ã‹ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	return Physics::IsSleeping(m_actorHandle);
 }
 
 void Rigidbody::SetUseGravity(bool useGravity)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Éd—Í‚Ìg—pİ’è‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	this->useGravity = useGravity; // “à•”‚Ìd—Íg—pƒvƒƒpƒeƒB‚àXV
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«é‡åŠ›ã®ä½¿ç”¨è¨­å®šã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	this->useGravity = useGravity; // å†…éƒ¨ã®é‡åŠ›ä½¿ç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚‚æ›´æ–°
 	Physics::SetUseGravity(m_actorHandle, useGravity);
 }
 
 void Rigidbody::SetUseCCD(bool useCCD)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉCCD‚Ìg—pİ’è‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	this->useCCD = useCCD; // “à•”‚ÌCCDg—pƒvƒƒpƒeƒB‚àXV
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«CCDã®ä½¿ç”¨è¨­å®šã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	this->useCCD = useCCD; // å†…éƒ¨ã®CCDä½¿ç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚‚æ›´æ–°
 	Physics::SetUseCCD(m_actorHandle, useCCD);
 }
 
 void Rigidbody::SetConstraints(RigidbodyConstraints constraints)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉˆÚ“®‚â‰ñ“]‚Ì§–ñ‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	this->constraints = constraints; // “à•”‚Ì§–ñƒvƒƒpƒeƒB‚àXV
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç§»å‹•ã‚„å›è»¢ã®åˆ¶ç´„ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	this->constraints = constraints; // å†…éƒ¨ã®åˆ¶ç´„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚‚æ›´æ–°
 	Physics::SetConstraints(m_actorHandle, physx::PxRigidDynamicLockFlags(static_cast<physx::PxU8>(constraints)));
 }
 
 RigidbodyConstraints Rigidbody::GetConstraints() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çˆÚ“®‚â‰ñ“]‚Ì§–ñ‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ç§»å‹•ã‚„å›è»¢ã®åˆ¶ç´„ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	//physx::PxRigidDynamicLockFlags flags = Physics::GetConstraints(m_actorHandle);
 	//return RigidbodyConstraints(static_cast<physx::PxU8>(flags));
-	return constraints; // “à•”‚Ì§–ñƒvƒƒpƒeƒB‚ğ•Ô‚·
+	return constraints; // å†…éƒ¨ã®åˆ¶ç´„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¿”ã™
 }
 
 void Rigidbody::SetLinearDamping(float damping)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉüŒ`Œ¸Š‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç·šå½¢æ¸›è¡°ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetLinearDamping(m_actorHandle, damping);
 }
 
 float Rigidbody::GetLinearDamping() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çüŒ`Œ¸Š‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ç·šå½¢æ¸›è¡°ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	return Physics::GetLinearDamping(m_actorHandle);
 }
 
 void Rigidbody::SetLinearDrag(float drag)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉüŒ`ƒhƒ‰ƒbƒO‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç·šå½¢ãƒ‰ãƒ©ãƒƒã‚°ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetLinearDrag(m_actorHandle, drag);
 }
 
 float Rigidbody::GetLinearDrag() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çüŒ`ƒhƒ‰ƒbƒO‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ç·šå½¢ãƒ‰ãƒ©ãƒƒã‚°ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	return Physics::GetLinearDrag(m_actorHandle);
 }
 
 void Rigidbody::SetMaxLinearVelocity(float maxVelocity)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉÅ‘åüŒ`‘¬“x‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«æœ€å¤§ç·šå½¢é€Ÿåº¦ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetMaxLinearVelocity(m_actorHandle, maxVelocity);
 }
 
 float Rigidbody::GetMaxLinearVelocity() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çÅ‘åüŒ`‘¬“x‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰æœ€å¤§ç·šå½¢é€Ÿåº¦ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	return Physics::GetMaxLinearVelocity(m_actorHandle);
 }
 
 void Rigidbody::SetAngularDamping(float damping)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉŠpŒ¸Š‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«è§’æ¸›è¡°ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetAngularDamping(m_actorHandle, damping);
 }
 
 float Rigidbody::GetAngularDamping() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çŠpŒ¸Š‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰è§’æ¸›è¡°ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	return Physics::GetAngularDamping(m_actorHandle);
 }
 
 void Rigidbody::SetAngularDrag(float drag)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉŠpƒhƒ‰ƒbƒO‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«è§’ãƒ‰ãƒ©ãƒƒã‚°ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetAngularDrag(m_actorHandle, drag);
 }
 
 float Rigidbody::GetAngularDrag() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çŠpƒhƒ‰ƒbƒO‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰è§’ãƒ‰ãƒ©ãƒƒã‚°ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	return Physics::GetAngularDrag(m_actorHandle);
 }
 
 void Rigidbody::SetMaxAngularVelocity(float maxVelocity)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉÅ‘åŠp‘¬“x‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«æœ€å¤§è§’é€Ÿåº¦ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetMaxAngularVelocity(m_actorHandle, maxVelocity);
 }
 
 float Rigidbody::GetMaxAngularVelocity() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çÅ‘åŠp‘¬“x‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰æœ€å¤§è§’é€Ÿåº¦ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	return Physics::GetMaxAngularVelocity(m_actorHandle);
 }
 
 void Rigidbody::SetSleepThreshold(float threshold)
 {
-	// •¨—ƒGƒ“ƒWƒ“‚ÉƒXƒŠ[ƒvè‡’l‚ğ’¼Úİ’è‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ã‚¹ãƒªãƒ¼ãƒ—é–¾å€¤ã‚’ç›´æ¥è¨­å®šã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	Physics::SetSleepThreshold(m_actorHandle, threshold);
 }
 
 float Rigidbody::GetSleepThreshold() const
 {
-	// •¨—ƒGƒ“ƒWƒ“‚©‚çƒXƒŠ[ƒvè‡’l‚ğ’¼Úæ“¾‚·‚éˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã‹ã‚‰ã‚¹ãƒªãƒ¼ãƒ—é–¾å€¤ã‚’ç›´æ¥å–å¾—ã™ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	return Physics::GetSleepThreshold(m_actorHandle);
 }
 
-// --- XVˆ—‚ÌÀ‘• ---
+// --- æ›´æ–°å‡¦ç†ã®å®Ÿè£… ---
 
 void Rigidbody::Update(float deltaTime)
 {
 #ifdef USE_PHYSX
-	// PhysX‚ğg—p‚µ‚Ä‚¢‚éê‡‚ÍA•¨—ƒGƒ“ƒWƒ“‚ÌXV‚É”C‚¹‚é‚½‚ßA‚±‚±‚Å‚Í‰½‚à‚µ‚Ü‚¹‚ñB
+	// PhysXã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®æ›´æ–°ã«ä»»ã›ã‚‹ãŸã‚ã€ã“ã“ã§ã¯ä½•ã‚‚ã—ã¾ã›ã‚“ã€‚
 
 #else
 	if (mass < 0.1f) mass = 0.1f;
-	//d—Í“K—p
+	//é‡åŠ›é©ç”¨
 	if (useGravity) {
 		AddForce(gravity * mass);
 	}
@@ -358,9 +358,9 @@ void Rigidbody::Update(float deltaTime)
 	velocity.x *= (1.0f - drag * deltaTime);
 	velocity.z *= (1.0f - drag * deltaTime);
 #endif
-	//‰Á‘¬“x“K—p
+	//åŠ é€Ÿåº¦é©ç”¨
 	velocity += acceleration * deltaTime;
-	//ÅI“I‚È‘¬“x‚ÅAˆÚ“®‚ğ“K—p
+	//æœ€çµ‚çš„ãªé€Ÿåº¦ã§ã€ç§»å‹•ã‚’é©ç”¨
 	gameObject->transform->Translate(velocity * deltaTime);
 	acceleration = 0;
 #endif // USE_PHYSX
@@ -371,15 +371,15 @@ void Rigidbody::FixedUpdate(float fixedDeltaTime)
 #ifdef USE_PHYSX
 	
 #else
-	// ŒÅ’èXV‚Å•¨—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ğs‚¤ê‡‚Ìˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
-	// —á‚¦‚ÎAÕ“Ë”»’è‚â•¨—‰‰Z‚ÌXV‚È‚Ç‚ğs‚¤‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+	// å›ºå®šæ›´æ–°ã§ç‰©ç†ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¡Œã†å ´åˆã®å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
+	// ä¾‹ãˆã°ã€è¡çªåˆ¤å®šã‚„ç‰©ç†æ¼”ç®—ã®æ›´æ–°ãªã©ã‚’è¡Œã†ã“ã¨ãŒã§ãã¾ã™ã€‚
 #endif
 }
 
 void Rigidbody::LateUpdate(float deltaTime)
 {
 #ifdef USE_PHYSX
-	// PhysX‚ğg—p‚µ‚Ä‚¢‚éê‡‚ÍA•¨—ƒGƒ“ƒWƒ“‚ÌXV‚É”C‚¹‚é‚½‚ßA‚±‚±‚Å‚Í‰½‚à‚µ‚Ü‚¹‚ñB
+	// PhysXã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®æ›´æ–°ã«ä»»ã›ã‚‹ãŸã‚ã€ã“ã“ã§ã¯ä½•ã‚‚ã—ã¾ã›ã‚“ã€‚
 
 	
 #endif
@@ -395,50 +395,50 @@ void Rigidbody::OnGround()
 void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 {
 
-	Component::DrawProperty(context); // Šî’êƒNƒ‰ƒX‚ÌƒvƒƒpƒeƒB•`‰æ‚àŒÄ‚Ño‚·
+	Component::DrawProperty(context); // åŸºåº•ã‚¯ãƒ©ã‚¹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚‚å‘¼ã³å‡ºã™
 
 	IMGUI_PROPERTY_BEGIN();
 	//ImGui::Text("Actor Handle: %d", m_actorHandle);
-	// •¨—ƒGƒ“ƒWƒ“‚ÌƒvƒƒpƒeƒB‚ğ•ÒW‚·‚éGUI—v‘f‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ç·¨é›†ã™ã‚‹GUIè¦ç´ ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 
 #if 0
-	// ¿—Ê‚ğ•ÒW‚·‚é‚½‚ß‚Ì“ü—ÍƒtƒB[ƒ‹ƒh
+	// è³ªé‡ã‚’ç·¨é›†ã™ã‚‹ãŸã‚ã®å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 	bool isMassChanged = false;
 	IMGUI_PROPERTY_FLOAT("mass", mass, isMassChanged, 0.1f, 0.0001f, FLT_MAX, "%.4f");
 	//if (ImGui::InputFloat("mass", &mass, 0.1f))
 	if (isMassChanged)
 	{
-		// ¿—Ê‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+		// è³ªé‡ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 		SetMass(mass);
 	}
 
-	// d—Í‚Ìg—pİ’è‚ğ•ÒW‚·‚é‚½‚ß‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+	// é‡åŠ›ã®ä½¿ç”¨è¨­å®šã‚’ç·¨é›†ã™ã‚‹ãŸã‚ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 	bool isUseGravityChanged = false;
 	IMGUI_PROPERTY_BOOL("useGravity", useGravity, isUseGravityChanged);
 	//if (ImGui::Checkbox("useGravity", &useGravity))
 	if (isUseGravityChanged)
 	{
-		// d—Í‚Ìg—pİ’è‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+		// é‡åŠ›ã®ä½¿ç”¨è¨­å®šãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 		SetUseGravity(useGravity);
 	}
 
-	// ƒLƒlƒ}ƒeƒBƒbƒNİ’è‚ğ•ÒW‚·‚é‚½‚ß‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+	// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯è¨­å®šã‚’ç·¨é›†ã™ã‚‹ãŸã‚ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 	bool isKinematicChanged = false;
 	IMGUI_PROPERTY_BOOL("isKinematic", isKinematic, isKinematicChanged);
 	//if (ImGui::Checkbox("isKinematic", &isKinematic))
 	if (isKinematicChanged)
 	{
-		// ƒLƒlƒ}ƒeƒBƒbƒNİ’è‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+		// ã‚­ãƒãƒãƒ†ã‚£ãƒƒã‚¯è¨­å®šãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 		SetKinematic(isKinematic);
 	}
 
-	// CCD‚Ìg—pİ’è‚ğ•ÒW‚·‚é‚½‚ß‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+	// CCDã®ä½¿ç”¨è¨­å®šã‚’ç·¨é›†ã™ã‚‹ãŸã‚ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 	bool isUseCCDChanged = false;
 	IMGUI_PROPERTY_BOOL("useCCD", useCCD, isUseCCDChanged);
 	//if (ImGui::Checkbox("useCCD", &useCCD))
 	if (isUseCCDChanged)
 	{
-		// CCD‚Ìg—pİ’è‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+		// CCDã®ä½¿ç”¨è¨­å®šãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 		SetUseCCD(useCCD);
 	}
 
@@ -447,27 +447,27 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 	//if (ImGui::InputFloat("sleepThreshold", &sleepThreshold, 0.001f))
 	if (isSleepThresholdChanged)
 	{
-		// ƒXƒŠ[ƒvè‡’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+		// ã‚¹ãƒªãƒ¼ãƒ—é–¾å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 		SetSleepThreshold(sleepThreshold);
 	}
 #endif // 0
 
 
-	// ˆÚ“®‚â‰ñ“]‚Ì§–ñ‚ğ•ÒW‚·‚é‚½‚ß‚ÌGUI—v‘f‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ç§»å‹•ã‚„å›è»¢ã®åˆ¶ç´„ã‚’ç·¨é›†ã™ã‚‹ãŸã‚ã®GUIè¦ç´ ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 	RigidbodyConstraints newConstraints = constraints;
 	bool isConstraintsChanged = false;
 	IMGUI_PROPERTY("Constraints");
 	if (ImGui::TreeNodeEx("##Constraints", ImGuiTreeNodeFlags_None))
 	{
-		// ‚·‚×‚Ä‚Ì§–ñ‚ğˆêŠ‡‚Åİ’è‚·‚é‚½‚ß‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+		// ã™ã¹ã¦ã®åˆ¶ç´„ã‚’ä¸€æ‹¬ã§è¨­å®šã™ã‚‹ãŸã‚ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 		isConstraintsChanged |= ImGui::CheckboxFlags("Freeze All", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezeAll));
 		
-		// Position‚ÆRotation‚Ì§–ñ‚ğ•ª‚¯‚Ä•\¦‚·‚é‚½‚ß‚ÌƒcƒŠ[\‘¢
+		// Positionã¨Rotationã®åˆ¶ç´„ã‚’åˆ†ã‘ã¦è¡¨ç¤ºã™ã‚‹ãŸã‚ã®ãƒ„ãƒªãƒ¼æ§‹é€ 
 		{
-			// Position‚ğˆêŠ‡‚Åİ’è‚·‚é‚½‚ß‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+			// Positionã‚’ä¸€æ‹¬ã§è¨­å®šã™ã‚‹ãŸã‚ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 			isConstraintsChanged |= ImGui::CheckboxFlags("##Freeze Position", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezePosition));
 			ImGui::SameLine();
-			// Position‚Å‚Ì§–ñ
+			// Positionã§ã®åˆ¶ç´„
 			if (ImGui::TreeNodeEx("Freeze Position", ImGuiTreeNodeFlags_None))
 			{
 				isConstraintsChanged |= ImGui::CheckboxFlags("X", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezePositionX));
@@ -478,10 +478,10 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 				ImGui::TreePop();
 			}
 
-			// Rotation‚ğˆêŠ‡‚Åİ’è‚·‚é‚½‚ß‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX
+			// Rotationã‚’ä¸€æ‹¬ã§è¨­å®šã™ã‚‹ãŸã‚ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
 			isConstraintsChanged |= ImGui::CheckboxFlags("##Freeze Rotation", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezeRotation));
 			ImGui::SameLine();
-			// Rotation‚Å‚Ì§–ñ
+			// Rotationã§ã®åˆ¶ç´„
 			if (ImGui::TreeNodeEx("Freeze Rotation", ImGuiTreeNodeFlags_None))
 			{
 				isConstraintsChanged |= ImGui::CheckboxFlags("X", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezeRotationX));
@@ -495,10 +495,10 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 
 		if (isConstraintsChanged)
 		{
-			// §–ñ‚Ìİ’è‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+			// åˆ¶ç´„ã®è¨­å®šãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 			IMGUI_PROPERTY_COMMAND_CUSTOM("constraints", newConstraints, constraints, std::to_string(static_cast<int>(newConstraints)), std::to_string(static_cast<int>(constraints)),
 				[this](const RigidbodyConstraints& v) {
-					SetConstraints(v); /* constraints ƒvƒƒpƒeƒB‚ğXV */
+					SetConstraints(v); /* constraints ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æ›´æ–° */
 				});
 		}
 		ImGui::TreePop();
@@ -506,11 +506,11 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 
 	IMGUI_PROPERTY_END();
 
-	// --- ƒeƒXƒg—p‚ÌGUI—v‘f ---
+	// --- ãƒ†ã‚¹ãƒˆç”¨ã®GUIè¦ç´  ---
 	{
-		ImGui::SeparatorText(reinterpret_cast<const char*>(u8"ƒeƒXƒg—p"));
+		ImGui::SeparatorText(reinterpret_cast<const char*>(u8"ãƒ†ã‚¹ãƒˆç”¨"));
 
-		// ƒeƒXƒg—p‚Ì—Í‚ğ‰Á‚¦‚éƒ{ƒ^ƒ“
+		// ãƒ†ã‚¹ãƒˆç”¨ã®åŠ›ã‚’åŠ ãˆã‚‹ãƒœã‚¿ãƒ³
 		static Vector3 forceToAdd(0, 0, 10);
 
 		ImGui::InputFloat3("Force to Add", &forceToAdd.x);

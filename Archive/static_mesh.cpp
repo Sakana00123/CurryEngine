@@ -17,12 +17,12 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename)
 	std::vector<XMFLOAT2> texcoords;
 	std::vector<std::wstring> mtl_filenames;
 
-	bool isFlip = true;//ƒeƒNƒXƒ`ƒƒ‚ğ”½“]‚³‚¹‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+	bool isFlip = true;//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’åè»¢ã•ã›ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 
 	std::wifstream fin(obj_filename);
 	_ASSERT_EXPR(fin, L"OBJ file not found.");
 	wchar_t command[256];
-	//OBJƒtƒ@ƒCƒ‹ƒo[ƒT[
+	//OBJãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ¼ã‚µãƒ¼
 	{
 		while (fin)
 		{
@@ -96,7 +96,7 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename)
 		}
 		fin.close();
 	}
-	//ƒTƒuƒZƒbƒg‚ÌƒCƒ“ƒfƒbƒNƒX”‚ğŒvZ‚·‚é
+	//ã‚µãƒ–ã‚»ãƒƒãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°ã‚’è¨ˆç®—ã™ã‚‹
 	{
 		std::vector<SubSet>::reverse_iterator iterator = subsets.rbegin();
 		iterator->index_count = static_cast<uint32_t>(indices.size()) - iterator->index_start;
@@ -106,10 +106,10 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename)
 		}
 	}
 
-	//ƒoƒbƒtƒ@¶¬
+	//ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	CreateComBuffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
 
-	//MTLƒtƒ@ƒCƒ‹‚ğƒ[ƒh‚µAƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼‚ğæ“¾
+	//MTLãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—
 	{
 		std::filesystem::path mtl_filename(obj_filename);
 		mtl_filename.replace_filename(std::filesystem::path(mtl_filenames[0]).filename());
@@ -180,7 +180,7 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename)
 		fin.close();
 	}
 
-	//ƒ}ƒeƒŠƒAƒ‹‚ª‚È‚©‚Á‚½‚çAƒ_ƒ~[ƒ}ƒeƒŠƒAƒ‹‚ğ’Ç‰Á
+	//ãƒãƒ†ãƒªã‚¢ãƒ«ãŒãªã‹ã£ãŸã‚‰ã€ãƒ€ãƒŸãƒ¼ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¿½åŠ 
 	if (materials.size() == 0)
 	{
 		for (const SubSet& subset : subsets)
@@ -189,17 +189,17 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename)
 		}
 	}
 
-	//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	D3D11_TEXTURE2D_DESC texture2d_desc{};
 	
-	//‚·‚×‚Ä‚Ìƒ}ƒeƒŠƒAƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ğƒ[ƒh‚µAƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğ¶¬‚·‚é
+	//ã™ã¹ã¦ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã€ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 	for (Material& material : materials)
 	{
 		if (material.texture_filenames[0] == L"")
 		{
-			//ƒ_ƒ~[ƒJƒ‰[ƒ}ƒbƒvƒeƒNƒXƒ`ƒƒì¬
+			//ãƒ€ãƒŸãƒ¼ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½œæˆ
 			MakeDummyTexture(device, material.shader_resource_views[0].GetAddressOf(), 0xFFFFFFFF, 16);
-			//ƒ_ƒ~[–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒì¬
+			//ãƒ€ãƒŸãƒ¼æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½œæˆ
 			MakeDummyTexture(device, material.shader_resource_views[1].GetAddressOf(), 0xFFFF7F7F, 16);
 		}
 		else
@@ -211,7 +211,7 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename)
 		}
 	}
 
-	//ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	HRESULT hr{ S_OK };
 
 	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
@@ -272,13 +272,13 @@ void StaticMesh::Render(ID3D11DeviceContext* immediate_context,
 	immediate_context->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	immediate_context->IASetInputLayout(input_layout.Get());
-	//’¸“_ƒVƒF[ƒ_[‚ÆƒsƒNƒZƒ‹ƒVƒF[ƒ_[ƒZƒbƒg
+	//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¨ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚»ãƒƒãƒˆ
 	immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
 	immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
 
 	for (const Material& material : materials)
 	{
-		//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚ÌƒoƒCƒ“ƒh
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ãƒ‰
 		immediate_context->PSSetShaderResources(0, 1, material.shader_resource_views[0].GetAddressOf());
 		immediate_context->PSSetShaderResources(1, 1, material.shader_resource_views[1].GetAddressOf());
 

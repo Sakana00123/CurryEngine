@@ -8,39 +8,39 @@ class RenderPass
 public:
 	virtual ~RenderPass() = default;
 
-	// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒpƒX‚Ì‰Šú‰»ˆ—i•K—v‚É‰‚¶‚ÄƒI[ƒo[ƒ‰ƒCƒhj
+	// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ‘ã‚¹ã®åˆæœŸåŒ–å‡¦ç†ï¼ˆå¿…è¦ã«å¿œã˜ã¦ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 	virtual void Initialize() {}
 
-	// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒpƒX‚ÌI—¹‰»ˆ—i•K—v‚É‰‚¶‚ÄƒI[ƒo[ƒ‰ƒCƒhj
+	// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ‘ã‚¹ã®çµ‚äº†åŒ–å‡¦ç†ï¼ˆå¿…è¦ã«å¿œã˜ã¦ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 	virtual void Finalize() {}
 
-	// ŠeƒŒƒ“ƒ_ƒŠƒ“ƒOƒpƒX‚ÅÀ‘•‚³‚ê‚é‚×‚«ƒˆ‰¼‘zŠÖ”
+	// å„ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ‘ã‚¹ã§å®Ÿè£…ã•ã‚Œã‚‹ã¹ãç´”ç²‹ä»®æƒ³é–¢æ•°
 	virtual void Execute(RenderContext* rtx, Scene* scene) = 0;
 
-	// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒpƒX‚ÌƒvƒƒpƒeƒB•`‰æˆ—i•K—v‚É‰‚¶‚ÄƒI[ƒo[ƒ‰ƒCƒhj
+	// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ‘ã‚¹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†ï¼ˆå¿…è¦ã«å¿œã˜ã¦ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 	virtual void DrawProperty() {}
 
-	//// ƒpƒX‚Ì“ü—ÍƒŠƒ\[ƒX‚ğ’è‹`‚·‚é‚½‚ß‚ÌŠÖ”i•K—v‚É‰‚¶‚ÄƒI[ƒo[ƒ‰ƒCƒhj
+	//// ãƒ‘ã‚¹ã®å…¥åŠ›ãƒªã‚½ãƒ¼ã‚¹ã‚’å®šç¾©ã™ã‚‹ãŸã‚ã®é–¢æ•°ï¼ˆå¿…è¦ã«å¿œã˜ã¦ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 	//virtual std::vector<std::string> GetInputs() const { return {}; }
-	//// ƒpƒX‚Ìo—ÍƒŠƒ\[ƒX‚ğ’è‹`‚·‚é‚½‚ß‚ÌŠÖ”i•K—v‚É‰‚¶‚ÄƒI[ƒo[ƒ‰ƒCƒhj
+	//// ãƒ‘ã‚¹ã®å‡ºåŠ›ãƒªã‚½ãƒ¼ã‚¹ã‚’å®šç¾©ã™ã‚‹ãŸã‚ã®é–¢æ•°ï¼ˆå¿…è¦ã«å¿œã˜ã¦ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 	//virtual std::vector<std::string> GetOutputs() const { return {}; }
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÌƒŠƒTƒCƒYƒCƒxƒ“ƒg‚ğˆ—‚·‚é‚½‚ß‚ÌŠÖ”
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ãƒªã‚µã‚¤ã‚ºã‚¤ãƒ™ãƒ³ãƒˆã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã®é–¢æ•°
 	void OnSizeChanged(ID3D11Device* device, uint32_t width, uint32_t height);
 
-	// ƒfƒoƒbƒO—p‚ÌƒpƒX–¼‚ğİ’è‚·‚é‚½‚ß‚ÌŠÖ”
+	// ãƒ‡ãƒãƒƒã‚°ç”¨ã®ãƒ‘ã‚¹åã‚’è¨­å®šã™ã‚‹ãŸã‚ã®é–¢æ•°
 	void SetRenderPassName(const char* name) { renderPassName = name; }
 
-	// ƒfƒoƒbƒO—p‚ÌƒpƒX–¼‚ğæ“¾‚·‚é‚½‚ß‚ÌŠÖ”
+	// ãƒ‡ãƒãƒƒã‚°ç”¨ã®ãƒ‘ã‚¹åã‚’å–å¾—ã™ã‚‹ãŸã‚ã®é–¢æ•°
 	const char* GetRenderPassName() const { return renderPassName; }
 
 protected:
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÌƒŠƒTƒCƒY‚ª•K—v‚Èê‡‚ÉAƒŠƒXƒg‚É’Ç‰Á‚·‚é‚½‚ß‚ÌŠÖ”
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ãƒªã‚µã‚¤ã‚ºãŒå¿…è¦ãªå ´åˆã«ã€ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹ãŸã‚ã®é–¢æ•°
 	void RegisterResizableRenderTexture(RenderTexture* rt);
 
 private:
 	friend class RenderPipeline;
-	std::vector<RenderTexture*> resizableRenderTargets; // ƒŠƒTƒCƒY‚ª•K—v‚ÈƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÌƒŠƒXƒg
-	const char* renderPassName = "Unnamed Pass"; // ƒfƒoƒbƒO—p‚ÌƒpƒX–¼
+	std::vector<RenderTexture*> resizableRenderTargets; // ãƒªã‚µã‚¤ã‚ºãŒå¿…è¦ãªãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ãƒªã‚¹ãƒˆ
+	const char* renderPassName = "Unnamed Pass"; // ãƒ‡ãƒãƒƒã‚°ç”¨ã®ãƒ‘ã‚¹å
 };

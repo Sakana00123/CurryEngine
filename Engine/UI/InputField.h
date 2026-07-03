@@ -8,145 +8,145 @@
 
 /**
  * @file
- * @brief ƒeƒLƒXƒg“ü—Í—p‚Ì UI ƒRƒ“ƒ|[ƒlƒ“ƒgB
- * @details ƒtƒH[ƒJƒXAƒJ[ƒ\ƒ‹iƒLƒƒƒŒƒbƒgj“_–ÅAƒL[“ü—Íˆ—‚ğs‚¢A
- *          `Text` ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ö•ÒWŒ‹‰Ê‚ğ”½‰f‚µ‚Ü‚·B`Selectable` ‚ÌƒiƒrƒQ[ƒVƒ‡ƒ“‚â
- *          `EventSystem` ‚Æ˜AŒg‚µA‘I‘ğó‘Ô‚Å‚ÌŒp‘±XVi`IUpdateSelectedHandler`j‚É‚à‘Î‰‚µ‚Ü‚·B
+ * @brief ãƒ†ã‚­ã‚¹ãƒˆå…¥åŠ›ç”¨ã® UI ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
+ * @details ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã€ã‚«ãƒ¼ã‚½ãƒ«ï¼ˆã‚­ãƒ£ãƒ¬ãƒƒãƒˆï¼‰ç‚¹æ»…ã€ã‚­ãƒ¼å…¥åŠ›å‡¦ç†ã‚’è¡Œã„ã€
+ *          `Text` ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¸ç·¨é›†çµæœã‚’åæ˜ ã—ã¾ã™ã€‚`Selectable` ã®ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ã‚„
+ *          `EventSystem` ã¨é€£æºã—ã€é¸æŠçŠ¶æ…‹ã§ã®ç¶™ç¶šæ›´æ–°ï¼ˆ`IUpdateSelectedHandler`ï¼‰ã«ã‚‚å¯¾å¿œã—ã¾ã™ã€‚
  */
 
 /**
- * @brief “ü—Í“®ì‚Ìƒtƒ‰ƒOB
+ * @brief å…¥åŠ›å‹•ä½œã®ãƒ•ãƒ©ã‚°ã€‚
  */
 enum InputFlag { 
-	MultiLine,       //!< •¡”s“ü—Í‚ğ‹–‰Â
-	CommitOnEnter    //!< Enter ƒL[‚ÅŠm’èi’Pˆêsƒ‚[ƒh‚È‚Çj
+	MultiLine,       //!< è¤‡æ•°è¡Œå…¥åŠ›ã‚’è¨±å¯
+	CommitOnEnter    //!< Enter ã‚­ãƒ¼ã§ç¢ºå®šï¼ˆå˜ä¸€è¡Œãƒ¢ãƒ¼ãƒ‰ãªã©ï¼‰
 };
 
 /**
- * @brief ƒeƒLƒXƒg“ü—ÍƒtƒB[ƒ‹ƒhB
- * @details `Selectable` ‚ğŒp³‚µA‘I‘ğEƒtƒH[ƒJƒX‚Ìó‘ÔŠÇ—‚ğs‚¢‚Ü‚·B
- *          `IUpdateSelectedHandler` ‚ğÀ‘•‚µA‘I‘ğ’†‚ÉŒp‘±“I‚ÉXVˆ—iƒL[“ü—ÍŠÄ‹‚È‚Çj‚ğs‚¢‚Ü‚·B
+ * @brief ãƒ†ã‚­ã‚¹ãƒˆå…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã€‚
+ * @details `Selectable` ã‚’ç¶™æ‰¿ã—ã€é¸æŠãƒ»ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã®çŠ¶æ…‹ç®¡ç†ã‚’è¡Œã„ã¾ã™ã€‚
+ *          `IUpdateSelectedHandler` ã‚’å®Ÿè£…ã—ã€é¸æŠä¸­ã«ç¶™ç¶šçš„ã«æ›´æ–°å‡¦ç†ï¼ˆã‚­ãƒ¼å…¥åŠ›ç›£è¦–ãªã©ï¼‰ã‚’è¡Œã„ã¾ã™ã€‚
  */
 class InputField : public Selectable, public IUpdateSelectedHandler
 {
 	C_REFLECT(InputField)
 public:
 	/**
-	 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^B
+	 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
 	 */
 	InputField();
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	virtual ~InputField() override = default;
 
 	/**
-	 * @brief ‰Šú‰»ˆ—B
-	 * @details ƒeƒLƒXƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì€”õ‚âƒJ[ƒ\ƒ‹•`‰æ—pƒŠƒ\[ƒX‚Ì‰Šú‰»‚ğs‚¢‚Ü‚·B
+	 * @brief åˆæœŸåŒ–å‡¦ç†ã€‚
+	 * @details ãƒ†ã‚­ã‚¹ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®æº–å‚™ã‚„ã‚«ãƒ¼ã‚½ãƒ«æç”»ç”¨ãƒªã‚½ãƒ¼ã‚¹ã®åˆæœŸåŒ–ã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	void Initialize() override;
 
 	/**
-	 * @brief –ˆƒtƒŒ[ƒ€XVB
-	 * @param elapsedTime Œo‰ßŠÔi•bjB
-	 * @details ƒLƒƒƒŒƒbƒg‚Ì“_–Å‚âƒtƒH[ƒJƒXó‘Ô‚ÌXVA•K—v‚É‰‚¶‚½“à•”ó‘ÔXV‚ğs‚¢‚Ü‚·B
+	 * @brief æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚
+	 * @param elapsedTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
+	 * @details ã‚­ãƒ£ãƒ¬ãƒƒãƒˆã®ç‚¹æ»…ã‚„ãƒ•ã‚©ãƒ¼ã‚«ã‚¹çŠ¶æ…‹ã®æ›´æ–°ã€å¿…è¦ã«å¿œã˜ãŸå†…éƒ¨çŠ¶æ…‹æ›´æ–°ã‚’è¡Œã„ã¾ã™ã€‚
 	 */
 	void Update(float elapsedTime) override;
 
 	/**
-	 * @brief •`‰æŠJn‚Ìˆ—B
-	 * @param rtx •`‰æƒRƒ“ƒeƒLƒXƒgB
+	 * @brief æç”»é–‹å§‹æ™‚ã®å‡¦ç†ã€‚
+	 * @param rtx æç”»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	void Begin(RenderContext* rtx) override;
 
 	/**
-	 * @brief •`‰æI—¹‚Ìˆ—B
-	 * @param rtx •`‰æƒRƒ“ƒeƒLƒXƒgB
+	 * @brief æç”»çµ‚äº†æ™‚ã®å‡¦ç†ã€‚
+	 * @param rtx æç”»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã€‚
 	 */
 	void End(RenderContext* rtx) override;
 
 #ifdef USE_IMGUI
 	/**
-	 * @brief ƒCƒ“ƒXƒyƒNƒ^—p‚ÌƒvƒƒpƒeƒB•`‰æB
+	 * @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚
 	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 protected:
 	/**
-	 * @brief ‘I‘ğ’†‚ÌŒp‘±XViƒL[“ü—Íˆ—‚È‚ÇjB
-	 * @param eventData ƒx[ƒXƒCƒxƒ“ƒgƒf[ƒ^B
+	 * @brief é¸æŠä¸­ã®ç¶™ç¶šæ›´æ–°ï¼ˆã‚­ãƒ¼å…¥åŠ›å‡¦ç†ãªã©ï¼‰ã€‚
+	 * @param eventData ãƒ™ãƒ¼ã‚¹ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã€‚
 	 */
 	void OnUpdateSelected(BaseEventData* eventData) override;
 
 	/**
-	 * @brief Å‘å•¶š”‚ğİ’è‚µ‚Ü‚·i0 ‚Í–³§ŒÀjB
-	 * @param characterLimit Å‘å•¶š”B
+	 * @brief æœ€å¤§æ–‡å­—æ•°ã‚’è¨­å®šã—ã¾ã™ï¼ˆ0 ã¯ç„¡åˆ¶é™ï¼‰ã€‚
+	 * @param characterLimit æœ€å¤§æ–‡å­—æ•°ã€‚
 	 */
 	void SetCharacterLimit(int characterLimit) { this->characterLimit = characterLimit; }
 	/**
-	 * @brief Å‘å•¶š”‚ğæ“¾‚µ‚Ü‚·B
-	 * @return Œ»İİ’è‚³‚ê‚Ä‚¢‚éÅ‘å•¶š”B
+	 * @brief æœ€å¤§æ–‡å­—æ•°ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ç¾åœ¨è¨­å®šã•ã‚Œã¦ã„ã‚‹æœ€å¤§æ–‡å­—æ•°ã€‚
 	 */
 	int GetCharacterLimit() const { return characterLimit; }
 protected:
 
 	/**
-	 * @brief ƒ|ƒCƒ“ƒ^ƒ_ƒEƒ“iƒNƒŠƒbƒNj‚ÌƒR[ƒ‹ƒoƒbƒNB
-	 * @param eventData ƒx[ƒXƒCƒxƒ“ƒgƒf[ƒ^B
+	 * @brief ãƒã‚¤ãƒ³ã‚¿ãƒ€ã‚¦ãƒ³ï¼ˆã‚¯ãƒªãƒƒã‚¯ï¼‰æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚
+	 * @param eventData ãƒ™ãƒ¼ã‚¹ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã€‚
 	 */
 	void OnPointerDown(PointerEventData* eventData) override;
 
 	/**
-	 * @brief ‘I‘ğ‚ÌƒR[ƒ‹ƒoƒbƒNB
-	 * @param eventData ƒx[ƒXƒCƒxƒ“ƒgƒf[ƒ^B
+	 * @brief é¸æŠæ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚
+	 * @param eventData ãƒ™ãƒ¼ã‚¹ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã€‚
 	 */
 	void OnSelect(BaseEventData* eventData) override;
 
 	/**
-	 * @brief ‘I‘ğ‰ğœ‚ÌƒR[ƒ‹ƒoƒbƒNB
-	 * @param eventData ƒx[ƒXƒCƒxƒ“ƒgƒf[ƒ^B
+	 * @brief é¸æŠè§£é™¤æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚
+	 * @param eventData ãƒ™ãƒ¼ã‚¹ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã€‚
 	 */
 	void OnDeselect(BaseEventData* eventData) override;
 private:
 
 	/**
-	 * @brief ƒJ[ƒ\ƒ‹ˆÊ’u‚ğXV‚µ‚Ü‚·B
-	 * @param move ˆÊ’u‚Ì‘Š‘ÎˆÚ“®—Êi•‰”‚Å¶A³”‚Å‰EjB
+	 * @brief ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’æ›´æ–°ã—ã¾ã™ã€‚
+	 * @param move ä½ç½®ã®ç›¸å¯¾ç§»å‹•é‡ï¼ˆè² æ•°ã§å·¦ã€æ­£æ•°ã§å³ï¼‰ã€‚
 	 */
 	void CursorUpdate(int move = 0);
 public:
 	
 	/**
-	 * @brief ƒeƒLƒXƒgƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ŠÖ˜A•t‚¯‚ç‚ê‚½ `Text` ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^B‘¶İ‚µ‚È‚¢ê‡‚Í `nullptr` ‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief ãƒ†ã‚­ã‚¹ãƒˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸ `Text` ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚å­˜åœ¨ã—ãªã„å ´åˆã¯ `nullptr` ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	Text* GetTextComponent() const;
 
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("Text"))
-	ObjectId textComponentRef; // ƒCƒ“ƒXƒyƒNƒ^‚Å‚ÌQÆ—pID
+	ObjectId textComponentRef; // ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ã§ã®å‚ç…§ç”¨ID
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
-	int inputFlags = 0; // “ü—Í“®ì‚Ìƒtƒ‰ƒOiInputFlag ‚Ìƒrƒbƒgƒ}ƒXƒNj
+	int inputFlags = 0; // å…¥åŠ›å‹•ä½œã®ãƒ•ãƒ©ã‚°ï¼ˆInputFlag ã®ãƒ“ãƒƒãƒˆãƒã‚¹ã‚¯ï¼‰
 
 	C_PROPERTY()
-	Color cursorLineColor; // ƒJ[ƒ\ƒ‹‚ÌF
+	Color cursorLineColor; // ã‚«ãƒ¼ã‚½ãƒ«ã®è‰²
 
-	/** @brief “ü—Í‰Â”\‚ÈÅ‘å•¶š”i0 ‚Í–³§ŒÀjB*/
+	/** @brief å…¥åŠ›å¯èƒ½ãªæœ€å¤§æ–‡å­—æ•°ï¼ˆ0 ã¯ç„¡åˆ¶é™ï¼‰ã€‚*/
 	C_PROPERTY()
-	int characterLimit = 0;//Å‘å•¶š”i0‚Í§ŒÀ‚È‚µj
+	int characterLimit = 0;//æœ€å¤§æ–‡å­—æ•°ï¼ˆ0ã¯åˆ¶é™ãªã—ï¼‰
 
 private:
-	/** @brief Œ»İ‚ÌƒJ[ƒ\ƒ‹ˆÊ’ui•¶šƒCƒ“ƒfƒbƒNƒXjB*/
+	/** @brief ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ï¼ˆæ–‡å­—ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰ã€‚*/
 	int cursorPos = 0;
 	//Image* cursorLine = nullptr;
-	/** @brief ƒJ[ƒ\ƒ‹iƒLƒƒƒŒƒbƒgj•`‰æ—pƒXƒvƒ‰ƒCƒgB*/
+	/** @brief ã‚«ãƒ¼ã‚½ãƒ«ï¼ˆã‚­ãƒ£ãƒ¬ãƒƒãƒˆï¼‰æç”»ç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã€‚*/
 	std::unique_ptr<Sprite> cursorLine;
-	/** @brief ƒtƒH[ƒJƒX’†‚©B*/
+	/** @brief ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ä¸­ã‹ã€‚*/
 	bool isFocus = false;
-	/** @brief “_–Åƒ^ƒCƒ}[i•bjB*/
+	/** @brief ç‚¹æ»…ã‚¿ã‚¤ãƒãƒ¼ï¼ˆç§’ï¼‰ã€‚*/
 	float blinkTimer = 0.f;
-	/** @brief “_–ÅŠÔŠui•bjB*/
+	/** @brief ç‚¹æ»…é–“éš”ï¼ˆç§’ï¼‰ã€‚*/
 	const float blinkInterval = 0.5f;
-	/** @brief Œ»İƒLƒƒƒŒƒbƒg‚ğ•\¦‚·‚é‚©B*/
+	/** @brief ç¾åœ¨ã‚­ãƒ£ãƒ¬ãƒƒãƒˆã‚’è¡¨ç¤ºã™ã‚‹ã‹ã€‚*/
 	bool cursorVisible = false;
 };

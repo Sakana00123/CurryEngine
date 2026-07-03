@@ -54,7 +54,7 @@ namespace CurryEngine
 
 		void AssetReferenceIndex::RebuildForFile(const std::string& filePath)
 		{
-			// Šù‘¶‚ÌŽQÆî•ñ‚ðíœ
+			// æ—¢å­˜ã®å‚ç…§æƒ…å ±ã‚’å‰Šé™¤
 			auto oldReferencesIt = s_referencesOf.find(filePath);
 			if (oldReferencesIt != s_referencesOf.end())
 			{
@@ -64,10 +64,10 @@ namespace CurryEngine
 				}
 			}
 
-			// V‚µ‚¢ŽQÆî•ñ‚ðŽûW
+			// æ–°ã—ã„å‚ç…§æƒ…å ±ã‚’åŽé›†
 			std::unordered_set<AssetId> foundIds = ScanAssetIdsInJsonFile(filePath);
 
-			// V‚µ‚¢ŽQÆî•ñ‚ðXV
+			// æ–°ã—ã„å‚ç…§æƒ…å ±ã‚’æ›´æ–°
 			for (const auto& newId : foundIds)
 			{
 				s_referencedBy[newId].insert(filePath);

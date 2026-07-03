@@ -28,7 +28,7 @@ void ScriptWatcher::Stop()
 {
 	if (!m_running) return;
 	m_running = false;
-	m_buildCv.notify_all(); // ƒrƒ‹ƒhƒXƒŒƒbƒh‚ª‘Ò‹@‚µ‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚Ì‚Å’Ê’m‚µ‚Ä‹N‚±‚·
+	m_buildCv.notify_all(); // ãƒ“ãƒ«ãƒ‰ã‚¹ãƒ¬ãƒƒãƒ‰ãŒå¾…æ©Ÿã—ã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§é€šçŸ¥ã—ã¦èµ·ã“ã™
 	if (m_buildThread.joinable()) m_buildThread.join();
 	if (m_watchThread.joinable()) m_watchThread.join();
 	Console::Log("[ScriptWatcher] Stopped.");
@@ -36,7 +36,7 @@ void ScriptWatcher::Stop()
 
 void ScriptWatcher::WatchLoop()
 {
-	// ‚Ü‚¸ƒpƒX‚ğŠm”F
+	// ã¾ãšãƒ‘ã‚¹ã‚’ç¢ºèª
 	std::filesystem::path dirPath(m_watchDir);
 	std::wstring watchDirW = dirPath.wstring();
 
@@ -58,39 +58,39 @@ void ScriptWatcher::WatchLoop()
 		return;
 	}
 
-	alignas(DWORD) char buffer[4096]; // FILE_NOTIFY_INFORMATION \‘¢‘Ì‚ª•¡”“ü‚é‰Â”\«‚ª‚ ‚é‚½‚ßA\•ª‚ÈƒTƒCƒY‚ğŠm•Û
+	alignas(DWORD) char buffer[4096]; // FILE_NOTIFY_INFORMATION æ§‹é€ ä½“ãŒè¤‡æ•°å…¥ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ã€ååˆ†ãªã‚µã‚¤ã‚ºã‚’ç¢ºä¿
 	DWORD bytesReturned = 0;
 	OVERLAPPED overlapped = {};
 	overlapped.hEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 
-	// .cs ‚ÅI‚í‚é ‚©‚Â ~ ‚Ån‚Ü‚ç‚È‚¢ ‚©‚Â . ‚Ån‚Ü‚ç‚È‚¢
+	// .cs ã§çµ‚ã‚ã‚‹ ã‹ã¤ ~ ã§å§‹ã¾ã‚‰ãªã„ ã‹ã¤ . ã§å§‹ã¾ã‚‰ãªã„
 	auto IsValidCsFile = [](const std::wstring& relativePath) -> bool {
-		// ƒrƒ‹ƒh¬‰Ê•¨ƒfƒBƒŒƒNƒgƒŠ‚ğœŠO
+		// ãƒ“ãƒ«ãƒ‰æˆæœç‰©ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é™¤å¤–
 		static const std::vector<std::wstring> excludedDirs = {
 			L"\\bin\\", L"\\obj\\", L"\\.vs\\", L"\\.git\\", L"\\Debug\\", L"\\Release\\"
 		};
 		for (const auto& exDir : excludedDirs) {
 			if (relativePath.find(exDir) != std::wstring::npos) {
-				return false; // œŠOƒfƒBƒŒƒNƒgƒŠ‚ªƒpƒX‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚éê‡‚Í–³Œø
+				return false; // é™¤å¤–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒãƒ‘ã‚¹ã«å«ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯ç„¡åŠ¹
 			}
 		}
 		std::wstring fileName = std::filesystem::path(relativePath).filename().wstring();
-		// ˆêƒtƒ@ƒCƒ‹‚ğœŠO
+		// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é™¤å¤–
 		if (fileName.starts_with(L"~"))  return false;
 		if (fileName.starts_with(L"."))  return false;
 		if (fileName.ends_with(L".tmp")) return false;
 		if (fileName.ends_with(L".TMP")) return false;
 		if (fileName.find(L"~RF") != std::wstring::npos) return false;
 
-		// .cs ƒtƒ@ƒCƒ‹‚Ì‚İ‘ÎÛ
+		// .cs ãƒ•ã‚¡ã‚¤ãƒ«ã®ã¿å¯¾è±¡
 		return relativePath.ends_with(L".cs");
 		};
 
-	// ÅŒã‚Ì•ÏX‚©‚çˆê’èŠÔ‘Ò‚Á‚Ä‚©‚çƒrƒ‹ƒh
+	// æœ€å¾Œã®å¤‰æ›´ã‹ã‚‰ä¸€å®šæ™‚é–“å¾…ã£ã¦ã‹ã‚‰ãƒ“ãƒ«ãƒ‰
 	auto lastChange = std::chrono::steady_clock::now();
 
 	while (m_running) {
-		// ”ñ“¯Šú‚ÅƒfƒBƒŒƒNƒgƒŠ‚Ì•ÏX‚ğŠÄ‹
+		// éåŒæœŸã§ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å¤‰æ›´ã‚’ç›£è¦–
 		ReadDirectoryChangesW(
 			hDir,
 			buffer,
@@ -101,7 +101,7 @@ void ScriptWatcher::WatchLoop()
 			&overlapped,
 			NULL);
 
-		// •ÏX‚ª‚ ‚Á‚½‚©‚ğ‘Ò‹@iƒ^ƒCƒ€ƒAƒEƒg‚Í 500msj
+		// å¤‰æ›´ãŒã‚ã£ãŸã‹ã‚’å¾…æ©Ÿï¼ˆã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã¯ 500msï¼‰
 		DWORD waitResult = WaitForSingleObject(overlapped.hEvent, 500);
 
 		if (waitResult == WAIT_OBJECT_0) {
@@ -114,15 +114,15 @@ void ScriptWatcher::WatchLoop()
 					info->FileNameLength / sizeof(wchar_t));
 
 				if (IsValidCsFile(relativePath)) {
-					Console::Log(std::string(reinterpret_cast<const char*>(u8"[ScriptWatcher] •ÏXŒŸ’m: "))
+					Console::Log(std::string(reinterpret_cast<const char*>(u8"[ScriptWatcher] å¤‰æ›´æ¤œçŸ¥: "))
 						+ std::string(relativePath.begin(), relativePath.end()));
-					// •ÏX‚ğXV‚µ‚Äƒtƒ‰ƒO‚ğ—§‚Ä‚é‚¾‚¯
+					// å¤‰æ›´æ™‚åˆ»ã‚’æ›´æ–°ã—ã¦ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹ã ã‘
 					lastChange = std::chrono::steady_clock::now();
 					RequestBuild();
 				}
-				// Ÿ‚ÌƒGƒ“ƒgƒŠ‚ª‚È‚¯‚ê‚Îƒ‹[ƒv‚ğ”²‚¯‚é
+				// æ¬¡ã®ã‚¨ãƒ³ãƒˆãƒªãŒãªã‘ã‚Œã°ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 				if (info->NextEntryOffset == 0) break;
-				// Ÿ‚ÌƒGƒ“ƒgƒŠ‚Ö
+				// æ¬¡ã®ã‚¨ãƒ³ãƒˆãƒªã¸
 				info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(
 					reinterpret_cast<char*>(info) + info->NextEntryOffset);
 			}
@@ -138,7 +138,7 @@ void ScriptWatcher::BuildLoop()
 
 	while (m_running)
 	{
-		// ƒrƒ‹ƒh—v‹‚ª—ˆ‚é‚Ü‚Å‘Ò‹@
+		// ãƒ“ãƒ«ãƒ‰è¦æ±‚ãŒæ¥ã‚‹ã¾ã§å¾…æ©Ÿ
 		{
 			std::unique_lock<std::mutex> lock(m_buildMutex);
 			m_buildCv.wait(lock, [this] { return m_pendingBuild.load() || !m_running.load(); });
@@ -146,7 +146,7 @@ void ScriptWatcher::BuildLoop()
 
 		if (!m_running) break;
 
-		// •ÏX‚©‚çˆê’èŠÔ‘Ò‚Á‚Ä‚©‚çƒrƒ‹ƒh
+		// å¤‰æ›´ã‹ã‚‰ä¸€å®šæ™‚é–“å¾…ã£ã¦ã‹ã‚‰ãƒ“ãƒ«ãƒ‰
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 		m_pendingBuild = false;
@@ -172,7 +172,7 @@ bool ScriptWatcher::BuildProject()
 
 	FILE* pipe = _popen(cmd.c_str(), "r");
 	if (!pipe) {
-		Console::LogError(reinterpret_cast<const char*>(u8"[ScriptWatcher] ƒrƒ‹ƒhƒvƒƒZƒX‚Ì‹N“®‚É¸”s"));
+		Console::LogError(reinterpret_cast<const char*>(u8"[ScriptWatcher] ãƒ“ãƒ«ãƒ‰ãƒ—ãƒ­ã‚»ã‚¹ã®èµ·å‹•ã«å¤±æ•—"));
 		return false;
 	}
 
@@ -181,7 +181,7 @@ bool ScriptWatcher::BuildProject()
 	while (fgets(line, sizeof(line), pipe)) {
 		std::string s = line;
 		if (!s.empty() && s.back() == '\n') s.pop_back();
-		// ƒrƒ‹ƒho—Í‚ğ‰ğÍ‚µ‚ÄƒGƒ‰[‚âŒx‚ğƒƒO‚Éo‚·
+		// ãƒ“ãƒ«ãƒ‰å‡ºåŠ›ã‚’è§£æã—ã¦ã‚¨ãƒ©ãƒ¼ã‚„è­¦å‘Šã‚’ãƒ­ã‚°ã«å‡ºã™
 		if (s.find("error") != std::string::npos ||
 			s.find("Error") != std::string::npos) {
 			Console::LogError("[Build] " + s);

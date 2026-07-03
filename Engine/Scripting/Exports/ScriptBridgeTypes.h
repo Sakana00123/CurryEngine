@@ -3,40 +3,40 @@
 
 struct CollisionInfoDto
 {
-	uint64_t selfId; // ©g‚ÌGameObject‚ÌID
-	uint64_t selfColliderId; // ©g‚ÌCollider‚ÌID(Õ“ËƒCƒxƒ“ƒg‚ª”­¶‚µ‚½Collider‚ÌID)
-	uint64_t otherId; // Õ“Ë‘Šè‚ÌGameObject‚ÌID
-	uint64_t otherColliderId; // Õ“Ë‘Šè‚ÌCollider‚ÌID(Õ“ËƒCƒxƒ“ƒg‚ª”­¶‚µ‚½Collider‚ÌID)
-	float impulseX; // Õ“Ë‚ğ‰ğŒˆ‚·‚é‚½‚ß‚ÉŒİ‚¢‚ÌƒRƒ‰ƒCƒ_‚É‰Á‚¦‚ç‚ê‚½‡Œv‚ÌÕŒ‚—ÊiƒxƒNƒgƒ‹j‚ÌX¬•ª
-	float impulseY; // Õ“Ë‚ğ‰ğŒˆ‚·‚é‚½‚ß‚ÉŒİ‚¢‚ÌƒRƒ‰ƒCƒ_‚É‰Á‚¦‚ç‚ê‚½‡Œv‚ÌÕŒ‚—ÊiƒxƒNƒgƒ‹j‚ÌY¬•ª
-	float impulseZ; // Õ“Ë‚ğ‰ğŒˆ‚·‚é‚½‚ß‚ÉŒİ‚¢‚ÌƒRƒ‰ƒCƒ_‚É‰Á‚¦‚ç‚ê‚½‡Œv‚ÌÕŒ‚—ÊiƒxƒNƒgƒ‹j‚ÌZ¬•ª
-	uint32_t contactCount; // ÚG“_‚Ì”
-	// ÚG“_‚Ìî•ñ‚ğŠi”[‚·‚é”z—ñBÅ‘å”‚Í MAX_CONTACTS_PER_PAIR ‚Å’è‹`‚³‚ê‚Ä‚¢‚éB
+	uint64_t selfId; // è‡ªèº«ã®GameObjectã®ID
+	uint64_t selfColliderId; // è‡ªèº«ã®Colliderã®ID(è¡çªã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ãŸColliderã®ID)
+	uint64_t otherId; // è¡çªç›¸æ‰‹ã®GameObjectã®ID
+	uint64_t otherColliderId; // è¡çªç›¸æ‰‹ã®Colliderã®ID(è¡çªã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ãŸColliderã®ID)
+	float impulseX; // è¡çªã‚’è§£æ±ºã™ã‚‹ãŸã‚ã«äº’ã„ã®ã‚³ãƒ©ã‚¤ãƒ€ã«åŠ ãˆã‚‰ã‚ŒãŸåˆè¨ˆã®è¡æ’ƒé‡ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ï¼‰ã®Xæˆåˆ†
+	float impulseY; // è¡çªã‚’è§£æ±ºã™ã‚‹ãŸã‚ã«äº’ã„ã®ã‚³ãƒ©ã‚¤ãƒ€ã«åŠ ãˆã‚‰ã‚ŒãŸåˆè¨ˆã®è¡æ’ƒé‡ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ï¼‰ã®Yæˆåˆ†
+	float impulseZ; // è¡çªã‚’è§£æ±ºã™ã‚‹ãŸã‚ã«äº’ã„ã®ã‚³ãƒ©ã‚¤ãƒ€ã«åŠ ãˆã‚‰ã‚ŒãŸåˆè¨ˆã®è¡æ’ƒé‡ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ï¼‰ã®Zæˆåˆ†
+	uint32_t contactCount; // æ¥è§¦ç‚¹ã®æ•°
+	// æ¥è§¦ç‚¹ã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹é…åˆ—ã€‚æœ€å¤§æ•°ã¯ MAX_CONTACTS_PER_PAIR ã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã€‚
 	struct ContactPointDto
 	{
-		float pointX; // ÚG“_‚ÌˆÊ’u‚ÌX¬•ª
-		float pointY; // ÚG“_‚ÌˆÊ’u‚ÌY¬•ª
-		float pointZ; // ÚG“_‚ÌˆÊ’u‚ÌZ¬•ª
-		float normalX; // ÚG“_‚Ì–@üƒxƒNƒgƒ‹‚ÌX¬•ª
-		float normalY; // ÚG“_‚Ì–@üƒxƒNƒgƒ‹‚ÌY¬•ª
-		float normalZ; // ÚG“_‚Ì–@üƒxƒNƒgƒ‹‚ÌZ¬•ª
-		float separation; // ÚG“_‚Å‚ÌƒRƒ‰ƒCƒ_[‚Ì‹——£
-		uint64_t thisId; // ©g‚ÌGameObject‚ÌID
-		uint64_t thisColliderId; // ©g‚ÌƒRƒ‰ƒCƒ_‚ÌID
-		uint64_t otherId; // Õ“Ë‘Šè‚ÌGameObject‚ÌID
-		uint64_t otherColliderId; // Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_‚ÌID
+		float pointX; // æ¥è§¦ç‚¹ã®ä½ç½®ã®Xæˆåˆ†
+		float pointY; // æ¥è§¦ç‚¹ã®ä½ç½®ã®Yæˆåˆ†
+		float pointZ; // æ¥è§¦ç‚¹ã®ä½ç½®ã®Zæˆåˆ†
+		float normalX; // æ¥è§¦ç‚¹ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®Xæˆåˆ†
+		float normalY; // æ¥è§¦ç‚¹ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®Yæˆåˆ†
+		float normalZ; // æ¥è§¦ç‚¹ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®Zæˆåˆ†
+		float separation; // æ¥è§¦ç‚¹ã§ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è·é›¢
+		uint64_t thisId; // è‡ªèº«ã®GameObjectã®ID
+		uint64_t thisColliderId; // è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ã®ID
+		uint64_t otherId; // è¡çªç›¸æ‰‹ã®GameObjectã®ID
+		uint64_t otherColliderId; // è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ã®ID
 	} contacts[MAX_CONTACTS_PER_PAIR];
 };
 
 struct TriggerInfoDto
 {
-	uint64_t selfId; // ©g‚ÌGameObject‚ÌID
-	uint64_t selfColliderId; // ©g‚ÌCollider‚ÌID(ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ª”­¶‚µ‚½Collider‚ÌID)
-	uint64_t otherId; // ƒgƒŠƒK[‘Šè‚ÌGameObject‚ÌID
-	uint64_t otherColliderId; // ƒgƒŠƒK[‘Šè‚ÌCollider‚ÌID(ƒgƒŠƒK[ƒCƒxƒ“ƒg‚ª”­¶‚µ‚½Collider‚ÌID)
+	uint64_t selfId; // è‡ªèº«ã®GameObjectã®ID
+	uint64_t selfColliderId; // è‡ªèº«ã®Colliderã®ID(ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ãŸColliderã®ID)
+	uint64_t otherId; // ãƒˆãƒªã‚¬ãƒ¼ç›¸æ‰‹ã®GameObjectã®ID
+	uint64_t otherColliderId; // ãƒˆãƒªã‚¬ãƒ¼ç›¸æ‰‹ã®Colliderã®ID(ãƒˆãƒªã‚¬ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ãŸColliderã®ID)
 };
 
-// ƒXƒNƒŠƒvƒgƒNƒ‰ƒX‚ÌƒvƒƒpƒeƒB‚Ìà–¾
+// ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚¯ãƒ©ã‚¹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®èª¬æ˜
 struct ScriptPropertyDesc
 {
 	const char* name;
@@ -46,10 +46,10 @@ struct ScriptPropertyDesc
 struct ScriptClassDesc
 {
 	const char* name;
-	const ScriptClassDesc* baseClass; // Œp³Œ³ƒNƒ‰ƒX‚Ìà–¾inullptr ‚È‚çŒp³‚È‚µj
-	const ScriptPropertyDesc* properties; // ƒvƒƒpƒeƒB‚Ì”z—ñinullptr ‚È‚çƒvƒƒpƒeƒB‚È‚µj
-	int propertyCount; // ƒvƒƒpƒeƒB‚Ì”
+	const ScriptClassDesc* baseClass; // ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã®èª¬æ˜ï¼ˆnullptr ãªã‚‰ç¶™æ‰¿ãªã—ï¼‰
+	const ScriptPropertyDesc* properties; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®é…åˆ—ï¼ˆnullptr ãªã‚‰ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãªã—ï¼‰
+	int propertyCount; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®æ•°
 };
 
-// C#‚©‚çŒÄ‚Î‚ê‚éŠÖ”ƒ|ƒCƒ“ƒ^Œ^ (UnmanagedCallersOnly ‚ÅƒGƒNƒXƒ|[ƒg‚³‚ê‚éŠÖ”‚ÌƒVƒOƒlƒ`ƒƒ‚É‡‚í‚¹‚é)
+// C#ã‹ã‚‰å‘¼ã°ã‚Œã‚‹é–¢æ•°ãƒã‚¤ãƒ³ã‚¿å‹ (UnmanagedCallersOnly ã§ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã•ã‚Œã‚‹é–¢æ•°ã®ã‚·ã‚°ãƒãƒãƒ£ã«åˆã‚ã›ã‚‹)
 using RegisterScriptClassFunc = void(__stdcall*)(const ScriptClassDesc* desc);

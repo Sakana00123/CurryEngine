@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <cassert>
 
-// hostfxr‚ÌŠÖ”ƒ|ƒCƒ“ƒ^
+// hostfxrã®é–¢æ•°ãƒã‚¤ãƒ³ã‚¿
 static hostfxr_initialize_for_runtime_config_fn s_initFunc;
 static hostfxr_get_runtime_delegate_fn s_getDelegateFunc;
 static hostfxr_close_fn s_closeFunc;
@@ -14,7 +14,7 @@ bool ScriptHost::LoadHostFxr()
 	char_t path[MAX_PATH];
 	size_t pathSize = MAX_PATH;
 
-	// .NETƒCƒ“ƒXƒg[ƒ‹Ï‚İêŠ‚©‚çhostfxr.dll‚ğ©“®ŒŸõ
+	// .NETã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ¸ˆã¿å ´æ‰€ã‹ã‚‰hostfxr.dllã‚’è‡ªå‹•æ¤œç´¢
 	int rc = get_hostfxr_path(path, &pathSize, nullptr);
 	if (rc != 0)
 	{
@@ -23,7 +23,7 @@ bool ScriptHost::LoadHostFxr()
 		return false;
 	}
 
-	// hostfxr.dll‚ğƒ[ƒh
+	// hostfxr.dllã‚’ãƒ­ãƒ¼ãƒ‰
 	HMODULE lib = LoadLibraryW(path);
 	if (!lib)
 	{
@@ -31,7 +31,7 @@ bool ScriptHost::LoadHostFxr()
 		return false;
 	}
 
-	// hostfxr‚ÌŠÖ”ƒ|ƒCƒ“ƒ^‚ğæ“¾
+	// hostfxrã®é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
 	s_initFunc = (hostfxr_initialize_for_runtime_config_fn)
 		(GetProcAddress(lib, "hostfxr_initialize_for_runtime_config"));
 	s_getDelegateFunc = (hostfxr_get_runtime_delegate_fn)
@@ -39,13 +39,13 @@ bool ScriptHost::LoadHostFxr()
 	s_closeFunc = (hostfxr_close_fn)
 		(GetProcAddress(lib, "hostfxr_close"));
 
-	// ŠÖ”ƒ|ƒCƒ“ƒ^‚ª‚·‚×‚Äæ“¾‚Å‚«‚½‚©Šm”F
+	// é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ãŒã™ã¹ã¦å–å¾—ã§ããŸã‹ç¢ºèª
 	return s_initFunc && s_getDelegateFunc && s_closeFunc;
 }
 
 bool ScriptHost::InitRuntime(const std::wstring& runtimeConfigPath)
 {
-	// .NETƒ‰ƒ“ƒ^ƒCƒ€‚ğ‰Šú‰»
+	// .NETãƒ©ãƒ³ã‚¿ã‚¤ãƒ ã‚’åˆæœŸåŒ–
     int rc = s_initFunc(runtimeConfigPath.c_str(), nullptr, &m_hostContext);
 	if (rc != 0 || !m_hostContext)
 	{
@@ -54,13 +54,13 @@ bool ScriptHost::InitRuntime(const std::wstring& runtimeConfigPath)
 		return false;
 	}
 
-	// ŠÖ”ƒ|ƒCƒ“ƒ^‚ğæ“¾
+	// é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
 	rc = s_getDelegateFunc(
 		m_hostContext,
 		hdt_load_assembly_and_get_function_pointer,
 		(void**)&m_loadFunc);
 
-	// ŠÖ”ƒ|ƒCƒ“ƒ^‚ªæ“¾‚Å‚«‚½‚©Šm”F
+	// é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ãŒå–å¾—ã§ããŸã‹ç¢ºèª
 	return rc == 0 && m_loadFunc != nullptr;
 }
 
@@ -78,7 +78,7 @@ bool ScriptHost::Initialize()
 	std::wstring engineApiDll = exeDir + L"CurryEngine.Runtime.dll";
 	std::wstring curryEngineApiDll = exeDir + L"CurryEngine.Runtime.dll";
 
-	//// ‚±‚±‚ÅÀÛ‚ÌƒpƒX‚ğ•\¦‚µ‚ÄŠm”F
+	//// ã“ã“ã§å®Ÿéš›ã®ãƒ‘ã‚¹ã‚’è¡¨ç¤ºã—ã¦ç¢ºèª
 	//std::wstring debug = L"configPath:\n" + configPath
 	//	+ L"\n\nexists: "
 	//	+ (GetFileAttributesW(configPath.c_str())
@@ -89,7 +89,7 @@ bool ScriptHost::Initialize()
 	if (!InitRuntime(configPath))
 		return false;
 
-	// EngineAPI.dll ‚©‚çƒoƒCƒ“ƒfƒBƒ“ƒOŠÖ”‚ğ‘Sæ“¾
+	// EngineAPI.dll ã‹ã‚‰ãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°é–¢æ•°ã‚’å…¨å–å¾—
 	auto load = [&]<typename TFunc>(TFunc& funcPtr, const std::wstring& dllPath, const wchar_t* typeName, const wchar_t* methodName)
 	{
 		int rc = m_loadFunc(
@@ -99,12 +99,12 @@ bool ScriptHost::Initialize()
 			UNMANAGEDCALLERSONLY_METHOD, // delegate_type_name
 			nullptr, // reserved
 			(void**)&funcPtr);
-		// æ“¾‚Å‚«‚½‚©Šm”F
+		// å–å¾—ã§ããŸã‹ç¢ºèª
 		assert(rc == 0 && funcPtr != nullptr);
 	};
 
 	
-	// ƒGƒ“ƒWƒ“ƒ‰ƒ“ƒ^ƒCƒ€‚ÌŠÖ”‚ğƒ[ƒh
+	// ã‚¨ãƒ³ã‚¸ãƒ³ãƒ©ãƒ³ã‚¿ã‚¤ãƒ ã®é–¢æ•°ã‚’ãƒ­ãƒ¼ãƒ‰
 	const wchar_t* engineRuntimeType = L"CurryEngine.EngineRuntime, CurryEngine.Runtime";
 	load(m_initFunc, engineApiDll, engineRuntimeType,
 		L"EngineInitialize");
@@ -115,7 +115,7 @@ bool ScriptHost::Initialize()
 	load(m_callbacks.RegisterAllScriptMeta, engineApiDll, engineRuntimeType,
 		L"RegisterAllScriptMeta");
 
-	// ƒXƒNƒŠƒvƒgƒuƒŠƒbƒW‚ÌŠÖ”‚ğƒ[ƒh
+	// ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ–ãƒªãƒƒã‚¸ã®é–¢æ•°ã‚’ãƒ­ãƒ¼ãƒ‰
 	const wchar_t* scriptBridgeType = L"CurryEngine.Interop.ScriptBridge, CurryEngine.Runtime";
 	load(m_callbacks.CreateScript, curryEngineApiDll, scriptBridgeType,
 		L"CreateScript");
@@ -146,7 +146,7 @@ bool ScriptHost::Initialize()
 		L"SetScriptField");
 
 
-	// PhysicsƒCƒxƒ“ƒg—pƒR[ƒ‹ƒoƒbƒN‚ğƒ[ƒh
+	// Physicsã‚¤ãƒ™ãƒ³ãƒˆç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ãƒ­ãƒ¼ãƒ‰
 
 	load(m_callbacks.OnCollisionEnter, curryEngineApiDll, scriptBridgeType,
 		L"OnCollisionEnterScript");
@@ -163,18 +163,18 @@ bool ScriptHost::Initialize()
 		L"OnTriggerExitScript");
 
 
-	// ‰Šú‰»ŠÖ”‚ğŒÄ‚Ño‚µ
+	// åˆæœŸåŒ–é–¢æ•°ã‚’å‘¼ã³å‡ºã—
 	m_initFunc();
 	return true;
 }
 
 void ScriptHost::Shutdown()
 {
-	// I—¹ŠÖ”‚ğŒÄ‚Ño‚µ
+	// çµ‚äº†é–¢æ•°ã‚’å‘¼ã³å‡ºã—
 	if (m_shutdownFunc)
 		m_shutdownFunc();
 
-	// hostfxr‚ÌI—¹ŠÖ”‚ğŒÄ‚Ño‚µ
+	// hostfxrã®çµ‚äº†é–¢æ•°ã‚’å‘¼ã³å‡ºã—
 	if (m_hostContext)
 	{
 		s_closeFunc(m_hostContext);

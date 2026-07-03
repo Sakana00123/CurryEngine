@@ -27,11 +27,11 @@ public:
 
 	static RenderState* GetRenderState() { return renderState.get(); }
 
-	// ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å–å¾—
 	static ID3D11RenderTargetView* GetDefaultRenderTargetView() { return m_buckBufferRTV.Get(); }
-	// ƒfƒtƒHƒ‹ƒg‚Ì[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚ğæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã‚’å–å¾—
 	static ID3D11DepthStencilView* GetDefaultDepthStencilView() { return m_defaultDSV.Get(); }
-	// ƒfƒtƒHƒ‹ƒg‚Ìƒrƒ…[ƒ|[ƒg‚ğæ“¾
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã‚’å–å¾—
 	static D3D11_VIEWPORT GetDefaultViewport();
 
 	static void GetScreenSize(float& x, float& y) { x = static_cast<float>(m_screenSize.cx), y = static_cast<float>(m_screenSize.cy); }
@@ -54,9 +54,9 @@ public:
 	static IDXGIAdapter3* GetAdapter() { return adapter.Get(); }
 
 
-	//ƒXƒNƒŠ[ƒ“”ÍˆÍİ’èiƒXƒNƒŠ[ƒ“À•Wj
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ç¯„å›²è¨­å®šï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼‰
 	static void SetScreenRect(float left, float top, float right, float bottom) { min = { left, top }, max = { right, bottom }; }
-	//ƒXƒNƒŠ[ƒ“”ÍˆÍæ“¾iƒXƒNƒŠ[ƒ“À•Wj
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ç¯„å›²å–å¾—ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼‰
 	static void GetScreenRect(float& left, float& top, float& right, float& bottom) { left = min.x, top = min.y, right = max.x, bottom = max.y; }
 	
 	static void SetView(DirectX::XMFLOAT4X4 view) { m_View = view; }
@@ -68,16 +68,16 @@ public:
 	static DirectX::XMFLOAT4X4 GetProjection() { return m_Projection; }
 
 
-	// ‹¤—LƒŠƒ\[ƒX‚ÌŠÇ—
+	// å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã®ç®¡ç†
 	static void SetSharedResource(const std::string& key, void* resource) { sharedResources[key] = resource; }
 
-	// ‹¤—LƒŠƒ\[ƒX‚Ìæ“¾
+	// å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 	static void* GetSharedResource(const std::string& key) { return sharedResources[key]; }
 
-	// ‹¤—LƒŠƒ\[ƒX‚ÌQÆ‚ğæ“¾
+	// å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã®å‚ç…§ã‚’å–å¾—
 	static std::unordered_map<std::string, void*> GetSharedResources() { return sharedResources; }
 
-	// ‹¤—LƒŠƒ\[ƒX‚ÌƒŠƒZƒbƒg
+	// å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã®ãƒªã‚»ãƒƒãƒˆ
 	static void ResetSharedResources() { sharedResources.clear(); }
 
 private:
@@ -108,8 +108,8 @@ private:
 
 	static inline std::unordered_map<std::string, void*> sharedResources;
 public:
-	//ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒNƒAƒbƒh
+	//ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¯ã‚¢ãƒƒãƒ‰
 	static inline std::unique_ptr<FullScreenQuad> fullScreenQuad;
-	//DDSƒeƒNƒXƒ`ƒƒ
+	//DDSãƒ†ã‚¯ã‚¹ãƒãƒ£
 	static inline Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shader_resource_views[8];
 };

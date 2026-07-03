@@ -5,38 +5,38 @@ class Scene;
 class EditorGUI
 {
 public:
-	// ƒƒCƒ“ƒƒjƒ…[‚Ì•`‰æ
+	// ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æç”»
 	static float DrawMainMenu();
 
-	// ƒc[ƒ‹ƒo[‚Ì•`‰æ
+	// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®æç”»
 	static float DrawToolbar(float offsetY);
 
-	// ƒV[ƒ“ƒrƒ…[‚Ìƒc[ƒ‹ƒo[‚Ì•`‰æ
+	// ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã®ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®æç”»
 	static float DrawSceneViewToolbar();
 
 public:
-	// ƒtƒ@ƒCƒ‹ƒƒjƒ…[‚Ì•`‰æ
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æç”»
 	static void DrawFileMenu();
 
 	//static void DrawEditMenu();
 
-	// ƒV[ƒ“ƒƒjƒ…[‚Ì•`‰æ
+	// ã‚·ãƒ¼ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æç”»
 	static void DrawSceneMenu();
 
-	// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgƒƒjƒ…[‚Ì•`‰æ
+	// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æç”»
 	static void DrawGameObjectMenu();
 
-	// ƒEƒBƒ“ƒhƒEƒƒjƒ…[‚Ì•`‰æ
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æç”»
 	static void DrawWindowMenu();
 
 private:
 	
-	// V‹KƒV[ƒ“‚Ìì¬
+	// æ–°è¦ã‚·ãƒ¼ãƒ³ã®ä½œæˆ
 	static void CreateNewScene();
-	// ƒV[ƒ“‚ÌƒI[ƒvƒ“
+	// ã‚·ãƒ¼ãƒ³ã®ã‚ªãƒ¼ãƒ—ãƒ³
 	static void OpenScene();
-	// ƒV[ƒ“‚Ì•Û‘¶
+	// ã‚·ãƒ¼ãƒ³ã®ä¿å­˜
 	static void SaveScene();
-	// ƒV[ƒ“‚Ì•Ê–¼•Û‘¶
+	// ã‚·ãƒ¼ãƒ³ã®åˆ¥åä¿å­˜
 	static void SaveSceneAs();
 };

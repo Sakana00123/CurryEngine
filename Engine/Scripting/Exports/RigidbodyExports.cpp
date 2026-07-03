@@ -14,7 +14,7 @@ static Rigidbody* GetRigidbody(uint64_t objectId)
 	return nullptr;
 }
 
-// --- エクスポート関数の実装 ---
+// --- 繧ｨ繧ｯ繧ｹ繝昴�ｼ繝磯未謨ｰ縺ｮ螳溯｣� ---
 
 ENGINE_API void Rigidbody_AddForce(uint64_t objectId, Vector3 force, int mode)
 {

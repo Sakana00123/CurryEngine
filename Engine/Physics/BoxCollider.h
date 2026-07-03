@@ -5,49 +5,49 @@ class BoxCollider : public Collider
 {
 	C_REFLECT(BoxCollider)
 public:
-	/** @brief ‰Šú‰»ˆ—iƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu€”õ‚È‚ÇjB*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ï¼ˆãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æº–å‚™ãªã©ï¼‰ã€‚*/
 	void Initialize() override;
-	/** @brief ƒuƒ[ƒhƒLƒƒƒXƒg“o˜^i‹óŠÔ\‘¢“™‚Ö‚Ì“o˜^jB*/
+	/** @brief ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç™»éŒ²ï¼ˆç©ºé–“æ§‹é€ ç­‰ã¸ã®ç™»éŒ²ï¼‰ã€‚*/
 	void Register() override;
 
-	/** @brief ƒRƒ‰ƒCƒ_[‚ÌŒ`ó‚ğ’†S‚ÆƒTƒCƒY‚ÅƒtƒBƒbƒg‚³‚¹‚éB*/
+	/** @brief ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å½¢çŠ¶ã‚’ä¸­å¿ƒã¨ã‚µã‚¤ã‚ºã§ãƒ•ã‚£ãƒƒãƒˆã•ã›ã‚‹ã€‚*/
 	void FitToBoundingBox(const Vector3& center, const Vector3& size) override;
 
-	/** @brief •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯ŠúB*/
+	/** @brief ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸã€‚*/
 	void SyncWithPhysics() override;
-	/** @brief ƒfƒoƒbƒO•`‰æB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°æç”»ã€‚*/
 	void Render(RenderContext* rtx) override;
 
 #ifdef USE_IMGUI
-	/** @brief ƒvƒƒpƒeƒB•`‰æB*/
+	/** @brief ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã€‚*/
 	//void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
-	/** @brief ƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	json Serialize() const override;
 
-	/** @brief ƒfƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	void Deserialize(const json& j) override;
 
 public:
-	/** @brief ƒ[ƒJƒ‹ƒIƒtƒZƒbƒgB*/
+	/** @brief ãƒ­ãƒ¼ã‚«ãƒ«ã‚ªãƒ•ã‚»ãƒƒãƒˆã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetCenter"), CurryEngine::PropertyAttributes::Setter("SetCenter"))
 	Vector3 center{ 0,0,0 };
-	/** @brief ƒ{ƒbƒNƒX‚Ì•Ó’·B*/
+	/** @brief ãƒœãƒƒã‚¯ã‚¹ã®è¾ºé•·ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetSize"), CurryEngine::PropertyAttributes::Setter("SetSize"))
 	Vector3 size{ 1,1,1 };
 
-	/** @brief ’†SˆÊ’u‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ä¸­å¿ƒä½ç½®ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	C_FUNCTION()
 	Vector3 GetCenter() const;
-	/** @brief ’†SˆÊ’u‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief ä¸­å¿ƒä½ç½®ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	C_FUNCTION()
 	void SetCenter(const Vector3& center);
-	/** @brief ƒTƒCƒY‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ã‚µã‚¤ã‚ºã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	C_FUNCTION()
 	Vector3 GetSize() const;
-	/** @brief ƒTƒCƒY‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief ã‚µã‚¤ã‚ºã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	C_FUNCTION()
 	void SetSize(const Vector3& size);
 

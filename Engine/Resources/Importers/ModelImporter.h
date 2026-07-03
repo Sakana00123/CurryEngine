@@ -6,22 +6,22 @@ namespace CurryEngine
 	namespace Resources
 	{
 		/**
-		 * @brief ���f���C���|�[�^�[�B���f���t�@�C����ǂݍ��݁A`Model` �A�Z�b�g�f�[�^�ɕϊ�����N���X�B
-		 * @details ���̃N���X�́A���f���t�@�C���i��: FBX, gltf, glb�j��ǂݍ��݁A`Model` �N���X�̃C���X�^���X�ɕϊ����邽�߂̃C���|�[�^�[�ł��BDirectX 11 �̃��b�V�����\�[�X���쐬���A�A�Z�b�g�f�[�^�Ƃ��ĊǗ����܂��B
+		 * @brief モデルインポーター。モデルファイルを読み込み、`Model` アセットデータに変換するクラス。
+		 * @details このクラスは、モデルファイル（例: FBX, gltf, glb）を読み込み、`Model` クラスのインスタンスに変換するためのインポーターです。DirectX 11 のメッシュリソースを作成し、アセットデータとして管理します。
 		 */
 		class ModelImporter : public IImporter
 		{
 		public:
 			virtual ~ModelImporter() = default;
 			/**
-			 * @brief ���f���t�@�C����ǂݍ��݁A`Model` �A�Z�b�g�f�[�^�ɕϊ�����֐��B
-			 * @param meta �ǂݍ��ރ��f���̃��^�f�[�^�B
-			 * @return �ǂݍ��񂾃��f���A�Z�b�g�f�[�^�̋��L�|�C���^�B�ǂݍ��݂Ɏ��s�����ꍇ��nullptr��Ԃ��܂��B
+			 * @brief モデルファイルを読み込み、`Model` アセットデータに変換する関数。
+			 * @param meta 読み込むモデルのメタデータ。
+			 * @return 読み込んだモデルアセットデータの共有ポインタ。読み込みに失敗した場合はnullptrを返します。
 			 */
 			std::shared_ptr<Resource> Import(const AssetMeta& meta) override;
 			/**
-			 * @brief ���̃C���|�[�^�[���T�|�[�g����t�@�C���g���q�̃��X�g��Ԃ��֐��B
-			 * @return �T�|�[�g����t�@�C���g���q�̃��X�g�i��: {".fbx", ".obj"}�j�B
+			 * @brief このインポーターがサポートするファイル拡張子のリストを返す関数。
+			 * @return サポートするファイル拡張子のリスト（例: {".fbx", ".obj"}）。
 			 */
 			std::vector<std::string> GetSupportedExtensions() const override;
 

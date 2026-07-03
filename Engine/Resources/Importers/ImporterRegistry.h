@@ -6,36 +6,36 @@ namespace CurryEngine
 	namespace Resources
 	{
 		/**
-		 * @brief �A�Z�b�g�C���|�[�^�[�̃��W�X�g���N���X
+		 * @brief アセットインポーターのレジストリクラス
 		 * 
-		 * ���̃N���X�́A�A�Z�b�g�C���|�[�^�[��o�^���A�t�@�C���g���q�Ɋ�Â��ēK�؂ȃC���|�[�^�[���擾���邽�߂̋@�\��񋟂��܂��B
+		 * このクラスは、アセットインポーターを登録し、ファイル拡張子に基づいて適切なインポーターを取得するための機能を提供します。
 		 */
 		class ImporterRegistry
 		{
 		public:
 			/**
-			 * @brief �C���|�[�^�[�����������܂��B�K�v�ɉ����āA�����Ńf�t�H���g�̃C���|�[�^�[��o�^���܂��B
+			 * @brief インポーターを初期化します。必要に応じて、ここでデフォルトのインポーターを登録します。
 			 */
 			static void Initialize();
 
 			/**
-			 * @brief �w�肳�ꂽ�A�Z�b�g�^�C�v�ɑΉ�����C���|�[�^�[���擾���܂��B
-			 * @param type �擾����C���|�[�^�[�̃A�Z�b�g�^�C�v
-			 * @return �Ή�����C���|�[�^�[�̃|�C���^�A���݂��Ȃ��ꍇ��nullptr
+			 * @brief 指定されたアセットタイプに対応するインポーターを取得します。
+			 * @param type 取得するインポーターのアセットタイプ
+			 * @return 対応するインポーターのポインタ、存在しない場合はnullptr
 			 */
 			static IImporter* Find(AssetType type);
 
 		private:
 			/**
-			 * @brief �C���|�[�^�[��o�^���܂��B
-			 * @param type �o�^����C���|�[�^�[�̃A�Z�b�g�^�C�v
-			 * @param importer �o�^����C���|�[�^�[�̋��L�|�C���^
+			 * @brief インポーターを登録します。
+			 * @param type 登録するインポーターのアセットタイプ
+			 * @param importer 登録するインポーターの共有ポインタ
 			 */
 			static void Register(AssetType type, std::unique_ptr<IImporter> importer);
 
 			/**
-			 * @brief �C���|�[�^�[�̃}�b�v���擾���܂��B
-			 * @return �A�Z�b�g�^�C�v�ƃC���|�[�^�[�̋��L�|�C���^�̃}�b�v
+			 * @brief インポーターのマップを取得します。
+			 * @return アセットタイプとインポーターの共有ポインタのマップ
 			 */
 			static std::unordered_map<AssetType, std::unique_ptr<IImporter>>& GetMap();
 		};

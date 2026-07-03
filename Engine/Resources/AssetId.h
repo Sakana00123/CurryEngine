@@ -7,59 +7,59 @@ namespace CurryEngine
 	namespace Resources
 	{
 		/**
-		 * @brief ƒAƒZƒbƒgID‚ğ•\‚·\‘¢‘ÌBƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq‚Æ‚µ‚Äg—p‚³‚ê‚Ü‚·B
-		 * @details ‚±‚Ì\‘¢‘Ì‚ÍAƒAƒZƒbƒg‚ÌŠÇ—‚âQÆ‚Ég—p‚³‚ê‚éID‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+		 * @brief ã‚¢ã‚»ãƒƒãƒˆIDã‚’è¡¨ã™æ§‹é€ ä½“ã€‚ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­ã¨ã—ã¦ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚
+		 * @details ã“ã®æ§‹é€ ä½“ã¯ã€ã‚¢ã‚»ãƒƒãƒˆã®ç®¡ç†ã‚„å‚ç…§æ™‚ã«ä½¿ç”¨ã•ã‚Œã‚‹IDã‚’æä¾›ã—ã¾ã™ã€‚
 		 */
 		struct AssetId
 		{
-			std::string id; ///< ƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
+			std::string id; ///< ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
 			/**
-			 * @brief ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^B‹ó‚ÌID‚ğ‰Šú‰»‚µ‚Ü‚·B
+			 * @brief ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚ç©ºã®IDã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
 			 */
 			AssetId() = default;
 			/**
-			 * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^Bw’è‚³‚ê‚½ID‚Å‰Šú‰»‚µ‚Ü‚·B
-			 * @param assetId ƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
+			 * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚æŒ‡å®šã•ã‚ŒãŸIDã§åˆæœŸåŒ–ã—ã¾ã™ã€‚
+			 * @param assetId ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
 			 */
 			explicit AssetId(const std::string& assetId) : id(assetId) {}
 			/**
-			 * @brief ID‚ª—LŒø‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ü‚·B
-			 * @return —LŒø‚ÈID‚Ìê‡‚ÍtrueA–³Œø‚Èê‡‚Ífalse‚ğ•Ô‚µ‚Ü‚·B
+			 * @brief IDãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¾ã™ã€‚
+			 * @return æœ‰åŠ¹ãªIDã®å ´åˆã¯trueã€ç„¡åŠ¹ãªå ´åˆã¯falseã‚’è¿”ã—ã¾ã™ã€‚
 			 */
 			bool IsValid() const { return !id.empty(); }
 			/**
-			 * @brief ID‚ğ•¶š—ñ‚Æ‚µ‚Äæ“¾‚µ‚Ü‚·B
-			 * @return ƒAƒZƒbƒg‚ÌˆêˆÓ‚È¯•Êq
+			 * @brief IDã‚’æ–‡å­—åˆ—ã¨ã—ã¦å–å¾—ã—ã¾ã™ã€‚
+			 * @return ã‚¢ã‚»ãƒƒãƒˆã®ä¸€æ„ãªè­˜åˆ¥å­
 			 */
 			const std::string& ToString() const { return id; }
 
 			/**
-			 * @brief “™‰¿‰‰ZqB2‚Â‚ÌAssetId‚ª“¯‚¶ID‚ğ‚Â‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ü‚·B
-			 * @param other ”äŠr‘ÎÛ‚ÌAssetId
-			 * @return “¯‚¶ID‚Ìê‡‚ÍtrueAˆÙ‚È‚éê‡‚Ífalse‚ğ•Ô‚µ‚Ü‚·B
+			 * @brief ç­‰ä¾¡æ¼”ç®—å­ã€‚2ã¤ã®AssetIdãŒåŒã˜IDã‚’æŒã¤ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¾ã™ã€‚
+			 * @param other æ¯”è¼ƒå¯¾è±¡ã®AssetId
+			 * @return åŒã˜IDã®å ´åˆã¯trueã€ç•°ãªã‚‹å ´åˆã¯falseã‚’è¿”ã—ã¾ã™ã€‚
 			 */
 			bool operator==(const AssetId& other) const { return id == other.id; }
 
 			/**
-			 * @brief •s“™‰¿‰‰ZqB2‚Â‚ÌAssetId‚ªˆÙ‚È‚éID‚ğ‚Â‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ü‚·B
-			 * @param other ”äŠr‘ÎÛ‚ÌAssetId
-			 * @return ˆÙ‚È‚éID‚Ìê‡‚ÍtrueA“¯‚¶ê‡‚Ífalse‚ğ•Ô‚µ‚Ü‚·B
+			 * @brief ä¸ç­‰ä¾¡æ¼”ç®—å­ã€‚2ã¤ã®AssetIdãŒç•°ãªã‚‹IDã‚’æŒã¤ã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¾ã™ã€‚
+			 * @param other æ¯”è¼ƒå¯¾è±¡ã®AssetId
+			 * @return ç•°ãªã‚‹IDã®å ´åˆã¯trueã€åŒã˜å ´åˆã¯falseã‚’è¿”ã—ã¾ã™ã€‚
 			 */
 			bool operator!=(const AssetId& other) const { return id != other.id; }
 
 			/**
-			 * @brief JSONƒVƒŠƒAƒ‰ƒCƒYŠÖ”BAssetId‚ğJSONŒ`®‚É•ÏŠ·‚µ‚Ü‚·B
-			 * @param j JSONƒIƒuƒWƒFƒNƒg
-			 * @param assetId ƒVƒŠƒAƒ‰ƒCƒY‚·‚éAssetId
+			 * @brief JSONã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºé–¢æ•°ã€‚AssetIdã‚’JSONå½¢å¼ã«å¤‰æ›ã—ã¾ã™ã€‚
+			 * @param j JSONã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+			 * @param assetId ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã™ã‚‹AssetId
 			 */
 			friend void to_json(nlohmann::json& j, const AssetId& assetId)
 			{
 				j = assetId.id;
 			}
 			/**
-			 * @brief JSONƒfƒVƒŠƒAƒ‰ƒCƒYŠÖ”BJSONŒ`®‚©‚çAssetId‚É•ÏŠ·‚µ‚Ü‚·B
-			 * @param j JSONƒIƒuƒWƒFƒNƒg
-			 * @param assetId ƒfƒVƒŠƒAƒ‰ƒCƒY‚·‚éAssetId
+			 * @brief JSONãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºé–¢æ•°ã€‚JSONå½¢å¼ã‹ã‚‰AssetIdã«å¤‰æ›ã—ã¾ã™ã€‚
+			 * @param j JSONã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+			 * @param assetId ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã™ã‚‹AssetId
 			 */
 			friend void from_json(const nlohmann::json& j, AssetId& assetId)
 			{

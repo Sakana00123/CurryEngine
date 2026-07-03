@@ -4,13 +4,13 @@
 class DebugRenderPass : public RenderPass
 {
 public:
-	// DebugRenderPass‚Ì‰Šú‰»ˆ—
+	// DebugRenderPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// DebugRenderPass‚ÌI—¹‰»ˆ—
+	// DebugRenderPassã®çµ‚äº†åŒ–å‡¦ç†
 	void Finalize() override;
 
-	// DebugRenderPass‚ÌÀ‘•
+	// DebugRenderPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 private:

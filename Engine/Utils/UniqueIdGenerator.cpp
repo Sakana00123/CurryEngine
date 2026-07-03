@@ -4,15 +4,15 @@
 #include "Engine/Editor/Console.h"
 
 
-static int g_globalInstanceID = 0; // ƒOƒ[ƒoƒ‹‚ÈƒCƒ“ƒXƒ^ƒ“ƒXIDƒJƒEƒ“ƒ^
+static int g_globalInstanceID = 0; // ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã‚«ã‚¦ãƒ³ã‚¿
 
 /**
- * @brief V‚µ‚¢ƒCƒ“ƒXƒ^ƒ“ƒXID‚ğ¶¬‚µA•Ô‚·B
- * @return ¶¬‚³‚ê‚½ƒCƒ“ƒXƒ^ƒ“ƒXIDi0‚©‚çn‚Ü‚é˜A”ÔjB
+ * @brief æ–°ã—ã„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã‚’ç”Ÿæˆã—ã€è¿”ã™ã€‚
+ * @return ç”Ÿæˆã•ã‚ŒãŸã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDï¼ˆ0ã‹ã‚‰å§‹ã¾ã‚‹é€£ç•ªï¼‰ã€‚
  */
 int GenerateInstanceID()
 {
-    int newID = g_globalInstanceID++; // ƒJƒEƒ“ƒ^‚ğƒCƒ“ƒNƒŠƒƒ“ƒg‚µ‚ÄV‚µ‚¢ID‚ğæ“¾
+    int newID = g_globalInstanceID++; // ã‚«ã‚¦ãƒ³ã‚¿ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã—ã¦æ–°ã—ã„IDã‚’å–å¾—
     Console::Log("Generated new instance ID: " + std::to_string(newID));
     return newID;
 }
@@ -21,15 +21,15 @@ int GetCurrentInstanceID()
 {
     int currentID = g_globalInstanceID;
     Console::Log("Current instance ID counter value: " + std::to_string(currentID));
-    return currentID; // Œ»İ‚ÌƒJƒEƒ“ƒ^’l‚ğæ“¾
+    return currentID; // ç¾åœ¨ã®ã‚«ã‚¦ãƒ³ã‚¿å€¤ã‚’å–å¾—
 }
 
 /**
- * @brief ƒCƒ“ƒXƒ^ƒ“ƒXIDƒJƒEƒ“ƒ^‚ğƒŠƒZƒbƒg‚·‚éBŸ‚ÉGenerateInstanceID‚ªŒÄ‚Ño‚³‚ê‚½‚Æ‚«A0‚©‚çn‚Ü‚éID‚ª¶¬‚³‚ê‚éB
+ * @brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹IDã‚«ã‚¦ãƒ³ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹ã€‚æ¬¡ã«GenerateInstanceIDãŒå‘¼ã³å‡ºã•ã‚ŒãŸã¨ãã€0ã‹ã‚‰å§‹ã¾ã‚‹IDãŒç”Ÿæˆã•ã‚Œã‚‹ã€‚
  */
 void ResetInstanceID(int id)
 {
-    int oldID = g_globalInstanceID;// ƒJƒEƒ“ƒ^‚ğƒŠƒZƒbƒg
+    int oldID = g_globalInstanceID;// ã‚«ã‚¦ãƒ³ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆ
     g_globalInstanceID = id;
     if (id < oldID) {
         Console::Log("Instance ID counter reset to " + std::to_string(id) + " (previously " + std::to_string(oldID) + ")");

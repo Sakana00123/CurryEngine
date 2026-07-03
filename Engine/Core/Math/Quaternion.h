@@ -14,82 +14,82 @@ struct Quaternion : public XMFLOAT4
 	Quaternion(Quaternion&&) = default;
 	Quaternion& operator=(Quaternion&&) = default;
 	Quaternion(const XMFLOAT4& q) : XMFLOAT4(q) {}
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğƒxƒNƒgƒ‹‚©‚ç\’z
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ãƒ™ã‚¯ãƒˆãƒ«ã‹ã‚‰æ§‹ç¯‰
 	Quaternion(const XMVECTOR& v)
 	{
 		XMStoreFloat4(this, v);
 	}
-	// ’PˆÊƒNƒH[ƒ^ƒjƒIƒ“‚ğ•Ô‚·
+	// å˜ä½ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’è¿”ã™
 	static const Quaternion Identity;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚Ì³‹K‰»
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã®æ­£è¦åŒ–
 	void Normalize();
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚Ì‹¤–ğ‚ğ•Ô‚·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã®å…±å½¹ã‚’è¿”ã™
 	Quaternion Conjugate() const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚Ì‹t”‚ğ•Ô‚·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã®é€†æ•°ã‚’è¿”ã™
 	Quaternion Inverse() const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚Ì¬•ª‚ÉƒAƒNƒZƒX
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã®æˆåˆ†ã«ã‚¢ã‚¯ã‚»ã‚¹
 	float& operator[](size_t index);
 
 	float operator[](size_t index) const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ÌæZ
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã®ä¹—ç®—
 	Quaternion operator*(const Quaternion& rhs) const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ÌƒCƒR[ƒ‹”äŠr
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã®ã‚¤ã‚³ãƒ¼ãƒ«æ¯”è¼ƒ
 	bool operator==(const Quaternion& rhs) const;
 	bool operator!=(const Quaternion& rhs) const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğ XMVECTOR ‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ XMVECTOR ã«å¤‰æ›
 	XMVECTOR ToXMVector() const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğƒIƒCƒ‰[Špi“xj‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼ˆåº¦ï¼‰ã«å¤‰æ›
 	Vector3 ToEuler() const;
 
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğ‘OƒxƒNƒgƒ‹‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’å‰ãƒ™ã‚¯ãƒˆãƒ«ã«å¤‰æ›
 	Vector3 Forward() const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğ‰EƒxƒNƒgƒ‹‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’å³ãƒ™ã‚¯ãƒˆãƒ«ã«å¤‰æ›
 	Vector3 Right() const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğãƒxƒNƒgƒ‹‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ä¸Šãƒ™ã‚¯ãƒˆãƒ«ã«å¤‰æ›
 	Vector3 Up() const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğ‰ñ“]s—ñ‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’å›è»¢è¡Œåˆ—ã«å¤‰æ›
 	XMMATRIX ToMatrix() const;
 
-	// ƒNƒH[ƒ^ƒjƒIƒ““¯m‚ÌƒCƒR[ƒ‹”äŠr
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³åŒå£«ã®ã‚¤ã‚³ãƒ¼ãƒ«æ¯”è¼ƒ
 	static bool Equal(const Quaternion& q1, const Quaternion& q2);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ““¯m‚ÌƒmƒbƒgƒCƒR[ƒ‹”äŠr
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³åŒå£«ã®ãƒãƒƒãƒˆã‚¤ã‚³ãƒ¼ãƒ«æ¯”è¼ƒ
 	static bool NotEqual(const Quaternion& q1, const Quaternion& q2);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ““¯m‚Ì‹ß—ƒCƒR[ƒ‹”äŠr
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³åŒå£«ã®è¿‘ä¼¼ã‚¤ã‚³ãƒ¼ãƒ«æ¯”è¼ƒ
 	static bool NearEqual(const Quaternion& q1, const Quaternion& q2, float epsilon = 1e-4f);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚Ì³‹K‰»
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã®æ­£è¦åŒ–
 	static Quaternion Normalized(const Quaternion& q);
 
-	// ƒIƒCƒ‰[Špi“xj‚ğƒNƒH[ƒ^ƒjƒIƒ“‚É•ÏŠ·
+	// ã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼ˆåº¦ï¼‰ã‚’ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã«å¤‰æ›
 	static Quaternion FromEuler(const Vector3& euler);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğ‰ñ“]s—ñ‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’å›è»¢è¡Œåˆ—ã«å¤‰æ›
 	static Quaternion LookAt(const Vector3& from, const Vector3& to, const Vector3& up = Vector3::Up);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğ”CˆÓ²‰ñ‚è‚Ì‰ñ“]‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ä»»æ„è»¸å›ã‚Šã®å›è»¢ã«å¤‰æ›
 	static Quaternion RotationAxis(const Vector3& axis, float angle);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğw’è²‚Ì‰ñ“]Šp‚É•ÏŠ·
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’æŒ‡å®šè»¸ã®å›è»¢è§’ã«å¤‰æ›
 	static float ToAxisAngle(const Vector3& axis, const Quaternion& q);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ““¯m‚ÌüŒ`•âŠÔ
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³åŒå£«ã®ç·šå½¢è£œé–“
 	static Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float t);
 
-	// ƒNƒH[ƒ^ƒjƒIƒ““¯m‚ÌæZ
+	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³åŒå£«ã®ä¹—ç®—
 	static Quaternion Multiply(const Quaternion& q1, const Quaternion& q2);
 
 };

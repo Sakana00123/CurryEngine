@@ -6,36 +6,36 @@ class ObjectManager;
 
 /**
  * @file
- * @brief ƒV[ƒ““Ç‚İ‚İ‚É‹ŒŒ`®‚ÌID‚ğVŒ`®‚É³‹K‰»‚·‚éƒNƒ‰ƒXB
- * @details Scene::Deserialize() ‚Ì––”ö‚©‚çŒÄ‚Ño‚·‚±‚Æ‚ğ‘z’è‚µ‚Ä‚¢‚Ü‚·B
- *          ‹ŒID‚Ì”»’è‚Í ObjectId::IsLegacy() ‚ÉˆÏ÷‚·‚é‚½‚ßA
- *          ”»’èƒƒWƒbƒN‚ª•Ï‚í‚Á‚Ä‚à–{ƒNƒ‰ƒX‚ÌC³‚Í•s—v‚Å‚·B
+ * @brief ã‚·ãƒ¼ãƒ³èª­ã¿è¾¼ã¿æ™‚ã«æ—§å½¢å¼ã®IDã‚’æ–°å½¢å¼ã«æ­£è¦åŒ–ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
+ * @details Scene::Deserialize() ã®æœ«å°¾ã‹ã‚‰å‘¼ã³å‡ºã™ã“ã¨ã‚’æƒ³å®šã—ã¦ã„ã¾ã™ã€‚
+ *          æ—§IDã®åˆ¤å®šã¯ ObjectId::IsLegacy() ã«å§”è­²ã™ã‚‹ãŸã‚ã€
+ *          åˆ¤å®šãƒ­ã‚¸ãƒƒã‚¯ãŒå¤‰ã‚ã£ã¦ã‚‚æœ¬ã‚¯ãƒ©ã‚¹ã®ä¿®æ­£ã¯ä¸è¦ã§ã™ã€‚
  */
 class SceneMigrator
 {
 public:
-    /** old ¨ new ‚Ì‘Î‰•\B*/
+    /** old â†’ new ã®å¯¾å¿œè¡¨ã€‚*/
     using RemapTable = std::unordered_map<ObjectId, ObjectId>;
 
     /**
-     * @brief ObjectManager “à‚Ì‘SƒIƒuƒWƒFƒNƒg‚ğ‘–¸‚µA
-     *        ‹ŒID‚ğVID‚É·‚µ‘Ö‚¦‚Ü‚·B
-     * @param objectManager ‘ÎÛ‚Ì ObjectManagerB
-     * @return ÀÛ‚É·‚µ‘Ö‚¦‚ª”­¶‚µ‚½ê‡‚Í trueB
-     * @details ‹ŒID‚ªˆêŒ‚à‚È‚¯‚ê‚Î‘¦ƒŠƒ^[ƒ“‚µ‚Ü‚·B
+     * @brief ObjectManager å†…ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’èµ°æŸ»ã—ã€
+     *        æ—§IDã‚’æ–°IDã«å·®ã—æ›¿ãˆã¾ã™ã€‚
+     * @param objectManager å¯¾è±¡ã® ObjectManagerã€‚
+     * @return å®Ÿéš›ã«å·®ã—æ›¿ãˆãŒç™ºç”Ÿã—ãŸå ´åˆã¯ trueã€‚
+     * @details æ—§IDãŒä¸€ä»¶ã‚‚ãªã‘ã‚Œã°å³ãƒªã‚¿ãƒ¼ãƒ³ã—ã¾ã™ã€‚
      */
     static bool Migrate(ObjectManager* objectManager);
 
 private:
     /**
-     * @brief ‹ŒID‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚ğŒŸo‚µA
-     *        VID‚ğŠ„‚è“–‚Ä‚È‚ª‚ç•ÏŠ·ƒe[ƒuƒ‹‚ğ\’z‚µ‚Ü‚·B
-     *        ‚±‚Ì’iŠK‚ÅƒIƒuƒWƒFƒNƒg–{‘Ì‚Ì id ‚àVID‚ÉXV‚µ‚Ü‚·B
+     * @brief æ—§IDã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¤œå‡ºã—ã€
+     *        æ–°IDã‚’å‰²ã‚Šå½“ã¦ãªãŒã‚‰å¤‰æ›ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æ§‹ç¯‰ã—ã¾ã™ã€‚
+     *        ã“ã®æ®µéšã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæœ¬ä½“ã® id ã‚‚æ–°IDã«æ›´æ–°ã—ã¾ã™ã€‚
      */
     static RemapTable BuildRemapTable(ObjectManager* objectManager);
 
     /**
-     * @brief •ÏŠ·ƒe[ƒuƒ‹‚É]‚Á‚Ä parentId / pendingParentID ‚ğ‘‚«Š·‚¦‚Ü‚·B
+     * @brief å¤‰æ›ãƒ†ãƒ¼ãƒ–ãƒ«ã«å¾“ã£ã¦ parentId / pendingParentID ã‚’æ›¸ãæ›ãˆã¾ã™ã€‚
      */
     static void ApplyRemap(ObjectManager* objectManager,
                            const RemapTable& remap);

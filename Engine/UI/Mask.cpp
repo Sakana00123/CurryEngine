@@ -20,7 +20,7 @@ D3D11_RECT Mask::GetScissorRect() const
 //void Mask::Begin(RenderContext* rtx)
 //{
 //#if 0
-//	// maskRect‚ªİ’è‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚ç‰½‚à‚µ‚È‚¢
+//	// maskRectãŒè¨­å®šã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ä½•ã‚‚ã—ãªã„
 //	if (!maskRect) 
 //	{
 //		return;

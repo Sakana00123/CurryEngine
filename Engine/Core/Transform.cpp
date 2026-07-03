@@ -17,13 +17,13 @@ REGISTER_COMPONENT_WITH_ATTRIBUTES(Transform, "Core", ComponentAttributes::Disal
 
 void Transform::OnDestroy()
 {
-	// ”O‚Ì‚½‚ßAPhysics‚ÉA‚±‚ÌTransform‚ª”jŠü‚³‚ê‚½‚±‚Æ‚ğ’Ê’m‚µ‚Ä‚¨‚­
+	// å¿µã®ãŸã‚ã€Physicsã«ã€ã“ã®TransformãŒç ´æ£„ã•ã‚ŒãŸã“ã¨ã‚’é€šçŸ¥ã—ã¦ãŠã
 	Physics::OnTrnasformDestroyed(this);
 }
 
 void Transform::Awake()
 {
-	priority = 0;// Transform‚Íí‚ÉÅ‰‚ÉXV‚³‚ê‚é‚æ‚¤‚É‚·‚é
+	priority = 0;// Transformã¯å¸¸ã«æœ€åˆã«æ›´æ–°ã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹
 }
 
 Quaternion Transform::XMVectorToQuaternion(const XMVECTOR& vector)
@@ -74,18 +74,18 @@ XMVECTOR Transform::QuaternionLookAt(const XMVECTOR& Original, const XMVECTOR& T
 
 //Vector3 Transform::QuaternionToEuler(const Quaternion& rotation)
 //{
-//	// ƒNƒH[ƒ^ƒjƒIƒ“‚ğ‰ñ“]s—ñ‚É•ÏŠ·
+//	// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’å›è»¢è¡Œåˆ—ã«å¤‰æ›
 //	XMFLOAT4X4 rotationMatrix;
 //	XMStoreFloat4x4(&rotationMatrix, XMMatrixRotationQuaternion(XMLoadFloat4(&rotation)));
-//	//ƒWƒ“ƒoƒ‹ƒƒbƒN”»’è
+//	//ã‚¸ãƒ³ãƒãƒ«ãƒ­ãƒƒã‚¯åˆ¤å®š
 //	float sx = rotationMatrix.m[2][1];
 //	bool unlocked = std::abs(sx) < 0.99999f;
-//	// ƒIƒCƒ‰[Šp‚ğŒvZ
+//	// ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‚’è¨ˆç®—
 //	Vector3 eulerAngles{};
 //	eulerAngles.x = unlocked ? asinf(sx) : atan2f(rotationMatrix.m[2][1], rotationMatrix.m[2][2]);
 //	eulerAngles.y = unlocked ? atan2f(-rotationMatrix.m[2][0], rotationMatrix.m[2][2]) : 0;
 //	eulerAngles.z = unlocked ? atan2f(-rotationMatrix.m[0][1], rotationMatrix.m[1][1]) : atan2f(rotationMatrix.m[1][0], rotationMatrix.m[0][0]);
-//	// ƒ‰ƒWƒAƒ“‚©‚ç“x‚É•ÏŠ·
+//	// ãƒ©ã‚¸ã‚¢ãƒ³ã‹ã‚‰åº¦ã«å¤‰æ›
 //	eulerAngles.x = -XMConvertToDegrees(eulerAngles.x);
 //	eulerAngles.y = -XMConvertToDegrees(eulerAngles.y);
 //	eulerAngles.z = -XMConvertToDegrees(eulerAngles.z);
@@ -118,8 +118,8 @@ Quaternion Transform::GetRotation()
 Vector3 Transform::GetEulerAngles()
 {
 	if (m_eulerDirty) {
-		m_eulerAngles = rotation.ToEuler(); // ƒ[ƒJƒ‹‰ñ“]‚©‚çƒIƒCƒ‰[Šp‚ğŒvZ‚µ‚Ä•Û‘¶
-		m_eulerDirty = false; // ƒIƒCƒ‰[Šp‚ªƒ[ƒJƒ‹‰ñ“]‚Æ“¯Šú‚µ‚Ä‚¢‚éó‘Ô
+		m_eulerAngles = rotation.ToEuler(); // ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã‹ã‚‰ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‚’è¨ˆç®—ã—ã¦ä¿å­˜
+		m_eulerDirty = false; // ã‚ªã‚¤ãƒ©ãƒ¼è§’ãŒãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã¨åŒæœŸã—ã¦ã„ã‚‹çŠ¶æ…‹
 	}
 	return m_eulerAngles;
 }
@@ -147,15 +147,15 @@ void Transform::SetRotation(const Quaternion& rotation)
 {
 	this->rotation = rotation;
 	//this->eulerAngles = QuaternionToEuler(rotation);
-	m_eulerDirty = true; // ƒ[ƒJƒ‹‰ñ“]‚ªƒIƒCƒ‰[Šp‚Æ“¯Šú‚µ‚Ä‚¢‚È‚¢ó‘Ô
+	m_eulerDirty = true; // ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ãŒã‚ªã‚¤ãƒ©ãƒ¼è§’ã¨åŒæœŸã—ã¦ã„ãªã„çŠ¶æ…‹
 	MarkNeedsUpdate();
 }
 
 void Transform::SetRotation(const Vector3& eulerAngles)
 {
-	this->m_eulerAngles = eulerAngles; // ƒIƒCƒ‰[Šp‚ğƒ[ƒJƒ‹‰ñ“]‚É•ÏŠ·‚µ‚Ä•Û‘¶
-	this->rotation = Quaternion::FromEuler(eulerAngles); // ƒ[ƒJƒ‹‰ñ“]‚ğƒIƒCƒ‰[Šp‚É•ÏŠ·‚µ‚Ä•Û‘¶
-	m_eulerDirty = false; // ƒIƒCƒ‰[Šp‚ªƒ[ƒJƒ‹‰ñ“]‚Æ“¯Šú‚µ‚Ä‚¢‚éó‘Ô
+	this->m_eulerAngles = eulerAngles; // ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‚’ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã«å¤‰æ›ã—ã¦ä¿å­˜
+	this->rotation = Quaternion::FromEuler(eulerAngles); // ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã‚’ã‚ªã‚¤ãƒ©ãƒ¼è§’ã«å¤‰æ›ã—ã¦ä¿å­˜
+	m_eulerDirty = false; // ã‚ªã‚¤ãƒ©ãƒ¼è§’ãŒãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã¨åŒæœŸã—ã¦ã„ã‚‹çŠ¶æ…‹
 	MarkNeedsUpdate();
 }
 void Transform::Rotate(const Quaternion& rotate)
@@ -196,7 +196,7 @@ void Transform::MarkNeedsUpdate()
 	needsUpdate = true;
 	changedThisFrame = true;
 
-	// q‹Ÿ‚ÌTransform‚àXV‚ª•K—v‚È‚½‚ßAÄ‹A“I‚ÉŒÄ‚Ño‚·
+	// å­ä¾›ã®Transformã‚‚æ›´æ–°ãŒå¿…è¦ãªãŸã‚ã€å†å¸°çš„ã«å‘¼ã³å‡ºã™
 	for (auto child : GetOwner()->children) {
 		if (child && child->transform) {
 			child->transform->MarkNeedsUpdate();
@@ -213,7 +213,7 @@ void Transform::LateUpdate(float deltaTime)
 {
 	if (changedThisFrame)
 	{
-		// Transform‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ’Ê’m
+		// TransformãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’é€šçŸ¥
 		for (auto& component : GetOwner()->GetAllComponents())
 		{
 			if (component)
@@ -221,14 +221,14 @@ void Transform::LateUpdate(float deltaTime)
 				component->OnTransformChanged();
 			}
 		}
-		changedThisFrame = false;// ’Ê’m‚ªŠ®—¹‚µ‚½‚Ì‚Åƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		changedThisFrame = false;// é€šçŸ¥ãŒå®Œäº†ã—ãŸã®ã§ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	}
 }
 
 void Transform::UpdateTransform()
 {
 	if (!needsUpdate) return;
-	//À•WŒn‚Æ²‚Ì•ÏŠ·s—ñ
+	//åº§æ¨™ç³»ã¨è»¸ã®å¤‰æ›è¡Œåˆ—
 	const DirectX::XMFLOAT4X4 coordinateSystemTransforms[]{
 		{ 1,0,0,0,0, 1,0,0,0,0,1,0,0,0,0,1}, //0:LHS Y-UP
 		{ 1,0,0,0,0, 1,0,0,0,0,1,0,0,0,0,1}, //0:LHS Z-UP
@@ -240,10 +240,10 @@ void Transform::UpdateTransform()
 	XMMATRIX R{ rotation.ToMatrix() };
 	XMMATRIX T{ XMMatrixTranslation(position.x, position.y, position.z) };
 	XMMATRIX L{ C * S * R * T };
-	XMStoreFloat4x4(&local, L);//ƒ[ƒJƒ‹À•W‚ğ•Û‘¶
+	XMStoreFloat4x4(&local, L);//ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã‚’ä¿å­˜
 	XMMATRIX W = (GetOwner()->parent) ? L * XMLoadFloat4x4(&GetOwner()->parent->transform->GetWorld()) : L;
-	XMStoreFloat4x4(&world, W);//ƒ[ƒ‹ƒhÀ•W‚ğ•Û‘¶
-	XMVECTOR Scale, Rotation, Position;//ƒ[ƒ‹ƒhÀ•W‚ğ•Û‘¶
+	XMStoreFloat4x4(&world, W);//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ä¿å­˜
+	XMVECTOR Scale, Rotation, Position;//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ä¿å­˜
 	if (XMMatrixDecompose(&Scale, &Rotation, &Position, W)) {
 		XMFLOAT3 s, p;
 		XMFLOAT4 r;
@@ -255,7 +255,7 @@ void Transform::UpdateTransform()
 		worldPosition = Vector3(p);
 	}
 
-	// XV‚ªŠ®—¹‚µ‚½‚Ì‚Åƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+	// æ›´æ–°ãŒå®Œäº†ã—ãŸã®ã§ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	needsUpdate = false;
 }
 
@@ -293,9 +293,9 @@ void Transform::SetWorldPosition(const Vector3& worldPos)
 {
 	if (GetOwner()->parent) {
 		if (GetOwner()->parent->transform) {
-			//e‚Ìƒ[ƒ‹ƒhs—ñ‚Ì‹ts—ñ‚ğæ“¾
+			//è¦ªã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®é€†è¡Œåˆ—ã‚’å–å¾—
 			XMMATRIX InverseWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(&GetOwner()->parent->transform->GetWorld()));
-			//worldPos‚ğe‚Ìƒ[ƒJƒ‹À•W‚É•ÏŠ·
+			//worldPosã‚’è¦ªã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã«å¤‰æ›
 			XMFLOAT3 worldPosFloat3 = worldPos;
 			XMVECTOR worldPosVec = XMLoadFloat3(&worldPosFloat3);
 			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&position), XMVector3TransformCoord(worldPosVec, InverseWorld));
@@ -329,9 +329,9 @@ void Transform::SetWorldRotation(const Quaternion& worldRotation)
 {
 	if (GetOwner()->parent) {
 		if (GetOwner()->parent->transform) {
-			//e‚Ìƒ[ƒ‹ƒh‰ñ“]‚ğæ“¾
+			//è¦ªã®ãƒ¯ãƒ¼ãƒ«ãƒ‰å›è»¢ã‚’å–å¾—
 			XMVECTOR wRot = XMLoadFloat4(&GetOwner()->parent->transform->GetWorldRotation());
-			//ƒ[ƒJƒ‹‰ñ“]‚ğZo
+			//ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã‚’ç®—å‡º
 			Quaternion q;
 			XMStoreFloat4(&q, XMQuaternionMultiply(
 				XMQuaternionInverse(wRot),
@@ -358,7 +358,7 @@ void Transform::SetWorldRotation(const Vector3& worldEuler)
 Vector3 Transform::GetForward()
 {
 	UpdateTransform();
-	//+Z•ûŒüƒxƒNƒgƒ‹‚ğ‰ñ“]‚³‚¹‚é
+	//+Zæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å›è»¢ã•ã›ã‚‹
 	XMVECTOR forward = XMVectorSet(0, 0, 1, 0);
 	Quaternion worldRot = GetWorldRotation();
 	forward = XMVector3Rotate(forward, QuaternionToXMVector(worldRot));
@@ -370,7 +370,7 @@ Vector3 Transform::GetForward()
 Vector3 Transform::GetRight()
 {
 	UpdateTransform();
-	//X+•ûŒüƒxƒNƒgƒ‹‚ğ‰ñ“]‚³‚¹‚é
+	//X+æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å›è»¢ã•ã›ã‚‹
 	XMVECTOR right = XMVectorSet(1, 0, 0, 0);
 	Quaternion worldRot = GetWorldRotation();
 	right = XMVector3Rotate(right, QuaternionToXMVector(worldRot));
@@ -382,7 +382,7 @@ Vector3 Transform::GetRight()
 Vector3 Transform::GetUp()
 {
 	UpdateTransform();
-	//Y+•ûŒüƒxƒNƒgƒ‹‚ğ‰ñ“]‚³‚¹‚é
+	//Y+æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å›è»¢ã•ã›ã‚‹
 	XMVECTOR up = XMVectorSet(0, 1, 0, 0);
 	Quaternion worldRot = GetWorldRotation();
 	up = XMVector3Rotate(up, QuaternionToXMVector(worldRot));
@@ -392,7 +392,7 @@ Vector3 Transform::GetUp()
 }
 
 #ifdef USE_IMGUI
-// ImGui‚ÌSliderScalarN‚ÍA•¡”‚ÌƒXƒJƒ‰[’l‚ğ“¯‚É•ÒW‚·‚é‚½‚ß‚ÌŠÖ”‚Å‚·‚ªAƒfƒtƒHƒ‹ƒg‚Å‚ÍAƒXƒJƒ‰[’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒRƒ}ƒ“ƒh‚ğ”­s‚·‚é‹@”\‚ª‚ ‚è‚Ü‚¹‚ñB‚»‚±‚ÅASliderCustomScalarNŠÖ”‚ğ’è‹`‚µ‚ÄAƒXƒJƒ‰[’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚ÉƒRƒ}ƒ“ƒh‚ğ”­s‚Å‚«‚é‚æ‚¤‚É‚µ‚Ü‚·B
+// ImGuiã®SliderScalarNã¯ã€è¤‡æ•°ã®ã‚¹ã‚«ãƒ©ãƒ¼å€¤ã‚’åŒæ™‚ã«ç·¨é›†ã™ã‚‹ãŸã‚ã®é–¢æ•°ã§ã™ãŒã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ã€ã‚¹ã‚«ãƒ©ãƒ¼å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œã™ã‚‹æ©Ÿèƒ½ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ãã“ã§ã€SliderCustomScalarNé–¢æ•°ã‚’å®šç¾©ã—ã¦ã€ã‚¹ã‚«ãƒ©ãƒ¼å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œã§ãã‚‹ã‚ˆã†ã«ã—ã¾ã™ã€‚
 namespace ImGui
 {
 	inline bool DragCustomScalarN(const char* label, ImGuiDataType data_type, void* p_data, int components, float v_speed, const void* p_min, const void* p_max, const char* format, ImGuiSliderFlags flags[3])
@@ -442,14 +442,14 @@ namespace ImGui
 
 void Transform::DrawProperty(const PropertyDrawContext& context)
 {
-	Component::DrawProperty(context); // Šî’êƒNƒ‰ƒX‚Ì•`‰æ‚ğŒÄ‚Ño‚·
+	Component::DrawProperty(context); // åŸºåº•ã‚¯ãƒ©ã‚¹ã®æç”»ã‚’å‘¼ã³å‡ºã™
 	return;
 	IMGUI_PROPERTY_BEGIN();
 
 	Transform* transform = dynamic_cast<Transform*>(context.Primary());
 	if (transform)
 	{
-		// ˆÊ’u‚Ì•ÒW
+		// ä½ç½®ã®ç·¨é›†
 		{
 			Vector3& position = transform->position;
 
@@ -469,11 +469,11 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 				}
 			}
 
-			if (ImGui::IsItemActivated()) // •ÒWŠJn‚ÉŒ»İ‚Ì’l‚ğ•Û‘¶
+			if (ImGui::IsItemActivated()) // ç·¨é›†é–‹å§‹æ™‚ã«ç¾åœ¨ã®å€¤ã‚’ä¿å­˜
 			{
 				prevPosition = position;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) // •ÒWI—¹‚ÉƒRƒ}ƒ“ƒh‚ğ”­s
+			if (ImGui::IsItemDeactivatedAfterEdit()) // ç·¨é›†çµ‚äº†æ™‚ã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ
 			{
 				Vector3 newPosition = position;
 				if (newPosition.x != prevPosition.x || newPosition.y != prevPosition.y || newPosition.z != prevPosition.z) {
@@ -493,9 +493,9 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 
 		if (!isEditing)
 		{
-			// •ÒW’†‚Å‚È‚¯‚ê‚ÎŒ»İ‚Ì‰ñ“]‚ğæ“¾
+			// ç·¨é›†ä¸­ã§ãªã‘ã‚Œã°ç¾åœ¨ã®å›è»¢ã‚’å–å¾—
 			editorEuler = GetEulerAngles();
-			// ‘O‰ñ‚Ì’l‚ğXV
+			// å‰å›ã®å€¤ã‚’æ›´æ–°
 			prevEuler = editorEuler;
 		}
 
@@ -503,7 +503,7 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 		IMGUI_PROPERTY("Rotation");
 		if (ImGui::DragFloat3("##Rotation", &editorEuler.x))
 		{
-			// ‰ñ“]‚ª•ÏX‚³‚ê‚½ê‡A·•ª‚ğŒvZ‚µ‚ÄƒNƒH[ƒ^ƒjƒIƒ“‚É”½‰f
+			// å›è»¢ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã€å·®åˆ†ã‚’è¨ˆç®—ã—ã¦ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã«åæ˜ 
 			Vector3 delta = editorEuler - prevEuler;
 			Quaternion deltaQuat = EulerToQuaternion(delta);
 			rotation = QuaternionMultiply(deltaQuat, rotation);
@@ -518,25 +518,25 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 		}
 #else
 		{
-			static Vector3 prevValue; /* ‘O‰ñ‚Ì’l‚ğ•Û‚·‚éÃ“I•Ï” */
-			static Vector3 editorEuler; /* •ÒW’†‚ÌƒIƒCƒ‰[Šp‚ğ•Û‚·‚éÃ“I•Ï” */
-			static bool isEditing = false; /* •ÒW’†‚©‚Ç‚¤‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO */
+			static Vector3 prevValue; /* å‰å›ã®å€¤ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
+			static Vector3 editorEuler; /* ç·¨é›†ä¸­ã®ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‚’ä¿æŒã™ã‚‹é™çš„å¤‰æ•° */
+			static bool isEditing = false; /* ç·¨é›†ä¸­ã‹ã©ã†ã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚° */
 			Quaternion* value = &rotation;
-			if (!isEditing) /* •ÒWŠJn‘O‚ÉŒ»İ‚Ì’l‚ğƒIƒCƒ‰[Šp‚É•ÏŠ·‚µ‚Ä•Û‘¶ */
+			if (!isEditing) /* ç·¨é›†é–‹å§‹å‰ã«ç¾åœ¨ã®å€¤ã‚’ã‚ªã‚¤ãƒ©ãƒ¼è§’ã«å¤‰æ›ã—ã¦ä¿å­˜ */
 			{
 				editorEuler = GetEulerAngles();
 			}
 
 			IMGUI_PROPERTY("Rotation");
-			bool valueChanged = false; // ’l‚ª•ÏX‚³‚ê‚½‚©‚ğ’ÇÕ‚·‚éƒtƒ‰ƒO
+			bool valueChanged = false; // å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’è¿½è·¡ã™ã‚‹ãƒ•ãƒ©ã‚°
 			valueChanged |= ImGui::DragFloat3("##rotation", &editorEuler.x);
-			if (ImGui::IsItemActivated()) /* •ÒWŠJn‚É‘O‰ñ‚Ì’l‚ğ•Û‘¶ */
+			if (ImGui::IsItemActivated()) /* ç·¨é›†é–‹å§‹æ™‚ã«å‰å›ã®å€¤ã‚’ä¿å­˜ */
 			{
 				prevValue = GetEulerAngles();
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) /* •ÒWI—¹Œã‚ÉƒRƒ}ƒ“ƒh‚ğ”­s */
+			if (ImGui::IsItemDeactivatedAfterEdit()) /* ç·¨é›†çµ‚äº†å¾Œã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ */
 			{
-				// •ÏX‚³‚ê‚½ƒIƒCƒ‰[Šp‚Æ‘O‰ñ‚ÌƒIƒCƒ‰[Šp‚Ì·•ª‚ğŒvZ‚µ‚ÄƒNƒH[ƒ^ƒjƒIƒ“‚É•ÏŠ·
+				// å¤‰æ›´ã•ã‚ŒãŸã‚ªã‚¤ãƒ©ãƒ¼è§’ã¨å‰å›ã®ã‚ªã‚¤ãƒ©ãƒ¼è§’ã®å·®åˆ†ã‚’è¨ˆç®—ã—ã¦ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã«å¤‰æ›
 				Vector3 newValue = editorEuler;
 				{
 					IMGUI_PROPERTY_COMMAND_CUSTOM("rotation", newValue, prevValue,
@@ -544,19 +544,19 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 						"(" + std::to_string(prevValue.x) + ", " + std::to_string(prevValue.y) + ", " + std::to_string(prevValue.z) + ")",
 						[this](const Vector3& rot) {SetRotation(rot); });
 				}
-				prevValue = newValue; /* ‘O‰ñ‚Ì’l‚ğXV */
-				GetTransform()->SetRotation(newValue); /* Transform ‚Ì‰ñ“]‚ğXV */
-				isEditing = false; /* •ÒWI—¹ */
+				prevValue = newValue; /* å‰å›ã®å€¤ã‚’æ›´æ–° */
+				GetTransform()->SetRotation(newValue); /* Transform ã®å›è»¢ã‚’æ›´æ–° */
+				isEditing = false; /* ç·¨é›†çµ‚äº† */
 			}
-			if (valueChanged) /* ’l‚ª•ÏX‚³‚ê‚½ê‡‚Í Transform ‚Ì‰ñ“]‚ğXV */
+			if (valueChanged) /* å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã¯ Transform ã®å›è»¢ã‚’æ›´æ–° */
 			{
 				GetTransform()->SetRotation(editorEuler);
-				isEditing = true; /* •ÒW’† */
+				isEditing = true; /* ç·¨é›†ä¸­ */
 			}
 		}
 #endif // 0
 
-		// ƒXƒP[ƒ‹‚Ì•ÒW
+		// ã‚¹ã‚±ãƒ¼ãƒ«ã®ç·¨é›†
 		{
 			static Vector3 prevScale;
 			IMGUI_PROPERTY("Scale");
@@ -573,12 +573,12 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 			if (ImGui::DragCustomFloat3("##Scale", &scale.x, 0.01f, 0.0f, 0.0f, "%.3f", flags)) {
 				if (scale.LengthSq() == 0 && prevThisFrameScale.LengthSq() != 0)
 				{
-					lastValidScale = prevThisFrameScale; // ƒXƒP[ƒ‹‚ª0‚É‚È‚Á‚½ê‡‚ÍAÅŒã‚É—LŒø‚¾‚Á‚½ƒXƒP[ƒ‹‚ğ•Û‘¶‚µ‚Ä‚¨‚­
+					lastValidScale = prevThisFrameScale; // ã‚¹ã‚±ãƒ¼ãƒ«ãŒ0ã«ãªã£ãŸå ´åˆã¯ã€æœ€å¾Œã«æœ‰åŠ¹ã ã£ãŸã‚¹ã‚±ãƒ¼ãƒ«ã‚’ä¿å­˜ã—ã¦ãŠã
 				}
 				if (enableScaleLink) {
-					// ƒXƒP[ƒ‹ƒŠƒ“ƒN‚ª—LŒø‚Èê‡A‚Ç‚Ì²‚ª•ÏX‚³‚ê‚½‚©‚ğ”»’è‚µ‚ÄA•ÏX‚³‚ê‚½²‚ÌƒXƒP[ƒ‹‚Ì•Ï‰»—¦‚ğŒvZ‚µA‘¼‚Ì²‚É‚à“¯‚¶•Ï‰»—¦‚ğ“K—p‚·‚é
+					// ã‚¹ã‚±ãƒ¼ãƒ«ãƒªãƒ³ã‚¯ãŒæœ‰åŠ¹ãªå ´åˆã€ã©ã®è»¸ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’åˆ¤å®šã—ã¦ã€å¤‰æ›´ã•ã‚ŒãŸè»¸ã®ã‚¹ã‚±ãƒ¼ãƒ«ã®å¤‰åŒ–ç‡ã‚’è¨ˆç®—ã—ã€ä»–ã®è»¸ã«ã‚‚åŒã˜å¤‰åŒ–ç‡ã‚’é©ç”¨ã™ã‚‹
 					if (prevThisFrameScale.x == prevThisFrameScale.y && prevThisFrameScale.y == prevThisFrameScale.z) {
-						// ‚·‚×‚Ä‚Ì²‚ª“¯‚¶’l‚Ìê‡A‚Ç‚Ì²‚ª•ÏX‚³‚ê‚½‚©‚ğ”»’è‚Å‚«‚È‚¢‚½‚ßAÅŒã‚É•Û‘¶‚³‚ê‚½—LŒø‚ÈƒXƒP[ƒ‹‚Ì’l‚ğŠî€‚É•ÏX‚·‚é
+						// ã™ã¹ã¦ã®è»¸ãŒåŒã˜å€¤ã®å ´åˆã€ã©ã®è»¸ãŒå¤‰æ›´ã•ã‚ŒãŸã‹ã‚’åˆ¤å®šã§ããªã„ãŸã‚ã€æœ€å¾Œã«ä¿å­˜ã•ã‚ŒãŸæœ‰åŠ¹ãªã‚¹ã‚±ãƒ¼ãƒ«ã®å€¤ã‚’åŸºæº–ã«å¤‰æ›´ã™ã‚‹
 						if (scale.x != prevThisFrameScale.x) {
 							scale.y = scale.z = scale.x;
 						}
@@ -618,11 +618,11 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 				MarkNeedsUpdate();
 			}
 
-			if (ImGui::IsItemActivated()) // •ÒWŠJn‚ÉŒ»İ‚Ì’l‚ğ•Û‘¶
+			if (ImGui::IsItemActivated()) // ç·¨é›†é–‹å§‹æ™‚ã«ç¾åœ¨ã®å€¤ã‚’ä¿å­˜
 			{
 				prevScale = scale;
 			}
-			if (ImGui::IsItemDeactivatedAfterEdit()) // •ÒWI—¹‚ÉƒRƒ}ƒ“ƒh‚ğ”­s
+			if (ImGui::IsItemDeactivatedAfterEdit()) // ç·¨é›†çµ‚äº†æ™‚ã«ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ
 			{
 				Vector3 newScale = scale;
 				if (newScale.x != prevScale.x || newScale.y != prevScale.y || newScale.z != prevScale.z) {
@@ -635,7 +635,7 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 				prevScale = newScale;
 			}
 
-			// ƒXƒP[ƒ‹ƒŠƒ“ƒNƒtƒ‰ƒO‚Ì•ÒW
+			// ã‚¹ã‚±ãƒ¼ãƒ«ãƒªãƒ³ã‚¯ãƒ•ãƒ©ã‚°ã®ç·¨é›†
 			{
 				ImGui::SameLine();
 				auto iconTex = ResourceManager::GetOrLoad<AssetTexture>("./Data/Icon/editorIcons.png");

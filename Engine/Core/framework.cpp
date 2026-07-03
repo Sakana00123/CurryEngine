@@ -48,14 +48,14 @@ CONST LONG SHADOWMAP_HEIGHT{ 2048 };
 
 Framework::Framework(HWND hwnd)
 {
-    //ƒvƒƒtƒ@ƒCƒ‰‰Šú‰»
+    //ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ©åˆæœŸåŒ–
     ProfileInitialize(&isPaused, Framework::SetPause, ImGuiControl::Profiler::DefaultMaxThreads);
     ProfileThreadName(0, "Main Thread");
 
-	// ƒƒO‰Šú‰»
+	// ãƒ­ã‚°åˆæœŸåŒ–
 	Console::Initialize();
 
-	// ŠeíƒVƒXƒeƒ€‰Šú‰»
+	// å„ç¨®ã‚·ã‚¹ãƒ†ãƒ åˆæœŸåŒ–
 
     Graphics::Initialize(hwnd, FULLSCREEN);
     InputSystem::Initialize();
@@ -83,7 +83,7 @@ bool Framework::Initialize()
     HRESULT hr{ S_OK };
     auto device = Graphics::GetDevice();
 
-	// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒVƒXƒeƒ€
+	// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚·ã‚¹ãƒ†ãƒ 
 	renderSystem = new RenderSystem;
 	renderSystem->Initialize(&time);
 
@@ -94,13 +94,13 @@ bool Framework::Initialize()
     //SceneManager::SetLoadingScene("EmptyScene");
     //SceneManager::ChangeScene("SampleScene");
 
-    // ƒGƒtƒFƒNƒgƒ}ƒl[ƒWƒƒ[‰Šú‰»
+    // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼åˆæœŸåŒ–
     EffectManager::Initialize();
 
-    //ƒGƒtƒFƒNƒgƒGƒfƒBƒ^‰Šú‰»
+    //ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚¨ãƒ‡ã‚£ã‚¿åˆæœŸåŒ–
     EffectEditor::Initialize();
 
-	// Å‰‚ÌƒV[ƒ“‚ğƒ[ƒh(EditorConfigManager‚Ì‰Šú‰»Œã‚ÉŒÄ‚Ño‚·•K—v‚ª‚ ‚é)
+	// æœ€åˆã®ã‚·ãƒ¼ãƒ³ã‚’ãƒ­ãƒ¼ãƒ‰(EditorConfigManagerã®åˆæœŸåŒ–å¾Œã«å‘¼ã³å‡ºã™å¿…è¦ãŒã‚ã‚‹)
 	SceneManager::LoadFirstScene();
 
     return true;
@@ -119,10 +119,10 @@ int Framework::Run()
     IMGUI_CHECKVERSION();
     ImGuiContext* imguiContext = ImGui::CreateContext();
     //ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", 14.0f, nullptr, glyphRangesJapanese);
-	// “ú–{ŒêƒtƒHƒ“ƒg‚Ì’Ç‰Á
+	// æ—¥æœ¬èªãƒ•ã‚©ãƒ³ãƒˆã®è¿½åŠ 
     auto japanese = ImGui::GetIO().Fonts->GetGlyphRangesJapanese();
     ImGui::GetIO().Fonts->AddFontFromFileTTF(".\\Data\\Fonts\\NotoSansJP-Medium.ttf", 18.0f, nullptr, japanese);
-	// ’†‘ŒêƒtƒHƒ“ƒg‚Ì’Ç‰Á
+	// ä¸­å›½èªãƒ•ã‚©ãƒ³ãƒˆã®è¿½åŠ 
 	auto chinese = ImGui::GetIO().Fonts->GetGlyphRangesChineseFull();
 	ImGui::GetIO().Fonts->AddFontFromFileTTF(".\\Data\\Fonts\\NotoSansSC-Medium.ttf", 18.0f, nullptr, chinese);
 
@@ -134,19 +134,19 @@ int Framework::Run()
     ImGui_ImplDX11_Init(device/*.Get()*/, immediate_context/*.Get()*/);
     ImGui::StyleColorsDark();
 
-	// ImPlot‰Šú‰»
+	// ImPlotåˆæœŸåŒ–
 	ImPlotContext* imPlotContext = ImPlot::CreateContext();
 	ImPlot::SetImGuiContext(imguiContext);
 
     
-    // ImGuiƒe[ƒ}‰Šú‰»
+    // ImGuiãƒ†ãƒ¼ãƒåˆæœŸåŒ–
     ImGuiTheme::Initialize();
 #endif
 
-    //‰Šú‰»
+    //åˆæœŸåŒ–
     time.Reset();
 
-    //ƒƒCƒ“ƒ‹[ƒv
+    //ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
     while (WM_QUIT != msg.message)
     {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -275,7 +275,7 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hwnd, UINT msg, WPARAM wparam, LP
 
 void Framework::BeginFrame()
 {
-	// ƒtƒŒ[ƒ€ŠJnˆ—
+	// ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹å‡¦ç†
     {
          SceneManager::BeginFrame();
 	}
@@ -283,7 +283,7 @@ void Framework::BeginFrame()
 
 void Framework::EndFrame()
 {
-    // ƒtƒŒ[ƒ€I—¹ˆ—
+    // ãƒ•ãƒ¬ãƒ¼ãƒ çµ‚äº†å‡¦ç†
     {
         InputSystem::EndFrame();
         SceneManager::EndFrame();
@@ -299,37 +299,37 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
     ImGuizmo::BeginFrame();
     ProfileNewFrame();
 #endif
-    // AudioXV
+    // Audioæ›´æ–°
     Audio::Update(deltaTime);
 
-	//// ƒŠƒ\[ƒXƒ}ƒl[ƒWƒƒXV
+	//// ãƒªã‚½ãƒ¼ã‚¹ãƒãƒãƒ¼ã‚¸ãƒ£æ›´æ–°
  //   {
  //       ProfileScopedSection_2(0, "ResourceManager::Update", ImGuiControl::Profiler::Yellow);
  //       ResourceManager::Update();
  //   }
 
-    // “ü—ÍƒVƒXƒeƒ€XV
+    // å…¥åŠ›ã‚·ã‚¹ãƒ†ãƒ æ›´æ–°
     if (GetForegroundWindow() == Graphics::GetHwnd())
     {
         ProfileScopedSection_2(0, "InputSystem::Update", ImGuiControl::Profiler::Green);
         InputSystem::Update(Time::UnscaledDeltaTime());
     }
 #ifdef _DEBUG
-	//else if (!AssetBrowser::IsExternalDragActive()) // ƒtƒH[ƒJƒX‚ª‚È‚¢ê‡‚ÍASleep‚µ‚ÄCPUg—p—¦‚ğ‰º‚°‚é(Debug‚Ì‚İ)
+	//else if (!AssetBrowser::IsExternalDragActive()) // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒãªã„å ´åˆã¯ã€Sleepã—ã¦CPUä½¿ç”¨ç‡ã‚’ä¸‹ã’ã‚‹(Debugæ™‚ã®ã¿)
  //   {
  //       Sleep(100);
  //   }
 #endif // _DEBUG
 
 
-    // ƒCƒxƒ“ƒgƒVƒXƒeƒ€XV
+    // ã‚¤ãƒ™ãƒ³ãƒˆã‚·ã‚¹ãƒ†ãƒ æ›´æ–°
     if ((SceneManager::GetCurrentScene() && SceneManager::GetCurrentScene()->IsStarted()) && SceneManager::state == SceneManager::State::Playing)
     {
         ProfileScopedSection_2(0, "EventSystem::Update", ImGuiControl::Profiler::Yellow);
         EventSystem::Update(Time::UnscaledDeltaTime());
     }
 
-    // ƒEƒBƒ“ƒhƒEØ‘Ö
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦åˆ‡æ›¿
 #ifdef _DEBUG
     if (InputSystem::GetInputState("Alt") && InputSystem::GetInputState("Enter", InputStateMask::Trigger))
     {
@@ -338,16 +338,16 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
 #endif // _DEBUG
 
 
-    // ƒV[ƒ“XV
+    // ã‚·ãƒ¼ãƒ³æ›´æ–°
     {
         ProfileScopedSection_2(0, "SceneManager::Update", ImGuiControl::Profiler::Red);
         SceneManager::Update(deltaTime);
     }
 
-    // ƒp[ƒeƒBƒNƒ‹ƒVƒXƒeƒ€XV
+    // ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚·ã‚¹ãƒ†ãƒ æ›´æ–°
     {
         ProfileScopedSection_2(0, "EffectManager::Update", ImGuiControl::Profiler::Blue);
-        // ƒGƒtƒFƒNƒgƒ}ƒl[ƒWƒƒXV
+        // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£æ›´æ–°
         EffectManager::Update(deltaTime);
     }
 
@@ -355,45 +355,45 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
 
 void Framework::Render(float deltaTime/*Elapsed seconds from last frame*/)
 {
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	renderSystem->Render();
 
-    //vsync‚ªtrue‚Ìê‡A•`‰æŠÔŠu‚ªŒÅ’èƒtƒŒ[ƒ€ƒŒ[ƒg‚Å“®ì‚·‚é‚æ‚¤‚É‚È‚é
+    //vsyncãŒtrueã®å ´åˆã€æç”»é–“éš”ãŒå›ºå®šãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆã§å‹•ä½œã™ã‚‹ã‚ˆã†ã«ãªã‚‹
     Graphics::Present(vsync);
 
-    // ‹¤—LƒŠƒ\[ƒX‚ÌƒŠƒZƒbƒg
+    // å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã®ãƒªã‚»ãƒƒãƒˆ
     Graphics::ResetSharedResources();
 }
 
 bool Framework::Uninitialize(HWND hwnd)
 {
 #ifdef USE_IMGUI
-    // ImPlotI—¹
+    // ImPlotçµ‚äº†
     ImPlot::DestroyContext();
 #endif // USE_IMGUI
 
-	// VcxprojHelper‚Ì•Û—¯’†‚ÌƒVƒF[ƒ_[“o˜^ˆ—‚ğŠ®—¹‚³‚¹‚é
+	// VcxprojHelperã®ä¿ç•™ä¸­ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç™»éŒ²å‡¦ç†ã‚’å®Œäº†ã•ã›ã‚‹
 	VcxprojHelper::ProcessPendingShaderRegistrations();
-	// VcxprojHelper‚Ì•Û—¯’†‚ÌƒVƒF[ƒ_[“o˜^‰ğœˆ—‚ğŠ®—¹‚³‚¹‚é
+	// VcxprojHelperã®ä¿ç•™ä¸­ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç™»éŒ²è§£é™¤å‡¦ç†ã‚’å®Œäº†ã•ã›ã‚‹
 	VcxprojHelper::ProcessPendingShaderUnregistrations();
 
-	// ƒAƒZƒbƒgƒuƒ‰ƒEƒU‚Ìƒhƒƒbƒvƒ^[ƒQƒbƒgI—¹
+	// ã‚¢ã‚»ãƒƒãƒˆãƒ–ãƒ©ã‚¦ã‚¶ã®ãƒ‰ãƒ­ãƒƒãƒ—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆçµ‚äº†
 	AssetBrowser::FinalizeDropTarget(hwnd);
 	
-    // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒVƒXƒeƒ€I—¹
+    // ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚·ã‚¹ãƒ†ãƒ çµ‚äº†
 	renderSystem->Finalize();
 	if (renderSystem) { delete renderSystem; renderSystem = nullptr; }
 
-    // ƒXƒNƒŠƒvƒgƒVƒXƒeƒ€I—¹
+    // ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚·ã‚¹ãƒ†ãƒ çµ‚äº†
     ScriptSystem::Shutdown();
 
-    //ƒvƒƒtƒ@ƒCƒ‰I—¹
+    //ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ©çµ‚äº†
     ProfileShutdown();
 
-    // ƒGƒtƒFƒNƒgƒ}ƒl[ƒWƒƒ[I—¹
+    // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼çµ‚äº†
     EffectManager::ClearAll();
 
-    //Audio‰ğ•ú
+    //Audioè§£æ”¾
     Audio::ClearAll();
 
     PersistentObjectManager::Clear();
@@ -406,13 +406,13 @@ bool Framework::Uninitialize(HWND hwnd)
     
     InputSystem::Finalize();
 
-    //I—¹‰»
+    //çµ‚äº†åŒ–
     Graphics::Finalize();
 
-    //ƒRƒ“ƒ\[ƒ‹I—¹
+    //ã‚³ãƒ³ã‚½ãƒ¼ãƒ«çµ‚äº†
     Console::Shutdown();
 
-	// EditorConfigManagerI—¹
+	// EditorConfigManagerçµ‚äº†
 #ifdef _DEBUG
 	EditorConfigManager::Shutdown();
 #endif // _DEBUG

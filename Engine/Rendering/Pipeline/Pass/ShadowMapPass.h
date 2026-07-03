@@ -5,14 +5,14 @@
 class ShadowMapPass : public RenderPass
 {
 public:
-	// ShadowMapPass‚Ì‰Šú‰»ˆ—
+	// ShadowMapPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// ShadowMapPass‚ÌÀ‘•
+	// ShadowMapPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 private:
-	// ƒVƒƒƒhƒEƒ}ƒbƒv—p‚ÌƒŠƒ\[ƒXi—á: [“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[AƒVƒF[ƒ_[‚È‚Çj‚ğ‚±‚±‚É’Ç‰Á
+	// ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ç”¨ã®ãƒªã‚½ãƒ¼ã‚¹ï¼ˆä¾‹: æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã€ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãªã©ï¼‰ã‚’ã“ã“ã«è¿½åŠ 
 	std::unique_ptr<CascadedShadowMaps> cascadedShadowMaps;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> cascadedShadowPs;
 	float criticalDepthValue = 990.0f;

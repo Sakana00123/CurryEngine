@@ -4,20 +4,20 @@
 
 void AudioAnalyzer::Initialize(IXAudio2SourceVoice* voice, const Audio::AudioBuffer* buffer)
 {
-	// ƒ\[ƒXƒ{ƒCƒX‚ÆƒI[ƒfƒBƒIƒoƒbƒtƒ@‚ğ•Û
+	// ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹ã¨ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒƒãƒ•ã‚¡ã‚’ä¿æŒ
 	sourceVoice = voice;
 	wfx = &buffer->wfx;
 	pcmData = buffer->buffer.pAudioData;
 	pcmSize = buffer->buffer.AudioBytes;
 
-	// FFT —pİ’è‚ğì¬
+	// FFT ç”¨è¨­å®šã‚’ä½œæˆ
 	fftConfig = kiss_fftr_alloc(fftSize, 0, nullptr, nullptr);
-	spectrumSize = fftSize / 2 + 1; // ³‹K‰»Ï‚İƒXƒyƒNƒgƒ‹ƒTƒCƒY
-	result.spectrum.reserve(spectrumSize); // ƒXƒyƒNƒgƒ‹ƒf[ƒ^—p‚ÉŠm•Û
-	previousSmoothed.resize(spectrumSize, 0.0f); // •½ŠŠ‰»Ï‚İƒf[ƒ^—p‚ÉŠm•Û
-	tempBuffer.reserve(fftSize); // •ªÍ—pˆêƒoƒbƒtƒ@
+	spectrumSize = fftSize / 2 + 1; // æ­£è¦åŒ–æ¸ˆã¿ã‚¹ãƒšã‚¯ãƒˆãƒ«ã‚µã‚¤ã‚º
+	result.spectrum.reserve(spectrumSize); // ã‚¹ãƒšã‚¯ãƒˆãƒ«ãƒ‡ãƒ¼ã‚¿ç”¨ã«ç¢ºä¿
+	previousSmoothed.resize(spectrumSize, 0.0f); // å¹³æ»‘åŒ–æ¸ˆã¿ãƒ‡ãƒ¼ã‚¿ç”¨ã«ç¢ºä¿
+	tempBuffer.reserve(fftSize); // åˆ†æç”¨ä¸€æ™‚ãƒãƒƒãƒ•ã‚¡
 
-	// ‘Š‘ÎŠî€‚ÌÄæ“¾ƒtƒ‰ƒO
+	// ç›¸å¯¾åŸºæº–ã®å†å–å¾—ãƒ•ãƒ©ã‚°
 	baseCaptured = false;
 	baseSamplesPlayed = 0;
 }
@@ -35,11 +35,11 @@ void AudioAnalyzer::Update(float deltaTime)
 	}
 	if (!sourceVoice || !wfx || !pcmData || pcmSize == 0) return;
 
-	// Ä¶ˆÊ’u‚ğæ“¾
+	// å†ç”Ÿä½ç½®ã‚’å–å¾—
 	XAUDIO2_VOICE_STATE state = {};
 	sourceVoice->GetState(&state);
 
-	// Ä¶ŠJnŒã‚ÌÅ‰‚Ì Update ‚Å‘Š‘ÎŠî€‚ğŠm’è
+	// å†ç”Ÿé–‹å§‹å¾Œã®æœ€åˆã® Update ã§ç›¸å¯¾åŸºæº–ã‚’ç¢ºå®š
 	if (!baseCaptured) {
 		baseSamplesPlayed = state.SamplesPlayed;
 		baseCaptured = true;
@@ -51,7 +51,7 @@ void AudioAnalyzer::Update(float deltaTime)
 
 	if (bits != 16)
 	{
-		// Œ»ó 16bit PCM ‚Ì‚İ‘Î‰
+		// ç¾çŠ¶ 16bit PCM ã®ã¿å¯¾å¿œ
 		Console::LogError("AudioAnalyzer: Only 16-bit PCM is supported.");
 		return;
 	}
@@ -59,7 +59,7 @@ void AudioAnalyzer::Update(float deltaTime)
 	size_t bytesPerSample = bits / 8;
 	size_t frameSize = bytesPerSample * channels;
 
-	// Œ»İ‚ÌÄ¶ƒTƒ“ƒvƒ‹ˆÊ’ui¡‰ñ‚ÌÄ¶‚É‘Î‚·‚é‘Š‘ÎˆÊ’uj‚ğŒvZ
+	// ç¾åœ¨ã®å†ç”Ÿã‚µãƒ³ãƒ—ãƒ«ä½ç½®ï¼ˆä»Šå›ã®å†ç”Ÿã«å¯¾ã™ã‚‹ç›¸å¯¾ä½ç½®ï¼‰ã‚’è¨ˆç®—
 	uint64_t relSamplesPlayed = state.SamplesPlayed - baseSamplesPlayed;
 	uint64_t totalSamples = pcmSize / frameSize;
 
@@ -69,10 +69,10 @@ void AudioAnalyzer::Update(float deltaTime)
 		return;
 	}
 
-	// ƒ‹[ƒvˆ—‚ğl—¶‚µ‚ÄÄ¶ƒTƒ“ƒvƒ‹ˆÊ’u‚ğ’²®
+	// ãƒ«ãƒ¼ãƒ—å‡¦ç†ã‚’è€ƒæ…®ã—ã¦å†ç”Ÿã‚µãƒ³ãƒ—ãƒ«ä½ç½®ã‚’èª¿æ•´
 	uint32_t playSample = static_cast<uint32_t>(relSamplesPlayed % totalSamples);
 
-	// •ªÍƒEƒBƒ“ƒhƒE = 1024 ƒTƒ“ƒvƒ‹•ª‚ğæ“¾(ƒ‚ƒmƒ‰ƒ‹•ÏŠ·)
+	// åˆ†æã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ = 1024 ã‚µãƒ³ãƒ—ãƒ«åˆ†ã‚’å–å¾—(ãƒ¢ãƒãƒ©ãƒ«å¤‰æ›)
 	constexpr size_t windowSamples = 1024;
 	tempBuffer.resize(windowSamples);
 
@@ -80,18 +80,18 @@ void AudioAnalyzer::Update(float deltaTime)
 
 	for (size_t i = 0; i < windowSamples; ++i)
 	{
-		size_t sampleIndex = (playSample + i) % totalSamples; // ƒ‹[ƒv‚ğl—¶‚µ‚½ƒTƒ“ƒvƒ‹ƒCƒ“ƒfƒbƒNƒX
-		// 1ch‚Ì‚İg—p (‚Æ‚è‚ ‚¦‚¸)
+		size_t sampleIndex = (playSample + i) % totalSamples; // ãƒ«ãƒ¼ãƒ—ã‚’è€ƒæ…®ã—ãŸã‚µãƒ³ãƒ—ãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		// 1chã®ã¿ä½¿ç”¨ (ã¨ã‚Šã‚ãˆãš)
 		tempBuffer[i] = static_cast<float>(pcm16[sampleIndex * channels]) / 32768.0f;
 	}
 
-	// RMS ‚Æƒs[ƒN’l‚ğŒvZ
+	// RMS ã¨ãƒ”ãƒ¼ã‚¯å€¤ã‚’è¨ˆç®—
 	ComputeRMSAndPeak(tempBuffer.data(), windowSamples);
 
-	// FFT ˆ—
+	// FFT å‡¦ç†
 	AnalyzeFFT(tempBuffer.data(), windowSamples);
 
-	// ü”g”‘Ñˆæ‚²‚Æ‚ÌƒŒƒxƒ‹‚ğXV
+	// å‘¨æ³¢æ•°å¸¯åŸŸã”ã¨ã®ãƒ¬ãƒ™ãƒ«ã‚’æ›´æ–°
 	UpdateBands();
 }
 
@@ -118,13 +118,13 @@ void AudioAnalyzer::AnalyzeFFT(const float* samples, size_t sampleCount)
 		return;
 	}
 
-	// kissFFT —p‚Ì“ü—Íƒoƒbƒtƒ@‚Æo—Íƒoƒbƒtƒ@‚ğ€”õ
+	// kissFFT ç”¨ã®å…¥åŠ›ãƒãƒƒãƒ•ã‚¡ã¨å‡ºåŠ›ãƒãƒƒãƒ•ã‚¡ã‚’æº–å‚™
 	std::vector<kiss_fft_cpx> fftOutput(spectrumSize);
 
-	// FFT Às
+	// FFT å®Ÿè¡Œ
 	kiss_fftr(fftConfig, samples, fftOutput.data());
 
-	// ƒXƒyƒNƒgƒ‹ƒf[ƒ^‚ğŒvZiU•ƒXƒyƒNƒgƒ‹j
+	// ã‚¹ãƒšã‚¯ãƒˆãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’è¨ˆç®—ï¼ˆæŒ¯å¹…ã‚¹ãƒšã‚¯ãƒˆãƒ«ï¼‰
 	result.spectrum.clear();
 	result.spectrum.resize(spectrumSize);
 	for (int i = 0; i < spectrumSize; ++i)
@@ -138,17 +138,17 @@ void AudioAnalyzer::AnalyzeFFT(const float* samples, size_t sampleCount)
 
 void AudioAnalyzer::UpdateBands()
 {
-	// ƒoƒ“ƒh•ªŠ„‚ÌƒCƒ“ƒfƒbƒNƒXŒvZ
-	size_t lowEnd = result.spectrum.size() / 4; // ’áü”g”‘Ñˆæ‚ÌI—¹ƒCƒ“ƒfƒbƒNƒX(0 ~ 1/4 : Bass)
-	size_t midEnd = result.spectrum.size() / 2; // ’†ü”g”‘Ñˆæ‚ÌI—¹ƒCƒ“ƒfƒbƒNƒX(1/4 ~ 1/2 : Mid)
-	size_t highEnd = result.spectrum.size();    // ‚ü”g”‘Ñˆæ‚ÌI—¹ƒCƒ“ƒfƒbƒNƒX(1/2 ~ 1 : Treble)
+	// ãƒãƒ³ãƒ‰åˆ†å‰²ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹è¨ˆç®—
+	size_t lowEnd = result.spectrum.size() / 4; // ä½å‘¨æ³¢æ•°å¸¯åŸŸã®çµ‚äº†ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(0 ~ 1/4 : Bass)
+	size_t midEnd = result.spectrum.size() / 2; // ä¸­å‘¨æ³¢æ•°å¸¯åŸŸã®çµ‚äº†ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(1/4 ~ 1/2 : Mid)
+	size_t highEnd = result.spectrum.size();    // é«˜å‘¨æ³¢æ•°å¸¯åŸŸã®çµ‚äº†ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹(1/2 ~ 1 : Treble)
 
-	// ƒoƒ“ƒhƒf[ƒ^‚ÌƒŠƒTƒCƒY
+	// ãƒãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚µã‚¤ã‚º
 	analyzerResult.lowBands.resize(lowEnd);
 	analyzerResult.midBands.resize(midEnd - lowEnd);
 	analyzerResult.highBands.resize(highEnd - midEnd);
 
-	// Å‘å’l‚ÌŒvZ
+	// æœ€å¤§å€¤ã®è¨ˆç®—
 	float lowMax = 0.0f;
 	for (size_t i = 0; i < lowEnd; i++) lowMax = (std::max)(lowMax, result.spectrum[i]);
 	float midMax = 0.0f;
@@ -156,17 +156,17 @@ void AudioAnalyzer::UpdateBands()
 	float highMax = 0.0f;
 	for (size_t i = midEnd; i < highEnd; i++) highMax = (std::max)(highMax, result.spectrum[i]);
 
-	// ³‹K‰»‚Æ•½ŠŠ‰»‚Ìƒ‰ƒ€ƒ_ŠÖ”
+	// æ­£è¦åŒ–ã¨å¹³æ»‘åŒ–ã®ãƒ©ãƒ ãƒ€é–¢æ•°
 	auto normalizeAndSmooth = [this](float raw, float& smoothed, float maxVal) -> float
 		{
-			// ³‹K‰»‚Æ•½ŠŠ‰»
+			// æ­£è¦åŒ–ã¨å¹³æ»‘åŒ–
 			//float norm = maxVal > 0.0f ? (raw / maxVal) : 0.0f;
-			float norm = raw; // ³‹K‰»‚ğ–³Œø‰»
-			smoothed = smoothed * 0.8f + norm * 0.2f; // •½ŠŠ‰»
+			float norm = raw; // æ­£è¦åŒ–ã‚’ç„¡åŠ¹åŒ–
+			smoothed = smoothed * 0.8f + norm * 0.2f; // å¹³æ»‘åŒ–
 			return norm;
 		};
 
-	// ’áü”g”‘Ñˆæ‚ÌXV
+	// ä½å‘¨æ³¢æ•°å¸¯åŸŸã®æ›´æ–°
 	analyzerResult.lowPeak = 0.0f;
 	for (size_t i = 0; i < lowEnd; ++i)
 	{
@@ -178,7 +178,7 @@ void AudioAnalyzer::UpdateBands()
 		previousSmoothed[i] = sm;
 	}
 
-	// ’†ü”g”‘Ñˆæ‚ÌXV
+	// ä¸­å‘¨æ³¢æ•°å¸¯åŸŸã®æ›´æ–°
 	analyzerResult.midPeak = 0.0f;
 	for (size_t i = lowEnd; i < midEnd; ++i)
 	{
@@ -190,7 +190,7 @@ void AudioAnalyzer::UpdateBands()
 		previousSmoothed[i] = sm;
 	}
 
-	// ‚ü”g”‘Ñˆæ‚ÌXV
+	// é«˜å‘¨æ³¢æ•°å¸¯åŸŸã®æ›´æ–°
 	analyzerResult.highPeak = 0.0f;
 	for (size_t i = midEnd; i < highEnd; ++i)
 	{
@@ -202,6 +202,6 @@ void AudioAnalyzer::UpdateBands()
 		previousSmoothed[i] = sm;
 	}
 
-	// ‘S‘Ì‚ÌRMS’l‚ğXV
+	// å…¨ä½“ã®RMSå€¤ã‚’æ›´æ–°
 	analyzerResult.overallRMS = result.rms;
 }

@@ -38,7 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_  HINSTANCE prev_instance, _
 	HWND hwnd = CreateWindowExW(0, APPLICATION_NAME, L"", WS_OVERLAPPEDWINDOW/* ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME*/ | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, instance, NULL);
 	ShowWindow(hwnd, cmd_show);
 
-	// ÉtÉåÅ[ÉÄÉèÅ[ÉNÇÃé¿çs
+	// „Éï„É¨„Éº„É†„ÉØ„Éº„ÇØ„ÅÆÂÆüË°å
 	Framework framework(hwnd);
 	SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&framework));
 	return framework.Run();

@@ -19,13 +19,13 @@ namespace CurryEngine
 		bool edited = ImGui::ColorEdit4("##color", &value.r);
 		if (edited)
 		{
-			// �l���ύX���ꂽ�Ƃ��̏����B�����I������Ă���ꍇ�́A���ׂĂ̑Ώۂɑ΂��ĐV�����l��K�p���܂��B
+			// 値が変更されたときの処理。複数選択されている場合は、すべての対象に対して新しい値を適用します。
 			PropertyDrawHelper::ApplyToAll<Color>(context, prop, value);
 		}
 
 		if (ImGui::IsItemDeactivatedAfterEdit())
 		{
-			// �l�̃R�~�b�g�����B���[�U�[���ҏW�����������Ƃ��ɁAUndo/Redo �R�}���h�𔭍s���܂��B
+			// 値のコミット処理。ユーザーが編集を完了したときに、Undo/Redo コマンドを発行します。
 			PropertyDrawHelper::CommitEdit<Color>(prop, context, m_state, value,
 				[](const Color& c) {
 					return "(" + std::to_string(c.r) + ", "

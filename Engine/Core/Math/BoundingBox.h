@@ -7,34 +7,34 @@
 namespace Math
 {
 	/**
-	 * @brief ²‚É•½s‚È’¼•û‘Ì‚Ì‹«ŠEƒ{ƒbƒNƒXB
-	 * @details Å¬/Å‘å“_A’†S“_AƒTƒCƒYA•ïŠÜ”»’è‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+	 * @brief è»¸ã«å¹³è¡Œãªç›´æ–¹ä½“ã®å¢ƒç•Œãƒœãƒƒã‚¯ã‚¹ã€‚
+	 * @details æœ€å°/æœ€å¤§ç‚¹ã€ä¸­å¿ƒç‚¹ã€ã‚µã‚¤ã‚ºã€åŒ…å«åˆ¤å®šã‚’æä¾›ã—ã¾ã™ã€‚
 	 */
 	struct BoundingBox
 	{
-		Vector3 min;    //!< Še²‚ÌÅ¬“_
-		Vector3 max;    //!< Še²‚ÌÅ‘å“_
+		Vector3 min;    //!< å„è»¸ã®æœ€å°ç‚¹
+		Vector3 max;    //!< å„è»¸ã®æœ€å¤§ç‚¹
 		/**
-		 * @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B
-		 * @details `min` ‚ğ”ñí‚É‘å‚«‚È’lA`max` ‚ğ”ñí‚É¬‚³‚È’l‚Å‰Šú‰»‚µ‚Ü‚·B
+		 * @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+		 * @details `min` ã‚’éå¸¸ã«å¤§ããªå€¤ã€`max` ã‚’éå¸¸ã«å°ã•ãªå€¤ã§åˆæœŸåŒ–ã—ã¾ã™ã€‚
 		 */
 		BoundingBox()
 			: min(FLT_MAX, FLT_MAX, FLT_MAX)
 			, max(-FLT_MAX, -FLT_MAX, -FLT_MAX)
 		{}
 		/**
-		 * @brief w’è‚µ‚½Å¬/Å‘å“_‚Å‰Šú‰»‚µ‚Ü‚·B
-		 * @param min Še²‚ÌÅ¬“_B
-		 * @param max Še²‚ÌÅ‘å“_B
+		 * @brief æŒ‡å®šã—ãŸæœ€å°/æœ€å¤§ç‚¹ã§åˆæœŸåŒ–ã—ã¾ã™ã€‚
+		 * @param min å„è»¸ã®æœ€å°ç‚¹ã€‚
+		 * @param max å„è»¸ã®æœ€å¤§ç‚¹ã€‚
 		 */
 		BoundingBox(const Vector3& min, const Vector3& max)
 			: min(min), max(max)
 		{}
 
 		/**
-		 * @brief ƒ{ƒbƒNƒX‚ª—LŒø‚Èó‘Ô‚©”»’è‚µ‚Ü‚·B
-		 * @details Še²‚ÌÅ¬“_‚ªÅ‘å“_ˆÈ‰º‚Å‚ ‚ê‚Î—LŒø‚Æ‚İ‚È‚µ‚Ü‚·B
-		 * @return —LŒø‚Èó‘Ô‚Å‚ ‚ê‚Î trueB
+		 * @brief ãƒœãƒƒã‚¯ã‚¹ãŒæœ‰åŠ¹ãªçŠ¶æ…‹ã‹åˆ¤å®šã—ã¾ã™ã€‚
+		 * @details å„è»¸ã®æœ€å°ç‚¹ãŒæœ€å¤§ç‚¹ä»¥ä¸‹ã§ã‚ã‚Œã°æœ‰åŠ¹ã¨ã¿ãªã—ã¾ã™ã€‚
+		 * @return æœ‰åŠ¹ãªçŠ¶æ…‹ã§ã‚ã‚Œã° trueã€‚
 		 */
 		bool IsValid() const
 		{
@@ -51,8 +51,8 @@ namespace Math
 		}
 
 		/**
-		 * @brief w’è‚µ‚½“_‚ğŠÜ‚Ş‚æ‚¤‚ÉŠg’£‚µ‚Ü‚·B
-		 * @param point ŠÜ‚ß‚½‚¢“_B
+		 * @brief æŒ‡å®šã—ãŸç‚¹ã‚’å«ã‚€ã‚ˆã†ã«æ‹¡å¼µã—ã¾ã™ã€‚
+		 * @param point å«ã‚ãŸã„ç‚¹ã€‚
 		 */
 		void Encapsulate(const XMFLOAT3& point)
 		{
@@ -64,8 +64,8 @@ namespace Math
 			max.z = (std::max)(max.z, point.z);
 		}
 		/**
-		 * @brief w’è‚µ‚½ƒ{ƒbƒNƒX‚ğŠÜ‚Ş‚æ‚¤‚ÉŠg’£‚µ‚Ü‚·B
-		 * @param box ŠÜ‚ß‚½‚¢ƒ{ƒbƒNƒXB
+		 * @brief æŒ‡å®šã—ãŸãƒœãƒƒã‚¯ã‚¹ã‚’å«ã‚€ã‚ˆã†ã«æ‹¡å¼µã—ã¾ã™ã€‚
+		 * @param box å«ã‚ãŸã„ãƒœãƒƒã‚¯ã‚¹ã€‚
 		 */
 		void Encapsulate(const BoundingBox& box)
 		{
@@ -77,8 +77,8 @@ namespace Math
 			max.z = (std::max)(max.z, box.max.z);
 		}
 		/**
-		 * @brief ƒ{ƒbƒNƒX‚Ì’†S“_‚ğæ“¾‚µ‚Ü‚·B
-		 * @return ’†S“_B
+		 * @brief ãƒœãƒƒã‚¯ã‚¹ã®ä¸­å¿ƒç‚¹ã‚’å–å¾—ã—ã¾ã™ã€‚
+		 * @return ä¸­å¿ƒç‚¹ã€‚
 		 */
 		Vector3 Center() const
 		{
@@ -88,8 +88,8 @@ namespace Math
 		}
 			
 		/**
-		 * @brief ƒ{ƒbƒNƒX‚ÌƒTƒCƒY‚ğæ“¾‚µ‚Ü‚·B
-		 * @return Še²‚ÌƒTƒCƒYB
+		 * @brief ãƒœãƒƒã‚¯ã‚¹ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã—ã¾ã™ã€‚
+		 * @return å„è»¸ã®ã‚µã‚¤ã‚ºã€‚
 		 */
 		Vector3 Size() const
 		{
@@ -98,9 +98,9 @@ namespace Math
 			return size;
 		}
 		/**
-		 * @brief w’è‚µ‚½“_‚ªƒ{ƒbƒNƒX‚ÉŠÜ‚Ü‚ê‚é‚©”»’è‚µ‚Ü‚·B
-		 * @param point ”»’è‚µ‚½‚¢“_B
-		 * @return ŠÜ‚Ü‚ê‚éê‡ trueB
+		 * @brief æŒ‡å®šã—ãŸç‚¹ãŒãƒœãƒƒã‚¯ã‚¹ã«å«ã¾ã‚Œã‚‹ã‹åˆ¤å®šã—ã¾ã™ã€‚
+		 * @param point åˆ¤å®šã—ãŸã„ç‚¹ã€‚
+		 * @return å«ã¾ã‚Œã‚‹å ´åˆ trueã€‚
 		 */
 		bool Contains(const XMFLOAT3& point) const
 		{
@@ -110,9 +110,9 @@ namespace Math
 		}
 
 		/**
-		 * @brief w’è‚µ‚½ƒ{ƒbƒNƒX‚ªƒ{ƒbƒNƒX‚ÉŠÜ‚Ü‚ê‚é‚©”»’è‚µ‚Ü‚·B
-		 * @param box ”»’è‚µ‚½‚¢ƒ{ƒbƒNƒXB
-		 * @return ŠÜ‚Ü‚ê‚éê‡ trueB
+		 * @brief æŒ‡å®šã—ãŸãƒœãƒƒã‚¯ã‚¹ãŒãƒœãƒƒã‚¯ã‚¹ã«å«ã¾ã‚Œã‚‹ã‹åˆ¤å®šã—ã¾ã™ã€‚
+		 * @param box åˆ¤å®šã—ãŸã„ãƒœãƒƒã‚¯ã‚¹ã€‚
+		 * @return å«ã¾ã‚Œã‚‹å ´åˆ trueã€‚
 		 */
 		bool Contains(const BoundingBox& box) const
 		{

@@ -11,19 +11,19 @@ public:
 	~FixedJoint() = default;
 
 public:
-	// Ú‘±‚·‚éƒIƒuƒWƒFƒNƒg
+	// æ¥ç¶šã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("Rigidbody"))
 	ObjectId connectedBody;
 
 private:
-	physx::PxFixedJoint* pxJoint = nullptr; // PhysX ‚ÌŒÅ’èƒWƒ‡ƒCƒ“ƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	physx::PxFixedJoint* pxJoint = nullptr; // PhysX ã®å›ºå®šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
 
 public:
-	// ƒWƒ‡ƒCƒ“ƒg‚ğì¬‚·‚éŠÖ”
+	// ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã™ã‚‹é–¢æ•°
 	void CreateJoint();
-	// ƒWƒ‡ƒCƒ“ƒg‚ğ”jŠü‚·‚éŠÖ”
+	// ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ç ´æ£„ã™ã‚‹é–¢æ•°
 	void DestroyJoint();
-	// Component ‚Ìƒ‰ƒCƒtƒTƒCƒNƒ‹ƒCƒxƒ“ƒg‚ÅƒWƒ‡ƒCƒ“ƒg‚ÌŠÇ—‚ğs‚¤
+	// Component ã®ãƒ©ã‚¤ãƒ•ã‚µã‚¤ã‚¯ãƒ«ã‚¤ãƒ™ãƒ³ãƒˆã§ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã®ç®¡ç†ã‚’è¡Œã†
 	virtual void Start() override;
 	void LateUpdate(float deltaTime) override;
 	virtual void OnDestroy() override;

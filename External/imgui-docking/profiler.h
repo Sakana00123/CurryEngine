@@ -46,8 +46,8 @@ namespace ImGuiControl
     class Profiler
     {
     public:
-        static constexpr int DefaultMaxThreads = 9; // �f�t�H���g�̌Œ�X���b�h��
-        int MaxThreads = DefaultMaxThreads;         // ���s���ɐݒ�\�Ȓl
+        static constexpr int DefaultMaxThreads = 9; // デフォルトの固定スレッド数
+        int MaxThreads = DefaultMaxThreads;         // 実行時に設定可能な値
 
         static const int MaxFrames      = 600;
         static const int MaxSections    = 2000;

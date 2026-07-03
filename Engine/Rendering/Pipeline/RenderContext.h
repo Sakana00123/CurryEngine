@@ -13,12 +13,12 @@ class FullScreenQuad;
 
 struct RenderContext
 {
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	RenderContext(ID3D11DeviceContext* context, FullScreenQuad* fullScreenQuad, std::unordered_map<std::string, void*> sharedResources);
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~RenderContext() = default;
 
-	// •`‰æ‚É•K—v‚ÈƒRƒ“ƒeƒLƒXƒgî•ñ‚ğ‚±‚±‚É’Ç‰Á
+	// æç”»ã«å¿…è¦ãªã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆæƒ…å ±ã‚’ã“ã“ã«è¿½åŠ 
 	ID3D11DeviceContext* immediateContext;
 	RenderState* renderState;
 	Vector3 cameraPosition;
@@ -31,44 +31,44 @@ struct RenderContext
 	DirectX::XMFLOAT4X4 inverseViewProjection;
 
 
-	float deltaTime{ 0.0f }; // ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bj
-	float unscaledDeltaTime{ 0.0f }; // ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bAƒXƒP[ƒŠƒ“ƒO‚È‚µj
-	float totalTime{ 0.0f }; // ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ŠJn‚©‚ç‚Ì‘Œo‰ßŠÔi•bAƒXƒP[ƒŠƒ“ƒO‚È‚µj
+	float deltaTime{ 0.0f }; // å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰
+	float unscaledDeltaTime{ 0.0f }; // å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ã€ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ãªã—ï¼‰
+	float totalTime{ 0.0f }; // ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹ã‹ã‚‰ã®ç·çµŒéæ™‚é–“ï¼ˆç§’ã€ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ãªã—ï¼‰
 
-	bool acceptRendering{ true }; // •`‰æ‚ğ‹–‰Â‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒOBƒJƒƒ‰‚ª‚È‚¢‚È‚Ç•`‰æ‚Å‚«‚È‚¢ó‹µ‚Åfalse‚É‚È‚é
+	bool acceptRendering{ true }; // æç”»ã‚’è¨±å¯ã™ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã€‚ã‚«ãƒ¡ãƒ©ãŒãªã„ãªã©æç”»ã§ããªã„çŠ¶æ³ã§falseã«ãªã‚‹
 
-	// ‹¤—LƒŠƒ\[ƒX‚Ìİ’è
+	// å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
 	void SetSharedResource(const std::string& key, void* resource);
 
-	// ‹¤—LƒŠƒ\[ƒX‚Ìæ“¾
+	// å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 	void* GetSharedResource(const std::string& key) const;
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Ìİ’è
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®è¨­å®š
 	void SetRenderTarget(const RenderTexture& target);
 
-	// ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÉØ‚è‘Ö‚¦‚é
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆ‡ã‚Šæ›¿ãˆã‚‹
 	void SetDefaultRenderTarget();
 
-	// Œ»İ‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒNƒŠƒA
+	// ç¾åœ¨ã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢
 	void ClearCurrentRenderTarget(const Color& color) const;
 
-	// ƒtƒ‹ƒXƒNƒŠ[ƒ“•`‰æ
+	// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æç”»
 	void DrawFullScreenQuad(ID3D11ShaderResourceView** shaderResourceViews, uint32_t startSlot, uint32_t numViews, ID3D11PixelShader* replacedPixelShader = nullptr);
 	void DrawFullScreenQuad(Material* material);
 
-	// ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒNƒAƒbƒh‚ÌQÆ
+	// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¯ã‚¢ãƒƒãƒ‰ã®å‚ç…§
 	FullScreenQuad* fullScreenQuad;
 private:
-	// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğ‚·‚×‚Ä‰ğœ
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ã™ã¹ã¦è§£é™¤
 	void UnbindSRVs() const;
 
-	// Œ»İ‚ÌƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
+	// ç¾åœ¨ã®ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
 	ID3D11DeviceContext* m_context{ nullptr };
 
-	// Œ»İ‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg
+	// ç¾åœ¨ã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 	const RenderTexture* m_currentRenderTarget{};
 	
-	// ‹¤—LƒŠƒ\[ƒX‚ÌŠÇ—
+	// å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã®ç®¡ç†
 	std::unordered_map<std::string, void*> sharedResources;
 
 

@@ -9,18 +9,18 @@ void OpaquePass::Execute(RenderContext* rtx, Scene* scene)
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 	
-	//[“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgİ’è
+	//æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
     renderState->BindDepthStencilState(immediateContext, DepthStencilState::TestAndWrite, 1);
-    //ƒ‰ƒXƒ^ƒ‰ƒCƒUİ’è
+    //ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶è¨­å®š
     renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullBack);
 
-	// •s“§–¾ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ(ˆê’U‚ÍƒV[ƒ““à‚Ì‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ğ•`‰æ‚·‚é)
+	// ä¸é€æ˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»(ä¸€æ—¦ã¯ã‚·ãƒ¼ãƒ³å†…ã®ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æç”»ã™ã‚‹)
 	scene->objectManager->Render(rtx);
 
-	////ƒV[ƒ“‘S‘Ì‚ÌƒLƒƒƒvƒ`ƒƒI—¹
+	////ã‚·ãƒ¼ãƒ³å…¨ä½“ã®ã‚­ãƒ£ãƒ—ãƒãƒ£çµ‚äº†
 	//frameBuffer->Deactivate(immediateContext);
 
-	//// ƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚ÌƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğRenderContext‚É‹¤—LƒŠƒ\[ƒX‚Æ‚µ‚Äİ’è
+	//// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’RenderContextã«å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹ã¨ã—ã¦è¨­å®š
 	//rtx->SetSharedResource("OpaquePass_ColorMap", frameBuffer->shader_resource_views[0].Get());
 	//rtx->SetSharedResource("OpaquePass_DepthMap", frameBuffer->shader_resource_views[1].Get());
 }
@@ -30,13 +30,13 @@ void PreviewPass::Execute(RenderContext* rtx, Scene* scene)
 {
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
-	//[“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgİ’è
+	//æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	renderState->BindDepthStencilState(immediateContext, DepthStencilState::TestAndWrite, 1);
-	//ƒ‰ƒXƒ^ƒ‰ƒCƒUİ’è
+	//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶è¨­å®š
 	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullBack);
-	// ƒvƒŒƒrƒ…[ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
+	// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
 	CurryEngine::Resources::ImportSettingsWindow::Render3DPreview(rtx);
 
-	// ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÉØ‚è‘Ö‚¦‚é
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆ‡ã‚Šæ›¿ãˆã‚‹
 	rtx->SetDefaultRenderTarget();
 }

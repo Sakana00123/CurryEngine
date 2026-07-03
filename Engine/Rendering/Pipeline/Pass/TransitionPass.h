@@ -4,22 +4,22 @@
 class TransitionPass : public RenderPass
 {
 public:
-	// RenderPass‚Ì‰Šú‰»ˆ—
+	// RenderPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// RenderPass‚ÌI—¹‰»ˆ—
+	// RenderPassã®çµ‚äº†åŒ–å‡¦ç†
 	void Finalize() override;
 
-	// RenderPass‚ÌÀ‘•
+	// RenderPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
-	// RenderPass‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// RenderPassã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	void DrawProperty() override;
 
 private:
-	std::shared_ptr<Material> m_material; // ƒ}ƒeƒŠƒAƒ‹
-	RenderTexture m_renderTexture; // •`‰æŒ‹‰Ê‚ğ‘‚«‚ŞƒeƒNƒXƒ`ƒƒ
+	std::shared_ptr<Material> m_material; // ãƒãƒ†ãƒªã‚¢ãƒ«
+	RenderTexture m_renderTexture; // æç”»çµæœã‚’æ›¸ãè¾¼ã‚€ãƒ†ã‚¯ã‚¹ãƒãƒ£
 
-	float transitionProgress = 0.0f; // 0.0 (–³•Ï‰») ` 1.0 (Š®‘S‘JˆÚ)
-	int isFadeIn = false; // false: ‰æ–Ê->• (OUT) / true: •->‰æ–Ê (IN)
+	float transitionProgress = 0.0f; // 0.0 (ç„¡å¤‰åŒ–) ã€œ 1.0 (å®Œå…¨é·ç§»)
+	int isFadeIn = false; // false: ç”»é¢->é»’ (OUT) / true: é»’->ç”»é¢ (IN)
 };

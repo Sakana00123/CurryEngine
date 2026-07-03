@@ -9,10 +9,10 @@ public:
 	void Initialize(Time* time);
 	void Render();
 
-	// �G�f�B�^GUI�̕`�揈���B�G�f�B�^���[�h�ł̂݌Ăяo����AImGui���g�p���ăG�f�B�^�ŗL��UI��`�悵�܂��B
+	// エディタGUIの描画処理。エディタモードでのみ呼び出され、ImGuiを使用してエディタ固有のUIを描画します。
 	void DrawEditorGUI();
 
-	// �E�B���h�E�T�C�Y�̕ύX�C�x���g�����B�E�B���h�E�T�C�Y�̕ύX�Ȃǂŕ`��^�[�Q�b�g�̃T�C�Y���ς�����Ƃ��ɌĂяo����܂��B�o�^���ꂽ�`��p�X�̃��T�C�Y���K�v�ȃ����_�[�^�[�Q�b�g�����ׂă��T�C�Y���܂��B
+	// ウィンドウサイズの変更イベント処理。ウィンドウサイズの変更などで描画ターゲットのサイズが変わったときに呼び出されます。登録された描画パスのリサイズが必要なレンダーターゲットをすべてリサイズします。
 	void OnSizeChanged(ID3D11Device* device, uint32_t width, uint32_t height);
 
 	void Finalize();
@@ -20,7 +20,7 @@ public:
 private:
 	Time* time{};
 
-	// TODO: ����ȏ㑝����悤�Ȃ�A�z���}�b�v�ŊǗ�����悤�ɕύX����
+	// TODO: これ以上増えるようなら、配列やマップで管理するように変更する
 
 	std::unique_ptr<RenderPipeline> sceneRenderPipeline;
 	std::unique_ptr<RenderPipeline> gameRenderPipeline;

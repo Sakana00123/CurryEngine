@@ -8,7 +8,7 @@ REGISTER_COMPONENT(BeatScaler2DComponent, "Easing")
 
 void BeatScaler2DComponent::Start()
 {
-	// RectTransform ƒRƒ“ƒ|[ƒlƒ“ƒg‚©‚çŠî–{ƒXƒP[ƒ‹‚ğæ“¾
+	// RectTransform ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‹ã‚‰åŸºæœ¬ã‚¹ã‚±ãƒ¼ãƒ«ã‚’å–å¾—
 	if (RectTransform* rect = GetOwner()->GetComponent<RectTransform>())
 	{
 		initialSize = Vector2(rect->GetWorldSize());
@@ -20,7 +20,7 @@ void BeatScaler2DComponent::Start()
 
 void BeatScaler2DComponent::Update(float deltaTime)
 {
-	// ƒr[ƒgƒJƒEƒ“ƒg‚ÌXV
+	// ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã®æ›´æ–°
 	if (BeatManager::IsJustBeat())
 	{
 		OnBeat();
@@ -29,10 +29,10 @@ void BeatScaler2DComponent::Update(float deltaTime)
 	{
 		targetScale = baseScale;
 	}
-	// Œ»İ‚ÌƒXƒP[ƒ‹‚ğƒ^[ƒQƒbƒgƒXƒP[ƒ‹‚É‹ß‚Ã‚¯‚é
+	// ç¾åœ¨ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«ã«è¿‘ã¥ã‘ã‚‹
 	currentScale += (targetScale - currentScale) * scaleSpeed * deltaTime;
 
-	// RectTransform ‚ÌƒTƒCƒY‚ğXV
+	// RectTransform ã®ã‚µã‚¤ã‚ºã‚’æ›´æ–°
 	if (RectTransform* rect = GetOwner()->GetComponent<RectTransform>())
 	{
 		rect->SetSize((initialSize * currentScale));
@@ -50,14 +50,14 @@ void BeatScaler2DComponent::DrawProperty(const PropertyDrawContext& context)
 
 void BeatScaler2DComponent::OnBeat()
 {
-	// ƒr[ƒgƒJƒEƒ“ƒg‚ğ‘‰Á
+	// ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—åŠ 
 	beatCount++;
-	// ƒXƒP[ƒ‹•p“x‚ÉŠî‚Ã‚¢‚ÄƒXƒP[ƒŠƒ“ƒO‚ğs‚¤‚©”»’è
+	// ã‚¹ã‚±ãƒ¼ãƒ«é »åº¦ã«åŸºã¥ã„ã¦ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã‚’è¡Œã†ã‹åˆ¤å®š
 	if (beatCount % scaleFrequency != 0)
 	{
 		return;
 	}
-	// ƒ^[ƒQƒbƒgƒXƒP[ƒ‹‚ğXV
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚¹ã‚±ãƒ¼ãƒ«ã‚’æ›´æ–°
 	targetScale = baseScale * (1.0f + scaleIntensity);
 	//Console::Log("OnBeat");
 }

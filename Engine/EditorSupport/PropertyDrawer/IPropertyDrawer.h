@@ -5,17 +5,17 @@ struct PropertyDrawContext;
 namespace CurryEngine
 {
 	/**
-	 * @brief �v���p�e�B�`��̃C���^�[�t�F�[�X���`����N���X�B�v���p�e�B�̌^���Ƃɂ��̃C���^�[�t�F�[�X�����������N���X���쐬���A�v���p�e�B�`��֐���񋟂��܂��B
-	 * @details IPropertyDrawer �́A�v���p�e�B�̌^�ɉ������`��֐���񋟂��邽�߂̃C���^�[�t�F�[�X�ł��B�e�v���p�e�B�^�C�v�iint�Afloat�AVector3 �Ȃǁj�ɑ΂��āA���̃C���^�[�t�F�[�X�����������N���X���쐬���A�v���p�e�B�`��֐����������܂��B
+	 * @brief プロパティ描画のインターフェースを定義するクラス。プロパティの型ごとにこのインターフェースを実装したクラスを作成し、プロパティ描画関数を提供します。
+	 * @details IPropertyDrawer は、プロパティの型に応じた描画関数を提供するためのインターフェースです。各プロパティタイプ（int、float、Vector3 など）に対して、このインターフェースを実装したクラスを作成し、プロパティ描画関数を実装します。
 	 */
 	class IPropertyDrawer
 	{
 	public:
 		virtual ~IPropertyDrawer() = default;
 		/**
-		 * @brief �v���p�e�B��`�悷�邽�߂̏������z�֐��B�h���N���X�ł��̊֐����I�[�o�[���C�h���āA����̃v���p�e�B�^�C�v�̕`�揈�����������܂��B
-		 * @param prop �`�悷��v���p�e�B�̃��^���Bgetter �� setter ���g�p���ăv���p�e�B�l���擾�E�ݒ�ł��܂��B
-		 * @param context �v���p�e�B�`��̃R���e�L�X�g�B�����I������Ă���I�u�W�F�N�g�̃��X�g�₻�̑��̕`��ɕK�v�ȏ�񂪊܂܂�܂��B
+		 * @brief プロパティを描画するための純粋仮想関数。派生クラスでこの関数をオーバーライドして、特定のプロパティタイプの描画処理を実装します。
+		 * @param prop 描画するプロパティのメタ情報。getter や setter を使用してプロパティ値を取得・設定できます。
+		 * @param context プロパティ描画のコンテキスト。複数選択されているオブジェクトのリストやその他の描画に必要な情報が含まれます。
 		 */
 		virtual void Draw(const PropertyInfo& prop, const PropertyDrawContext& context) = 0;
 	};

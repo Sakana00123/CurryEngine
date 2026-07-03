@@ -32,11 +32,11 @@ GeometricPrimitive::GeometricPrimitive(ID3D11Device* device)
 void GeometricPrimitive::CreateCube(ID3D11Device* device)
 {
 	Vertex vertices[24]{};
-	// ƒTƒCƒY‚ª1.0‚Ì³—§•û‘Ìƒf[ƒ^‚ğì¬‚·‚éidS‚ğŒ´“_‚É‚·‚éjB³—§•û‘Ì‚ÌƒRƒ“ƒgƒ[ƒ‹ƒ|ƒCƒ“ƒg”‚Í‚WŒÂA
-	// ‚P‚Â‚ÌƒRƒ“ƒgƒ[ƒ‹ƒ|ƒCƒ“ƒg‚ÌˆÊ’u‚É‚Í–@ü‚ÌŒü‚«‚ªˆá‚¤’¸“_‚ª‚RŒÂ‚ ‚é‚Ì‚Å’¸“_î•ñ‚Ì‘”‚Í‚Wx‚R‚Q‚SŒÂA
-	// ’¸“_î•ñ”z—ñiverticesj‚É‚·‚×‚Ä‚Ì’¸“_‚ÌˆÊ’uE–@üî•ñ‚ğŠi”[‚·‚éB
+	// ã‚µã‚¤ã‚ºãŒ1.0ã®æ­£ç«‹æ–¹ä½“ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ï¼ˆé‡å¿ƒã‚’åŸç‚¹ã«ã™ã‚‹ï¼‰ã€‚æ­£ç«‹æ–¹ä½“ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒã‚¤ãƒ³ãƒˆæ•°ã¯ï¼˜å€‹ã€
+	// ï¼‘ã¤ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒã‚¤ãƒ³ãƒˆã®ä½ç½®ã«ã¯æ³•ç·šã®å‘ããŒé•ã†é ‚ç‚¹ãŒï¼“å€‹ã‚ã‚‹ã®ã§é ‚ç‚¹æƒ…å ±ã®ç·æ•°ã¯ï¼˜xï¼“ï¼ï¼’ï¼”å€‹ã€
+	// é ‚ç‚¹æƒ…å ±é…åˆ—ï¼ˆverticesï¼‰ã«ã™ã¹ã¦ã®é ‚ç‚¹ã®ä½ç½®ãƒ»æ³•ç·šæƒ…å ±ã‚’æ ¼ç´ã™ã‚‹ã€‚
 
-	//Front(¶ã0,‰Eã1,¶‰º2,‰E‰º3)
+	//Front(å·¦ä¸Š0,å³ä¸Š1,å·¦ä¸‹2,å³ä¸‹3)
 	{
 		vertices[0].position = { -0.5f, 0.5f, -0.5f };
 		vertices[1].position = { 0.5f, 0.5f, -0.5f };
@@ -45,7 +45,7 @@ void GeometricPrimitive::CreateCube(ID3D11Device* device)
 
 		vertices[0].normal = vertices[1].normal = vertices[2].normal = vertices[3].normal = { 0,0,-1 };
 	}
-	//Right(¶ã4,‰Eã5,¶‰º6,‰E‰º7)
+	//Right(å·¦ä¸Š4,å³ä¸Š5,å·¦ä¸‹6,å³ä¸‹7)
 	{
 		vertices[4].position = { 0.5f, 0.5f, -0.5f };
 		vertices[5].position = { 0.5f, 0.5f, 0.5f };
@@ -92,10 +92,10 @@ void GeometricPrimitive::CreateCube(ID3D11Device* device)
 	}
 
 	uint32_t indices[36]{};
-	// ³—§•û‘Ì‚Í‚U–Ê‚¿A‚P‚Â‚Ì–Ê‚Í‚Q‚Â‚Ì‚RŠpŒ`ƒ|ƒŠƒSƒ“‚Å\¬‚³‚ê‚é‚Ì‚ÅA‚RŠpŒ`ƒ|ƒŠƒSƒ“‚Ì‘”‚Í‚Ux‚Q‚P‚QŒÂA
-	// ³—§•û‘Ì‚ğ•`‰æ‚·‚é‚½‚ß‚É‚P‚Q‰ñ‚Ì‚RŠpŒ`ƒ|ƒŠƒSƒ“•`‰æ‚ª•K—vA‚æ‚Á‚ÄQÆ‚³‚ê‚é’¸“_î•ñ‚Í‚P‚Qx‚R‚R‚U‰ñA
-	// ‚RŠpŒ`ƒ|ƒŠƒSƒ“‚ªQÆ‚·‚é’¸“_î•ñ‚ÌƒCƒ“ƒfƒbƒNƒXi’¸“_”Ô†j‚ğ•`‰æ‡‚É”z—ñiindicesj‚ÉŠi”[‚·‚éB
-	// Œv‰ñ‚è‚ª•\–Ê‚É‚È‚é‚æ‚¤‚ÉŠi”[‚·‚é‚±‚ÆB
+	// æ­£ç«‹æ–¹ä½“ã¯ï¼–é¢æŒã¡ã€ï¼‘ã¤ã®é¢ã¯ï¼’ã¤ã®ï¼“è§’å½¢ãƒãƒªã‚´ãƒ³ã§æ§‹æˆã•ã‚Œã‚‹ã®ã§ã€ï¼“è§’å½¢ãƒãƒªã‚´ãƒ³ã®ç·æ•°ã¯ï¼–xï¼’ï¼ï¼‘ï¼’å€‹ã€
+	// æ­£ç«‹æ–¹ä½“ã‚’æç”»ã™ã‚‹ãŸã‚ã«ï¼‘ï¼’å›ã®ï¼“è§’å½¢ãƒãƒªã‚´ãƒ³æç”»ãŒå¿…è¦ã€ã‚ˆã£ã¦å‚ç…§ã•ã‚Œã‚‹é ‚ç‚¹æƒ…å ±ã¯ï¼‘ï¼’xï¼“ï¼ï¼“ï¼–å›ã€
+	// ï¼“è§’å½¢ãƒãƒªã‚´ãƒ³ãŒå‚ç…§ã™ã‚‹é ‚ç‚¹æƒ…å ±ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆé ‚ç‚¹ç•ªå·ï¼‰ã‚’æç”»é †ã«é…åˆ—ï¼ˆindicesï¼‰ã«æ ¼ç´ã™ã‚‹ã€‚
+	// æ™‚è¨ˆå›ã‚ŠãŒè¡¨é¢ã«ãªã‚‹ã‚ˆã†ã«æ ¼ç´ã™ã‚‹ã“ã¨ã€‚
 
 	//Front
 	indices[0] = 2;
@@ -150,7 +150,7 @@ void GeometricPrimitive::CreateCube(ID3D11Device* device)
 	indices[34] = 21;
 	indices[35] = 23;
 
-	//ƒoƒbƒtƒ@¶¬
+	//ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	CreateComBuffers(device, vertices, 24, indices, 36);
 }
 
@@ -160,7 +160,7 @@ void GeometricPrimitive::CreateCylinder(ID3D11Device* device, int segmentCount)
 	std::vector<uint32_t> indices/*(segmentCount * 12)*/;
 
 	float angleStep = DirectX::XM_2PI / segmentCount;
-	//ã‰º–Ê
+	//ä¸Šä¸‹é¢
 	for (int t = 0; t < 2; t++) {
 		DirectX::XMFLOAT3 normal{ 0,1,0 };
 		normal.y = (t == 0) ? 1.f : -1.f;
@@ -187,7 +187,7 @@ void GeometricPrimitive::CreateCylinder(ID3D11Device* device, int segmentCount)
 			}
 		}
 	}
-	//‘¤–Ê
+	//å´é¢
 	int beginIndex = 2 * segmentCount + 4;
 	for (int i = 0; i < segmentCount * 2; i += 2) {
 		float theta0 = i * angleStep;
@@ -217,11 +217,11 @@ void GeometricPrimitive::CreateSphere(ID3D11Device* device, int stackCount, int 
 {
 	std::vector<Vertex> vertices;
 	for (int stack = 0; stack <= stackCount; ++stack) {
-		float phi = DirectX::XM_PI * stack / stackCount;//ˆÜ“x
+		float phi = DirectX::XM_PI * stack / stackCount;//ç·¯åº¦
 
 		for (int slice = 0; slice <= sliceCount; ++slice) {
-			float theta = DirectX::XM_2PI * slice / sliceCount;//Œo“x
-			//‹ÉÀ•W‚©‚ç’¼ŒğÀ•W‚É•ÏŠ·
+			float theta = DirectX::XM_2PI * slice / sliceCount;//çµŒåº¦
+			//æ¥µåº§æ¨™ã‹ã‚‰ç›´äº¤åº§æ¨™ã«å¤‰æ›
 			DirectX::XMFLOAT3 position = {
 				sinf(phi) * cosf(theta),//x
 				cosf(phi),				//y

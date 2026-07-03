@@ -13,7 +13,7 @@ Image::Image()
 	ID3D11Device* device = Graphics::GetDevice();
 
 	HRESULT hr{ S_OK };
-	//’¸“_î•ñ‚ÌƒZƒbƒg
+	//é ‚ç‚¹æƒ…å ±ã®ã‚»ãƒƒãƒˆ
 	Vertex vertices[]
 	{
 		{ { -1,  1, 0, 1 }, { 1, 1, 1, 1 } },
@@ -21,7 +21,7 @@ Image::Image()
 		{ { -1, -1, 0, 1 }, { 0, 1, 0, 1 } },
 		{ {  1, -1, 0, 1 }, { 0, 0, 1, 1 } },
 	};
-	//’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.ByteWidth = sizeof(vertices);
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -36,7 +36,7 @@ Image::Image()
 	hr = device->CreateBuffer(&bufferDesc, &subresourceData, vertexBuffer.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-	//‰æ‘œƒtƒ@ƒCƒ‹‚Ìƒ[ƒh‚ÆƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ­ãƒ¼ãƒ‰ã¨ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	/*hr = SetSource(device, filePath, shaderResourceView.ReleaseAndGetAddressOf(), &texture2dDesc,false);
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));*/
 
@@ -59,7 +59,7 @@ Image::Image()
 	material.SetShader(device, vs);
 	material.SetShader(device, ps);
 
-	//ƒ}ƒXƒN—pƒsƒNƒZƒ‹ƒVƒF[ƒ_[
+	//ãƒã‚¹ã‚¯ç”¨ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 	std::shared_ptr<Shader> maskPS = ResourceManager::GetOrLoadShader<PixelShader>("SpriteMaskPS");
 	maskMaterial.SetShader(device, vs);
 	maskMaterial.SetShader(device, maskPS);
@@ -79,11 +79,11 @@ void Image::SetSource(const wchar_t* source, bool reload)
 	}
 	material.SetTexture("color_map", texture);
 
-	// ƒeƒNƒXƒ`ƒƒ•ÏXƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚½‚ç‰Šú‰»
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£å¤‰æ›´ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ãŸã‚‰åˆæœŸåŒ–
 	if (material.IsTextureChanged())
 	{
 		Initialize();
-		// ƒtƒ‰ƒO‚ğƒNƒŠƒA
+		// ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
 		material.ClearTextureChangedFlag();
 	}
 }
@@ -129,7 +129,7 @@ void Image::Draw(RenderContext* rtx)
 		}
 	}*/
 
-	//ˆø”‚©‚ç‹éŒ`‚ÌŠe’¸“_‚ÌˆÊ’uiƒXƒNƒŠ[ƒ“À•WŒnj‚ğŒvZ‚·‚é
+	//å¼•æ•°ã‹ã‚‰çŸ©å½¢ã®å„é ‚ç‚¹ã®ä½ç½®ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ï¼‰ã‚’è¨ˆç®—ã™ã‚‹
 	// left-top
 	float x0{ rectTransform->TopLeft().x };
 	float y0{ rectTransform->TopLeft().y };
@@ -143,7 +143,7 @@ void Image::Draw(RenderContext* rtx)
 	float x3{ rectTransform->BottomRight().x };
 	float y3{ rectTransform->BottomRight().y };
 
-	//Ø‚èæ‚èˆÊ’u
+	//åˆ‡ã‚Šå–ã‚Šä½ç½®
 	float u = this->uv.x * sw;
 	float v = this->uv.y * sh;
 	//left-top
@@ -159,7 +159,7 @@ void Image::Draw(RenderContext* rtx)
 	float tx3{ sx + sw + u };
 	float ty3{ sy + sh + v };
 
-	//ƒXƒNƒŠ[ƒ“À•WŒn‚©‚çNDC‚Ö‚ÌÀ•W•ÏŠ·‚ğs‚¤
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã‹ã‚‰NDCã¸ã®åº§æ¨™å¤‰æ›ã‚’è¡Œã†
 	x0 = 2.0f * x0 / refW - 1.0f;
 	y0 = 1.0f - 2.0f * y0 / refH;
 	x1 = 2.0f * x1 / refW - 1.0f;
@@ -169,7 +169,7 @@ void Image::Draw(RenderContext* rtx)
 	x3 = 2.0f * x3 / refW - 1.0f;
 	y3 = 1.0f - 2.0f * y3 / refH;
 
-	//ŒvZŒ‹‰Ê‚Å’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚ğXV‚·‚é
+	//è¨ˆç®—çµæœã§é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ›´æ–°ã™ã‚‹
 	HRESULT hr{ S_OK };
 	D3D11_MAPPED_SUBRESOURCE mapped_subresource{};
 	hr = immediateContext->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_subresource);
@@ -196,26 +196,26 @@ void Image::Draw(RenderContext* rtx)
 	}
 	immediateContext->Unmap(vertexBuffer.Get(), 0);
 
-	//’¸“_ƒoƒbƒtƒ@‚ÌƒoƒCƒ“ƒh
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒã‚¤ãƒ³ãƒ‰
 	UINT stride{ sizeof(Vertex) };
 	UINT offset{ 0 };
 	immediateContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 
-	//ƒvƒŠƒ~ƒeƒBƒuƒ^ƒCƒv‚¨‚æ‚Ñƒf[ƒ^‚Ì‡˜‚ÉŠÖ‚·‚éî•ñ‚ÌƒoƒCƒ“ƒh
+	//ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã‚¿ã‚¤ãƒ—ãŠã‚ˆã³ãƒ‡ãƒ¼ã‚¿ã®é †åºã«é–¢ã™ã‚‹æƒ…å ±ã®ãƒã‚¤ãƒ³ãƒ‰
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	//“ü—ÍƒŒƒCƒAƒEƒgƒIƒuƒWƒFƒNƒg‚ÌƒoƒCƒ“ƒh
+	//å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ãƒ‰
 	//immediateContext->IASetInputLayout(inputLayout.Get());
 
-	//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚ÌƒoƒCƒ“ƒh
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ãƒ‰
 	//immediateContext->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
 
-	//ƒVƒF[ƒ_[‚ÌƒoƒCƒ“ƒh
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ãƒã‚¤ãƒ³ãƒ‰
 	//immediateContext->VSSetShader(vertexShader.Get(), nullptr, 0);
 	//immediateContext->PSSetShader(pixelShader.Get(), nullptr, 0);
 	material.Apply(rtx);
 
-	//ƒ}ƒXƒN
+	//ãƒã‚¹ã‚¯
 	if (enableMask)
 	{
 		/*immediateContext->PSSetShader(maskPixelShader.Get(), nullptr, 0);
@@ -223,7 +223,7 @@ void Image::Draw(RenderContext* rtx)
 		maskMaterial.Apply(rtx);
 	}
 
-	//ƒvƒŠƒ~ƒeƒBƒu‚Ì•`‰æ
+	//ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®æç”»
 	immediateContext->Draw(4, 0);
 }
 
@@ -245,11 +245,11 @@ void Image::DrawProperty(const PropertyDrawContext& context)
 	// Material
 	material.DrawProperty();
 
-	//ƒ}ƒeƒŠƒAƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ª•ÏX‚³‚ê‚Ä‚¢‚½‚ç‰Šú‰»‚µ’¼‚·
+	//ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒå¤‰æ›´ã•ã‚Œã¦ã„ãŸã‚‰åˆæœŸåŒ–ã—ç›´ã™
 	if (material.IsTextureChanged())
 	{
 		Initialize();
-		// ƒtƒ‰ƒO‚ğƒNƒŠƒA
+		// ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
 		material.ClearTextureChangedFlag();
 	}
 
@@ -273,9 +273,9 @@ json Image::Serialize() const
 	j["enableMask"] = enableMask;
 
 #if 1
-	// ƒ}ƒeƒŠƒAƒ‹
+	// ãƒãƒ†ãƒªã‚¢ãƒ«
 	j["material"] = material.Serialize();
-	// ƒ}ƒXƒNƒ}ƒeƒŠƒAƒ‹
+	// ãƒã‚¹ã‚¯ãƒãƒ†ãƒªã‚¢ãƒ«
 	j["maskMaterial"] = maskMaterial.Serialize();
 #endif // 0
 
@@ -294,11 +294,11 @@ void Image::Deserialize(const json& j)
 	}
 	enableMask = j.value("enableMask", false);
 #if 1
-	// ƒ}ƒeƒŠƒAƒ‹
+	// ãƒãƒ†ãƒªã‚¢ãƒ«
 	if (j.contains("material")) {
 		material.Deserialize(j["material"]);
 	}
-	// ƒ}ƒXƒNƒ}ƒeƒŠƒAƒ‹
+	// ãƒã‚¹ã‚¯ãƒãƒ†ãƒªã‚¢ãƒ«
 	if (j.contains("maskMaterial")) {
 		maskMaterial.Deserialize(j["maskMaterial"]);
 	}

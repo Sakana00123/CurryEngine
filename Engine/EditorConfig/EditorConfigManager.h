@@ -6,9 +6,9 @@ struct SceneViewConfig;
 class EditorConfigManager
 {
 public:
-	// EditorConfigManager ‚Ì‰Šú‰»
+	// EditorConfigManager ã®åˆæœŸåŒ–
 	static void Initialize();
-	// EditorConfigManager ‚ÌƒVƒƒƒbƒgƒ_ƒEƒ“
+	// EditorConfigManager ã®ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³
 	static void Shutdown();
 
 	/// ----- EditorConfigManager API -----

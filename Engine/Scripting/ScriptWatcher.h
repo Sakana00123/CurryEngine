@@ -15,24 +15,24 @@ public:
 	~ScriptWatcher() { Stop(); }
 	
 	/**
-	 * @brief �X�N���v�g�̕ύX���Ď����A�ύX���������ꍇ�Ƀv���W�F�N�g���r���h���ă����[�h����@�\���J�n���܂��B
-	 * @param watchDir �Ď�����f�B���N�g���̃p�X�B
-	 * @param csprojPath �r���h�Ɏg�p���� .csproj �t�@�C���̃p�X�B
-	 * @param onReloaded �X�N���v�g�������[�h���ꂽ�Ƃ��ɌĂяo�����R�[���o�b�N�֐��B
+	 * @brief スクリプトの変更を監視し、変更があった場合にプロジェクトをビルドしてリロードする機能を開始します。
+	 * @param watchDir 監視するディレクトリのパス。
+	 * @param csprojPath ビルドに使用する .csproj ファイルのパス。
+	 * @param onReloaded スクリプトがリロードされたときに呼び出されるコールバック関数。
 	 */
 	bool Start(
 		const std::string& watchDir,
 		const std::string& csprojPath,
 		ReloadCallback onReloaded);
 
-	/** @brief �X�N���v�g�̊Ď��ƃ����[�h�@�\���~���܂��B*/
+	/** @brief スクリプトの監視とリロード機能を停止します。*/
 	void Stop();
 
-	/** @brief �v���W�F�N�g�̃r���h��v�����܂��B*/
+	/** @brief プロジェクトのビルドを要求します。*/
 	void RequestBuild() { m_pendingBuild = true; m_buildCv.notify_one(); }
 
 private:
-	// �Ď����[�v�ƃr���h����
+	// 監視ループとビルド処理
 	void WatchLoop();
 	void BuildLoop();
 	bool BuildProject();

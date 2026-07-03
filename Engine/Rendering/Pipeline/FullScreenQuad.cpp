@@ -37,18 +37,18 @@ void FullScreenQuad::Render(RenderContext* rtx, Material* material)
 
 	immediateContext->PSSetShader(embedded_pixel_shader.Get(), nullptr, 0);
 
-	// ƒ}ƒeƒŠƒAƒ‹‚Ì“K—p(ƒVƒF[ƒ_[‚ÌÝ’è‚È‚Ç)
-	Shader::SetNullShader(immediateContext); // ‚Ü‚¸‚ÍƒVƒF[ƒ_[‚ð‚·‚×‚ÄƒAƒ“ƒoƒCƒ“ƒh‚µ‚Ä‚©‚çƒ}ƒeƒŠƒAƒ‹‚ð“K—p‚·‚é
+	// ãƒžãƒ†ãƒªã‚¢ãƒ«ã®é©ç”¨(ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®è¨­å®šãªã©)
+	Shader::SetNullShader(immediateContext); // ã¾ãšã¯ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã™ã¹ã¦ã‚¢ãƒ³ãƒã‚¤ãƒ³ãƒ‰ã—ã¦ã‹ã‚‰ãƒžãƒ†ãƒªã‚¢ãƒ«ã‚’é©ç”¨ã™ã‚‹
 	material->Apply(rtx);
 
-	// ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒNƒAƒbƒh‚Ì•`‰æ‚É•K—v‚ÈÝ’è‚ðã‘‚«‚·‚é
+	// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¯ã‚¢ãƒƒãƒ‰ã®æç”»ã«å¿…è¦ãªè¨­å®šã‚’ä¸Šæ›¸ãã™ã‚‹
 	immediateContext->IASetInputLayout(nullptr);
 	immediateContext->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	// ’¸“_ƒVƒF[ƒ_[‚Íƒtƒ‹ƒXƒNƒŠ[ƒ“ƒNƒAƒbƒh—p‚Ì‚à‚Ì‚ðŽg—p‚·‚é
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¯ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¯ã‚¢ãƒƒãƒ‰ç”¨ã®ã‚‚ã®ã‚’ä½¿ç”¨ã™ã‚‹
 	immediateContext->VSSetShader(embedded_vertex_shader.Get(), nullptr, 0);
 
-	// ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒNƒAƒbƒh‚Ì•`‰æ
+	// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¯ã‚¢ãƒƒãƒ‰ã®æç”»
 	immediateContext->Draw(4, 0);
 }

@@ -292,7 +292,7 @@ void SkinnedMesh::FetchMeshes(FbxScene* fbxScene, std::vector<Mesh>& meshes)
 					}
 				}
 
-				if (fbxMesh->GetElementNormalCount() > 0)//–@üƒxƒNƒgƒ‹æ“¾
+				if (fbxMesh->GetElementNormalCount() > 0)//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«å–å¾—
 				{
 					FbxVector4 normal;
 					fbxMesh->GetPolygonVertexNormal(polygonIndex, positionInPolygon, normal);
@@ -300,7 +300,7 @@ void SkinnedMesh::FetchMeshes(FbxScene* fbxScene, std::vector<Mesh>& meshes)
 					vertex.normal.y = static_cast<float>(normal[1]);
 					vertex.normal.z = static_cast<float>(normal[2]);
 				}
-				if (fbxMesh->GetElementUVCount() > 0)//ƒeƒNƒXƒ`ƒƒÀ•Wæ“¾
+				if (fbxMesh->GetElementUVCount() > 0)//ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™å–å¾—
 				{
 					FbxVector2 uv;
 					bool unmappedUV;
@@ -309,7 +309,7 @@ void SkinnedMesh::FetchMeshes(FbxScene* fbxScene, std::vector<Mesh>& meshes)
 					vertex.texcoord.x = static_cast<float>(uv[0]);
 					vertex.texcoord.y = 1.0f - static_cast<float>(uv[1]);
 				}
-				if (fbxMesh->GenerateTangentsData(0, false))//–@üƒxƒNƒgƒ‹’læ“¾
+				if (fbxMesh->GenerateTangentsData(0, false))//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«å€¤å–å¾—
 				{
 					const FbxGeometryElementTangent* tangent = fbxMesh->GetElementTangent(0);
 					vertex.tangent.x = static_cast<float>(tangent->GetDirectArray().GetAt(vertexIndex)[0]);
@@ -523,7 +523,7 @@ void SkinnedMesh::CreateComObjects(ID3D11Device* device, const char* fbxFilename
 		input_layout.ReleaseAndGetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
 	CreatePixelShaderFromCSO(device, "./Data/Shaders/skinned_mesh_ps.cso", pixel_shader.ReleaseAndGetAddressOf());
 
-	//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[ƒIƒuƒWƒFƒNƒg¶¬
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	{
 		for (std::unordered_map<uint64_t, Material>::iterator iterator = materials.begin();
 			iterator != materials.end(); ++iterator)
@@ -625,7 +625,7 @@ void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context,
 			immediate_context->UpdateSubresource(constant_buffer.Get(), 0, 0, &data, 0, 0);
 			immediate_context->VSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
 
-			//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğƒoƒCƒ“ƒh
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ãƒã‚¤ãƒ³ãƒ‰
 			immediate_context->PSSetShaderResources(0, 1, material.shader_resource_views[0].GetAddressOf());
 			immediate_context->PSSetShaderResources(1, 1, material.shader_resource_views[1].GetAddressOf());
 

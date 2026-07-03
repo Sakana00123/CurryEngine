@@ -5,13 +5,13 @@
 
 /**
  * @file
- * @brief ƒC[ƒWƒ“ƒO‚ÌƒV[ƒPƒ“ƒX‚ğŠÇ—‚µA’l‚ğŠÔ“I‚É•âŠÔ‚·‚éƒnƒ“ƒhƒ‰B
- * @details ’¼—ñ‚ÌƒC[ƒWƒ“ƒO/‘Ò‹@‚ğ‘g‚İ—§‚ÄA`Update` ‚É‚æ‚èis‚³‚¹‚Ü‚·B
- *          i’»’l‚â•âŠÔÏ‚İi’»AŠ®—¹ƒR[ƒ‹ƒoƒbƒN‚ÌŠÇ—‚às‚¢‚Ü‚·B
+ * @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã‚’ç®¡ç†ã—ã€å€¤ã‚’æ™‚é–“çš„ã«è£œé–“ã™ã‚‹ãƒãƒ³ãƒ‰ãƒ©ã€‚
+ * @details ç›´åˆ—ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°/å¾…æ©Ÿã‚’çµ„ã¿ç«‹ã¦ã€`Update` ã«ã‚ˆã‚Šé€²è¡Œã•ã›ã¾ã™ã€‚
+ *          é€²æ—å€¤ã‚„è£œé–“æ¸ˆã¿é€²æ—ã€å®Œäº†æ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®ç®¡ç†ã‚‚è¡Œã„ã¾ã™ã€‚
  */
 
 /**
- * @brief ƒC[ƒWƒ“ƒOí•ÊB
+ * @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ç¨®åˆ¥ã€‚
  */
 enum class EaseType
 {
@@ -46,69 +46,69 @@ enum class EaseType
 };
 
 /**
- * @brief ƒC[ƒWƒ“ƒO‚ğ§Œä‚·‚éƒnƒ“ƒhƒ‰ƒNƒ‰ƒXB
+ * @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚’åˆ¶å¾¡ã™ã‚‹ãƒãƒ³ãƒ‰ãƒ©ã‚¯ãƒ©ã‚¹ã€‚
  */
 class EasingHandler
 {
 public:
 	/**
-	 * @brief 1 ƒXƒeƒbƒv•ª‚ÌƒC[ƒWƒ“ƒO—v‘fB
-	 * @details `easeData` ‚É‚âŠJn/I—¹’l“™‚ğ•Û‚µA`function` ‚Ü‚½‚Í
-	 *          `backFunction` ‚ğg‚Á‚Ä•âŠÔ’l‚ğZo‚µ‚Ü‚·B
+	 * @brief 1 ã‚¹ãƒ†ãƒƒãƒ—åˆ†ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°è¦ç´ ã€‚
+	 * @details `easeData` ã«æ™‚åˆ»ã‚„é–‹å§‹/çµ‚äº†å€¤ç­‰ã‚’ä¿æŒã—ã€`function` ã¾ãŸã¯
+	 *          `backFunction` ã‚’ä½¿ã£ã¦è£œé–“å€¤ã‚’ç®—å‡ºã—ã¾ã™ã€‚
 	 */
 	struct EaseItem
 	{
-		EaseData easeData{}; //!< EŠJn/I—¹’lEƒoƒbƒN’l‚È‚Ç
+		EaseData easeData{}; //!< æ™‚åˆ»ãƒ»é–‹å§‹/çµ‚äº†å€¤ãƒ»ãƒãƒƒã‚¯å€¤ãªã©
 		std::function<float(float, float, float, float)> function; //!< e(t, b, c, d)
 		std::function<float(float, float, float, float, float)> backFunction; //!< e(t, b, c, d, back)
 	};
 
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	EasingHandler() {}
-	/** @brief ƒfƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	~EasingHandler() {}
 
 	/**
-	 * @brief ƒC[ƒWƒ“ƒO—v‘f‚ğ’Ç‰Á‚µ‚Ü‚·B
-	 * @param type ƒC[ƒWƒ“ƒOƒ^ƒCƒvB
-	 * @param start ŠJn’lB
-	 * @param end I—¹’lB
-	 * @param duration •âŠÔŠÔi•bjB
-	 * @param back ƒoƒbƒNŒn‚Å—p‚¢‚éŒW”i–¢g—pƒ^ƒCƒv‚Å‚Í–³‹jB
+	 * @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°è¦ç´ ã‚’è¿½åŠ ã—ã¾ã™ã€‚
+	 * @param type ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—ã€‚
+	 * @param start é–‹å§‹å€¤ã€‚
+	 * @param end çµ‚äº†å€¤ã€‚
+	 * @param duration è£œé–“æ™‚é–“ï¼ˆç§’ï¼‰ã€‚
+	 * @param back ãƒãƒƒã‚¯ç³»ã§ç”¨ã„ã‚‹ä¿‚æ•°ï¼ˆæœªä½¿ç”¨ã‚¿ã‚¤ãƒ—ã§ã¯ç„¡è¦–ï¼‰ã€‚
 	 */
 	void AddEasing(EaseType type, float start, float end, float duration = 1.0f, float back = 1.70158f);
-	/** @brief Šù»‚ÌƒC[ƒWƒ“ƒO—v‘f‚ğ’Ç‰Á‚µ‚Ü‚·B*/
+	/** @brief æ—¢è£½ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°è¦ç´ ã‚’è¿½åŠ ã—ã¾ã™ã€‚*/
 	void AddEasing(const EaseItem& item);
 
 	/**
-	 * @brief ‘Ò‹@iƒfƒBƒŒƒCj‚ğ’Ç‰Á‚µ‚Ü‚·B
-	 * @param waitTime ‘Ò‹@ŠÔi•bjB
+	 * @brief å¾…æ©Ÿï¼ˆãƒ‡ã‚£ãƒ¬ã‚¤ï¼‰ã‚’è¿½åŠ ã—ã¾ã™ã€‚
+	 * @param waitTime å¾…æ©Ÿæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void AddWait(float waitTime);
 
-	/** @brief ‚·‚×‚Ä‚Ì—v‘f‚ğƒNƒŠƒA‚µ‚Ü‚·B*/
+	/** @brief ã™ã¹ã¦ã®è¦ç´ ã‚’ã‚¯ãƒªã‚¢ã—ã¾ã™ã€‚*/
 	void Clear();
 
 	/**
-	 * @brief ’l‚ğXVi•âŠÔj‚µ‚Ü‚·B
-	 * @param value ƒC[ƒWƒ“ƒO‘ÎÛ‚Ì’liQÆjB
-	 * @param deltaTime Œo‰ßŠÔi•bjB
+	 * @brief å€¤ã‚’æ›´æ–°ï¼ˆè£œé–“ï¼‰ã—ã¾ã™ã€‚
+	 * @param value ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°å¯¾è±¡ã®å€¤ï¼ˆå‚ç…§ï¼‰ã€‚
+	 * @param deltaTime çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	void Update(float& value, float deltaTime);
 
-	/** @brief Œ»İ‚Ìi’»i0`1jB*/
+	/** @brief ç¾åœ¨ã®é€²æ—ï¼ˆ0ã€œ1ï¼‰ã€‚*/
 	float GetProgress() const { return progress; }
 
-	/** @brief ƒC[ƒWƒ“ƒOÏ‚İ‚Ìi’»i0`1jB*/
+	/** @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°æ¸ˆã¿ã®é€²æ—ï¼ˆ0ã€œ1ï¼‰ã€‚*/
 	float GetEasedProgress() const { return easedProgress; }
 
 	/**
-	 * @brief üŒ`•âŠÔ‚ğs‚¢‚Ü‚·B
-	 * @tparam T ”CˆÓŒ^i‰‰Zq*‚Æ+‚ª•K—vjB
-	 * @param a ŠJn’lB
-	 * @param b I—¹’lB
-	 * @param t i’»i0`1jB
-	 * @return •âŠÔ’lB
+	 * @brief ç·šå½¢è£œé–“ã‚’è¡Œã„ã¾ã™ã€‚
+	 * @tparam T ä»»æ„å‹ï¼ˆæ¼”ç®—å­*ã¨+ãŒå¿…è¦ï¼‰ã€‚
+	 * @param a é–‹å§‹å€¤ã€‚
+	 * @param b çµ‚äº†å€¤ã€‚
+	 * @param t é€²æ—ï¼ˆ0ã€œ1ï¼‰ã€‚
+	 * @return è£œé–“å€¤ã€‚
 	 */
 	template <class T>
 	static T Lerp(const T& a, const T& b, float t)
@@ -116,50 +116,50 @@ public:
 		return a * (1.0f - t) + b * t;
 	}
 	/**
-	 * @brief ”CˆÓŒ^‚Ì•âŠÔ’l‚ğ•Ô‚µ‚Ü‚·B
-	 * @tparam T ”CˆÓŒ^B
-	 * @param start ŠJn’lB
-	 * @param end I—¹’lB
-	 * @return `easedProgress` ‚ÉŠî‚Ã‚­•âŠÔŒ‹‰ÊB
+	 * @brief ä»»æ„å‹ã®è£œé–“å€¤ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @tparam T ä»»æ„å‹ã€‚
+	 * @param start é–‹å§‹å€¤ã€‚
+	 * @param end çµ‚äº†å€¤ã€‚
+	 * @return `easedProgress` ã«åŸºã¥ãè£œé–“çµæœã€‚
 	 */
 	template<typename T>
 	T GetValue(const T& start, const T& end) const {
 		return Lerp(start, end, easedProgress);
 	}
 
-	/** @brief ‚·‚×‚Ä‚Ìˆ—‚ªŠ®—¹‚µ‚½‚©B*/
+	/** @brief ã™ã¹ã¦ã®å‡¦ç†ãŒå®Œäº†ã—ãŸã‹ã€‚*/
 	bool IsCompleted() const { return isCompleted; }
 
 	/**
-	 * @brief Š®—¹‚ÉÀs‚·‚éŠÖ”‚ğİ’è‚µ‚Ü‚·B
-	 * @param function ˆø”‚È‚µƒR[ƒ‹ƒoƒbƒNŠÖ”B
+	 * @brief å®Œäº†æ™‚ã«å®Ÿè¡Œã™ã‚‹é–¢æ•°ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param function å¼•æ•°ãªã—ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã€‚
 	 */
 	void SetCompletedFunction(std::function<void()> function) { completeFunction = function; }
 
-	/** @brief Œ»İ‚ÌƒV[ƒPƒ“ƒX’·‚ğ•Ô‚µ‚Ü‚·B*/
+	/** @brief ç¾åœ¨ã®ã‚·ãƒ¼ã‚±ãƒ³ã‚¹é•·ã‚’è¿”ã—ã¾ã™ã€‚*/
 	size_t GetSequenceCount() const { return sequence.size(); }
 
 	/**
-	 * @brief —ñ‹“Œ^‚ğƒC[ƒWƒ“ƒOŠÖ”‚É•ÏŠ·‚µ‚Ü‚·B
-	 * @param type ƒC[ƒWƒ“ƒOƒ^ƒCƒvB
-	 * @param func back ”ñ‘Î‰ŠÖ”‚Ìo—ÍæB
-	 * @param backFunc back ‘Î‰ŠÖ”‚Ìo—ÍæB
+	 * @brief åˆ—æŒ™å‹ã‚’ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°é–¢æ•°ã«å¤‰æ›ã—ã¾ã™ã€‚
+	 * @param type ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚¿ã‚¤ãƒ—ã€‚
+	 * @param func back éå¯¾å¿œé–¢æ•°ã®å‡ºåŠ›å…ˆã€‚
+	 * @param backFunc back å¯¾å¿œé–¢æ•°ã®å‡ºåŠ›å…ˆã€‚
 	 */
 	static void ToEasingFunction(EaseType type, std::function<float(float, float, float, float)>& func, std::function<float(float, float, float, float, float)>& backFunc);
 
 private:
-	/** @brief Š®—¹ƒR[ƒ‹ƒoƒbƒN‚ª‚ ‚ê‚ÎÀs‚µ‚Ü‚·B*/
+	/** @brief å®Œäº†æ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãŒã‚ã‚Œã°å®Ÿè¡Œã—ã¾ã™ã€‚*/
 	void ExecuteCompletedFunction() { if (completeFunction != nullptr) completeFunction(); }
 
 private:
-	/** @brief ƒC[ƒWƒ“ƒO—v‘f‚ÌƒV[ƒPƒ“ƒXB*/
+	/** @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°è¦ç´ ã®ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã€‚*/
 	std::vector<EaseItem> sequence;
-	/** @brief Š®—¹ƒtƒ‰ƒOB*/
+	/** @brief å®Œäº†ãƒ•ãƒ©ã‚°ã€‚*/
 	bool isCompleted = false;
-	/** @brief Œ»İ‚Ìi’»i0`1jB*/
+	/** @brief ç¾åœ¨ã®é€²æ—ï¼ˆ0ã€œ1ï¼‰ã€‚*/
 	float progress = 0.0f;
-	/** @brief ƒC[ƒWƒ“ƒOŒã‚Ìi’»i0`1jB*/
+	/** @brief ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°å¾Œã®é€²æ—ï¼ˆ0ã€œ1ï¼‰ã€‚*/
 	float easedProgress = 0.0f;
-	/** @brief Š®—¹ƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief å®Œäº†æ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	std::function<void()> completeFunction;
 };

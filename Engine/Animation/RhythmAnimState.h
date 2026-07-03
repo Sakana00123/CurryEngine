@@ -1,12 +1,12 @@
 #pragma once
 #include "RhythmAnimationClip.h"
 
-// ƒŠƒYƒ€ƒAƒjƒ[ƒVƒ‡ƒ“ƒXƒe[ƒg‚Ì’è‹`
+// ãƒªã‚ºãƒ ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®å®šç¾©
 struct RhythmAnimState
 {
-	std::string name; // ƒXƒe[ƒg–¼
-	RhythmAnimationClip clip; // Ä¶‚·‚éƒNƒŠƒbƒv
+	std::string name; // ã‚¹ãƒ†ãƒ¼ãƒˆå
+	RhythmAnimationClip clip; // å†ç”Ÿã™ã‚‹ã‚¯ãƒªãƒƒãƒ—
 
-	bool loop = true; // ƒ‹[ƒvÄ¶‚·‚é‚©
-	bool syncToBeat = true; // ƒr[ƒg‚É“¯Šú‚·‚é‚©
+	bool loop = true; // ãƒ«ãƒ¼ãƒ—å†ç”Ÿã™ã‚‹ã‹
+	bool syncToBeat = true; // ãƒ“ãƒ¼ãƒˆã«åŒæœŸã™ã‚‹ã‹
 };

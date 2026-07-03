@@ -32,58 +32,58 @@ public:
     };
     std::vector<Skin> skins;
 
-    // GLTF‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒf[ƒ^‚ğ•\‚·\‘¢‘Ì
+    // GLTFã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã‚’è¡¨ã™æ§‹é€ ä½“
     struct Animation
     {
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì–¼‘Oi”CˆÓj
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åå‰ï¼ˆä»»æ„ï¼‰
         std::string name;
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‘S‘Ì‚Ì’·‚³iÅ‘å‚Ìƒ^ƒCƒ€ƒ‰ƒCƒ“’lj
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å…¨ä½“ã®é•·ã•ï¼ˆæœ€å¤§ã®ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³å€¤ï¼‰
         float duration{ 0.0f };
 
-        // ƒ`ƒƒƒ“ƒlƒ‹Fƒm[ƒh‚Ì‚Ç‚ÌƒvƒƒpƒeƒB‚ÉA‚Ç‚ÌƒTƒ“ƒvƒ‰[‚ğ“K—p‚·‚é‚©‚ğ’è‹`
+        // ãƒãƒ£ãƒ³ãƒãƒ«ï¼šãƒãƒ¼ãƒ‰ã®ã©ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã«ã€ã©ã®ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’é©ç”¨ã™ã‚‹ã‹ã‚’å®šç¾©
         struct Channel
         {
-            // g—p‚·‚éƒTƒ“ƒvƒ‰[isamplers ‚ÌƒCƒ“ƒfƒbƒNƒXj
+            // ä½¿ç”¨ã™ã‚‹ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ï¼ˆsamplers ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰
             int sampler{ -1 };
 
-            // ‘ÎÛ‚Æ‚È‚éƒm[ƒhianimatedNodes‚ÌƒCƒ“ƒfƒbƒNƒXj
+            // å¯¾è±¡ã¨ãªã‚‹ãƒãƒ¼ãƒ‰ï¼ˆanimatedNodesã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰
             int targetNode{ -1 };
 
-            // ‘ÎÛ‚Æ‚È‚éƒvƒƒpƒeƒB–¼i—áF"translation", "rotation", "scale"j
+            // å¯¾è±¡ã¨ãªã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åï¼ˆä¾‹ï¼š"translation", "rotation", "scale"ï¼‰
             std::string targetPath;
         };
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÉŠÜ‚Ü‚ê‚éƒ`ƒƒƒ“ƒlƒ‹‚ÌƒŠƒXƒg
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã«å«ã¾ã‚Œã‚‹ãƒãƒ£ãƒ³ãƒãƒ«ã®ãƒªã‚¹ãƒˆ
         std::vector<Channel> channels;
 
-        // ƒTƒ“ƒvƒ‰[FŠÔ‚Æ’l‚Ì‘Î‰‚ğ’è‹`‚µA•âŠÔ•û–@‚à‚Â
+        // ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ï¼šæ™‚é–“ã¨å€¤ã®å¯¾å¿œã‚’å®šç¾©ã—ã€è£œé–“æ–¹æ³•ã‚‚æŒã¤
         struct Sampler
         {
-            // “ü—ÍiŠÔ”z—ñj‚Ì IDitimelines ‚ÌƒL[j
+            // å…¥åŠ›ï¼ˆæ™‚é–“é…åˆ—ï¼‰ã® IDï¼ˆtimelines ã®ã‚­ãƒ¼ï¼‰
             int input{ -1 };
 
-            // o—Íi’l”z—ñj‚Ì IDiscales/rotations/translations ‚ÌƒL[j
+            // å‡ºåŠ›ï¼ˆå€¤é…åˆ—ï¼‰ã® IDï¼ˆscales/rotations/translations ã®ã‚­ãƒ¼ï¼‰
             int output{ -1 };
 
-            // •âŠÔ•û–@i"LINEAR", "STEP", "CUBICSPLINE" ‚È‚Çj
+            // è£œé–“æ–¹æ³•ï¼ˆ"LINEAR", "STEP", "CUBICSPLINE" ãªã©ï¼‰
             std::string interpolation;
         };
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ég—p‚³‚ê‚éƒTƒ“ƒvƒ‰[‚ÌƒŠƒXƒg
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã«ä½¿ç”¨ã•ã‚Œã‚‹ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®ãƒªã‚¹ãƒˆ
         std::vector<Sampler> samplers;
 
-        // ŠeƒTƒ“ƒvƒ‰[‚Ì input ‚É‘Î‰‚·‚éŠÔ’liƒL[ƒtƒŒ[ƒ€‚ÌŠÔj
+        // å„ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã® input ã«å¯¾å¿œã™ã‚‹æ™‚é–“å€¤ï¼ˆã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ™‚é–“ï¼‰
         std::unordered_map<int /* sampler.input */, std::vector<float>> timelines;
 
-        // ŠeƒTƒ“ƒvƒ‰[‚Ì output ‚É‘Î‰‚·‚éƒXƒP[ƒ‹’l
+        // å„ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã® output ã«å¯¾å¿œã™ã‚‹ã‚¹ã‚±ãƒ¼ãƒ«å€¤
         std::unordered_map<int /* sampler.output */, std::vector<DirectX::XMFLOAT3>> scales;
 
-        // ŠeƒTƒ“ƒvƒ‰[‚Ì output ‚É‘Î‰‚·‚é‰ñ“]’liƒNƒH[ƒ^ƒjƒIƒ“j
+        // å„ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã® output ã«å¯¾å¿œã™ã‚‹å›è»¢å€¤ï¼ˆã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ï¼‰
         std::unordered_map<int /* sampler.output */, std::vector<DirectX::XMFLOAT4>> rotations;
 
-        // ŠeƒTƒ“ƒvƒ‰[‚Ì output ‚É‘Î‰‚·‚éˆÊ’ui•½sˆÚ“®j’l
+        // å„ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã® output ã«å¯¾å¿œã™ã‚‹ä½ç½®ï¼ˆå¹³è¡Œç§»å‹•ï¼‰å€¤
         std::unordered_map<int /* sampler.output */, std::vector<DirectX::XMFLOAT3>> translations;
     };
 
-    // GLTFƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ü‚ê‚½ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìˆê——
+    // GLTFãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã¾ã‚ŒãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ä¸€è¦§
     std::vector<Animation> animations;
 
 
@@ -156,8 +156,8 @@ public:
     struct Material
     {
         std::string name;
-        // TODO:01‚±‚±’Ç‰Á
-        Microsoft::WRL::ComPtr<ID3D11PixelShader> replacedPixelShader{ nullptr };//‚©ƒXƒ‰ƒ€ƒVƒF[ƒ_[
+        // TODO:01ã“ã“è¿½åŠ 
+        Microsoft::WRL::ComPtr<ID3D11PixelShader> replacedPixelShader{ nullptr };//ã‹ã‚¹ãƒ©ãƒ ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
         struct CBuffer
         {
             float emissiveFactor[3] = { 0,0,0 };
@@ -203,7 +203,7 @@ public:
     Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
 
 
-    //’è”ƒoƒbƒtƒ@----------------------------------------------------
+    //å®šæ•°ãƒãƒƒãƒ•ã‚¡----------------------------------------------------
 
     struct PrimitiveConstants
     {
@@ -226,7 +226,7 @@ public:
 
     //---------------------------------------------------------------------
 
-    //ƒAƒjƒ[ƒVƒ‡ƒ“’Ç‰Á“Ç‚İ‚İ
+    //ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¿½åŠ èª­ã¿è¾¼ã¿
     bool AppendAnimations(const std::string& filePath);
 
     void UpdateAnimation(float elapsedTime);
@@ -243,7 +243,7 @@ public:
     float animationBlendTime = 1.2f;
     int animationIndex = 0;
     
-    //ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶”ÍˆÍ‚ğİ’è
+    //ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿç¯„å›²ã‚’è¨­å®š
     void SetAnimationRange(float start, float end) 
     {
         rangeStart = start;
@@ -253,22 +253,22 @@ public:
     float rangeStart = 0.0f;
     float rangeEnd = 0.0f;
     bool useRange = false;
-    //w’è‚Ìƒm[ƒhæ“¾
+    //æŒ‡å®šã®ãƒãƒ¼ãƒ‰å–å¾—
     Node* FindNode(const std::string& name) {
-        //w’è‚Ìƒm[ƒh‚Ì–¼‘O‚ª‘¶İ‚·‚é‚©ŒŸõ
+        //æŒ‡å®šã®ãƒãƒ¼ãƒ‰ã®åå‰ãŒå­˜åœ¨ã™ã‚‹ã‹æ¤œç´¢
         for (Node& node : nodes) {
             if (node.name == name) {
                 return &node;
             }
         }
-        //w’è‚Ìƒm[ƒh‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚çnull‚ğ•Ô‚·
+        //æŒ‡å®šã®ãƒãƒ¼ãƒ‰ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã‚‰nullã‚’è¿”ã™
         return nullptr;
     }
 
-    //ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI’[‚É“’B‚µ‚½‚©iƒ‹[ƒv‚È‚µ‚Ì‚İj
+    //ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚ç«¯ã«åˆ°é”ã—ãŸã‹ï¼ˆãƒ«ãƒ¼ãƒ—ãªã—ã®ã¿ï¼‰
     bool IsAnimationCompleted() const { return isAnimationCompleted; }
 
-    bool loop = true;//ƒ‹[ƒvİ’è
+    bool loop = true;//ãƒ«ãƒ¼ãƒ—è¨­å®š
 
     void Render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world,
         const std::vector<Node>& animatedNodes = {}, ID3D11PixelShader* replacePixelShader = nullptr, ID3D11VertexShader* replaceVertexShader = nullptr);

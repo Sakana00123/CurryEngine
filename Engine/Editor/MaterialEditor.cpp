@@ -11,7 +11,7 @@ namespace CurryEngine::Editor
 {
 	MaterialEditor::MaterialEditor(const CurryEngine::Resources::AssetId& materialId)
 	{
-		// ƒAƒZƒbƒgƒf[ƒ^ƒx[ƒX‚©‚çƒ}ƒeƒŠƒAƒ‹‚ğƒ[ƒh
+		// ã‚¢ã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‹ã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
 		//m_material = CurryEngine::Resources::AssetDatabase::LoadAsset<CurryEngine::Resources::AssetMaterial>(materialId);
 		m_material = ResourceManager::GetOrLoad<CurryEngine::Resources::AssetMaterial>(CurryEngine::Resources::AssetDatabase::FindMutable(materialId)->path.string());
 		m_isOpen = true;
@@ -25,13 +25,13 @@ namespace CurryEngine::Editor
 
 		ImGui::Begin("Material Editor", &m_isOpen);
 
-		// ƒvƒŒƒrƒ…[
+		// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼
 		/*ImGui::Text("Material Preview");
 		{
 			ImGui::Image((ImTextureID)context->GetSharedResource("MaterialPreviewSRV"), ImVec2(256, 256));
 		}*/
 
-		// ƒ}ƒeƒŠƒAƒ‹‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»
 		m_material->GetMaterial().DrawProperty();
 
 		if (ImGui::Button("Save"))
@@ -46,7 +46,7 @@ namespace CurryEngine::Editor
 	void MaterialEditor::Save()
 	{
 		if (!m_material) return;
-		// ƒ}ƒeƒŠƒAƒ‹‚Ì•ÏX‚ğ•Û‘¶
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ã®å¤‰æ›´ã‚’ä¿å­˜
 		m_material->SaveToFile(m_material->GetPath());
 	}
 }

@@ -45,5 +45,5 @@ ENGINE_API bool Collider_GetIsTrigger(uint64_t ownerId, uint64_t componentId)
 			}
 		}
 	}
-	return false; // デフォルトは false を返す
+	return false; // 繝�繝輔か繝ｫ繝医�ｯ false 繧定ｿ斐☆
 }

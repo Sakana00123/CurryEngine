@@ -13,14 +13,14 @@ void HingeJoint::Start()
 
 void HingeJoint::LateUpdate(float deltaTime)
 {
-	// connectedBody ‚ª–³Œø‚É‚È‚Á‚½ê‡‚ÍƒWƒ‡ƒCƒ“ƒg‚ğ”jŠü‚µ‚Ü‚·B
+	// connectedBody ãŒç„¡åŠ¹ã«ãªã£ãŸå ´åˆã¯ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ç ´æ£„ã—ã¾ã™ã€‚
 	if (!connectedBody.IsValid())
 	{
 		DestroyJoint();
 	}
 	if (!pxJoint)
 	{
-		// connectedBody ‚ª—LŒø‚ÅA‚Ü‚¾ƒWƒ‡ƒCƒ“ƒg‚ªì¬‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍƒWƒ‡ƒCƒ“ƒg‚ğì¬‚µ‚Ü‚·B
+		// connectedBody ãŒæœ‰åŠ¹ã§ã€ã¾ã ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆãŒä½œæˆã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
 		CreateJoint();
 	}
 }
@@ -32,24 +32,24 @@ void HingeJoint::OnDestroy()
 
 void HingeJoint::CreateJoint()
 {
-	// ‚±‚±‚Å PhysX ‚Ì‰ñ“]ƒWƒ‡ƒCƒ“ƒg‚ğì¬‚·‚éˆ—‚ğÀ‘•‚µ‚Ü‚·B
-	// connectedBody ‚ª—LŒø‚Èê‡‚É‚Ì‚İƒWƒ‡ƒCƒ“ƒg‚ğì¬‚µ‚Ü‚·B
+	// ã“ã“ã§ PhysX ã®å›è»¢ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…ã—ã¾ã™ã€‚
+	// connectedBody ãŒæœ‰åŠ¹ãªå ´åˆã«ã®ã¿ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
 	if (connectedBody.IsValid())
 	{
-		// connectedBody ‚©‚ç Rigidbody ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚ÄAPhysX ‚ÌƒAƒNƒ^[‚ğæ“¾‚µ‚Ü‚·B
+		// connectedBody ã‹ã‚‰ Rigidbody ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¦ã€PhysX ã®ã‚¢ã‚¯ã‚¿ãƒ¼ã‚’å–å¾—ã—ã¾ã™ã€‚
 		if (const auto& connectedRigidbody = std::reinterpret_pointer_cast<Rigidbody>(ObjectManager::FindComponent(connectedBody)))
 		{
 			physx::PxRigidActor* actorA = Physics::GetActor(Physics::GetActorHandle(GetOwner()->GetTransform()));
 			physx::PxRigidActor* actorB = Physics::GetActor(Physics::GetActorHandle(connectedRigidbody->GetTransform()));
 			if (actorA && actorB)
 			{
-				// Z²‚ğ’†S‚É‰ñ“]‚³‚¹‚é‚½‚ßAƒ[ƒJƒ‹‚ÌX²‚ğZ²•ûŒü‚ÖŒü‚¯‚éiY²ü‚è‚É90“x‰ñ“]j
+				// Zè»¸ã‚’ä¸­å¿ƒã«å›è»¢ã•ã›ã‚‹ãŸã‚ã€ãƒ­ãƒ¼ã‚«ãƒ«ã®Xè»¸ã‚’Zè»¸æ–¹å‘ã¸å‘ã‘ã‚‹ï¼ˆYè»¸å‘¨ã‚Šã«90åº¦å›è»¢ï¼‰
 				physx::PxQuat rotZ(physx::PxHalfPi, physx::PxVec3(0, 1, 0));
 
 				physx::PxTransform localFrameA = physx::PxTransform(physx::PxVec3(0, 0.5f, 0), rotZ);
 				physx::PxTransform localFrameB = physx::PxTransform(physx::PxVec3(0, 0, 0), rotZ);
 
-				// ‘o•û‚ÌˆÊ’u‚Ì’†“_‚ğŒvZ‚µ‚ÄAƒ[ƒJƒ‹ƒtƒŒ[ƒ€‚ÌˆÊ’u‚ğ’²®‚µ‚Ü‚·B
+				// åŒæ–¹ã®ä½ç½®ã®ä¸­ç‚¹ã‚’è¨ˆç®—ã—ã¦ã€ãƒ­ãƒ¼ã‚«ãƒ«ãƒ•ãƒ¬ãƒ¼ãƒ ã®ä½ç½®ã‚’èª¿æ•´ã—ã¾ã™ã€‚
 				{
 					physx::PxVec3 posA = actorA->getGlobalPose().p;
 					physx::PxVec3 posB = actorB->getGlobalPose().p;
@@ -60,18 +60,18 @@ void HingeJoint::CreateJoint()
 
 				}
 
-				// PhysX ‚Ì‰ñ“]ƒWƒ‡ƒCƒ“ƒg‚ğì¬‚µ‚Ü‚·B
+				// PhysX ã®å›è»¢ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
 				pxJoint = physx::PxRevoluteJointCreate(*Physics::GetPhysics(), actorA, localFrameA, actorB, localFrameB);
 				if (pxJoint)
 				{
-					// 1. Šp“x§ŒÀ‚ğ—LŒø‰»‚·‚é
+					// 1. è§’åº¦åˆ¶é™ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹
 					pxJoint->setRevoluteJointFlag(physx::PxRevoluteJointFlag::eLIMIT_ENABLED, true);
 
-					// 2. §ŒÀŠp“x‚ğw’è‚·‚éi—á: -30“x ‚©‚ç 30“xj
+					// 2. åˆ¶é™è§’åº¦ã‚’æŒ‡å®šã™ã‚‹ï¼ˆä¾‹: -30åº¦ ã‹ã‚‰ 30åº¦ï¼‰
 					float limitAngle = physx::PxPi / 6.0f;
 					physx::PxJointAngularLimitPair limit(-limitAngle, limitAngle);
 
-					// 3. ”½“®iƒoƒEƒ“ƒXj‚ÆƒXƒvƒŠƒ“ƒO‹““®‚ğŠ®‘S‚ÉÁ‹‚·‚éid‚¢Õ“Ëj
+					// 3. åå‹•ï¼ˆãƒã‚¦ãƒ³ã‚¹ï¼‰ã¨ã‚¹ãƒ—ãƒªãƒ³ã‚°æŒ™å‹•ã‚’å®Œå…¨ã«æ¶ˆå»ã™ã‚‹ï¼ˆç¡¬ã„è¡çªï¼‰
 					limit.restitution = 0.5f;
 					limit.stiffness = 0.5f;
 					limit.damping = 0.5f;
@@ -80,7 +80,7 @@ void HingeJoint::CreateJoint()
 				}
 				else
 				{
-					// ƒWƒ‡ƒCƒ“ƒg‚Ìì¬‚É¸”s‚µ‚½ê‡‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+					// ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã®ä½œæˆã«å¤±æ•—ã—ãŸå ´åˆã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
 					std::cerr << "Failed to create hinge joint." << std::endl;
 				}
 			}

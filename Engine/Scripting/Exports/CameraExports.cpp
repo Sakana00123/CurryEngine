@@ -4,7 +4,7 @@
 #include "Engine/Scenes/Scene.h"
 #include "Engine/Scenes/SceneManager.h"
 
-/** @brief ƒIƒuƒWƒFƒNƒgID‚©‚çƒJƒƒ‰ƒRƒ“ƒ|[ƒlƒ“ƒg‚ðŽæ“¾‚µ‚Ü‚·B*/
+/** @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆIDã‹ã‚‰ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 static CameraComponent* GetCameraComponentById(uint64_t objectId)
 {
 	Scene* scene = SceneManager::GetLoadingSceneOrCurrentScene();

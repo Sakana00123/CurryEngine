@@ -18,12 +18,12 @@ public:
     virtual bool IsModuleSupported() const { return true; }
     virtual bool ShouldActivateModule() const { return true; }
 
-    // –ˆƒtƒŒ[ƒ€ŒÄ‚Î‚ê‚é
+    // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã°ã‚Œã‚‹
     virtual void Process(float deltaTime) = 0;
 
-    // “ü—ÍÀ•W‚ğæ“¾iƒI[ƒo[ƒ‰ƒCƒh„§j
+    // å…¥åŠ›åº§æ¨™ã‚’å–å¾—ï¼ˆã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰æ¨å¥¨ï¼‰
     virtual Vector2 GetPointerPosition() const { return { 0, 0 }; }
 
-    // ƒCƒxƒ“ƒg¶¬‚È‚Ç‚Ég—p
+    // ã‚¤ãƒ™ãƒ³ãƒˆç”Ÿæˆãªã©ã«ä½¿ç”¨
     EventSystem* GetEventSystem() const { return eventSystem; }
 };

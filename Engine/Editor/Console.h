@@ -7,75 +7,75 @@
 
 /**
  * @file
- * @brief ƒGƒfƒBƒ^“à‚ÌŠÈˆÕƒRƒ“ƒ\[ƒ‹iƒƒO•\¦j‹@”\B
- * @details •¶š—ñ‚Ìî•ñ/Œx/ƒGƒ‰[ƒƒO‚ğ’~Ï‚µAImGui ‚ğ—p‚¢‚½•\¦EƒNƒŠƒA‚È‚Ç‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+ * @brief ã‚¨ãƒ‡ã‚£ã‚¿å†…ã®ç°¡æ˜“ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ï¼ˆãƒ­ã‚°è¡¨ç¤ºï¼‰æ©Ÿèƒ½ã€‚
+ * @details æ–‡å­—åˆ—ã®æƒ…å ±/è­¦å‘Š/ã‚¨ãƒ©ãƒ¼ãƒ­ã‚°ã‚’è“„ç©ã—ã€ImGui ã‚’ç”¨ã„ãŸè¡¨ç¤ºãƒ»ã‚¯ãƒªã‚¢ãªã©ã‚’æä¾›ã—ã¾ã™ã€‚
  */
 class Console
 {
 public:
 	/**
-	 * @brief ƒƒOƒŒƒxƒ‹B
+	 * @brief ãƒ­ã‚°ãƒ¬ãƒ™ãƒ«ã€‚
 	 */
 	enum class LogLevel { Info = 0, Warning = 1, Error = 2 };
 
 	/**
-	 * @brief 1 Œ‚ÌƒƒOƒGƒ“ƒgƒŠB
+	 * @brief 1 ä»¶ã®ãƒ­ã‚°ã‚¨ãƒ³ãƒˆãƒªã€‚
 	 */
 	struct LogEntry
 	{
-		LogLevel level;       //!< ƒŒƒxƒ‹
-		std::string message;  //!< ƒƒbƒZ[ƒW–{•¶
+		LogLevel level;       //!< ãƒ¬ãƒ™ãƒ«
+		std::string message;  //!< ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æœ¬æ–‡
 		std::string file;      // __FILE__
 		int         line;      // __LINE__
 	};
 private:
-	/** @brief ’~Ï‚³‚ê‚½ƒƒOB*/
+	/** @brief è“„ç©ã•ã‚ŒãŸãƒ­ã‚°ã€‚*/
 	static std::vector<LogEntry> logs;
-	/** @brief ƒRƒ“ƒ\[ƒ‹ƒEƒBƒ“ƒhƒE‚ªŠJ‚¢‚Ä‚¢‚é‚©B*/
+	/** @brief ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‹ã„ã¦ã„ã‚‹ã‹ã€‚*/
 	static bool isOpen;
-	/** @brief ‚±‚ÌƒtƒŒ[ƒ€‚ÅƒƒO‚ª‘‚¦‚½‚©i©“®ƒXƒNƒ[ƒ‹—pjB*/
+	/** @brief ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ãƒ­ã‚°ãŒå¢—ãˆãŸã‹ï¼ˆè‡ªå‹•ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ç”¨ï¼‰ã€‚*/
 	static bool isLogSizeIncreasedInCurrentFrame;
-	/** @brief ƒƒOƒŒƒxƒ‹‚Ì•\¦/”ñ•\¦ƒtƒ‰ƒOBƒrƒbƒg 0: Info, 1: Warning, 2: ErrorB*/
+	/** @brief ãƒ­ã‚°ãƒ¬ãƒ™ãƒ«ã®è¡¨ç¤º/éè¡¨ç¤ºãƒ•ãƒ©ã‚°ã€‚ãƒ“ãƒƒãƒˆ 0: Info, 1: Warning, 2: Errorã€‚*/
 	static uint8_t s_logLevelFlags;
-	/** @brief ƒƒOƒtƒBƒ‹ƒ^‚Ì“ü—Íƒoƒbƒtƒ@B*/
+	/** @brief ãƒ­ã‚°ãƒ•ã‚£ãƒ«ã‚¿ã®å…¥åŠ›ãƒãƒƒãƒ•ã‚¡ã€‚*/
 	static char s_filterBuffer[256];
 public:
-	/** @brief ‰Šú‰»ˆ—B•K—v‚ÈƒŠƒ\[ƒX‚ÌŠm•Û‚È‚Ç‚ğs‚¢‚Ü‚·B*/
+	/** @brief åˆæœŸåŒ–å‡¦ç†ã€‚å¿…è¦ãªãƒªã‚½ãƒ¼ã‚¹ã®ç¢ºä¿ãªã©ã‚’è¡Œã„ã¾ã™ã€‚*/
 	static void Initialize();
 
-	/** @brief î•ñƒƒO‚ğ’Ç‰Á‚µ‚Ü‚·B*/
+	/** @brief æƒ…å ±ãƒ­ã‚°ã‚’è¿½åŠ ã—ã¾ã™ã€‚*/
 	static void Log(const std::string& message, const std::string& file = "", int line = -1);
 	static void Log(const std::u8string& message, const std::string& file = "", int line = -1);
 
-	/** @brief ŒxƒƒO‚ğ’Ç‰Á‚µ‚Ü‚·B*/
+	/** @brief è­¦å‘Šãƒ­ã‚°ã‚’è¿½åŠ ã—ã¾ã™ã€‚*/
 	static void LogWarning(const std::string& message, const std::string& file = "", int line = -1);
 	static void LogWarning(const std::u8string& message, const std::string& file = "", int line = -1);
 	
-	/** @brief ƒGƒ‰[ƒƒO‚ğ’Ç‰Á‚µ‚Ü‚·B*/
+	/** @brief ã‚¨ãƒ©ãƒ¼ãƒ­ã‚°ã‚’è¿½åŠ ã—ã¾ã™ã€‚*/
 	static void LogError(const std::string& message, const std::string& file = "", int line = -1);
 	static void LogError(const std::u8string& message, const std::string& file = "", int line = -1);
 
-	/** @brief ƒJƒXƒ^ƒ€ƒƒO‚ğ’Ç‰Á‚µ‚Ü‚·B*/
+	/** @brief ã‚«ã‚¹ã‚¿ãƒ ãƒ­ã‚°ã‚’è¿½åŠ ã—ã¾ã™ã€‚*/
 	static void CustomLog(LogLevel level, const std::string& message, const std::string& file, int line);
 	static void CustomLog(LogLevel level, const std::u8string& message, const std::string& file, int line);
 
-	/** @brief ƒƒO‚ğ‚·‚×‚ÄƒNƒŠƒA‚µ‚Ü‚·B*/
+	/** @brief ãƒ­ã‚°ã‚’ã™ã¹ã¦ã‚¯ãƒªã‚¢ã—ã¾ã™ã€‚*/
 	static void ClearLog();
 
-	/** @brief ƒRƒ“ƒ\[ƒ‹ƒEƒBƒ“ƒhƒE‚ğ•\¦‚µ‚Ü‚·B*/
+	/** @brief ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚*/
 	static void Show();
 
-	/** @brief I—¹ˆ—B•K—v‚ÈƒŠƒ\[ƒX‚ğ‰ğ•ú‚µ‚Ü‚·B*/
+	/** @brief çµ‚äº†å‡¦ç†ã€‚å¿…è¦ãªãƒªã‚½ãƒ¼ã‚¹ã‚’è§£æ”¾ã—ã¾ã™ã€‚*/
 	static void Shutdown();
 
-	/** @brief Visual Studio ‚Åw’è‚µ‚½ƒtƒ@ƒCƒ‹‚Ìs‚ğŠJ‚«‚Ü‚·B*/
+	/** @brief Visual Studio ã§æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®è¡Œã‚’é–‹ãã¾ã™ã€‚*/
 	static void OpenInVisualStudio(const std::string& file, int line);
 
-	/** @brief ImGui ‚ğ—p‚¢‚ÄƒRƒ“ƒ\[ƒ‹ GUI ‚ğ•`‰æ‚µ‚Ü‚·B*/
+	/** @brief ImGui ã‚’ç”¨ã„ã¦ã‚³ãƒ³ã‚½ãƒ¼ãƒ« GUI ã‚’æç”»ã—ã¾ã™ã€‚*/
 	static void DrawGUI();
 };
 
-// ---- ƒ}ƒNƒ ----
+// ---- ãƒã‚¯ãƒ­ ----
 #ifndef DEFINE_LOG
 #define DEFINE_LOG
 #define LOG_INFO(msg)    Console::CustomLog(Console::LogLevel::Info,    (msg), __FILE__, __LINE__)

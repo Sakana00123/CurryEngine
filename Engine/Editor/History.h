@@ -8,7 +8,7 @@ namespace CurryEngine
 	class History
 	{
 	public:
-		// コマンドを実行し、履歴に追加する
+		// 繧ｳ繝槭Φ繝峨ｒ螳溯｡後＠縲∝ｱ･豁ｴ縺ｫ霑ｽ蜉縺吶ｋ
 		static void ExecuteCommand(std::shared_ptr<IEditorCommand> command)
 		{
 			GetUndoRedoStack().ExecuteCommand(std::move(command));

@@ -9,214 +9,214 @@
 #include "Engine/Core/GameObject.h"
 #include <unordered_map>
 
-#define USE_PHYSX // PhysX ‚ğg—p‚·‚éê‡‚Í’è‹`‚ğ—LŒø‚É‚µ‚Ä‚­‚¾‚³‚¢B–¢’è‹`‚Ìê‡‚Í“Æ©‚ÌŠÈˆÕ•¨—ƒGƒ“ƒWƒ“‚ªg—p‚³‚ê‚Ü‚·B
+#define USE_PHYSX // PhysX ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯å®šç¾©ã‚’æœ‰åŠ¹ã«ã—ã¦ãã ã•ã„ã€‚æœªå®šç¾©ã®å ´åˆã¯ç‹¬è‡ªã®ç°¡æ˜“ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ãŒä½¿ç”¨ã•ã‚Œã¾ã™ã€‚
 #include "Engine/Physics/Physics.h"
 
 /**
- * @brief ƒRƒ‰ƒCƒ_Šî’êƒNƒ‰ƒXB
- * @details ƒCƒxƒ“ƒgŠÇ—AÕ“ËƒŒƒ|[ƒgW–ñAƒfƒoƒbƒO•`‰æA”h¶Œ^‚Æ‚Ì‘ŠŒİ”»’è‚ğ’è‹`‚µ‚Ü‚·B
+ * @brief ã‚³ãƒ©ã‚¤ãƒ€åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚
+ * @details ã‚¤ãƒ™ãƒ³ãƒˆç®¡ç†ã€è¡çªãƒ¬ãƒãƒ¼ãƒˆé›†ç´„ã€ãƒ‡ãƒãƒƒã‚°æç”»ã€æ´¾ç”Ÿå‹ã¨ã®ç›¸äº’åˆ¤å®šã‚’å®šç¾©ã—ã¾ã™ã€‚
  */
 class Collider : public Component
 {
 	C_REFLECT(Collider)
 private:
-	/** @brief Collision/Trigger ŠeƒCƒxƒ“ƒg‚Ìw“ÇÒB*/
+	/** @brief Collision/Trigger å„ã‚¤ãƒ™ãƒ³ãƒˆã®è³¼èª­è€…ã€‚*/
 	std::vector<std::function<void(const CollisionInfo&)>> onCollisionEnterEvents;
 	std::vector<std::function<void(const CollisionInfo&)>> onCollisionStayEvents;
 	std::vector<std::function<void(const CollisionInfo&)>> onCollisionExitEvents;
 	std::vector<std::function<void(const TriggerInfo&)>> onTriggerEnterEvents;
 	std::vector<std::function<void(const TriggerInfo&)>> onTriggerStayEvents;
 	std::vector<std::function<void(const TriggerInfo&)>> onTriggerExitEvents;
-	/** @brief “–ƒtƒŒ[ƒ€‚ÌÕ“ËW‡B*/
+	/** @brief å½“ãƒ•ãƒ¬ãƒ¼ãƒ ã®è¡çªé›†åˆã€‚*/
 	std::unordered_map<Collider*, CollisionInfo> currentCollisions;
-	/** @brief ‘OƒtƒŒ[ƒ€‚ÌÕ“ËW‡B*/
+	/** @brief å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®è¡çªé›†åˆã€‚*/
 	std::unordered_map<Collider*, CollisionInfo> previousCollisions;
-	/** @brief ‰½‚©‚Éƒqƒbƒg‚µ‚Ä‚¢‚é‚©i“à•”—˜—pjB*/
+	/** @brief ä½•ã‹ã«ãƒ’ãƒƒãƒˆã—ã¦ã„ã‚‹ã‹ï¼ˆå†…éƒ¨åˆ©ç”¨ï¼‰ã€‚*/
 	bool isHit{ false };
 
 protected:
 	ShapeHandle m_shapeHandle{ INVALID_SHAPE_HANDLE };
 	MaterialHandle m_materialHandle{ DEFAULT_MATERIAL_HANDLE };
-	bool onEnableFlag = false; // “à•”ó‘ÔŠÇ——pƒtƒ‰ƒO
+	bool onEnableFlag = false; // å†…éƒ¨çŠ¶æ…‹ç®¡ç†ç”¨ãƒ•ãƒ©ã‚°
 private:
-	bool m_needSync = false; // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚©
+	bool m_needSync = false; // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ã‹
 public:
-	/** @brief Šù’èƒRƒ“ƒXƒgƒ‰ƒNƒ^B*/
+	/** @brief æ—¢å®šã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚*/
 	Collider() = default;
 
-	/** @brief —LŒø‰»‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief æœ‰åŠ¹åŒ–æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnEnable() override;
 
-	/** @brief –³Œø‰»‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ç„¡åŠ¹åŒ–æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnDisable() override;
 
-	/** @brief ”jŠü’¼‘O‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ç ´æ£„ç›´å‰ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnDestroy() override;
 
-	/** @brief I—¹ˆ—B*/
+	/** @brief çµ‚äº†å‡¦ç†ã€‚*/
 	void Finalize() override;
 
-	/** @brief ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€•ÏX‚ÌƒR[ƒ‹ƒoƒbƒNB*/
+	/** @brief ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ å¤‰æ›´æ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚*/
 	void OnTransformChanged() override;
 
 	void Awake() override;
 
-	/** @brief ŠJnˆ—BƒV[ƒ“ŠJn‚Éˆê“x‚¾‚¯ŒÄ‚Ño‚³‚ê‚Ü‚·B*/
+	/** @brief é–‹å§‹å‡¦ç†ã€‚ã‚·ãƒ¼ãƒ³é–‹å§‹æ™‚ã«ä¸€åº¦ã ã‘å‘¼ã³å‡ºã•ã‚Œã¾ã™ã€‚*/
 	void Start() override;
 
-	/** @brief ‰Šú‰»iƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu€”õ‚È‚ÇjB*/
+	/** @brief åˆæœŸåŒ–ï¼ˆãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æº–å‚™ãªã©ï¼‰ã€‚*/
 	void Initialize() override;
 
-	/** @brief ŒÅ’èƒtƒŒ[ƒ€XVB*/
+	/** @brief å›ºå®šãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚*/
 	void FixedUpdate(float fixedDeltaTime) override;
 
-	/** @brief ƒtƒŒ[ƒ€XVB*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã€‚*/
 	void LateUpdate(float deltaTime) override;
 	
-	/** @brief ƒtƒŒ[ƒ€ŠJnˆ—ió‘ÔƒŠƒZƒbƒgjB*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹å‡¦ç†ï¼ˆçŠ¶æ…‹ãƒªã‚»ãƒƒãƒˆï¼‰ã€‚*/
 	void BeginFrame() override;
 
 	/**
-	 * @brief ‘¼ƒRƒ‰ƒCƒ_‚Æ‚ÌÕ“Ë‚ğ•ñ‚µ‚Ü‚·B
-	 * @param other ‘ŠèƒRƒ‰ƒCƒ_B
-	 * @param info Õ“Ëî•ñB
+	 * @brief ä»–ã‚³ãƒ©ã‚¤ãƒ€ã¨ã®è¡çªã‚’å ±å‘Šã—ã¾ã™ã€‚
+	 * @param other ç›¸æ‰‹ã‚³ãƒ©ã‚¤ãƒ€ã€‚
+	 * @param info è¡çªæƒ…å ±ã€‚
 	 */
 	void ReportCollision(Collider* other, const CollisionInfo& info);
 
-	/** @brief ƒtƒŒ[ƒ€I—¹ˆ—iEnter/Stay/Exit/Trigger ‚ğ’Ê’mjB*/
+	/** @brief ãƒ•ãƒ¬ãƒ¼ãƒ çµ‚äº†å‡¦ç†ï¼ˆEnter/Stay/Exit/Trigger ã‚’é€šçŸ¥ï¼‰ã€‚*/
 	void EndFrame() override;
 
 	/**
-	 * @brief ƒRƒ‰ƒCƒ_[‚Ìƒ[ƒ‹ƒhs—ñ‚ğ•Ô‚µ‚Ü‚·B
-	 * @return ƒ[ƒ‹ƒh•ÏŠ·s—ñB
+	 * @brief ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—ã€‚
 	 */
 	XMFLOAT4X4 CalculateColliderWorldTransform(const Vector3& localPos, const Vector3& localScale) const;
 
 
-	/** @brief ƒgƒŠƒK[‚©‚Ç‚¤‚©B*/
+	/** @brief ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã€‚*/
 	C_FUNCTION()
 	bool IsTrigger();
 
-	/** @brief ƒgƒŠƒK[İ’èB*/
+	/** @brief ãƒˆãƒªã‚¬ãƒ¼è¨­å®šã€‚*/
 	C_FUNCTION()
 	void SetTrigger(bool trigger);
 
-	/* @brief ©“®ƒtƒBƒbƒg‚·‚é‚©B*/
+	/* @brief è‡ªå‹•ãƒ•ã‚£ãƒƒãƒˆã™ã‚‹ã‹ã€‚*/
 	C_FUNCTION()
 	bool GetAutoFit() const;
 
-	/* @brief ©“®ƒtƒBƒbƒgİ’èB*/
+	/* @brief è‡ªå‹•ãƒ•ã‚£ãƒƒãƒˆè¨­å®šã€‚*/
 	C_FUNCTION()
 	void SetAutoFit(bool autoFit);
 
-	/** @brief ÚGƒIƒtƒZƒbƒg‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	C_FUNCTION()
 	float GetContactOffset() const;
 
-	/** @brief ÚGƒIƒtƒZƒbƒg‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	C_FUNCTION()
 	void SetContactOffset(float offset);
 
 	/**
-	 * @brief •¨—ƒ}ƒeƒŠƒAƒ‹‚ğİ’è‚µ‚Ü‚·B
-	 * @param materialHandle İ’è‚·‚é•¨—ƒ}ƒeƒŠƒAƒ‹‚ÌMaterialHandleB
+	 * @brief ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param materialHandle è¨­å®šã™ã‚‹ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®MaterialHandleã€‚
 	 */
 	void SetMaterial(MaterialHandle materialHandle);
 
-	/** @brief •¨—ƒ}ƒeƒŠƒAƒ‹‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	MaterialHandle GetMaterialHandle() const { return m_materialHandle; }
 
-	/** @brief •¨—ƒ}ƒeƒŠƒAƒ‹‚Ì“Á«‚ğİ’è‚µ‚Ü‚·B*/
+	/** @brief ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç‰¹æ€§ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	void SetMaterialData(const PhysicsMaterialData& data);
 
-	/** @brief •¨—ƒ}ƒeƒŠƒAƒ‹‚Ì“Á«‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief ç‰©ç†ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç‰¹æ€§ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	PhysicsMaterialData GetMaterialData() const;
 
-	/** @brief Œ`óƒnƒ“ƒhƒ‹‚ğæ“¾‚µ‚Ü‚·B*/
+	/** @brief å½¢çŠ¶ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã—ã¾ã™ã€‚*/
 	ShapeHandle GetShapeHandle() const { return m_shapeHandle; }
 
-	/* @brief •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚©‚ğİ’è‚µ‚Ü‚·B*/
+	/* @brief ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ã‹ã‚’è¨­å®šã—ã¾ã™ã€‚*/
 	void SetNeedSync();
 
-	/** @brief ƒRƒ‰ƒCƒ_[‚ÌŒ`ó‚ğ’†S‚ÆƒTƒCƒY‚ÅƒtƒBƒbƒg‚³‚¹‚éB*/
+	/** @brief ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å½¢çŠ¶ã‚’ä¸­å¿ƒã¨ã‚µã‚¤ã‚ºã§ãƒ•ã‚£ãƒƒãƒˆã•ã›ã‚‹ã€‚*/
 	virtual void FitToBoundingBox(const Vector3& center, const Vector3& size) {}
 
-	/** @brief •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯ŠúB*/
+	/** @brief ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸã€‚*/
 	virtual void SyncWithPhysics() = 0;
 
-	/** @brief ƒfƒoƒbƒO•`‰æB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°æç”»ã€‚*/
 	virtual void Render(RenderContext* rtx) override = 0;
 
 #ifdef USE_IMGUI
-	/** @brief ƒCƒ“ƒXƒyƒNƒ^•`‰æB*/
+	/** @brief ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿æç”»ã€‚*/
 	virtual void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
-	/** @brief ƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	virtual json Serialize() const override;
 
-	/** @brief ƒfƒVƒŠƒAƒ‰ƒCƒYB*/
+	/** @brief ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã€‚*/
 	virtual void Deserialize(const json& j) override;
 
-	/** @brief ƒuƒ[ƒhƒLƒƒƒXƒg“o˜^i‹óŠÔ\‘¢“™‚Ö‚Ì“o˜^jB*/
+	/** @brief ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç™»éŒ²ï¼ˆç©ºé–“æ§‹é€ ç­‰ã¸ã®ç™»éŒ²ï¼‰ã€‚*/
 	virtual void Register() = 0;
 
 public:
-	/** @brief Õ“ËŠJnƒCƒxƒ“ƒg‚ğ’Ç‰ÁB*/
+	/** @brief è¡çªé–‹å§‹ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¿½åŠ ã€‚*/
 	void AddOnCollisionEnterEvent(const std::function<void(const CollisionInfo&)>& func);
 
-	/** @brief Õ“ËŒp‘±ƒCƒxƒ“ƒg‚ğ’Ç‰ÁB*/
+	/** @brief è¡çªç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆã‚’è¿½åŠ ã€‚*/
 	void AddOnCollisionStayEvent(const std::function<void(const CollisionInfo&)>& func);
 
-	/** @brief Õ“ËI—¹ƒCƒxƒ“ƒg‚ğ’Ç‰ÁB*/
+	/** @brief è¡çªçµ‚äº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¿½åŠ ã€‚*/
 	void AddOnCollisionExitEvent(const std::function<void(const CollisionInfo&)>& func);
 
-	/** @brief ƒgƒŠƒK[ŠJnƒCƒxƒ“ƒg‚ğ’Ç‰ÁB*/
+	/** @brief ãƒˆãƒªã‚¬ãƒ¼é–‹å§‹ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¿½åŠ ã€‚*/
 	void AddOnTriggerEnterEvent(const std::function<void(const TriggerInfo&)>& func);
 
-	/** @brief ƒgƒŠƒK[Œp‘±ƒCƒxƒ“ƒg‚ğ’Ç‰ÁB*/
+	/** @brief ãƒˆãƒªã‚¬ãƒ¼ç¶™ç¶šã‚¤ãƒ™ãƒ³ãƒˆã‚’è¿½åŠ ã€‚*/
 	void AddOnTriggerStayEvent(const std::function<void(const TriggerInfo&)>& func);
 
-	/** @brief ƒgƒŠƒK[I—¹ƒCƒxƒ“ƒg‚ğ’Ç‰ÁB*/
+	/** @brief ãƒˆãƒªã‚¬ãƒ¼çµ‚äº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¿½åŠ ã€‚*/
 	void AddOnTriggerExitEvent(const std::function<void(const TriggerInfo&)>& func);
 
 private:
-	//friend class Physics; // “à•”‚©‚ç’¼ÚƒCƒxƒ“ƒg‚ğŒÄ‚Ño‚·‚½‚ß‚ÌƒtƒŒƒ“ƒhéŒ¾
-	friend class SimulationEventCallback; // “à•”‚©‚ç’¼ÚƒCƒxƒ“ƒg‚ğŒÄ‚Ño‚·‚½‚ß‚ÌƒtƒŒƒ“ƒhéŒ¾
-	friend class Physics; // “à•”‚©‚ç’¼ÚƒCƒxƒ“ƒg‚ğŒÄ‚Ño‚·‚½‚ß‚ÌƒtƒŒƒ“ƒhéŒ¾
-	/** @brief ’¼‹ßƒtƒŒ[ƒ€‚ÌÕ“ËŠJn‚ğ’Ê’mB*/
+	//friend class Physics; // å†…éƒ¨ã‹ã‚‰ç›´æ¥ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‘¼ã³å‡ºã™ãŸã‚ã®ãƒ•ãƒ¬ãƒ³ãƒ‰å®£è¨€
+	friend class SimulationEventCallback; // å†…éƒ¨ã‹ã‚‰ç›´æ¥ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‘¼ã³å‡ºã™ãŸã‚ã®ãƒ•ãƒ¬ãƒ³ãƒ‰å®£è¨€
+	friend class Physics; // å†…éƒ¨ã‹ã‚‰ç›´æ¥ã‚¤ãƒ™ãƒ³ãƒˆã‚’å‘¼ã³å‡ºã™ãŸã‚ã®ãƒ•ãƒ¬ãƒ³ãƒ‰å®£è¨€
+	/** @brief ç›´è¿‘ãƒ•ãƒ¬ãƒ¼ãƒ ã®è¡çªé–‹å§‹ã‚’é€šçŸ¥ã€‚*/
 	void OnCollisionEnter(const CollisionInfo& info);
-	/** @brief ’¼‹ßƒtƒŒ[ƒ€‚ÌÕ“ËŒp‘±‚ğ’Ê’mB*/
+	/** @brief ç›´è¿‘ãƒ•ãƒ¬ãƒ¼ãƒ ã®è¡çªç¶™ç¶šã‚’é€šçŸ¥ã€‚*/
 	void OnCollisionStay(const CollisionInfo& info);
-	/** @brief ’¼‹ßƒtƒŒ[ƒ€‚ÌÕ“ËI—¹‚ğ’Ê’mB*/
+	/** @brief ç›´è¿‘ãƒ•ãƒ¬ãƒ¼ãƒ ã®è¡çªçµ‚äº†ã‚’é€šçŸ¥ã€‚*/
 	void OnCollisionExit(const CollisionInfo& info);
-	/** @brief ’¼‹ßƒtƒŒ[ƒ€‚ÌƒgƒŠƒK[ŠJn‚ğ’Ê’mB*/
+	/** @brief ç›´è¿‘ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒˆãƒªã‚¬ãƒ¼é–‹å§‹ã‚’é€šçŸ¥ã€‚*/
 	void OnTriggerEnter(const TriggerInfo& info);
-	/** @brief ’¼‹ßƒtƒŒ[ƒ€‚ÌƒgƒŠƒK[Œp‘±‚ğ’Ê’mB*/
+	/** @brief ç›´è¿‘ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒˆãƒªã‚¬ãƒ¼ç¶™ç¶šã‚’é€šçŸ¥ã€‚*/
 	void OnTriggerStay(const TriggerInfo& info);
-	/** @brief ’¼‹ßƒtƒŒ[ƒ€‚ÌƒgƒŠƒK[I—¹‚ğ’Ê’mB*/
+	/** @brief ç›´è¿‘ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒˆãƒªã‚¬ãƒ¼çµ‚äº†ã‚’é€šçŸ¥ã€‚*/
 	void OnTriggerExit(const TriggerInfo& info);
 public:
-	/** @brief •¨—“I‚É”½‰‚¹‚¸’Ê’m‚Ì‚İ‚ğs‚¤ê‡‚É trueB*/
+	/** @brief ç‰©ç†çš„ã«åå¿œã›ãšé€šçŸ¥ã®ã¿ã‚’è¡Œã†å ´åˆã« trueã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("IsTrigger"), CurryEngine::PropertyAttributes::Setter("SetTrigger"))
 	bool isTrigger{ false };
 
-	/** @brief ©“®ƒtƒBƒbƒg‚·‚é‚©B*/
+	/** @brief è‡ªå‹•ãƒ•ã‚£ãƒƒãƒˆã™ã‚‹ã‹ã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetAutoFit"), CurryEngine::PropertyAttributes::Setter("SetAutoFit"))
 	bool autoFit{ false };
 
-	/** @brief Õ“Ë”»’è‚ÌÛ‚ÌÚGƒIƒtƒZƒbƒgB*/
+	/** @brief è¡çªåˆ¤å®šã®éš›ã®æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã€‚*/
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetContactOffset"), CurryEngine::PropertyAttributes::Setter("SetContactOffset"), CurryEngine::PropertyAttributes::Range(0.000001f, 1000000.0f), CurryEngine::PropertyAttributes::Format("%.6f"))
 	float contactOffset{ 0.02f };
 
-	/** @brief AABB ‚ÌÅ¬“_B*/
+	/** @brief AABB ã®æœ€å°ç‚¹ã€‚*/
 	virtual XMFLOAT3 Min() const { return { 0,0,0 }; }
-	/** @brief AABB ‚ÌÅ‘å“_B*/
+	/** @brief AABB ã®æœ€å¤§ç‚¹ã€‚*/
 	virtual XMFLOAT3 Max() const { return { 0,0,0 }; }
 protected:
-	/** @brief ƒfƒoƒbƒO•`‰æ—p‚ÌƒWƒIƒƒgƒŠB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°æç”»ç”¨ã®ã‚¸ã‚ªãƒ¡ãƒˆãƒªã€‚*/
 	std::unique_ptr<GeometricPrimitive> primitive;
-	/** @brief ƒfƒoƒbƒO•`‰æFB*/
+	/** @brief ãƒ‡ãƒãƒƒã‚°æç”»è‰²ã€‚*/
 	Color color{ 0,1,0,1 };
 };

@@ -2,26 +2,26 @@
 #include "RhythmAnimState.h"
 #include "StateTransition.h"
 
-// ƒŠƒYƒ€ƒXƒe[ƒgƒ}ƒVƒ“‚Ì’è‹`
+// ãƒªã‚ºãƒ ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³ã®å®šç¾©
 class RhythmStateMachine
 {
 public:
 
-	// ƒXƒe[ƒgƒ}ƒVƒ“‚ÌƒŠƒZƒbƒg
+	// ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³ã®ãƒªã‚»ãƒƒãƒˆ
 	void Reset(const std::string& initialState);
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// ƒXƒe[ƒg‚ğæ“¾
+	// ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—
 	RhythmAnimState* GetState(const std::string& name);
 
 public:
 
-	// ƒXƒe[ƒg‚ÌƒŠƒXƒg
+	// ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒªã‚¹ãƒˆ
 	std::vector<RhythmAnimState> states;
-	// ƒXƒe[ƒg‘JˆÚ‚ÌƒŠƒXƒg
+	// ã‚¹ãƒ†ãƒ¼ãƒˆé·ç§»ã®ãƒªã‚¹ãƒˆ
 	std::vector<StateTransition> transitions;
-	// Œ»İ‚ÌƒXƒe[ƒg–¼
+	// ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ãƒˆå
 	std::string currentStateName;
 };

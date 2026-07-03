@@ -5,23 +5,23 @@
 
 void PfxCrtPass::Initialize()
 {
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Ì‰Šú‰»
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®åˆæœŸåŒ–
 	auto device = Graphics::GetDevice();
 	m_pfxCrtTexture.Create(device, 1920, 1080);
-	RegisterResizableRenderTexture(&m_pfxCrtTexture); // ƒŠƒTƒCƒY‚ª•K—v‚ÈƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚Æ‚µ‚Ä“o˜^(¦‚±‚ê‚ğŒÄ‚Ño‚³‚È‚¢‚ÆAƒEƒBƒ“ƒhƒEƒTƒCƒY•ÏX‚ÉƒŠƒTƒCƒY‚³‚ê‚È‚¢‚Ì‚Å’ˆÓ)
+	RegisterResizableRenderTexture(&m_pfxCrtTexture); // ãƒªã‚µã‚¤ã‚ºãŒå¿…è¦ãªãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦ç™»éŒ²(â€»ã“ã‚Œã‚’å‘¼ã³å‡ºã•ãªã„ã¨ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¤‰æ›´æ™‚ã«ãƒªã‚µã‚¤ã‚ºã•ã‚Œãªã„ã®ã§æ³¨æ„)
 
-	// ƒ|ƒXƒgƒvƒƒZƒXƒ}ƒeƒŠƒAƒ‹‚Ì‰Šú‰»
+	// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒãƒ†ãƒªã‚¢ãƒ«ã®åˆæœŸåŒ–
 	m_pfxCrtMaterial = std::make_shared<Material>();
-	m_pfxCrtMaterial->SetShader(device, ResourceManager::LoadShader<PixelShader>("PFX_CrtPassPS")); // ‚±‚±‚Åg—p‚·‚éƒVƒF[ƒ_[‚ğw’è
+	m_pfxCrtMaterial->SetShader(device, ResourceManager::LoadShader<PixelShader>("PFX_CrtPassPS")); // ã“ã“ã§ä½¿ç”¨ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’æŒ‡å®š
 	//std::vector<std::string> notBindCBufferNames = {
 	//	"SCENE_CONSTANT_BUFFER",
 	//};
-	//m_pfxCrtMaterial->SetNotBindCBuffer(notBindCBufferNames); //NOTIFY: ƒfƒtƒHƒ‹ƒgİ’è‚ğÀ‘•‚µ‚½‚Ì‚ÅŠî–{“I‚É‚±‚Ìˆ—‚ª•s—v‚É‚È‚Á‚½B
+	//m_pfxCrtMaterial->SetNotBindCBuffer(notBindCBufferNames); //NOTIFY: ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¨­å®šã‚’å®Ÿè£…ã—ãŸã®ã§åŸºæœ¬çš„ã«ã“ã®å‡¦ç†ãŒä¸è¦ã«ãªã£ãŸã€‚
 }
 
 void PfxCrtPass::Finalize()
 {
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ÌI—¹‰»ˆ—
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®çµ‚äº†åŒ–å‡¦ç†
 	m_pfxCrtTexture.Release();
 }
 
@@ -30,28 +30,28 @@ void PfxCrtPass::Execute(RenderContext* rtx, Scene* scene)
 	auto renderTexture = static_cast<RenderTexture*>(rtx->GetSharedResource("PFX_OutLinePass_RenderTexture"));
 	if (renderTexture)
 	{
-		// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒZƒbƒg
+		// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚»ãƒƒãƒˆ
 		rtx->SetRenderTarget(m_pfxCrtTexture);
 		rtx->ClearCurrentRenderTarget(Color::Black);
 
-		// ‚±‚Ì•”•ª‚ÅArenderTexture‚ğg—p‚µ‚Äƒ|ƒXƒgƒvƒƒZƒXƒGƒtƒFƒNƒg‚ğ“K—p‚·‚éˆ—‚ğÀ‘•‚µ‚Ü‚·B
+		// ã“ã®éƒ¨åˆ†ã§ã€renderTextureã‚’ä½¿ç”¨ã—ã¦ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’é©ç”¨ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…ã—ã¾ã™ã€‚
 		RawTexture2D* colorTexture = renderTexture->GetColorTexture();
 		auto depthTexture = static_cast<RawTexture2D*>(rtx->GetSharedResource("OpaquePass_DepthTexture"));
 		std::shared_ptr<RawTexture2D> sharedColorTexture = std::make_shared<RawTexture2D>(*colorTexture);
 		std::shared_ptr<RawTexture2D> sharedDepthTexture = std::make_shared<RawTexture2D>(*depthTexture);
-		// •¡”ƒeƒNƒXƒ`ƒƒ“n‚µ‚½‚¢‚Æ‚«‚ÍAª‚Ìˆ—‚ğŠeƒeƒNƒXƒ`ƒƒ‚É‘Î‚µ‚Äs‚¤B
+		// è¤‡æ•°ãƒ†ã‚¯ã‚¹ãƒãƒ£æ¸¡ã—ãŸã„ã¨ãã¯ã€â†‘ã®å‡¦ç†ã‚’å„ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«å¯¾ã—ã¦è¡Œã†ã€‚
 
-		// TODO_MARUMO: ‘æˆêˆø”‚É‚Éhlsl‘¤‚Ì–¼‘O“ü‚ê‚éB(ˆê‰”z—ñ‹Ö~)
+		// TODO_MARUMO: ç¬¬ä¸€å¼•æ•°ã«ã«hlslå´ã®åå‰å…¥ã‚Œã‚‹ã€‚(ä¸€å¿œé…åˆ—ç¦æ­¢)
 		m_pfxCrtMaterial->SetTexture("textureMap", sharedColorTexture);
 		m_pfxCrtMaterial->SetTexture("depthMap", sharedDepthTexture);
 
-		//int testValue = 42; // —á‚Æ‚µ‚Ä®”’l‚ğİ’è
-		//m_postProcessMaterial->SetValue<int>("testValue", testValue); // ‚±‚ñ‚ÈŠ´‚¶‚Å•Ï”‚à“n‚¹‚é
+		//int testValue = 42; // ä¾‹ã¨ã—ã¦æ•´æ•°å€¤ã‚’è¨­å®š
+		//m_postProcessMaterial->SetValue<int>("testValue", testValue); // ã“ã‚“ãªæ„Ÿã˜ã§å¤‰æ•°ã‚‚æ¸¡ã›ã‚‹
 
-		// ƒ|ƒXƒgƒvƒƒZƒXƒ}ƒeƒŠƒAƒ‹‚ğg—p‚µ‚Ä‘S‰æ–ÊƒNƒƒbƒh‚ğ•`‰æ
+		// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’ä½¿ç”¨ã—ã¦å…¨ç”»é¢ã‚¯ãƒ¯ãƒƒãƒ‰ã‚’æç”»
 		rtx->DrawFullScreenQuad(m_pfxCrtMaterial.get());
 
-		// SharedResource‚Éƒ|ƒXƒgƒvƒƒZƒXŒã‚ÌƒeƒNƒXƒ`ƒƒ‚ğ•Û‘¶‚µ‚ÄAŸ‚ÌƒpƒX‚Åg—p‚Å‚«‚é‚æ‚¤‚É‚·‚é
+		// SharedResourceã«ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹å¾Œã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä¿å­˜ã—ã¦ã€æ¬¡ã®ãƒ‘ã‚¹ã§ä½¿ç”¨ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 		rtx->SetSharedResource("PostProcessPass_RenderTexture", &m_pfxCrtTexture);
 	}
 }
@@ -59,11 +59,11 @@ void PfxCrtPass::Execute(RenderContext* rtx, Scene* scene)
 void PfxCrtPass::DrawProperty()
 {
 #ifdef USE_IMGUI
-	// ƒ|ƒXƒgƒvƒƒZƒXƒpƒX‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹ãƒ‘ã‚¹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	ImGui::Text("PfxCrtProperties");
-	// ‚±‚±‚ÉImGui‚ğg‚Á‚½ƒvƒƒpƒeƒB•`‰æƒR[ƒh‚ğ’Ç‰Á‚µ‚Ü‚·B
+	// ã“ã“ã«ImGuiã‚’ä½¿ã£ãŸãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¾ã™ã€‚
 
-	ImGui::Image(m_pfxCrtTexture.GetColorBuffer(), ImVec2(256, 144)); // ƒ|ƒXƒgƒvƒƒZƒXŒã‚ÌƒeƒNƒXƒ`ƒƒ‚ğ•\¦
+	ImGui::Image(m_pfxCrtTexture.GetColorBuffer(), ImVec2(256, 144)); // ãƒã‚¹ãƒˆãƒ—ãƒ­ã‚»ã‚¹å¾Œã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¡¨ç¤º
 
 
 #endif // USE_IMGUI

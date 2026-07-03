@@ -3,7 +3,7 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include <profiler.h>
 
-// NOTE: Še•`‰æƒpƒX‚Ìƒwƒbƒ_[ƒtƒ@ƒCƒ‹‚ğƒCƒ“ƒNƒ‹[ƒh‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
+// NOTE: å„æç”»ãƒ‘ã‚¹ã®ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
 #include "Engine/Rendering/Pipeline/Pass/OpaquePass.h"
 #include "Engine/Rendering/Pipeline/Pass/ConstantBufferPass.h"
 #include "Engine/Rendering/Pipeline/Pass/ParticlePass.h"
@@ -17,18 +17,18 @@
 #include "Engine/Rendering/Pipeline/Pass/PostProcessPass.h"
 #include "Engine/Rendering/Pipeline/Pass/TransitionPass.h"
 
-/// ---------------------------------- PFXƒCƒ“ƒNƒ‹[ƒh ----------------------------------
+/// ---------------------------------- PFXã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ ----------------------------------
 #include "Engine/Rendering/Pipeline/Pass/PFX_CrtPass.h"
 #include "Engine/Rendering/Pipeline/Pass/PFX_OutLinePass.h"
 
 
-// -------------------------------- •`‰æƒpƒCƒvƒ‰ƒCƒ“‚Ì‹¤’Êˆ— ----------------------------------
+// -------------------------------- æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®å…±é€šå‡¦ç† ----------------------------------
 
 void RenderPipeline::Initialize()
 {
 	ProfileScopedSection_3(0, "RenderPipeline::Initialize", ImGuiControl::Profiler::Color::Yellow);
 
-	// •`‰æƒpƒCƒvƒ‰ƒCƒ“‚Ì‰Šú‰»ˆ—
+	// æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®åˆæœŸåŒ–å‡¦ç†
 	for (const auto& pass : m_renderPasses)
 	{
 		ProfileScopedSection_3(0, pass->renderPassName, ImGuiControl::Profiler::Color::Yellow);
@@ -40,13 +40,13 @@ void RenderPipeline::Finalize()
 {
 	ProfileScopedSection_3(0, "RenderPipeline::Finalize", ImGuiControl::Profiler::Color::Yellow);
 
-	// •`‰æƒpƒCƒvƒ‰ƒCƒ“‚ÌI—¹ˆ—
+	// æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®çµ‚äº†å‡¦ç†
 	for (const auto& pass : m_renderPasses)
 	{
 		ProfileScopedSection_3(0, pass->renderPassName, ImGuiControl::Profiler::Color::Yellow);
 		pass->Finalize();
 	}
-	// •`‰æƒpƒX‚ÌƒŠƒXƒg‚ğƒNƒŠƒA
+	// æç”»ãƒ‘ã‚¹ã®ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
 	m_renderPasses.clear();
 }
 
@@ -54,7 +54,7 @@ void RenderPipeline::Execute(RenderContext* rtx, Scene* scene)
 {
 	ProfileScopedSection_3(0, "RenderPipeline::Execute", ImGuiControl::Profiler::Color::Yellow);
 
-	// •`‰æƒpƒCƒvƒ‰ƒCƒ“‚ÌÀsˆ—
+	// æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®å®Ÿè¡Œå‡¦ç†
 	for (const auto& pass : m_renderPasses)
 	{
 		ProfileScopedSection_3(0, pass->renderPassName, ImGuiControl::Profiler::Color::Yellow);
@@ -66,7 +66,7 @@ void RenderPipeline::DrawProperty()
 {
 	ProfileScopedSection_3(0, "RenderPipeline::DrawProperty", ImGuiControl::Profiler::Color::Yellow);
 
-	// •`‰æƒpƒCƒvƒ‰ƒCƒ“‚ÌƒvƒƒpƒeƒB•`‰æˆ—
+	// æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»å‡¦ç†
 	for (const auto& pass : m_renderPasses)
 	{
 		ProfileScopedSection_3(0, pass->renderPassName, ImGuiControl::Profiler::Color::Yellow);
@@ -76,12 +76,12 @@ void RenderPipeline::DrawProperty()
 
 void RenderPipeline::OnSizeChanged(ID3D11Device* device, uint32_t width, uint32_t height)
 {
-	// Å¬‰»i0x0j‚Í–³‹
+	// æœ€å°åŒ–æ™‚ï¼ˆ0x0ï¼‰ã¯ç„¡è¦–
 	if (width == 0 || height == 0) return;
 
 	ProfileScopedSection_3(0, "RenderPipeline::OnSizeChanged", ImGuiControl::Profiler::Color::Yellow);
 
-	// •`‰æƒpƒCƒvƒ‰ƒCƒ“‚ÌƒTƒCƒY•ÏXƒCƒxƒ“ƒgˆ—
+	// æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®ã‚µã‚¤ã‚ºå¤‰æ›´ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†
 	for (const auto& pass : m_renderPasses)
 	{
 		ProfileScopedSection_3(0, pass->renderPassName, ImGuiControl::Profiler::Color::Yellow);
@@ -91,13 +91,13 @@ void RenderPipeline::OnSizeChanged(ID3D11Device* device, uint32_t width, uint32_
 
 void RenderPipeline::AddRenderPass(std::unique_ptr<RenderPass> pass)
 {
-	pass->SetRenderPassName(typeid(*pass).name()); // ƒfƒoƒbƒO—p‚ÉƒpƒX–¼‚ğİ’è
+	pass->SetRenderPassName(typeid(*pass).name()); // ãƒ‡ãƒãƒƒã‚°ç”¨ã«ãƒ‘ã‚¹åã‚’è¨­å®š
 	m_renderPasses.push_back(std::move(pass));
 }
 
-// ---------------------------------- Še•`‰æƒpƒCƒvƒ‰ƒCƒ“‚ÌƒpƒX“o˜^ˆ— ----------------------------------
+// ---------------------------------- å„æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®ãƒ‘ã‚¹ç™»éŒ²å‡¦ç† ----------------------------------
 
-// ƒV[ƒ“ƒrƒ…[‚Ì•`‰æƒpƒX‚Ì“o˜^ˆ—
+// ã‚·ãƒ¼ãƒ³ãƒ“ãƒ¥ãƒ¼ã®æç”»ãƒ‘ã‚¹ã®ç™»éŒ²å‡¦ç†
 void SceneRenderPipeline::SetupRenderPasses()
 {
 	AddRenderPass(std::make_unique<ConstantBufferPass>());
@@ -115,7 +115,7 @@ void SceneRenderPipeline::SetupRenderPasses()
 	AddRenderPass(std::make_unique<FinalPass>());
 }
 
-// ƒQ[ƒ€ƒrƒ…[‚Ì•`‰æƒpƒX‚Ì“o˜^ˆ—
+// ã‚²ãƒ¼ãƒ ãƒ“ãƒ¥ãƒ¼ã®æç”»ãƒ‘ã‚¹ã®ç™»éŒ²å‡¦ç†
 void GameRenderPipeline::SetupRenderPasses()
 {
 	AddRenderPass(std::make_unique<ConstantBufferPass>());

@@ -13,38 +13,38 @@ class BeatManager
 public:
 
 	/**
-	 * @brief ƒr[ƒgƒ}ƒl[ƒWƒƒ‚ğ‰Šú‰»‚µ‚Ü‚·B
+	 * @brief ãƒ“ãƒ¼ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
 	 */
 	static void Initialize();
 
 	/**
-	 * @brief Œ»İ‚Ìƒr[ƒgƒ^ƒCƒ~ƒ“ƒO‚©‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief ç¾åœ¨ã®ãƒ“ãƒ¼ãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‹ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	static bool IsBeatTiming();
 
 	/**
-	 * @brief ‚¿‚å‚¤‚Çƒr[ƒg‚ğ‚ñ‚¾uŠÔ‚©‚ğ•Ô‚µ‚Ü‚·B
+	 * @brief ã¡ã‚‡ã†ã©ãƒ“ãƒ¼ãƒˆã‚’åˆ»ã‚“ã ç¬é–“ã‹ã‚’è¿”ã—ã¾ã™ã€‚
 	 */
 	static bool IsJustBeat(float offset = -0.05f)
 	{
-		// ƒr[ƒgƒJƒEƒ“ƒg‚ÌXV
+		// ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã®æ›´æ–°
 		int previousBeatCount = static_cast<int>((previousSongTime + offset) / beatInterval);
 		int beatCount = static_cast<int>((songTime + offset) / beatInterval);
 		bool isBeatTiming = false;
 
-		// ‘O‰ñ‚Ìƒr[ƒgƒJƒEƒ“ƒg‚Æ”äŠr‚µ‚ÄAƒr[ƒg‚ª•Ï‚í‚Á‚½‚©‚ğƒ`ƒFƒbƒN
+		// å‰å›ã®ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã¨æ¯”è¼ƒã—ã¦ã€ãƒ“ãƒ¼ãƒˆãŒå¤‰ã‚ã£ãŸã‹ã‚’ãƒã‚§ãƒƒã‚¯
 		if (beatCount != previousBeatCount)
 		{
-			// ƒr[ƒg‚ª•Ï‚í‚Á‚½‚Æ‚«‚Ìˆ—
+			// ãƒ“ãƒ¼ãƒˆãŒå¤‰ã‚ã£ãŸã¨ãã®å‡¦ç†
 			isBeatTiming = true;
 		}
 		return isBeatTiming;
 	}
 
 	/**
-	 * @brief Œ»İ‚Ìƒr[ƒg“à‚ÌŠÔ‚ğ•Ô‚µ‚Ü‚·B
-	 * @param offset ƒIƒtƒZƒbƒgŠÔi•bjBƒfƒtƒHƒ‹ƒg‚Í -0.05 •bB
-	 * @return Œ»İ‚Ìƒr[ƒg“à‚ÌŠÔi•bjB
+	 * @brief ç¾åœ¨ã®ãƒ“ãƒ¼ãƒˆå†…ã®æ™‚é–“ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param offset ã‚ªãƒ•ã‚»ãƒƒãƒˆæ™‚é–“ï¼ˆç§’ï¼‰ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ -0.05 ç§’ã€‚
+	 * @return ç¾åœ¨ã®ãƒ“ãƒ¼ãƒˆå†…ã®æ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	static float GetTimeInCurrentBeat(float offset = -0.05f)
 	{
@@ -53,9 +53,9 @@ public:
 
 
 	/**
-	 * @brief ƒr[ƒgƒ^ƒCƒ~ƒ“ƒO‚Ì•]‰¿‚ğ•Ô‚µ‚Ü‚·B
-	 * @param offset •]‰¿‚ÌƒIƒtƒZƒbƒgŠÔi•bjBƒfƒtƒHƒ‹ƒg‚Í -0.05 •bB
-	 * @return ƒr[ƒgƒ^ƒCƒ~ƒ“ƒO‚Ì•]‰¿Œ‹‰ÊB
+	 * @brief ãƒ“ãƒ¼ãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°ã®è©•ä¾¡ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param offset è©•ä¾¡ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆæ™‚é–“ï¼ˆç§’ï¼‰ã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ -0.05 ç§’ã€‚
+	 * @return ãƒ“ãƒ¼ãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°ã®è©•ä¾¡çµæœã€‚
 	 */
 	static BeatResult CheckBeatTiming(float offset = -0.05f) 
 	{
@@ -74,25 +74,25 @@ public:
 	}
 
 	/**
-	 * @brief ƒr[ƒgƒ^ƒCƒ~ƒ“ƒO‚ğXV‚µ‚Ü‚·B
-	 * @param deltaTime ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌŒo‰ßŠÔi•bjB
+	 * @brief ãƒ“ãƒ¼ãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’æ›´æ–°ã—ã¾ã™ã€‚
+	 * @param deltaTime å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚
 	 */
 	static void Update(float deltaTime);
 private:
-	/** @brief ‘O‰ñ‚Ìƒr[ƒgƒJƒEƒ“ƒgB*/
+	/** @brief å‰å›ã®ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã€‚*/
 	static inline int previousBeatCount = -1;
-	/** @brief ƒr[ƒgƒJƒEƒ“ƒgB*/
+	/** @brief ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆã€‚*/
 	static inline int beatCount = 0;
-	/** @brief Œ»İƒr[ƒgƒ^ƒCƒ~ƒ“ƒO‚©B*/
+	/** @brief ç¾åœ¨ãƒ“ãƒ¼ãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‹ã€‚*/
 	static inline bool isBeatTiming = false;
-	/** @brief BPMiBeats Per MinutejB*/
+	/** @brief BPMï¼ˆBeats Per Minuteï¼‰ã€‚*/
 	static inline float bpm = 128.0f;
-	/** @brief ƒr[ƒgŠÔŠui•bjB*/
+	/** @brief ãƒ“ãƒ¼ãƒˆé–“éš”ï¼ˆç§’ï¼‰ã€‚*/
 	static inline float beatInterval = 60.0f / bpm;
-	/** @brief ‘O‰ñ‚Ì‹È‚ÌÄ¶ŠÔi•bjB*/
+	/** @brief å‰å›ã®æ›²ã®å†ç”Ÿæ™‚é–“ï¼ˆç§’ï¼‰ã€‚*/
 	static inline float previousSongTime = 0.0f;
-	/** @brief ‹È‚ÌÄ¶ŠÔi•bjB*/
+	/** @brief æ›²ã®å†ç”Ÿæ™‚é–“ï¼ˆç§’ï¼‰ã€‚*/
 	static inline float songTime = 0.0f;
-	/** @brief ƒr[ƒgƒ^ƒCƒ~ƒ“ƒO‚Ì‹–—eŒë·i•bjB*/
+	/** @brief ãƒ“ãƒ¼ãƒˆã‚¿ã‚¤ãƒŸãƒ³ã‚°ã®è¨±å®¹èª¤å·®ï¼ˆç§’ï¼‰ã€‚*/
 	static inline float beatTolerance = 0.1f;
 };

@@ -4,10 +4,10 @@
 class ParticlePass : public RenderPass
 {
 public:
-	// ParticlePass‚Ì‰Šú‰»ˆ—
+	// ParticlePassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// ParticlePass‚ÌÀ‘•
+	// ParticlePassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 };

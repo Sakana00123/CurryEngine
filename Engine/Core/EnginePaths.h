@@ -2,20 +2,20 @@
 
 namespace EnginePaths
 {
-    // ƒAƒZƒbƒgŠÖ˜A
+    // ã‚¢ã‚»ãƒƒãƒˆé–¢é€£
     inline constexpr const char* AssetsDir       = "./Assets/";
     inline constexpr const char* ScenesDir       = "./Assets/Scenes/";
 
-    // ƒf[ƒ^ŠÖ˜Aiƒrƒ‹ƒhÏ‚İƒŠƒ\[ƒX‚È‚Çj
+    // ãƒ‡ãƒ¼ã‚¿é–¢é€£ï¼ˆãƒ“ãƒ«ãƒ‰æ¸ˆã¿ãƒªã‚½ãƒ¼ã‚¹ãªã©ï¼‰
     inline constexpr const char* DataDir         = "./Data/";
-    inline constexpr const char* ShadersDataDir  = "./Assets/Shaders/"; // CSOƒtƒ@ƒCƒ‹‚Ìƒ[ƒhŒ³‚È‚Ç
+    inline constexpr const char* ShadersDataDir  = "./Assets/Shaders/"; // CSOãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ­ãƒ¼ãƒ‰å…ƒãªã©
     inline constexpr const char* ImagesDataDir   = "./Data/Images/";
     inline constexpr const char* IconsDir        = "./Data/Icon/";
 
-    // ƒ\[ƒXƒR[ƒhŠÖ˜A
-    inline constexpr const char* ShaderSourceDir = "./Shader/";       // HLSLEHLSLIƒtƒ@ƒCƒ‹‚Ì”z’uæ
+    // ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰é–¢é€£
+    inline constexpr const char* ShaderSourceDir = "./Shader/";       // HLSLãƒ»HLSLIãƒ•ã‚¡ã‚¤ãƒ«ã®é…ç½®å…ˆ
 
-    // ƒGƒfƒBƒ^EƒvƒƒWƒFƒNƒgŠÖ˜A
+    // ã‚¨ãƒ‡ã‚£ã‚¿ãƒ»ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆé–¢é€£
     inline constexpr const char* ProjectSettingsFile = "./ProjectSettings/settings.json";
 	inline constexpr const char* PhysicsSettingsFile = "./ProjectSettings/Physics.json";
 	inline constexpr const char* EditorConfigFile = "./ProjectSettings/EditorConfig.json";

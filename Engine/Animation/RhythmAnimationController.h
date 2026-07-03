@@ -7,34 +7,34 @@ class RhythmAnimationController : public Component
 {
 	C_REFLECT(RhythmAnimationController)
 public:
-	/** @brief GltfModelRenderer ‚Ö‚ÌQÆB*/
+	/** @brief GltfModelRenderer ã¸ã®å‚ç…§ã€‚*/
 	GltfModelRenderer* modelRenderer = nullptr;
 
-	/** @brief ƒŠƒYƒ€ƒXƒe[ƒgƒ}ƒVƒ“B*/
+	/** @brief ãƒªã‚ºãƒ ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³ã€‚*/
 	RhythmStateMachine stateMachine;
 
-	/** @brief Œ»İ‚Ìƒr[ƒgB*/
+	/** @brief ç¾åœ¨ã®ãƒ“ãƒ¼ãƒˆã€‚*/
 	int currentBeat = 0;
-	/** @brief ‘O‰ñ‚Ìƒr[ƒgB*/
+	/** @brief å‰å›ã®ãƒ“ãƒ¼ãƒˆã€‚*/
 	int previousBeat = -1;
-	/** @brief ƒr[ƒg‚Ìis‘¬“xiBPMjB*/
+	/** @brief ãƒ“ãƒ¼ãƒˆã®é€²è¡Œé€Ÿåº¦ï¼ˆBPMï¼‰ã€‚*/
 	float bpm = 120.0f;
-	/** @brief Œo‰ßŠÔi•bjB*/
+	/** @brief çµŒéæ™‚é–“ï¼ˆç§’ï¼‰ã€‚*/
 	float elapsedTime = 0.0f;
-	/** @brief Œ»İ‚ÌŠÔi•bjB*/
+	/** @brief ç¾åœ¨ã®æ™‚é–“ï¼ˆç§’ï¼‰ã€‚*/
 	float currentTime = 0.0f;
-	/** @brief 1ƒr[ƒg‚ ‚½‚è‚Ì•b”B*/
+	/** @brief 1ãƒ“ãƒ¼ãƒˆã‚ãŸã‚Šã®ç§’æ•°ã€‚*/
 	float secondsPerBeat = 0.5f;
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶‘¬“xB*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿé€Ÿåº¦ã€‚*/
 	float animationSpeed = 1.0f;
-	/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒhŠÔi•bjB*/
+	/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰æ™‚é–“ï¼ˆç§’ï¼‰ã€‚*/
 	float animationBlendTime = 0.2f;
 	
 public:
 
-	// ŠJnˆ—
+	// é–‹å§‹å‡¦ç†
 	void Start() override;
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update(float deltaTime) override;
 };

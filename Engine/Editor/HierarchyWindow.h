@@ -8,27 +8,27 @@ class ObjectManager;
 namespace CurryEngine
 {
 	/**
-	 * @brief �q�G�����L�[�E�B���h�E���Ǘ�����N���X�B�V�[�����̃I�u�W�F�N�g�̊K�w�\����\���E���삷�邽�߂̃E�B���h�E��񋟂��܂��B
+	 * @brief ヒエラルキーウィンドウを管理するクラス。シーン内のオブジェクトの階層構造を表示・操作するためのウィンドウを提供します。
 	 */
 	class HierarchyWindow
 	{
 	public:
 		HierarchyWindow() = default;
-		// �V���O���g���C���X�^���X�ւ̃A�N�Z�X(�������A�����I�ɂ͕����C���X�^���X���T�|�[�g����\�������邽�߁A�V���O���g���p�^�[���͈ꎞ�I�ȑ[�u�Ƃ��Ďg�p���Ă��܂��B)
+		// シングルトンインスタンスへのアクセス(ただし、将来的には複数インスタンスをサポートする可能性があるため、シングルトンパターンは一時的な措置として使用しています。)
 		static HierarchyWindow& Get() {
 			static HierarchyWindow instance;
 			return instance;
 		}
 
-		/** @brief �q�G�����L�[�E�B���h�E��`�悷��֐��B�V�[�����̃I�u�W�F�N�g�̊K�w�\����\���E���삵�܂��B*/
+		/** @brief ヒエラルキーウィンドウを描画する関数。シーン内のオブジェクトの階層構造を表示・操作します。*/
 		void Draw(ObjectManager* objectManager);
 	private:
 		struct PendingDrop {
-			GameObject* target;       // �h���b�v��
-			bool reorder;             // true=���ёւ� / false=�e�q�֌W
-			bool appendToEnd = false; // �����ɒǉ����邩�ǂ���
+			GameObject* target;       // ドロップ先
+			bool reorder;             // true=並び替え / false=親子関係
+			bool appendToEnd = false; // 末尾に追加するかどうか
 		};
-		// �h���b�v�����ۗ̕���Ԃ��Ǘ�����I�v�V�����B�h���b�O�I����Ƀh���b�v���������s���邽�߂Ɏg�p����܂��B
+		// ドロップ処理の保留状態を管理するオプション。ドラッグ終了後にドロップ処理を実行するために使用されます。
 		std::optional<PendingDrop> m_pendingDrop;
 	};
 }

@@ -3,7 +3,7 @@
 
 void EasingHandler::AddEasing(EaseType type, float start, float end, float duration, float back)
 {
-	//ˆ—“à—e‚ğİ’è
+	//å‡¦ç†å†…å®¹ã‚’è¨­å®š
 	EaseItem item{};
 	ToEasingFunction(type, item.function, item.backFunction);
 	item.easeData.timer = 0.0f;
@@ -15,7 +15,7 @@ void EasingHandler::AddEasing(EaseType type, float start, float end, float durat
 		item.easeData.backValue = back;
 	}
 
-	//ƒV[ƒPƒ“ƒX‚É’Ç‰Á
+	//ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã«è¿½åŠ 
 	sequence.emplace_back(item);
 
 	isCompleted = false;
@@ -23,7 +23,7 @@ void EasingHandler::AddEasing(EaseType type, float start, float end, float durat
 
 void EasingHandler::AddEasing(const EaseItem& item)
 {
-	//ƒV[ƒPƒ“ƒX‚É’Ç‰Á
+	//ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã«è¿½åŠ 
 	sequence.emplace_back(item);
 
 	isCompleted = false;
@@ -31,13 +31,13 @@ void EasingHandler::AddEasing(const EaseItem& item)
 
 void EasingHandler::AddWait(float waitTime)
 {
-	//ˆ—“à—e‚ğİ’è
+	//å‡¦ç†å†…å®¹ã‚’è¨­å®š
 	EaseItem item{};
 	item.function = nullptr;
 	item.easeData.timer = 0.0f;
 	item.easeData.totalTime = waitTime;
 
-	//ƒV[ƒPƒ“ƒX‚É’Ç‰Á
+	//ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã«è¿½åŠ 
 	sequence.emplace_back(item);
 	
 	isCompleted = false;
@@ -49,11 +49,11 @@ void EasingHandler::Update(float& value, float deltaTime)
 
 	auto& item = sequence.front();
 
-	//æ“ª‚ÌƒC[ƒWƒ“ƒOˆ—‚ğÀs‚·‚é
+	//å…ˆé ­ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°å‡¦ç†ã‚’å®Ÿè¡Œã™ã‚‹
 	{
 		item.easeData.timer += deltaTime;
 
-		//ƒC[ƒWƒ“ƒOŠÖ”
+		//ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°é–¢æ•°
 		if (item.function != nullptr)
 			value = item.function(item.easeData.timer, item.easeData.totalTime, item.easeData.endValue, item.easeData.startValue);
 		else if (item.backFunction != nullptr) {
@@ -69,7 +69,7 @@ void EasingHandler::Update(float& value, float deltaTime)
 			sequence.erase(sequence.begin());
 		}
 	}
-	//‘S‚Ä‚Ì•âŠ®ˆ—‚ªŠ®—¹‚µ‚½‚çŠ®—¹ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+	//å…¨ã¦ã®è£œå®Œå‡¦ç†ãŒå®Œäº†ã—ãŸã‚‰å®Œäº†ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	if (sequence.empty() && !isCompleted)
 	{
 		isCompleted = true;

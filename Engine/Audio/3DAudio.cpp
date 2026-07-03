@@ -10,10 +10,10 @@
 
 void C3DAudio::Initialize()
 {
-	//X3DAudio‚Ì‰Šú‰»
+	//X3DAudioã®åˆæœŸåŒ–
 	DWORD channelMask;
 	Audio::masterVoice->GetChannelMask(&channelMask);
-	channelMask = SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT; //ƒXƒeƒŒƒIŠÂ‹«‚ğ‘z’è
+	channelMask = SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT; //ã‚¹ãƒ†ãƒ¬ã‚ªç’°å¢ƒã‚’æƒ³å®š
 	X3DAudioInitialize(channelMask, X3DAUDIO_SPEED_OF_SOUND, x3dAudioHandle);
 }
 
@@ -21,18 +21,18 @@ void C3DAudio::Culculate3DAudio(GameObject* source)
 {
 	if (AudioListener* listener = AudioListener::GetListener())
 	{
-		//ƒŠƒXƒi[‚Æ‰¹Œ¹‚ÌˆÊ’u
+		//ãƒªã‚¹ãƒŠãƒ¼ã¨éŸ³æºã®ä½ç½®
 		XMFLOAT3 sourcePos = source->transform->GetWorldPosition();
 		XMFLOAT3 listenerPos = listener->GetOwner()->transform->GetWorldPosition();
 		
-		//ƒŠƒXƒi[‚Ì‘O•ûƒxƒNƒgƒ‹‚Æ‰EƒxƒNƒgƒ‹AãƒxƒNƒgƒ‹‚ğæ“¾
+		//ãƒªã‚¹ãƒŠãƒ¼ã®å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«ã¨å³ãƒ™ã‚¯ãƒˆãƒ«ã€ä¸Šãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 		XMFLOAT3 listenerForward = listener->GetOwner()->transform->GetForward();
 		XMFLOAT3 listenerRight = listener->GetOwner()->transform->GetRight();
 		XMFLOAT3 listenerUp = listener->GetOwner()->transform->GetUp();
 
 		listenerForward.z = -listenerForward.z;
 
-		//‰¹Œ¹‚Ì‘O•ûƒxƒNƒgƒ‹
+		//éŸ³æºã®å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«
 		//XMFLOAT3 emitterForward = source->transform->GetForward();
 		XMFLOAT3 emitterForward = { 0,0,0 };
 		//XMFLOAT3 emitterRight = source->transform->GetRight();
@@ -41,46 +41,46 @@ void C3DAudio::Culculate3DAudio(GameObject* source)
 		XMFLOAT3 emitterUp = { 0,0,0 };
 		
 		X3DAUDIO_LISTENER listenerData = {};
-		listenerData.OrientFront = listenerForward; // ‘O•ûƒxƒNƒgƒ‹
-		listenerData.OrientTop = listenerUp; // ãƒxƒNƒgƒ‹
-		listenerData.Position = listenerPos; // ƒvƒŒƒCƒ„[‚ÌˆÊ’u
-		listenerData.Velocity = { 0,0,0 }; // ƒvƒŒƒCƒ„[‚Ì‘¬“xiÃ~‚µ‚Ä‚¢‚éê‡‚Í0j
-		listenerData.pCone = nullptr; // ‰¹Œ¹‚ÌƒR[ƒ“ig—p‚µ‚È‚¢ê‡‚Ínullptrj
+		listenerData.OrientFront = listenerForward; // å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«
+		listenerData.OrientTop = listenerUp; // ä¸Šãƒ™ã‚¯ãƒˆãƒ«
+		listenerData.Position = listenerPos; // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®
+		listenerData.Velocity = { 0,0,0 }; // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®é€Ÿåº¦ï¼ˆé™æ­¢ã—ã¦ã„ã‚‹å ´åˆã¯0ï¼‰
+		listenerData.pCone = nullptr; // éŸ³æºã®ã‚³ãƒ¼ãƒ³ï¼ˆä½¿ç”¨ã—ãªã„å ´åˆã¯nullptrï¼‰
 
 		X3DAUDIO_EMITTER emitterData = {};
-		emitterData.Position = sourcePos; // ‰¹Œ¹‚ÌˆÊ’u
-		emitterData.Velocity = { 0,0,0 }; // ‰¹Œ¹‚Ì‘¬“xiÃ~‚µ‚Ä‚¢‚éê‡‚Í0j
-		emitterData.OrientFront = emitterForward; // ‰¹Œ¹‚Ì‘O•ûƒxƒNƒgƒ‹
-		emitterData.OrientTop = emitterUp; // ‰¹Œ¹‚ÌãƒxƒNƒgƒ‹
+		emitterData.Position = sourcePos; // éŸ³æºã®ä½ç½®
+		emitterData.Velocity = { 0,0,0 }; // éŸ³æºã®é€Ÿåº¦ï¼ˆé™æ­¢ã—ã¦ã„ã‚‹å ´åˆã¯0ï¼‰
+		emitterData.OrientFront = emitterForward; // éŸ³æºã®å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«
+		emitterData.OrientTop = emitterUp; // éŸ³æºã®ä¸Šãƒ™ã‚¯ãƒˆãƒ«
 		emitterData.ChannelCount = 1;
 		emitterData.CurveDistanceScaler = 1.0f;
 
 		X3DAUDIO_DSP_SETTINGS dspSettings = {};
 		FLOAT32 matrix[XAUDIO2_MAX_AUDIO_CHANNELS * XAUDIO2_MAX_AUDIO_CHANNELS] = {};
-		dspSettings.SrcChannelCount = 1; // ƒ‚ƒmƒ‰ƒ‹‰¹Œ¹‚È‚ç1
-		dspSettings.DstChannelCount = 2; // ƒ‚ƒmƒ‰ƒ‹‰¹Œ¹‚ğƒXƒeƒŒƒI‚É•ÏŠ·‚·‚é‚Ì‚Å2
+		dspSettings.SrcChannelCount = 1; // ãƒ¢ãƒãƒ©ãƒ«éŸ³æºãªã‚‰1
+		dspSettings.DstChannelCount = 2; // ãƒ¢ãƒãƒ©ãƒ«éŸ³æºã‚’ã‚¹ãƒ†ãƒ¬ã‚ªã«å¤‰æ›ã™ã‚‹ã®ã§2
 		dspSettings.pMatrixCoefficients = matrix;
 
-		// 3DƒI[ƒfƒBƒI‚ÌŒvZ
+		// 3Dã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã®è¨ˆç®—
 		X3DAudioCalculate(x3dAudioHandle,
 			&listenerData,
 			&emitterData,
 			X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER,
 			&dspSettings);
 
-		// ŒvZŒ‹‰Ê‚ÌƒƒOo—ÍiƒfƒoƒbƒO—pj
+		// è¨ˆç®—çµæœã®ãƒ­ã‚°å‡ºåŠ›ï¼ˆãƒ‡ãƒãƒƒã‚°ç”¨ï¼‰
 		Console::Log("Left Volume: " + std::to_string(dspSettings.pMatrixCoefficients[0]));
 		Console::Log("Right Volume: " + std::to_string(dspSettings.pMatrixCoefficients[1]));
 		Console::Log("Doppler Factor: " + std::to_string(dspSettings.DopplerFactor));
 
-		//AudioSourceƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾
+		//AudioSourceã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—
 		if (AudioSource* audioSource = source->GetComponent<AudioSource>())
 		{
-			//ŒvZŒ‹‰Ê‚ğAudioSource‚É”½‰f
-			//audioSource->SetVolume(dspSettings.pMatrixCoefficients[0]); // ¶ƒ`ƒƒƒ“ƒlƒ‹‚Ì‰¹—Ê‚ğİ’è
-			//audioSource->SetPan(dspSettings.pMatrixCoefficients[1] - dspSettings.pMatrixCoefficients[0]); // ƒpƒ“‚ğİ’èi‰E-¶j
-			audioSource->sourceVoice->SetOutputMatrix(NULL, dspSettings.SrcChannelCount, dspSettings.DstChannelCount, matrix); // o—Íƒ}ƒgƒŠƒbƒNƒX‚ğİ’è
-			audioSource->sourceVoice->SetFrequencyRatio(dspSettings.DopplerFactor); // ƒhƒbƒvƒ‰[Œø‰Ê‚Ìü”g””ä‚ğİ’è
+			//è¨ˆç®—çµæœã‚’AudioSourceã«åæ˜ 
+			//audioSource->SetVolume(dspSettings.pMatrixCoefficients[0]); // å·¦ãƒãƒ£ãƒ³ãƒãƒ«ã®éŸ³é‡ã‚’è¨­å®š
+			//audioSource->SetPan(dspSettings.pMatrixCoefficients[1] - dspSettings.pMatrixCoefficients[0]); // ãƒ‘ãƒ³ã‚’è¨­å®šï¼ˆå³-å·¦ï¼‰
+			audioSource->sourceVoice->SetOutputMatrix(NULL, dspSettings.SrcChannelCount, dspSettings.DstChannelCount, matrix); // å‡ºåŠ›ãƒãƒˆãƒªãƒƒã‚¯ã‚¹ã‚’è¨­å®š
+			audioSource->sourceVoice->SetFrequencyRatio(dspSettings.DopplerFactor); // ãƒ‰ãƒƒãƒ—ãƒ©ãƒ¼åŠ¹æœã®å‘¨æ³¢æ•°æ¯”ã‚’è¨­å®š
 		}
 	}
 }

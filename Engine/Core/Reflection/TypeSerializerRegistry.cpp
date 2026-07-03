@@ -7,7 +7,7 @@ C_REGISTER_TYPE(bool);
 C_REGISTER_TYPE(std::string);
 
 
-// “o˜^
+// ç™»éŒ²
 void TypeSerializerRegistry::Register(
 	const std::string& type,
 	const TypeSerializerInfo& info)

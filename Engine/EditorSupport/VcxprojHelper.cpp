@@ -10,10 +10,10 @@ std::queue<std::filesystem::path> VcxprojHelper::s_pendingShaderUnregistrations;
 
 static std::string ShaderTypeString(const std::filesystem::path& path)
 {
-    // Šg’£q‚ğ¬•¶š‚Åæ“¾
+    // æ‹¡å¼µå­ã‚’å°æ–‡å­—ã§å–å¾—
 	std::string filename = path.filename().string();
 	std::transform(filename.begin(), filename.end(), filename.begin(), ::tolower);
-	// Œã‚ë7•¶š‚ğŒ©‚Ä”»’èi—á: "shader.vs.hlsl" ‚Ìê‡‚Í "vs.hlsl" ‚ğŒ©‚éj
+	// å¾Œã‚7æ–‡å­—ã‚’è¦‹ã¦åˆ¤å®šï¼ˆä¾‹: "shader.vs.hlsl" ã®å ´åˆã¯ "vs.hlsl" ã‚’è¦‹ã‚‹ï¼‰
     if (filename.size() >= 7) {
         std::string suffix = filename.substr(filename.size() - 7);
         if (suffix == "vs.hlsl") return "Vertex";
@@ -28,20 +28,20 @@ static std::string ShaderTypeString(const std::filesystem::path& path)
 
 void VcxprojHelper::EnqueueShaderRegistration(const std::filesystem::path& shaderPath)
 {
-	// “o˜^‰ğœ‘Ò‚¿ƒLƒ…[‚É“¯‚¶ƒpƒX‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
+	// ç™»éŒ²è§£é™¤å¾…ã¡ã‚­ãƒ¥ãƒ¼ã«åŒã˜ãƒ‘ã‚¹ãŒå­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 	bool foundInUnregistrations = false;
 	std::queue<std::filesystem::path> tempQueue;
 	while (!s_pendingShaderUnregistrations.empty()) {
 		if (s_pendingShaderUnregistrations.front() == shaderPath) {
-			// ‚È‚É‚à‚µ‚È‚¢i‘ŠE‚³‚¹‚é‚½‚ßA“o˜^‰ğœ‘Ò‚¿‚©‚çíœ‚µ‚Ä“o˜^‚às‚í‚È‚¢j
+			// ãªã«ã‚‚ã—ãªã„ï¼ˆç›¸æ®ºã•ã›ã‚‹ãŸã‚ã€ç™»éŒ²è§£é™¤å¾…ã¡ã‹ã‚‰å‰Šé™¤ã—ã¦ç™»éŒ²ã‚‚è¡Œã‚ãªã„ï¼‰
 			foundInUnregistrations = true;
 		}
 		else {
-			tempQueue.push(s_pendingShaderUnregistrations.front()); // ˆêƒLƒ…[‚É•Û
+			tempQueue.push(s_pendingShaderUnregistrations.front()); // ä¸€æ™‚ã‚­ãƒ¥ãƒ¼ã«ä¿æŒ
 		}
 		s_pendingShaderUnregistrations.pop();
 	}
-	s_pendingShaderUnregistrations = std::move(tempQueue); // “o˜^‰ğœ‘Ò‚¿ƒLƒ…[‚ğXV
+	s_pendingShaderUnregistrations = std::move(tempQueue); // ç™»éŒ²è§£é™¤å¾…ã¡ã‚­ãƒ¥ãƒ¼ã‚’æ›´æ–°
     if (!foundInUnregistrations)
     {
         s_pendingShaderRegistrations.push(shaderPath);
@@ -50,19 +50,19 @@ void VcxprojHelper::EnqueueShaderRegistration(const std::filesystem::path& shade
 
 void VcxprojHelper::EnqueueShaderUnregistration(const std::filesystem::path& shaderPath)
 {
-    // “o˜^‘Ò‚¿ƒLƒ…[‚É“¯‚¶ƒpƒX‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
+    // ç™»éŒ²å¾…ã¡ã‚­ãƒ¥ãƒ¼ã«åŒã˜ãƒ‘ã‚¹ãŒå­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 	bool foundInRegistrations = false;
     std::queue<std::filesystem::path> tempQueue;
     while (!s_pendingShaderRegistrations.empty()) {
         if (s_pendingShaderRegistrations.front() == shaderPath) {
-			// ‚È‚É‚à‚µ‚È‚¢i‘ŠE‚³‚¹‚é‚½‚ßA“o˜^‘Ò‚¿‚©‚çíœ‚µ‚Ä“o˜^‰ğœ‚às‚í‚È‚¢j
+			// ãªã«ã‚‚ã—ãªã„ï¼ˆç›¸æ®ºã•ã›ã‚‹ãŸã‚ã€ç™»éŒ²å¾…ã¡ã‹ã‚‰å‰Šé™¤ã—ã¦ç™»éŒ²è§£é™¤ã‚‚è¡Œã‚ãªã„ï¼‰
 			foundInRegistrations = true;
         } else {
-			tempQueue.push(s_pendingShaderRegistrations.front()); // ˆêƒLƒ…[‚É•Û
+			tempQueue.push(s_pendingShaderRegistrations.front()); // ä¸€æ™‚ã‚­ãƒ¥ãƒ¼ã«ä¿æŒ
         }
         s_pendingShaderRegistrations.pop();
     }
-	s_pendingShaderRegistrations = std::move(tempQueue); // “o˜^‘Ò‚¿ƒLƒ…[‚ğXV
+	s_pendingShaderRegistrations = std::move(tempQueue); // ç™»éŒ²å¾…ã¡ã‚­ãƒ¥ãƒ¼ã‚’æ›´æ–°
 	
     if (!foundInRegistrations)
     {
@@ -85,22 +85,22 @@ bool VcxprojHelper::IsShaderRegistered(const std::filesystem::path& shaderPath)
 
 bool VcxprojHelper::IsShaderRegistrationPending(const std::filesystem::path& shaderPath)
 {
-    // “o˜^‘Ò‚¿ƒLƒ…[‚É“¯‚¶ƒpƒX‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
-    std::queue<std::filesystem::path> tempQueue = s_pendingShaderRegistrations; // ƒLƒ…[‚ğƒRƒs[‚µ‚ÄŒŸõ
+    // ç™»éŒ²å¾…ã¡ã‚­ãƒ¥ãƒ¼ã«åŒã˜ãƒ‘ã‚¹ãŒå­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+    std::queue<std::filesystem::path> tempQueue = s_pendingShaderRegistrations; // ã‚­ãƒ¥ãƒ¼ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦æ¤œç´¢
     while (!tempQueue.empty()) {
         if (tempQueue.front() == shaderPath) {
-            return true; // “o˜^‘Ò‚¿‚É‘¶İ
+            return true; // ç™»éŒ²å¾…ã¡ã«å­˜åœ¨
         }
         tempQueue.pop();
     }
-    return false; // “o˜^‘Ò‚¿‚É‘¶İ‚µ‚È‚¢
+    return false; // ç™»éŒ²å¾…ã¡ã«å­˜åœ¨ã—ãªã„
 }
 
 void VcxprojHelper::ProcessPendingShaderRegistrations()
 {
     while (!s_pendingShaderRegistrations.empty()) {
         const auto& shaderPath = s_pendingShaderRegistrations.front();
-		// hlsl ‚Æ hlsli ‚ğ•ª‚¯‚Ä“o˜^‚·‚é
+		// hlsl ã¨ hlsli ã‚’åˆ†ã‘ã¦ç™»éŒ²ã™ã‚‹
         if (shaderPath.extension() == ".hlsl") {
             if (!RegisterHLSLShader(shaderPath)) {
                 Console::LogError("Failed to register shader: " + shaderPath.string());
@@ -120,10 +120,10 @@ void VcxprojHelper::ProcessPendingShaderRegistrations()
 
 void VcxprojHelper::ProcessPendingShaderUnregistrations()
 {
-    // “o˜^‰ğœ‚Ìˆ—‚Í–¢À‘•i•K—v‚É‰‚¶‚Ä RegisterHLSLShader ‚Æ“¯—l‚Ìè‡‚ÅÀ‘•‚·‚éj
+    // ç™»éŒ²è§£é™¤ã®å‡¦ç†ã¯æœªå®Ÿè£…ï¼ˆå¿…è¦ã«å¿œã˜ã¦ RegisterHLSLShader ã¨åŒæ§˜ã®æ‰‹é †ã§å®Ÿè£…ã™ã‚‹ï¼‰
     while (!s_pendingShaderUnregistrations.empty()) {
         const auto& shaderPath = s_pendingShaderUnregistrations.front();
-		// hlsl ‚Æ hlsli ‚ğ•ª‚¯‚Ä“o˜^‰ğœ‚·‚é
+		// hlsl ã¨ hlsli ã‚’åˆ†ã‘ã¦ç™»éŒ²è§£é™¤ã™ã‚‹
         if (shaderPath.extension() == ".hlsl") {
             UnregisterHLSLShader(shaderPath);
         }
@@ -139,7 +139,7 @@ void VcxprojHelper::ProcessPendingShaderUnregistrations()
 
 bool VcxprojHelper::RegisterHLSLShader(const std::filesystem::path& shaderPath)
 {
-    // --- 1. ƒtƒ@ƒCƒ‹“Ç‚İ‚İ ---
+    // --- 1. ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ ---
 	auto vcxprojPath = std::filesystem::path(s_vcxprojPath);
     std::ifstream ifs(vcxprojPath);
     if (!ifs) return false;
@@ -147,19 +147,19 @@ bool VcxprojHelper::RegisterHLSLShader(const std::filesystem::path& shaderPath)
         std::istreambuf_iterator<char>());
     ifs.close();
 
-    // --- 2. .vcxproj ‚©‚ç‚Ì‘Š‘ÎƒpƒX‚É•ÏŠ· ---
-    // Include‘®«‚Í .vcxproj ‚©‚ç‚Ì‘Š‘ÎƒpƒX‚Å‘‚­
+    // --- 2. .vcxproj ã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹ã«å¤‰æ› ---
+    // Includeå±æ€§ã¯ .vcxproj ã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹ã§æ›¸ã
     //auto relativePath = std::filesystem::relative(shaderPath, vcxprojPath.parent_path());
-    // Windows ‚Ì‹æØ‚è•¶š‚É“ˆê
+    // Windows ã®åŒºåˆ‡ã‚Šæ–‡å­—ã«çµ±ä¸€
     std::string includeStr = shaderPath.string();
     std::ranges::replace(includeStr, '/', '\\');
 
-    // --- 3. d•¡ƒ`ƒFƒbƒN ---
+    // --- 3. é‡è¤‡ãƒã‚§ãƒƒã‚¯ ---
     if (content.find("Include=\"" + includeStr + "\"") != std::string::npos) {
-        return true; // Šù‚É“o˜^Ï‚İ
+        return true; // æ—¢ã«ç™»éŒ²æ¸ˆã¿
     }
 
-    // --- 4. ‘}“üXML‚ğ‘g‚İ—§‚Ä ---
+    // --- 4. æŒ¿å…¥XMLã‚’çµ„ã¿ç«‹ã¦ ---
     std::string shaderType = ShaderTypeString(shaderPath);
     if (shaderType == "Unknown") {
         Console::LogError("Unrecognized shader type for file: " + shaderPath.string());
@@ -173,30 +173,30 @@ bool VcxprojHelper::RegisterHLSLShader(const std::filesystem::path& shaderPath)
         + shaderType + "</ShaderType>\n"
         "    </FxCompile>\n";
 
-    // --- 5. Šù‘¶‚Ì FxCompile ItemGroup ‚Ì––”ö‚É‘}“ü ---
-    // "</FxCompile>" ‚ªÅŒã‚ÉoŒ»‚·‚éˆÊ’u‚Ì’¼Œã‚É·‚µ‚Ş
+    // --- 5. æ—¢å­˜ã® FxCompile ItemGroup ã®æœ«å°¾ã«æŒ¿å…¥ ---
+    // "</FxCompile>" ãŒæœ€å¾Œã«å‡ºç¾ã™ã‚‹ä½ç½®ã®ç›´å¾Œã«å·®ã—è¾¼ã‚€
     auto insertPos = content.rfind("</FxCompile>");
     if (insertPos == std::string::npos) {
-        // FxCompile ƒGƒ“ƒgƒŠ‚ª‚Ü‚¾1‚Â‚à‚È‚¢ê‡: </ItemGroup> ‚Ì‘O‚É‘}“ü
-        // (FxCompile ê—p ItemGroup ‚ª‚ ‚é‘O’ñB‚È‚¯‚ê‚Î•Ê“rì¬‚ª•K—v)
+        // FxCompile ã‚¨ãƒ³ãƒˆãƒªãŒã¾ã 1ã¤ã‚‚ãªã„å ´åˆ: </ItemGroup> ã®å‰ã«æŒ¿å…¥
+        // (FxCompile å°‚ç”¨ ItemGroup ãŒã‚ã‚‹å‰æã€‚ãªã‘ã‚Œã°åˆ¥é€”ä½œæˆãŒå¿…è¦)
         insertPos = content.rfind("</ItemGroup>");
         if (insertPos == std::string::npos) return false;
         content.insert(insertPos, entry);
     }
     else {
-        // "</FxCompile>" ‚Ìs–– (\nŠÜ‚Ş) ‚Ì’¼Œã‚É‘}“ü
+        // "</FxCompile>" ã®è¡Œæœ« (\nå«ã‚€) ã®ç›´å¾Œã«æŒ¿å…¥
         insertPos = content.find('\n', insertPos);
         if (insertPos == std::string::npos) return false;
         content.insert(insertPos + 1, entry);
     }
 
-    // --- 6. ‘‚«–ß‚µ ---
+    // --- 6. æ›¸ãæˆ»ã— ---
     std::ofstream ofs(vcxprojPath);
     if (!ofs) return false;
     ofs << content;
-	ofs.close(); // flush ‚Æ close ‚ğ–¾¦“I‚ÉŒÄ‚Ô‚±‚Æ‚ÅA‘‚«‚İ¸”s‚ğŒŸo‚µ‚â‚·‚­‚·‚é
+	ofs.close(); // flush ã¨ close ã‚’æ˜ç¤ºçš„ã«å‘¼ã¶ã“ã¨ã§ã€æ›¸ãè¾¼ã¿å¤±æ•—ã‚’æ¤œå‡ºã—ã‚„ã™ãã™ã‚‹
 
-	//// --- 7. Visual Studio ‚ÉƒŠƒ[ƒh‚ğ‘£‚· ---
+	//// --- 7. Visual Studio ã«ãƒªãƒ­ãƒ¼ãƒ‰ã‚’ä¿ƒã™ ---
  //   if (!VSProjectReloader::ReloadProject(vcxprojPath.wstring())) {
  //       Console::LogError("Failed to reload project in Visual Studio: " + vcxprojPath.string());
  //       return false;
@@ -207,41 +207,41 @@ bool VcxprojHelper::RegisterHLSLShader(const std::filesystem::path& shaderPath)
 
 bool VcxprojHelper::RegisterHLSLIFile(const std::filesystem::path& shaderPath)
 {
-    // --- 1. ƒtƒ@ƒCƒ‹“Ç‚İ‚İ ---
+    // --- 1. ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ ---
     auto vcxprojPath = std::filesystem::path(s_vcxprojPath);
     std::ifstream ifs(vcxprojPath);
     if (!ifs) return false;
     std::string content((std::istreambuf_iterator<char>(ifs)),
         std::istreambuf_iterator<char>());
     ifs.close();
-    // --- 2. .vcxproj ‚©‚ç‚Ì‘Š‘ÎƒpƒX‚É•ÏŠ· ---
+    // --- 2. .vcxproj ã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹ã«å¤‰æ› ---
     //auto relativePath = std::filesystem::relative(shaderPath, vcxprojPath.parent_path());
     std::string includeStr = shaderPath.string();
     std::ranges::replace(includeStr, '/', '\\');
-    // --- 3. d•¡ƒ`ƒFƒbƒN ---
+    // --- 3. é‡è¤‡ãƒã‚§ãƒƒã‚¯ ---
     if (content.find("Include=\"" + includeStr + "\"") != std::string::npos) {
-        return true; // Šù‚É“o˜^Ï‚İ
+        return true; // æ—¢ã«ç™»éŒ²æ¸ˆã¿
     }
-    // --- 4. ‘}“üXML‚ğ‘g‚İ—§‚Ä ---
+    // --- 4. æŒ¿å…¥XMLã‚’çµ„ã¿ç«‹ã¦ ---
     std::string entry =
         "    <None Include=\"" + includeStr + "\" />\n";
 
-    // --- 5. .hlsli ‚Ì ItemGroup ––”ö‚ğ“Á’è‚µ‚Ä‘}“ü ---
-    // ".hlsli" ‚ğŠÜ‚Ş <None Include> ‚ªÅŒã‚ÉoŒ»‚·‚és‚Ì’¼Œã‚É·‚µ‚Ş
+    // --- 5. .hlsli ã® ItemGroup æœ«å°¾ã‚’ç‰¹å®šã—ã¦æŒ¿å…¥ ---
+    // ".hlsli" ã‚’å«ã‚€ <None Include> ãŒæœ€å¾Œã«å‡ºç¾ã™ã‚‹è¡Œã®ç›´å¾Œã«å·®ã—è¾¼ã‚€
     auto insertPos = std::string::npos;
     size_t searchFrom = 0;
     while (true) {
         auto pos = content.find(".hlsli\"", searchFrom);
         if (pos == std::string::npos) break;
-        // ‚»‚Ìs–– (\n) ‚ğ‹L˜^‚µ‚ÄŸ‚ğ’T‚·
+        // ãã®è¡Œæœ« (\n) ã‚’è¨˜éŒ²ã—ã¦æ¬¡ã‚’æ¢ã™
         insertPos = content.find('\n', pos);
         if (insertPos == std::string::npos) break;
         searchFrom = insertPos + 1;
     }
 
     if (insertPos == std::string::npos) {
-        // .hlsli ƒGƒ“ƒgƒŠ‚ª1‚Â‚à‚È‚¢ê‡‚ÌƒtƒH[ƒ‹ƒoƒbƒN:
-        // <None Include= ‚ªÅŒã‚ÉoŒ»‚·‚és––‚Ì’¼Œã
+        // .hlsli ã‚¨ãƒ³ãƒˆãƒªãŒ1ã¤ã‚‚ãªã„å ´åˆã®ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯:
+        // <None Include= ãŒæœ€å¾Œã«å‡ºç¾ã™ã‚‹è¡Œæœ«ã®ç›´å¾Œ
         searchFrom = 0;
         while (true) {
             auto pos = content.find("<None Include=", searchFrom);
@@ -256,13 +256,13 @@ bool VcxprojHelper::RegisterHLSLIFile(const std::filesystem::path& shaderPath)
 
     content.insert(insertPos + 1, entry);
 
-    // --- 6. ‘‚«–ß‚µ ---
+    // --- 6. æ›¸ãæˆ»ã— ---
     std::ofstream ofs(vcxprojPath);
     if (!ofs) return false;
     ofs << content;
 	ofs.close();
 
- //   // --- 7. Visual Studio ‚ÉƒŠƒ[ƒh‚ğ‘£‚· ---
+ //   // --- 7. Visual Studio ã«ãƒªãƒ­ãƒ¼ãƒ‰ã‚’ä¿ƒã™ ---
  //   if (!VSProjectReloader::ReloadProject(vcxprojPath.wstring())) {
  //       Console::LogError("Failed to reload project in Visual Studio: " + vcxprojPath.string());
  //       return false;
@@ -273,36 +273,36 @@ bool VcxprojHelper::RegisterHLSLIFile(const std::filesystem::path& shaderPath)
 
 bool VcxprojHelper::UnregisterHLSLShader(const std::filesystem::path& shaderPath)
 {
-	// RegisterHLSLShader ‚Æ“¯—l‚Ìè‡‚Å .vcxproj ‚ğ“Ç‚İ‚İAŠY“–‚·‚é <FxCompile Include="..."> ƒGƒ“ƒgƒŠ‚ğíœ‚µ‚Ä‘‚«–ß‚·
-	// --- 1. ƒtƒ@ƒCƒ‹“Ç‚İ‚İ ---
+	// RegisterHLSLShader ã¨åŒæ§˜ã®æ‰‹é †ã§ .vcxproj ã‚’èª­ã¿è¾¼ã¿ã€è©²å½“ã™ã‚‹ <FxCompile Include="..."> ã‚¨ãƒ³ãƒˆãƒªã‚’å‰Šé™¤ã—ã¦æ›¸ãæˆ»ã™
+	// --- 1. ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ ---
 	auto vcxprojPath = std::filesystem::path(s_vcxprojPath);
 	std::ifstream ifs(vcxprojPath);
 	if (!ifs) return false;
 	std::string content((std::istreambuf_iterator<char>(ifs)),
 		std::istreambuf_iterator<char>());
 	ifs.close();
-	// --- 2. .vcxproj ‚©‚ç‚Ì‘Š‘ÎƒpƒX‚É•ÏŠ· ---
+	// --- 2. .vcxproj ã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹ã«å¤‰æ› ---
 	std::string includeStr = shaderPath.string();
 	std::ranges::replace(includeStr, '/', '\\');
-	// --- 3. ƒGƒ“ƒgƒŠ‚ÌˆÊ’u‚ğ“Á’è ---
+	// --- 3. ã‚¨ãƒ³ãƒˆãƒªã®ä½ç½®ã‚’ç‰¹å®š ---
 	std::string entryStart = "    <FxCompile Include=\"" + includeStr + "\"";
 	size_t pos = content.find(entryStart);
 	if (pos == std::string::npos) {
-		return true; // ƒGƒ“ƒgƒŠ‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍŠù‚É“o˜^‰ğœ‚³‚ê‚Ä‚¢‚é‚Æ‚İ‚È‚·
+		return true; // ã‚¨ãƒ³ãƒˆãƒªãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯æ—¢ã«ç™»éŒ²è§£é™¤ã•ã‚Œã¦ã„ã‚‹ã¨ã¿ãªã™
 	}
-	// ƒGƒ“ƒgƒŠ‚ÌI—¹ˆÊ’u‚ğŒ©‚Â‚¯‚éiŸ‚Ì </FxCompile> ‚Ü‚Åj
+	// ã‚¨ãƒ³ãƒˆãƒªã®çµ‚äº†ä½ç½®ã‚’è¦‹ã¤ã‘ã‚‹ï¼ˆæ¬¡ã® </FxCompile> ã¾ã§ï¼‰
 	size_t entryEnd = content.find("</FxCompile>", pos);
 	if (entryEnd == std::string::npos) {
-		return false; // •s³‚ÈŒ`®
+		return false; // ä¸æ­£ãªå½¢å¼
 	}
 	entryEnd = content.find('\n', entryEnd);
 	if (entryEnd == std::string::npos) {
-		return false; // •s³‚ÈŒ`®
+		return false; // ä¸æ­£ãªå½¢å¼
 	}
-	// --- 4. ƒGƒ“ƒgƒŠ‚ğíœ ---
+	// --- 4. ã‚¨ãƒ³ãƒˆãƒªã‚’å‰Šé™¤ ---
 	content.erase(pos, entryEnd - pos + 1);
 
-	// --- 5. ‘‚«–ß‚µ ---
+	// --- 5. æ›¸ãæˆ»ã— ---
 	std::ofstream ofs(vcxprojPath);
 	if (!ofs) return false;
 	ofs << content;
@@ -313,32 +313,32 @@ bool VcxprojHelper::UnregisterHLSLShader(const std::filesystem::path& shaderPath
 
 bool VcxprojHelper::UnregisterHLSLIFile(const std::filesystem::path& shaderPath)
 {
-    // RegisterHLSLIFile ‚Æ“¯—l‚Ìè‡‚Å .vcxproj ‚ğ“Ç‚İ‚İAŠY“–‚·‚é <None Include="..."> ƒGƒ“ƒgƒŠ‚ğíœ‚µ‚Ä‘‚«–ß‚·
-	// --- 1. ƒtƒ@ƒCƒ‹“Ç‚İ‚İ ---
+    // RegisterHLSLIFile ã¨åŒæ§˜ã®æ‰‹é †ã§ .vcxproj ã‚’èª­ã¿è¾¼ã¿ã€è©²å½“ã™ã‚‹ <None Include="..."> ã‚¨ãƒ³ãƒˆãƒªã‚’å‰Šé™¤ã—ã¦æ›¸ãæˆ»ã™
+	// --- 1. ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ ---
 	auto vcxprojPath = std::filesystem::path(s_vcxprojPath);
 	std::ifstream ifs(vcxprojPath);
 	if (!ifs) return false;
 	std::string content((std::istreambuf_iterator<char>(ifs)),
 		std::istreambuf_iterator<char>());
 	ifs.close();
-	// --- 2. .vcxproj ‚©‚ç‚Ì‘Š‘ÎƒpƒX‚É•ÏŠ· ---
+	// --- 2. .vcxproj ã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹ã«å¤‰æ› ---
 	std::string includeStr = shaderPath.string();
 	std::ranges::replace(includeStr, '/', '\\');
-	// --- 3. ƒGƒ“ƒgƒŠ‚ÌˆÊ’u‚ğ“Á’è ---
+	// --- 3. ã‚¨ãƒ³ãƒˆãƒªã®ä½ç½®ã‚’ç‰¹å®š ---
 	std::string entryStart = "    <None Include=\"" + includeStr + "\"";
 	size_t pos = content.find(entryStart);
 	if (pos == std::string::npos) {
-		return true; // ƒGƒ“ƒgƒŠ‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍŠù‚É“o˜^‰ğœ‚³‚ê‚Ä‚¢‚é‚Æ‚İ‚È‚·
+		return true; // ã‚¨ãƒ³ãƒˆãƒªãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯æ—¢ã«ç™»éŒ²è§£é™¤ã•ã‚Œã¦ã„ã‚‹ã¨ã¿ãªã™
 	}
-	// ƒGƒ“ƒgƒŠ‚ÌI—¹ˆÊ’u‚ğŒ©‚Â‚¯‚éis––‚Ü‚Åj
+	// ã‚¨ãƒ³ãƒˆãƒªã®çµ‚äº†ä½ç½®ã‚’è¦‹ã¤ã‘ã‚‹ï¼ˆè¡Œæœ«ã¾ã§ï¼‰
 	size_t entryEnd = content.find('\n', pos);
 	if (entryEnd == std::string::npos) {
-		return false; // •s³‚ÈŒ`®
+		return false; // ä¸æ­£ãªå½¢å¼
 	}
-	// --- 4. ƒGƒ“ƒgƒŠ‚ğíœ ---
+	// --- 4. ã‚¨ãƒ³ãƒˆãƒªã‚’å‰Šé™¤ ---
 	content.erase(pos, entryEnd - pos + 1);
 
-	// --- 5. ‘‚«–ß‚µ ---
+	// --- 5. æ›¸ãæˆ»ã— ---
 	std::ofstream ofs(vcxprojPath);
 	if (!ofs) return false;
 	ofs << content;

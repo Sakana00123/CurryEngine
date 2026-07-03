@@ -4,8 +4,8 @@
 namespace CurryEngine::Resources
 {
 	/**
-	 * @brief ���f���̃C���|�[�g�ݒ��`�悷�邽�߂̃N���X�B���f���A�Z�b�g�̃C���|�[�g�ݒ��GUI��ŕҏW���邽�߂̕`�惍�W�b�N��񋟂��܂��B
-	 * @details ���̃N���X�́A���f���A�Z�b�g�̃C���|�[�g�ݒ�����[�U�[���ҏW�ł���悤�ɂ��邽�߂�GUI�`��@�\��񋟂��܂��B�Ⴆ�΁A�X�P�[�����O�W����ÓI�o�b�`���O�̗L�����Ȃǂ̐ݒ��ύX���邱�Ƃ��ł��܂��B
+	 * @brief モデルのインポート設定を描画するためのクラス。モデルアセットのインポート設定をGUI上で編集するための描画ロジックを提供します。
+	 * @details このクラスは、モデルアセットのインポート設定をユーザーが編集できるようにするためのGUI描画機能を提供します。例えば、スケーリング係数や静的バッチングの有効化などの設定を変更することができます。
 	 */
 	class ModelImportSettingsDrawer : public IImportSettingsDrawer
 	{
@@ -16,22 +16,22 @@ namespace CurryEngine::Resources
 
 		void Draw3DPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context) override;
 		/**
-		 * @brief �v���r���[�p�̃��\�[�X��`�悷��֐��B
-		 * @param previewResource �v���r���[�Ƃ��ĕ\�����郊�\�[�X�ւ̋��L�|�C���^�B
-		 * @param context �`��Ɏg�p���郌���_�����O�R���e�L�X�g�B�K�v�ɉ����āA�`�揈���ł��̃R���e�L�X�g���g�p���ă��\�[�X�̕`����s���܂��B
-		 * @details ���̊֐��́A���f���A�Z�b�g�̃v���r���[��GUI��ɕ`�悵�܂��B�v���r���[�����p�ł��Ȃ��ꍇ�́A�K�؂ȃ��b�Z�[�W��\�����܂��B
+		 * @brief プレビュー用のリソースを描画する関数。
+		 * @param previewResource プレビューとして表示するリソースへの共有ポインタ。
+		 * @param context 描画に使用するレンダリングコンテキスト。必要に応じて、描画処理でこのコンテキストを使用してリソースの描画を行います。
+		 * @details この関数は、モデルアセットのプレビューをGUI上に描画します。プレビューが利用できない場合は、適切なメッセージを表示します。
 		 */
 		void DrawPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context) override;
 		/**
-		 * @brief �C���|�[�g�ݒ�t�B�[���h��`�悵�A���[�U�[���ҏW�ł���悤�ɂ���֐��B
-		 * @param editingSettings ���ݕҏW���̃C���|�[�g�ݒ��ێ�����JSON�I�u�W�F�N�g�ւ̎Q�ƁB
-		 * @param isDirty �ݒ肪�ύX���ꂽ���ǂ����������t���O�ւ̎Q�ƁB�ύX���������ꍇ��true�ɐݒ肳��܂��B
-		 * @return �ݒ肪�ύX���ꂽ�ꍇ��true�A����ȊO�̏ꍇ��false��Ԃ��܂��B
+		 * @brief インポート設定フィールドを描画し、ユーザーが編集できるようにする関数。
+		 * @param editingSettings 現在編集中のインポート設定を保持するJSONオブジェクトへの参照。
+		 * @param isDirty 設定が変更されたかどうかを示すフラグへの参照。変更があった場合はtrueに設定されます。
+		 * @return 設定が変更された場合はtrue、それ以外の場合はfalseを返します。
 		 */
 		bool DrawSettingsFields(nlohmann::json& editingSettings, bool& isDirty) override;
 		/**
-		 * @brief �f�t�H���g�̃C���|�[�g�ݒ���擾����֐��B
-		 * @return �f�t�H���g�̃C���|�[�g�ݒ��\��JSON�I�u�W�F�N�g�B
+		 * @brief デフォルトのインポート設定を取得する関数。
+		 * @return デフォルトのインポート設定を表すJSONオブジェクト。
 		 */
 		nlohmann::json GetDefaultSettings() const override;
 	};

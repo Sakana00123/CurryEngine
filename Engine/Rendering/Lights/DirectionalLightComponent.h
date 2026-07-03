@@ -19,7 +19,7 @@ public:
 	DirectionalLight GetDirectionalLight() const;
 
 #ifdef USE_IMGUI
-	// プロパティ描画
+	// 繝励Ο繝代ユ繧｣謠冗判
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 

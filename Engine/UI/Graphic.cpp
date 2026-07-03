@@ -8,7 +8,7 @@ REGISTER_COMPONENT_WITH_ATTRIBUTES(Graphic, "UI", ComponentAttributes::HideInAdd
 
 void Graphic::OnEnable()
 {
-	if (GetOwner() == nullptr) return; // Š‘® GameObject ‚ª–³Œø‚Èê‡‚Íˆ—‚µ‚È‚¢
+	if (GetOwner() == nullptr) return; // æ‰€å± GameObject ãŒç„¡åŠ¹ãªå ´åˆã¯å‡¦ç†ã—ãªã„
 
 	if (Canvas* canvas = GetOwner()->GetComponentInParent<Canvas>()) {
 		canvas->RegisterGraphic(this);
@@ -17,7 +17,7 @@ void Graphic::OnEnable()
 
 void Graphic::OnDisable()
 {
-	if (GetOwner() == nullptr) return; // Š‘® GameObject ‚ª–³Œø‚Èê‡‚Íˆ—‚µ‚È‚¢
+	if (GetOwner() == nullptr) return; // æ‰€å± GameObject ãŒç„¡åŠ¹ãªå ´åˆã¯å‡¦ç†ã—ãªã„
 
 	if (Canvas* canvas = GetOwner()->GetComponentInParent<Canvas>()) {
 		canvas->UnregisterGraphic(this);
@@ -26,18 +26,18 @@ void Graphic::OnDisable()
 
 Canvas* Graphic::GetCanvas() const
 {
-	if (GetOwner() == nullptr) return nullptr; // Š‘® GameObject ‚ª–³Œø‚Èê‡‚Í nullptr ‚ğ•Ô‚·
+	if (GetOwner() == nullptr) return nullptr; // æ‰€å± GameObject ãŒç„¡åŠ¹ãªå ´åˆã¯ nullptr ã‚’è¿”ã™
 	return GetOwner()->GetComponentInParent<Canvas>();
 }
 
 bool Graphic::Raycast(const Vector2& position)
 {
 	if (isRaycastTarget) {
-		if (!GetRectTransform()) return false; // RectTransform ‚ª‚È‚¢ê‡‚Í“–‚½‚è”»’è‚Å‚«‚È‚¢
+		if (!GetRectTransform()) return false; // RectTransform ãŒãªã„å ´åˆã¯å½“ãŸã‚Šåˆ¤å®šã§ããªã„
 		if (!GetRectTransform()->Contains(position))
-			return false; // ‹éŒ`“à‚É‚È‚¢ê‡‚Í“–‚½‚è”»’è‚È‚µ
+			return false; // çŸ©å½¢å†…ã«ãªã„å ´åˆã¯å½“ãŸã‚Šåˆ¤å®šãªã—
 
-		// ‘cæ‚ÌMask‚ÅƒNƒŠƒbƒsƒ“ƒO
+		// ç¥–å…ˆã®Maskã§ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°
 		auto* parent = GetOwner()->GetParent();
 
 		while (parent) {
@@ -45,13 +45,13 @@ bool Graphic::Raycast(const Vector2& position)
 				D3D11_RECT scissorRect = mask->GetScissorRect();
 				if (position.x < scissorRect.left || position.x > scissorRect.right ||
 					position.y < scissorRect.top || position.y > scissorRect.bottom) {
-					return false; // ƒ}ƒXƒN‚Ì‹éŒ`ŠO‚É‚ ‚éê‡‚Í“–‚½‚è”»’è‚È‚µ
+					return false; // ãƒã‚¹ã‚¯ã®çŸ©å½¢å¤–ã«ã‚ã‚‹å ´åˆã¯å½“ãŸã‚Šåˆ¤å®šãªã—
 				}
 			}
 			parent = parent->GetParent();
 		}
 
-		return true; // “–‚½‚è”»’è‚ ‚è
+		return true; // å½“ãŸã‚Šåˆ¤å®šã‚ã‚Š
 	}
 	return false;
 }

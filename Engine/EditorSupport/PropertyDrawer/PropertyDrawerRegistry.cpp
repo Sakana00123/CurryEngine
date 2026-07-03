@@ -25,7 +25,7 @@ namespace CurryEngine
 
 	PropertyDrawerRegistry::PropertyDrawerRegistry()
 	{
-		// TODO: ���ƂŎ����o�^�@�\����������\��Ȃ̂ŁA����͎蓮�Ńh�����[��o�^���邽�߂̃R�[�h���R���X�g���N�^�ɏ����Ă��܂��B
+		// TODO: あとで自動登録機能を実装する予定なので、現状は手動でドロワーを登録するためのコードをコンストラクタに書いています。
 		Register("bool", std::make_unique<BoolDrawer>());
 		Register("int", std::make_unique<IntDrawer>());
 		Register("float", std::make_unique<FloatDrawer>());
@@ -40,7 +40,7 @@ namespace CurryEngine
 		Register("Color", std::make_unique<ColorDrawer>());
 		Register("ObjectId", std::make_unique<ObjectIdDrawer>());
 		Register("String_AssetReference", std::make_unique<AssetReferenceDrawer>());
-		// EnumDrawer �͓���̌^�Ɉˑ����Ȃ����߁A"Enum" �Ƃ����L�[�œo�^���܂��BCustomDrawer �����ł��̃L�[���w�肷�邱�ƂŁA�C�ӂ̗񋓌^�ɑ΂��� EnumDrawer ���g�p�ł��܂��B
+		// EnumDrawer は特定の型に依存しないため、"Enum" というキーで登録します。CustomDrawer 属性でこのキーを指定することで、任意の列挙型に対して EnumDrawer を使用できます。
 		Register("Enum", std::make_unique<EnumDrawer>());
 	}
 
@@ -56,6 +56,6 @@ namespace CurryEngine
 		{
 			return it->second.get();
 		}
-		return nullptr; // ������Ȃ��ꍇ�� nullptr ��Ԃ�
+		return nullptr; // 見つからない場合は nullptr を返す
 	}
 }

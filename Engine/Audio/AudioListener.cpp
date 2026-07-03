@@ -10,7 +10,7 @@ REGISTER_COMPONENT(AudioListener, "Audio")
 
 AudioListener::~AudioListener()
 {
-	//���������݂̃��X�i�[�Ȃ烊�Z�b�g����
+	//自分が現在のリスナーならリセットする
 	if (listener == this)
 	{
 		listener = nullptr;
@@ -19,7 +19,7 @@ AudioListener::~AudioListener()
 
 void AudioListener::Awake()
 {
-	//�ŏ��ɐ������ꂽ���X�i�[�����݂̃��X�i�[�Ƃ���
+	//最初に生成されたリスナーを現在のリスナーとする
 	listener = this;
 }
 

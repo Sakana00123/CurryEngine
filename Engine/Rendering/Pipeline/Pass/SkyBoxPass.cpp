@@ -7,7 +7,7 @@ void SkyBoxPass::Initialize()
 {
 	skymap = std::make_unique<Skymap>(Graphics::GetDevice());
 
-	// ƒQ[ƒ€”wŒiƒeƒNƒXƒ`ƒƒ‚Ìƒ[ƒh
+	// ã‚²ãƒ¼ãƒ èƒŒæ™¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ­ãƒ¼ãƒ‰
 	/*gameBackgroundTexture = ResourceManager::GetOrLoad<AssetTexture>("./Assets/Texture/image2.png");
 	backgroundMaterial = std::make_unique<Material>();
 	backgroundMaterial->SetShader(Graphics::GetDevice(), ResourceManager::GetOrLoadShader<PixelShader>("BackgroundShaderPS"));
@@ -19,7 +19,7 @@ void SkyBoxPass::Execute(RenderContext* rtx, Scene* scene)
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 
-	// ƒXƒJƒCƒ}ƒbƒv‚Ì•`‰æ
+	// ã‚¹ã‚«ã‚¤ãƒãƒƒãƒ—ã®æç”»
 	if (skymap)
 	{
 		renderState->BindDepthStencilState(immediateContext, DepthStencilState::NoTestNoWrite);
@@ -29,23 +29,23 @@ void SkyBoxPass::Execute(RenderContext* rtx, Scene* scene)
 
 	//if (gameBackgroundTexture)
 	//{
-	//	// ƒQ[ƒ€”wŒiƒeƒNƒXƒ`ƒƒ‚Ì•`‰æ
+	//	// ã‚²ãƒ¼ãƒ èƒŒæ™¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æç”»
 	//	renderState->BindDepthStencilState(immediateContext, DepthStencilState::NoTestNoWrite);
 	//	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
 
-	//	//Vector2 offset = { 0.0f, 0.0f }; // ƒIƒtƒZƒbƒg‚ğ•K—v‚É‰‚¶‚Ä•ÏX
-	//	//offset.x -= rtx->totalTime * 0.01f; // ŠÔŒo‰ß‚É‰‚¶‚ÄƒIƒtƒZƒbƒg‚ğ•ÏXi—á: ‚ä‚Á‚­‚è‚Æ‰E‚ÉƒXƒNƒ[ƒ‹j
+	//	//Vector2 offset = { 0.0f, 0.0f }; // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’å¿…è¦ã«å¿œã˜ã¦å¤‰æ›´
+	//	//offset.x -= rtx->totalTime * 0.01f; // æ™‚é–“çµŒéã«å¿œã˜ã¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’å¤‰æ›´ï¼ˆä¾‹: ã‚†ã£ãã‚Šã¨å³ã«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ï¼‰
 	//	//offset.y += rtx->totalTime * 0.01f; 
 	//	//backgroundMaterial->SetValue("uvOffset", offset);
 
-	//	// ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒNƒAƒbƒh‚ğ•`‰æ
+	//	// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¯ã‚¢ãƒƒãƒ‰ã‚’æç”»
 	//	rtx->DrawFullScreenQuad(backgroundMaterial.get());
 	//}
 }
 
 void SkyBoxPass::DrawProperty()
 {
-	// ImGui ‚ğg—p‚µ‚ÄƒvƒƒpƒeƒB‚ğ•`‰æ
+	// ImGui ã‚’ä½¿ç”¨ã—ã¦ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»
 #ifdef USE_IMGUI
 	if (ImGui::CollapsingHeader("SkyBoxPass"), ImGuiTreeNodeFlags_DefaultOpen)
 	{
@@ -59,7 +59,7 @@ void SkyBoxPass::DrawProperty()
 			ImGui::Text("Not Loaded");
 		}
 		ImGui::Separator();
-		// ƒQ[ƒ€”wŒiƒeƒNƒXƒ`ƒƒ‚ÌƒvƒƒpƒeƒB
+		// ã‚²ãƒ¼ãƒ èƒŒæ™¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 		ImGui::Text("Game Background Material:");
 		if (backgroundMaterial)
 		{

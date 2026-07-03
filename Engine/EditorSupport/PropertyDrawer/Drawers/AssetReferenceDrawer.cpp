@@ -20,7 +20,7 @@ namespace CurryEngine
 
 		char buffer[256];
 		strncpy_s(buffer, mixed ? "---" : value.c_str(), sizeof(buffer));
-		buffer[sizeof(buffer) - 1] = '\0'; // ƒoƒbƒtƒ@‚ÌÅŒã‚ğ null ‚ÅI’[
+		buffer[sizeof(buffer) - 1] = '\0'; // ãƒãƒƒãƒ•ã‚¡ã®æœ€å¾Œã‚’ null ã§çµ‚ç«¯
 		bool edited = ImGui::InputText("##string", buffer, sizeof(buffer));
 		bool activated = ImGui::IsItemActivated();
 		bool deactivatedAfterEdit = ImGui::IsItemDeactivatedAfterEdit();
@@ -30,26 +30,26 @@ namespace CurryEngine
 		}
 
 		ImGui::SameLine();
-		// ƒtƒ@ƒCƒ‹‘I‘ğƒ{ƒ^ƒ“
+		// ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒœã‚¿ãƒ³
 		if (ImGui::Button("..."))
 		{
-			// ƒ_ƒCƒAƒƒO‚ğŠJ‚¢‚ÄƒGƒtƒFƒNƒgƒf[ƒ^‚ğ‘I‘ğ
+			// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‹ã„ã¦ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’é¸æŠ
 			char filename[256]{};
-			char filter[MAX_PATH] = "All Files (*.*)|*.*|"; // ƒtƒBƒ‹ƒ^‚Ì—áB•K—v‚É‰‚¶‚Ä•ÏX‚µ‚Ä‚­‚¾‚³‚¢B
+			char filter[MAX_PATH] = "All Files (*.*)|*.*|"; // ãƒ•ã‚£ãƒ«ã‚¿ã®ä¾‹ã€‚å¿…è¦ã«å¿œã˜ã¦å¤‰æ›´ã—ã¦ãã ã•ã„ã€‚
 
 			if (auto* dialogFilterAttr = prop.GetAttribute("DialogFilter"))
 			{
-				// TODO: ‚¤‚Ü‚­s‚Á‚Ä‚È‚¢‚Ì‚ÅƒfƒoƒbƒO‚·‚é‚±‚ÆBargs[0] ‚ÉƒtƒBƒ‹ƒ^•¶š—ñ‚ª“ü‚Á‚Ä‚¢‚é‘z’èB
+				// TODO: ã†ã¾ãè¡Œã£ã¦ãªã„ã®ã§ãƒ‡ãƒãƒƒã‚°ã™ã‚‹ã“ã¨ã€‚args[0] ã«ãƒ•ã‚£ãƒ«ã‚¿æ–‡å­—åˆ—ãŒå…¥ã£ã¦ã„ã‚‹æƒ³å®šã€‚
 				if (!dialogFilterAttr->args.empty())
 				{
 					std::string raw = dialogFilterAttr->args[0];
 					std::replace(raw.begin(), raw.end(), '|', '\0');
-					raw += '\0'; // ––”ö‚Ì’Ç‰Á \0
+					raw += '\0'; // æœ«å°¾ã®è¿½åŠ  \0
 
 					memcpy(filter, raw.data(), (std::min)(raw.size(), sizeof(filter) - 1));
 
 					//strncpy_s(filter, dialogFilterAttr->args[0].data(), sizeof(filter));
-					//filter[sizeof(filter) - 1] = '\0'; // ƒoƒbƒtƒ@‚ÌÅŒã‚ğ null ‚ÅI’[
+					//filter[sizeof(filter) - 1] = '\0'; // ãƒãƒƒãƒ•ã‚¡ã®æœ€å¾Œã‚’ null ã§çµ‚ç«¯
 				}
 			}
 
@@ -61,11 +61,11 @@ namespace CurryEngine
 					return a == b;
 				},
 				[]() {
-					// •ÒWŠJn‘O‚Ìó‘Ô‚ğ•Û‘¶‚·‚éŠÖ”B‚±‚±‚Å‚ÍAŒ»İ‚Ì std::string ’l‚ğ m_state ‚É•Û‘¶‚µ‚Ä‚¢‚Ü‚·B
+					// ç·¨é›†é–‹å§‹å‰ã®çŠ¶æ…‹ã‚’ä¿å­˜ã™ã‚‹é–¢æ•°ã€‚ã“ã“ã§ã¯ã€ç¾åœ¨ã® std::string å€¤ã‚’ m_state ã«ä¿å­˜ã—ã¦ã„ã¾ã™ã€‚
 					return true;
 				},
 				[]() {
-					// ƒRƒ~ƒbƒg‚µ‚Ä‚à‚¢‚¢‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚éŠÖ”B‚±‚±‚Å‚Íí‚É true ‚ğ•Ô‚µ‚Ä‚¢‚Ü‚·‚ªA•K—v‚É‰‚¶‚ÄğŒ‚ğ’Ç‰Á‚Å‚«‚Ü‚·B
+					// ã‚³ãƒŸãƒƒãƒˆã—ã¦ã‚‚ã„ã„ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹é–¢æ•°ã€‚ã“ã“ã§ã¯å¸¸ã« true ã‚’è¿”ã—ã¦ã„ã¾ã™ãŒã€å¿…è¦ã«å¿œã˜ã¦æ¡ä»¶ã‚’è¿½åŠ ã§ãã¾ã™ã€‚
 					return false;
 				}
 			);
@@ -74,19 +74,19 @@ namespace CurryEngine
 			{
 				value = filename;
 				edited = true;
-				activated = false; // ƒ_ƒCƒAƒƒO‚Å‘I‘ğ‚µ‚½‚Æ‚«‚ÍAInputText ‚Ì•ÒWó‘Ô‚ğ–³Œø‚É‚·‚é
-				deactivatedAfterEdit = true; // ƒ_ƒCƒAƒƒO‚Å‘I‘ğ‚µ‚½Œã‚ÍA‘¦À‚ÉƒRƒ~ƒbƒg‚·‚é‚½‚ß‚Éƒtƒ‰ƒO‚ğ—§‚Ä‚é
+				activated = false; // ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§é¸æŠã—ãŸã¨ãã¯ã€InputText ã®ç·¨é›†çŠ¶æ…‹ã‚’ç„¡åŠ¹ã«ã™ã‚‹
+				deactivatedAfterEdit = true; // ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§é¸æŠã—ãŸå¾Œã¯ã€å³åº§ã«ã‚³ãƒŸãƒƒãƒˆã™ã‚‹ãŸã‚ã«ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 			}
 		}
 
 
 		if (edited)
 		{
-			// ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—B•¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚·‚×‚Ä‚Ì‘ÎÛ‚É‘Î‚µ‚ÄV‚µ‚¢’l‚ğ“K—p‚µ‚Ü‚·B
+			// å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã€‚è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ã™ã¹ã¦ã®å¯¾è±¡ã«å¯¾ã—ã¦æ–°ã—ã„å€¤ã‚’é©ç”¨ã—ã¾ã™ã€‚
 			PropertyDrawHelper::ApplyToAll<std::string>(context, prop, value);
 		}
 
-		// ’l‚ÌƒRƒ~ƒbƒgˆ—Bƒ†[ƒU[‚ª•ÒW‚ğŠ®—¹‚µ‚½‚Æ‚«‚ÉAUndo/Redo ƒRƒ}ƒ“ƒh‚ğ”­s‚µ‚Ü‚·B
+		// å€¤ã®ã‚³ãƒŸãƒƒãƒˆå‡¦ç†ã€‚ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç·¨é›†ã‚’å®Œäº†ã—ãŸã¨ãã«ã€Undo/Redo ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œã—ã¾ã™ã€‚
 		PropertyDrawHelper::CommitEdit<std::string>(prop, context, m_state, value,
 			[](const std::string& v) {
 				return v;
@@ -95,11 +95,11 @@ namespace CurryEngine
 				return a == b;
 			},
 			[activated]() {
-				// •ÒWŠJn‘O‚Ìó‘Ô‚ğ•Û‘¶‚·‚éŠÖ”B‚±‚±‚Å‚ÍAŒ»İ‚Ì std::string ’l‚ğ m_state ‚É•Û‘¶‚µ‚Ä‚¢‚Ü‚·B
+				// ç·¨é›†é–‹å§‹å‰ã®çŠ¶æ…‹ã‚’ä¿å­˜ã™ã‚‹é–¢æ•°ã€‚ã“ã“ã§ã¯ã€ç¾åœ¨ã® std::string å€¤ã‚’ m_state ã«ä¿å­˜ã—ã¦ã„ã¾ã™ã€‚
 				return activated;
 			},
 			[deactivatedAfterEdit]() {
-				// ƒRƒ~ƒbƒg‚µ‚Ä‚à‚¢‚¢‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚éŠÖ”B‚±‚±‚Å‚Íí‚É true ‚ğ•Ô‚µ‚Ä‚¢‚Ü‚·‚ªA•K—v‚É‰‚¶‚ÄğŒ‚ğ’Ç‰Á‚Å‚«‚Ü‚·B
+				// ã‚³ãƒŸãƒƒãƒˆã—ã¦ã‚‚ã„ã„ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹é–¢æ•°ã€‚ã“ã“ã§ã¯å¸¸ã« true ã‚’è¿”ã—ã¦ã„ã¾ã™ãŒã€å¿…è¦ã«å¿œã˜ã¦æ¡ä»¶ã‚’è¿½åŠ ã§ãã¾ã™ã€‚
 				return deactivatedAfterEdit;
 			}
 		);

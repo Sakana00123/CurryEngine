@@ -8,12 +8,12 @@ namespace CurryEngine
 	class UndoRedoStack
 	{
 	public:
-		// ƒRƒ}ƒ“ƒh‚ðŽÀs‚µAUndoƒXƒ^ƒbƒN‚É’Ç‰Á‚·‚é
+		// ã‚³ãƒžãƒ³ãƒ‰ã‚’å®Ÿè¡Œã—ã€Undoã‚¹ã‚¿ãƒƒã‚¯ã«è¿½åŠ ã™ã‚‹
 		void ExecuteCommand(std::shared_ptr<IEditorCommand> command)
 		{
 			command->Execute();
 			m_undoStack.push(std::move(command));
-			ClearRedo(); // V‚µ‚¢ƒRƒ}ƒ“ƒh‚ªŽÀs‚³‚ê‚½‚Æ‚«‚ÉRedoƒXƒ^ƒbƒN‚ðƒNƒŠƒA
+			ClearRedo(); // æ–°ã—ã„ã‚³ãƒžãƒ³ãƒ‰ãŒå®Ÿè¡Œã•ã‚ŒãŸã¨ãã«Redoã‚¹ã‚¿ãƒƒã‚¯ã‚’ã‚¯ãƒªã‚¢
 		}
 		void Undo()
 		{
@@ -38,11 +38,11 @@ namespace CurryEngine
 		bool CanRedo() const { return !m_redoStack.empty(); }
 
 		/// <summary>
-		/// Undo/RedoƒXƒ^ƒbƒN‚Ì“à—e‚ð•¶Žš—ñ‚ÌƒŠƒXƒg‚Æ‚µ‚ÄŽæ“¾‚·‚éBŽå‚ÉUI‚Å—š—ð‚ð•\Ž¦‚·‚é‚½‚ß‚ÉŽg—p‚³‚ê‚éB
+		/// Undo/Redoã‚¹ã‚¿ãƒƒã‚¯ã®å†…å®¹ã‚’æ–‡å­—åˆ—ã®ãƒªã‚¹ãƒˆã¨ã—ã¦å–å¾—ã™ã‚‹ã€‚ä¸»ã«UIã§å±¥æ­´ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã•ã‚Œã‚‹ã€‚
 		/// </summary>
-		/// <param name="undoDescriptions">UndoƒXƒ^ƒbƒN‚ÌƒRƒ}ƒ“ƒh‚Ìà–¾‚ðŠi”[‚·‚éƒŠƒXƒgBÅ‚àV‚µ‚¢ƒRƒ}ƒ“ƒh‚ªæ“ª‚É—ˆ‚éB</param>
-		/// <param name="redoDescriptions">RedoƒXƒ^ƒbƒN‚ÌƒRƒ}ƒ“ƒh‚Ìà–¾‚ðŠi”[‚·‚éƒŠƒXƒgBÅ‚àV‚µ‚¢ƒRƒ}ƒ“ƒh‚ªæ“ª‚É—ˆ‚éB</param>
-		/// <returns>UndoƒXƒ^ƒbƒN‚ÌƒRƒ}ƒ“ƒh‚Ì”B</returns>
+		/// <param name="undoDescriptions">Undoã‚¹ã‚¿ãƒƒã‚¯ã®ã‚³ãƒžãƒ³ãƒ‰ã®èª¬æ˜Žã‚’æ ¼ç´ã™ã‚‹ãƒªã‚¹ãƒˆã€‚æœ€ã‚‚æ–°ã—ã„ã‚³ãƒžãƒ³ãƒ‰ãŒå…ˆé ­ã«æ¥ã‚‹ã€‚</param>
+		/// <param name="redoDescriptions">Redoã‚¹ã‚¿ãƒƒã‚¯ã®ã‚³ãƒžãƒ³ãƒ‰ã®èª¬æ˜Žã‚’æ ¼ç´ã™ã‚‹ãƒªã‚¹ãƒˆã€‚æœ€ã‚‚æ–°ã—ã„ã‚³ãƒžãƒ³ãƒ‰ãŒå…ˆé ­ã«æ¥ã‚‹ã€‚</param>
+		/// <returns>Undoã‚¹ã‚¿ãƒƒã‚¯ã®ã‚³ãƒžãƒ³ãƒ‰ã®æ•°ã€‚</returns>
 		int GetUndoRedoDescriptions(std::vector<std::string>& undoDescriptions, std::vector<std::string>& redoDescriptions) const
 		{
 			undoDescriptions = GetUndoHistory();
@@ -51,7 +51,7 @@ namespace CurryEngine
 		}
 
 	private:
-		// RedoƒXƒ^ƒbƒN‚ðƒNƒŠƒA‚·‚é
+		// Redoã‚¹ã‚¿ãƒƒã‚¯ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 		void ClearRedo()
 		{
 			while (!m_redoStack.empty())
@@ -81,7 +81,7 @@ namespace CurryEngine
 			return history;
 		}
 
-		std::stack<std::shared_ptr<IEditorCommand>> m_undoStack; // UndoƒXƒ^ƒbƒNBƒRƒ}ƒ“ƒh‚ªŽÀs‚³‚ê‚é‚Æ‚±‚±‚É’Ç‰Á‚³‚ê‚éB(shared_ptr‚ðŽg—p‚µ‚Ä‚¢‚é‚Ì‚ÍAUndo/RedoƒXƒ^ƒbƒN‚ªƒRƒ}ƒ“ƒh‚ÌŠ—LŒ ‚ðŽ‚¿AƒRƒ}ƒ“ƒh‚ª•¡”‚ÌêŠ‚Å‹¤—L‚³‚ê‚é‰Â”\«‚ª‚ ‚é‚½‚ßB)
-		std::stack<std::shared_ptr<IEditorCommand>> m_redoStack; // RedoƒXƒ^ƒbƒNBUndo‚³‚ê‚½ƒRƒ}ƒ“ƒh‚ª‚±‚±‚É’Ç‰Á‚³‚ê‚éBV‚µ‚¢ƒRƒ}ƒ“ƒh‚ªŽÀs‚³‚ê‚é‚ÆƒNƒŠƒA‚³‚ê‚éB (shared_ptr‚ðŽg—p‚µ‚Ä‚¢‚é‚Ì‚ÍAUndo/RedoƒXƒ^ƒbƒN‚ªƒRƒ}ƒ“ƒh‚ÌŠ—LŒ ‚ðŽ‚¿AƒRƒ}ƒ“ƒh‚ª•¡”‚ÌêŠ‚Å‹¤—L‚³‚ê‚é‰Â”\«‚ª‚ ‚é‚½‚ßB)
+		std::stack<std::shared_ptr<IEditorCommand>> m_undoStack; // Undoã‚¹ã‚¿ãƒƒã‚¯ã€‚ã‚³ãƒžãƒ³ãƒ‰ãŒå®Ÿè¡Œã•ã‚Œã‚‹ã¨ã“ã“ã«è¿½åŠ ã•ã‚Œã‚‹ã€‚(shared_ptrã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹ã®ã¯ã€Undo/Redoã‚¹ã‚¿ãƒƒã‚¯ãŒã‚³ãƒžãƒ³ãƒ‰ã®æ‰€æœ‰æ¨©ã‚’æŒã¡ã€ã‚³ãƒžãƒ³ãƒ‰ãŒè¤‡æ•°ã®å ´æ‰€ã§å…±æœ‰ã•ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ã€‚)
+		std::stack<std::shared_ptr<IEditorCommand>> m_redoStack; // Redoã‚¹ã‚¿ãƒƒã‚¯ã€‚Undoã•ã‚ŒãŸã‚³ãƒžãƒ³ãƒ‰ãŒã“ã“ã«è¿½åŠ ã•ã‚Œã‚‹ã€‚æ–°ã—ã„ã‚³ãƒžãƒ³ãƒ‰ãŒå®Ÿè¡Œã•ã‚Œã‚‹ã¨ã‚¯ãƒªã‚¢ã•ã‚Œã‚‹ã€‚ (shared_ptrã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹ã®ã¯ã€Undo/Redoã‚¹ã‚¿ãƒƒã‚¯ãŒã‚³ãƒžãƒ³ãƒ‰ã®æ‰€æœ‰æ¨©ã‚’æŒã¡ã€ã‚³ãƒžãƒ³ãƒ‰ãŒè¤‡æ•°ã®å ´æ‰€ã§å…±æœ‰ã•ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ã€‚)
 	};
 }

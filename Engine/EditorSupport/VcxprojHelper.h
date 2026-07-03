@@ -13,38 +13,38 @@ enum class VcxprojType
 class VcxprojHelper
 {
 public:
-	// ƒVƒF[ƒ_[‚Ì“o˜^‚ğƒLƒ…[‚É’Ç‰ÁiÀsI—¹‘O‚É‚Ü‚Æ‚ß‚Äˆ—j
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ç™»éŒ²ã‚’ã‚­ãƒ¥ãƒ¼ã«è¿½åŠ ï¼ˆå®Ÿè¡Œçµ‚äº†å‰ã«ã¾ã¨ã‚ã¦å‡¦ç†ï¼‰
 	static void EnqueueShaderRegistration(const std::filesystem::path& shaderPath);
 
-	// ƒVƒF[ƒ_[‚Ì“o˜^‰ğœivcxproj‚©‚çƒGƒ“ƒgƒŠ‚ğíœj
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ç™»éŒ²è§£é™¤ï¼ˆvcxprojã‹ã‚‰ã‚¨ãƒ³ãƒˆãƒªã‚’å‰Šé™¤ï¼‰
 	static void EnqueueShaderUnregistration(const std::filesystem::path& shaderPath);
 
 
-	// ƒVƒF[ƒ_[‚ª‚·‚Å‚ÉƒvƒƒWƒFƒNƒg‚É“o˜^‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒã™ã§ã«ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 	static bool IsShaderRegistered(const std::filesystem::path& shaderPath);
 
-	// ƒVƒF[ƒ_[‚Ì“o˜^‚ªƒLƒ…[‚É“ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ç™»éŒ²ãŒã‚­ãƒ¥ãƒ¼ã«å…¥ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	static bool IsShaderRegistrationPending(const std::filesystem::path& shaderPath);
 
 
-	// “o˜^‘Ò‚¿‚ÌƒVƒF[ƒ_[‚ğ‚Ü‚Æ‚ß‚Äˆ—iÀsI—¹‘O‚ÉŒÄ‚Ô‚±‚Æj
+	// ç™»éŒ²å¾…ã¡ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã¾ã¨ã‚ã¦å‡¦ç†ï¼ˆå®Ÿè¡Œçµ‚äº†å‰ã«å‘¼ã¶ã“ã¨ï¼‰
 	static void ProcessPendingShaderRegistrations();
 	
-	// ƒVƒF[ƒ_[‚Ì“o˜^‰ğœ‚ğƒLƒ…[‚É’Ç‰ÁiÀsI—¹‘O‚É‚Ü‚Æ‚ß‚Äˆ—j
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ç™»éŒ²è§£é™¤ã‚’ã‚­ãƒ¥ãƒ¼ã«è¿½åŠ ï¼ˆå®Ÿè¡Œçµ‚äº†å‰ã«ã¾ã¨ã‚ã¦å‡¦ç†ï¼‰
 	static void ProcessPendingShaderUnregistrations();
 
 private:
 
-	// HLSLƒVƒF[ƒ_[‚ğƒvƒƒWƒFƒNƒg‚É“o˜^ivcxproj‚ÉCompileItem‚ğ’Ç‰Áj
+	// HLSLã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«ç™»éŒ²ï¼ˆvcxprojã«CompileItemã‚’è¿½åŠ ï¼‰
 	static bool RegisterHLSLShader(const std::filesystem::path& shaderPath);
 
-	// HLSLIƒtƒ@ƒCƒ‹‚ğƒvƒƒWƒFƒNƒg‚É“o˜^ivcxproj‚ÉNoneItem‚ğ’Ç‰Áj
+	// HLSLIãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«ç™»éŒ²ï¼ˆvcxprojã«NoneItemã‚’è¿½åŠ ï¼‰
 	static bool RegisterHLSLIFile(const std::filesystem::path& shaderPath);
 
-	// HLSLƒVƒF[ƒ_[‚ğƒvƒƒWƒFƒNƒg‚©‚ç“o˜^‰ğœivcxproj‚©‚çCompileItem‚ğíœj
+	// HLSLã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ç™»éŒ²è§£é™¤ï¼ˆvcxprojã‹ã‚‰CompileItemã‚’å‰Šé™¤ï¼‰
 	static bool UnregisterHLSLShader(const std::filesystem::path& shaderPath);
 
-	// HLSLIƒtƒ@ƒCƒ‹‚ğƒvƒƒWƒFƒNƒg‚©‚ç“o˜^‰ğœivcxproj‚©‚çNoneItem‚ğíœj
+	// HLSLIãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ç™»éŒ²è§£é™¤ï¼ˆvcxprojã‹ã‚‰NoneItemã‚’å‰Šé™¤ï¼‰
 	static bool UnregisterHLSLIFile(const std::filesystem::path& shaderPath);
 
 private:
@@ -52,6 +52,6 @@ private:
 	//static std::string GetVcxprojPath(VcxprojType type);
 	//static std::string NormalizePath(const std::string& path);
 	static constexpr const char* s_vcxprojPath = "CurryEngine.vcxproj";
-	static std::queue<std::filesystem::path> s_pendingShaderRegistrations; // “o˜^‘Ò‚¿‚ÌƒVƒF[ƒ_[ƒpƒX(ÀsI—¹Œã‚É‚Ü‚Æ‚ß‚Äˆ—)
-	static std::queue<std::filesystem::path> s_pendingShaderUnregistrations; // “o˜^‰ğœ‘Ò‚¿‚ÌƒVƒF[ƒ_[ƒpƒX(ÀsI—¹Œã‚É‚Ü‚Æ‚ß‚Äˆ—)
+	static std::queue<std::filesystem::path> s_pendingShaderRegistrations; // ç™»éŒ²å¾…ã¡ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ‘ã‚¹(å®Ÿè¡Œçµ‚äº†å¾Œã«ã¾ã¨ã‚ã¦å‡¦ç†)
+	static std::queue<std::filesystem::path> s_pendingShaderUnregistrations; // ç™»éŒ²è§£é™¤å¾…ã¡ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ‘ã‚¹(å®Ÿè¡Œçµ‚äº†å¾Œã«ã¾ã¨ã‚ã¦å‡¦ç†)
 };

@@ -20,10 +20,10 @@ public:
 #endif // USE_IMGUI
 
 
-	// シリアライズ
+	// 繧ｷ繝ｪ繧｢繝ｩ繧､繧ｺ
 	json Serialize() const override;
 
-	// デシリアライズ
+	// 繝�繧ｷ繝ｪ繧｢繝ｩ繧､繧ｺ
 	void Deserialize(const json& j) override;
 
 public:

@@ -8,13 +8,13 @@ class RectTransformUtils
 {
 public:
 	/**
-	 * @brief `RectTransform` �̃A���J�[�ƃs�{�b�g���ʒu��ς����ɐݒ肵�܂��B
-	 * @param rect �Ώۂ� `RectTransform`�B
-	 * @param newAnchorMin �V�����ŏ��A���J�[�i0-1�A�e����(0,0)�A�E��(1,1)�j�B
-	 * @param newAnchorMax �V�����ő�A���J�[�i0-1�A�e����(0,0)�A�E��(1,1)�j�B
-	 * @param newPivot �V�����s�{�b�g�i0-1�A����(0,0)�A�E��(1,1)�j�B
-	 * @details ���̊֐��́A`rect` �̌��݂̈ʒu���ێ����A�A���J�[�ƃs�{�b�g��ύX���܂��B
-	 *          ����ɂ��AUI �v�f�̃��C�A�E�g������邱�ƂȂ��A�A���J�[�ƃs�{�b�g�̒������\�ł��B
+	 * @brief `RectTransform` のアンカーとピボットを位置を変えずに設定します。
+	 * @param rect 対象の `RectTransform`。
+	 * @param newAnchorMin 新しい最小アンカー（0-1、親左上(0,0)、右下(1,1)）。
+	 * @param newAnchorMax 新しい最大アンカー（0-1、親左上(0,0)、右下(1,1)）。
+	 * @param newPivot 新しいピボット（0-1、左上(0,0)、右下(1,1)）。
+	 * @details この関数は、`rect` の現在の位置を維持しつつ、アンカーとピボットを変更します。
+	 *          これにより、UI 要素のレイアウトが崩れることなく、アンカーとピボットの調整が可能です。
 	 */
 	static void SetAnchorAndPivotWithoutAffectingPosition(
 		RectTransform* rect,
@@ -24,12 +24,12 @@ public:
 	);
 
 	/**
-	 * @brief 3D `Transform` �̈ʒu�Ɋ�Â��� `RectTransform` �̃A���J�[�|�W�V������ݒ肵�܂��B
-	 * @param rect �Ώۂ� `RectTransform`�B
-	 * @param targetTransform �ʒu�̊�ƂȂ� `Transform`�B
-	 * @details ���̊֐��́A`targetTransform` �̃��[���h�ʒu���X�N���[�����W�ɕϊ����A
-	 *          ����� `rect` �̃A���J�[�|�W�V�����Ƃ��Đݒ肵�܂��B
-	 *          ����ɂ��A`rect` �� `targetTransform` �̈ʒu�ɒǏ]����悤�ɂȂ�܂��B
+	 * @brief 3D `Transform` の位置に基づいて `RectTransform` のアンカーポジションを設定します。
+	 * @param rect 対象の `RectTransform`。
+	 * @param targetTransform 位置の基準となる `Transform`。
+	 * @details この関数は、`targetTransform` のワールド位置をスクリーン座標に変換し、
+	 *          それを `rect` のアンカーポジションとして設定します。
+	 *          これにより、`rect` は `targetTransform` の位置に追従するようになります。
 	 */
 	static void SetAnchordPositionBy3DTransform(
 		RectTransform* rect,
@@ -37,13 +37,13 @@ public:
 	);
 
 	/**
-	 * @brief �X�N���[�����W�����[���h���W�ɕϊ����܂��B
-	 * @param screenPos �X�N���[�����W�i�s�N�Z���P�ʁj�B
-	 * @param depth ���[���h��Ԃł̐[�x�iZ �l�j�B
-	 * @return �ϊ����ꂽ���[���h���W�B
-	 * @details ���̊֐��́A���݂̃J�����ݒ�Ɋ�Â��āA�w�肳�ꂽ�X�N���[�����W��
-	 *          ���[���h���W�ɕϊ����܂��B`depth` �p�����[�^�́A�ϊ���̃��[���h
-	 *          ���W�� Z �l���w�肵�܂��B
+	 * @brief スクリーン座標をワールド座標に変換します。
+	 * @param screenPos スクリーン座標（ピクセル単位）。
+	 * @param depth ワールド空間での深度（Z 値）。
+	 * @return 変換されたワールド座標。
+	 * @details この関数は、現在のカメラ設定に基づいて、指定されたスクリーン座標を
+	 *          ワールド座標に変換します。`depth` パラメータは、変換後のワールド
+	 *          座標の Z 値を指定します。
 	 */
 	static Vector3 UIScreenToWorld(
 		const Vector2& screenPos,
@@ -51,11 +51,11 @@ public:
 	);
 
 	/**
-	 * @brief ���[���h���W���X�N���[�����W�ɕϊ����܂��B
-	 * @param worldPos ���[���h���W�B
-	 * @return �ϊ����ꂽ�X�N���[�����W�i�s�N�Z���P�ʁj�B
-	 * @details ���̊֐��́A���݂̃J�����ݒ�Ɋ�Â��āA�w�肳�ꂽ���[���h���W��
-	 *          �X�N���[�����W�ɕϊ����܂��B
+	 * @brief ワールド座標をスクリーン座標に変換します。
+	 * @param worldPos ワールド座標。
+	 * @return 変換されたスクリーン座標（ピクセル単位）。
+	 * @details この関数は、現在のカメラ設定に基づいて、指定されたワールド座標を
+	 *          スクリーン座標に変換します。
 	 */
 	static XMFLOAT2 WorldToUIScreen(
 		const Vector3& worldPos

@@ -2,42 +2,42 @@
 #include "LayoutGroup.h"
 #include "Engine/Core/GameObject.h"
 
-// ‚¢‚¸‚ê‚©‚Ìƒ}ƒNƒ‚ğg—p‚µ‚ÄƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ“o˜^‚µ‚Ü‚·B•K—v‚É‰‚¶‚Ä‘®«‚àw’è‚Å‚«‚Ü‚·B
+// ã„ãšã‚Œã‹ã®ãƒã‚¯ãƒ­ã‚’ä½¿ç”¨ã—ã¦ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç™»éŒ²ã—ã¾ã™ã€‚å¿…è¦ã«å¿œã˜ã¦å±æ€§ã‚‚æŒ‡å®šã§ãã¾ã™ã€‚
 //REGISTER_COMPONENT(LayoutGroup, "UserScripts")
 REGISTER_COMPONENT_WITH_ATTRIBUTES(LayoutGroup, "UI", ComponentAttributes::ExecuteInEditMode | ComponentAttributes::HideInAddComponentMenu, {})
 
 
 void LayoutGroup::Start()
 {
-	// ƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŠJn‚³‚ê‚½‚Æ‚«‚Ìˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒé–‹å§‹ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 }
 
 void LayoutGroup::Update(float deltaTime)
 {
-	// –ˆƒtƒŒ[ƒ€‚ÌXVˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
-	// TODO: ƒŒƒCƒAƒEƒg‚ÌXV‚ª•K—v‚Èê‡‚É‚Ì‚İ `UpdateLayout()` ‚ğŒÄ‚Ño‚·‚æ‚¤‚ÉA`m_layoutDirty` ƒtƒ‰ƒO‚ğg—p‚µ‚ÄÅ“K‰»‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+	// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ›´æ–°å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
+	// TODO: ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®æ›´æ–°ãŒå¿…è¦ãªå ´åˆã«ã®ã¿ `UpdateLayout()` ã‚’å‘¼ã³å‡ºã™ã‚ˆã†ã«ã€`m_layoutDirty` ãƒ•ãƒ©ã‚°ã‚’ä½¿ç”¨ã—ã¦æœ€é©åŒ–ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 	//if (m_layoutDirty)
 	{
-		UpdateLayout(); // ƒŒƒCƒAƒEƒg‚ğXV
-		m_layoutDirty = false; // XVŒã‚Íƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+		UpdateLayout(); // ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’æ›´æ–°
+		m_layoutDirty = false; // æ›´æ–°å¾Œã¯ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	}
 }
 
 #ifdef USE_IMGUI
 void LayoutGroup::DrawProperty(const PropertyDrawContext& context)
 {
-	// ƒGƒfƒBƒ^‚ÅƒvƒƒpƒeƒB‚ğ•`‰æ‚·‚é‚½‚ß‚Ìˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
-	Component::DrawProperty(context); // Šî’êƒNƒ‰ƒX‚ÌƒvƒƒpƒeƒB•`‰æ‚ğŒÄ‚Ño‚·
+	// ã‚¨ãƒ‡ã‚£ã‚¿ã§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»ã™ã‚‹ãŸã‚ã®å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
+	Component::DrawProperty(context); // åŸºåº•ã‚¯ãƒ©ã‚¹ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æç”»ã‚’å‘¼ã³å‡ºã™
 
 	IMGUI_PROPERTY_BEGIN();
 
-	// alignment ‚ÌƒvƒƒpƒeƒB‚ğ•`‰æ
+	// alignment ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’æç”»
 	const char* alignmentOptions[] = { "Left", "Center", "Right" };
 	int oldAlignment = layoutAlignment;
 	IMGUI_PROPERTY_ENUM("layoutAlignment", layoutAlignment, alignmentOptions, _countof(alignmentOptions));
 	if (oldAlignment != layoutAlignment)
 	{
-		SetLayoutDirty(); // ”z’u•û–@‚ª•ÏX‚³‚ê‚½‚çƒŒƒCƒAƒEƒg‚ğXV‚·‚é•K—v‚ª‚ ‚é‚±‚Æ‚ğ¦‚·
+		SetLayoutDirty(); // é…ç½®æ–¹æ³•ãŒå¤‰æ›´ã•ã‚ŒãŸã‚‰ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’æ›´æ–°ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã“ã¨ã‚’ç¤ºã™
 	}
 
 	IMGUI_PROPERTY_END();
@@ -54,7 +54,7 @@ std::vector<std::shared_ptr<RectTransform>> LayoutGroup::GetChildRects() const
 		{
 			if (!child->IsActive())
 			{
-				continue; // ”ñƒAƒNƒeƒBƒu‚Èq‚ÍƒXƒLƒbƒv
+				continue; // éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªå­ã¯ã‚¹ã‚­ãƒƒãƒ—
 			}
 			if (auto rect = child->GetComponentShared<RectTransform>())
 			{

@@ -9,7 +9,7 @@ namespace CurryEngine
 		AssetType AssetTypeUtils::DetectFromExtension(const std::string& extension)
 		{
 			std::string ext = extension;
-			std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower); // ¬•¶š‚É•ÏŠ·‚µ‚Ä”äŠr
+			std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower); // å°æ–‡å­—ã«å¤‰æ›ã—ã¦æ¯”è¼ƒ
 
 			static const std::unordered_map<std::string, AssetType> extensionToTypeMap = {
 				{ ".png", AssetType::Texture },

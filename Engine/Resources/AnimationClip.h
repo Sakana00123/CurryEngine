@@ -6,68 +6,68 @@ class GltfModelRenderer;
 
 enum class TrackType : uint8_t
 {
-	Value, // ’lƒgƒ‰ƒbƒN
-	Event, // ƒCƒxƒ“ƒgƒgƒ‰ƒbƒN
-	Curve, // ƒJ[ƒuƒgƒ‰ƒbƒN
-	State, // ƒXƒe[ƒgƒgƒ‰ƒbƒN
+	Value, // å€¤ãƒˆãƒ©ãƒƒã‚¯
+	Event, // ã‚¤ãƒ™ãƒ³ãƒˆãƒˆãƒ©ãƒƒã‚¯
+	Curve, // ã‚«ãƒ¼ãƒ–ãƒˆãƒ©ãƒƒã‚¯
+	State, // ã‚¹ãƒ†ãƒ¼ãƒˆãƒˆãƒ©ãƒƒã‚¯
 };
 
 struct AnimationContext
 {
-	// ƒAƒjƒ[ƒVƒ‡ƒ“•]‰¿‚É•K—v‚Èƒf[ƒ^‚ğ‚±‚±‚É’Ç‰Á
-	// —á: ‘ÎÛƒIƒuƒWƒFƒNƒg‚ÌQÆAƒuƒŒƒ“ƒhî•ñ‚È‚Ç
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è©•ä¾¡ã«å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’ã“ã“ã«è¿½åŠ 
+	// ä¾‹: å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‚ç…§ã€ãƒ–ãƒ¬ãƒ³ãƒ‰æƒ…å ±ãªã©
 	GltfModelRenderer* targetModelRenderer = nullptr;
 };
 
-/** @brief ƒL[ƒtƒŒ[ƒ€‚ÌŠî’ê\‘¢‘ÌB*/
+/** @brief ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®åŸºåº•æ§‹é€ ä½“ã€‚*/
 struct KeyframeBase
 {
-	float time = 0.0f; // ƒL[ƒtƒŒ[ƒ€‚ÌŠÔi•bj
+	float time = 0.0f; // ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ™‚é–“ï¼ˆç§’ï¼‰
 };
 
 struct ValueKeyframe : public KeyframeBase
 {
-	float value = 0.0f; // ƒL[ƒtƒŒ[ƒ€‚Ì’l
+	float value = 0.0f; // ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®å€¤
 };
 
 struct EventKeyframe : public KeyframeBase
 {
-	std::string eventName; // ƒCƒxƒ“ƒg–¼
+	std::string eventName; // ã‚¤ãƒ™ãƒ³ãƒˆå
 };
 
 struct CurveKeyframe : public KeyframeBase
 {
-	float value = 0.0f; // ƒL[ƒtƒŒ[ƒ€‚Ì’l
-	float inTangent = 0.0f; // “ü—ÍÚü
-	float outTangent = 0.0f; // o—ÍÚü
+	float value = 0.0f; // ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®å€¤
+	float inTangent = 0.0f; // å…¥åŠ›æ¥ç·š
+	float outTangent = 0.0f; // å‡ºåŠ›æ¥ç·š
 };
 
 struct StateKeyframe : public KeyframeBase
 {
-	std::string stateName; // ƒXƒe[ƒg–¼
+	std::string stateName; // ã‚¹ãƒ†ãƒ¼ãƒˆå
 };
 
 
-/** @brief ƒAƒjƒ[ƒVƒ‡ƒ“ƒgƒ‰ƒbƒN‚ÌŠî’êƒNƒ‰ƒXB*/
+/** @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒˆãƒ©ãƒƒã‚¯ã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚*/
 class TrackBase
 {
 public:
 	virtual ~TrackBase() = default;
 
-	/** @brief ƒgƒ‰ƒbƒN‚Ìí—Ş‚ğæ“¾B*/
+	/** @brief ãƒˆãƒ©ãƒƒã‚¯ã®ç¨®é¡ã‚’å–å¾—ã€‚*/
 	virtual TrackType GetType() const = 0;
 
-	/** @brief ƒgƒ‰ƒbƒN‚Ì•]‰¿‚ğs‚¤B*/
+	/** @brief ãƒˆãƒ©ãƒƒã‚¯ã®è©•ä¾¡ã‚’è¡Œã†ã€‚*/
 	virtual void Evaluate(
 		float prevTime,
 		float currentTime,
 		AnimationContext& context
 	) = 0;
 
-	/** @brief ƒgƒ‰ƒbƒN‚Ì•\¦–¼‚ğæ“¾B*/
+	/** @brief ãƒˆãƒ©ãƒƒã‚¯ã®è¡¨ç¤ºåã‚’å–å¾—ã€‚*/
 	virtual const char* GetDisplayName() const = 0;
 
-	std::string name; // ƒgƒ‰ƒbƒN–¼
+	std::string name; // ãƒˆãƒ©ãƒƒã‚¯å
 };
 
 class ValueTrack : public TrackBase
@@ -83,14 +83,14 @@ public:
 
 	const char* GetDisplayName() const override { return "Value Track"; }
 
-	/** @brief ƒL[ƒtƒŒ[ƒ€‚ğ’Ç‰Á‚µAŠÔ‚Åƒ\[ƒg‚·‚éB*/
+	/** @brief ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¿½åŠ ã—ã€æ™‚é–“ã§ã‚½ãƒ¼ãƒˆã™ã‚‹ã€‚*/
 	void AddKeyframe(float time, float value)
 	{
 		keys.push_back({ time, value });
 		Sort();
 	}
 
-	/** @brief ƒL[ƒtƒŒ[ƒ€‚ğŠÔ‚Åƒ\[ƒg‚·‚éB*/
+	/** @brief ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æ™‚é–“ã§ã‚½ãƒ¼ãƒˆã™ã‚‹ã€‚*/
 	void Sort();
 
 	std::vector<ValueKeyframe> keys;
@@ -155,8 +155,8 @@ class AnimationClip/* : public Resource*/
 {
 public:
 	std::string name;
-	float length = 0.0f; // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’·‚³i•bj
-	float fps = 60.0f;    // ƒtƒŒ[ƒ€ƒŒ[ƒg
+	float length = 0.0f; // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é•·ã•ï¼ˆç§’ï¼‰
+	float fps = 60.0f;    // ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆ
 	std::vector<Track> tracks;
-	//std::vector<std::unique_ptr<TrackBase>> tracks; // ƒgƒ‰ƒbƒN‚Ìˆê——
+	//std::vector<std::unique_ptr<TrackBase>> tracks; // ãƒˆãƒ©ãƒƒã‚¯ã®ä¸€è¦§
 };

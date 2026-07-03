@@ -5,10 +5,10 @@
 class ConstantBufferPass : public RenderPass
 {
 public:
-	// ConstantBufferPass‚Ì‰Šú‰»ˆ—
+	// ConstantBufferPassã®åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
 
-	// ConstantBufferPass‚ÌŽÀ‘•
+	// ConstantBufferPassã®å®Ÿè£…
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 private:
@@ -16,7 +16,7 @@ private:
     {
         DirectX::XMFLOAT4X4 view{};
         DirectX::XMFLOAT4X4 projection{};
-        DirectX::XMFLOAT4X4 viewProjection{};//ƒrƒ…[EƒvƒƒWƒFƒNƒVƒ‡ƒ“•ÏŠ·s—ñ
+        DirectX::XMFLOAT4X4 viewProjection{};//ãƒ“ãƒ¥ãƒ¼ãƒ»ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³å¤‰æ›è¡Œåˆ—
         DirectX::XMFLOAT4X4 inverseView{};
         DirectX::XMFLOAT4X4 inverseProjection{};
         DirectX::XMFLOAT4X4 inverseViewProjection{};

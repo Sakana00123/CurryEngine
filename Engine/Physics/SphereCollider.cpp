@@ -5,7 +5,7 @@ REGISTER_COMPONENT(SphereCollider, "Physics")
 
 void SphereCollider::Initialize()
 {
-	// ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu‚Ì€”õ‚È‚ÇA•K—v‚È‰Šú‰»ˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®æº–å‚™ãªã©ã€å¿…è¦ãªåˆæœŸåŒ–å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 	ID3D11Device* device = Graphics::GetDevice();
 	Collider::Initialize();
 	primitive->CreateSphere(device, 16, 16);
@@ -16,38 +16,38 @@ void SphereCollider::Register()
 	Vector3 worldScale = Vector3(GetTransform()->GetWorldScale());
 
 	SphereColliderData data;
-	data.radius = radius; // ”¼Œa‚ğw’è
-	data.center = Vector3(center); // ƒIƒtƒZƒbƒg‚ğ’†SˆÊ’u‚Æ‚µ‚Äİ’èiƒ[ƒ‹ƒhƒXƒP[ƒ‹‚Í SphereColliderData “à‚Ål—¶‚³‚ê‚é‚½‚ßA‚±‚±‚Å‚Í“K—p‚µ‚È‚¢j
-	data.materialHandle = m_materialHandle; // ƒ}ƒeƒŠƒAƒ‹ƒnƒ“ƒhƒ‹‚ğİ’è
-	data.isTrigger = isTrigger; // ƒgƒŠƒK[‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ğİ’è
-	data.contactOffset = contactOffset; // ÚGƒIƒtƒZƒbƒg‚ğİ’è
-	data.collider = this; // ƒRƒ‰ƒCƒ_‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğİ’èi•K—v‚É‰‚¶‚Äj
+	data.radius = radius; // åŠå¾„ã‚’æŒ‡å®š
+	data.center = Vector3(center); // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ä¸­å¿ƒä½ç½®ã¨ã—ã¦è¨­å®šï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã¯ SphereColliderData å†…ã§è€ƒæ…®ã•ã‚Œã‚‹ãŸã‚ã€ã“ã“ã§ã¯é©ç”¨ã—ãªã„ï¼‰
+	data.materialHandle = m_materialHandle; // ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’è¨­å®š
+	data.isTrigger = isTrigger; // ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+	data.contactOffset = contactOffset; // æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
+	data.collider = this; // ã‚³ãƒ©ã‚¤ãƒ€ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¨­å®šï¼ˆå¿…è¦ã«å¿œã˜ã¦ï¼‰
 
-	// •¨—ƒGƒ“ƒWƒ“‚ÉƒRƒ‰ƒCƒ_[‚ğ“o˜^
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ç™»éŒ²
 	if (!Physics::AddSphereShape(GetTransform(), data, m_shapeHandle))
 	{
-		// ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+		// è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
 		Console::LogError("Failed to add SphereCollider shape to physics engine.");
 	}
 }
 
 void SphereCollider::FitToBoundingBox(const Vector3& center, const Vector3& size)
 {
-	this->center = center; // ƒIƒtƒZƒbƒg‚ğ’†SˆÊ’u‚Æ‚µ‚Äİ’è
-	radius = max(size.x, size.z); // XZ•½–Ê‚ÌÅ‘åƒTƒCƒY‚ğ”¼Œa‚Æ‚·‚é
-	SetNeedSync(); // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚Å‚ ‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+	this->center = center; // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ä¸­å¿ƒä½ç½®ã¨ã—ã¦è¨­å®š
+	radius = max(size.x, size.z); // XZå¹³é¢ã®æœ€å¤§ã‚µã‚¤ã‚ºã‚’åŠå¾„ã¨ã™ã‚‹
+	SetNeedSync(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 }
 
 void SphereCollider::SyncWithPhysics()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Éƒ[ƒJƒ‹ƒ|[ƒY‚ğXV
-	Vector3 position = Vector3(center); // ƒIƒtƒZƒbƒg‚ğƒ[ƒ‹ƒhƒXƒP[ƒ‹‚Å’²®‚µ‚Äƒ[ƒJƒ‹À•W‚É•ÏŠ·
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒ¼ã‚ºã‚’æ›´æ–°
+	Vector3 position = Vector3(center); // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã§èª¿æ•´ã—ã¦ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã«å¤‰æ›
 	Quaternion rotation = Quaternion(0, 0, 0, 1);
 	Physics::SetLocalPose(m_shapeHandle, position, rotation);
 
-	// ƒTƒCƒY‚Ì•ÏX‚à”½‰f
-	radius = max(radius, 0.01f); // ”¼Œa‚ª0ˆÈ‰º‚É‚È‚ç‚È‚¢‚æ‚¤‚ÉÅ’á’l‚ğİ’è
-	physx::PxSphereGeometry geometry(radius); // ”¼Œa‚ğw’èiƒTƒCƒY‚Ìx¬•ª‚ğg—pj
+	// ã‚µã‚¤ã‚ºã®å¤‰æ›´ã‚‚åæ˜ 
+	radius = max(radius, 0.01f); // åŠå¾„ãŒ0ä»¥ä¸‹ã«ãªã‚‰ãªã„ã‚ˆã†ã«æœ€ä½å€¤ã‚’è¨­å®š
+	physx::PxSphereGeometry geometry(radius); // åŠå¾„ã‚’æŒ‡å®šï¼ˆã‚µã‚¤ã‚ºã®xæˆåˆ†ã‚’ä½¿ç”¨ï¼‰
 	if (!geometry.isValid())
 	{
 		Console::LogError("Invalid geometry parameters for SphereCollider. Radius must be greater than 0.");
@@ -60,9 +60,9 @@ void SphereCollider::Render(RenderContext* rtx)
 {
 #ifdef _DEBUG
 	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
-	// ƒ[ƒ‹ƒhs—ñ‚ğŒvZ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¨ˆç®—
 	XMFLOAT4X4 world = CalculateColliderWorldTransform(center, Vector3(radius, radius, radius));
-	// ƒƒCƒ„[ƒtƒŒ[ƒ€‚Å•`‰æ
+	// ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã§æç”»
 	RenderState* renderState = Graphics::GetRenderState();
 	renderState->BindRasterizerState(immediateContext, RasterizerState::WireCullBack);
 	primitive->Render(immediateContext, world, color);
@@ -86,7 +86,7 @@ void SphereCollider::Render(RenderContext* rtx)
 //
 //	if (isChanged)
 //	{
-//		// ƒvƒƒpƒeƒB‚ª•ÏX‚³‚ê‚½ê‡A•¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚Å‚ ‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO‚ğ—§‚Ä‚Ü‚·B
+//		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã¾ã™ã€‚
 //		SetNeedSync();
 //	}
 //	IMGUI_PROPERTY_END();
@@ -104,14 +104,14 @@ json SphereCollider::Serialize() const
 void SphereCollider::Deserialize(const json& j)
 {
 	Collider::Deserialize(j);
-	// "center" ƒvƒƒpƒeƒB‚ª‘¶İ‚µA”z—ñ‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚©‚ç“Ç‚İæ‚è‚Ü‚·B
+	// "center" ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã—ã€é…åˆ—ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ã‹ã‚‰èª­ã¿å–ã‚Šã¾ã™ã€‚
 	if (j.contains("center") && j["center"].is_array() && j["center"].size() == 3)
 	{
 		center.x = j["center"][0].get<float>();
 		center.y = j["center"][1].get<float>();
 		center.z = j["center"][2].get<float>();
 	}
-	// "offset" ƒvƒƒpƒeƒB‚ª‘¶İ‚µA”z—ñ‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚©‚ç“Ç‚İæ‚è‚Ü‚·B(‹ŒƒvƒƒpƒeƒB‚ÌƒTƒ|[ƒg)
+	// "offset" ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã—ã€é…åˆ—ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ã‹ã‚‰èª­ã¿å–ã‚Šã¾ã™ã€‚(æ—§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚µãƒãƒ¼ãƒˆ)
 	else if (j.contains("offset") && j["offset"].is_array() && j["offset"].size() == 3)
 	{
 		center.x = j["offset"][0].get<float>();
@@ -119,16 +119,16 @@ void SphereCollider::Deserialize(const json& j)
 		center.z = j["offset"][2].get<float>();
 	}
 
-	// "radius" ƒvƒƒpƒeƒB‚ª‘¶İ‚µA”’l‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚©‚ç“Ç‚İæ‚è‚Ü‚·B
+	// "radius" ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã—ã€æ•°å€¤ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ã‹ã‚‰èª­ã¿å–ã‚Šã¾ã™ã€‚
 	if (j.contains("radius"))
 	{
 		radius = j["radius"].get<float>();
 	}
 
-	// "size" ƒvƒƒpƒeƒB‚ª‘¶İ‚µA”z—ñ‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚©‚ç“Ç‚İæ‚è‚Ü‚·B(‹ŒƒvƒƒpƒeƒB‚ÌƒTƒ|[ƒg)
+	// "size" ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå­˜åœ¨ã—ã€é…åˆ—ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ã‹ã‚‰èª­ã¿å–ã‚Šã¾ã™ã€‚(æ—§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚µãƒãƒ¼ãƒˆ)
 	if (j.contains("size") && j["size"].is_array() && j["size"].size() == 3)
 	{
-		radius = j["size"][0].get<float>(); // ƒTƒCƒY‚Ìx¬•ª‚ğ”¼Œa‚Æ‚µ‚Äg—p
+		radius = j["size"][0].get<float>(); // ã‚µã‚¤ã‚ºã®xæˆåˆ†ã‚’åŠå¾„ã¨ã—ã¦ä½¿ç”¨
 	}
 }
 
@@ -142,7 +142,7 @@ void SphereCollider::SetCenter(const Vector3& newCenter)
 	if (center != newCenter)
 	{
 		center = newCenter;
-		SetNeedSync(); // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚Å‚ ‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+		SetNeedSync(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	}
 }
 
@@ -156,6 +156,6 @@ void SphereCollider::SetRadius(float newRadius)
 	if (radius != newRadius)
 	{
 		radius = newRadius;
-		SetNeedSync(); // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚Å‚ ‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+		SetNeedSync(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	}
 }

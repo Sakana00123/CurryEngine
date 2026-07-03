@@ -8,28 +8,28 @@ class MeshRenderer : public Renderer
 public:
 	MeshRenderer() = default;
 	~MeshRenderer() override = default;
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	void Initialize() override;
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Render(RenderContext* rtx) override;
-	// AABBŒvZ
+	// AABBè¨ˆç®—
 	Math::BoundingBox CalculateAABB() const override;
 #ifdef USE_IMGUI
-	// ƒfƒoƒbƒO GUI ‚Ì•`‰æ
+	// ãƒ‡ãƒãƒƒã‚° GUI ã®æç”»
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
-	// ƒVƒŠƒAƒ‰ƒCƒY
+	// ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	json Serialize() const override;
-	// ƒfƒVƒŠƒAƒ‰ƒCƒY
+	// ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
 	void Deserialize(const json& j) override;
 
-	// ƒvƒŠƒ~ƒeƒBƒuƒƒbƒVƒ…‚Ìİ’è(ƒeƒXƒg—pB«—ˆ“I‚É‚ÍMeshFilter‚È‚Ç‚ÅŠÇ—‚·‚é‚±‚Æ‚àŒŸ“¢)
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ãƒ¡ãƒƒã‚·ãƒ¥ã®è¨­å®š(ãƒ†ã‚¹ãƒˆç”¨ã€‚å°†æ¥çš„ã«ã¯MeshFilterãªã©ã§ç®¡ç†ã™ã‚‹ã“ã¨ã‚‚æ¤œè¨)
 	void SetPrimitiveMesh(int type);
 public:
 	//C_PROPERTY()
-	//std::string meshAssetPath; // ƒƒbƒVƒ…ƒAƒZƒbƒg‚ÌƒpƒX
+	//std::string meshAssetPath; // ãƒ¡ãƒƒã‚·ãƒ¥ã‚¢ã‚»ãƒƒãƒˆã®ãƒ‘ã‚¹
 
-	int primitiveType = 0; // •`‰æƒvƒŠƒ~ƒeƒBƒuƒ^ƒCƒv(0: ƒLƒ…[ƒuA1: ‹…A2: •½–ÊA3: ƒJƒvƒZƒ‹A4: ‰~’Œ)
+	int primitiveType = 0; // æç”»ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã‚¿ã‚¤ãƒ—(0: ã‚­ãƒ¥ãƒ¼ãƒ–ã€1: çƒã€2: å¹³é¢ã€3: ã‚«ãƒ—ã‚»ãƒ«ã€4: å††æŸ±)
 
-	std::shared_ptr<Mesh> mesh; // ƒƒbƒVƒ…ƒf[ƒ^‚Ö‚ÌQÆ
+	std::shared_ptr<Mesh> mesh; // ãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿ã¸ã®å‚ç…§
 };

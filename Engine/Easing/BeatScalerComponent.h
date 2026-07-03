@@ -5,14 +5,14 @@ class BeatScalerComponent : public Component
 {
 	C_REFLECT(BeatScalerComponent)
 public:
-	/** @brief ƒr[ƒg‚É‡‚í‚¹‚ÄƒXƒP[ƒŠƒ“ƒO‚·‚é‹­‚³B*/
+	/** @brief ãƒ“ãƒ¼ãƒˆã«åˆã‚ã›ã¦ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã™ã‚‹å¼·ã•ã€‚*/
 	C_PROPERTY()
 	float scaleIntensity = 1.0f;
-	/** @brief ƒXƒP[ƒŠƒ“ƒO‚Ì‘¬‚³B*/
+	/** @brief ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã®é€Ÿã•ã€‚*/
 	C_PROPERTY()
 	float scaleSpeed = 5.0f;
 
-	/** @brief ‰½ƒr[ƒg‚Éˆê‰ñƒXƒP[ƒŠƒ“ƒO‚·‚é‚©B*/
+	/** @brief ä½•ãƒ“ãƒ¼ãƒˆã«ä¸€å›ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã™ã‚‹ã‹ã€‚*/
 	C_PROPERTY()
 	int scaleFrequency = 1;
 public:
@@ -32,5 +32,5 @@ private:
 	float baseScale = 1.0f;
 	float targetScale = 1.0f;
 	float currentScale = 1.0f;
-	int beatCount = 0; // ƒr[ƒgƒJƒEƒ“ƒg
+	int beatCount = 0; // ãƒ“ãƒ¼ãƒˆã‚«ã‚¦ãƒ³ãƒˆ
 };

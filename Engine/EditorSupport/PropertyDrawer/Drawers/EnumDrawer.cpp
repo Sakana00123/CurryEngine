@@ -28,7 +28,7 @@ namespace CurryEngine
 		std::string previewValue = mixed ? "---" : enumInfo->isClass ? (enumInfo->name + "::" + enumInfo->values[value].name) : enumInfo->values[value].name;
 		if (ImGui::BeginCombo("##enum", previewValue.c_str()))
 		{
-			// ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì“à—e‚ğ—ñ‹“Œ^‚Ì’l‚Å–„‚ß‚é
+			// ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®å†…å®¹ã‚’åˆ—æŒ™å‹ã®å€¤ã§åŸ‹ã‚ã‚‹
 			for (const auto& enumValue : enumInfo->values)
 			{
 				bool isSelected = (value == enumValue.value);
@@ -40,7 +40,7 @@ namespace CurryEngine
 
 				if (isSelected)
 				{
-					ImGui::SetItemDefaultFocus(); // Å‰‚ÌƒAƒCƒeƒ€‚ÉƒtƒH[ƒJƒX‚ğ“–‚Ä‚é
+					ImGui::SetItemDefaultFocus(); // æœ€åˆã®ã‚¢ã‚¤ãƒ†ãƒ ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’å½“ã¦ã‚‹
 				}
 			}
 			ImGui::EndCombo();
@@ -48,25 +48,25 @@ namespace CurryEngine
 
 		if (edited)
 		{
-			// ’l‚ª•ÏX‚³‚ê‚½‚Æ‚«‚Ìˆ—B•¡”‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚·‚×‚Ä‚Ì‘ÎÛ‚É‘Î‚µ‚ÄV‚µ‚¢’l‚ğ“K—p‚µ‚Ü‚·B
+			// å€¤ãŒå¤‰æ›´ã•ã‚ŒãŸã¨ãã®å‡¦ç†ã€‚è¤‡æ•°é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ã™ã¹ã¦ã®å¯¾è±¡ã«å¯¾ã—ã¦æ–°ã—ã„å€¤ã‚’é©ç”¨ã—ã¾ã™ã€‚
 			PropertyDrawHelper::ApplyToAll<int>(context, prop, value);
 		}
 
 		if (ImGui::IsItemDeactivatedAfterEdit())
 		{
-			// ’l‚ÌƒRƒ~ƒbƒgˆ—Bƒ†[ƒU[‚ª•ÒW‚ğŠ®—¹‚µ‚½‚Æ‚«‚ÉAUndo/Redo ƒRƒ}ƒ“ƒh‚ğ”­s‚µ‚Ü‚·B
+			// å€¤ã®ã‚³ãƒŸãƒƒãƒˆå‡¦ç†ã€‚ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç·¨é›†ã‚’å®Œäº†ã—ãŸã¨ãã«ã€Undo/Redo ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œã—ã¾ã™ã€‚
 			PropertyDrawHelper::CommitEdit<int>(prop, context, m_state, value,
 				[enumInfo](const int& v) {
-					// ’l‚ğ•¶š—ñ‚É•ÏŠ·‚·‚éŠÖ”BEnumInfo ‚ğQÆ‚µ‚ÄA’l‚É‘Î‰‚·‚é–¼‘O‚ğ•Ô‚µ‚Ü‚·B
+					// å€¤ã‚’æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹é–¢æ•°ã€‚EnumInfo ã‚’å‚ç…§ã—ã¦ã€å€¤ã«å¯¾å¿œã™ã‚‹åå‰ã‚’è¿”ã—ã¾ã™ã€‚
 					for (const auto& enumValue : enumInfo->values)
 					{
 						if (enumValue.value == v)
 						{
-							// enum class ‚È‚ç "EnumName::ValueName"A‚»‚¤‚Å‚È‚¢‚È‚ç "ValueName" ‚ğ•Ô‚·
+							// enum class ãªã‚‰ "EnumName::ValueName"ã€ãã†ã§ãªã„ãªã‚‰ "ValueName" ã‚’è¿”ã™
 							return enumInfo->isClass ? (enumInfo->name + "::" + enumValue.name) : enumValue.name;
 						}
 					}
-					return std::to_string(v); // ‘Î‰‚·‚é–¼‘O‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Í”’l‚ğ•¶š—ñ‚Å•Ô‚·
+					return std::to_string(v); // å¯¾å¿œã™ã‚‹åå‰ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯æ•°å€¤ã‚’æ–‡å­—åˆ—ã§è¿”ã™
 				}
 			);
 		}

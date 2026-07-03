@@ -7,7 +7,7 @@ class Effect : public Component
 {
 public:
 	Effect(const char* filePath) {
-		//Effekseerエフェクト読み込み
+		//Effekseer繧ｨ繝輔ぉ繧ｯ繝郁ｪｭ縺ｿ霎ｼ縺ｿ
 		handle = EffectManager::LoadRequest(filePath);
 	}
 	~Effect() override {

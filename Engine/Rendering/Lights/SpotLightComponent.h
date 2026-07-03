@@ -15,9 +15,9 @@ public:
 	C_PROPERTY()
 	float range = 10.0f;
 	C_PROPERTY()
-	float innerConeAngle = 30.0f; // “à‘¤‚ÌƒR[ƒ“Šp“xi“x”–@j
+	float innerConeAngle = 30.0f; // å†…å´ã®ã‚³ãƒ¼ãƒ³è§’åº¦ï¼ˆåº¦æ•°æ³•ï¼‰
 	C_PROPERTY()
-	float outerConeAngle = 45.0f; // ŠO‘¤‚ÌƒR[ƒ“Šp“xi“x”–@j
+	float outerConeAngle = 45.0f; // å¤–å´ã®ã‚³ãƒ¼ãƒ³è§’åº¦ï¼ˆåº¦æ•°æ³•ï¼‰
 
 public:
 	SpotLightComponent() = default;

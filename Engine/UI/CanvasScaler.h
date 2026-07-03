@@ -6,33 +6,33 @@ class CanvasScaler : public UIComponent
 	C_REFLECT(CanvasScaler)
 public:
     enum class ScaleMode {
-        ConstantPixelSize,      // scaleFactorŒÅ’è
-        ScaleWithScreenSize,    // ‰ğ‘œ“x”ä‚ÅƒXƒP[ƒ‹
+        ConstantPixelSize,      // scaleFactorå›ºå®š
+        ScaleWithScreenSize,    // è§£åƒåº¦æ¯”ã§ã‚¹ã‚±ãƒ¼ãƒ«
     };
 
     ScaleMode scaleMode = ScaleMode::ScaleWithScreenSize;
 
-    // İŒv‰ğ‘œ“x
+    // è¨­è¨ˆè§£åƒåº¦
 	C_PROPERTY()
     float referenceWidth = 1920.f;
 	C_PROPERTY()
     float referenceHeight = 1080.f;
 
-    // 0=•Šî€, 1=‚‚³Šî€, 0.5=ƒuƒŒƒ“ƒh
+    // 0=å¹…åŸºæº–, 1=é«˜ã•åŸºæº–, 0.5=ãƒ–ãƒ¬ãƒ³ãƒ‰
     C_PROPERTY(CurryEngine::PropertyAttributes::Range(0.0f, 1.0f))
     float matchWidthOrHeight = 0.5f;
 
-    // ConstantPixelSizeƒ‚[ƒh—p
+    // ConstantPixelSizeãƒ¢ãƒ¼ãƒ‰ç”¨
     float constantScaleFactor = 1.f;
 
-    // “Ç‚İæ‚èê—p (–ˆƒtƒŒ[ƒ€XV)
+    // èª­ã¿å–ã‚Šå°‚ç”¨ (æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°)
 	C_PROPERTY(CurryEngine::PropertyAttributes::NonSerialized)
     float scaleFactor = 1.f;
 
-	// ƒXƒP[ƒ‹ƒtƒ@ƒNƒ^[‚ğæ“¾‚µ‚Ü‚·B
+	// ã‚¹ã‚±ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¯ã‚¿ãƒ¼ã‚’å–å¾—ã—ã¾ã™ã€‚
 	float GetScaleFactor() const { return scaleFactor; }
 
-	// İŒv‰ğ‘œ“x‚ğæ“¾‚µ‚Ü‚·B
+	// è¨­è¨ˆè§£åƒåº¦ã‚’å–å¾—ã—ã¾ã™ã€‚
 	Vector2 GetReferenceResolution() const { return { referenceWidth, referenceHeight }; }
 
 	void Start() override;

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Engine/Scripting/ScriptSystem.h"
-// C#‚©‚çŒÄ‚Ño‚·ŠÖ”‚ÌÀ‘•
+// C#ã‹ã‚‰å‘¼ã³å‡ºã™é–¢æ•°ã®å®Ÿè£…
 
 ENGINE_API void ScriptNames_Add(const char* name)
 {

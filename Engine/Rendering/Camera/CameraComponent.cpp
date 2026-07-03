@@ -26,7 +26,7 @@ void CameraComponent::DrawProperty(const PropertyDrawContext& context)
 
 void CameraComponent::OnEnable()
 {
-	// ƒJƒƒ‰‚ª—LŒø‚É‚È‚Á‚½‚Æ‚«AƒJƒƒ‰ƒVƒXƒeƒ€‚ÉƒƒCƒ“ƒJƒƒ‰‚ÌXV‚ª•K—v‚Å‚ ‚é‚±‚Æ‚ğ’Ê’m
+	// ã‚«ãƒ¡ãƒ©ãŒæœ‰åŠ¹ã«ãªã£ãŸã¨ãã€ã‚«ãƒ¡ãƒ©ã‚·ã‚¹ãƒ†ãƒ ã«ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã®æ›´æ–°ãŒå¿…è¦ã§ã‚ã‚‹ã“ã¨ã‚’é€šçŸ¥
 	if (auto* scene = GetOwner()->GetScene())
 	{
 		scene->cameraSystem.NotifyCameraChanged();
@@ -35,7 +35,7 @@ void CameraComponent::OnEnable()
 
 void CameraComponent::OnDisable()
 {
-	// ƒJƒƒ‰‚ª–³Œø‚É‚È‚Á‚½‚Æ‚«AƒJƒƒ‰ƒVƒXƒeƒ€‚ÉƒƒCƒ“ƒJƒƒ‰‚ÌXV‚ª•K—v‚Å‚ ‚é‚±‚Æ‚ğ’Ê’m
+	// ã‚«ãƒ¡ãƒ©ãŒç„¡åŠ¹ã«ãªã£ãŸã¨ãã€ã‚«ãƒ¡ãƒ©ã‚·ã‚¹ãƒ†ãƒ ã«ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã®æ›´æ–°ãŒå¿…è¦ã§ã‚ã‚‹ã“ã¨ã‚’é€šçŸ¥
 	if (auto* scene = GetOwner()->GetScene())
 	{
 		scene->cameraSystem.NotifyCameraChanged();
@@ -98,7 +98,7 @@ Math::BoundingBox CameraComponent::GetBoundingBox() const
 		return Math::BoundingBox();
 	}
 	Vector3 center = GetOwner()->GetTransform()->GetWorldPosition();
-	Vector3 extents{ 0.5f, 0.5f, 0.5f }; // ƒJƒƒ‰‚ÌƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚Ì”¼•ª‚ÌƒTƒCƒY
+	Vector3 extents{ 0.5f, 0.5f, 0.5f }; // ã‚«ãƒ¡ãƒ©ã®ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®åŠåˆ†ã®ã‚µã‚¤ã‚º
 	Vector3 min{}, max{};
 	min = center - extents;
 	max = center + extents;
@@ -108,12 +108,12 @@ Math::BoundingBox CameraComponent::GetBoundingBox() const
 XMMATRIX CameraComponent::GetViewMatrix() const
 {
 	XMMATRIX World = XMLoadFloat4x4(&GetOwner()->transform->GetWorld());
-	XMVECTOR Scale, Quaternion, Eye;//Scale‚Íg—p‚µ‚È‚¢
+	XMVECTOR Scale, Quaternion, Eye;//Scaleã¯ä½¿ç”¨ã—ãªã„
 	XMMatrixDecompose(&Scale, &Quaternion, &Eye, World);
 	
 	XMVECTOR Forward = XMVector3TransformNormal(
-		XMVectorSet(0, 0, 1, 0), // ‘O•ûŒüƒxƒNƒgƒ‹
-		XMMatrixRotationQuaternion(Quaternion) // ‰ñ“]‚ğ“K—p
+		XMVectorSet(0, 0, 1, 0), // å‰æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+		XMMatrixRotationQuaternion(Quaternion) // å›è»¢ã‚’é©ç”¨
 	);
 	XMVECTOR Focus = Eye + Forward;
 	XMVECTOR Up = XMVector3TransformNormal(

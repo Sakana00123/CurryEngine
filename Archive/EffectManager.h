@@ -7,29 +7,29 @@
 class EffectManager
 {
 public:
-	using UserHandle = int;//ƒ†[ƒU[‘¤‚ÌƒGƒtƒFƒNƒg¯•Ê—pƒnƒ“ƒhƒ‹
+	using UserHandle = int;//ãƒ¦ãƒ¼ã‚¶ãƒ¼å´ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆè­˜åˆ¥ç”¨ãƒãƒ³ãƒ‰ãƒ«
 
 	static void Initialize() {
 		ID3D11Device* device = Graphics::GetDevice();
 		ID3D11DeviceContext* immediateContext = Graphics::GetDeviceContext();
-		//EffekseerƒŒƒ“ƒ_ƒ‰¶¬
+		//Effekseerãƒ¬ãƒ³ãƒ€ãƒ©ç”Ÿæˆ
 		effekseerRenderer = EffekseerRendererDX11::Renderer::Create(device, immediateContext, 2048);
 
-		//Effekseerƒ}ƒl[ƒWƒƒ[¶¬
+		//Effekseerãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆ
 		effekseerManager = Effekseer::Manager::Create(2048);
 
-		//EffekseerƒŒƒ“ƒ_ƒ‰‚ÌŠeíİ’è
+		//Effekseerãƒ¬ãƒ³ãƒ€ãƒ©ã®å„ç¨®è¨­å®š
 		effekseerManager->SetSpriteRenderer(effekseerRenderer->CreateSpriteRenderer());
 		effekseerManager->SetRibbonRenderer(effekseerRenderer->CreateRibbonRenderer());
 		effekseerManager->SetRingRenderer(effekseerRenderer->CreateRingRenderer());
 		effekseerManager->SetTrackRenderer(effekseerRenderer->CreateTrackRenderer());
 		effekseerManager->SetModelRenderer(effekseerRenderer->CreateModelRenderer());
-		//Effekseer“à‚Å‚Ìƒ[ƒ_[‚Ìİ’è
+		//Effekseerå†…ã§ã®ãƒ­ãƒ¼ãƒ€ãƒ¼ã®è¨­å®š
 		effekseerManager->SetTextureLoader(effekseerRenderer->CreateTextureLoader());
 		effekseerManager->SetModelLoader(effekseerRenderer->CreateModelLoader());
 		effekseerManager->SetMaterialLoader(effekseerRenderer->CreateMaterialLoader());
 
-		//Effekseer‚ğ¶èÀ•WŒn‚ÅŒvZ‚·‚é
+		//Effekseerã‚’å·¦æ‰‹åº§æ¨™ç³»ã§è¨ˆç®—ã™ã‚‹
 		effekseerManager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
 	}
 
@@ -41,22 +41,22 @@ public:
 	}
 
 	static void Update(float elapsedTime) {
-		//ƒGƒtƒFƒNƒg‚ğƒ[ƒh
+		//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ãƒ­ãƒ¼ãƒ‰
 		while (!loadQueue.empty()) {
 			auto& [userHandle, filePath] = loadQueue.front();
 			effectMap[userHandle] = LoadEffect(filePath);
 			loadQueue.pop();
 		}
-		//ƒGƒtƒFƒNƒg‚ğÄ¶
+		//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿ
 		while (!playQueue.empty()) {
 			UserHandle userHandle = playQueue.front();
 			playQueue.pop();
 			if (effectMap.count(userHandle)) {
 				Effekseer::Handle handle = effekseerManager->Play(effectMap[userHandle], Effekseer::Vector3D());
-				handleMap[userHandle] = handle;//ƒ†[ƒU[ƒnƒ“ƒhƒ‹‚ÆEffekseer::Handle‚ğ•R‚Ã‚¯
+				handleMap[userHandle] = handle;//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒãƒ³ãƒ‰ãƒ«ã¨Effekseer::Handleã‚’ç´ã¥ã‘
 			}
 		}
-		//ƒGƒtƒFƒNƒg‚ğ’â~
+		//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’åœæ­¢
 		while (!stopQueue.empty()) {
 			UserHandle userHandle = stopQueue.front();
 			stopQueue.pop();
@@ -64,22 +64,22 @@ public:
 				effekseerManager->StopEffect(handleMap[userHandle]);
 			}
 		}
-		//ƒGƒtƒFƒNƒgXVˆ—
+		//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆæ›´æ–°å‡¦ç†
 		effekseerManager->Update(elapsedTime * 60.f);
 	}
 
 	static void Render(const DirectX::XMFLOAT4X4& view, const DirectX::XMFLOAT4X4& projection) {
-		//ƒrƒ…[•ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğEffekseerƒŒƒ“ƒ_ƒ‰‚Éİ’è
+		//ãƒ“ãƒ¥ãƒ¼ï¼†ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’Effekseerãƒ¬ãƒ³ãƒ€ãƒ©ã«è¨­å®š
 		effekseerRenderer->SetCameraMatrix(*reinterpret_cast<const Effekseer::Matrix44*>(&view));
 		effekseerRenderer->SetProjectionMatrix(*reinterpret_cast<const Effekseer::Matrix44*>(&projection));
 
-		//Effekseer•`‰æŠJn
+		//Effekseeræç”»é–‹å§‹
 		effekseerRenderer->BeginRendering();
 
-		// Effekseer•`‰æÀs
+		// Effekseeræç”»å®Ÿè¡Œ
 		effekseerManager->Draw();
 
-		//Effekseer•`‰æI—¹
+		//Effekseeræç”»çµ‚äº†
 		effekseerRenderer->EndRendering();
 	}
 
@@ -125,12 +125,12 @@ private:
 	static inline Effekseer::ManagerRef effekseerManager;
 	static inline EffekseerRenderer::RendererRef effekseerRenderer;
 
-	static inline std::queue<std::pair<UserHandle, std::string>> loadQueue;   // **ƒGƒtƒFƒNƒg‚Ìƒ[ƒhƒŠƒNƒGƒXƒgƒLƒ…[**
-	static inline std::queue<UserHandle> playQueue;   // **ƒGƒtƒFƒNƒg‚ÌÄ¶ƒŠƒNƒGƒXƒgƒLƒ…[**
-	static inline std::queue<UserHandle> stopQueue;   // **ƒGƒtƒFƒNƒg‚Ì’â~ƒŠƒNƒGƒXƒgƒLƒ…[**
+	static inline std::queue<std::pair<UserHandle, std::string>> loadQueue;   // **ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ãƒ­ãƒ¼ãƒ‰ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚­ãƒ¥ãƒ¼**
+	static inline std::queue<UserHandle> playQueue;   // **ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å†ç”Ÿãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚­ãƒ¥ãƒ¼**
+	static inline std::queue<UserHandle> stopQueue;   // **ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®åœæ­¢ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚­ãƒ¥ãƒ¼**
 
-	static inline std::unordered_map<UserHandle, Effekseer::EffectRef> effectMap; //ƒGƒtƒFƒNƒgIDŠÇ—
-	static inline std::unordered_map<UserHandle, Effekseer::Handle> handleMap; //Effekseer::Handle‚Æ“¯Šú
+	static inline std::unordered_map<UserHandle, Effekseer::EffectRef> effectMap; //ã‚¨ãƒ•ã‚§ã‚¯ãƒˆIDç®¡ç†
+	static inline std::unordered_map<UserHandle, Effekseer::Handle> handleMap; //Effekseer::Handleã¨åŒæœŸ
 
 	static inline UserHandle nextUserHandle = 1;
 };

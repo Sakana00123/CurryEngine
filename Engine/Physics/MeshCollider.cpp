@@ -7,13 +7,13 @@ REGISTER_COMPONENT(MeshCollider, "Physics")
 
 void MeshCollider::Initialize()
 {
-	// ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu‚Ì€”õ‚È‚ÇA•K—v‚È‰Šú‰»ˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®æº–å‚™ãªã©ã€å¿…è¦ãªåˆæœŸåŒ–å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 	Collider::Initialize();
 }
 
 void MeshCollider::Register()
 {
-	// ‚±‚±‚ÅMeshCollider‚ğ‚ÂƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÉMeshCollider‚ğ’Ç‰Á‚µA•¨—ƒGƒ“ƒWƒ“‚É“o˜^‚·‚éˆ—‚ğÀ‘•
+	// ã“ã“ã§MeshColliderã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«MeshColliderã‚’è¿½åŠ ã—ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²ã™ã‚‹å‡¦ç†ã‚’å®Ÿè£…
 	GltfModelRenderer* modelRenderer = GetOwner()->GetComponent<GltfModelRenderer>();
 
 	if (Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>())
@@ -34,16 +34,16 @@ void MeshCollider::Register()
 		{
 			for (const auto& batchMesh : modelAsset->batchMeshes)
 			{
-				size_t vertexOffset = data.vertices.size(); // Œ»İ‚Ì’¸“_”‚ğƒIƒtƒZƒbƒg‚Æ‚µ‚Ä•Û‘¶
+				size_t vertexOffset = data.vertices.size(); // ç¾åœ¨ã®é ‚ç‚¹æ•°ã‚’ã‚ªãƒ•ã‚»ãƒƒãƒˆã¨ã—ã¦ä¿å­˜
 				data.vertices.reserve(vertexOffset + batchMesh.cachedVertices.size());
 				for (const auto& vertex : batchMesh.cachedVertices)
 				{
-					// BatchMesh‚Ì’¸“_ƒf[ƒ^‚à•K—v‚É‰‚¶‚ÄA‚±‚Ì“_‚Å”z’uÏ‚İ‚Å‚ ‚é‚±‚Æ‚ğ‘O’ñ‚Æ‚µ‚Ü‚·
+					// BatchMeshã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã‚‚å¿…è¦ã«å¿œã˜ã¦ã€ã“ã®æ™‚ç‚¹ã§é…ç½®æ¸ˆã¿ã§ã‚ã‚‹ã“ã¨ã‚’å‰æã¨ã—ã¾ã™
 					data.vertices.push_back({ vertex.position.x, vertex.position.y, vertex.position.z });
 				}
 				for (const auto& index : batchMesh.cachedIndices)
 				{
-					data.indices.push_back(static_cast<int>(index + vertexOffset)); // ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Í’¸“_ƒIƒtƒZƒbƒg‚ğ‰ÁZ‚µ‚Ä’Ç‰Á
+					data.indices.push_back(static_cast<int>(index + vertexOffset)); // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã¯é ‚ç‚¹ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’åŠ ç®—ã—ã¦è¿½åŠ 
 					
 					_ASSERT_EXPR(
 						index + vertexOffset <= INT_MAX,
@@ -55,7 +55,7 @@ void MeshCollider::Register()
 		}
 		else
 		{
-			// Mesh‚ğ’¼Úg‚¤‚Ì‚Å‚Í‚È‚­ANode‚ª‚Âtransforms—ñ‚ğl—¶‚µ‚Ä“WŠJ‚·‚é
+			// Meshã‚’ç›´æ¥ä½¿ã†ã®ã§ã¯ãªãã€NodeãŒæŒã¤transformè¡Œåˆ—ã‚’è€ƒæ…®ã—ã¦å±•é–‹ã™ã‚‹
 			for (const auto& node : modelAsset->nodes)
 			{
 				if (node.mesh >= 0 && node.mesh < modelAsset->meshes.size())
@@ -65,11 +65,11 @@ void MeshCollider::Register()
 
 					for (const auto& primitive : mesh.primitives)
 					{
-						size_t vertexOffset = data.vertices.size(); // Œ»İ‚Ì’¸“_”‚ğƒIƒtƒZƒbƒg‚Æ‚µ‚Ä•Û‘¶
+						size_t vertexOffset = data.vertices.size(); // ç¾åœ¨ã®é ‚ç‚¹æ•°ã‚’ã‚ªãƒ•ã‚»ãƒƒãƒˆã¨ã—ã¦ä¿å­˜
 						data.vertices.reserve(vertexOffset + primitive.cachedVertices.size());
 						for (const auto& vertex : primitive.cachedVertices)
 						{
-							// ’¸“_À•W‚Éƒm[ƒh‚Ì•ÏŠ·s—ñ‚ğ“K—p‚µ‚Äƒ[ƒ‹ƒhƒXƒP[ƒ‹/ƒ[ƒJƒ‹”z’u‚ğ”½‰f‚·‚é
+							// é ‚ç‚¹åº§æ¨™ã«ãƒãƒ¼ãƒ‰ã®å¤‰æ›è¡Œåˆ—ã‚’é©ç”¨ã—ã¦ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«/ãƒ­ãƒ¼ã‚«ãƒ«é…ç½®ã‚’åæ˜ ã™ã‚‹
 							DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&vertex.position);
 							pos = DirectX::XMVector3TransformCoord(pos, globalTransform);
 							DirectX::XMFLOAT3 transformedPos;
@@ -77,7 +77,7 @@ void MeshCollider::Register()
 							
 							data.vertices.push_back({ transformedPos.x, transformedPos.y, transformedPos.z });
 						}
-						// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚ÌƒtƒH[ƒ}ƒbƒg‚É‡‚í‚¹‚Ä byte ”z—ñ‚©‚ç“Ç‚İæ‚é
+						// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«åˆã‚ã›ã¦ byte é…åˆ—ã‹ã‚‰èª­ã¿å–ã‚‹
 						if (primitive.indexBufferView.format == DXGI_FORMAT_R32_UINT)
 						{
 							const uint32_t* indices = reinterpret_cast<const uint32_t*>(primitive.cachedIndices.data());
@@ -112,27 +112,27 @@ void MeshCollider::Register()
 				}
 			}
 		}
-		data.materialHandle = m_materialHandle; // ƒ}ƒeƒŠƒAƒ‹ƒnƒ“ƒhƒ‹‚ğİ’è
-		data.isTrigger = isTrigger; // ƒgƒŠƒK[‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ğİ’è
-		data.contactOffset = contactOffset; // ÚGƒIƒtƒZƒbƒg‚ğİ’è
-		data.collider = this; // ƒRƒ‰ƒCƒ_‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğİ’è
+		data.materialHandle = m_materialHandle; // ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’è¨­å®š
+		data.isTrigger = isTrigger; // ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+		data.contactOffset = contactOffset; // æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
+		data.collider = this; // ã‚³ãƒ©ã‚¤ãƒ€ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¨­å®š
 
 
 		if (convex)
 		{
-			// •¨—ƒGƒ“ƒWƒ“‚É“ÊƒƒbƒVƒ…‚Æ‚µ‚ÄƒRƒ‰ƒCƒ_[‚ğ“o˜^
+			// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«å‡¸ãƒ¡ãƒƒã‚·ãƒ¥ã¨ã—ã¦ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ç™»éŒ²
 			if (!Physics::AddConvexMeshShape(GetTransform(), data, m_shapeHandle))
 			{
-				// ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+				// è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
 				Console::LogError("Failed to add MeshCollider shape to physics engine.");
 			}
 		}
 		else
 		{
-			// •¨—ƒGƒ“ƒWƒ“‚ÉOŠpŒ`ƒƒbƒVƒ…‚Æ‚µ‚ÄƒRƒ‰ƒCƒ_[‚ğ“o˜^
+			// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ä¸‰è§’å½¢ãƒ¡ãƒƒã‚·ãƒ¥ã¨ã—ã¦ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ç™»éŒ²
 			if (!Physics::AddTriangleMeshShape(GetTransform(), data, m_shapeHandle))
 			{
-				// ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+				// è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
 				Console::LogError("Failed to add MeshCollider shape to physics engine.");
 			}
 		}
@@ -146,15 +146,15 @@ void MeshCollider::Register()
 
 void MeshCollider::SyncWithPhysics()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Éƒ[ƒJƒ‹ƒ|[ƒY‚ğXV
-	// MeshCollider‚Í’ÊíAˆÊ’u‚â‰ñ“]‚Ì•ÏX‚ª‚ ‚Ü‚è‚È‚¢‚½‚ßA•K—v‚É‰‚¶‚ÄÀ‘•‚µ‚Ü‚·B
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒ¼ã‚ºã‚’æ›´æ–°
+	// MeshColliderã¯é€šå¸¸ã€ä½ç½®ã‚„å›è»¢ã®å¤‰æ›´ãŒã‚ã¾ã‚Šãªã„ãŸã‚ã€å¿…è¦ã«å¿œã˜ã¦å®Ÿè£…ã—ã¾ã™ã€‚
 
 }
 
 void MeshCollider::Render(RenderContext* rtx)
 {
 #ifdef _DEBUG
-	// ƒfƒoƒbƒO•`‰æ‚ÌÀ‘•‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ü‚·B
+	// ãƒ‡ãƒãƒƒã‚°æç”»ã®å®Ÿè£…ã‚’ã“ã“ã«è¿½åŠ ã—ã¾ã™ã€‚
 #endif
 }
 
@@ -169,7 +169,7 @@ void MeshCollider::Render(RenderContext* rtx)
 //	IMGUI_PROPERTY_BOOL("Convex", convex, edited);
 //	if (edited)
 //	{
-//		SetNeedSync(); // convex ƒvƒƒpƒeƒB‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ’Ê’m‚µ‚ÄA•¨—ƒGƒ“ƒWƒ“‚É“¯Šú‚·‚é•K—v‚ª‚ ‚é‚±‚Æ‚ğ¦‚µ‚Ü‚·B
+//		SetNeedSync(); // convex ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’é€šçŸ¥ã—ã¦ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŒæœŸã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã“ã¨ã‚’ç¤ºã—ã¾ã™ã€‚
 //	}
 //
 //	IMGUI_PROPERTY_END();
@@ -198,6 +198,6 @@ void MeshCollider::SetConvex(bool isConvex)
 	if (convex != isConvex)
 	{
 		convex = isConvex;
-		SetNeedSync(); // convex ƒvƒƒpƒeƒB‚ª•ÏX‚³‚ê‚½‚±‚Æ‚ğ’Ê’m‚µ‚ÄA•¨—ƒGƒ“ƒWƒ“‚É“¯Šú‚·‚é•K—v‚ª‚ ‚é‚±‚Æ‚ğ¦‚µ‚Ü‚·B
+		SetNeedSync(); // convex ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå¤‰æ›´ã•ã‚ŒãŸã“ã¨ã‚’é€šçŸ¥ã—ã¦ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«åŒæœŸã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã“ã¨ã‚’ç¤ºã—ã¾ã™ã€‚
 	}
 }

@@ -5,7 +5,7 @@ REGISTER_COMPONENT(CapsuleCollider, "Physics")
 
 void CapsuleCollider::Initialize()
 {
-	// ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu‚Ì€”õ‚È‚ÇA•K—v‚È‰Šú‰»ˆ—‚ğ‚±‚±‚ÉÀ‘•‚µ‚Ü‚·B
+	// ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®æº–å‚™ãªã©ã€å¿…è¦ãªåˆæœŸåŒ–å‡¦ç†ã‚’ã“ã“ã«å®Ÿè£…ã—ã¾ã™ã€‚
 	ID3D11Device* device = Graphics::GetDevice();
 	top = std::make_unique<GeometricPrimitive>(device);
 	top->CreateSphere(device, 16, 16);
@@ -19,18 +19,18 @@ void CapsuleCollider::Register()
 {
 	Vector3 worldScale = Vector3(GetTransform()->GetWorldScale());
 	CapsuleColliderData data;
-	data.radius = radius; // ”¼Œa‚ğw’è
-	data.height = height; // ‚‚³‚ğw’è
-	data.center = Vector3(center); // ƒIƒtƒZƒbƒg‚ğ’†SˆÊ’u‚Æ‚µ‚Äİ’èiƒ[ƒ‹ƒhƒXƒP[ƒ‹‚Í CapsuleColliderData “à‚Ål—¶‚³‚ê‚é‚½‚ßA‚±‚±‚Å‚Í“K—p‚µ‚È‚¢j
-	data.materialHandle = m_materialHandle; // ƒ}ƒeƒŠƒAƒ‹ƒnƒ“ƒhƒ‹‚ğİ’è
-	data.isTrigger = isTrigger; // ƒgƒŠƒK[‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ğİ’è
-	data.contactOffset = contactOffset; // ÚGƒIƒtƒZƒbƒg‚ğİ’è
-	data.collider = this; // ƒRƒ‰ƒCƒ_‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğİ’èi•K—v‚É‰‚¶‚Äj
+	data.radius = radius; // åŠå¾„ã‚’æŒ‡å®š
+	data.height = height; // é«˜ã•ã‚’æŒ‡å®š
+	data.center = Vector3(center); // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ä¸­å¿ƒä½ç½®ã¨ã—ã¦è¨­å®šï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã¯ CapsuleColliderData å†…ã§è€ƒæ…®ã•ã‚Œã‚‹ãŸã‚ã€ã“ã“ã§ã¯é©ç”¨ã—ãªã„ï¼‰
+	data.materialHandle = m_materialHandle; // ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’è¨­å®š
+	data.isTrigger = isTrigger; // ãƒˆãƒªã‚¬ãƒ¼ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+	data.contactOffset = contactOffset; // æ¥è§¦ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
+	data.collider = this; // ã‚³ãƒ©ã‚¤ãƒ€ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¨­å®šï¼ˆå¿…è¦ã«å¿œã˜ã¦ï¼‰
 
-	// •¨—ƒGƒ“ƒWƒ“‚ÉƒRƒ‰ƒCƒ_[‚ğ“o˜^
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ç™»éŒ²
 	if (!Physics::AddCapsuleShape(GetTransform(), data, m_shapeHandle))
 	{
-		// ’Ç‰Á‚É¸”s‚µ‚½ê‡‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+		// è¿½åŠ ã«å¤±æ•—ã—ãŸå ´åˆã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
 		Console::LogError("Failed to add CapsuleCollider shape to physics engine.");
 	}
 }
@@ -38,20 +38,20 @@ void CapsuleCollider::Register()
 void CapsuleCollider::FitToBoundingBox(const Vector3& center, const Vector3& size)
 {
 	this->center = center;
-	radius = min(size.x, size.z); // XZ•½–Ê‚ÌƒTƒCƒY‚©‚ç”¼Œa‚ğŒˆ’è
-	height = max(0.0f, size.y - radius * 2.0f); // ‚‚³‚ÍYƒTƒCƒY‚©‚ç”¼Œa•ª‚ğˆø‚¢‚½‚à‚Ìi•‰‚É‚È‚ç‚È‚¢‚æ‚¤‚Émax‚Å’²®j
-	SetNeedSync(); // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚È‚±‚Æ‚ğƒ}[ƒN
+	radius = min(size.x, size.z); // XZå¹³é¢ã®ã‚µã‚¤ã‚ºã‹ã‚‰åŠå¾„ã‚’æ±ºå®š
+	height = max(0.0f, size.y - radius * 2.0f); // é«˜ã•ã¯Yã‚µã‚¤ã‚ºã‹ã‚‰åŠå¾„åˆ†ã‚’å¼•ã„ãŸã‚‚ã®ï¼ˆè² ã«ãªã‚‰ãªã„ã‚ˆã†ã«maxã§èª¿æ•´ï¼‰
+	SetNeedSync(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ãªã“ã¨ã‚’ãƒãƒ¼ã‚¯
 }
 
 void CapsuleCollider::SyncWithPhysics()
 {
-	// •¨—ƒGƒ“ƒWƒ“‚Éƒ[ƒJƒ‹ƒ|[ƒY‚ğXV
-	Vector3 position = Vector3(center); // ƒIƒtƒZƒbƒg‚ğƒ[ƒ‹ƒhƒXƒP[ƒ‹‚Å’²®‚µ‚Äƒ[ƒJƒ‹À•W‚É•ÏŠ·
-	Quaternion rotation = Quaternion::FromEuler({ 0.0f, 0.0f, 90.0f }); // ƒJƒvƒZƒ‹‚ÌŒü‚«‚ğY²‚©‚çZ²‚É•ÏXiPhysX‚ÌƒJƒvƒZƒ‹‚ÍƒfƒtƒHƒ‹ƒg‚ÅY²‚É‰ˆ‚Á‚Ä‚¢‚é‚½‚ßj
+	// ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã«ãƒ­ãƒ¼ã‚«ãƒ«ãƒãƒ¼ã‚ºã‚’æ›´æ–°
+	Vector3 position = Vector3(center); // ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«ã§èª¿æ•´ã—ã¦ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã«å¤‰æ›
+	Quaternion rotation = Quaternion::FromEuler({ 0.0f, 0.0f, 90.0f }); // ã‚«ãƒ—ã‚»ãƒ«ã®å‘ãã‚’Yè»¸ã‹ã‚‰Zè»¸ã«å¤‰æ›´ï¼ˆPhysXã®ã‚«ãƒ—ã‚»ãƒ«ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§Yè»¸ã«æ²¿ã£ã¦ã„ã‚‹ãŸã‚ï¼‰
 	Physics::SetLocalPose(m_shapeHandle, position, rotation);
 
-	// ƒTƒCƒY‚Ì•ÏX‚à”½‰f
-	physx::PxCapsuleGeometry geometry(radius, height); // ”¼Œa‚Æ‚‚³‚ğw’è
+	// ã‚µã‚¤ã‚ºã®å¤‰æ›´ã‚‚åæ˜ 
+	physx::PxCapsuleGeometry geometry(radius, height); // åŠå¾„ã¨é«˜ã•ã‚’æŒ‡å®š
 	if (!geometry.isValid())
 	{
 		Console::LogError("Invalid capsule geometry parameters. Radius must be > 0 and height must be >= 0.");
@@ -67,9 +67,9 @@ void CapsuleCollider::Render(RenderContext* rtx)
 	auto immediateContext = rtx->immediateContext;
 	float halfRadius = radius;
 	float heightHalf = this->height;
-	float halfHeightWithoutSphere = max(0.0f, heightHalf - halfRadius); // ”¼‹…‚ğœ‚¢‚½‚‚³‚Ì”¼•ªi•‰‚É‚È‚ç‚È‚¢‚æ‚¤‚Émax‚Å’²®j
+	float halfHeightWithoutSphere = max(0.0f, heightHalf - halfRadius); // åŠçƒã‚’é™¤ã„ãŸé«˜ã•ã®åŠåˆ†ï¼ˆè² ã«ãªã‚‰ãªã„ã‚ˆã†ã«maxã§èª¿æ•´ï¼‰
 	Vector3 localScale = Vector3(halfRadius, halfRadius, halfRadius);
-	// ã”¼‹…A‰~’ŒA‰º”¼‹…‚Ìƒ[ƒ‹ƒhs—ñ‚ğŒvZ
+	// ä¸ŠåŠçƒã€å††æŸ±ã€ä¸‹åŠçƒã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’è¨ˆç®—
 	XMFLOAT4X4 sphereTopWorld = CalculateColliderWorldTransform(Vector3(center.x, center.y + halfHeightWithoutSphere, center.z), localScale);
 	XMFLOAT4X4 cylinderWorld = CalculateColliderWorldTransform(center, Vector3(halfRadius, halfHeightWithoutSphere * 2.0f, halfRadius));
 	XMFLOAT4X4 sphereBottomWorld = CalculateColliderWorldTransform(Vector3(center.x, center.y - halfHeightWithoutSphere, center.z), localScale);
@@ -96,7 +96,7 @@ void CapsuleCollider::Render(RenderContext* rtx)
 //
 //	if (isChanged)
 //	{
-//		SetNeedSync(); // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚È‚±‚Æ‚ğƒ}[ƒN
+//		SetNeedSync(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ãªã“ã¨ã‚’ãƒãƒ¼ã‚¯
 //	}
 //	IMGUI_PROPERTY_END();
 //}
@@ -138,7 +138,7 @@ Vector3 CapsuleCollider::GetCenter() const
 void CapsuleCollider::SetCenter(const Vector3& newCenter)
 {
 	center = newCenter;
-	SetNeedSync(); // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚È‚±‚Æ‚ğƒ}[ƒN
+	SetNeedSync(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ãªã“ã¨ã‚’ãƒãƒ¼ã‚¯
 }
 
 float CapsuleCollider::GetRadius() const
@@ -149,7 +149,7 @@ float CapsuleCollider::GetRadius() const
 void CapsuleCollider::SetRadius(float newRadius)
 {
 	radius = newRadius;
-	SetNeedSync(); // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚È‚±‚Æ‚ğƒ}[ƒN
+	SetNeedSync(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ãªã“ã¨ã‚’ãƒãƒ¼ã‚¯
 }
 
 float CapsuleCollider::GetHeight() const
@@ -160,5 +160,5 @@ float CapsuleCollider::GetHeight() const
 void CapsuleCollider::SetHeight(float newHeight)
 {
 	height = newHeight;
-	SetNeedSync(); // •¨—ƒGƒ“ƒWƒ“‚Æ‚Ìó‘Ô“¯Šú‚ª•K—v‚È‚±‚Æ‚ğƒ}[ƒN
+	SetNeedSync(); // ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ã¨ã®çŠ¶æ…‹åŒæœŸãŒå¿…è¦ãªã“ã¨ã‚’ãƒãƒ¼ã‚¯
 }

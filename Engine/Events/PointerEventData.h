@@ -2,52 +2,52 @@
 #include "BaseEventData.h"
 #include "RaycastResult.h"
 
-//ƒŒƒCƒLƒƒƒXƒg‚Ì“ü—ÍŒ³‚Ìî•ñ‚ğŠi”[‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
+//ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã®å…¥åŠ›å…ƒã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 class PointerEventData : public BaseEventData
 {
 public:
 #ifdef USE_MULTIPOINTER
-	int pointerId = -1;					//ƒ}ƒEƒXF|‚P
+	int pointerId = -1;					//ãƒã‚¦ã‚¹ï¼šâˆ’ï¼‘
 #endif // USE_MULTIPOINTER
 
-	Vector2 position{};			// Œ»İ‚ÌƒXƒNƒŠ[ƒ“À•W
-	Vector2 lastPosition{};		// ‘OƒtƒŒ[ƒ€‚ÌƒXƒNƒŠ[ƒ“À•W
-	Vector2 delta{};				// ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌˆÚ“®—Ê
-	Vector2 pressPosition{};		// ‰Ÿ‚µ‚½ˆÊ’u
-	float scrollDelta = 0.f;				// ƒXƒNƒ[ƒ‹—Ê
-	float clickTime = 0.f;					// ÅŒã‚ÌƒNƒŠƒbƒNŠÔ
-	int clickCount = 0;						// ƒNƒŠƒbƒN‰ñ”
-	bool eligibleForClick = false;			// ƒNƒŠƒbƒNŒó•âó‘Ô
-	bool dragging = false;					// ƒhƒ‰ƒbƒO’†‚©‚Ç‚¤‚©
+	Vector2 position{};			// ç¾åœ¨ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
+	Vector2 lastPosition{};		// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
+	Vector2 delta{};				// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®ç§»å‹•é‡
+	Vector2 pressPosition{};		// æŠ¼ã—ãŸä½ç½®
+	float scrollDelta = 0.f;				// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«é‡
+	float clickTime = 0.f;					// æœ€å¾Œã®ã‚¯ãƒªãƒƒã‚¯æ™‚é–“
+	int clickCount = 0;						// ã‚¯ãƒªãƒƒã‚¯å›æ•°
+	bool eligibleForClick = false;			// ã‚¯ãƒªãƒƒã‚¯å€™è£œçŠ¶æ…‹
+	bool dragging = false;					// ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‹ã©ã†ã‹
 
-	GameObject* pointerEnter = nullptr;		// Œ»İƒzƒo[‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg
-	ObjectId pointerEnterId = ObjectId::Invalid(); // Œ»İƒzƒo[‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ÌID
-	GameObject* pointerPress = nullptr;		// ‰Ÿ‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg
-	ObjectId pointerPressId = ObjectId::Invalid(); // ‰Ÿ‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ÌID
-	GameObject* lastPress = nullptr;		// ÅŒã‚É‰Ÿ‚µ‚Ä‚¢‚½ƒIƒuƒWƒFƒNƒg
-	ObjectId lastPressId = ObjectId::Invalid(); // ÅŒã‚É‰Ÿ‚µ‚Ä‚¢‚½ƒIƒuƒWƒFƒNƒg‚ÌID
-	GameObject* pointerDrag = nullptr;		// ƒhƒ‰ƒbƒO‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg
-	ObjectId pointerDragId = ObjectId::Invalid(); // ƒhƒ‰ƒbƒO‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg‚ÌID
+	GameObject* pointerEnter = nullptr;		// ç¾åœ¨ãƒ›ãƒãƒ¼ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ObjectId pointerEnterId = ObjectId::Invalid(); // ç¾åœ¨ãƒ›ãƒãƒ¼ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ID
+	GameObject* pointerPress = nullptr;		// æŠ¼ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ObjectId pointerPressId = ObjectId::Invalid(); // æŠ¼ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ID
+	GameObject* lastPress = nullptr;		// æœ€å¾Œã«æŠ¼ã—ã¦ã„ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ObjectId lastPressId = ObjectId::Invalid(); // æœ€å¾Œã«æŠ¼ã—ã¦ã„ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ID
+	GameObject* pointerDrag = nullptr;		// ãƒ‰ãƒ©ãƒƒã‚°å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ObjectId pointerDragId = ObjectId::Invalid(); // ãƒ‰ãƒ©ãƒƒã‚°å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ID
 
-	RaycastResult pointerCurrentRaycast;	// Œ»İ‚ÌƒŒƒCƒLƒƒƒXƒgŒ‹‰Ê
-	RaycastResult pointerPressRaycast;		// ‰Ÿ‚µ‚½‚Æ‚«‚ÌƒŒƒCƒLƒƒƒXƒgŒ‹‰Ê
+	RaycastResult pointerCurrentRaycast;	// ç¾åœ¨ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆçµæœ
+	RaycastResult pointerPressRaycast;		// æŠ¼ã—ãŸã¨ãã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆçµæœ
 
-	// ƒzƒo[ó‘Ô‚ÌƒIƒuƒWƒFƒNƒg‚ğİ’è
+	// ãƒ›ãƒãƒ¼çŠ¶æ…‹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¨­å®š
 	void SetPointerEnter(GameObject* obj);
-	// ‰Ÿ‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ğİ’è
+	// æŠ¼ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¨­å®š
 	void SetPointerPress(GameObject* obj);
-	// ÅŒã‚É‰Ÿ‚µ‚Ä‚¢‚½ƒIƒuƒWƒFƒNƒg‚ğİ’è
+	// æœ€å¾Œã«æŠ¼ã—ã¦ã„ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¨­å®š
 	void SetLastPress(GameObject* obj);
-	// ƒhƒ‰ƒbƒO‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg‚ğİ’è
+	// ãƒ‰ãƒ©ãƒƒã‚°å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¨­å®š
 	void SetPointerDrag(GameObject* obj);
 
-	// Œ»İƒzƒo[‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ğæ“¾
+	// ç¾åœ¨ãƒ›ãƒãƒ¼ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 	GameObject* GetPointerEnter() const;
-	// ‰Ÿ‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ğæ“¾
+	// æŠ¼ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 	GameObject* GetPointerPress() const;
-	// ÅŒã‚É‰Ÿ‚µ‚Ä‚¢‚½ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+	// æœ€å¾Œã«æŠ¼ã—ã¦ã„ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 	GameObject* GetLastPress() const;
-	// ƒhƒ‰ƒbƒO‘ÎÛ‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾
+	// ãƒ‰ãƒ©ãƒƒã‚°å¯¾è±¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 	GameObject* GetPointerDrag() const;
 
 public:
