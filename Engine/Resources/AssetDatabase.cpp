@@ -11,7 +11,7 @@ namespace CurryEngine
 	namespace Resources
 	{
 		std::unordered_map<std::filesystem::path, AssetMeta> AssetDatabase::s_metaByPath; ///< アセットパスをキーとしたアセットメタデータのマップ
-		std::unordered_map<std::string, std::filesystem::path> AssetDatabase::s_pathById; ///< アセットIDをキーとしたアセットパスのマップ
+		std::unordered_map<AssetId, std::filesystem::path> AssetDatabase::s_pathById; ///< アセットIDをキーとしたアセットパスのマップ
 		std::filesystem::path AssetDatabase::s_assetRootDir; ///< アセットのルートディレクトリのパス
 		bool AssetDatabase::s_initialized = false; ///< アセットデータベースが初期化されているかどうか
 
@@ -68,7 +68,7 @@ namespace CurryEngine
 					if (!meta.id.IsValid()) continue; // 読み込み失敗はスキップ
 
 					s_metaByPath[assetPath] = meta;
-					s_pathById[meta.id.ToString()] = assetPath;
+					s_pathById[meta.id] = assetPath;
 				}
 			}
 		}
@@ -147,7 +147,7 @@ namespace CurryEngine
 			}
 
 			s_metaByPath[normalizedPath] = meta;
-			s_pathById[meta.id.ToString()] = normalizedPath;
+			s_pathById[meta.id] = normalizedPath;
 			return &s_metaByPath[normalizedPath];
 		}
 
@@ -168,7 +168,7 @@ namespace CurryEngine
 
 		const AssetMeta* AssetDatabase::Find(const AssetId& id)
 		{
-			auto it = s_pathById.find(id.ToString());
+			auto it = s_pathById.find(id);
 			if (it != s_pathById.end())
 			{
 				return FindByPath(it->second);
@@ -178,7 +178,7 @@ namespace CurryEngine
 
 		AssetMeta* AssetDatabase::FindMutable(const AssetId& id)
 		{
-			auto it = s_pathById.find(id.ToString());
+			auto it = s_pathById.find(id);
 			if (it != s_pathById.end())
 			{
 				auto metaIt = s_metaByPath.find(it->second);
@@ -235,7 +235,7 @@ namespace CurryEngine
 			meta.path = normalizedNewPath;
 			s_metaByPath.erase(it);
 			s_metaByPath[normalizedNewPath] = meta;
-			s_pathById[meta.id.ToString()] = normalizedNewPath; // IDは変わらないので、パスだけ更新
+			s_pathById[meta.id] = normalizedNewPath; // IDは変わらないので、パスだけ更新
 			// 変更後のパスでメタデータを保存
 			AssetMetaSerializer::Save(meta);
 		}
@@ -272,13 +272,13 @@ namespace CurryEngine
 			{
 				AssetMetaSerializer::Save(meta); // メタデータを保存
 				s_metaByPath[newPath] = meta; // 新しいキーで再挿入
-				s_pathById[meta.id.ToString()] = newPath; // IDは変わらないので、パスだけ更新
+				s_pathById[meta.id] = newPath; // IDは変わらないので、パスだけ更新
 			}
 		}
 
 		void AssetDatabase::Remove(const AssetId& id)
 		{
-			auto it = s_pathById.find(id.ToString());
+			auto it = s_pathById.find(id);
 			if (it != s_pathById.end())
 			{
 				RemoveByPath(it->second);
@@ -303,7 +303,7 @@ namespace CurryEngine
 				}
 
 				// マップから削除
-				s_pathById.erase(it->second.id.ToString());
+				s_pathById.erase(it->second.id);
 				s_metaByPath.erase(it);
 			}
 		}
@@ -326,7 +326,7 @@ namespace CurryEngine
 						LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + metaFilePath.u8string());
 					}
 					// マップから削除
-					s_pathById.erase(it->second.id.ToString());
+					s_pathById.erase(it->second.id);
 					it = s_metaByPath.erase(it); // eraseはイテレータを返すので、次の要素に進む
 				}
 				else ++it;
