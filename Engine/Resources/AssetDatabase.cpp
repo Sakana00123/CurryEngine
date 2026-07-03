@@ -23,6 +23,17 @@ namespace CurryEngine
 				normalized.make_preferred(); // OSに依存したパス区切り文字に変換
 				return normalized;
 			}
+
+			bool IsUnderPrefix(const std::filesystem::path& path, const std::filesystem::path& prefix)
+			{
+				if (path == prefix) return true;
+				auto& pathStr = path.native();
+				auto& prefixStr = prefix.native();
+				if (!pathStr.starts_with(prefixStr)) return false;
+				// prefix直後が区切り文字であることを確認
+				return pathStr.size() > prefixStr.size()
+					&& (pathStr[prefixStr.size()] == std::filesystem::path::preferred_separator);
+			}
 		}
 
 
@@ -253,10 +264,13 @@ namespace CurryEngine
 			std::vector<std::pair<std::filesystem::path, AssetMeta>> entriesToRename;
 			for (auto it = s_metaByPath.begin(); it != s_metaByPath.end(); )
 			{
-				if (it->first.string().starts_with(normalizedOldPrefix.string()))
+				if (IsUnderPrefix(it->first, normalizedOldPrefix))
 				{
 					AssetMeta meta = it->second;
-					std::filesystem::path newPath = normalizedNewPrefix / std::filesystem::relative(it->first, normalizedOldPrefix);
+					// 新しいパスを計算
+					std::filesystem::path newPath = (it->first == normalizedOldPrefix)
+						? normalizedNewPrefix
+						: NormalizePath(normalizedNewPrefix / std::filesystem::relative(it->first, normalizedOldPrefix));
 					meta.path = newPath;
 					entriesToRename.emplace_back(newPath, meta); // 新しいキーと更新されたメタデータを保存
 					// 古いメタファイルを削除
@@ -264,10 +278,6 @@ namespace CurryEngine
 					if (std::filesystem::exists(oldMetaFilePath))
 					{
 						std::filesystem::remove(oldMetaFilePath);
-					}
-					else
-					{
-						LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + oldMetaFilePath.u8string());
 					}
 					it = s_metaByPath.erase(it); // 後で新しいキーで再挿入するため、ここで削除
 				}
@@ -302,10 +312,6 @@ namespace CurryEngine
 				{
 					std::filesystem::remove(metaFilePath);
 				}
-				else
-				{
-					LOG_WARNING(u8"[AssetDatabase] Meta file not found for removal: " + metaFilePath.u8string());
-				}
 
 				// マップから削除
 				s_pathById.erase(it->second.id);
@@ -318,7 +324,7 @@ namespace CurryEngine
 			std::filesystem::path normalizedPrefix = NormalizePath(pathPrefix);
 			for (auto it = s_metaByPath.begin(); it != s_metaByPath.end(); )
 			{
-				if (it->first.string().starts_with(normalizedPrefix.string()))
+				if (IsUnderPrefix(it->first, normalizedPrefix))
 				{
 					// メタデータファイルを削除
 					std::filesystem::path metaFilePath = AssetMetaSerializer::MetaPathFor(it->first);
