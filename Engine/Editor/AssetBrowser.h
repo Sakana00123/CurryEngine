@@ -140,7 +140,7 @@ private:
 	static bool HandleDropTargetForFolder(const fs::path& targetFolderPath);
 #endif // USE_IMGUI
 
-	static fs::path MakeUniqueFilePath(const fs::path& dir, const std::string& stem, const std::string& extension = ".cs");
+	static fs::path MakeUniqueFilePath(const fs::path& dir, const fs::path& stem, const std::string& extension = ".cs");
 	static fs::path ToUnityStylePath(const fs::path& path);
 	static bool MoveAssetToFolder(const fs::path& srcPath, const fs::path& dstFolderPath);
 	static bool MoveFolderToFolder(const fs::path& source, const fs::path& destinationParent);

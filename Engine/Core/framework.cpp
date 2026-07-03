@@ -119,7 +119,14 @@ int Framework::Run()
     IMGUI_CHECKVERSION();
     ImGuiContext* imguiContext = ImGui::CreateContext();
     //ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", 14.0f, nullptr, glyphRangesJapanese);
-    ImGui::GetIO().Fonts->AddFontFromFileTTF(".\\Data\\Fonts\\NotoSansJP-Medium.ttf", 18.0f, nullptr, glyphRangesJapanese);
+	// 日本語フォントの追加
+    auto japanese = ImGui::GetIO().Fonts->GetGlyphRangesJapanese();
+    ImGui::GetIO().Fonts->AddFontFromFileTTF(".\\Data\\Fonts\\NotoSansJP-Medium.ttf", 18.0f, nullptr, japanese);
+	// 中国語フォントの追加
+	auto chinese = ImGui::GetIO().Fonts->GetGlyphRangesChineseFull();
+	ImGui::GetIO().Fonts->AddFontFromFileTTF(".\\Data\\Fonts\\NotoSansSC-Medium.ttf", 18.0f, nullptr, chinese);
+
+
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui_ImplWin32_Init(Graphics::GetHwnd());
     ID3D11Device* device = Graphics::GetDevice();

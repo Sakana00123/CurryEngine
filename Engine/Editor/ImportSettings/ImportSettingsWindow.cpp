@@ -179,7 +179,7 @@ namespace CurryEngine::Resources
 		if (ImGui::BeginPopupModal("Import Settings", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			// 上段: ファイル名とアセット種別
-			ImGui::TextUnformatted(std::filesystem::path(meta->path).filename().string().c_str());
+			ImGui::TextUnformatted(reinterpret_cast<const char*>(std::filesystem::path(meta->path).filename().u8string().c_str()));
 			ImGui::SameLine();
 			ImGui::TextDisabled(AssetMetaSerializer::AssetTypeToString(meta->type).c_str());
 			ImGui::Separator();
