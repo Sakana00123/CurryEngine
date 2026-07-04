@@ -392,7 +392,8 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
         {
             if (selection)
             {
-                for (const auto& selectedObj : selection->GetAll())
+                std::vector<std::shared_ptr<GameObject>> selections = selection->GetAll();
+                for (const auto& selectedObj : selections)
                 {
                     action(selectedObj.get());
                 }
