@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MeshCollider.h"
 #include "Engine/Rendering/Renderers/GltfModelRenderer.h"
+#include "Engine/Rendering/Renderers/MeshRenderer.h"
 #include "Rigidbody.h"
 
 REGISTER_COMPONENT(MeshCollider, "Physics")
@@ -14,7 +15,13 @@ void MeshCollider::Initialize()
 void MeshCollider::Register()
 {
 	// ここでMeshColliderを持つゲームオブジェクトにMeshColliderを追加し、物理エンジンに登録する処理を実装
+#if 0
 	GltfModelRenderer* modelRenderer = GetOwner()->GetComponent<GltfModelRenderer>();
+#else
+	MeshRenderer* meshRenderer = GetOwner()->GetComponent<MeshRenderer>();
+	ModelRenderer* modelRenderer = meshRenderer ? meshRenderer->modelRenderer.get() : nullptr;
+#endif // 0
+
 
 	if (Rigidbody* rigidbody = GetOwner()->GetComponent<Rigidbody>())
 	{
@@ -27,9 +34,11 @@ void MeshCollider::Register()
 
 	if (modelRenderer)
 	{
+		MeshColliderData data;
+		
+#if 0
 		ModelAsset* modelAsset = modelRenderer->GetModelAsset();
 
-		MeshColliderData data;
 		if (modelAsset->batchMeshes.size() > 0)
 		{
 			for (const auto& batchMesh : modelAsset->batchMeshes)
@@ -44,14 +53,14 @@ void MeshCollider::Register()
 				for (const auto& index : batchMesh.cachedIndices)
 				{
 					data.indices.push_back(static_cast<int>(index + vertexOffset)); // インデックスデータは頂点オフセットを加算して追加
-					
+
 					_ASSERT_EXPR(
 						index + vertexOffset <= INT_MAX,
 						L"index overflow"
 					);
 				}
 			}
-			
+
 		}
 		else
 		{
@@ -74,7 +83,7 @@ void MeshCollider::Register()
 							pos = DirectX::XMVector3TransformCoord(pos, globalTransform);
 							DirectX::XMFLOAT3 transformedPos;
 							DirectX::XMStoreFloat3(&transformedPos, pos);
-							
+
 							data.vertices.push_back({ transformedPos.x, transformedPos.y, transformedPos.z });
 						}
 						// インデックスデータのフォーマットに合わせて byte 配列から読み取る
@@ -112,6 +121,63 @@ void MeshCollider::Register()
 				}
 			}
 		}
+#else
+		AssetModel* assetModel = modelRenderer->m_asset.get();
+
+		for (const auto& node : assetModel->nodes)
+		{
+			if (node.meshIndices.empty())
+				continue;
+			// ノードが持つメッシュインデックスを使って、各メッシュの頂点とインデックスを取得
+			for (int meshIndex : node.meshIndices)
+			{
+				if (meshIndex < 0 || meshIndex >= assetModel->meshes.size())
+					continue;
+				const auto& mesh = assetModel->meshes[meshIndex];
+				DirectX::XMMATRIX globalTransform = DirectX::XMLoadFloat4x4(&node.globalTransform);
+
+
+				// 頂点データを作成
+				size_t vertexOffset = data.vertices.size(); // 現在の頂点数をオフセットとして保存
+				if (mesh.isSkinned)
+				{
+					data.vertices.reserve(vertexOffset + mesh.skinnedVertices.size());
+					for (const auto& vertex : mesh.skinnedVertices)
+					{
+						// 頂点座標にノードの変換行列を適用してワールドスケール/ローカル配置を反映する
+						DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&vertex.position);
+						pos = DirectX::XMVector3TransformCoord(pos, globalTransform);
+						DirectX::XMFLOAT3 transformedPos;
+						DirectX::XMStoreFloat3(&transformedPos, pos);
+						data.vertices.push_back({ transformedPos.x, transformedPos.y, transformedPos.z });
+					}
+				}
+				else
+				{
+					data.vertices.reserve(vertexOffset + mesh.staticVertices.size());
+					for (const auto& vertex : mesh.staticVertices)
+					{
+						// 頂点座標にノードの変換行列を適用してワールドスケール/ローカル配置を反映する
+						DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&vertex.position);
+						pos = DirectX::XMVector3TransformCoord(pos, globalTransform);
+						DirectX::XMFLOAT3 transformedPos;
+						DirectX::XMStoreFloat3(&transformedPos, pos);
+						data.vertices.push_back({ transformedPos.x, transformedPos.y, transformedPos.z });
+					}
+				}
+
+				// インデックスデータを作成
+				const uint32_t* indices = reinterpret_cast<const uint32_t*>(mesh.indices.data());
+				size_t numIndices = mesh.indexCount;
+				data.indices.reserve(data.indices.size() + numIndices);
+				for (size_t i = 0; i < numIndices; ++i)
+				{
+					data.indices.push_back(static_cast<int>(indices[i] + vertexOffset));
+				}
+			}
+		}
+#endif // 0
+
 		data.materialHandle = m_materialHandle; // マテリアルハンドルを設定
 		data.isTrigger = isTrigger; // トリガーかどうかのフラグを設定
 		data.contactOffset = contactOffset; // 接触オフセットを設定

@@ -1800,8 +1800,7 @@ bool Physics::AddTriangleMeshShape(Transform* transform, const MeshColliderData&
 		_ASSERT_EXPR(meshDesc.isValid(), L"PxTriangleMeshDesc is invalid!");
 
 		physx::PxCookingParams cookingParams(pxPhysics->getTolerancesScale());
-		//cookingParams.meshPreprocessParams |= physx::PxMeshPreprocessingFlag::eWELD_VERTICES;
-		cookingParams.meshWeldTolerance = 0.001f;
+		cookingParams.meshPreprocessParams |= physx::PxMeshPreprocessingFlag::eFORCE_32BIT_INDICES;
 		physx::PxTriangleMesh* triangleMesh = PxCreateTriangleMesh(cookingParams, meshDesc);
 		_ASSERT_EXPR(triangleMesh != nullptr, L"PxCreateTriangleMesh failed!");
 
@@ -1876,6 +1875,7 @@ bool Physics::AddConvexMeshShape(Transform* transform, const MeshColliderData& d
 		_ASSERT_EXPR(meshDesc.isValid(), L"PxConvexMeshDesc is invalid!");
 
 		physx::PxCookingParams cookingParams(pxPhysics->getTolerancesScale());
+		cookingParams.meshPreprocessParams |= physx::PxMeshPreprocessingFlag::eFORCE_32BIT_INDICES;
 		physx::PxConvexMesh* convexMesh = PxCreateConvexMesh(cookingParams, meshDesc);
 		_ASSERT_EXPR(convexMesh != nullptr, L"PxCreateConvexMesh failed!");
 
