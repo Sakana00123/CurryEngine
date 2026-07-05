@@ -14,7 +14,9 @@
 #include "Engine/UI/GraphicRaycaster.h"
 #include "Engine/Events/EventSystem.h"
 #include "Engine/Events/InputModule.h"
-#include "Engine/Rendering/Renderers/GltfModelRenderer.h"
+//#include "Engine/Rendering/Renderers/GltfModelRenderer.h"
+#include "Engine/Rendering/Renderers/MeshRenderer.h"
+#include "Engine/Resources/AssetDatabase.h"
 #include "Engine/Rendering/Renderers/PrimitiveRenderer.h"
 #include "Engine/Physics/Collider.h"
 #include "Engine/Physics/BoxCollider.h"
@@ -268,9 +270,20 @@ GameObject* GameObjectFactory::CreateSphere(Scene* scene, const std::string& nam
 	obj->AddComponent<SphereCollider>()->autoFit = true;
 	return obj;
 }
-GameObject* GameObjectFactory::CreateModel(Scene* scene, const std::string& name, const std::string& filePath, bool staticBatching) {
+GameObject* GameObjectFactory::CreateModel(Scene* scene, const std::string& name, const std::u8string& filePath, bool staticBatching) {
 	GameObject* obj = Create(scene, name);
-	obj->AddComponent<GltfModelRenderer>()->LoadModel(Graphics::GetDevice(), filePath, staticBatching);
+	//obj->AddComponent<GltfModelRenderer>()->LoadModel(Graphics::GetDevice(), filePath, staticBatching);
+	MeshRenderer* meshRenderer = obj->AddComponent<MeshRenderer>();
+	meshRenderer->meshAssetPath = std::string(filePath.begin(), filePath.end());
+	if (!filePath.empty())
+	{
+		if (CurryEngine::Resources::AssetMeta* meta = CurryEngine::Resources::AssetDatabase::GetOrImport(filePath))
+		{
+			meshRenderer->modelRenderer = std::make_shared<ModelRenderer>();
+			std::shared_ptr<AssetModel> asset = CurryEngine::Resources::AssetDatabase::LoadAsset<AssetModel>(meta->id);
+			meshRenderer->modelRenderer->SetModelAsset(asset);
+		}
+	}
 	return obj;
 }
 GameObject* GameObjectFactory::CreateAudioSource(Scene* scene, const std::string& name, const wchar_t* filePath) {

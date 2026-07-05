@@ -46,7 +46,7 @@ public:
 	/** @brief 球体を生成します。*/
 	static GameObject* CreateSphere(Scene* scene, const std::string& name, int segment = 20);
 	/** @brief モデルを読み込み生成します。*/
-	static GameObject* CreateModel(Scene* scene, const std::string& name, const std::string& filePath, bool staticBatching = false);
+	static GameObject* CreateModel(Scene* scene, const std::string& name, const std::u8string& filePath, bool staticBatching = false);
 	/** @brief オーディオソースを生成します。*/
 	static GameObject* CreateAudioSource(Scene* scene, const std::string& name, const wchar_t* filePath = L"Data/Sounds/Demo.wav");
 	/** @brief カメラを生成します。*/

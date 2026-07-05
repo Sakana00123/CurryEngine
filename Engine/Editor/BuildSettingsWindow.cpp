@@ -342,12 +342,12 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH"))
 				{
 					// ドロップされたシーンの名前を取得
-					const char* path = static_cast<const char*>(payload->Data);
-					std::string pathStr(path != nullptr ? path : "");
+					const char8_t* path = static_cast<const char8_t*>(payload->Data);
+					std::filesystem::path pathStr(path != nullptr ? path : u8"");
 					// シーンのリストに追加
 					if (!pathStr.empty())
 					{
-						SceneManager::Register(pathStr);
+						SceneManager::Register(pathStr.string());
 					}
 				}
 				ImGui::EndDragDropTarget();

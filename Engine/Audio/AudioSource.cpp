@@ -473,8 +473,8 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH")) {
-			const char* p = static_cast<const char*>(payload->Data);
-			std::filesystem::path path = p ? p : "";
+			const char8_t* p = static_cast<const char8_t*>(payload->Data);
+			std::filesystem::path path = p ? p : u8"";
 			AssetType assetType = AssetBrowser::DetectAssetTypeFromFile(path);
 			if (assetType == AssetType::Sound) {
 				SetSource(path.wstring());

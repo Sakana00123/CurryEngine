@@ -1,6 +1,11 @@
 {
     "id": "d37593a57362efe97a83826d40e2dedb",
-    "importSettings": null,
+    "importSettings": {
+        "importFlags": 159384143,
+        "preset": 1,
+        "scaleFactor": 0.10000000149011612,
+        "staticBatching": false
+    },
     "isFolder": false,
     "path": [
         84,

@@ -497,7 +497,6 @@ void EditorGUI::DrawGameObjectMenu()
 				createdObj = GameObjectFactory::Create(scene, "GltfModel");
 				createdObj->AddComponent<GltfModelRenderer>()->LoadModel(Graphics::GetDevice(), std::string(filePath), false);
 			}
-
 		}
 		ImGui::EndMenu();
 	}

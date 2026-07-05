@@ -35,7 +35,7 @@
 
 #include "Engine/EditorSupport/OrderManager.h"
 #include <imgui_internal.h>
-#include <Engine\Rendering\Renderers\GltfModelRenderer.h>
+#include <Engine\Rendering\Renderers\MeshRenderer.h>
 #include "Engine/Editor/Dialog.h"
 #include "Engine/UI/Mask.h"
 
@@ -351,15 +351,20 @@ void ObjectManager::Render(RenderContext* rtx)
 		// 無効化されたオブジェクトは描画しない
 		if (weakObj.expired()/* || weakObj.lock()->parent*/) continue;
 
-		// TODO: あとでリファクタリングすること。GltfModelRendererのマテリアルのアルファモードをチェックして、透過オブジェクトは後で描画するようにする。
-		if (auto* gltfModelRenderer = object->GetComponent<GltfModelRenderer>()) {
-			auto& materials = gltfModelRenderer->GetModelAsset()->materials;
-			if (!materials.empty() && materials[0].data.alphaMode != 0) {
-				// 透過オブジェクトは通常の描画パスで描画されるため、ここではスキップ
-				renderQueue.push_back(object); // 後で描画するためにキューに追加
-				continue;
-			}
-		}
+		//// TODO: あとでリファクタリングすること。MeshRendererのマテリアルのアルファモードをチェックして、透過オブジェクトは後で描画するようにする。
+		//if (auto* meshRenderer = object->GetComponent<MeshRenderer>()) {
+		//	auto& materials = meshRenderer->modelRenderer->m_asset->materials;
+		//	if (!materials.empty())
+		//	{
+		//		// TODO: マテリアルのアルファモードを取得する処理を追加する必要がある。
+		//		float alphaMode;
+		//		if (alphaMode == 1.0f) {
+		//			// 透過オブジェクトは通常の描画パスで描画されるため、ここではスキップ
+		//			renderQueue.push_back(object); // 後で描画するためにキューに追加
+		//			continue;
+		//		}
+		//	}
+		//}
 		Render(rtx, object.get());
 	}
 	for (auto& transparentObj : renderQueue) {

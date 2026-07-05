@@ -455,8 +455,8 @@ namespace CurryEngine
 				if (ImGui::BeginDragDropTargetCustom(window->Rect(), window->ID))
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH")) {
-						const char* p = static_cast<const char*>(payload->Data);
-						std::filesystem::path path = p ? p : "";
+						const char8_t* p = static_cast<const char8_t*>(payload->Data);
+						std::filesystem::path path = p ? p : u8"";
 						AssetType assetType = AssetBrowser::DetectAssetTypeFromFile(path);
 						Scene* currentScene = SceneManager::GetCurrentScene();
 						switch (assetType)
@@ -467,7 +467,7 @@ namespace CurryEngine
 							GameObjectFactory::CreateImage(currentScene, path.stem().string(), nullptr, path.wstring().c_str());
 							break;
 						case AssetType::Model:
-							GameObjectFactory::CreateModel(currentScene, path.stem().string(), path.string());
+							GameObjectFactory::CreateModel(currentScene, path.stem().generic_string(), path.generic_u8string());
 							break;
 						case AssetType::Sound:
 							GameObjectFactory::CreateAudioSource(currentScene, path.stem().string(), path.wstring().c_str());

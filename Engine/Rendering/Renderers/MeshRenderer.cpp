@@ -89,8 +89,9 @@ json MeshRenderer::Serialize() const
 	// メッシュのパスを保存
 	if (!meshAssetPath.empty())
 	{
-		std::u8string u8MeshAssetPath(meshAssetPath.begin(), meshAssetPath.end());
-		j["meshAssetPath"] = u8MeshAssetPath;
+		//std::u8string u8MeshAssetPath(meshAssetPath.begin(), meshAssetPath.end());
+		//j["meshAssetPath"] = u8MeshAssetPath;
+		j["meshAssetPath"] = meshAssetPath;
 	}
 	
 	return j;
@@ -102,8 +103,9 @@ void MeshRenderer::Deserialize(const json& j)
 	// メッシュのパスからメッシュをロード
 	if (j.contains("meshAssetPath"))
 	{
-		std::u8string u8MeshAssetPath = j["meshAssetPath"].get<std::u8string>();
-		meshAssetPath = std::string(u8MeshAssetPath.begin(), u8MeshAssetPath.end());
+		//std::u8string u8MeshAssetPath = j["meshAssetPath"].get<std::u8string>();
+		//meshAssetPath = std::string(u8MeshAssetPath.begin(), u8MeshAssetPath.end());
+		meshAssetPath = j["meshAssetPath"].get<std::string>();
 		if (!meshAssetPath.empty())
 		{
 			if (CurryEngine::Resources::AssetMeta* meta = CurryEngine::Resources::AssetDatabase::GetOrImport(meshAssetPath))
