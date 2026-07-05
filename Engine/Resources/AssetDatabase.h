@@ -26,6 +26,11 @@ namespace CurryEngine
 			static void Finalize();
 
 			/**
+			 * @brief アセットデータベースを更新します。
+			 */
+			static void Update();
+
+			/**
 			 * @brief アセットのルートディレクトリを取得します。
 			 * @return アセットのルートディレクトリのパス
 			 */
@@ -152,7 +157,7 @@ namespace CurryEngine
 
 		private:
 			static std::unordered_map<std::filesystem::path, AssetMeta> s_metaByPath; ///< アセットパスをキーとしたアセットメタデータのマップ
-			static std::unordered_map<std::string, std::filesystem::path> s_pathById; ///< アセットIDをキーとしたアセットパスのマップ
+			static std::unordered_map<AssetId, std::filesystem::path> s_pathById; ///< アセットIDをキーとしたアセットパスのマップ
 			static std::filesystem::path s_assetRootDir; ///< アセットのルートディレクトリのパス
 			static bool s_initialized; ///< アセットデータベースが初期化されているかどうか
 

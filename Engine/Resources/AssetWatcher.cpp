@@ -23,6 +23,68 @@ namespace CurryEngine
 		}
 	}
 
+	void AssetWatcher::ProcessPendingEvents()
+	{
+		std::vector<FileAction> eventsToProcess;
+		{
+			std::lock_guard<std::mutex> lock(m_queueMutex);
+			eventsToProcess.swap(m_pendingEvents); // 保留中のイベントをローカルに移動
+		}
+
+		for (const auto& event : eventsToProcess)
+		{
+			// ファイルアクションに応じて処理を分岐
+			switch (event.action)
+			{
+			case FILE_ACTION_ADDED:
+			{
+				LOG_INFO(u8"[AssetWatcher] File added: " + event.path.u8string());
+				CurryEngine::Resources::AssetDatabase::Import(event.path); // 新しいアセットをインポート
+				break;
+			}
+			case FILE_ACTION_REMOVED:
+				LOG_INFO(u8"[AssetWatcher] File removed: " + event.path.u8string());
+				CurryEngine::Resources::AssetDatabase::RemoveByPath(event.path); // アセットを削除
+				break;
+			case FILE_ACTION_MODIFIED:
+				LOG_INFO(u8"[AssetWatcher] File modified: " + event.path.u8string());
+				break;
+			case FILE_ACTION_RENAMED_OLD_NAME:
+			{
+				LOG_INFO(u8"[AssetWatcher] File renamed (old name): " + event.path.u8string());
+				m_pendingRenameOldPath = event.path; // リネームの旧パスを保留
+				break;
+			}
+			case FILE_ACTION_RENAMED_NEW_NAME:
+				if (m_pendingRenameOldPath.has_value()) {
+					LOG_INFO(u8"[AssetWatcher] File renamed from " + m_pendingRenameOldPath.value().u8string() + u8" to " + event.path.u8string());
+					if (std::filesystem::is_regular_file(event.path))
+					{
+						CurryEngine::Resources::AssetDatabase::Rename(m_pendingRenameOldPath.value(), event.path); // アセットをリネーム
+					}
+					else if (std::filesystem::is_directory(event.path))
+					{
+						CurryEngine::Resources::AssetDatabase::RemapPathPrefix(m_pendingRenameOldPath.value(), event.path); // フォルダをリネーム
+					}
+					m_pendingRenameOldPath.reset(); // 保留をクリア
+				}
+				else {
+					LOG_WARNING(u8"[AssetWatcher] Received new name without old name: " + event.path.u8string());
+				}
+				break;
+			default:
+				LOG_WARNING("[AssetWatcher] Unknown file action: " + std::to_string(event.action));
+				break;
+			}
+		}
+
+		// アセットブラウザのキャッシュを更新
+		if (!eventsToProcess.empty())
+		{
+			AssetBrowser::Refresh();
+		}
+	}
+
 	void AssetWatcher::WatchLoop()
 	{
 		std::filesystem::path dirPath(m_watchDir);
@@ -149,56 +211,9 @@ namespace CurryEngine
 
 	void AssetWatcher::OnFileAction(DWORD action, const std::filesystem::path& path)
 	{
-		// ここでファイルの変更イベントを処理する
-		std::filesystem::path replacedPath = path;
+		if (path.extension() == ".meta") return;
 
-		if (std::filesystem::path(replacedPath).extension() == ".meta") {
-			// .metaファイルの変更は無視する
-			return;
-		}
-
-		switch (action)
-		{
-		case FILE_ACTION_ADDED:
-		{
-			LOG_INFO(u8"[AssetWatcher] File added: " + replacedPath.u8string());
-			CurryEngine::Resources::AssetDatabase::Import(replacedPath); // 新しいアセットをインポート
-			break;
-		}
-		case FILE_ACTION_REMOVED:
-			LOG_INFO(u8"[AssetWatcher] File removed: " + replacedPath.u8string());
-			CurryEngine::Resources::AssetDatabase::RemoveByPath(replacedPath); // アセットを削除
-			break;
-		case FILE_ACTION_MODIFIED:
-			LOG_INFO(u8"[AssetWatcher] File modified: " + replacedPath.u8string());
-			AssetBrowser::Refresh(); // アセットブラウザをリフレッシュして変更を反映
-			break;
-		case FILE_ACTION_RENAMED_OLD_NAME:
-		{
-			LOG_INFO(u8"[AssetWatcher] File renamed (old name): " + replacedPath.u8string());
-			m_pendingRenameOldPath = replacedPath; // リネームの旧パスを保留
-			break;
-		}
-		case FILE_ACTION_RENAMED_NEW_NAME:
-			if (m_pendingRenameOldPath.has_value()) {
-				LOG_INFO(u8"[AssetWatcher] File renamed from " + m_pendingRenameOldPath.value().u8string() + u8" to " + replacedPath.u8string());
-				if (std::filesystem::is_regular_file(replacedPath))
-				{
-					CurryEngine::Resources::AssetDatabase::Rename(m_pendingRenameOldPath.value(), replacedPath); // アセットをリネーム
-				}
-				else if (std::filesystem::is_directory(replacedPath))
-				{
-					CurryEngine::Resources::AssetDatabase::RemapPathPrefix(m_pendingRenameOldPath.value(), replacedPath); // フォルダをリネーム
-				}
-				m_pendingRenameOldPath.reset(); // 保留をクリア
-			}
-			else {
-				LOG_WARNING(u8"[AssetWatcher] Received new name without old name: " + replacedPath.u8string());
-			}
-			break;
-		default:
-			LOG_WARNING("[AssetWatcher] Unknown file action: " + std::to_string(action));
-			break;
-		}
+		std::lock_guard<std::mutex> lock(m_queueMutex);
+		m_pendingEvents.push_back({ action, path }); // 保留中のイベントキューに追加
 	}
 }

@@ -176,7 +176,7 @@ int EditorSelection::Count() const
 	return static_cast<int>(m_selected.size());
 }
 
-const std::vector<std::shared_ptr<GameObject>>& EditorSelection::GetAll() const
+std::vector<std::shared_ptr<GameObject>> EditorSelection::GetAll() const
 {
 	std::vector<std::shared_ptr<GameObject>> result;
 	if (m_isLocked) {

@@ -35,7 +35,7 @@ public:
     void SetModelAsset(std::shared_ptr<AssetModel> asset);
 
     void Update(float elapsedTime);
-    void Draw(RenderContext* rtx);
+    void Draw(RenderContext* rtx, const XMMATRIX& world = XMMatrixIdentity());
 
     // --- アニメーション制御（将来 Animator コンポーネントに移管予定） ---
     float time = 0.0f;  //!< アニメーション経過時間（秒）

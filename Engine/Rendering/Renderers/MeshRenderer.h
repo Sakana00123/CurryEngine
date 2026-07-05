@@ -1,6 +1,6 @@
 #pragma once
 #include "Renderer.h"
-#include "Engine/Resources/Mesh.h"
+#include "ModelRenderer.h"
 
 class MeshRenderer : public Renderer
 {
@@ -22,14 +22,9 @@ public:
 	json Serialize() const override;
 	// デシリアライズ
 	void Deserialize(const json& j) override;
-
-	// プリミティブメッシュの設定(テスト用。将来的にはMeshFilterなどで管理することも検討)
-	void SetPrimitiveMesh(int type);
 public:
-	//C_PROPERTY()
-	//std::string meshAssetPath; // メッシュアセットのパス
+	C_PROPERTY(CurryEngine::PropertyAttributes::DialogFilter("Mesh Files (*.fbx;*.obj;*.gltf;*.glb)|*.fbx;*.obj;*.gltf;*.glb|All Files (*.*)|*.*|"), CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"), CurryEngine::PropertyAttributes::NonSerialized)
+	std::string meshAssetPath; // メッシュアセットのパス
 
-	int primitiveType = 0; // 描画プリミティブタイプ(0: キューブ、1: 球、2: 平面、3: カプセル、4: 円柱)
-
-	std::shared_ptr<Mesh> mesh; // メッシュデータへの参照
+	std::shared_ptr<ModelRenderer> modelRenderer; // モデルレンダラー
 };

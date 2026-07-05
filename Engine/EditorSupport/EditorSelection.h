@@ -93,7 +93,7 @@ public:
 	 * @brief 選択されているオブジェクトのリストを取得します。
 	 * @return 選択されているオブジェクトのリスト
 	 */
-	const std::vector<std::shared_ptr<GameObject>>& GetAll() const;
+	std::vector<std::shared_ptr<GameObject>> GetAll() const;
 
 	/**
 	 * @brief 選択されているオブジェクトのリストを取得します。

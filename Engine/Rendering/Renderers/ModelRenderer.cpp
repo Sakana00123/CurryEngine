@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "ModelRenderer.h"
 
 #include <Engine/Rendering/Pipeline/Graphics.h>
@@ -101,14 +101,14 @@ void ModelRenderer::Update(float elapsedTime)
 // Draw
 // ============================================================
 
-void ModelRenderer::Draw(RenderContext* rtx)
+void ModelRenderer::Draw(RenderContext* rtx, const XMMATRIX& world)
 {
     if (!m_asset) return;
     if (!m_vsStatic || !m_vsSkinned) return;
 
     // TODO: ワールド行列は将来 Transform コンポーネントから受け取る
     XMFLOAT4X4 worldMatrix;
-    XMStoreFloat4x4(&worldMatrix, XMMatrixIdentity());
+    XMStoreFloat4x4(&worldMatrix, world);
 
     ID3D11DeviceContext* ctx = rtx->immediateContext;
     ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
