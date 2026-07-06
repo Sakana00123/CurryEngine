@@ -104,11 +104,11 @@ void SceneRenderPipeline::SetupRenderPasses()
 	AddRenderPass(std::make_unique<PreRenderPass>());
 	AddRenderPass(std::make_unique<SkyBoxPass>());
 	AddRenderPass(std::make_unique<OpaquePass>());
+	AddRenderPass(std::make_unique<DebugRenderPass>());
 	AddRenderPass(std::make_unique<ParticlePass>());
 	AddRenderPass(std::make_unique<ShadowMapPass>());
 	AddRenderPass(std::make_unique<ShadowApplyPass>());
 	AddRenderPass(std::make_unique<UIPass>());
-	AddRenderPass(std::make_unique<DebugRenderPass>());
 
 	AddRenderPass(std::make_unique<PostProcessPass>());
 	AddRenderPass(std::make_unique<TransitionPass>());
