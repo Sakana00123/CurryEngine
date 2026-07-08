@@ -74,7 +74,7 @@ void Collider::Start()
 
 void Collider::Initialize()
 {
-	primitive = std::make_unique<GeometricPrimitive>(Graphics::GetDevice());
+	
 }
 
 void Collider::FixedUpdate(float fixedDeltaTime)

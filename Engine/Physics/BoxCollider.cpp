@@ -6,9 +6,7 @@ REGISTER_COMPONENT(BoxCollider, "Physics")
 void BoxCollider::Initialize()
 {
 	// デバッグプリミティブの準備など、必要な初期化処理をここに実装します。
-	ID3D11Device* device = Graphics::GetDevice();
 	Collider::Initialize();
-	primitive->CreateCube(device);
 }
 
 void BoxCollider::Register()
@@ -57,29 +55,6 @@ void BoxCollider::SyncWithPhysics()
 	}
 	Physics::SetGeometry(m_shapeHandle, geometry);
 }
-
-void BoxCollider::Render(RenderContext* rtx)
-{
-#if 0
-	// デバッグ描画用のワイヤーフレームボックスを描画(いずれはデバッグ描画用の専用クラスを作るべきかもしれません)
-#ifdef _DEBUG
-	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
-	// ワールド行列を計算
-	XMFLOAT4X4 world = CalculateColliderWorldTransform(center, size);
-
-	// ワイヤーフレームで描画
-	RenderState* renderState = Graphics::GetRenderState();
-	renderState->BindRasterizerState(immediateContext, RasterizerState::WireCullBack);
-	primitive->Render(immediateContext, world, color);
-	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
-#else
-	RenderState* renderState = Graphics::GetRenderState();
-	renderState->BindRasterizerState(rtx->immediateContext, RasterizerState::SolidCullNone);
-#endif // DEBUG  
-#endif // 0
-
-}
-
 
 #ifdef USE_IMGUI
 //void BoxCollider::DrawProperty(const PropertyDrawContext& context)

@@ -6,13 +6,7 @@ REGISTER_COMPONENT(CapsuleCollider, "Physics")
 void CapsuleCollider::Initialize()
 {
 	// デバッグプリミティブの準備など、必要な初期化処理をここに実装します。
-	ID3D11Device* device = Graphics::GetDevice();
-	top = std::make_unique<GeometricPrimitive>(device);
-	top->CreateSphere(device, 16, 16);
-	bottom = std::make_unique<GeometricPrimitive>(device);
-	bottom->CreateSphere(device, 16, 16);
 	Collider::Initialize();
-	primitive->CreateCylinder(device, 16);
 }
 
 void CapsuleCollider::Register()
@@ -58,32 +52,6 @@ void CapsuleCollider::SyncWithPhysics()
 		return;
 	}
 	Physics::SetGeometry(m_shapeHandle, geometry);
-}
-
-
-void CapsuleCollider::Render(RenderContext* rtx)
-{
-#if 0
-#ifdef _DEBUG
-	auto immediateContext = rtx->immediateContext;
-	float halfRadius = radius;
-	float heightHalf = this->height;
-	float halfHeightWithoutSphere = max(0.0f, heightHalf - halfRadius); // 半球を除いた高さの半分（負にならないようにmaxで調整）
-	Vector3 localScale = Vector3(halfRadius, halfRadius, halfRadius);
-	// 上半球、円柱、下半球のワールド行列を計算
-	XMFLOAT4X4 sphereTopWorld = CalculateColliderWorldTransform(Vector3(center.x, center.y + halfHeightWithoutSphere, center.z), localScale);
-	XMFLOAT4X4 cylinderWorld = CalculateColliderWorldTransform(center, Vector3(halfRadius, halfHeightWithoutSphere * 2.0f, halfRadius));
-	XMFLOAT4X4 sphereBottomWorld = CalculateColliderWorldTransform(Vector3(center.x, center.y - halfHeightWithoutSphere, center.z), localScale);
-
-	RenderState* renderState = Graphics::GetRenderState();
-	renderState->BindRasterizerState(immediateContext, RasterizerState::WireCullBack);
-	primitive->Render(immediateContext, cylinderWorld, color);
-	top->Render(immediateContext, sphereTopWorld, color);
-	bottom->Render(immediateContext, sphereBottomWorld, color);
-	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
-#endif // _DEBUG  
-#endif // 0
-
 }
 
 //#ifdef USE_IMGUI

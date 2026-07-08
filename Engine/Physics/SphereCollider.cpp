@@ -6,9 +6,7 @@ REGISTER_COMPONENT(SphereCollider, "Physics")
 void SphereCollider::Initialize()
 {
 	// デバッグプリミティブの準備など、必要な初期化処理をここに実装します。
-	ID3D11Device* device = Graphics::GetDevice();
 	Collider::Initialize();
-	primitive->CreateSphere(device, 16, 16);
 }
 
 void SphereCollider::Register()
@@ -54,26 +52,6 @@ void SphereCollider::SyncWithPhysics()
 		return;
 	}
 	Physics::SetGeometry(m_shapeHandle, geometry);
-}
-
-void SphereCollider::Render(RenderContext* rtx)
-{
-#if 0
-#ifdef _DEBUG
-	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
-	// ワールド行列を計算
-	XMFLOAT4X4 world = CalculateColliderWorldTransform(center, Vector3(radius, radius, radius));
-	// ワイヤーフレームで描画
-	RenderState* renderState = Graphics::GetRenderState();
-	renderState->BindRasterizerState(immediateContext, RasterizerState::WireCullBack);
-	primitive->Render(immediateContext, world, color);
-	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
-#else
-	RenderState* renderState = Graphics::GetRenderState();
-	renderState->BindRasterizerState(rtx->immediateContext, RasterizerState::SolidCullNone);
-#endif // DEBUG  
-#endif // 0
-
 }
 
 #ifdef USE_IMGUI

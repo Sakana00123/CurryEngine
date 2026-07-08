@@ -65,10 +65,6 @@ class Rigidbody : public Component
 {
 	C_REFLECT(Rigidbody)
 public:
-	//Vector3 velocity;
-	Vector3 acceleration;
-	//Vector3 force;
-	
 	
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetMass"), CurryEngine::PropertyAttributes::Setter("SetMass"), CurryEngine::PropertyAttributes::Speed(1.0f))
 	float mass = 1.0f; // 質量
@@ -86,10 +82,6 @@ public:
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetSleepThreshold"), CurryEngine::PropertyAttributes::Setter("SetSleepThreshold"), CurryEngine::PropertyAttributes::Speed(0.001f), CurryEngine::PropertyAttributes::Format("%.6f"))
 	float sleepThreshold = 0.005f; // スリープ状態になる速度の閾値
-
-
-	//const Vector3 gravity = { 0.0f, -9.8f, 0.0f };
-	const Vector3 gravity = { 0.0f, -360.0f, 0.0f };
 public:
 	// --- 物理エンジンに対する操作 ---
 
@@ -373,8 +365,6 @@ public:
 
 	void LateUpdate(float deltaTime) override;
 
-	void OnGround();
-
 	void OnTriggerEnter(CollisionInfo info) {
 		
 	}
@@ -382,9 +372,6 @@ public:
 #ifdef USE_IMGUI
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
-
-
-	bool isGround = false;
 
 private:
 	ActorHandle m_actorHandle = INVALID_ACTOR_HANDLE;

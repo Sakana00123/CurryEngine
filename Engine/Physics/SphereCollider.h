@@ -15,8 +15,6 @@ public:
 
 	/** @brief 物理エンジンとの状態同期。*/
 	void SyncWithPhysics() override;
-	/** @brief デバッグ描画。*/
-	void Render(RenderContext* rtx) override;
 
 #ifdef USE_IMGUI
 	/** @brief プロパティ描画。*/
@@ -53,7 +51,4 @@ public:
 	/** @brief 球の半径を設定します。*/
 	C_FUNCTION()
 	void SetRadius(float newRadius);
-
-
-
 };

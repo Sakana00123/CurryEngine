@@ -15,8 +15,6 @@ public:
 
 	/** @brief 物理エンジンとの状態同期。*/
 	void SyncWithPhysics() override;
-	/** @brief ワイヤーフレーム描画処理 */
-	void Render(RenderContext* rtx) override;
 
 #ifdef USE_IMGUI
 	/** @brief プロパティ描画。*/
@@ -60,9 +58,4 @@ public:
 	/** @brief 高さを設定します。*/
 	C_FUNCTION()
 	void SetHeight(float newHeight);
-
-
-
-	std::unique_ptr<GeometricPrimitive> top;
-	std::unique_ptr<GeometricPrimitive> bottom;
 };

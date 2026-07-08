@@ -217,13 +217,6 @@ void MeshCollider::SyncWithPhysics()
 
 }
 
-void MeshCollider::Render(RenderContext* rtx)
-{
-#ifdef _DEBUG
-	// デバッグ描画の実装をここに追加します。
-#endif
-}
-
 #ifdef USE_IMGUI
 //void MeshCollider::DrawProperty(const PropertyDrawContext& context)
 //{

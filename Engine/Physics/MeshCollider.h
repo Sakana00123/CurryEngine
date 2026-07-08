@@ -11,8 +11,6 @@ public:
 	void Register() override;
 	/** @brief 物理エンジンとの状態同期。*/
 	void SyncWithPhysics() override;
-	/** @brief デバッグ描画。*/
-	void Render(RenderContext* rtx) override;
 #ifdef USE_IMGUI
 	/** @brief プロパティ描画。*/
 	//void DrawProperty(const PropertyDrawContext& context) override;

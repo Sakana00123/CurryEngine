@@ -1,6 +1,5 @@
 #pragma once
 #include "Engine/Core/Component.h"
-#include "Archive/geometric_primitive.h"
 
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include "Engine/Rendering/Pipeline/RenderState.h"
@@ -144,9 +143,6 @@ public:
 	/** @brief 物理エンジンとの状態同期。*/
 	virtual void SyncWithPhysics() = 0;
 
-	/** @brief デバッグ描画。*/
-	virtual void Render(RenderContext* rtx) override = 0;
-
 #ifdef USE_IMGUI
 	/** @brief インスペクタ描画。*/
 	virtual void DrawProperty(const PropertyDrawContext& context) override;
@@ -214,9 +210,4 @@ public:
 	virtual XMFLOAT3 Min() const { return { 0,0,0 }; }
 	/** @brief AABB の最大点。*/
 	virtual XMFLOAT3 Max() const { return { 0,0,0 }; }
-protected:
-	/** @brief デバッグ描画用のジオメトリ。*/
-	std::unique_ptr<GeometricPrimitive> primitive;
-	/** @brief デバッグ描画色。*/
-	Color color{ 0,1,0,1 };
 };

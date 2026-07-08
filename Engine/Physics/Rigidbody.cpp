@@ -89,7 +89,6 @@ void Rigidbody::OnDisable()
 
 void Rigidbody::AddForce(Vector3 force, ForceMode mode)
 {
-	//acceleration += force / mass;
 	if (isKinematic)
 	{
 		// キネマティックなオブジェクトには力を加えない
@@ -330,49 +329,13 @@ float Rigidbody::GetSleepThreshold() const
 
 void Rigidbody::Update(float deltaTime)
 {
-#ifdef USE_PHYSX
 	// PhysXを使用している場合は、物理エンジンの更新に任せるため、ここでは何もしません。
-
-#else
-	if (mass < 0.1f) mass = 0.1f;
-	//重力適用
-	if (useGravity) {
-		AddForce(gravity * mass);
-	}
-#if 1
-	float length = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-	if (length > 0.f) {
-		float friction = this->friction * deltaTime;
-		if (length > friction) {
-			float vx = velocity.x / length;
-			float vz = velocity.z / length;
-			velocity.x -= vx * friction;
-			velocity.z -= vz * friction;
-		}
-		else {
-			velocity.x = velocity.z = 0.f;
-		}
-	}
-#else	
-	float drag = 0.9f;
-	velocity.x *= (1.0f - drag * deltaTime);
-	velocity.z *= (1.0f - drag * deltaTime);
-#endif
-	//加速度適用
-	velocity += acceleration * deltaTime;
-	//最終的な速度で、移動を適用
-	gameObject->transform->Translate(velocity * deltaTime);
-	acceleration = 0;
-#endif // USE_PHYSX
 }
 
 void Rigidbody::FixedUpdate(float fixedDeltaTime)
 {
 #ifdef USE_PHYSX
-	
-#else
-	// 固定更新で物理シミュレーションを行う場合の処理をここに追加します。
-	// 例えば、衝突判定や物理演算の更新などを行うことができます。
+	// PhysXを使用している場合は、物理エンジンの更新に任せるため、ここでは何もしません。
 #endif
 }
 
@@ -383,12 +346,6 @@ void Rigidbody::LateUpdate(float deltaTime)
 
 	
 #endif
-}
-
-void Rigidbody::OnGround()
-{
-	//velocity.y = 0;
-	isGround = true;
 }
 
 #ifdef USE_IMGUI
