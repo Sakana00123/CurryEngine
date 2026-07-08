@@ -58,6 +58,7 @@ void SphereCollider::SyncWithPhysics()
 
 void SphereCollider::Render(RenderContext* rtx)
 {
+#if 0
 #ifdef _DEBUG
 	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
 	// ワールド行列を計算
@@ -70,7 +71,9 @@ void SphereCollider::Render(RenderContext* rtx)
 #else
 	RenderState* renderState = Graphics::GetRenderState();
 	renderState->BindRasterizerState(rtx->immediateContext, RasterizerState::SolidCullNone);
-#endif // DEBUG
+#endif // DEBUG  
+#endif // 0
+
 }
 
 #ifdef USE_IMGUI

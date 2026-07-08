@@ -60,6 +60,7 @@ void BoxCollider::SyncWithPhysics()
 
 void BoxCollider::Render(RenderContext* rtx)
 {
+#if 0
 	// デバッグ描画用のワイヤーフレームボックスを描画(いずれはデバッグ描画用の専用クラスを作るべきかもしれません)
 #ifdef _DEBUG
 	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
@@ -74,7 +75,9 @@ void BoxCollider::Render(RenderContext* rtx)
 #else
 	RenderState* renderState = Graphics::GetRenderState();
 	renderState->BindRasterizerState(rtx->immediateContext, RasterizerState::SolidCullNone);
-#endif // DEBUG
+#endif // DEBUG  
+#endif // 0
+
 }
 
 

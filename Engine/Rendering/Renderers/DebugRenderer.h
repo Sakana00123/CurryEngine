@@ -29,7 +29,65 @@ public:
 	 * @param color 色。
 	 */
 	static void DrawLine(const Vector3& start, const Vector3& end, const Color& color);
-	
+
+	/**
+	 * @brief 立方体を描画します。
+	 * @param center 立方体の中心位置。
+	 * @param size 立方体のサイズ（幅、高さ、奥行き）。
+	 * @param color 色。
+	 */
+	static void DrawBox(const Vector3& center, const Vector3& size, const Color& color);
+
+	/**
+	 * @brief 球を描画します。
+	 * @param center 球の中心位置。
+	 * @param radius 球の半径。
+	 * @param color 色。
+	 * @param segments 球の分割数（デフォルトは16）。分割数が多いほど滑らかになります。
+	 */
+	static void DrawSphere(const Vector3& center, float radius, const Color& color, int segments = 16);
+
+	/**
+	 * @brief 半球を描画します。
+	 * @param center 半球の中心位置。
+	 * @param direction 半球の向き（法線ベクトル）。
+	 * @param radius 半球の半径。
+	 * @param color 色。
+	 * @param drawBottom 底面を描画するかどうか（デフォルトはtrue）。
+	 * @param segments 半球の分割数（デフォルトは16）。分割数が多いほど滑らかになります。
+	 */
+	static void DrawHemisphere(const Vector3& center, const Vector3& direction, float radius, const Color& color, bool drawBottom = true, int segments = 16);
+
+	/**
+	 * @brief 円柱を描画します。
+	 * @param start 円柱の始点。
+	 * @param end 円柱の終点。
+	 * @param radius 円柱の半径。
+	 * @param color 色。
+	 * @param drawTopBottom 上下の面を描画するかどうか（デフォルトはtrue）。
+	 * @param segments 円柱の分割数（デフォルトは16）。分割数が多いほど滑らかになります。
+	 */
+	static void DrawCylinder(const Vector3& start, const Vector3& end, float radius, const Color& color, bool drawTopBottom = true, int segments = 16);
+
+	/**
+	 * @brief カプセルを描画します。
+	 * @param start カプセルの始点。
+	 * @param end カプセルの終点。
+	 * @param radius カプセルの半径。
+	 * @param color 色。
+	 * @param segments カプセルの分割数（デフォルトは16）。分割数が多いほど滑らかになります。
+	 */
+	static void DrawCapsule(const Vector3& start, const Vector3& end, float radius, const Color& color, int segments = 16);
+
+	/**
+	 * @brief 平面を描画します。
+	 * @param center 平面の中心位置。
+	 * @param normal 平面の法線ベクトル。
+	 * @param size 平面のサイズ（幅、高さ）。
+	 * @param color 色。
+	 */
+	static void DrawPlane(const Vector3& center, const Vector3& normal, float size, const Color& color);
+
 	/**
 	 * @brief グリッドを描画します。
 	 * @param center グリッドの中心位置。

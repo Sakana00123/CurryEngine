@@ -63,6 +63,7 @@ void CapsuleCollider::SyncWithPhysics()
 
 void CapsuleCollider::Render(RenderContext* rtx)
 {
+#if 0
 #ifdef _DEBUG
 	auto immediateContext = rtx->immediateContext;
 	float halfRadius = radius;
@@ -80,7 +81,9 @@ void CapsuleCollider::Render(RenderContext* rtx)
 	top->Render(immediateContext, sphereTopWorld, color);
 	bottom->Render(immediateContext, sphereBottomWorld, color);
 	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
-#endif // _DEBUG
+#endif // _DEBUG  
+#endif // 0
+
 }
 
 //#ifdef USE_IMGUI

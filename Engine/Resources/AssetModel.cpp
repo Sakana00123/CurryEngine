@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "AssetModel.h"
 
 #include <Engine/Resources/Texture.h>
@@ -25,6 +25,19 @@ namespace
     {
         return std::u8string(str.begin(), str.end());
 	}
+
+    std::u8string MakeUniqueName(const std::u8string& baseName, std::unordered_set<std::u8string>& existingNames)
+    {
+        int suffix = 1;
+		std::u8string uniqueName = baseName;
+        while (existingNames.find(uniqueName) != existingNames.end())
+        {
+			uniqueName = baseName + u8"_" + StringToU8String(std::to_string(suffix++));
+        };
+		existingNames.insert(uniqueName); // 新しい名前を既存の名前セットに追加
+        return uniqueName;
+	}
+
 }
 
 namespace Assimp
@@ -456,13 +469,14 @@ void AssetModel::ImportTextures(const aiScene* scene, const std::u8string& baseD
 #else
 		int texIndex = std::stoi(embeddedPath.wstring().substr(1));
 		std::string texName = scene->mTextures[texIndex]->mFilename.C_Str();
+        if (texName.empty())
+        {
+            texName = "embedded_texture_" + std::to_string(texIndex);
+		}
         fs::path outputPath = baseDir / fs::path(texName);
 		outputPath.replace_extension(".png"); // PNG 形式で書き出す
         if (ExportEmbeddedTexture(scene, texIndex, outputPath))
         {
-			// 競合状態を避けるため、少し待つ(良くないので将来的には改善する)
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
             // 書き出した埋め込みテクスチャをロード
 			getOrLoad(outputPath);
         }
@@ -702,10 +716,12 @@ void AssetModel::ImportNodes(const aiScene* scene)
     // ノード名 → インデックス（スキン解決で使う）
     m_nodeNameToIndex.clear();
 
+	std::unordered_set<std::u8string> nodeNames; // 重複ノード名チェック用
+
     std::function<int(const aiNode*, int)> traverse = [&](const aiNode* aiN, int parentIndex) -> int
         {
             Node node;
-            node.name = StringToU8String(aiN->mName.C_Str());
+            node.name = MakeUniqueName(StringToU8String(aiN->mName.C_Str()), nodeNames);
             node.parent = parentIndex;
 
             // TRS 分解（aiMatrix4x4::Decompose を使う）

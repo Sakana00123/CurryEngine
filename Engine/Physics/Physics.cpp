@@ -877,14 +877,15 @@ void Physics::RenderDebug(RenderContext* renderContext)
 		auto drawShape = [&](physx::PxShape* pxShape, const physx::PxTransform& pxShapeTransform, float contactOffset, bool sleeping)
 			{
 				const physx::PxGeometry& pxGeometry = pxShape->getGeometry();
-				const physx::PxMat44 pxShapeMat(pxShapeTransform);
+				physx::PxTransform pxShapeLocalTransform = pxShape->getLocalPose(); // ローカルポーズを取得
+				const physx::PxMat44 pxShapeMat = physx::PxMat44(pxShapeTransform)/* * physx::PxMat44(pxShapeLocalTransform)*/; // ワールド座標系での形状の変換行列を計算
 				DirectX::XMFLOAT4X4 shapeTransform = {
 					pxShapeMat.column0.x, pxShapeMat.column0.y, pxShapeMat.column0.z, pxShapeMat.column0.w,
 					pxShapeMat.column1.x, pxShapeMat.column1.y, pxShapeMat.column1.z, pxShapeMat.column1.w,
 					pxShapeMat.column2.x, pxShapeMat.column2.y, pxShapeMat.column2.z, pxShapeMat.column2.w,
 					pxShapeMat.column3.x, pxShapeMat.column3.y, pxShapeMat.column3.z, pxShapeMat.column3.w,
 				};
-				DirectX::XMFLOAT3 shapePosition = {
+				Vector3 shapePosition = {
 					pxShapeMat.column3.x, pxShapeMat.column3.y, pxShapeMat.column3.z
 				};
 
@@ -920,32 +921,78 @@ void Physics::RenderDebug(RenderContext* renderContext)
 
 				switch (pxGeometry.getType())
 				{
-				/*case physx::PxGeometryType::eSPHERE:
+				case physx::PxGeometryType::eSPHERE:
 				{
 					const physx::PxSphereGeometry& pxSphereGeometry = static_cast<const physx::PxSphereGeometry&>(pxGeometry);
-					shapeRenderer->DrawSphere(shapeTransform, pxSphereGeometry.radius, color);
+					// 球を描画
+					{
+						// 球の半径を取得
+						float radius = pxSphereGeometry.radius;
+						// 球を描画
+						DebugRenderer::DrawSphere(shapePosition, radius, color);
+					}
 					break;
 				}
 				case physx::PxGeometryType::ePLANE:
 				{
 					const physx::PxPlaneGeometry& pxPlaneGeometry = static_cast<const physx::PxPlaneGeometry&>(pxGeometry);
+					// 平面を描画
+					{
+						// 平面の法線はActorの回転に依存するため、Actorの回転を取得して法線を計算
+						Vector3 normal = ToVector3(pxShapeMat.rotate(physx::PxVec3(0, 1, 0)));
+
+						// 平面の描画サイズは適当に設定（必要に応じて調整）
+						float size = 1.0f;
+
+						// 平面を描画
+						DebugRenderer::DrawPlane(shapePosition, normal, size, color);
+					}
 					break;
 				}
 				case physx::PxGeometryType::eCAPSULE:
 				{
 					const physx::PxCapsuleGeometry& pxCapsuleGeometry = static_cast<const physx::PxCapsuleGeometry&>(pxGeometry);
-					DirectX::XMMATRIX ShapeTransform = DirectX::XMLoadFloat4x4(&shapeTransform);
-					DirectX::XMMATRIX OffsetTransform = DirectX::XMMatrixRotationZ(DirectX::XM_PIDIV2);
-					DirectX::XMStoreFloat4x4(&shapeTransform, OffsetTransform * ShapeTransform);
-					shapeRenderer->DrawCapsule(shapeTransform, pxCapsuleGeometry.radius + contactOffset, pxCapsuleGeometry.halfHeight * 2.0f, color);
+
+					// カプセルを描画
+					{
+						// カプセルの半径と高さを取得
+						float radius = pxCapsuleGeometry.radius;
+						float halfHeight = pxCapsuleGeometry.halfHeight;
+						// カプセルの上端と下端の位置を計算
+						physx::PxVec3 topOffset(0, halfHeight, 0);
+						physx::PxVec3 bottomOffset(0, -halfHeight, 0);
+
+						physx::PxMat44 capsuleMat = pxShapeMat;
+						// カプセルだけ、Z軸回転させているので、戻すために逆の回転をかける
+						Quaternion localRot = Quaternion::FromEuler({ 0.0f, 0.0f, -90.0f }); // Z軸に-90度回転させる
+						physx::PxQuat rotation = ToPxQuat(localRot).getNormalized();
+						capsuleMat = capsuleMat * physx::PxMat44(rotation);
+
+						physx::PxVec3 topPosition = capsuleMat.transform(topOffset);
+						physx::PxVec3 bottomPosition = capsuleMat.transform(bottomOffset);
+
+						Vector3 start = ToVector3(topPosition);
+						Vector3 end = ToVector3(bottomPosition);
+
+						// カプセルを描画
+						DebugRenderer::DrawCapsule(start, end, radius, color);
+					}
+
 					break;
 				}
 				case physx::PxGeometryType::eBOX:
 				{
 					const physx::PxBoxGeometry& pxBoxGeometry = static_cast<const physx::PxBoxGeometry&>(pxGeometry);
-					shapeRenderer->DrawBox(shapeTransform, DirectX::XMFLOAT3(pxBoxGeometry.halfExtents.x + contactOffset, pxBoxGeometry.halfExtents.y + contactOffset, pxBoxGeometry.halfExtents.z + contactOffset), color);
+					
+					// ボックスを描画
+					{
+						// ボックスの半サイズを取得
+						Vector3 size = ToVector3(pxBoxGeometry.halfExtents) * 2.0f; // 半サイズを2倍してフルサイズに変換
+						// ボックスを描画
+						DebugRenderer::DrawBox(shapePosition, size, color);
+					}
 					break;
-				}*/
+				}
 				case physx::PxGeometryType::eCONVEXMESH:
 				{
 					const physx::PxConvexMeshGeometry& pxConvexMeshGeometry = static_cast<const physx::PxConvexMeshGeometry&>(pxGeometry);
