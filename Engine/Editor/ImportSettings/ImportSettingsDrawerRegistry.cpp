@@ -3,6 +3,7 @@
 
 #include "TextureImportSettingsDrawer.h"
 #include "ModelImportSettingsDrawer.h"
+#include "FbxImportSettingsDrawer.h"
 
 namespace CurryEngine::Resources
 {
@@ -11,7 +12,8 @@ namespace CurryEngine::Resources
 	{
 		// 必要に応じて、ここでデフォルトの描画クラスを登録することができます。
 		Register(AssetType::Texture, std::make_unique<TextureImportSettingsDrawer>());
-		Register(AssetType::Model, std::make_unique<ModelImportSettingsDrawer>());
+		Register(AssetType::Model, std::make_unique<FbxImportSettingsDrawer>());
+		//Register(AssetType::Model, std::make_unique<ModelImportSettingsDrawer>());
 	}
 
 	IImportSettingsDrawer* ImportSettingsDrawerRegistry::Find(AssetType assetType)

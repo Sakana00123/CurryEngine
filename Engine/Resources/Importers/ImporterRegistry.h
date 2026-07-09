@@ -19,11 +19,12 @@ namespace CurryEngine
 			static void Initialize();
 
 			/**
-			 * @brief 指定されたアセットタイプに対応するインポーターを取得します。
-			 * @param type 取得するインポーターのアセットタイプ
+			 * @brief 指定されたファイル拡張子に対応するインポーターを検索します。
+			 * @param type アセットタイプ
+			 * @param extension 検索するファイル拡張子（例: ".png", ".fbx"）
 			 * @return 対応するインポーターのポインタ、存在しない場合はnullptr
 			 */
-			static IImporter* Find(AssetType type);
+			static IImporter* Find(AssetType type, const std::filesystem::path& extension);
 
 		private:
 			/**

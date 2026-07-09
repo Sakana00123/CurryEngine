@@ -61,7 +61,7 @@ namespace CurryEngine
 				if (meta)
 				{
 					// アセットタイプに対応するインポーターを取得
-					if (IImporter* importer = ImporterRegistry::Find(meta->type))
+					if (IImporter* importer = ImporterRegistry::Find(meta->type, meta->path.extension()))
 					{
 						auto resource = importer->Import(*meta);
 						ResourceManager::Register(meta->path.string(), resource);

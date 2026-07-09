@@ -1675,7 +1675,7 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 		if (isSelected)
 		{
 			auto meta = CurryEngine::Resources::AssetDatabase::FindByPath(assetPath); // アセットのパスからアセットデータを取得する処理
-			if (meta && CurryEngine::Resources::ImporterRegistry::Find(meta->type))
+			if (meta && CurryEngine::Resources::ImporterRegistry::Find(meta->type, assetPath.extension()))
 			{
 				if (ImGui::MenuItem("Open Import Settings"))
 				{

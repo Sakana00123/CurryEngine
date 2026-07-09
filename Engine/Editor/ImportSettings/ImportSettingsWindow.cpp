@@ -440,7 +440,7 @@ namespace CurryEngine::Resources
 		AssetMeta previewMeta = *meta;
 		previewMeta.importSettings = _editingSettings;
 
-		if (IImporter* importer = ImporterRegistry::Find(previewMeta.type))
+		if (IImporter* importer = ImporterRegistry::Find(previewMeta.type, previewMeta.path.extension()))
 		{
 			_previewResource = nullptr; // 既存のプレビューリソースを解放
 			_previewResource = importer->Import(previewMeta);
