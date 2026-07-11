@@ -26,6 +26,13 @@ namespace CurryEngine
 			 */
 			static IImporter* Find(AssetType type, const std::filesystem::path& extension);
 
+			/**
+			 * @brief 指定されたアセットメタデータに対応するインポーターを検索します。
+			 * @param meta 検索するアセットのメタデータ
+			 * @return 対応するインポーターのポインタ、存在しない場合はnullptr
+			 */
+			static IImporter* Find(const AssetMeta& meta);
+
 		private:
 			/**
 			 * @brief インポーターを登録します。

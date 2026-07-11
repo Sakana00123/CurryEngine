@@ -13,6 +13,9 @@ using namespace DirectX;
 #include "AssetDatabase.h"
 #include "ImportSettings/FbxImportSettings.h"
 
+#include "Engine/Resources/Importers/ImporterRegistry.h"
+#include "Engine/Resources/Importers/TextureImporter.h"
+
 #include "Engine/Rendering/Pipeline/Graphics.h"
 
 inline XMFLOAT4X4 ToXMFLOAT4X4(const FbxAMatrix& fbxamatrix)
@@ -76,8 +79,6 @@ namespace CurryEngine::Resources
 		}
 	}
 
-	static const std::filesystem::path ArtifactDirectory = ".\\Library\\Artifacts";
-
 	bool SkinnedMesh::LoadFromFile(const std::string& path)
 	{
 		auto device = Graphics::GetDevice();
@@ -98,7 +99,7 @@ namespace CurryEngine::Resources
 	{
 		_path = fbx_filename;
 
-		std::filesystem::path artifactPath(ArtifactDirectory / artifactStem);
+		std::filesystem::path artifactPath(EnginePaths::ArtifactDir / artifactStem);
 		artifactPath.replace_extension("");
 		if (std::filesystem::exists(artifactPath))
 		{
@@ -593,9 +594,25 @@ namespace CurryEngine::Resources
 					{
 						std::filesystem::path path(fbxFilename);
 						path.replace_filename(iterator->second.texture_filenames[textureIndex]);
+#if 0
 						D3D11_TEXTURE2D_DESC texture2d_desc;
 						LoadTextureFromFile(device, path.c_str(),
 							iterator->second.shader_resource_views[textureIndex].GetAddressOf(), &texture2d_desc);
+#else
+						// Load texture from asset database
+						AssetMeta* meta = AssetDatabase::GetOrImport(path);
+						if (meta)
+						{
+							if (TextureImporter* textureImporter = dynamic_cast<TextureImporter*>(ImporterRegistry::Find(*meta)))
+							{
+								if (auto textureResource = std::dynamic_pointer_cast<AssetTexture>(textureImporter->Import(*meta)))
+								{
+									iterator->second.shader_resource_views[textureIndex] = textureResource->GetSRV();
+								}
+							}
+						}
+#endif // 0
+
 					}
 					else
 					{

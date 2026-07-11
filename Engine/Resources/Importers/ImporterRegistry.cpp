@@ -47,6 +47,11 @@ namespace CurryEngine
 			return nullptr;
 		}
 
+		IImporter* ImporterRegistry::Find(const AssetMeta& meta)
+		{
+			return Find(meta.type, meta.path.extension());
+		}
+
 		void ImporterRegistry::Register(AssetType type, std::unique_ptr<IImporter> importer)
 		{
 			auto& map = GetMap();

@@ -1,4 +1,5 @@
 #pragma once
+#include <filesystem>
 
 namespace EnginePaths
 {
@@ -11,6 +12,7 @@ namespace EnginePaths
     inline constexpr const char* ShadersDataDir  = "./Assets/Shaders/"; // CSOファイルのロード元など
     inline constexpr const char* ImagesDataDir   = "./Data/Images/";
     inline constexpr const char* IconsDir        = "./Data/Icon/";
+	inline const std::filesystem::path ArtifactDir = ".\\Library\\Artifacts\\"; // ビルド済みリソースの保存先
 
     // ソースコード関連
     inline constexpr const char* ShaderSourceDir = "./Shader/";       // HLSL・HLSLIファイルの配置先

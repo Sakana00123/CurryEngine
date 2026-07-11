@@ -1,5 +1,6 @@
 #pragma once
 #include "IImporter.h"
+#include "Engine/Core/Misc.h"
 
 namespace CurryEngine
 {

@@ -5,6 +5,9 @@
 #include "Engine/Resources/AssetMeta.h"
 
 #include <filesystem>
+#include <fstream>
+
+#include <DirectXTex.h>
 
 #include <WICTextureLoader.h>
 #include <DDSTextureLoader.h>
@@ -53,6 +56,12 @@ namespace CurryEngine
 
 		bool TextureImporter::LoadTextureFromFile(const AssetMeta& meta, ComPtr<ID3D11ShaderResourceView>& textureView, ComPtr<ID3D11Resource>& textureResource)
 		{
+			// アーティファクトのパスを生成
+			std::filesystem::path artifactStem = meta.id.id;
+			std::filesystem::path artifactPath(EnginePaths::ArtifactDir / artifactStem);
+			artifactPath.replace_extension("");
+
+			// ファイルの拡張子を小文字に変換して取得
 			std::filesystem::path filePath(meta.path);
 			std::string extension = filePath.extension().string();
 			std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
@@ -62,57 +71,163 @@ namespace CurryEngine
 			TextureImportSettings settings = meta.GetImportSettings<TextureImportSettings>();
 
 			// 読み込み関数の引数の設定
-			ID3D11Device*						device			= Graphics::GetDevice();
-			std::wstring						filePathW		= filePath.wstring();
-			size_t								maxsize			= 0; // 0は制限なし
-			D3D11_USAGE							usage			= D3D11_USAGE_DEFAULT;
-			unsigned int						bindFlags		= D3D11_BIND_SHADER_RESOURCE;
-			unsigned int						cpuAccessFlags	= 0;
-			unsigned int						miscFlags		= 0;
-			DirectX::WIC_LOADER_FLAGS			wicLoadFlags	= DirectX::WIC_LOADER_DEFAULT;
-			DirectX::DX11::DDS_LOADER_FLAGS		ddsLoadFlags	= DirectX::DDS_LOADER_DEFAULT;
-			DDS_ALPHA_MODE						alphaMode		= DDS_ALPHA_MODE_UNKNOWN;
+			ID3D11Device* device = Graphics::GetDevice();
+			std::wstring						filePathW = filePath.wstring();
 
-			if (extension == ".dds")
+			DirectX::ScratchImage scratchImage;
+
+			// アーティファクトが存在しない場合、元のテクスチャファイルから読み込む
+			if (!std::filesystem::exists(artifactPath))
 			{
-				// DirectX::CreateDDSTextureFromFileEx を使用してDDSテクスチャを読み込む
-				hr = DirectX::CreateDDSTextureFromFileEx(
+				if (extension == ".dds")
+				{
+					// DirectXTex を使用して DDS テクスチャを読み込む
+					hr = DirectX::LoadFromDDSFile(
+						filePathW.c_str(),
+						DirectX::DDS_FLAGS_NONE,
+						nullptr,
+						scratchImage
+					);
+				}
+				else if (extension == ".tga")
+				{
+					// DirectXTex を使用して TGA テクスチャを読み込む
+					hr = DirectX::LoadFromTGAFile(
+						filePathW.c_str(),
+						DirectX::TGA_FLAGS_NONE,
+						nullptr,
+						scratchImage
+					);
+				}
+				else if (extension == ".hdr")
+				{
+					// DirectXTex を使用して HDR テクスチャを読み込む
+					hr = DirectX::LoadFromHDRFile(
+						filePathW.c_str(),
+						nullptr,
+						scratchImage
+					);
+				}
+				else
+				{
+					// DirectXTex を使用してその他のテクスチャを読み込む
+					hr = DirectX::LoadFromWICFile(
+						filePathW.c_str(),
+						DirectX::WIC_FLAGS_NONE,
+						nullptr,
+						scratchImage
+					);
+				}
+				if (FAILED(hr))
+				{
+					std::string hrStr = "HRESULT: " + std::to_string(hr);
+					std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+					std::u8string errorMsg = u8"テクスチャ読み込み失敗: " + meta.path.u8string() + u8", " + hrU8Str;
+					LOG_ERROR(errorMsg);
+					return false;
+				}
+
+				// DirectXTex を使用して ID3D11Resource を作成する
+				hr = DirectX::CreateTexture(
 					device,
-					filePathW.c_str(),
-					maxsize,
-					usage,
-					bindFlags,
-					cpuAccessFlags,
-					miscFlags,
-					ddsLoadFlags,
-					textureResource.ReleaseAndGetAddressOf(),
-					textureView.ReleaseAndGetAddressOf(),
-					&alphaMode
+					scratchImage.GetImages(),
+					scratchImage.GetImageCount(),
+					scratchImage.GetMetadata(),
+					textureResource.ReleaseAndGetAddressOf()
 				);
+				if (FAILED(hr))
+				{
+					std::string hrStr = "HRESULT: " + std::to_string(hr);
+					std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+					std::u8string errorMsg = u8"テクスチャリソース作成失敗: " + meta.path.u8string() + u8", " + hrU8Str;
+					LOG_ERROR(errorMsg);
+					return false;
+				}
+
+				// ID3D11ShaderResourceView を作成する
+				hr = device->CreateShaderResourceView(
+					textureResource.Get(),
+					nullptr,
+					textureView.ReleaseAndGetAddressOf()
+				);
+				if (FAILED(hr))
+				{
+					std::string hrStr = "HRESULT: " + std::to_string(hr);
+					std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+					std::u8string errorMsg = u8"シェーダーリソースビュー作成失敗: " + meta.path.u8string() + u8", " + hrU8Str;
+					LOG_ERROR(errorMsg);
+					return false;
+				}
+
+				// 成功した場合、テクスチャをアーティファクトとして保存する
+				std::filesystem::path artifactStem = meta.id.id;
+				std::filesystem::path artifactPath(EnginePaths::ArtifactDir / artifactStem);
+				artifactPath.replace_extension("");
+
+				// 中身はDDS形式で保存する
+				hr = DirectX::SaveToDDSFile(
+					scratchImage.GetImages(),
+					scratchImage.GetImageCount(),
+					scratchImage.GetMetadata(),
+					DirectX::DDS_FLAGS_NONE,
+					artifactPath.wstring().c_str()
+				);
+				if (FAILED(hr))
+				{
+					std::string hrStr = "HRESULT: " + std::to_string(hr);
+					std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+					std::u8string errorMsg = u8"アーティファクト保存失敗: " + artifactPath.u8string() + u8", " + hrU8Str;
+					LOG_ERROR(errorMsg);
+					return false;
+				}
 			}
 			else
 			{
-				// DirectX::CreateWICTextureFromFileEx を使用してその他のテクスチャを読み込む
-				hr = DirectX::CreateWICTextureFromFileEx(
+				// アーティファクトが存在する場合、DDSファイルとしてテクスチャを読み込む
+				hr = DirectX::LoadFromDDSFile(
+					artifactPath.wstring().c_str(),
+					DirectX::DDS_FLAGS_NONE,
+					nullptr,
+					scratchImage
+				);
+				if (FAILED(hr))
+				{
+					std::string hrStr = "HRESULT: " + std::to_string(hr);
+					std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+					std::u8string errorMsg = u8"アーティファクト読み込み失敗: " + artifactPath.u8string() + u8", " + hrU8Str;
+					LOG_ERROR(errorMsg);
+					return false;
+				}
+				// DirectXTex を使用して ID3D11Resource を作成する
+				hr = DirectX::CreateTexture(
 					device,
-					filePathW.c_str(),
-					maxsize,
-					usage,
-					bindFlags,
-					cpuAccessFlags,
-					miscFlags,
-					wicLoadFlags,
-					textureResource.ReleaseAndGetAddressOf(),
+					scratchImage.GetImages(),
+					scratchImage.GetImageCount(),
+					scratchImage.GetMetadata(),
+					textureResource.ReleaseAndGetAddressOf()
+				);
+				if (FAILED(hr))
+				{
+					std::string hrStr = "HRESULT: " + std::to_string(hr);
+					std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+					std::u8string errorMsg = u8"アーティファクトからのテクスチャリソース作成失敗: " + artifactPath.u8string() + u8", " + hrU8Str;
+					LOG_ERROR(errorMsg);
+					return false;
+				}
+				// ID3D11ShaderResourceView を作成する
+				hr = device->CreateShaderResourceView(
+					textureResource.Get(),
+					nullptr,
 					textureView.ReleaseAndGetAddressOf()
 				);
-			}
-			if (FAILED(hr))
-			{
-				std::string hrStr = "HRESULT: " + std::to_string(hr);
-				std::u8string hrU8Str(hrStr.begin(), hrStr.end());
-				std::u8string errorMsg = u8"テクスチャ読み込み失敗: " + meta.path.u8string() + u8", " + hrU8Str;
-				LOG_ERROR(errorMsg);
-				return false;
+				if (FAILED(hr))
+				{
+					std::string hrStr = "HRESULT: " + std::to_string(hr);
+					std::u8string hrU8Str(hrStr.begin(), hrStr.end());
+					std::u8string errorMsg = u8"アーティファクトからのシェーダーリソースビュー作成失敗: " + artifactPath.u8string() + u8", " + hrU8Str;
+					LOG_ERROR(errorMsg);
+					return false;
+				}
 			}
 			return true;
 		}
