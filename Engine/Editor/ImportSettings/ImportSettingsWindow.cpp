@@ -352,6 +352,7 @@ namespace CurryEngine::Resources
 			{
 				editorCamera->Initialize();
 				editorCamera->SetPosition(Vector3(0, 0, 0)); // 適切な初期位置に設定
+				editorCamera->wheelSpeed = 1.0f; // ホイールの回転速度を調整
 			}
 		}
 	}

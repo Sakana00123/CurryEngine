@@ -33,6 +33,16 @@ namespace CurryEngine::Resources
 		ImGui::Separator();
 		ImGui::Text("Meshes: %zu", skinnedMesh->meshes.size());
 		ImGui::Text("Animations: %zu", skinnedMesh->animationClips.size());
+		ImGui::Text("Materials: %zu", skinnedMesh->materials.size());
+
+		int boneCount = 0;
+		for (const auto& mesh : skinnedMesh->meshes)
+		{
+			boneCount += static_cast<int>(mesh.bindPose.bones.size());
+		}
+		ImGui::Text("Bones: %d", boneCount);
+
+
 	}
 	bool FbxImportSettingsDrawer::DrawSettingsFields(nlohmann::json& settings, bool& isDirty)
 	{

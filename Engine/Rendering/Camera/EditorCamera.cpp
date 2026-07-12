@@ -18,7 +18,7 @@ void EditorCamera::Update(float elapsedTime)
 #ifdef USE_IMGUI
 	if (updateFlagFunction ? updateFlagFunction() : false) {
 		if (float wheelDelta = InputSystem::GetWheelDelta()) {
-			distance -= wheelDelta * 0.1f; // ホイールの回転量に応じて距離を調整
+			distance -= wheelDelta * wheelSpeed; // ホイールの回転量に応じて距離を調整
 			distance = std::clamp(distance, minDistance, maxDistance);
 		}
 	}

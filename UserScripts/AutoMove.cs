@@ -21,8 +21,14 @@ public class AutoMove : Behaviour
     {
         // Circle movement
         time += Time.deltaTime;
-        Vector3 newPosition = center + Quaternion.Euler(0, time * speed, 0) * direction.normalized * range;
 
+        // 周囲を回る動き
+        //Vector3 newPosition = center + Quaternion.Euler(0, time * speed, 0) * direction.normalized * range;
+
+        // 進み続ける動き
+        Vector3 newPosition = transform.position + direction.normalized * speed * Time.deltaTime;
+
+        // 座標更新
         transform.position = newPosition;
 
     }

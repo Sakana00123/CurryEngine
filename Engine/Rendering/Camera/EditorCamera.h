@@ -42,6 +42,12 @@ private:
 	int panKey = VK_MBUTTON; // 平行移動のトリガーキー（中ボタン）
 	bool isMoving = false; // カメラが移動中かどうかのフラグ
 	std::function<bool()> updateFlagFunction; // 更新フラグを取得する関数。対象のウィンドウがフォーカスされている場合に true を返すように設定する。
+
+public:
+
+	/** @brief ホイールの回転速度。*/
+	float wheelSpeed = 0.1f;
+
 public:
 	/** @brief 初期化処理。入力と内部状態をセットアップします。*/
 	void Initialize();

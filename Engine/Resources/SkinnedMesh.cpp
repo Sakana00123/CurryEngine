@@ -177,6 +177,11 @@ namespace CurryEngine::Resources
 
 			fbxManager->Destroy();
 
+			// シリアライズしてアーティファクトとして保存
+			if (std::filesystem::exists(artifactPath.parent_path()) == false)
+			{
+				std::filesystem::create_directories(artifactPath.parent_path());
+			}
 			std::ofstream ofs(artifactPath, std::ios::binary);
 			cereal::BinaryOutputArchive serialization(ofs);
 			serialization(scene_view, meshes, materials, animationClips);
