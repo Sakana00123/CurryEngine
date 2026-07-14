@@ -14,8 +14,8 @@ namespace CurryEngine
 		{
 			// 必要に応じて、ここでデフォルトのインポーターを登録することができます。
 			Register(AssetType::Texture, std::make_unique<TextureImporter>());
-			Register(AssetType::Model, std::make_unique<FbxImporter>());
-			//Register(AssetType::Model, std::make_unique<ModelImporter>());
+			//Register(AssetType::Model, std::make_unique<FbxImporter>());
+			Register(AssetType::Model, std::make_unique<ModelImporter>());
 		}
 
 		IImporter* ImporterRegistry::Find(AssetType type, const std::filesystem::path& extension)
