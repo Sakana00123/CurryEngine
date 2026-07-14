@@ -365,10 +365,16 @@ void Framework::Render(float deltaTime/*Elapsed seconds from last frame*/)
 	renderSystem->Render();
 
     //vsyncがtrueの場合、描画間隔が固定フレームレートで動作するようになる
-    Graphics::Present(vsync);
+    {
+        ProfileScopedSection_2(0, "Graphics::Present", ImGuiControl::Profiler::Purple);
+        Graphics::Present(vsync);
+    }
 
     // 共有リソースのリセット
-    Graphics::ResetSharedResources();
+    {
+        ProfileScopedSection_2(0, "Graphics::ResetSharedResources", ImGuiControl::Profiler::Purple);
+        Graphics::ResetSharedResources();
+    }
 }
 
 bool Framework::Uninitialize(HWND hwnd)

@@ -201,28 +201,52 @@ void RenderSystem::Render()
 	// デバッグ描画 (Renderに入れてる理由は、GUI描画でRenderContextの情報を使いたいから)
 #ifdef USE_IMGUI
     // ImGui描画
-    SceneManager::DrawGUI(&sceneContext, &gameContext);
+    {
+        ProfileScopedSection_2(0, "SceneManager::DrawGUI", ImGuiControl::Profiler::Purple);
+        SceneManager::DrawGUI(&sceneContext, &gameContext);
+    }
 
     // RenderSystemのGUI描画
-    DrawEditorGUI();
+    {
+        ProfileScopedSection_2(0, "RenderSystem::DrawEditorGUI", ImGuiControl::Profiler::Purple);
+        DrawEditorGUI();
+    }
 
 	// インポート設定ウィンドウのGUI描画
-	CurryEngine::Resources::ImportSettingsWindow::DrawGUI(&previewContext);
+    {
+        ProfileScopedSection_2(0, "ImportSettingsWindow::DrawGUI", ImGuiControl::Profiler::Purple);
+        CurryEngine::Resources::ImportSettingsWindow::DrawGUI(&previewContext);
+    }
 
 	// ImGuiデバッグログウィンドウの表示
-    ImGui::ShowDebugLogWindow();
+    {
+        ProfileScopedSection_2(0, "ImGui::DebugLogWindow", ImGuiControl::Profiler::Purple);
+        ImGui::ShowDebugLogWindow();
+    }
 
     // ImGuiTheme描画
-    ImGuiTheme::DrawGUI();
+    {
+        ProfileScopedSection_2(0, "ImGuiTheme::DrawGUI", ImGuiControl::Profiler::Purple);
+        ImGuiTheme::DrawGUI();
+    }
 
     //エフェクトエディタGUI描画
-    EffectEditor::DrawGUI(&effectPreviewContext);
+    {
+        ProfileScopedSection_2(0, "EffectEditor::DrawGUI", ImGuiControl::Profiler::Purple);
+        EffectEditor::DrawGUI(&effectPreviewContext);
+    }
 
     //物理エンジンデバッグ描画
-    Physics::DrawGUI();
+    {
+        ProfileScopedSection_2(0, "Physics::DrawGUI", ImGuiControl::Profiler::Purple);
+        Physics::DrawGUI();
+    }
 
     //レイヤー設定GUI描画
-    LayerManager::Get().DrawLayerSettingsGUI();
+    {
+        ProfileScopedSection_2(0, "LayerManager::DrawLayerSettingsGUI", ImGuiControl::Profiler::Purple);
+        LayerManager::Get().DrawLayerSettingsGUI();
+    }
 
     // Undo/Redoテスト用 (確認が終わったら別場所に移す)
     {
@@ -260,10 +284,20 @@ void RenderSystem::Render()
     }
     //ImGui::Text("Video memory usage %d MB", VideoMemoryUsage());
 
-    ProfileDrawUI();
+    {
+        ProfileScopedSection_2(0, "ProfileDrawUI", ImGuiControl::Profiler::Purple);
+
+        ProfileDrawUI();
+    }
     // ImGui描画
-    ImGui::Render();
-    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+    {
+		ProfileScopedSection_2(0, "ImGui::Render", ImGuiControl::Profiler::Purple);
+        ImGui::Render();
+    }
+    {
+		ProfileScopedSection_2(0, "ImGui_ImplDX11_RenderDrawData", ImGuiControl::Profiler::Purple);
+        ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+    }
 #endif // USE_IMGUI
 }
 
