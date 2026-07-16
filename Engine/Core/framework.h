@@ -49,7 +49,7 @@ CONST LPCWSTR APPLICATION_NAME{ L"CurryEngine" };
 class Framework
 {
 public:
-    BOOL vsync{ TRUE };
+    BOOL vsync{ FALSE };
 
     const float fixedTimeStep = 1.0f / 60;//固定更新間隔(FPS)
     float accumulatedTime = 0.0f;

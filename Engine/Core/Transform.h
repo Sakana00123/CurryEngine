@@ -50,7 +50,7 @@ public:
 	Vector3 scale;
 
 	/** @brief ローカル回転（オイラー角、度）。*/
-	C_PROPERTY(CurryEngine::PropertyAttributes::ReadOnly)
+	C_PROPERTY(CurryEngine::PropertyAttributes::HideInInspector)
 	Vector3 m_eulerAngles;
 
 	/** @brief 座標系の設定。*/
