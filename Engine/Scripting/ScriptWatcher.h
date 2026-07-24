@@ -1,10 +1,19 @@
 #pragma once
 #include <string>
+#include <filesystem>
 #include <thread>
 #include <atomic>
 #include <functional>
 #include <mutex>
 #include <condition_variable>
+
+namespace fs = std::filesystem;
+
+struct BuildCommand
+{
+	fs::path projectPath; // .csproj ファイルのパス
+	std::string additionalArgs = "-c Release --nologo -v q 2>&1"; // 追加のビルド引数（オプション）
+};
 
 class ScriptWatcher
 {
@@ -22,7 +31,7 @@ public:
 	 */
 	bool Start(
 		const std::string& watchDir,
-		const std::string& csprojPath,
+		const std::vector<BuildCommand>& buildCommands,
 		ReloadCallback onReloaded);
 
 	/** @brief スクリプトの監視とリロード機能を停止します。*/
@@ -35,11 +44,12 @@ private:
 	// 監視ループとビルド処理
 	void WatchLoop();
 	void BuildLoop();
-	bool BuildProject();
+	bool BuildProjects();
+	bool BuildProject(const BuildCommand& config);
 
 private:
 	std::string m_watchDir;
-	std::string m_csprojPath;
+	std::vector<BuildCommand> m_buildCommands;
 	ReloadCallback m_onReloaded;
 
 	std::thread m_watchThread;

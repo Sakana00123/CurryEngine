@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
@@ -11,6 +11,21 @@ public static class EngineRuntime
 {
     private static HotReloadManager? s_hotReloadManager;
     internal static HotReloadManager? HotReload => s_hotReloadManager;
+
+    internal static string? GetExecutableDirectory()
+    {
+        var exePath = Environment.ProcessPath;
+        var exeDir = Path.GetDirectoryName(exePath);
+        if (exeDir == Environment.CurrentDirectory)
+        {
+            // カレントディレクトリと同じ場合は、x64/$(Configuration) を返すようにする。
+            var config = Environment.GetEnvironmentVariable("CONFIGURATION") ?? "Debug";
+            exeDir = Path.Combine(exeDir, "x64", config);
+            Debug.Log($"GetExecutableDirectory: カレントディレクトリと同じため、x64/{config} を返す: {exeDir}");
+        }
+        Debug.Log($"GetExecutableDirectory: {exeDir}");
+        return exeDir;
+    }
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
     public static void EngineInitialize()
@@ -34,8 +49,7 @@ public static class EngineRuntime
             ScriptRegistry.RegisterAssembly(typeof(Behaviour).Assembly);
 
             // UserScripts.dll をロードして ScriptRegistry に登録する。
-            var exePath = Environment.ProcessPath;
-            var exeDir = Path.GetDirectoryName(exePath) ?? string.Empty;
+            var exeDir = GetExecutableDirectory() ?? string.Empty;
 
             var userScriptsPath = Path.Combine(exeDir, "Assembly-CSharp.dll");
             //Debug.Log($"Assembly-CSharp.dll のパス: {userScriptsPath}");
@@ -79,8 +93,7 @@ public static class EngineRuntime
             if (string.IsNullOrEmpty(dllPath))
             {
                 // パスが無効な場合はデフォルトのパスを使用する。
-                var exePath = Environment.ProcessPath;
-                var exeDir = Path.GetDirectoryName(exePath) ?? string.Empty;
+                var exeDir = GetExecutableDirectory() ?? string.Empty;
                 dllPath = Path.Combine(exeDir, "Assembly-CSharp.dll");
             }
             //Debug.Log($"ReloadScripts called with path: {dllPath}");

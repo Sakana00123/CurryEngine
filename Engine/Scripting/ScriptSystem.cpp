@@ -121,9 +121,20 @@ void ScriptSystem::Initialize()
 #ifdef _DEBUG
 	// スクリプトウォッチャーの初期化
 	s_scriptWatcher = new ScriptWatcher();
+
+	// TODO: あとでここを修正する
+	//std::vector<BuildCommand> commands = {
+	//	/*{".\\CurryEngine.API\\CurryEngine.API.csproj", "-c Debug --nologo -v q 2>&1" },
+	//	{ ".\\EngineAPI\\EngineAPI.csproj", "-c Debug --nologo -v q 2>&1" },*/
+	//	{ settings.scriptProjectPath, "-c Release --nologo -v q 2>&1" }
+	//};
+	std::vector<BuildCommand> commands = {
+		{ settings.scriptProjectPath, "-c Release --nologo -v q 2>&1" } //-o \"" + settings.scriptOutputPath + "\" 
+	};
+
 	s_scriptWatcher->Start(
 		settings.scriptWatchDirectory,
-		settings.scriptProjectPath,
+		commands,
 		[]() {
 			ScriptSystem::Reload(); // ビルド成功時にスクリプトをリロードするコールバック
 		}

@@ -8,7 +8,7 @@
 
 bool ScriptWatcher::Start(
 	const std::string& watchDir,
-	const std::string& csprojPath,
+	const std::vector<BuildCommand>& buildCommands,
 	ReloadCallback onReloaded)
 {
 	if (m_running) {
@@ -16,7 +16,7 @@ bool ScriptWatcher::Start(
 		return false;
 	}
 	m_watchDir = watchDir;
-	m_csprojPath = csprojPath;
+	m_buildCommands = buildCommands;
 	m_onReloaded = onReloaded;
 	m_running = true;
 	m_watchThread = std::thread(&ScriptWatcher::WatchLoop, this);
@@ -151,28 +151,39 @@ void ScriptWatcher::BuildLoop()
 
 		m_pendingBuild = false;
 		
-		if (BuildProject()) {
-			Console::Log("[ScriptWatcher] Build succeeded. Reloading...");
-			m_onReloaded();
+		// ビルドを実行
+		if (!BuildProjects()) {
+			Console::LogError(u8"[ScriptWatcher] ビルドに失敗しました。スクリプトはリロードされません。");
+			continue;
 		}
-		else {
-			Console::LogError("[ScriptWatcher] Build failed.");
-		}
+
+		// ビルド成功時はスクリプトをリロード
+		Console::Log(u8"[ScriptWatcher] ビルド成功。スクリプトをリロードします。");
+		m_onReloaded();
 	}
 }
 
-
-bool ScriptWatcher::BuildProject()
+bool ScriptWatcher::BuildProjects()
 {
-	//Console::Log("[ScriptWatcher] Building project: " + m_csprojPath);
-	Console::Log("Building project...");
+	bool allSuccess = true;
+	for (const auto& command : m_buildCommands) {
+		if (!BuildProject(command)) {
+			allSuccess = false;
+		}
+	}
+	return allSuccess;
+}
 
-	std::string cmd = "dotnet build \"" + m_csprojPath
-		+ "\" -c Release --nologo -v q 2>&1";
+bool ScriptWatcher::BuildProject(const BuildCommand& command)
+{
+	Console::Log(u8"[ScriptWatcher] Building project: " + command.projectPath.u8string());
+
+	std::string cmd = "dotnet build \"" + command.projectPath.string()
+		+ "\" " + command.additionalArgs;
 
 	FILE* pipe = _popen(cmd.c_str(), "r");
 	if (!pipe) {
-		Console::LogError(reinterpret_cast<const char*>(u8"[ScriptWatcher] ビルドプロセスの起動に失敗"));
+		LOG_ERROR(u8"[ScriptWatcher] ビルドプロセスの起動に失敗");
 		return false;
 	}
 
