@@ -5,7 +5,6 @@ public class Character : Behaviour
 {
     [SerializeField] float speed = 5f;
     public bool enableJump = true;
-    [SerializeField] bool enableOutputLog = true;
 
     // Start is called before the first frame update
     public override void Start()
@@ -40,13 +39,9 @@ public class Character : Behaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 // ジャンプの処理をここに追加
-                if (enableOutputLog)
-                {
-                    Debug.Log("Jump!");
-                }
-                
                 if (gameObject.TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
                 {
+                    Debug.Log("Jump!");
                     rigidbody.AddForce(Vector3.up * 5f, ForceMode.Impulse);
                 }
             }

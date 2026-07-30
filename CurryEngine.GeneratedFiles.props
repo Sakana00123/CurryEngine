@@ -22,9 +22,9 @@
   ============================================================ -->
   <ItemGroup>
     <!-- Interop 層 (Export関数) -->
-	<_WildCardClCompile Include="$(GeneratedInteropDir)\*.generated.cpp">
+	<ClCompile Include="$(GeneratedInteropDir)\*.generated.cpp">
 	  <PrecompiledHeader>NotUsing</PrecompiledHeader>
-	</_WildCardClCompile>
+	</ClCompile>
 
     <!-- Reflection 層 (REGISTER_CLASS 展開) -->
     <!-- .generated.h はヘッダーなので ClInclude として認識させる -->

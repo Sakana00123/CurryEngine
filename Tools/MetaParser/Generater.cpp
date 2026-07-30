@@ -39,25 +39,25 @@ void Generater::Generate(const std::vector<FileInfo>& files, const std::vector<s
 {
 	knownEnums = BuildKnownEnums(files);
 
-	// Šeƒtƒ@ƒCƒ‹‚²‚Æ‚Éˆ—
+	// å„ãƒ•ã‚¡ã‚¤ãƒ«ã”ã¨ã«å‡¦ç†
 	for (const auto& info : files)
 	{
-		// Œ³ƒwƒbƒ_[ƒtƒ@ƒCƒ‹‚Ì‘Š‘ÎƒpƒX
+		// å…ƒãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ç›¸å¯¾ãƒ‘ã‚¹
 		std::string relativePathFromHeader = std::filesystem::relative(info.path, outputDirectory + "/" + headerDir).string();
 		std::string relativePathFromSource = std::filesystem::relative(info.path, outputDirectory + "/" + sourceDir).string();
 		std::string relativePathFromEnum = std::filesystem::relative(info.path, outputDirectory + "/" + enumDir).string();
 		std::string relativePathFromStruct = std::filesystem::relative(info.path, outputDirectory + "/" + structDir).string();
-		// •ÏŠ·‚µ‚ÄƒXƒ‰ƒbƒVƒ…‹æØ‚è‚É
+		// å¤‰æ›ã—ã¦ã‚¹ãƒ©ãƒƒã‚·ãƒ¥åŒºåˆ‡ã‚Šã«
 		std::replace(relativePathFromHeader.begin(), relativePathFromHeader.end(), '\\', '/');
 		std::replace(relativePathFromSource.begin(), relativePathFromSource.end(), '\\', '/');
 		std::replace(relativePathFromEnum.begin(), relativePathFromEnum.end(), '\\', '/');
 		std::replace(relativePathFromStruct.begin(), relativePathFromStruct.end(), '\\', '/');
 
-		// ¶¬ƒ\[ƒX‚©‚çƒ\ƒŠƒ…[ƒVƒ‡ƒ“ƒ‹[ƒg‚Ö‚Ì‘Š‘ÎƒpƒX (—á: "../../")
+		// ç”Ÿæˆã‚½ãƒ¼ã‚¹ã‹ã‚‰ã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ãƒ«ãƒ¼ãƒˆã¸ã®ç›¸å¯¾ãƒ‘ã‚¹ (ä¾‹: "../../")
 		//std::string relativeSolutionPath = std::filesystem::relative(std::filesystem::current_path(), std::filesystem::absolute(relativePathFromSource)).string();
 		//std::replace(relativeSolutionPath.begin(), relativeSolutionPath.end(), '\\', '/');
 
-		// o—ÍƒfƒBƒŒƒNƒgƒŠ‚©‚ç‚Ì‘Š‘ÎƒpƒX‚ğŒvZ
+		// å‡ºåŠ›ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹ã‚’è¨ˆç®—
 		for (const auto& classInfo : info.classes)
 		{
 			if (!classInfo.reflect) continue;
@@ -79,7 +79,7 @@ void Generater::Generate(const std::vector<FileInfo>& files, const std::vector<s
 			std::replace(relativeSolutionPathStr.begin(), relativeSolutionPathStr.end(), '\\', '/');
 
 			GenerateHeader(classInfo, headerPath, relativePathFromHeader);
-			// ˆê•”‚ÌƒNƒ‰ƒX‚ÍœŠO‚·‚é(GameObject‚È‚Ç‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğŒp³‚µ‚È‚¢ƒNƒ‰ƒX‚Í¶¬‚µ‚È‚¢)
+			// ä¸€éƒ¨ã®ã‚¯ãƒ©ã‚¹ã¯é™¤å¤–ã™ã‚‹(GameObjectãªã©ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ç¶™æ‰¿ã—ãªã„ã‚¯ãƒ©ã‚¹ã¯ç”Ÿæˆã—ãªã„)
 			bool allowSourceGen = true;
 			for (const auto& ignore : ignoreClasses)
 			{
@@ -95,7 +95,7 @@ void Generater::Generate(const std::vector<FileInfo>& files, const std::vector<s
 			}
 		}
 
-		// enum / enum class ‚Ì¶¬
+		// enum / enum class ã®ç”Ÿæˆ
 		for (const auto& enumInfo : info.enums)
 		{
 			std::filesystem::path headerOutputDir = std::filesystem::path(outputDirectory) / enumDir;
@@ -107,7 +107,7 @@ void Generater::Generate(const std::vector<FileInfo>& files, const std::vector<s
 			GenerateEnum(enumInfo, headerPath, relativePathFromEnum);
 		}
 
-		// struct ‚Ì¶¬
+		// struct ã®ç”Ÿæˆ
 		for (const auto& structInfo : info.structs)
 		{
 			std::filesystem::path headerOutputDir = std::filesystem::path(outputDirectory) / structDir;
@@ -120,7 +120,7 @@ void Generater::Generate(const std::vector<FileInfo>& files, const std::vector<s
 		}
 	}
 
-	// ReflectionGenerated.h ‚ğ¶¬
+	// ReflectionGenerated.h ã‚’ç”Ÿæˆ
 	{
 		std::ofstream ofs(outputDirectory + "/ReflectionGenerated.h");
 		ofs << "#pragma once\n\n";
@@ -170,7 +170,7 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 	ofs << ")\n";
 	for (const auto& field : info.fields)
 	{
-		// customGetter/customSetter ‚Ì—L–³‚Å4ƒpƒ^[ƒ“‚É•ªŠò
+		// customGetter/customSetter ã®æœ‰ç„¡ã§4ãƒ‘ã‚¿ãƒ¼ãƒ³ã«åˆ†å²
 		bool hasGetter = !field.customGetter.empty();
 		bool hasSetter = !field.customSetter.empty();
 		bool hasAttributes = !field.attributes.empty();
@@ -179,7 +179,7 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 		{
 			if (!hasAttributes)
 			{
-				// ‘®«‚ª‚È‚¢ê‡‚Í’Êí‚Ìƒ}ƒNƒ‚ğg—p
+				// å±æ€§ãŒãªã„å ´åˆã¯é€šå¸¸ã®ãƒã‚¯ãƒ­ã‚’ä½¿ç”¨
 				ofs << "    REGISTER_PROPERTY("
 					<< info.name << ", "
 					<< field.name << ", "
@@ -187,7 +187,7 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 			}
 			else
 			{
-				// ‘®«‚ª‚ ‚éê‡‚Í‘®«•t‚«ƒ}ƒNƒ‚ğg—p
+				// å±æ€§ãŒã‚ã‚‹å ´åˆã¯å±æ€§ä»˜ããƒã‚¯ãƒ­ã‚’ä½¿ç”¨
 				ofs << "    REGISTER_PROPERTY_WITH_ATTR("
 					<< info.name << ", "
 					<< field.name << ", "
@@ -197,13 +197,13 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 		}
 		else if (hasGetter && !hasSetter)
 		{
-			// Getter ‚Ì‚İw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍƒZƒbƒ^[ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“‚É‹ó•¶š—ñ‚ğ“n‚·
+			// Getter ã®ã¿æŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚»ãƒƒã‚¿ãƒ¼ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã«ç©ºæ–‡å­—åˆ—ã‚’æ¸¡ã™
 			ofs << "    REGISTER_PROPERTY_WITH_CUSTOM_GETTER("
 				<< info.name << ", "
 				<< field.name << ", "
 				<< field.type << ", "
 				<< field.customGetter;
-			// ‘®«ƒŠƒXƒg‚ğo—Í
+			// å±æ€§ãƒªã‚¹ãƒˆã‚’å‡ºåŠ›
 			if (hasAttributes)
 			{
 				ofs << ", " << BuildAttributeList(field.attributes);
@@ -212,13 +212,13 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 		}
 		else if (!hasGetter && hasSetter)
 		{
-			// Setter ‚Ì‚İw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍƒQƒbƒ^[ƒtƒ@ƒ“ƒNƒVƒ‡ƒ“‚É‹ó•¶š—ñ‚ğ“n‚·
+			// Setter ã®ã¿æŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚²ãƒƒã‚¿ãƒ¼ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã«ç©ºæ–‡å­—åˆ—ã‚’æ¸¡ã™
 			ofs << "    REGISTER_PROPERTY_WITH_CUSTOM_SETTER("
 				<< info.name << ", "
 				<< field.name << ", "
 				<< field.type << ", "
 				<< field.customSetter;
-			// ‘®«ƒŠƒXƒg‚ğo—Í
+			// å±æ€§ãƒªã‚¹ãƒˆã‚’å‡ºåŠ›
 			if (hasAttributes)
 			{
 				ofs << ", " << BuildAttributeList(field.attributes);
@@ -227,14 +227,14 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 		}
 		else
 		{
-			// Getter ‚Æ Setter ‚Ì—¼•û‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚Í—¼•û‚ğ“n‚·
+			// Getter ã¨ Setter ã®ä¸¡æ–¹ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ä¸¡æ–¹ã‚’æ¸¡ã™
 			ofs << "    REGISTER_PROPERTY_WITH_CUSTOM_ACCESSOR("
 				<< info.name << ", "
 				<< field.name << ", "
 				<< field.type << ", "
 				<< field.customGetter << ", "
 				<< field.customSetter;
-			// ‘®«ƒŠƒXƒg‚ğo—Í
+			// å±æ€§ãƒªã‚¹ãƒˆã‚’å‡ºåŠ›
 			if (hasAttributes)
 			{
 				ofs << ", " << BuildAttributeList(field.attributes);
@@ -248,11 +248,11 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 		for (size_t i = 0; i < method.parameters.size(); i++)
 		{
 			if (i > 0) castExpr += ", ";
-			castExpr += method.parameters[i].type; // ˆø”‚ÌŒ^‚ğƒJƒ“ƒ}‹æØ‚è‚Å˜AŒ‹
+			castExpr += method.parameters[i].type; // å¼•æ•°ã®å‹ã‚’ã‚«ãƒ³ãƒåŒºåˆ‡ã‚Šã§é€£çµ
 		}
 		if (method.parameters.empty())
 		{
-			castExpr += "void"; // ˆø”‚È‚µ‚Í void ‚Æ‚µ‚Äˆµ‚¤
+			castExpr += "void"; // å¼•æ•°ãªã—ã¯ void ã¨ã—ã¦æ‰±ã†
 		}
 		castExpr += ")";
 		if (method.isConst)
@@ -276,12 +276,12 @@ void Generater::GenerateHeader(const ClassInfo& info, const std::string& outPath
 				ofs << param.type << " " << param.name;
 				if (i < method.parameters.size() - 1)
 					ofs << ", ";
-				// TODO: ƒfƒtƒHƒ‹ƒgˆø”‚àƒ}ƒNƒ‚É“n‚·•K—v‚ª‚ ‚é‚©‚à‚µ‚ê‚È‚¢iŒ»ó‚Í–³‹‚µ‚Ä‚¢‚éj
+				// TODO: ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå¼•æ•°ã‚‚ãƒã‚¯ãƒ­ã«æ¸¡ã™å¿…è¦ãŒã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ï¼ˆç¾çŠ¶ã¯ç„¡è¦–ã—ã¦ã„ã‚‹ï¼‰
 			}
 		}
 		else
 		{
-			ofs << ", void"; // ˆø”‚È‚µ‚Í void ‚Æ‚µ‚Äˆµ‚¤
+			ofs << ", void"; // å¼•æ•°ãªã—ã¯ void ã¨ã—ã¦æ‰±ã†
 		}
 		
 		ofs << ")\n";
@@ -297,20 +297,19 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 	{
 		throw std::runtime_error("Failed to open file for writing: " + outPath);
 	}
-	// ƒNƒ‰ƒX–¼
+	// ã‚¯ãƒ©ã‚¹å
 	std::string className = info.name;
 	
 	//ofs << "#include \"" << relativeSolutionPath << "/pch.h" << "\"\n";
 	ofs << "#include \"" << includePath << "\"\n";
 	ofs << "#include \"" << relativeSolutionPath << "/Engine/Scenes/Scene.h" << "\"\n";
 	ofs << "#include \"" << relativeSolutionPath << "/Engine/Scenes/SceneManager.h" << "\"\n";
-	// API ŠÖ”‚ÌÀ‘•‚Í‚±‚±‚É‘‚­i—á: ƒIƒuƒWƒFƒNƒgID‚©‚çƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚·‚éŠÖ”‚È‚Çj
+	// API é–¢æ•°ã®å®Ÿè£…ã¯ã“ã“ã«æ›¸ãï¼ˆä¾‹: ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆIDã‹ã‚‰ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹é–¢æ•°ãªã©ï¼‰
 
-	ofs << "// —á: " << className << " ‚ÌƒIƒuƒWƒFƒNƒgID‚©‚çƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚·‚éŠÖ”\n";
 	ofs << "static " << className << "* Get" << className << "ById(uint64_t objectId)\n{\n";
 	ofs << "    Scene* scene = SceneManager::GetLoadingSceneOrCurrentScene();\n";
 	ofs << "    if (!scene) return nullptr;\n";
-	ofs << "    const auto& compMap = scene->objectManager->GetComponentCacheMap();\n";
+	ofs << "    const auto& compMap = scene->GetObjectManager()->GetComponentCacheMap();\n";
 	ofs << "    if (compMap.contains(ObjectId::FromValue(objectId))) {\n";
 	ofs << "        if (auto compPtr = compMap.at(ObjectId::FromValue(objectId)).lock()) {\n";
 	ofs << "            if (auto ptr = dynamic_cast<" << className << "*>(compPtr.get())) {\n";
@@ -321,23 +320,23 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 	ofs << "    return nullptr;\n";
 	ofs << "}\n";
 
-	// ƒtƒB[ƒ‹ƒh‚Ì Get/Set ŠÖ”‚à“¯—l‚ÉÀ‘•‚µ‚Ä‚¢‚­
+	// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã® Get/Set é–¢æ•°ã‚‚åŒæ§˜ã«å®Ÿè£…ã—ã¦ã„ã
 	for (const auto& field : info.fields)
 	{
-		// æ“ª‘å•¶š‚ÌƒtƒB[ƒ‹ƒh–¼
+		// å…ˆé ­å¤§æ–‡å­—ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å
 		std::string capName = field.name;
 		std::string fieldName = field.name;
 		if (!capName.empty()) capName[0] = static_cast<char>(std::toupper(capName[0]));
-		// ƒtƒB[ƒ‹ƒh‚ÌŒ^
+		// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®å‹
 		bool fieldIsEnum = IsEnumType(field.type, knownEnums, typeMap);
 		std::string exportType = fieldIsEnum ? "int" : field.type;
 
-		// Get ŠÖ”
+		// Get é–¢æ•°
 		ofs << "extern \"""C\"" << " __declspec(dllexport) " << exportType << " " << className << "_Get" << capName << "(uint64_t objectId)\n{\n";
 		ofs << "    if (auto comp = Get" << className << "ById(objectId)) {\n";
 		if (fieldIsEnum)
 		{
-			// —ñ‹“Œ^‚Í int ‚ÉƒLƒƒƒXƒg‚µ‚Ä•Ô‚·
+			// åˆ—æŒ™å‹ã¯ int ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦è¿”ã™
 			ofs << "        return static_cast<int>(comp->" << fieldName << ");\n";
 		}
 		else
@@ -347,21 +346,21 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		ofs << "    }\n";
 		if (fieldIsEnum)
 		{
-			// —ñ‹“Œ^‚Í int ‚©‚çŒ³‚ÌŒ^‚ÉƒLƒƒƒXƒg‚µ‚Ä–ß‚è’l‚ğ•Ô‚·
-			ofs << "    return static_cast<int>(" << field.type << "{}); // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ì–ß‚è’l\n";
+			// åˆ—æŒ™å‹ã¯ int ã‹ã‚‰å…ƒã®å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦æˆ»ã‚Šå€¤ã‚’è¿”ã™
+			ofs << "    return static_cast<int>(" << field.type << "{}); // Return Value When an Object Is Not Found\n";
 		}
 		else
 		{
-			ofs << "    return " << exportType << "{}; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ì–ß‚è’l\n";
+			ofs << "    return " << exportType << "{}; // Return Value When an Object Is Not Found\n";
 		}
 		ofs << "}\n";
-		// Set ŠÖ”
+		// Set é–¢æ•°
 		ofs << "extern \"""C\"" << " __declspec(dllexport) void " << className << "_Set" << capName << "(uint64_t objectId, "
 			<< exportType << " value)\n{\n";
 		ofs << "    if (auto comp = Get" << className << "ById(objectId)) {\n";
 		if (fieldIsEnum)
 		{
-			// —ñ‹“Œ^‚Í int ‚©‚çŒ³‚ÌŒ^‚ÉƒLƒƒƒXƒg‚µ‚Ä‘ã“ü
+			// åˆ—æŒ™å‹ã¯ int ã‹ã‚‰å…ƒã®å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ä»£å…¥
 			ofs << "        comp->" << fieldName << " = static_cast<" << field.type << ">(value);\n";
 		}
 		else
@@ -372,9 +371,11 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		ofs << "}\n";
 	}
 
-	// ‘¼‚Ì API ŠÖ”‚à“¯—l‚ÉÀ‘•‚µ‚Ä‚¢‚­
+	// ä»–ã® API é–¢æ•°ã‚‚åŒæ§˜ã«å®Ÿè£…ã—ã¦ã„ã
 	for (const auto& method : info.methods)
 	{
+		if (method.isPropertyAccessor) continue; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚¢ã‚¯ã‚»ã‚µãƒªã¯ã‚¹ã‚­ãƒƒãƒ—
+
 		bool retIsEnum = IsEnumType(method.returnType, knownEnums, typeMap);
 		std::string exportRetType = retIsEnum ? "int" : method.returnType;
 
@@ -388,8 +389,8 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		}
 		ofs << ")\n{\n";
 		ofs << "    if (auto comp = Get" << className << "ById(objectId)) {\n";
-		ofs << "        // comp ‚ğg‚Á‚Ä API ‚Ìˆ—‚ğÀ‘•\n";
-		// ƒƒ\ƒbƒh‚ÌŒÄ‚Ño‚µ
+		ofs << "        // Implementing API processing using `comp`\n";
+		// ãƒ¡ã‚½ãƒƒãƒ‰ã®å‘¼ã³å‡ºã—
 		if (method.returnType != "void")
 		{
 			if (retIsEnum)
@@ -405,13 +406,13 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		{
 			ofs << "        comp->" << method.name << "(";
 		}
-		// ˆø”‚ğ“n‚·
+		// å¼•æ•°ã‚’æ¸¡ã™
 		for (size_t i = 0; i < method.parameters.size(); i++)
 		{
 			const auto& param = method.parameters[i];
 			if (IsEnumType(param.type, knownEnums, typeMap))
 			{
-				// int ‚©‚çŒ³‚Ì—ñ‹“Œ^‚ÉƒLƒƒƒXƒg‚µ‚Ä“n‚·
+				// int ã‹ã‚‰å…ƒã®åˆ—æŒ™å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦æ¸¡ã™
 				ofs << "static_cast<" << param.type << ">(" << param.name << ")";
 			}
 			else
@@ -427,11 +428,11 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		{
 			if (retIsEnum)
 			{
-				ofs << "    return static_cast<int>(" << method.returnType << "{}); // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ì–ß‚è’l\n";
+				ofs << "    return static_cast<int>(" << method.returnType << "{}); // Return Value When an Object Is Not Found\n";
 			}
 			else
 			{
-				ofs << "    return " << method.returnType << "{}; // ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚Ì–ß‚è’l\n";
+				ofs << "    return " << method.returnType << "{}; // Return Value When an Object Is Not Found\n";
 			}
 		}
 		ofs << "}\n";
@@ -453,7 +454,7 @@ void Generater::GenerateEnum(const EnumInfo& info, const std::string& outPath, c
 	ofs << "#pragma once\n\n";
 	ofs << "#include \"" << includePath << "\"\n";
 
-	// —ñ‹“Œ^‚Ì“o˜^ƒR[ƒh‚ğ¶¬
+	// åˆ—æŒ™å‹ã®ç™»éŒ²ã‚³ãƒ¼ãƒ‰ã‚’ç”Ÿæˆ
 	ofs << "REGISTER_ENUM(" << info.name << ")\n";
 	ofs << "    UNDERLYING_TYPE(" << info.underlyingType << ")\n";
 	for (const auto& value : info.values)
@@ -463,7 +464,7 @@ void Generater::GenerateEnum(const EnumInfo& info, const std::string& outPath, c
 		{
 			ofs << ", " << "static_cast<" << info.underlyingType << ">(" << value.value << ")";
 		}
-		else // ’l‚ª–¾¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í©“®ƒJƒEƒ“ƒ^[‚ğg—p
+		else // å€¤ãŒæ˜ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯è‡ªå‹•ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’ä½¿ç”¨
 		{
 			ofs << ", " << "static_cast<" << info.underlyingType << ">(" << info.name << "::" << value.name << ")";
 		}
@@ -484,7 +485,7 @@ void Generater::GenerateStruct(const StructInfo& info, const std::string& outPat
 	ofs << "#pragma once\n\n";
 	ofs << "#include \"" << includePath << "\"\n";
 
-	// \‘¢‘Ì‚Ì“o˜^ƒR[ƒh‚ğ¶¬
+	// æ§‹é€ ä½“ã®ç™»éŒ²ã‚³ãƒ¼ãƒ‰ã‚’ç”Ÿæˆ
 	ofs << "REGISTER_STRUCT(" << info.name << ")\n";
 	for (const auto& field : info.fields)
 	{

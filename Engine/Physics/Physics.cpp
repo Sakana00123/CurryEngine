@@ -888,6 +888,13 @@ void Physics::RenderDebug(RenderContext* renderContext)
 				Vector3 shapePosition = {
 					pxShapeMat.column3.x, pxShapeMat.column3.y, pxShapeMat.column3.z
 				};
+				Quaternion shapeRotation;
+				{
+					DirectX::XMVECTOR S, R, T;
+					DirectX::XMMATRIX shapeMat = DirectX::XMLoadFloat4x4(&shapeTransform);
+					DirectX::XMMatrixDecompose(&S, &R, &T, shapeMat);
+					DirectX::XMStoreFloat4(&shapeRotation, R);
+				}
 
 				Color color(0.0f, 1.0f, 0.0f, 0.3f);
 
@@ -989,7 +996,7 @@ void Physics::RenderDebug(RenderContext* renderContext)
 						// ボックスの半サイズを取得
 						Vector3 size = ToVector3(pxBoxGeometry.halfExtents) * 2.0f; // 半サイズを2倍してフルサイズに変換
 						// ボックスを描画
-						DebugRenderer::DrawBox(shapePosition, size, color);
+						DebugRenderer::DrawBox(shapePosition, shapeRotation, size, color);
 					}
 					break;
 				}

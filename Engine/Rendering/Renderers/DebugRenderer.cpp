@@ -121,20 +121,32 @@ void DebugRenderer::DrawLine(const Vector3& start, const Vector3& end, const Col
 	AddVertex(end, color);
 }
 
-void DebugRenderer::DrawBox(const Vector3& center, const Vector3& size, const Color& color)
+void DebugRenderer::DrawBox(const Vector3& center, const Quaternion& rotation, const Vector3& size, const Color& color)
 {
 	// 立方体を描画する処理を実装
 	Vector3 halfSize = size * 0.5f;
-	Vector3 vertices[8] = {
-		center + Vector3(-halfSize.x, -halfSize.y, -halfSize.z),
-		center + Vector3(halfSize.x, -halfSize.y, -halfSize.z),
-		center + Vector3(halfSize.x, halfSize.y, -halfSize.z),
-		center + Vector3(-halfSize.x, halfSize.y, -halfSize.z),
-		center + Vector3(-halfSize.x, -halfSize.y, halfSize.z),
-		center + Vector3(halfSize.x, -halfSize.y, halfSize.z),
-		center + Vector3(halfSize.x, halfSize.y, halfSize.z),
-		center + Vector3(-halfSize.x, halfSize.y, halfSize.z)
+	Vector3 vertices[] = {
+		Vector3(-halfSize.x, -halfSize.y, -halfSize.z),
+		Vector3(halfSize.x, -halfSize.y, -halfSize.z),
+		Vector3(halfSize.x, halfSize.y, -halfSize.z),
+		Vector3(-halfSize.x, halfSize.y, -halfSize.z),
+		Vector3(-halfSize.x, -halfSize.y, halfSize.z),
+		Vector3(halfSize.x, -halfSize.y, halfSize.z),
+		Vector3(halfSize.x, halfSize.y, halfSize.z),
+		Vector3(-halfSize.x, halfSize.y, halfSize.z)
 	};
+	DirectX::XMMATRIX rotMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(reinterpret_cast<const DirectX::XMFLOAT4*>(&rotation)));
+	for (int i = 0; i < _countof(vertices); ++i)
+	{
+		// 回転を適用
+		DirectX::XMVECTOR v = DirectX::XMLoadFloat3(reinterpret_cast<const DirectX::XMFLOAT3*>(&vertices[i]));
+		v = DirectX::XMVector3Transform(v, rotMatrix);
+		DirectX::XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&vertices[i]), v);
+
+		// 中心位置を加算
+		vertices[i] += center;
+	}
+
 	int edges[12][2] = {
 		{0, 1}, {1, 2}, {2, 3}, {3, 0},
 		{4, 5}, {5, 6}, {6, 7}, {7, 4},

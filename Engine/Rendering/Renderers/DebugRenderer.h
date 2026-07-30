@@ -2,6 +2,7 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include "Engine/Core/Math/Vector3.h"
+#include "Engine/Core/Math/Quaternion.h"
 #include "Engine/Core/Color.h"
 struct RenderContext;
 
@@ -33,10 +34,11 @@ public:
 	/**
 	 * @brief 立方体を描画します。
 	 * @param center 立方体の中心位置。
+	 * @param rotation 立方体の回転。
 	 * @param size 立方体のサイズ（幅、高さ、奥行き）。
 	 * @param color 色。
 	 */
-	static void DrawBox(const Vector3& center, const Vector3& size, const Color& color);
+	static void DrawBox(const Vector3& center, const Quaternion& rotation, const Vector3& size, const Color& color);
 
 	/**
 	 * @brief 球を描画します。
