@@ -58,23 +58,28 @@ void ScriptWatcher::WatchLoop()
 		return;
 	}
 
-	alignas(DWORD) char buffer[4096]; // FILE_NOTIFY_INFORMATION 構造体が複数入る可能性があるため、十分なサイズを確保
+	alignas(DWORD) char buffer[4096]{}; // FILE_NOTIFY_INFORMATION 構造体が複数入る可能性があるため、十分なサイズを確保
 	DWORD bytesReturned = 0;
 	OVERLAPPED overlapped = {};
 	overlapped.hEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
+	if (overlapped.hEvent == nullptr) {
+		LOG_ERROR("[ScriptWatcher] Failed to create event for overlapped I/O.");
+		CloseHandle(hDir);
+		return;
+	}
 
 	// .cs で終わる かつ ~ で始まらない かつ . で始まらない
-	auto IsValidCsFile = [](const std::wstring& relativePath) -> bool {
+	auto IsValidCsFile = [](const std::filesystem::path& relativePath) -> bool {
+		std::wstring fileName = relativePath.filename().wstring();
 		// ビルド成果物ディレクトリを除外
 		static const std::vector<std::wstring> excludedDirs = {
 			L"\\bin\\", L"\\obj\\", L"\\.vs\\", L"\\.git\\", L"\\Debug\\", L"\\Release\\"
 		};
 		for (const auto& exDir : excludedDirs) {
-			if (relativePath.find(exDir) != std::wstring::npos) {
+			if (fileName.find(exDir) != std::wstring::npos) {
 				return false; // 除外ディレクトリがパスに含まれている場合は無効
 			}
 		}
-		std::wstring fileName = std::filesystem::path(relativePath).filename().wstring();
 		// 一時ファイルを除外
 		if (fileName.starts_with(L"~"))  return false;
 		if (fileName.starts_with(L"."))  return false;
@@ -83,15 +88,13 @@ void ScriptWatcher::WatchLoop()
 		if (fileName.find(L"~RF") != std::wstring::npos) return false;
 
 		// .cs ファイルのみ対象
-		return relativePath.ends_with(L".cs");
+		return fileName.ends_with(L".cs");
 		};
 
-	// 最後の変更から一定時間待ってからビルド
-	auto lastChange = std::chrono::steady_clock::now();
-
+	// 監視ループ
 	while (m_running) {
 		// 非同期でディレクトリの変更を監視
-		ReadDirectoryChangesW(
+		bool result = ReadDirectoryChangesW(
 			hDir,
 			buffer,
 			sizeof(buffer),
@@ -100,6 +103,17 @@ void ScriptWatcher::WatchLoop()
 			&bytesReturned,
 			&overlapped,
 			NULL);
+
+		// ReadDirectoryChangesW が失敗した場合はループを抜ける
+		if (!result) {
+			LOG_ERROR("[ScriptWatcher] ReadDirectoryChangesW failed.");
+			break;
+		}
+
+		if (overlapped.hEvent == nullptr) {
+			LOG_ERROR("[ScriptWatcher] Failed to create event for overlapped I/O.");
+			break;
+		}
 
 		// 変更があったかを待機（タイムアウトは 500ms）
 		DWORD waitResult = WaitForSingleObject(overlapped.hEvent, 500);
@@ -110,14 +124,11 @@ void ScriptWatcher::WatchLoop()
 			auto* info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(buffer);
 			while (true)
 			{
-				std::wstring relativePath(info->FileName,
-					info->FileNameLength / sizeof(wchar_t));
+				std::filesystem::path relativePath(info->FileName);
 
 				if (IsValidCsFile(relativePath)) {
-					Console::Log(std::string(reinterpret_cast<const char*>(u8"[ScriptWatcher] 変更検知: "))
-						+ std::string(relativePath.begin(), relativePath.end()));
-					// 変更時刻を更新してフラグを立てるだけ
-					lastChange = std::chrono::steady_clock::now();
+					Console::Log(u8"[ScriptWatcher] 変更検知: "
+						+ relativePath.u8string());
 					RequestBuild();
 				}
 				// 次のエントリがなければループを抜ける
@@ -177,11 +188,11 @@ bool ScriptWatcher::BuildProjects()
 bool ScriptWatcher::BuildProject(const BuildCommand& command)
 {
 	Console::Log(u8"[ScriptWatcher] Building project: " + command.projectPath.u8string());
+	std::wstring args = std::wstring(command.additionalArgs.begin(), command.additionalArgs.end());
+	std::wstring cmd = L"dotnet build \"" + command.projectPath.wstring()
+		+ L"\" " + args;
 
-	std::string cmd = "dotnet build \"" + command.projectPath.string()
-		+ "\" " + command.additionalArgs;
-
-	FILE* pipe = _popen(cmd.c_str(), "r");
+	FILE* pipe = _wpopen(cmd.c_str(), L"r");
 	if (!pipe) {
 		LOG_ERROR(u8"[ScriptWatcher] ビルドプロセスの起動に失敗");
 		return false;
