@@ -88,7 +88,7 @@ void ScriptWatcher::WatchLoop()
 		if (fileName.find(L"~RF") != std::wstring::npos) return false;
 
 		// .cs ファイルのみ対象
-		return fileName.ends_with(L".cs");
+		return relativePath.extension() == L".cs";
 		};
 
 	// 監視ループ
