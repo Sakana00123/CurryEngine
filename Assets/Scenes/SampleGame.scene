@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            -0.45835232734680176,
-            2.3694353103637695,
-            0.5330525636672974
+            -1.9004114866256714,
+            3.5166125297546387,
+            4.453369140625
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.017960596829652786,
-            0.9670249819755554,
-            -0.24385792016983032,
-            0.07122812420129776
+            0.012039913795888424,
+            0.9827115535736084,
+            -0.17136110365390778,
+            0.06905320286750793
         ],
         "speed": 3.0
     },
@@ -121,7 +121,7 @@
                     "name": "Transform",
                     "position": [
                         0.0,
-                        3.0,
+                        0.2999999523162842,
                         0.0
                     ],
                     "priority": 0,
@@ -314,7 +314,7 @@
                     "name": "Transform",
                     "position": [
                         0.0,
-                        0.5,
+                        1.0,
                         0.0
                     ],
                     "priority": 0,
@@ -333,38 +333,12 @@
                 },
                 {
                     "enabledSelf": true,
-                    "id": "4887888328596506505",
-                    "meshAssetPath": "./Assets/Models/character.gltf",
-                    "name": "MeshRenderer",
-                    "priority": 1000,
-                    "type": "MeshRenderer"
-                },
-                {
-                    "autoFit": false,
-                    "center": [
-                        0.0,
-                        1.7999999523162842,
-                        0.0
-                    ],
-                    "contactOffset": 0.019999999552965164,
-                    "enabledSelf": true,
-                    "height": 1.0,
-                    "id": "9033103992363615225",
-                    "isTrigger": false,
-                    "material": 0,
-                    "name": "CapsuleCollider",
-                    "priority": 2000,
-                    "radius": 0.800000011920929,
-                    "type": "CapsuleCollider"
-                },
-                {
-                    "enabledSelf": true,
                     "fields": {
                         "speed": 5
                     },
                     "id": "10962852155025648948",
                     "name": "ScriptComponent",
-                    "priority": 3000,
+                    "priority": 1000,
                     "scriptName": "Character",
                     "type": "ScriptComponent"
                 },
@@ -375,11 +349,65 @@
                     "isKinematic": false,
                     "mass": 1.0,
                     "name": "Rigidbody",
-                    "priority": 4000,
+                    "priority": 2000,
                     "sleepThreshold": 0.004999999888241291,
                     "type": "Rigidbody",
                     "useCCD": false,
                     "useGravity": true
+                },
+                {
+                    "color": [
+                        1.0,
+                        0.30000001192092896,
+                        0.30000001192092896,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "17191699531613946967",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    0.30000001192092896,
+                                    0.30000001192092896,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 3000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "551562891745866264",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 4000,
+                    "size": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "BoxCollider"
                 }
             ],
             "id": "3215127106798646221",

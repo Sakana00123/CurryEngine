@@ -73,7 +73,7 @@ void ScriptWatcher::WatchLoop()
 		std::wstring fileName = relativePath.filename().wstring();
 		// ビルド成果物ディレクトリを除外
 		static const std::vector<std::wstring> excludedDirs = {
-			L"\\bin\\", L"\\obj\\", L"\\.vs\\", L"\\.git\\", L"\\Debug\\", L"\\Release\\"
+			L"bin\\", L"obj\\", L".vs\\", L".git\\", L"Debug\\", L"Release\\"
 		};
 		for (const auto& exDir : excludedDirs) {
 			if (fileName.find(exDir) != std::wstring::npos) {
@@ -124,7 +124,8 @@ void ScriptWatcher::WatchLoop()
 			auto* info = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(buffer);
 			while (true)
 			{
-				std::filesystem::path relativePath(info->FileName);
+				std::wstring fileName(info->FileName, info->FileNameLength / sizeof(WCHAR));
+				std::filesystem::path relativePath(fileName);
 
 				if (IsValidCsFile(relativePath)) {
 					Console::Log(u8"[ScriptWatcher] 変更検知: "

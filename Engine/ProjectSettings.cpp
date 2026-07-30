@@ -19,9 +19,6 @@ bool ProjectSettings::Load(const std::string& exeDir)
 	s_data.description = data.value("description", "Project Description");
 
 	// デフォルトパスを構築。絶対パスで指定されていない場合は、exe のディレクトリを基準にした相対パスを使用する。
-	//std::string defaultScriptProjectPath = exeDir + "/../../UserScripts/Assembly-CSharp.csproj";
-	//std::string defaultScriptOutputPath = exeDir + "/../../x64/Debug/Assembly-CSharp.dll";
-	//std::string defaultScriptWatchDirectory = exeDir + "/../../UserScripts";
 
 	// ソリューションのディレクトリを取得
 	// TODO: ソリューションのディレクトリを自動的に検出するか、プロジェクト設定で指定できるようにする
@@ -30,6 +27,7 @@ bool ProjectSettings::Load(const std::string& exeDir)
 	// ソリューションのディレクトリを基準にした絶対パス
 	std::filesystem::path defaultScriptProjectPath = solutionDir / "UserScripts/Assembly-CSharp.csproj";
 	std::filesystem::path defaultScriptOutputPath = solutionDir / "x64/Debug/Assembly-CSharp.dll";
+	//std::filesystem::path defaultScriptOutputPath = solutionDir / "Library/ScriptAssemblies/Assembly-CSharp.dll";
 	std::filesystem::path defaultScriptWatchDirectory = solutionDir / "UserScripts/";
 	// JSONからパスを取得。絶対パスで指定されていない場合は、exe のディレクトリを基準にした絶対パスを使用する。
 	std::filesystem::path scriptProjectPath = data.value("scriptProjectPath", defaultScriptProjectPath.string());

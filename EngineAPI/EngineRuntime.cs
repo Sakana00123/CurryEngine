@@ -27,6 +27,25 @@ public static class EngineRuntime
         return exeDir;
     }
 
+    internal static string? GetUserScriptsPath()
+    {
+        var solutionDir = Environment.GetEnvironmentVariable("SOLUTION_DIR");
+        if (string.IsNullOrEmpty(solutionDir))
+        {
+            Debug.LogError("SOLUTION_DIR 環境変数が設定されていません。");
+            return null;
+        }
+        // Assembly-CSharp.dll のパスを組み立てる。($(SolutionDir)Library\ScriptAssemblies\Assembly-CSharp.dll)
+        var userScriptsPath = Path.Combine(solutionDir, "Library", "ScriptAssemblies", "Assembly-CSharp.dll");
+        //var userScriptsPath = Path.Combine(solutionDir, "UserScripts", "x64", "Debug", "Assembly-CSharp.dll");
+        if (!File.Exists(userScriptsPath))
+        {
+            Debug.LogError($"Assembly-CSharp.dll が見つかりません: {userScriptsPath}");
+            return null;
+        }
+        return userScriptsPath;
+    }
+
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
     public static void EngineInitialize()
     {
@@ -50,8 +69,7 @@ public static class EngineRuntime
 
             // UserScripts.dll をロードして ScriptRegistry に登録する。
             var exeDir = GetExecutableDirectory() ?? string.Empty;
-
-            var userScriptsPath = Path.Combine(exeDir, "Assembly-CSharp.dll");
+            var userScriptsPath = /*GetUserScriptsPath() ?? */Path.Combine(exeDir, "Assembly-CSharp.dll");
             //Debug.Log($"Assembly-CSharp.dll のパス: {userScriptsPath}");
 
             // EngineRuntime と同じ ALC を使ってロードする。通常は EngineRuntime と UserScripts は同じ ALC にロードされるはずだが、これで確実になる。
@@ -94,7 +112,7 @@ public static class EngineRuntime
             {
                 // パスが無効な場合はデフォルトのパスを使用する。
                 var exeDir = GetExecutableDirectory() ?? string.Empty;
-                dllPath = Path.Combine(exeDir, "Assembly-CSharp.dll");
+                dllPath = /*GetUserScriptsPath() ?? */Path.Combine(exeDir, "Assembly-CSharp.dll");
             }
             //Debug.Log($"ReloadScripts called with path: {dllPath}");
             var currentAlc = AssemblyLoadContext.GetLoadContext(typeof(EngineRuntime).Assembly)!;
