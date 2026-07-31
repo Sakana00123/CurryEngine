@@ -70,22 +70,22 @@ void ScriptWatcher::WatchLoop()
 
 	// .cs で終わる かつ ~ で始まらない かつ . で始まらない
 	auto IsValidCsFile = [](const std::filesystem::path& relativePath) -> bool {
-		std::wstring fileName = relativePath.filename().wstring();
+		std::wstring filePath = relativePath.wstring();
 		// ビルド成果物ディレクトリを除外
 		static const std::vector<std::wstring> excludedDirs = {
 			L"bin\\", L"obj\\", L".vs\\", L".git\\", L"Debug\\", L"Release\\"
 		};
 		for (const auto& exDir : excludedDirs) {
-			if (fileName.find(exDir) != std::wstring::npos) {
+			if (filePath.find(exDir) != std::wstring::npos) {
 				return false; // 除外ディレクトリがパスに含まれている場合は無効
 			}
 		}
 		// 一時ファイルを除外
-		if (fileName.starts_with(L"~"))  return false;
-		if (fileName.starts_with(L"."))  return false;
-		if (fileName.ends_with(L".tmp")) return false;
-		if (fileName.ends_with(L".TMP")) return false;
-		if (fileName.find(L"~RF") != std::wstring::npos) return false;
+		if (filePath.starts_with(L"~"))  return false;
+		if (filePath.starts_with(L"."))  return false;
+		if (filePath.ends_with(L".tmp")) return false;
+		if (filePath.ends_with(L".TMP")) return false;
+		if (filePath.find(L"~RF") != std::wstring::npos) return false;
 
 		// .cs ファイルのみ対象
 		return relativePath.extension() == L".cs";
