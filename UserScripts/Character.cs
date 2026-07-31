@@ -42,7 +42,7 @@ public class Character : Behaviour
                 if (gameObject.TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
                 {
                     Debug.Log("Jump!");
-                    rigidbody.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+                    rigidbody.SetVelocity(Vector3.up * 5f);
                 }
             }
         }

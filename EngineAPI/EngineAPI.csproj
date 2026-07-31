@@ -18,6 +18,7 @@
     <Compile Include="ComponentAccessorAdapter.cs" />
     <Compile Include="Components\ComponentRegistry.cs" />
     <Compile Include="EngineRuntime.cs" />
+    <Compile Include="GameObjectAccessor.cs" />
     <Compile Include="HotReload\HotReloadManager.cs" />
     <Compile Include="HotReload\ScriptLoadContext.cs" />
     <Compile Include="BehaviourMethodCache.cs" />

@@ -1,7 +1,8 @@
-﻿using System.Text;
+using System.Text;
 using System.Runtime.CompilerServices;
 using CurryEngine.Math;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace CurryEngine.Interop;
 internal static partial class NativeMethods
@@ -187,8 +188,12 @@ internal static partial class NativeMethods
     [LibraryImport(Dll)] internal static partial void Object_Destroy(ulong objectId);
 
     // ------------------------------------ GameObject -----------------------------------------
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    [LibraryImport(Dll)] internal static partial string GameObject_GetName(ulong objectId);
 
-    [LibraryImport(Dll)] internal static partial ulong GameObject_Find([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    [LibraryImport(Dll)] internal static partial void GameObject_SetName(ulong objectId, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+
+    [LibraryImport(Dll)] internal static partial ulong GameObject_FindByName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
 
     [LibraryImport(Dll)] internal static partial void GameObject_SetActive(ulong objectId,[MarshalAs(UnmanagedType.Bool)] bool active);
     [LibraryImport(Dll)]

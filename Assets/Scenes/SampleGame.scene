@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            -1.9004114866256714,
-            3.5166125297546387,
-            4.453369140625
+            -0.7887340188026428,
+            8.294135093688965,
+            -7.728487491607666
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.012039913795888424,
-            0.9827115535736084,
-            -0.17136110365390778,
-            0.06905320286750793
+            0.2717015743255615,
+            -0.0591580793261528,
+            0.016734719276428223,
+            0.9604158401489258
         ],
         "speed": 3.0
     },
@@ -229,9 +229,9 @@
                         1.0
                     ],
                     "scale": [
-                        20.0,
+                        50.0,
                         1.0,
-                        20.0
+                        50.0
                     ],
                     "type": "Transform"
                 },
@@ -283,9 +283,9 @@
                     "name": "BoxCollider",
                     "priority": 2000,
                     "size": [
-                        20.0,
+                        50.0,
                         1.0,
-                        20.0
+                        50.0
                     ],
                     "type": "BoxCollider"
                 }
@@ -334,6 +334,7 @@
                 {
                     "enabledSelf": true,
                     "fields": {
+                        "enableJump": true,
                         "speed": 5
                     },
                     "id": "10962852155025648948",
@@ -411,12 +412,135 @@
                 }
             ],
             "id": "3215127106798646221",
-            "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
+            "isDefaultOpenOnHierarchy": false,
+            "layer": 4,
             "name": "character",
             "parent": "0",
             "parentId": "0",
             "priority": 4000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "4928842743748726023",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        1.0,
+                        5.300000190734863
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "constraints": 56,
+                    "enabledSelf": true,
+                    "id": "17271518682239132870",
+                    "isKinematic": false,
+                    "mass": 1.0,
+                    "name": "Rigidbody",
+                    "priority": 1000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": false,
+                    "useGravity": true
+                },
+                {
+                    "color": [
+                        0.0,
+                        0.30000001192092896,
+                        0.699999988079071,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "3998117232673022026",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    0.0,
+                                    0.30000001192092896,
+                                    0.699999988079071,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 2000,
+                    "shape": 0,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "6354122492459396998",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "BoxCollider",
+                    "priority": 3000,
+                    "size": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "BoxCollider"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "chaseDistance": 10,
+                        "playerObject": "GameObject(objectId: 3215127106798646221)",
+                        "speed": 3,
+                        "stopDistance": 3
+                    },
+                    "id": "9169283374165616344",
+                    "name": "ScriptComponent",
+                    "priority": 4000,
+                    "scriptName": "Enemy",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "1481355775892858889",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Enemy",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 5000,
             "version": 1
         }
     ]

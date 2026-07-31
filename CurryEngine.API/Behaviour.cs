@@ -1,4 +1,4 @@
-﻿using CurryEngine.Interop;
+using CurryEngine.Interop;
 using System;
 using System.Runtime.CompilerServices;
 
@@ -107,4 +107,11 @@ public abstract class Behaviour : Component
         return Instantiate(resourcePath, null, Vector3.zero, Quaternion.identity);
     }
 
+    
+    public static GameObject? Find(string name)
+    {
+        var id = NativeMethods.GameObject_FindByName(name);
+        if (id == 0) return null;
+        return new GameObject(id);
+    }
 }

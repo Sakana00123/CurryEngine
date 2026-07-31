@@ -1,4 +1,4 @@
-﻿
+
 using CurryEngine.Interop;
 using System;
 
@@ -14,6 +14,13 @@ namespace CurryEngine
 
         public Transform transform
             => Component.Accessor?.GetTransform(objectId)!;
+
+
+        public string name
+        {
+            get => NativeMethods.GameObject_GetName(objectId) ?? throw new InvalidOperationException($"GameObject {objectId} has no name");
+            set => NativeMethods.GameObject_SetName(objectId, value);
+        }
 
         public T? GetComponent<T>() where T : Component
             => Component.Accessor?.Get<T>(objectId);

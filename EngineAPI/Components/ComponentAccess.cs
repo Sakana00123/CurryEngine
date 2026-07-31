@@ -1,4 +1,4 @@
-﻿using CurryEngine.Components;
+using CurryEngine.Components;
 using CurryEngine.Interop;
 
 namespace CurryEngine;
@@ -36,16 +36,8 @@ internal static class ComponentAccess
         return (Transform)GetOrCreate(ownerId, ids[0], typeof(Transform));
     }
 
-    /// エンティティ破棄時にそのエンティティのコンポーネントを全破棄
-    internal static void Invalidate(ulong ownerId)
-    {
-        var ids = NativeMethods.GameObject_GetComponentIdsHelper(ownerId, null); // null = 全型
-        foreach (var id in ids)
-            s_cache.Remove(id);
-    }
-
     /// コンポーネント単体の破棄（Detach時など）
-    internal static void InvalidateComponent(ulong componentId)
+    internal static void RemoveComponent(ulong componentId)
         => s_cache.Remove(componentId);
 
     // ---- 内部実装 ----

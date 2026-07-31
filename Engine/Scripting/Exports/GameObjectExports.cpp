@@ -10,11 +10,21 @@
 
 ENGINE_API const char* GameObject_GetName(uint64_t objectId)
 {
+	std::string name = ""; // デフォルト値として空文字を設定
+
 	if (GameObject* obj = ObjectManager::Find(ObjectId::FromValue(objectId)))
 	{
-		return obj->name.c_str();
+		name = obj->name;
 	}
-	return ""; // オブジェクトが見つからない場合は空文字を返す
+
+	size_t size = name.size() + 1; // +1 for null terminator
+	char* buffer = static_cast<char*>(CoTaskMemAlloc(size));
+	if (buffer)
+	{
+		strcpy_s(buffer, size, name.c_str());
+		return buffer; // CoTaskMemAlloc で確保したメモリを返す
+	}
+	return nullptr; // メモリ確保に失敗した場合は nullptr を返す
 }
 
 ENGINE_API void GameObject_SetName(uint64_t objectId, const char* name)
@@ -166,4 +176,24 @@ ENGINE_API uint64_t GameObject_InstantiateFromResource(const char* resourcePath,
 		std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
 		return 0; // JSONの解析に失敗した場合は 0 を返す
 	}
+}
+
+// ---------------- Find ----------------
+
+ENGINE_API uint64_t GameObject_FindByName(const char* name)
+{
+	if (GameObject* obj = ObjectManager::Find(name))
+	{
+		return obj->GetId().Value();
+	}
+	return 0; // オブジェクトが見つからない場合は 0 を返す
+}
+
+ENGINE_API uint64_t GameObject_FindById(uint64_t objectId)
+{
+	if (GameObject* obj = ObjectManager::Find(ObjectId::FromValue(objectId)))
+	{
+		return obj->GetId().Value();
+	}
+	return 0; // オブジェクトが見つからない場合は 0 を返す
 }

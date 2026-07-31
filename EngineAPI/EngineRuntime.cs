@@ -221,6 +221,23 @@ public static class EngineRuntime
     }
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
+    public static void EngineUpdate(float deltaTime)
+    {
+        // エンジンの更新処理をここに書く。
+        try
+        {
+            //Debug.Log($"EngineUpdate called with deltaTime: {deltaTime}");
+            // ここでスクリプトの Update メソッドを呼び出すなどの処理を行う。
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"EngineUpdate 例外: {ex.Message}");
+        }
+    }
+
+
+
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
     public static void EngineShutdown()
     {
         // エンジンの終了処理をここに書く。
