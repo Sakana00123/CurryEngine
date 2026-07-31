@@ -57,19 +57,19 @@ extern "C" void __stdcall OnScriptClassRegistered(const ScriptClassDesc* desc)
 					}
 					else
 					{
-						Console::LogError("Property '" + name + "' not found in script fields.");
+						LOG_ERROR("Property '" + name + "' not found in script fields.");
 						return std::any();
 					}
 				}
 				else
 				{
-					Console::LogError("Failed to parse script fields JSON: " + jsonStr);
+					LOG_ERROR("Failed to parse script fields JSON: " + jsonStr);
 					return std::any();
 				}
 			}
 			else
 			{
-				Console::LogError("Failed to get script fields for property '" + name + "'.");
+				LOG_ERROR("Failed to get script fields for property '" + name + "'.");
 				return std::any();
 			}
 			};
@@ -84,7 +84,7 @@ extern "C" void __stdcall OnScriptClassRegistered(const ScriptClassDesc* desc)
 			}
 			catch (const std::bad_any_cast& e)
 			{
-				Console::LogError("Failed to cast property value to string: " + std::string(e.what()));
+				LOG_ERROR("Failed to cast property value to string: " + std::string(e.what()));
 				return;
 			}
 			ScriptSystem::SetScriptField(sc->GetGCHandle(), name.c_str(), valueStr.c_str());
@@ -112,7 +112,7 @@ void ScriptSystem::Initialize()
 	// スクリプトホストの初期化
 	s_scriptHost = new ScriptHost();
 	if (!s_scriptHost->Initialize()) {
-		Console::LogError("[ScriptSystem] Failed to initialize the script host.");
+		LOG_ERROR("[ScriptSystem] Failed to initialize the script host.");
 		delete s_scriptHost;
 		s_scriptHost = nullptr;
 		return;
@@ -142,7 +142,7 @@ void ScriptSystem::Initialize()
 	s_scriptWatcher->RequestBuild(); // 起動時に一度ビルドを要求して最新のスクリプトを読み込む  
 #endif // _DEBUG
 
-	Console::Log("[ScriptSystem] Script host initialized successfully.");
+	LOG_INFO("[ScriptSystem] Script host initialized successfully.");
 	return;
 }
 
@@ -158,7 +158,7 @@ void ScriptSystem::Shutdown()
 #endif // _DEBUG
 
 	if (!s_scriptHost) {
-		Console::LogError("[ScriptSystem] Cannot shutdown scripts because the script host is not initialized.");
+		LOG_ERROR("[ScriptSystem] Cannot shutdown scripts because the script host is not initialized.");
 		return;
 	}
 	// スクリプトホストの終了処理
@@ -170,7 +170,7 @@ void ScriptSystem::Shutdown()
 void ScriptSystem::Reload()
 {
 	if (!s_scriptHost) {
-		Console::LogError("[ScriptSystem] Cannot reload scripts because the script host is not initialized.");
+		LOG_ERROR("[ScriptSystem] Cannot reload scripts because the script host is not initialized.");
 		return;
 	}
 
@@ -224,7 +224,7 @@ void ScriptSystem::RequestScriptBuildAndReload()
 	}
 	else
 	{
-		Console::LogError("[ScriptSystem] Cannot request script build because the script watcher is not initialized.");
+		LOG_ERROR("[ScriptSystem] Cannot request script build because the script watcher is not initialized.");
 	}
 }
 

@@ -25,7 +25,7 @@ void CapsuleCollider::Register()
 	if (!Physics::AddCapsuleShape(GetTransform(), data, m_shapeHandle))
 	{
 		// 追加に失敗した場合のエラーハンドリング
-		Console::LogError("Failed to add CapsuleCollider shape to physics engine.");
+		LOG_ERROR("Failed to add CapsuleCollider shape to physics engine.");
 	}
 }
 
@@ -48,7 +48,7 @@ void CapsuleCollider::SyncWithPhysics()
 	physx::PxCapsuleGeometry geometry(radius, height); // 半径と高さを指定
 	if (!geometry.isValid())
 	{
-		Console::LogError("Invalid capsule geometry parameters. Radius must be > 0 and height must be >= 0.");
+		LOG_ERROR("Invalid capsule geometry parameters. Radius must be > 0 and height must be >= 0.");
 		return;
 	}
 	Physics::SetGeometry(m_shapeHandle, geometry);

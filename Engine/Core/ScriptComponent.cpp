@@ -92,7 +92,7 @@ void ScriptComponent::Initialize()
             for (auto& [fieldName, value] : m_pendingFields.items())
             {
                 std::string valueStr = value.dump();
-                //Console::Log("[Deserialize] field: " + fieldName + " = " + valueStr);
+                //LOG_INFO("[Deserialize] field: " + fieldName + " = " + valueStr);
                 ScriptSystem::SetScriptField(m_gcHandle, fieldName.c_str(), valueStr.c_str());
             }
             m_pendingFields.clear();
@@ -104,11 +104,11 @@ void ScriptComponent::Initialize()
 
         // TODO:一時的な措置。スクリプトが有効化されたときに OnEnable を呼び出す。C++のライフサイクルを完全に理解してから見直すこと。
         OnEnable(); // ここに来てる時点でスクリプトが有効化されてるのでここで強制的に呼び出す
-        Console::Log("[ScriptComponent] Created: " + scriptName);
+        LOG_INFO("[ScriptComponent] Created: " + scriptName);
     }
     else
     {
-        Console::LogError("[ScriptComponent] Failed: " + scriptName);
+        LOG_ERROR("[ScriptComponent] Failed: " + scriptName);
     }
 }
 
@@ -159,14 +159,14 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
         {
             if (results.size() > 1)
             {
-                Console::LogWarning("[ScriptComponent] Multiple script assets found with name: " + scriptName + ". Opening the first one.");
+                LOG_WARNING("[ScriptComponent] Multiple script assets found with name: " + scriptName + ". Opening the first one.");
             }
             // 最初の一致を開く
             AssetBrowser::OpenAsset(results[0].path());
         }
         else
         {
-            Console::LogError("[ScriptComponent] Script asset not found: " + scriptName);
+            LOG_ERROR("[ScriptComponent] Script asset not found: " + scriptName);
         }
 	}
 
@@ -182,7 +182,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 	json j = json::parse(jsonStr, nullptr,false);
     if (j.is_discarded())
     {
-        Console::LogError("[ScriptComponent] Failed to parse script fields JSON: " + jsonStr);
+        LOG_ERROR("[ScriptComponent] Failed to parse script fields JSON: " + jsonStr);
         return;
 	}
 	// フィールド値をマップに格納
@@ -431,7 +431,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                                 }
                                 catch (const std::exception& e)
                                 {
-                                    Console::LogError("[ScriptComponent] Failed to parse GameObject ID from string: " + valueStr + ". Error: " + e.what());
+                                    LOG_ERROR("[ScriptComponent] Failed to parse GameObject ID from string: " + valueStr + ". Error: " + e.what());
                                     return ObjectId::Invalid();
                                 }
                             }
@@ -485,7 +485,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                                 }
                                 catch (const std::exception& e)
                                 {
-                                    Console::LogError("[ScriptComponent] Failed to parse Component ID from string: " + valueStr + ". Error: " + e.what());
+                                    LOG_ERROR("[ScriptComponent] Failed to parse Component ID from string: " + valueStr + ". Error: " + e.what());
                                     return ObjectId::Invalid();
                                 }
                             }
@@ -504,7 +504,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                                 }
                                 catch (const std::exception& e)
                                 {
-                                    Console::LogError("[ScriptComponent] Failed to parse owner ID from string: " + valueStr + ". Error: " + e.what());
+                                    LOG_ERROR("[ScriptComponent] Failed to parse owner ID from string: " + valueStr + ". Error: " + e.what());
                                     return ObjectId::Invalid();
                                 }
                             }
@@ -531,7 +531,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
         }
         else
         {
-            Console::LogWarning("[ScriptComponent] Unsupported field type: " + prop.type);
+            LOG_WARNING("[ScriptComponent] Unsupported field type: " + prop.type);
 			continue;
 		}
 		prop.hasCustomGetter = true;

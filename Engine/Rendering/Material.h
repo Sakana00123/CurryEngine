@@ -71,7 +71,7 @@ public:
 			}
 		}
 		// 見つからなかった場合の警告
-		//Console::LogWarning("Warning: Material::GetTexture failed. Texture variable " + name + " not found.");
+		//LOG_WARNING("Warning: Material::GetTexture failed. Texture variable " + name + " not found.");
 		return {};
 	}
 

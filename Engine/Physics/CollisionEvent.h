@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Engine/Core/Reflection/Meta.h"
 #include "Engine/Core/Math/Vector3.h"
 class GameObject;
 class Collider;
@@ -39,6 +39,7 @@ struct TriggerInfo
 // 衝突イベントのコールバックを処理するインターフェースクラス
 class ICollisionEventCallback
 {
+	C_REFLECT(ICollisionEventCallback)
 public:
 	virtual ~ICollisionEventCallback() = default;
 
@@ -62,6 +63,7 @@ public:
 // トリガーイベントのコールバックを処理するインターフェースクラス
 class ITriggerEventCallback
 {
+	C_REFLECT(ITriggerEventCallback)
 public:
 	virtual ~ITriggerEventCallback() = default;
 

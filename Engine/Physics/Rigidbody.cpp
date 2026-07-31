@@ -92,7 +92,7 @@ void Rigidbody::AddForce(Vector3 force, ForceMode mode)
 	if (isKinematic)
 	{
 		// キネマティックなオブジェクトには力を加えない
-		Console::LogWarning(std::format("Cannot add force to a kinematic Rigidbody ({}).", GetOwner()->GetName()));
+		LOG_WARNING(std::format("Cannot add force to a kinematic Rigidbody ({}).", GetOwner()->GetName()));
 		return;
 	}
 

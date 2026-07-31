@@ -25,7 +25,7 @@ void BoxCollider::Register()
 	if (!Physics::AddBoxShape(GetTransform(), data, m_shapeHandle))
 	{
 		// 追加に失敗した場合のエラーハンドリング
-		Console::LogError("Failed to add BoxCollider shape to physics engine.");
+		LOG_ERROR("Failed to add BoxCollider shape to physics engine.");
 	}
 }
 
@@ -50,7 +50,7 @@ void BoxCollider::SyncWithPhysics()
 	physx::PxBoxGeometry geometry(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f); // 半サイズを指定
 	if (!geometry.isValid())
 	{
-		Console::LogError("Invalid box geometry for BoxCollider. Size must be positive.");
+		LOG_ERROR("Invalid box geometry for BoxCollider. Size must be positive.");
 		return;
 	}
 	Physics::SetGeometry(m_shapeHandle, geometry);

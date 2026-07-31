@@ -25,7 +25,7 @@ void SphereCollider::Register()
 	if (!Physics::AddSphereShape(GetTransform(), data, m_shapeHandle))
 	{
 		// 追加に失敗した場合のエラーハンドリング
-		Console::LogError("Failed to add SphereCollider shape to physics engine.");
+		LOG_ERROR("Failed to add SphereCollider shape to physics engine.");
 	}
 }
 
@@ -48,7 +48,7 @@ void SphereCollider::SyncWithPhysics()
 	physx::PxSphereGeometry geometry(radius); // 半径を指定（サイズのx成分を使用）
 	if (!geometry.isValid())
 	{
-		Console::LogError("Invalid geometry parameters for SphereCollider. Radius must be greater than 0.");
+		LOG_ERROR("Invalid geometry parameters for SphereCollider. Radius must be greater than 0.");
 		return;
 	}
 	Physics::SetGeometry(m_shapeHandle, geometry);

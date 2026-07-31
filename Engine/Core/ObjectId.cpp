@@ -19,7 +19,7 @@ ObjectId ObjectId::FromLegacy(int legacyId)
 	else if (legacyId <= 0 || static_cast<uint64_t>(legacyId) > IdRange::LEGACY_MAX)
 	{
 		// 旧IDが有効な範囲外の場合はエラーログを出力して無効なIDを返す
-		Console::LogError("Invalid legacy ID: " + std::to_string(legacyId) + ". Must be between 1 and " + std::to_string(IdRange::LEGACY_MAX) + ".");
+		LOG_ERROR("Invalid legacy ID: " + std::to_string(legacyId) + ". Must be between 1 and " + std::to_string(IdRange::LEGACY_MAX) + ".");
 	}
 	return ObjectId(static_cast<uint64_t>(legacyId));
 }
@@ -36,7 +36,7 @@ ObjectId ObjectId::FromString(const std::string& str)
 		return ObjectId(value);
 	}
 	catch (const std::exception& e) {
-		Console::LogError("Failed to parse ObjectId from string: " + str + ". Error: " + e.what());
+		LOG_ERROR("Failed to parse ObjectId from string: " + str + ". Error: " + e.what());
 		return ObjectId::Invalid();
 	}
 }

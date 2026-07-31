@@ -566,7 +566,7 @@ void BuildSettingsWindow::RunBuild()
 	// ビルド中はビルドボタンを無効化する
 	if (m_isBuilding)
 	{
-		Console::LogWarning("[Build] Build is already in progress.");
+		LOG_WARNING("[Build] Build is already in progress.");
 		return;
 	}
 
@@ -617,7 +617,7 @@ void BuildSettingsWindow::RunBuild()
 
 	if (!CreatePipe(&hReadPipe, &hWritePipe, &sa, 0))
 	{
-		Console::LogError("[Build] Failed to create pipe.");
+		LOG_ERROR("[Build] Failed to create pipe.");
 		return;
 	}
 
@@ -642,7 +642,7 @@ void BuildSettingsWindow::RunBuild()
 		nullptr, nullptr,
 		&si, &pi))
 	{
-		Console::LogError("[Build] Failed to start build process.");
+		LOG_ERROR("[Build] Failed to start build process.");
 		CloseHandle(hReadPipe);
 		CloseHandle(hWritePipe);
 		return;
@@ -653,7 +653,7 @@ void BuildSettingsWindow::RunBuild()
 	CloseHandle(hWritePipe);
 
 	m_isBuilding = true;
-	Console::Log("[Build] Build started.");
+	LOG_INFO("[Build] Build started.");
 
 	// --- 読み取りスレッド ---
 	std::thread([this, hReadPipe, pi]() mutable
@@ -720,8 +720,8 @@ void BuildSettingsWindow::RunBuild()
 			bool ok = (exitCode == 0);
 			pushLog(ok ? "[Build] Build succeeded." : std::format("[Build] Build failed. (exit code: {})", exitCode));
 
-			if (ok) Console::Log("[Build] Build succeeded.");
-			else    Console::LogError(std::format("[Build] Build failed. (exit code: {})", exitCode));
+			if (ok) LOG_INFO("[Build] Build succeeded.");
+			else    LOG_ERROR(std::format("[Build] Build failed. (exit code: {})", exitCode));
 
 			CloseHandle(hReadPipe);
 			CloseHandle(pi.hProcess);
@@ -782,7 +782,7 @@ void BuildSettingsWindow::PackageBuildOutput()
 
 	if (!CreatePipe(&hReadPipe, &hWritePipe, &sa, 0))
 	{
-		Console::LogError("[Build] Failed to create pipe.");
+		LOG_ERROR("[Build] Failed to create pipe.");
 		return;
 	}
 
@@ -807,7 +807,7 @@ void BuildSettingsWindow::PackageBuildOutput()
 		nullptr, nullptr,
 		&si, &pi))
 	{
-		Console::LogError("[Build] Failed to start build process.");
+		LOG_ERROR("[Build] Failed to start build process.");
 		CloseHandle(hReadPipe);
 		CloseHandle(hWritePipe);
 		return;
@@ -818,7 +818,7 @@ void BuildSettingsWindow::PackageBuildOutput()
 	CloseHandle(hWritePipe);
 
 	m_isPackaging = true;
-	Console::Log("[Build] Build started.");
+	LOG_INFO("[Build] Build started.");
 
 	// --- 読み取りスレッド ---
 	std::thread([this, hReadPipe, pi]() mutable
@@ -838,9 +838,9 @@ void BuildSettingsWindow::PackageBuildOutput()
 			DWORD exitCode = 0;
 			GetExitCodeProcess(pi.hProcess, &exitCode);
 			if (exitCode == 0)
-				Console::Log("[Build] Build succeeded.");
+				LOG_INFO("[Build] Build succeeded.");
 			else
-				Console::LogError(std::format("[Build] Build failed. (exit code: {})", exitCode));
+				LOG_ERROR(std::format("[Build] Build failed. (exit code: {})", exitCode));
 
 			CloseHandle(hReadPipe);
 

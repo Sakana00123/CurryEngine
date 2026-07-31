@@ -542,7 +542,7 @@ void Material::DrawTextureSlots(size_t shaderType)
 						}
 						else
 						{
-							Console::LogWarning("Failed to create single-slice SRV for texture preview: " + std::to_string(hr));
+							LOG_WARNING("Failed to create single-slice SRV for texture preview: " + std::to_string(hr));
 						}
 #endif // 0
 
@@ -632,7 +632,7 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 		// サイズがアラインメントされていない場合は警告
 		if (alignedSize != layout.size)
 		{
-			Console::LogWarning("Warning: CBuffer " + layout.name + " size " + std::to_string(layout.size) +
+			LOG_WARNING("Warning: CBuffer " + layout.name + " size " + std::to_string(layout.size) +
 				" is not 16-byte aligned. Aligned size: " + std::to_string(alignedSize));
 		}
 
@@ -663,7 +663,7 @@ void Material::UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& bindin
 				if (var.defaultValue == nullptr) continue; // 初期値が定義されていない場合はスキップ
 				if (var.offset + var.size > layout.size) // 初期値がバッファサイズを超えている場合は警告を出してスキップ
 				{
-					Console::LogWarning("Warning: Default value of variable " + var.name + " in CBuffer " + layout.name +
+					LOG_WARNING("Warning: Default value of variable " + var.name + " in CBuffer " + layout.name +
 						" exceeds buffer size. Variable offset: " + std::to_string(var.offset) +
 						", Variable size: " + std::to_string(var.size) +
 						", Buffer size: " + std::to_string(layout.size));
@@ -758,7 +758,7 @@ json Material::Serialize() const
 			const ShaderReflectionData::ConstantBufferLayout* layout = m_ShaderBindings[i].shader->GetConstantBufferLayout(cbName);
 			if (!layout)
 			{
-				Console::LogWarning("Warning: Material::Serialize skipped CBuffer " + cbName + " because its layout was not found in the shader.");
+				LOG_WARNING("Warning: Material::Serialize skipped CBuffer " + cbName + " because its layout was not found in the shader.");
 				continue;
 			}
 			
@@ -794,7 +794,7 @@ json Material::Serialize() const
 						break;
 					}
 					default:
-						Console::LogWarning("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because its scalar type is not supported for serialization.");
+						LOG_WARNING("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because its scalar type is not supported for serialization.");
 						break;
 					};
 					break;
@@ -818,7 +818,7 @@ json Material::Serialize() const
 						break;
 					}
 					default:
-						Console::LogWarning("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because its vector type is not supported for serialization.");
+						LOG_WARNING("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because its vector type is not supported for serialization.");
 						break;
 					};
 					break;
@@ -826,11 +826,11 @@ json Material::Serialize() const
 				case D3D_SVC_STRUCT:
 				{
 					//構造体の中身を保存するには、ShaderVariableに子変数の情報を持たせる必要がある
-					Console::LogWarning("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because struct type is not supported for serialization.");
+					LOG_WARNING("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because struct type is not supported for serialization.");
 					break;
 				}
 				default:
-					Console::LogWarning("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because its type is not supported for serialization.");
+					LOG_WARNING("Warning: Material::Serialize skipped CBuffer variable " + var.name + " because its type is not supported for serialization.");
 					break;
 				};
 			}

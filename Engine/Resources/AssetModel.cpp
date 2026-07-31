@@ -206,13 +206,13 @@ namespace
     {
         if (texIndex < 0 || texIndex >= scene->mNumTextures)
         {
-            Console::LogError("Invalid embedded texture index: " + std::to_string(texIndex));
+            LOG_ERROR("Invalid embedded texture index: " + std::to_string(texIndex));
             return false;
         }
         const aiTexture* embeddedTex = scene->mTextures[texIndex];
         if (!embeddedTex)
         {
-            Console::LogError("Embedded texture is null at index: " + std::to_string(texIndex));
+            LOG_ERROR("Embedded texture is null at index: " + std::to_string(texIndex));
             return false;
         }
         // 埋め込みテクスチャのデータを取得
@@ -276,7 +276,7 @@ namespace
 		// ファイルが存在するかチェック
         if (!fs::exists(resolved))
         {
-            Console::LogWarning("Texture file not found: " + resolved.string());
+            LOG_WARNING("Texture file not found: " + resolved.string());
             outPath.clear();
             return false;
 		}
@@ -315,7 +315,7 @@ bool AssetModel::LoadFromFile(const std::string& path)
     const aiScene* scene = importer.ReadFile(path, importFlags);
     if (!scene || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !scene->mRootNode)
     {
-        Console::LogError("AssetModel::LoadFromFile failed: " + std::string(importer.GetErrorString()));
+        LOG_ERROR("AssetModel::LoadFromFile failed: " + std::string(importer.GetErrorString()));
         return false;
     }
 

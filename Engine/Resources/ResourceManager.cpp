@@ -89,7 +89,7 @@ std::shared_ptr<Resource> ResourceManager::Load(const std::string& path)
 #ifdef _DEBUG
 		std::filesystem::path hlslPath = EnginePaths::ShaderSourceDir / fsPath.filename();
 		if (!std::filesystem::exists(hlslPath)) {
-			Console::LogError("Shader file not found: " + hlslPath.string());
+			LOG_ERROR("Shader file not found: " + hlslPath.string());
 			return nullptr;
 		}
 #endif // _DEBUG
@@ -111,7 +111,7 @@ std::shared_ptr<Resource> ResourceManager::Load(const std::string& path)
 		} else if (suffix == "cs") {
 			resource = std::make_shared<ComputeShader>();
 		} else {
-			Console::LogError("Unsupported shader type: " + findPath);
+			LOG_ERROR("Unsupported shader type: " + findPath);
 			return nullptr;
 		}
 		if (resource->LoadFromFile(findPath)) {
@@ -126,7 +126,7 @@ std::shared_ptr<Resource> ResourceManager::Load(const std::string& path)
 			return resource;
 		}
 	} else {
-		Console::LogError("Unsupported resource type: " + path);
+		LOG_ERROR("Unsupported resource type: " + path);
 	}
 	return nullptr; // ロード失敗
 }
@@ -273,9 +273,9 @@ void ResourceManager::LoadAllShaders()
 					}
 
 					if (shader) {
-						Console::Log("Loaded shader: " + path.string());
+						LOG_INFO("Loaded shader: " + path.string());
 					} else {
-						Console::LogWarning("Failed to load shader: " + path.string());
+						LOG_WARNING("Failed to load shader: " + path.string());
 					}
 				}
 			}
@@ -301,9 +301,9 @@ void ResourceManager::LoadAllTextures()
 					std::string pathStr = path.string();
 					auto texture = Load<AssetTexture>(pathStr);
 					if (texture) {
-						Console::Log("Loaded texture: " + path.string());
+						LOG_INFO("Loaded texture: " + path.string());
 					} else {
-						Console::LogWarning("Failed to load texture: " + path.string());
+						LOG_WARNING("Failed to load texture: " + path.string());
 					}
 				}
 			}

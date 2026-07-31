@@ -55,7 +55,7 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 	callbacks.setHovering = [](bool hovering)
 	{
 			isExternalDragHovering = hovering;
-			//Console::Log("External drag hovering: " + std::string(hovering ? "true" : "false"));
+			//LOG_INFO("External drag hovering: " + std::string(hovering ? "true" : "false"));
 	};
 	callbacks.onDrop = [](const std::vector<std::filesystem::path>& paths)
 	{
@@ -80,7 +80,7 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 					//	CurryEngine::Resources::ImportSettingsWindow::OpenForNewAsset(meta->id);
 					//}
 
-					Console::Log(u8"Imported: " + dst.u8string());
+					LOG_INFO(u8"Imported: " + dst.u8string());
 					anySucceeded = true;
 				}
 				catch (const fs::filesystem_error& e)
@@ -95,12 +95,12 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 	callbacks.onDragEnter = []()
 		{
 			isExternalDragActive = true; // ドラッグが開始されたのでアクティブにする
-			//Console::Log("External drag entered.");
+			//LOG_INFO("External drag entered.");
 		};
 	callbacks.onDragLeave = []()
 		{
 			isExternalDragActive = false; // ドラッグが終了したのでアクティブでない
-			//Console::Log("External drag left.");
+			//LOG_INFO("External drag left.");
 		};
 
 
@@ -138,7 +138,7 @@ void AssetBrowser::OnDropFiles(HWND hwnd, HDROP hDrop)
 	{
 		// グリッド外へのドロップは無視
 		DragFinish(hDrop);
-		Console::Log("Drop ignored: outside asset grid.");
+		LOG_INFO("Drop ignored: outside asset grid.");
 		return;
 	}
 
@@ -174,12 +174,12 @@ void AssetBrowser::OnDropFiles(HWND hwnd, HDROP hDrop)
 			else
 				fs::copy_file(src, dst);
 
-			Console::Log("Imported: " + dst.string());
+			LOG_INFO("Imported: " + dst.string());
 			anySucceeded = true;
 		}
 		catch (const fs::filesystem_error& e)
 		{
-			Console::LogError("Import failed: " + std::string(e.what()));
+			LOG_ERROR("Import failed: " + std::string(e.what()));
 		}
 	}
 
@@ -441,12 +441,12 @@ void AssetBrowser::CreateCSharpScript(const fs::path& directory, const std::stri
 		newScriptFile << "}\n";
 		newScriptFile.close();
 
-		Console::Log("Created new script: " + newScriptPath.string());
+		LOG_INFO("Created new script: " + newScriptPath.string());
 		Refresh(); // キャッシュをクリアして新しいスクリプトがアセットブラウザに表示されるようにする
 	}
 	else
 	{
-		Console::LogError((std::string("Failed to create script file: ") + std::string(reinterpret_cast<const char*>(newScriptPath.u8string().c_str()))));
+		LOG_ERROR((std::string("Failed to create script file: ") + std::string(reinterpret_cast<const char*>(newScriptPath.u8string().c_str()))));
 	}
 }
 
@@ -461,12 +461,12 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 	fs::path newShaderPath = MakeUniqueFilePath(directory, shaderName, extension);
 	if (fs::exists(newShaderPath))
 	{ // 同名のファイルが既に存在する場合はエラーを表示して処理を終了
-		Console::LogError("A file with the same name already exists: " + newShaderPath.string());
+		LOG_ERROR("A file with the same name already exists: " + newShaderPath.string());
 		return;
 	}
 	if (!newShaderPath.has_stem())
 	{ // ファイル名が無効な場合はエラーを表示して処理を終了
-		Console::LogError("Invalid shader name. The file extension must be .hlsl");
+		LOG_ERROR("Invalid shader name. The file extension must be .hlsl");
 		return;
 	}
 	std::ofstream newShaderFile(newShaderPath);
@@ -557,7 +557,7 @@ void AssetBrowser::CreateHlslShader(const fs::path& directory, const std::string
 
 		newShaderFile.close();
 
-		Console::Log("Created new shader: " + newShaderPath.string());
+		LOG_INFO("Created new shader: " + newShaderPath.string());
 
 		if (extension == ".hlsl")
 		{
@@ -618,8 +618,8 @@ void AssetBrowser::OpenAsset(const fs::path& assetPath)
 	else if (type == AssetType::Prefab)
 	{
 		// プレハブファイルならプレハブエディタで開く（未実装）
-		//Console::Log("Opening prefab editor for: " + path.string());
-		Console::Log("Prefab editing is not implemented yet.");
+		//LOG_INFO("Opening prefab editor for: " + path.string());
+		LOG_INFO("Prefab editing is not implemented yet.");
 	}
 	else if (type == AssetType::Script)
 	{

@@ -265,32 +265,6 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 				if (pi.hProcess) CloseHandle(pi.hProcess);
 				if (pi.hThread)  CloseHandle(pi.hThread);
 			}
-			//// --- 3. devenv /Edit "file(line)" を実行 ---
-			//// "file(line)" 形式は VS が公式サポートする行ジャンプ記法。
-			//// /command "Edit.GoTo N" は引数の解釈が不安定なため使用しない。
-			//std::wstring args = L"\""
-			//	+ wfile
-			//	+ L"("
-			//	+ std::to_wstring(line)
-			//	+ L")\"";
-			//
-			//// ── デバッグ用：実際に渡す devenv パスと引数をコンソールに出力 ──
-			//// 問題が解決したらこのブロックを削除してください
-			//{
-			//	OutputDebugStringW((L"[Console] devenv : " + devenvPath + L"\n").c_str());
-			//	OutputDebugStringW((L"[Console] args   : " + args + L"\n").c_str());
-			//}
-			//
-
-			//// --- 4. ShellExecuteW で devenv を起動 ---
-			//ShellExecuteW(
-			//	nullptr,            // 親ウィンドウ
-			//	L"open",            // 動詞
-			//	devenvPath.c_str(), // 実行ファイル
-			//	args.c_str(),       // 引数
-			//	nullptr,            // 作業ディレクトリ
-			//	SW_SHOWNORMAL
-			//);
 #endif // _WIN32
 		}).detach();
 }

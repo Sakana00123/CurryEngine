@@ -25,13 +25,13 @@ void AudioAnalyzer::Initialize(IXAudio2SourceVoice* voice, const Audio::AudioBuf
 void AudioAnalyzer::Update(float deltaTime)
 {
 	if (!sourceVoice) {
-		Console::LogError("AudioAnalyzer: Source voice is not initialized.");
+		LOG_ERROR("AudioAnalyzer: Source voice is not initialized.");
 	}
 	if (!wfx) {
-		Console::LogError("AudioAnalyzer: Wave format is not initialized.");
+		LOG_ERROR("AudioAnalyzer: Wave format is not initialized.");
 	}
 	if (!pcmData || pcmSize == 0) {
-		Console::LogError("AudioAnalyzer: PCM data is not initialized.");
+		LOG_ERROR("AudioAnalyzer: PCM data is not initialized.");
 	}
 	if (!sourceVoice || !wfx || !pcmData || pcmSize == 0) return;
 
@@ -52,7 +52,7 @@ void AudioAnalyzer::Update(float deltaTime)
 	if (bits != 16)
 	{
 		// 現状 16bit PCM のみ対応
-		Console::LogError("AudioAnalyzer: Only 16-bit PCM is supported.");
+		LOG_ERROR("AudioAnalyzer: Only 16-bit PCM is supported.");
 		return;
 	}
 
@@ -65,7 +65,7 @@ void AudioAnalyzer::Update(float deltaTime)
 
 	if (totalSamples == 0)
 	{
-		Console::LogError("AudioAnalyzer: Total samples is zero.");
+		LOG_ERROR("AudioAnalyzer: Total samples is zero.");
 		return;
 	}
 
@@ -114,7 +114,7 @@ void AudioAnalyzer::ComputeRMSAndPeak(const float* samples, size_t sampleCount)
 void AudioAnalyzer::AnalyzeFFT(const float* samples, size_t sampleCount)
 {
 	if (!fftConfig) {
-		Console::LogError("AudioAnalyzer: FFT config is not initialized.");
+		LOG_ERROR("AudioAnalyzer: FFT config is not initialized.");
 		return;
 	}
 

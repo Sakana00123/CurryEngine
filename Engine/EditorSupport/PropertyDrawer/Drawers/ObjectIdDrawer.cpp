@@ -108,12 +108,12 @@ namespace CurryEngine
 									}
 									else
 									{
-										Console::LogWarning("Dropped GameObject does not have the required component type: " + refTypeName);
+										LOG_WARNING("Dropped GameObject does not have the required component type: " + refTypeName);
 									}
 								}
 								else
 								{
-									Console::LogWarning("Dropped GameObject not found: " + std::to_string(droppedId.Value()));
+									LOG_WARNING("Dropped GameObject not found: " + std::to_string(droppedId.Value()));
 								}
 							}
 						}

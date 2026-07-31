@@ -253,7 +253,7 @@ bool Shader::CompileShader(const std::string& filePath, const std::string& entry
 		if (errorBlob)
 		{
 			OutputDebugStringA(static_cast<char*>(errorBlob->GetBufferPointer()));
-			Console::LogError(static_cast<char*>(errorBlob->GetBufferPointer()));
+			LOG_ERROR(static_cast<char*>(errorBlob->GetBufferPointer()));
 			errorBlob->Release();
 		}
 		return false;
@@ -283,12 +283,12 @@ bool Shader::ReflectAndCreateShader(ID3D11Device* device, const std::string& fil
 	// シェーダーオブジェクトの生成
 	if (!CreateShader(device, pReflection, shaderDesc, pShaderBytecode, BytecodeLength))
 	{
-		Console::LogError("CreateShader faild!");
+		LOG_ERROR("CreateShader faild!");
 		return false;
 	}
 
-	//Console::Log("Shader Loaded");
-	//Console::Log(std::format("Shader Loaded: {} (EntryPoint: {}, Target: {})", filePath, entryPoint, shaderTarget));
+	//LOG_INFO("Shader Loaded");
+	//LOG_INFO(std::format("Shader Loaded: {} (EntryPoint: {}, Target: {})", filePath, entryPoint, shaderTarget));
 	return hr == S_OK;
 }
 
@@ -370,7 +370,7 @@ void Shader::ReflectConstantBufferLayouts(ID3D11ShaderReflection* pReflection, D
 		// TODO: この関数内で定数バッファ以外も処理する場合はここを変更
 		if (cbDesc.Type != D3D_CT_CBUFFER)
 		{
-			Console::LogWarning(std::format("Skipping non-constant buffer: {}", cbDesc.Name));
+			LOG_WARNING(std::format("Skipping non-constant buffer: {}", cbDesc.Name));
 			continue; // 定数バッファ以外はスキップ
 		}
 

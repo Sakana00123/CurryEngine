@@ -67,7 +67,7 @@ void Collider::Start()
 	// 物理エンジンに該当のマテリアルが存在するか確認し、存在しない場合はデフォルトマテリアルにフォールバックする
 	if (!Physics::GetMaterial(m_materialHandle))
 	{
-		Console::LogWarning("MaterialHandle " + std::to_string(m_materialHandle) + " not found. Falling back to default material.");
+		LOG_WARNING("MaterialHandle " + std::to_string(m_materialHandle) + " not found. Falling back to default material.");
 		m_materialHandle = DEFAULT_MATERIAL_HANDLE;
 	}
 }
@@ -251,7 +251,7 @@ void Collider::DrawProperty(const PropertyDrawContext& context)
 	// 物理エンジンに該当のマテリアルが存在するか確認し、存在しない場合はデフォルトマテリアルにフォールバックする
 	if (!Physics::GetMaterial(m_materialHandle))
 	{
-		Console::LogWarning("MaterialHandle " + std::to_string(m_materialHandle) + " not found. Falling back to default material.");
+		LOG_WARNING("MaterialHandle " + std::to_string(m_materialHandle) + " not found. Falling back to default material.");
 		m_materialHandle = DEFAULT_MATERIAL_HANDLE;
 	}
 
@@ -348,7 +348,7 @@ void Collider::OnCollisionEnter(const CollisionInfo& info)
 	}
 	/*if (!onCollisionEnterEvents.empty())
 	{
-		Console::Log("OnCollisionEnter: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
+		LOG_INFO("OnCollisionEnter: " + GetOwner()->name + " hit " + info.other->name + " by " + info.self->name);
 	}*/
 }
 

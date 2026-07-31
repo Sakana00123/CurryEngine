@@ -534,7 +534,7 @@ json GameObject::Serialize() const {
         visited.insert(currentClass);
         auto* meta = ReflectionRegistry::FindClass(currentClass);
         if (!meta) {
-            Console::LogWarning("Reflection metadata not found for class: " + currentClass);
+            LOG_WARNING("Reflection metadata not found for class: " + currentClass);
             continue; // メタデータが見つからない場合はスキップ
 		}
 
@@ -594,7 +594,7 @@ json GameObject::Serialize() const {
                     const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
                     if (!typeInfo)
                     {
-                        Console::LogWarning("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + component->name);
+                        LOG_WARNING("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + component->name);
                         continue;
                     }
 
@@ -626,7 +626,7 @@ json GameObject::Serialize() const {
                 visited.insert(currentClass);
                 auto* meta = ReflectionRegistry::FindClass(currentClass);
                 if (!meta) {
-                    Console::LogWarning("Reflection metadata not found for class: " + currentClass);
+                    LOG_WARNING("Reflection metadata not found for class: " + currentClass);
                     continue; // メタデータが見つからない場合はスキップ
                 }
 
@@ -646,7 +646,7 @@ json GameObject::Serialize() const {
                     const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
                     if (!typeInfo)
                     {
-                        Console::LogWarning("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + component->name);
+                        LOG_WARNING("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + component->name);
                         continue;
                     }
 
@@ -674,7 +674,7 @@ json GameObject::Serialize() const {
                 if (!ComponentFactory::Exists(component->name))
                 {
 					// 登録されてないコンポーネントの場合はログを出してスキップ
-					Console::LogError("Object::Serialize: Unknown component type: " + component->name);
+					LOG_ERROR("Object::Serialize: Unknown component type: " + component->name);
                     continue;
                 }
 				else // 登録されているコンポーネントの場合は配列に追加
@@ -743,7 +743,7 @@ void GameObject::Deserialize(const json& j)
         visited.insert(currentClass);
         auto* meta = ReflectionRegistry::FindClass(currentClass);
         if (!meta) {
-            Console::LogWarning("Reflection metadata not found for class: " + currentClass);
+            LOG_WARNING("Reflection metadata not found for class: " + currentClass);
             continue; // メタデータが見つからない場合はスキップ
         }
 
@@ -820,7 +820,7 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
                             }
                         }
                         if (exists) {
-                            Console::LogError("GameObject::DeserializeComponents: Multiple components of type " + type + " are not allowed. Skipping.");
+                            LOG_ERROR("GameObject::DeserializeComponents: Multiple components of type " + type + " are not allowed. Skipping.");
                             continue; // 同じ型のコンポーネントがすでに存在する場合はスキップ
 						}
                     }
@@ -829,7 +829,7 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
 
                 if (!component)
                 {
-                    Console::LogError("GameObject::DeserializeComponents: Failed to create component of type: " + type);
+                    LOG_ERROR("GameObject::DeserializeComponents: Failed to create component of type: " + type);
                     continue;
 				}
 
@@ -899,7 +899,7 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
                         const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
                         if (!typeInfo)
                         {
-                            Console::LogWarning("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + type);
+                            LOG_WARNING("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + type);
                             continue;
                         }
                         // デシリアライズ実行
@@ -923,7 +923,7 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
                     visited.insert(currentClass);
                     auto* meta = ReflectionRegistry::FindClass(currentClass);
                     if (!meta) {
-                        Console::LogWarning("Reflection metadata not found for class: " + currentClass);
+                        LOG_WARNING("Reflection metadata not found for class: " + currentClass);
                         continue; // メタデータが見つからない場合はスキップ
                     }
 
@@ -943,7 +943,7 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
                         const auto* typeInfo = TypeSerializerRegistry::Find(prop.type);
                         if (!typeInfo)
                         {
-                            Console::LogWarning("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + type);
+                            LOG_WARNING("Unsupported type: " + prop.type + " for property: " + prop.name + " in component: " + type);
                             continue;
                         }
                         // デシリアライズ実行

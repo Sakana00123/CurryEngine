@@ -343,7 +343,7 @@ void SimulationEventCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU3
 		if (processedPairs.contains(pairKey))
 		{
 			// すでに処理されたペアの場合はスキップ
-			Console::LogWarning(std::format("Duplicate trigger event detected for actors: {} and {}. Skipping duplicate event.", triggerActorPtr, otherActorPtr));
+			LOG_WARNING(std::format("Duplicate trigger event detected for actors: {} and {}. Skipping duplicate event.", triggerActorPtr, otherActorPtr));
 			continue;
 		}
 		// ペアを処理した後、セットに追加して重複処理を防止
@@ -513,7 +513,7 @@ void Physics::Initialize()
 		_ASSERT_EXPR(pxPvdTransport != nullptr, "PxDefaultPvdSocketTransportCreate failed!");
 
 		bool connected = pxPvd->connect(*pxPvdTransport, physx::PxPvdInstrumentationFlag::eALL);
-		Console::LogWarning(connected ? "Connected to PhysX Visual Debugger." : "Failed to connect to PhysX Visual Debugger.");
+		LOG_WARNING(connected ? "Connected to PhysX Visual Debugger." : "Failed to connect to PhysX Visual Debugger.");
 	}
 
 	// 物理エンジン生成
@@ -1300,20 +1300,20 @@ void Physics::DrawGUI()
 				// Componentから取得するときは、GetOwner()->GetScene()などを経由してシーンを取得することもできます。
 				SceneManager::GetLoadingSceneOrCurrentScene()->GetCameraSystem()->GetMainCamera()->ScreenPointToRay(rayStartScreen, rayStart, rayDir); // 現在のシーンのカメラシステムからスクリーン座標からレイを計算する
 
-				Console::Log(std::format("Ray Start: ({}, {}, {}), Ray Dir: ({}, {}, {})", rayStart.x, rayStart.y, rayStart.z, rayDir.x, rayDir.y, rayDir.z));
+				LOG_INFO(std::format("Ray Start: ({}, {}, {}), Ray Dir: ({}, {}, {})", rayStart.x, rayStart.y, rayStart.z, rayDir.x, rayDir.y, rayDir.z));
 
 				float rayLength = 1000.0f; // レイの長さ
 				RaycastHit hitInfo;
 				if (Raycast(rayStart, rayDir, rayLength, hitInfo, LayerMasks::Everything))
 				{
-					Console::Log(std::format("Raycast hit at position: ({}, {}, {})", hitInfo.point.x, hitInfo.point.y, hitInfo.point.z));
-					Console::Log(std::format("Hit Normal: ({}, {}, {})", hitInfo.normal.x, hitInfo.normal.y, hitInfo.normal.z));
-					Console::Log(std::format("Hit Distance: {}", hitInfo.distance));
-					Console::Log(std::format("Hit Collider: {}", hitInfo.collider ? hitInfo.collider->GetOwner()->GetName() : "Null"));
+					LOG_INFO(std::format("Raycast hit at position: ({}, {}, {})", hitInfo.point.x, hitInfo.point.y, hitInfo.point.z));
+					LOG_INFO(std::format("Hit Normal: ({}, {}, {})", hitInfo.normal.x, hitInfo.normal.y, hitInfo.normal.z));
+					LOG_INFO(std::format("Hit Distance: {}", hitInfo.distance));
+					LOG_INFO(std::format("Hit Collider: {}", hitInfo.collider ? hitInfo.collider->GetOwner()->GetName() : "Null"));
 				}
 				else
 				{
-					Console::Log("Raycast did not hit anything.");
+					LOG_INFO("Raycast did not hit anything.");
 				}
 			}
 		}
@@ -2210,18 +2210,18 @@ void Physics::SetMass(const ActorHandle& handle, float mass)
 		if (std::isinf(mass) || std::isnan(mass))
 		{
 			mass = 0.0001f; // 質量が無限大またはNaNの場合は最小値にクランプして設定する
-			Console::LogWarning("Invalid mass value! Mass must be finite and non-NaN. Mass has been clamped to 0.0001.");
+			LOG_WARNING("Invalid mass value! Mass must be finite and non-NaN. Mass has been clamped to 0.0001.");
 		}
 		if (dynamicActor->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION)
 		{
 			// シミュレーションが無効なActorの場合は質量を設定しても意味がないため、質量を設定せずに終了する
-			Console::LogWarning("Attempted to set mass on an actor with simulation disabled! Mass will not be set.");
+			LOG_WARNING("Attempted to set mass on an actor with simulation disabled! Mass will not be set.");
 			return;
 		}
 		if (dynamicActor->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC)
 		{
 			// キネマティックなActorの場合は質量を設定しても意味がないため、質量を設定せずに終了する
-			Console::LogWarning("Attempted to set mass on a kinematic actor! Mass will not be set.");
+			LOG_WARNING("Attempted to set mass on a kinematic actor! Mass will not be set.");
 			return;
 		}
 
@@ -2243,7 +2243,7 @@ void Physics::SetInertiaTensor(const ActorHandle& handle, const Vector3& inertia
 			std::isinf(inertiaTensor.z) || std::isnan(inertiaTensor.z))
 		{
 			// 慣性テンソルのいずれかの成分が無限大またはNaNの場合は、慣性テンソルを設定せずに終了する
-			Console::LogError("Invalid inertia tensor value! Inertia tensor components must be finite and non-NaN. Inertia tensor will not be set.");
+			LOG_ERROR("Invalid inertia tensor value! Inertia tensor components must be finite and non-NaN. Inertia tensor will not be set.");
 			return;
 		}
 
@@ -2612,7 +2612,7 @@ void Physics::SetKinematicTarget(const ActorHandle& handle, const Vector3& pos, 
 	{
 		if (dynamicActor->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION)
 		{
-			Console::LogWarning("Attempting to set kinematic target on an actor that is disabled for simulation. This will have no effect.");
+			LOG_WARNING("Attempting to set kinematic target on an actor that is disabled for simulation. This will have no effect.");
 			return; // シミュレーションが無効なActorに対してキネマティックターゲットを設定しようとした場合は警告を出して処理をスキップする
 		}
 		physx::PxQuat quat = ToPxQuat(rot);

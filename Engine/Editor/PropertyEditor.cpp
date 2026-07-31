@@ -451,7 +451,7 @@ namespace CurryEngine
 			{
 				if (referenceAttr->args.empty())
 				{
-					//Console::LogWarning("ObjectReference attribute on property: " + prop->name + " in component: " + name + " is missing the reference type argument.");
+					//LOG_WARNING("ObjectReference attribute on property: " + prop->name + " in component: " + name + " is missing the reference type argument.");
 					ImGui::PopID();
 					return;
 				}
@@ -523,12 +523,12 @@ namespace CurryEngine
 										}
 										else
 										{
-											Console::LogWarning("Dropped GameObject does not have the required component type: " + refTypeName);
+											LOG_WARNING("Dropped GameObject does not have the required component type: " + refTypeName);
 										}
 									}
 									else
 									{
-										Console::LogWarning("Dropped GameObject not found: " + std::to_string(droppedId.Value()));
+										LOG_WARNING("Dropped GameObject not found: " + std::to_string(droppedId.Value()));
 									}
 									value = newComponentId; // フィールドにドロップされたコンポーネントの ObjectId を設定
 									std::string refTypeDisplay = (refTypeName == "GameObject") ? "GameObject" : ("Component(" + refTypeName + ")");
@@ -715,7 +715,7 @@ namespace CurryEngine
 		}
 		else
 		{
-			//Console::LogWarning("Unsupported property type: " + prop->type + " for property: " + prop->name + " in component: " + name);
+			//LOG_WARNING("Unsupported property type: " + prop->type + " for property: " + prop->name + " in component: " + name);
 		}
 
 		ImGui::PopID();

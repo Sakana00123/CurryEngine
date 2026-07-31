@@ -59,5 +59,5 @@ void BeatScaler2DComponent::OnBeat()
 	}
 	// ターゲットスケールを更新
 	targetScale = baseScale * (1.0f + scaleIntensity);
-	//Console::Log("OnBeat");
+	//LOG_INFO("OnBeat");
 }

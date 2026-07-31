@@ -200,12 +200,12 @@ struct MethodInfo
 			}
 			catch (const std::bad_any_cast& e)
 			{
-				Console::LogError("Failed to cast method return value: " + std::string(e.what()));
+				LOG_ERROR("Failed to cast method return value: " + std::string(e.what()));
 			}
 		}
 		else
 		{
-			Console::LogError("Method did not return a value.");
+			LOG_ERROR("Method did not return a value.");
 		}
 	}
 };

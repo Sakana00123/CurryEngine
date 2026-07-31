@@ -69,9 +69,9 @@ void C3DAudio::Culculate3DAudio(GameObject* source)
 			&dspSettings);
 
 		// 計算結果のログ出力（デバッグ用）
-		Console::Log("Left Volume: " + std::to_string(dspSettings.pMatrixCoefficients[0]));
-		Console::Log("Right Volume: " + std::to_string(dspSettings.pMatrixCoefficients[1]));
-		Console::Log("Doppler Factor: " + std::to_string(dspSettings.DopplerFactor));
+		LOG_INFO("Left Volume: " + std::to_string(dspSettings.pMatrixCoefficients[0]));
+		LOG_INFO("Right Volume: " + std::to_string(dspSettings.pMatrixCoefficients[1]));
+		LOG_INFO("Doppler Factor: " + std::to_string(dspSettings.DopplerFactor));
 
 		//AudioSourceコンポーネントを取得
 		if (AudioSource* audioSource = source->GetComponent<AudioSource>())

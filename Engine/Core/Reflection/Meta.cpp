@@ -8,7 +8,7 @@ std::any MethodInfo::Invoke(void* instance, std::vector<std::any> args) const
 	{
 		return invoker(instance, args);
 	}
-	Console::LogError("Method does not return a value or invoker is not set.");
+	LOG_ERROR("Method does not return a value or invoker is not set.");
 	return std::any(); // 戻り値なし（void）や invoker が未設定の場合は空の any を返す
 }
 
@@ -20,7 +20,7 @@ void MethodInfo::InvokeVoid(void* instance, std::vector<std::any> args) const
 	}
 	else
 	{
-		Console::LogError("Method does not return a value or invoker is not set.");
+		LOG_ERROR("Method does not return a value or invoker is not set.");
 	}
 }
 
@@ -79,19 +79,19 @@ const MethodInfo* ClassMeta::FindMethod(const std::string& methodName) const
 void ReflectionRegistry::Register(const ClassMeta& meta)
 {
 	GetClassRegistry()[meta.name] = meta;
-	Console::Log("class: " + meta.name + ", fields: " + std::to_string(meta.properties.size()) + ", methods: " + std::to_string(meta.methods.size()));
+	LOG_INFO("class: " + meta.name + ", fields: " + std::to_string(meta.properties.size()) + ", methods: " + std::to_string(meta.methods.size()));
 }
 
 void ReflectionRegistry::RegisterEnum(const EnumInfo& meta)
 {
 	GetEnumRegistry()[meta.name] = meta;
-	Console::Log("enum: " + meta.name + ", values: " + std::to_string(meta.values.size()));
+	LOG_INFO("enum: " + meta.name + ", values: " + std::to_string(meta.values.size()));
 }
 
 void ReflectionRegistry::RegisterStruct(const StructInfo& meta)
 {
 	GetStructRegistry()[meta.name] = meta;
-	Console::Log("struct: " + meta.name + ", fields: " + std::to_string(meta.properties.size()));
+	LOG_INFO("struct: " + meta.name + ", fields: " + std::to_string(meta.properties.size()));
 }
 
 const ClassMeta* ReflectionRegistry::FindClass(const std::string& name)

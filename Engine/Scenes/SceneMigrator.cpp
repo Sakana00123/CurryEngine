@@ -20,7 +20,7 @@ bool SceneMigrator::Migrate(ObjectManager* objectManager)
     // ② 変換表を使って親子参照を書き換える
     ApplyRemap(objectManager, remap);
 
-    Console::Log("[SceneMigrator] Migrated " +
+    LOG_INFO("[SceneMigrator] Migrated " +
                  std::to_string(remap.size()) + " legacy ID(s).");
     return true;
 }

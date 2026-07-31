@@ -63,7 +63,7 @@ void Button::UpdateInfo(EventInfo& info)
 				else {
 					if (typeStr != "void")
 					{
-						Console::LogWarning("Unsupported parameter type for Button event: " + typeStr);
+						LOG_WARNING("Unsupported parameter type for Button event: " + typeStr);
 					}
 					info.value.second.reset();
 				}

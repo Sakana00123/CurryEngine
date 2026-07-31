@@ -28,7 +28,7 @@ void MeshCollider::Register()
 		if (!convex && !rigidbody->IsKinematic())
 		{
 			rigidbody->SetKinematic(true);
-			Console::LogError("MeshCollider with non-convex mesh must be used with a kinematic Rigidbody. The Rigidbody has been set to kinematic automatically.");
+			LOG_ERROR("MeshCollider with non-convex mesh must be used with a kinematic Rigidbody. The Rigidbody has been set to kinematic automatically.");
 		}
 	}
 
@@ -190,7 +190,7 @@ void MeshCollider::Register()
 			if (!Physics::AddConvexMeshShape(GetTransform(), data, m_shapeHandle))
 			{
 				// 追加に失敗した場合のエラーハンドリング
-				Console::LogError("Failed to add MeshCollider shape to physics engine.");
+				LOG_ERROR("Failed to add MeshCollider shape to physics engine.");
 			}
 		}
 		else
@@ -199,13 +199,13 @@ void MeshCollider::Register()
 			if (!Physics::AddTriangleMeshShape(GetTransform(), data, m_shapeHandle))
 			{
 				// 追加に失敗した場合のエラーハンドリング
-				Console::LogError("Failed to add MeshCollider shape to physics engine.");
+				LOG_ERROR("Failed to add MeshCollider shape to physics engine.");
 			}
 		}
 	}
 	else
 	{
-		Console::LogWarning("MeshCollider requires a GltfModelRenderer component to obtain the mesh asset path.");
+		LOG_WARNING("MeshCollider requires a GltfModelRenderer component to obtain the mesh asset path.");
 		return;
 	}
 }

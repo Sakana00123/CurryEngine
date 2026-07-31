@@ -13,14 +13,14 @@ static int g_globalInstanceID = 0; // グローバルなインスタンスIDカ�
 int GenerateInstanceID()
 {
     int newID = g_globalInstanceID++; // カウンタをインクリメントして新しいIDを取得
-    Console::Log("Generated new instance ID: " + std::to_string(newID));
+    LOG_INFO("Generated new instance ID: " + std::to_string(newID));
     return newID;
 }
 
 int GetCurrentInstanceID()
 {
     int currentID = g_globalInstanceID;
-    Console::Log("Current instance ID counter value: " + std::to_string(currentID));
+    LOG_INFO("Current instance ID counter value: " + std::to_string(currentID));
     return currentID; // 現在のカウンタ値を取得
 }
 
@@ -32,9 +32,9 @@ void ResetInstanceID(int id)
     int oldID = g_globalInstanceID;// カウンタをリセット
     g_globalInstanceID = id;
     if (id < oldID) {
-        Console::Log("Instance ID counter reset to " + std::to_string(id) + " (previously " + std::to_string(oldID) + ")");
+        LOG_INFO("Instance ID counter reset to " + std::to_string(id) + " (previously " + std::to_string(oldID) + ")");
     }
     else {
-        Console::Log("Instance ID counter set to " + std::to_string(id) + " (previously " + std::to_string(oldID) + ")");
+        LOG_INFO("Instance ID counter set to " + std::to_string(id) + " (previously " + std::to_string(oldID) + ")");
     }
 }

@@ -17,7 +17,7 @@ void ComponentFactory::Register(
 std::shared_ptr<Component> ComponentFactory::Create(const std::string& name)
 {
 	if (Registry().find(name) == Registry().end()) {
-		Console::LogError("ComponentFactory: Unknown component type: " + name);
+		LOG_ERROR("ComponentFactory: Unknown component type: " + name);
 		return nullptr;
 	}
 	auto& entry = Registry().at(name);

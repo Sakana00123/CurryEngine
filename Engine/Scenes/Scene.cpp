@@ -218,7 +218,7 @@ void Scene::Serialize(json& j) const
 
 	// 次のインスタンスIDを保存
 	//int nextId = GetCurrentInstanceID();
-	//Console::Log("Serializing scene: saving next instance ID " + std::to_string(nextId));
+	//LOG_INFO("Serializing scene: saving next instance ID " + std::to_string(nextId));
 	//j["nextInstanceId"] = nextId;
 
 }
@@ -230,7 +230,7 @@ void Scene::Deserialize(const json& j) {
 	// 次のインスタンスIDを復元
 	//if (j.contains("nextInstanceId")) {
 	//	int nextId = j["nextInstanceId"].get<int>();
-	//	Console::Log("Deserializing scene: resetting instance ID counter to " + std::to_string(nextId));
+	//	LOG_INFO("Deserializing scene: resetting instance ID counter to " + std::to_string(nextId));
 	//	ResetInstanceID(nextId);
 	//}
 

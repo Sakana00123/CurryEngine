@@ -56,7 +56,7 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 							prop->setter(this, pair.second); /*プロパティの値を変更*/ \
 						} \
 						else { \
-							Console::LogError("Property not found: " + pair.first); /*プロパティが見つからない場合はエラーログを出力*/ \
+							LOG_ERROR("Property not found: " + pair.first); /*プロパティが見つからない場合はエラーログを出力*/ \
 						} \
 					} \
 				}, \

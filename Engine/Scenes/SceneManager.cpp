@@ -174,7 +174,7 @@ void SceneManager::Update(float deltaTime)
 	// シーン遷移中は更新処理をスキップ
 	/*if (IsTransition())
 	{
-		Console::LogWarning("Scene transition in progress. Update skipped.");
+		LOG_WARNING("Scene transition in progress. Update skipped.");
 		return;
 	}*/
 

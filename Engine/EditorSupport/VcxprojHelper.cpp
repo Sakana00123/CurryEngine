@@ -103,16 +103,16 @@ void VcxprojHelper::ProcessPendingShaderRegistrations()
 		// hlsl と hlsli を分けて登録する
         if (shaderPath.extension() == ".hlsl") {
             if (!RegisterHLSLShader(shaderPath)) {
-                Console::LogError("Failed to register shader: " + shaderPath.string());
+                LOG_ERROR("Failed to register shader: " + shaderPath.string());
             }
         }
         else if (shaderPath.extension() == ".hlsli") {
             if (!RegisterHLSLIFile(shaderPath)) {
-                Console::LogError("Failed to register HLSLI file: " + shaderPath.string());
+                LOG_ERROR("Failed to register HLSLI file: " + shaderPath.string());
             }
         }
         else {
-            Console::LogError("Unsupported shader file type: " + shaderPath.string());
+            LOG_ERROR("Unsupported shader file type: " + shaderPath.string());
 		}
         s_pendingShaderRegistrations.pop();
     }
@@ -131,7 +131,7 @@ void VcxprojHelper::ProcessPendingShaderUnregistrations()
             UnregisterHLSLIFile(shaderPath);
         }
         else {
-            Console::LogError("Unsupported shader file type for unregistration: " + shaderPath.string());
+            LOG_ERROR("Unsupported shader file type for unregistration: " + shaderPath.string());
         }
         s_pendingShaderUnregistrations.pop();
     }
@@ -162,7 +162,7 @@ bool VcxprojHelper::RegisterHLSLShader(const std::filesystem::path& shaderPath)
     // --- 4. 挿入XMLを組み立て ---
     std::string shaderType = ShaderTypeString(shaderPath);
     if (shaderType == "Unknown") {
-        Console::LogError("Unrecognized shader type for file: " + shaderPath.string());
+        LOG_ERROR("Unrecognized shader type for file: " + shaderPath.string());
         return false;
 	}
     std::string entry =
@@ -198,7 +198,7 @@ bool VcxprojHelper::RegisterHLSLShader(const std::filesystem::path& shaderPath)
 
 	//// --- 7. Visual Studio にリロードを促す ---
  //   if (!VSProjectReloader::ReloadProject(vcxprojPath.wstring())) {
- //       Console::LogError("Failed to reload project in Visual Studio: " + vcxprojPath.string());
+ //       LOG_ERROR("Failed to reload project in Visual Studio: " + vcxprojPath.string());
  //       return false;
 	//}
 
@@ -264,7 +264,7 @@ bool VcxprojHelper::RegisterHLSLIFile(const std::filesystem::path& shaderPath)
 
  //   // --- 7. Visual Studio にリロードを促す ---
  //   if (!VSProjectReloader::ReloadProject(vcxprojPath.wstring())) {
- //       Console::LogError("Failed to reload project in Visual Studio: " + vcxprojPath.string());
+ //       LOG_ERROR("Failed to reload project in Visual Studio: " + vcxprojPath.string());
  //       return false;
 	//}
 

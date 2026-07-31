@@ -184,7 +184,7 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 		}
 	}
 	// 読み込み失敗
-	Console::LogError("Failed to load effect data from file: " + filePath);
+	LOG_ERROR("Failed to load effect data from file: " + filePath);
 	return -1; // 無効なハンドルを返す
 }
 
@@ -331,7 +331,7 @@ int EffectManager::Play(EffectHandle handle, const Vector3& pos, const Vector3& 
 	// ハンドルチェック
 	if (handle < 0 || handle >= static_cast<EffectHandle>(effectData.size()))
 	{
-		Console::LogError("EffectManager::Play: Invalid effect handle " + std::to_string(handle));
+		LOG_ERROR("EffectManager::Play: Invalid effect handle " + std::to_string(handle));
 		return -1; // 無効な再生インスタンスIDを返す
 	}
 
@@ -397,7 +397,7 @@ void EffectManager::Stop(EffectHandle handle)
 	// ハンドルチェック
 	if (handle < 0 || handle >= static_cast<EffectHandle>(effectData.size()))
 	{
-		Console::LogError("EffectManager::Stop: Invalid effect handle " + std::to_string(handle));
+		LOG_ERROR("EffectManager::Stop: Invalid effect handle " + std::to_string(handle));
 		return;
 	}
 	// 再生中のエミッタを停止
@@ -427,7 +427,7 @@ bool EffectManager::IsPlaying(EffectHandle handle)
 	// ハンドルチェック
 	if (handle < 0 || handle >= static_cast<EffectHandle>(effectData.size()))
 	{
-		Console::LogError("EffectManager::IsPlaying: Invalid effect handle " + std::to_string(handle));
+		LOG_ERROR("EffectManager::IsPlaying: Invalid effect handle " + std::to_string(handle));
 		return false;
 	}
 	// 再生中のエミッタが存在するかチェック
@@ -446,7 +446,7 @@ EffectHandle EffectManager::CopyEffectData(EffectHandle srcHandle)
 	// エフェクトデータコピー
 	if (srcHandle < 0 || srcHandle >= static_cast<EffectHandle>(effectData.size()))
 	{
-		Console::LogError("EffectManager::CopyEffectData: Invalid effect handle " + std::to_string(srcHandle));
+		LOG_ERROR("EffectManager::CopyEffectData: Invalid effect handle " + std::to_string(srcHandle));
 		return -1; // 無効なハンドルを返す
 	}
 	// 新しいエフェクトデータ追加用のハンドル
@@ -613,7 +613,7 @@ void EffectManager::EmitOnce(const EmitterPlayState& state)
 
 	if (particleSystemList.find(state.emitterIndex) == particleSystemList.end())
 	{
-		Console::LogError("EffectManager::EmitOnce: Particle system not found for effect " + effectFilePath + " emitter index " + std::to_string(state.emitterIndex));
+		LOG_ERROR("EffectManager::EmitOnce: Particle system not found for effect " + effectFilePath + " emitter index " + std::to_string(state.emitterIndex));
 		return;
 	}
 

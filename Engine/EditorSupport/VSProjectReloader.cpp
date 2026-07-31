@@ -130,7 +130,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
 		//	}
   //      }
 		//if (!targetProject) {
-		//	Console::LogError("Project not found in Visual Studio: " + std::string(vcxprojPath.begin(), vcxprojPath.end()));
+		//	LOG_ERROR("Project not found in Visual Studio: " + std::string(vcxprojPath.begin(), vcxprojPath.end()));
 		//	break;
 		//}
 
@@ -145,7 +145,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
 		//if (FAILED(hrUnload)) {
 		//	wchar_t buf[64];
 		//	swprintf_s(buf, L"0x%08X", (unsigned)hrUnload);
-		//	Console::LogError("Failed to unload project (HRESULT: "
+		//	LOG_ERROR("Failed to unload project (HRESULT: "
 		//		+ std::string(buf, buf + wcslen(buf)) + "): "
 		//		+ std::string(targetFullName.begin(), targetFullName.end()));
 		//	break;
@@ -158,7 +158,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
 		//argReload.bstrVal = SysAllocString(targetFullName.c_str());
 
 		//if (FAILED(DispCall(solution, L"ReloadProject", &argReload, 1))) {
-		//	Console::LogError("Failed to reload project: " + std::string(targetFullName.begin(), targetFullName.end()));
+		//	LOG_ERROR("Failed to reload project: " + std::string(targetFullName.begin(), targetFullName.end()));
 		//	break;
 		//}
 		//SysFreeString(argReload.bstrVal);
@@ -236,7 +236,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
             }
         }
         if (!targetNode) {
-            Console::LogError("Project node not found in SolutionExplorer");
+            LOG_ERROR("Project node not found in SolutionExplorer");
             break;
         }
 
@@ -263,7 +263,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
             if (FAILED(hr)) {
                 wchar_t buf[64];
                 swprintf_s(buf, L"0x%08X", (unsigned)hr);
-                Console::LogError("Failed to execute command '" + std::string(cmd, cmd + wcslen(cmd)) + "' (HRESULT: "
+                LOG_ERROR("Failed to execute command '" + std::string(cmd, cmd + wcslen(cmd)) + "' (HRESULT: "
                     + std::string(buf, buf + wcslen(buf)) + ")");
             }
 
@@ -271,7 +271,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
             };
 
         if (FAILED(ExecuteCommand(L"Project.UnloadProject"))) {
-            Console::LogError("Failed to execute UnloadProject");
+            LOG_ERROR("Failed to execute UnloadProject");
             break;
         }
 
@@ -279,7 +279,7 @@ bool VSProjectReloader::ReloadProject(const std::wstring& vcxprojPath)
         Sleep(200);
 
         if (FAILED(ExecuteCommand(L"Project.ReloadProject"))) {
-            Console::LogError("Failed to execute ReloadProject");
+            LOG_ERROR("Failed to execute ReloadProject");
             break;
         }
 

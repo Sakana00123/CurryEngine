@@ -12,7 +12,7 @@ bool ScriptWatcher::Start(
 	ReloadCallback onReloaded)
 {
 	if (m_running) {
-		Console::LogWarning("[ScriptWatcher] Already running.");
+		LOG_WARNING("[ScriptWatcher] Already running.");
 		return false;
 	}
 	m_watchDir = watchDir;
@@ -31,7 +31,7 @@ void ScriptWatcher::Stop()
 	m_buildCv.notify_all(); // ビルドスレッドが待機している可能性があるので通知して起こす
 	if (m_buildThread.joinable()) m_buildThread.join();
 	if (m_watchThread.joinable()) m_watchThread.join();
-	Console::Log("[ScriptWatcher] Stopped.");
+	LOG_INFO("[ScriptWatcher] Stopped.");
 }
 
 void ScriptWatcher::WatchLoop()
@@ -54,7 +54,7 @@ void ScriptWatcher::WatchLoop()
 		char buf[256];
 		sprintf_s(buf, "[ScriptWatcher] Failed error=%lu",
 			err);
-		Console::LogError(buf);
+		LOG_ERROR(buf);
 		return;
 	}
 
@@ -128,7 +128,7 @@ void ScriptWatcher::WatchLoop()
 				std::filesystem::path relativePath(fileName);
 
 				if (IsValidCsFile(relativePath)) {
-					Console::Log(u8"[ScriptWatcher] 変更検知: "
+					LOG_INFO(u8"[ScriptWatcher] 変更検知: "
 						+ relativePath.u8string());
 					RequestBuild();
 				}
@@ -165,12 +165,12 @@ void ScriptWatcher::BuildLoop()
 		
 		// ビルドを実行
 		if (!BuildProjects()) {
-			Console::LogError(u8"[ScriptWatcher] ビルドに失敗しました。スクリプトはリロードされません。");
+			LOG_ERROR(u8"[ScriptWatcher] ビルドに失敗しました。スクリプトはリロードされません。");
 			continue;
 		}
 
 		// ビルド成功時はスクリプトをリロード
-		Console::Log(u8"[ScriptWatcher] ビルド成功。スクリプトをリロードします。");
+		LOG_INFO(u8"[ScriptWatcher] ビルド成功。スクリプトをリロードします。");
 		m_onReloaded();
 	}
 }
@@ -188,7 +188,7 @@ bool ScriptWatcher::BuildProjects()
 
 bool ScriptWatcher::BuildProject(const BuildCommand& command)
 {
-	Console::Log(u8"[ScriptWatcher] Building project: " + command.projectPath.u8string());
+	LOG_INFO(u8"[ScriptWatcher] Building project: " + command.projectPath.u8string());
 	std::wstring args = std::wstring(command.additionalArgs.begin(), command.additionalArgs.end());
 	std::wstring cmd = L"dotnet build \"" + command.projectPath.wstring()
 		+ L"\" " + args;
@@ -207,15 +207,15 @@ bool ScriptWatcher::BuildProject(const BuildCommand& command)
 		// ビルド出力を解析してエラーや警告をログに出す
 		if (s.find("error") != std::string::npos ||
 			s.find("Error") != std::string::npos) {
-			Console::LogError("[Build] " + s);
+			LOG_ERROR("[Build] " + s);
 			hasError = true;
 		}
 		else if (s.find("warning") != std::string::npos ||
 			s.find("Warning") != std::string::npos) {
-			Console::LogWarning("[Build] " + s);
+			LOG_WARNING("[Build] " + s);
 		}
 		else if (!s.empty()) {
-			Console::Log("[Build] " + s);
+			LOG_INFO("[Build] " + s);
 		}
 	}
 
