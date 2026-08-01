@@ -51,9 +51,9 @@ BuildOutput/
 imgui.ini
 CurryEngine/x64/
 Document/latex/
-EngineAPI/obj/
-UserScripts/obj/
+CurryEngine.Runtime/obj/
 CurryEngine.API/obj/
+UserScripts/obj/
 Generated/
 Assets/Saves/Achievements.json
 Assets/Saves/Achievements.bin

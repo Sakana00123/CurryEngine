@@ -12,55 +12,55 @@
 class CSharpGenerater
 {
 public:
-    // outputDir  : ¶¬ƒtƒ@ƒCƒ‹‚Ìo—Íæ
-    // typeMapPath: type_map.json ‚ÌƒpƒX
-    // nmNamespace: NativeMethods ‚Ì–¼‘O‹óŠÔ (—á: "CurryEngine.Interop")
-    // csNamespace: ƒ‰ƒbƒp[ƒNƒ‰ƒX‚Ì–¼‘O‹óŠÔ (—á: "CurryEngine")
+    // outputDir  : ç”Ÿæˆãƒ•ã‚¡ã‚¤ãƒ«ã®å‡ºåŠ›å…ˆ
+    // typeMapPath: type_map.json ã®ãƒ‘ã‚¹
+    // nmNamespace: NativeMethods ã®åå‰ç©ºé–“ (ä¾‹: "CurryEngine.Interop")
+    // csNamespace: ãƒ©ãƒƒãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹ã®åå‰ç©ºé–“ (ä¾‹: "CurryEngine")
     CSharpGenerater(
         const std::string& outputDir,
         const std::string& typeMapPath,
-        const std::string& nmNamespace = "CurryEngine.Interop",
+        const std::string& nmNamespace = "CurryEngine.Runtime.Native",
         const std::string& csNamespace = "CurryEngine"
     );
 
-    // FileInfo ƒŠƒXƒg‚©‚ç‘Sƒtƒ@ƒCƒ‹‚ğ¶¬
+    // FileInfo ãƒªã‚¹ãƒˆã‹ã‚‰å…¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆ
     void Generate(const std::vector<FileInfo>& files);
 
 private:
     std::string outputDirectory;
-    std::string nmNamespace; // NativeMethods ‚Ì–¼‘O‹óŠÔ
-    std::string csNamespace; // ƒ‰ƒbƒp[‚Ì–¼‘O‹óŠÔ
-    std::string dllConstant; // NativeMethods.Dll QÆ•¶š—ñ
+    std::string nmNamespace; // NativeMethods ã®åå‰ç©ºé–“
+    std::string csNamespace; // ãƒ©ãƒƒãƒ‘ãƒ¼ã®åå‰ç©ºé–“
+    std::string dllConstant; // NativeMethods.Dll å‚ç…§æ–‡å­—åˆ—
 
-	// Šù’m‚Ì enum –¼‚ÌƒZƒbƒg (C_ENUM ‚ÅûW‚³‚ê‚½‚à‚Ì)
+	// æ—¢çŸ¥ã® enum åã®ã‚»ãƒƒãƒˆ (C_ENUM ã§åé›†ã•ã‚ŒãŸã‚‚ã®)
     std::unordered_set<std::string> knownEnums;
-    // C++ Œ^–¼ ¨ TypeMapping
+    // C++ å‹å â†’ TypeMapping
     std::unordered_map<std::string, TypeMapping> typeMap;
 
-    // C++ ‚ÌƒfƒtƒHƒ‹ƒg’l•\Œ»‚ğ C# ‚É•ÏŠ·‚·‚éƒe[ƒuƒ‹
-    // —á: "ForceMode::Force" ¨ "ForceMode.Force"
-    //     "true" ¨ "true"i‚»‚Ì‚Ü‚Üj
-    //     "nullptr" ¨ "null"
+    // C++ ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤è¡¨ç¾ã‚’ C# ã«å¤‰æ›ã™ã‚‹ãƒ†ãƒ¼ãƒ–ãƒ«
+    // ä¾‹: "ForceMode::Force" â†’ "ForceMode.Force"
+    //     "true" â†’ "true"ï¼ˆãã®ã¾ã¾ï¼‰
+    //     "nullptr" â†’ "null"
     std::unordered_map<std::string, std::string> defaultValueMap = {
         { "nullptr", "null"    },
         { "true",    "true"    },
         { "false",   "false"   },
     };
 
-    // --- Œ^ƒ}ƒbƒv“Ç‚İ‚İ ---
+    // --- å‹ãƒãƒƒãƒ—èª­ã¿è¾¼ã¿ ---
     void LoadTypeMap(const std::string& path);
 
-    // --- Œ^‰ğŒˆ ---
-    // C++ Œ^–¼‚ğ C# Œ^–¼‚É•ÏŠ·B–¢“o˜^‚È‚çŒx‚µ‚ÄŒ^–¼‚ğ‚»‚Ì‚Ü‚Ü•Ô‚·
+    // --- å‹è§£æ±º ---
+    // C++ å‹åã‚’ C# å‹åã«å¤‰æ›ã€‚æœªç™»éŒ²ãªã‚‰è­¦å‘Šã—ã¦å‹åã‚’ãã®ã¾ã¾è¿”ã™
     std::string ResolveCsType(const std::string& cppType) const;
 
-    // bool ‚È‚Ç MarshalAs ‚ª•K—v‚ÈŒ^‚©ƒ`ƒFƒbƒN‚µ‚Ä‘®«•¶š—ñ‚ğ•Ô‚· ("" ‚È‚ç•s—v)
+    // bool ãªã© MarshalAs ãŒå¿…è¦ãªå‹ã‹ãƒã‚§ãƒƒã‚¯ã—ã¦å±æ€§æ–‡å­—åˆ—ã‚’è¿”ã™ ("" ãªã‚‰ä¸è¦)
     std::string ResolveMarshalAttr(const std::string& cppType) const;
 
-	// ƒfƒtƒHƒ‹ƒgˆø”‚Ì C++ ’l‚ğ C# ‚Ì’l‚É•ÏŠ· (–¢“o˜^‚Ì’l‚Í‚»‚Ì‚Ü‚Ü•Ô‚·)
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå¼•æ•°ã® C++ å€¤ã‚’ C# ã®å€¤ã«å¤‰æ› (æœªç™»éŒ²ã®å€¤ã¯ãã®ã¾ã¾è¿”ã™)
 	std::string ConvertDefaultValue(const std::string& cppDefault, const std::string& cppType) const;
 
-    // --- ¶¬ƒƒ\ƒbƒh ---
+    // --- ç”Ÿæˆãƒ¡ã‚½ãƒƒãƒ‰ ---
     // NativeMethods.Xxx.g.cs (partial LibraryImport)
     void GenerateNativeMethods(const ClassInfo& info);
 
@@ -73,17 +73,17 @@ private:
     // XxxStruct.g.cs
     void GenerateStruct(const StructInfo& info);
 
-    // --- ƒwƒ‹ƒp[ ---
-    // ƒƒ\ƒbƒh‚Ì LibraryImport ƒVƒOƒlƒ`ƒƒs‚ğ¶¬
+    // --- ãƒ˜ãƒ«ãƒ‘ãƒ¼ ---
+    // ãƒ¡ã‚½ãƒƒãƒ‰ã® LibraryImport ã‚·ã‚°ãƒãƒãƒ£è¡Œã‚’ç”Ÿæˆ
     std::string BuildLibraryImportLine(const std::string& className, const MethodInfo& m, int indent) const;
 
-    // ƒtƒB[ƒ‹ƒh‚Ì getter/setter —p LibraryImport ƒVƒOƒlƒ`ƒƒ‚ğ¶¬
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã® getter/setter ç”¨ LibraryImport ã‚·ã‚°ãƒãƒãƒ£ã‚’ç”Ÿæˆ
     std::string BuildFieldImportLines(const std::string& className, const FieldInfo& f, int indent) const;
 
-    // ƒvƒƒpƒeƒBÀ‘•iC# ƒ‰ƒbƒp[‘¤j
+    // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å®Ÿè£…ï¼ˆC# ãƒ©ãƒƒãƒ‘ãƒ¼å´ï¼‰
     std::string BuildPropertyImpl(const std::string& className, const FieldInfo& f, int indent) const;
 
-    // ƒƒ\ƒbƒhÀ‘•iC# ƒ‰ƒbƒp[‘¤j
+    // ãƒ¡ã‚½ãƒƒãƒ‰å®Ÿè£…ï¼ˆC# ãƒ©ãƒƒãƒ‘ãƒ¼å´ï¼‰
     std::string BuildMethodImpl(const std::string& className, const MethodInfo& m, int indent) const;
 
     std::string Indent(int n) const { return std::string(n * 4, ' '); }

@@ -8,12 +8,22 @@
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
+  
+  <ItemGroup>
+	  <!-- Core プロジェクトを参照 -->
+	  <ProjectReference Include="..\CurryEngine.Core\CurryEngine.Core.csproj" />
+	  <!-- Runtime プロジェクトを参照-->
+	  <ProjectReference Include="..\CurryEngine.Runtime\CurryEngine.Runtime.csproj" />
+	  <!--CurryEngine.Coreに対して内部可視性を許可する-->
+	  <InternalsVisibleTo Include="CurryEngine.Core" />
 
-	<ItemGroup>
-		<Compile Include="$(SolutionDir)Generated\CSharp\**\*.g.cs" />
-	</ItemGroup>
+	  <!--Wrappers の自動生成コードを参照-->
+	  <Compile Include="$(SolutionDir)Generated\CSharp\Wrappers\*.g.cs">
+		  <Link>Wrappers\%(RecursiveDir)%(Filename)%(Extension)</Link>
+	  </Compile>
+  </ItemGroup>
 	
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Copy SourceFiles="$(OutDir)CurryEngine.API.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
-	</Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Copy SourceFiles="$(OutDir)CurryEngine.API.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+  </Target>
 </Project>

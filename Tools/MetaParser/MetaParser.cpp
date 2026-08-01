@@ -1,4 +1,4 @@
-﻿// MetaParser.cpp : このファイルには 'main' 関数が含まれています。プログラム実行の開始と終了がそこで行われます。
+// MetaParser.cpp : このファイルには 'main' 関数が含まれています。プログラム実行の開始と終了がそこで行われます。
 //
 
 #include "CSharpGenerater.h"
@@ -54,10 +54,23 @@ int main(int argc, char** argv)
 	// C# 出力ディレクトリは outputJson/CSharp とする
 	std::filesystem::path csOutputDir(outputJson);
 	csOutputDir /= "CSharp";
-	if (!std::filesystem::exists(csOutputDir))
-	{
-		std::filesystem::create_directories(csOutputDir);
-	}
+	auto createDirectoriesIfNotExist = [](const std::filesystem::path& dir) {
+		if (!std::filesystem::exists(dir))
+		{
+			std::filesystem::create_directories(dir);
+		}
+		};
+
+	// C# 出力ディレクトリを作成(サブディレクトリであるNative, Wrappers, Enums, Structsも作成)
+	std::filesystem::path csNativeDir = csOutputDir / "Native";
+	createDirectoriesIfNotExist(csNativeDir);
+	std::filesystem::path csWrappersDir = csOutputDir / "Wrappers";
+	createDirectoriesIfNotExist(csWrappersDir);
+	std::filesystem::path csEnumsDir = csOutputDir / "Enums";
+	createDirectoriesIfNotExist(csEnumsDir);
+	std::filesystem::path csStructsDir = csOutputDir / "Structs";
+	createDirectoriesIfNotExist(csStructsDir);
+
 
 	std::vector<FileInfo> csFiles;
 

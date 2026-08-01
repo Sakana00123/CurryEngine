@@ -10,7 +10,9 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Reference Include="CurryEngine.Runtime">
+	<!-- Core プロジェクトを参照 -->
+	<ProjectReference Include="..\CurryEngine.Core\CurryEngine.Core.csproj" />
+    <Reference Include="CurryEngine.API">
 	  <HintPath>..\x64\Debug\CurryEngine.API.dll</HintPath>
     </Reference>
   </ItemGroup>

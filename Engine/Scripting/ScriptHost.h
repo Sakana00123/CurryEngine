@@ -86,6 +86,7 @@ class ScriptHost
 public:
 
 	bool Initialize();
+	void Update();
 	void Shutdown();
 
 	const ScriptCallbacks& GetCallbacks() { return m_callbacks; }
@@ -115,6 +116,7 @@ private:
 
 private:
 	VoidFunc m_initFunc = nullptr;
+	VoidFunc m_updateFunc = nullptr;
 	VoidFunc m_shutdownFunc = nullptr;
 	ScriptCallbacks m_callbacks;
 	// hostfxrの関数ポインタ

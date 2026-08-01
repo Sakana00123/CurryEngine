@@ -125,7 +125,7 @@ void ScriptSystem::Initialize()
 	// TODO: あとでここを修正する
 	//std::vector<BuildCommand> commands = {
 	//	/*{".\\CurryEngine.API\\CurryEngine.API.csproj", "-c Debug --nologo -v q 2>&1" },
-	//	{ ".\\EngineAPI\\EngineAPI.csproj", "-c Debug --nologo -v q 2>&1" },*/
+	//	{ ".\\CurryEngine.Runtime\\CurryEngine.Runtime.csproj", "-c Debug --nologo -v q 2>&1" },*/
 	//	{ settings.scriptProjectPath, "-c Release --nologo -v q 2>&1" }
 	//};
 	std::vector<BuildCommand> commands = {
@@ -144,6 +144,12 @@ void ScriptSystem::Initialize()
 
 	LOG_INFO("[ScriptSystem] Script host initialized successfully.");
 	return;
+}
+
+void ScriptSystem::Update()
+{
+	if (!s_scriptHost) return;
+	s_scriptHost->Update();
 }
 
 void ScriptSystem::Shutdown()

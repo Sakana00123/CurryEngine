@@ -75,8 +75,7 @@ bool ScriptHost::Initialize()
 		0, std::wstring(exePath).rfind(L'\\') + 1);
 
 	std::wstring configPath = exeDir + L"CurryEngine.Runtime.runtimeconfig.json";
-	std::wstring engineApiDll = exeDir + L"CurryEngine.Runtime.dll";
-	std::wstring curryEngineApiDll = exeDir + L"CurryEngine.Runtime.dll";
+	std::wstring engineRuntimeDll = exeDir + L"CurryEngine.Runtime.dll";
 
 	//// ここで実際のパスを表示して確認
 	//std::wstring debug = L"configPath:\n" + configPath
@@ -89,7 +88,7 @@ bool ScriptHost::Initialize()
 	if (!InitRuntime(configPath))
 		return false;
 
-	// EngineAPI.dll からバインディング関数を全取得
+	// ここで関数ポインタをロードするためのラムダ関数を定義
 	auto load = [&]<typename TFunc>(TFunc& funcPtr, const std::wstring& dllPath, const wchar_t* typeName, const wchar_t* methodName)
 	{
 		int rc = m_loadFunc(
@@ -105,67 +104,76 @@ bool ScriptHost::Initialize()
 
 	
 	// エンジンランタイムの関数をロード
-	const wchar_t* engineRuntimeType = L"CurryEngine.EngineRuntime, CurryEngine.Runtime";
-	load(m_initFunc, engineApiDll, engineRuntimeType,
+	const wchar_t* engineRuntimeType = L"CurryEngine.Runtime.EngineRuntime, CurryEngine.Runtime";
+	load(m_initFunc, engineRuntimeDll, engineRuntimeType,
 		L"EngineInitialize");
-	load(m_callbacks.ReloadScripts, engineApiDll, engineRuntimeType,
+	load(m_callbacks.ReloadScripts, engineRuntimeDll, engineRuntimeType,
 		L"ReloadScripts");
-	load(m_shutdownFunc, engineApiDll, engineRuntimeType,
+	load(m_updateFunc, engineRuntimeDll, engineRuntimeType,
+		L"EngineUpdate");
+	load(m_shutdownFunc, engineRuntimeDll, engineRuntimeType,
 		L"EngineShutdown");
-	load(m_callbacks.RegisterAllScriptMeta, engineApiDll, engineRuntimeType,
+	load(m_callbacks.RegisterAllScriptMeta, engineRuntimeDll, engineRuntimeType,
 		L"RegisterAllScriptMeta");
 
 	// スクリプトブリッジの関数をロード
-	const wchar_t* scriptBridgeType = L"CurryEngine.Interop.ScriptBridge, CurryEngine.Runtime";
-	load(m_callbacks.CreateScript, curryEngineApiDll, scriptBridgeType,
+	const wchar_t* scriptBridgeType = L"CurryEngine.Runtime.Native.ScriptBridge, CurryEngine.Runtime";
+	load(m_callbacks.CreateScript, engineRuntimeDll, scriptBridgeType,
 		L"CreateScript");
-	load(m_callbacks.ReleaseScript, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.ReleaseScript, engineRuntimeDll, scriptBridgeType,
 		L"ReleaseScript");
-	load(m_callbacks.AwakeScript, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.AwakeScript, engineRuntimeDll, scriptBridgeType,
 		L"AwakeScript");
-	load(m_callbacks.StartScript, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.StartScript, engineRuntimeDll, scriptBridgeType,
 		L"StartScript");
-	load(m_callbacks.UpdateScript, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.UpdateScript, engineRuntimeDll, scriptBridgeType,
 		L"UpdateScript");
-	load(m_callbacks.OnEnableScript, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnEnableScript, engineRuntimeDll, scriptBridgeType,
 		L"OnEnableScript");
-	load(m_callbacks.OnDisableScript, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnDisableScript, engineRuntimeDll, scriptBridgeType,
 		L"OnDisableScript");
 
-	load(m_callbacks.OnDestroyScript, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnDestroyScript, engineRuntimeDll, scriptBridgeType,
 		L"OnDestroyScript");
 
-	load(m_callbacks.HotSwapScript, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.HotSwapScript, engineRuntimeDll, scriptBridgeType,
 		L"HotSwapScript");
 
-	load(m_callbacks.GetScriptFields, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.GetScriptFields, engineRuntimeDll, scriptBridgeType,
 		L"GetScriptFields");
-	//load(m_callbacks.GetScriptField, curryEngineApiDll, scriptBridgeType,
+	//load(m_callbacks.GetScriptField, engineRuntimeDll, scriptBridgeType,
 	//	L"GetScriptField");
-	load(m_callbacks.SetScriptField, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.SetScriptField, engineRuntimeDll, scriptBridgeType,
 		L"SetScriptField");
 
 
 	// Physicsイベント用コールバックをロード
 
-	load(m_callbacks.OnCollisionEnter, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnCollisionEnter, engineRuntimeDll, scriptBridgeType,
 		L"OnCollisionEnterScript");
-	load(m_callbacks.OnCollisionStay, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnCollisionStay, engineRuntimeDll, scriptBridgeType,
 		L"OnCollisionStayScript");
-	load(m_callbacks.OnCollisionExit, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnCollisionExit, engineRuntimeDll, scriptBridgeType,
 		L"OnCollisionExitScript");
 
-	load(m_callbacks.OnTriggerEnter, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnTriggerEnter, engineRuntimeDll, scriptBridgeType,
 		L"OnTriggerEnterScript");
-	load(m_callbacks.OnTriggerStay, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnTriggerStay, engineRuntimeDll, scriptBridgeType,
 		L"OnTriggerStayScript");
-	load(m_callbacks.OnTriggerExit, curryEngineApiDll, scriptBridgeType,
+	load(m_callbacks.OnTriggerExit, engineRuntimeDll, scriptBridgeType,
 		L"OnTriggerExitScript");
 
 
 	// 初期化関数を呼び出し
 	m_initFunc();
 	return true;
+}
+
+void ScriptHost::Update()
+{
+	// 更新関数を呼び出し
+	if (m_updateFunc)
+		m_updateFunc();
 }
 
 void ScriptHost::Shutdown()

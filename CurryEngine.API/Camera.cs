@@ -1,4 +1,5 @@
-﻿using CurryEngine.Interop;
+
+using CurryEngine.Runtime.Native;
 namespace CurryEngine;
 
 public class Camera : Component
