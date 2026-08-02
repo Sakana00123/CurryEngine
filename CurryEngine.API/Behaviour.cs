@@ -66,7 +66,7 @@ public abstract class Behaviour : Component
     {
         var newId = NativeMethods.GameObject_InstantiateFromId(original.objectId, parent != null ? parent.ownerId : 0, position, rotation);
         if (newId == 0) throw new InvalidOperationException("Failed to instantiate object.");
-        return new GameObject(newId);
+        return GameObject.Accessor?.GetOrCreate(newId) ?? new GameObject(newId);
     }
 
     public static GameObject Instantiate(GameObject original, Transform? parent = null)
@@ -89,7 +89,7 @@ public abstract class Behaviour : Component
     {
         var newId = NativeMethods.GameObject_InstantiateFromResource(resourcePath, parent != null ? parent.ownerId : 0, position, rotation);
         if (newId == 0) throw new InvalidOperationException($"Failed to instantiate object from resource: {resourcePath}");
-        return new GameObject(newId);
+        return GameObject.Accessor?.GetOrCreate(newId) ?? new GameObject(newId);
     }
 
     public static GameObject Instantiate(string resourcePath, Transform? parent = null)
@@ -112,6 +112,6 @@ public abstract class Behaviour : Component
     {
         var id = NativeMethods.GameObject_FindByName(name);
         if (id == 0) return null;
-        return new GameObject(id);
+        return GameObject.Accessor?.GetOrCreate(id) ?? new GameObject(id);
     }
 }

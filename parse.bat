@@ -10,4 +10,4 @@ if exist "%~dp0Generated\Reflection" (
 if exist "Generated\Json" (
     rmdir /s /q "Generated\Json"
 )
-"Tools\MetaParser\x64\Debug\MetaParser.exe" "Generated" "Engine"
+"Tools\MetaParser\x64\Debug\MetaParser.exe" "Generated" "Engine" "Game"

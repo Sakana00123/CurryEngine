@@ -1,4 +1,4 @@
-﻿using CurryEngine.Interop;
+using CurryEngine.Interop;
 using System;
 namespace CurryEngine;
 
@@ -58,7 +58,8 @@ public abstract class Component : Object
     /// このコンポーネントがアタッチされている GameObject を取得する。
     /// </summary>
     public GameObject gameObject
-        => new(ownerId);
+        => GameObject.Accessor?.GetOrCreate(ownerId) 
+           ?? throw new InvalidOperationException($"GameObject not found for entity {ownerId}");
 
     /// <summary>
     /// このコンポーネントがアタッチされている GameObject の Transform コンポーネントを取得する。

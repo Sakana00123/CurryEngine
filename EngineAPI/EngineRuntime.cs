@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
@@ -54,15 +55,13 @@ public static class EngineRuntime
             // エンジンの初期化処理をここに書く。
             //Debug.Log("EngineInitialize 開始");
 
-            Component.Accessor = new ComponentAccessorAdapter();
-            // 注入後に確認
-            var asm = typeof(Component).Assembly;
-            var alc = AssemblyLoadContext.GetLoadContext(asm);
-            //File.AppendAllText("debug.txt", $"EngineInitialize called\n");
-            //File.AppendAllText("debug.txt", $"Accessor注入: {Component.Accessor != null}\n");
-            //File.AppendAllText("debug.txt", $"AssemblyハッシュID: {RuntimeHelpers.GetHashCode(typeof(Component).Assembly)}\n");
-            //File.AppendAllText("debug.txt", $"ALC名: {alc?.Name}\n\n");
+            // GC のレイテンシモードを SustainedLowLatency に設定する。これにより、GC が長時間の停止を避けるようになる。
+            GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
 
+
+            // Component と GameObject のアクセサを設定する。
+            Component.Accessor = new ComponentAccessorAdapter();
+            GameObject.Accessor = new GameObjectAccessor();
 
             // EngineAPI.dll 内の全ての Behaviour 派生クラスを ScriptRegistry に登録する。
             ScriptRegistry.RegisterAssembly(typeof(Behaviour).Assembly);

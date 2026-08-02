@@ -156,6 +156,14 @@ void Component::DrawProperty(const PropertyDrawContext& context)
 			{
 				break; // 継承元がない場合は終了
 			}
+#if 1
+			// TODO: 展示会用の一時的な処理。
+			if (meta->name == "RectTransform")
+			{
+				break; // RectTransform 以上の継承元は描画しない
+			}
+#endif
+
 			meta = ReflectionRegistry::FindClass(meta->bases.front()); // 最初の継承元を取得してループを続ける
 		}
 	}

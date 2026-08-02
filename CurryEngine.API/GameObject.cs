@@ -6,6 +6,8 @@ namespace CurryEngine
 {
     public class GameObject : Object
     {
+        internal static IGameObjectAccessor? Accessor { get; set; }
+
         public GameObject(ulong objectId)
         {
             SetObjectIdInternal(objectId);

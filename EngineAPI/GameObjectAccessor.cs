@@ -1,17 +1,11 @@
-using CurryEngine.Interop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CurryEngine
 {
-    internal static class GameObjectAccessor
+    public class GameObjectAccessor : IGameObjectAccessor
     {
-        private static readonly Dictionary<ulong, GameObject> s_cache = new();
+        private readonly Dictionary<ulong, GameObject> s_cache = new();
 
-        public static GameObject GetOrCreate(ulong objectId)
+        public GameObject GetOrCreate(ulong objectId)
         {
             if (!s_cache.TryGetValue(objectId, out var gameObject))
             {
@@ -21,7 +15,7 @@ namespace CurryEngine
             return gameObject;
         }
 
-        public static void Remove(ulong objectId)
+        public void Remove(ulong objectId)
         {
             s_cache.Remove(objectId);
         }
