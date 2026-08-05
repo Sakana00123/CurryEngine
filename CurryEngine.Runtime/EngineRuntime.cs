@@ -68,7 +68,7 @@ public static class EngineRuntime
                 catch (Exception ex)
                 {
                     // ネイティブ側のログ出力で例外が発生した場合は、C# 側でログを出力する。
-                    Console.WriteLine($"Debug.LogNativeHandler 例外: {ex.Message}");
+                    File.WriteAllText("Debug_LogNativeHandler_Exception.log", $"例外: {ex.Message}\nスタックトレース: {ex.StackTrace}");
                 }
             };
 
@@ -122,9 +122,8 @@ public static class EngineRuntime
         }
         catch (Exception ex)
         {
-            // 例外が発生した場合はログに出力する。
-            Console.WriteLine($"EngineInitialize 例外: {ex.Message}");
-            Console.WriteLine($"スタックトレース: {ex.StackTrace}");
+            // 例外が発生した場合は、ログファイルに書き込む。
+            File.WriteAllText("EngineInitialize_Exception.log", $"例外: {ex.Message}\nスタックトレース: {ex.StackTrace}");
 
             Debug.LogError($"EngineInitialize 例外: {ex.Message}");
             if (ex.InnerException != null)

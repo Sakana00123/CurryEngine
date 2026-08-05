@@ -26,4 +26,7 @@
 	  </Compile>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Copy SourceFiles="$(OutDir)CurryEngine.Core.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+  </Target>
 </Project>

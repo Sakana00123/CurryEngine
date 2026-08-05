@@ -1,0 +1,12 @@
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\bin\Release\net9.0\CurryEngine.Core.deps.json
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\bin\Release\net9.0\CurryEngine.Core.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\bin\Release\net9.0\CurryEngine.Core.pdb
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\CurryEngine.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\CurryEngine.Core.AssemblyInfoInputs.cache
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\CurryEngine.Core.AssemblyInfo.cs
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\CurryEngine.Core.csproj.CoreCompileInputs.cache
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\CurryEngine.Core.sourcelink.json
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\CurryEngine.Core.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\refint\CurryEngine.Core.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\CurryEngine.Core.pdb
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\CurryEngine.Core\obj\Release\net9.0\ref\CurryEngine.Core.dll

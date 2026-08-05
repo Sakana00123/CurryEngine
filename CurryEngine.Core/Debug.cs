@@ -1,5 +1,6 @@
 
 using System.Runtime.CompilerServices;
+using System.IO;
 
 namespace CurryEngine;
 
@@ -30,7 +31,13 @@ public static class Debug
     internal static void LogInternal(LogLevel level, object? message,
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
-        => LogNativeHandler?.Invoke((int)level, message?.ToString() ?? "", file, line);
+    {
+        // テキストファイルにログを出力
+        string logMessage = $"[{level}] {message?.ToString() ?? ""} (File: {file}, Line: {line}){Environment.NewLine}";
+        File.WriteAllText("log.txt", logMessage);
+        // C++側のログ出力関数が設定されている場合に呼び出す
+        LogNativeHandler?.Invoke((int)level, message?.ToString() ?? "", file, line);
+    }
 
 
     /// <summary>
