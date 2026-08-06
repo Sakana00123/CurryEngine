@@ -64,28 +64,22 @@ public static class EngineRuntime
                 // 探しているアセンブリの名前を取得
                 var assemblyName = new AssemblyName(args.Name).Name;
 
-                // 実行ファイルのディレクトリ等から探すパスを組み立てる
-                string assemblyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{assemblyName}.dll");
+                string? exeDir = GetExecutableDirectory();
+                if (exeDir == null)
+                {
+                    Debug.LogError("AssemblyResolve: 実行ファイルのディレクトリが取得できません。");
+                    return null;
+                }
+                string assemblyPath = Path.Combine(exeDir, $"{assemblyName}.dll");
 
                 if (File.Exists(assemblyPath))
                 {
                     return Assembly.LoadFrom(assemblyPath);
                 }
+                Debug.LogError($"AssemblyResolve: アセンブリが見つかりません: {assemblyPath}");
 
                 return null;
             };
-
-            // C#側のシステム初期化
-            if (File.Exists("CurryEngine.Core.dll"))
-            {
-                var coreAssembly = Assembly.LoadFrom("CurryEngine.Core.dll");
-            }
-            else
-            {
-                Debug.LogError("CurryEngine.Core.dll が見つかりません。");
-                return;
-            }
-
 
             // Debug クラスのネイティブログハンドラを設定する。これにより、C# 側のログ出力が C++ 側のログ出力関数に渡されるようになる。
             Debug.LogNativeHandler = (level, message, file, line) =>
@@ -114,7 +108,7 @@ public static class EngineRuntime
                     Debug.LogError($"Time.OnTimeScaleChanged 例外: {ex.Message}");
                 }
             };
-
+            Debug.Log("EngineInitialize 開始");
 
             // Component クラスの Accessor を設定する。これにより、C# 側で Component の操作が可能になる。
             Component.Accessor = new ComponentAccessor();

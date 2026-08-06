@@ -10,17 +10,18 @@
   </PropertyGroup>
   
   <ItemGroup>
-	  <!-- Core プロジェクトを参照 -->
-	  <ProjectReference Include="..\CurryEngine.Core\CurryEngine.Core.csproj" />
-	  <!-- Runtime プロジェクトを参照-->
-	  <ProjectReference Include="..\CurryEngine.Runtime\CurryEngine.Runtime.csproj" />
-	  <!--CurryEngine.Coreに対して内部可視性を許可する-->
-	  <InternalsVisibleTo Include="CurryEngine.Core" />
+    <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Wrappers\*.g.cs">
+      <Link>Wrappers\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
 
-	  <!--Wrappers の自動生成コードを参照-->
-	  <Compile Include="$(SolutionDir)Generated\CSharp\Wrappers\*.g.cs">
-		  <Link>Wrappers\%(RecursiveDir)%(Filename)%(Extension)</Link>
-	  </Compile>
+  <ItemGroup>
+    <!-- Core プロジェクトを参照 -->
+    <ProjectReference Include="..\CurryEngine.Core\CurryEngine.Core.csproj" />
+    <!-- Runtime プロジェクトを参照-->
+    <ProjectReference Include="..\CurryEngine.Runtime\CurryEngine.Runtime.csproj" />
+    <!-- CurryEngine.Coreに対して内部可視性を許可する -->
+    <InternalsVisibleTo Include="CurryEngine.Core" />
   </ItemGroup>
 	
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

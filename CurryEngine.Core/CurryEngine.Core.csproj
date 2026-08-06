@@ -17,11 +17,11 @@
 	  <InternalsVisibleTo Include="CurryEngine.API" />
 
 	  <!--Enums の自動生成コードを参照-->
-	  <Compile Include="$(SolutionDir)Generated\CSharp\Enums\*.g.cs">
+	  <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Enums\*.g.cs">
 		  <Link>Enums\%(RecursiveDir)%(Filename)%(Extension)</Link>
 	  </Compile>
 	  <!--Structs の自動生成コードを参照-->
-	  <Compile Include="$(SolutionDir)Generated\CSharp\Structs\*.g.cs">
+	  <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Structs\*.g.cs">
 		  <Link>Structs\%(RecursiveDir)%(Filename)%(Extension)</Link>
 	  </Compile>
   </ItemGroup>

@@ -8,8 +8,9 @@
     <Nullable>enable</Nullable>
 	<EnableDynamicLoading>true</EnableDynamicLoading>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<BaseOutputPath>$(SolutionDir)</BaseOutputPath>
 	<Platforms>x64</Platforms>
+
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,13 +41,16 @@
 	  <!--CurryEngine.APIに対して内部可視性を許可する-->
 	  <InternalsVisibleTo Include="CurryEngine.API" />
 	  
-	  <Compile Include="$(SolutionDir)Generated\CSharp\Native\*.g.cs">
+	  <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Native\*.g.cs">
 		  <Link>Native\%(RecursiveDir)%(Filename)%(Extension)</Link>
 	  </Compile>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y &quot;$(SolutionDir)x64\$(Configuration)\net9.0\CurryEngine.Runtime.dll&quot; &quot;$(SolutionDir)x64\$(Configuration)\&quot;&#xD;&#xA;xcopy /y &quot;$(SolutionDir)x64\$(Configuration)\net9.0\CurryEngine.Runtime.runtimeconfig.json&quot; &quot;$(SolutionDir)x64\$(Configuration)\&quot;&#xD;&#xA;xcopy /y &quot;$(SolutionDir)x64\$(Configuration)\net9.0\CurryEngine.Runtime.deps.json&quot; &quot;$(SolutionDir)x64\$(Configuration)\&quot;&#xD;&#xA;xcopy /y &quot;$(SolutionDir)x64\$(Configuration)\net9.0\CurryEngine.Runtime.pdb&quot; &quot;$(SolutionDir)x64\$(Configuration)\&quot;" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.Runtime.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.Runtime.pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.Runtime.deps.json" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.Runtime.runtimeconfig.json" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
   </Target>
 
 </Project>

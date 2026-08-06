@@ -34,7 +34,7 @@ public static class Debug
     {
         // テキストファイルにログを出力
         string logMessage = $"[{level}] {message?.ToString() ?? ""} (File: {file}, Line: {line}){Environment.NewLine}";
-        File.WriteAllText("log.txt", logMessage);
+        File.AppendAllText("debug_log.txt", logMessage);
         // C++側のログ出力関数が設定されている場合に呼び出す
         LogNativeHandler?.Invoke((int)level, message?.ToString() ?? "", file, line);
     }

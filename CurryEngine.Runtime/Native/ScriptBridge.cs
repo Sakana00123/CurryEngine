@@ -18,6 +18,7 @@ public static unsafe class ScriptBridge
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
     public static void* CreateScript(byte* typeNameUtf8, ulong ownerId, ulong componentId)
     {
+        Debug.Log($"CreateScript: typeNameUtf8={Marshal.PtrToStringUTF8((nint)typeNameUtf8)} ownerId={ownerId} componentId={componentId}");
         try
         {
             var typeName = Marshal.PtrToStringUTF8((nint)typeNameUtf8)!;
