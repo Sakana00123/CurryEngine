@@ -1,0 +1,12 @@
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\Assembly-CSharp.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\assimp.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\CurryEngine.API.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\CurryEngine.Core.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\CurryEngine.exe
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\CurryEngine.exp
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\CurryEngine.lib
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\CurryEngine.pdb
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\CurryEngine.Runtime.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\CurryEngine.Runtime.runtimeconfig.json
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\nethost.dll
+C:\Users\dheit\Desktop\GitHubProjects\PersonalProduction\CurryEngine\x64\Debug\projectSettings.json

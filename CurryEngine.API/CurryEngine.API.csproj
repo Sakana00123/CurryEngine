@@ -25,5 +25,6 @@
 	
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
 	<Copy SourceFiles="$(OutDir)CurryEngine.API.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.API.pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
   </Target>
 </Project>

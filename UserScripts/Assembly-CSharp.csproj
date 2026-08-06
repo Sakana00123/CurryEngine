@@ -7,17 +7,21 @@
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
+
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
-  
+
+  <ItemGroup>
+	<Compile Include="**/*.cs" Exclude="obj/**;bin/**" />
+  </ItemGroup>
   <ItemGroup>
 	<!-- Core プロジェクトを参照 -->
 	<ProjectReference Include="..\CurryEngine.Core\CurryEngine.Core.csproj" />
-    <Reference Include="CurryEngine.API">
-	  <HintPath>..\x64\Debug\CurryEngine.API.dll</HintPath>
-    </Reference>
+	<ProjectReference Include="..\CurryEngine.API\CurryEngine.API.csproj" />
   </ItemGroup>
   
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(OutDir)Assembly-CSharp.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\Debug\" />
+	<Copy SourceFiles="$(OutDir)Assembly-CSharp.pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\Debug\" />
   </Target>
 </Project>

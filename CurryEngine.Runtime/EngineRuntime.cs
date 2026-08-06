@@ -58,6 +58,35 @@ public static class EngineRuntime
             // GC のレイテンシモードを SustainedLowLatency に設定する。これにより、GC が長時間の停止を避けるようになる。
             GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
 
+            // AssemblyResolve イベントを設定する。これにより、C# 側でアセンブリが見つからない場合に、指定したパスからアセンブリをロードすることができる。
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+            {
+                // 探しているアセンブリの名前を取得
+                var assemblyName = new AssemblyName(args.Name).Name;
+
+                // 実行ファイルのディレクトリ等から探すパスを組み立てる
+                string assemblyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{assemblyName}.dll");
+
+                if (File.Exists(assemblyPath))
+                {
+                    return Assembly.LoadFrom(assemblyPath);
+                }
+
+                return null;
+            };
+
+            // C#側のシステム初期化
+            if (File.Exists("CurryEngine.Core.dll"))
+            {
+                var coreAssembly = Assembly.LoadFrom("CurryEngine.Core.dll");
+            }
+            else
+            {
+                Debug.LogError("CurryEngine.Core.dll が見つかりません。");
+                return;
+            }
+
+
             // Debug クラスのネイティブログハンドラを設定する。これにより、C# 側のログ出力が C++ 側のログ出力関数に渡されるようになる。
             Debug.LogNativeHandler = (level, message, file, line) =>
             {
@@ -120,8 +149,15 @@ public static class EngineRuntime
                 Debug.LogError($"Assembly-CSharp.dll が見つかりません: {userScriptsPath}");
             }
         }
-        catch (Exception ex)
+        catch (ReflectionTypeLoadException ex)
         {
+            foreach (var e in ex.LoaderExceptions)
+            {
+                File.AppendAllText(
+                    "LoaderExceptions.txt",
+                    e?.ToString() + Environment.NewLine + Environment.NewLine);
+            }
+
             // 例外が発生した場合は、ログファイルに書き込む。
             File.WriteAllText("EngineInitialize_Exception.log", $"例外: {ex.Message}\nスタックトレース: {ex.StackTrace}");
 
