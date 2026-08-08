@@ -357,6 +357,12 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
         EffectManager::Update(deltaTime);
     }
 
+    // スクリプトシステム更新
+    {
+        ProfileScopedSection_2(0, "ScriptSystem::Update", ImGuiControl::Profiler::Green);
+        ScriptSystem::Update();
+	}
+
 }
 
 void Framework::Render(float deltaTime/*Elapsed seconds from last frame*/)

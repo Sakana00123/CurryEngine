@@ -31,7 +31,7 @@ public class Enemy : Behaviour
         }
         else
         {
-            timeSinceLastLog += Time.deltaTime;
+            timeSinceLastLog += Time.DeltaTime;
         }
 
         if (playerObject == null)
@@ -56,7 +56,7 @@ public class Enemy : Behaviour
             if (directionToPlayer != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.DeltaTime * 5f);
             }
 
             // プレイヤーとの距離を計算
@@ -71,7 +71,7 @@ public class Enemy : Behaviour
                 return;
             }
 
-            Vector3 movement = directionToPlayer.normalized * speed * Time.deltaTime;
+            Vector3 movement = directionToPlayer.normalized * speed * Time.DeltaTime;
 
             // プレイヤーに向かって移動する
             transform.position += movement;

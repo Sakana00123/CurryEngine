@@ -8,15 +8,39 @@
     ".NETCoreApp,Version=v9.0": {
       "Assembly-CSharp/1.0.0": {
         "dependencies": {
-          "CurryEngine.API": "1.0.0.0"
+          "CurryEngine.API": "1.0.0",
+          "CurryEngine.Core": "1.0.0"
         },
         "runtime": {
           "Assembly-CSharp.dll": {}
         }
       },
-      "CurryEngine.API/1.0.0.0": {
+      "CurryEngine.API/1.0.0": {
+        "dependencies": {
+          "CurryEngine.Core": "1.0.0",
+          "CurryEngine.Runtime": "1.0.0"
+        },
         "runtime": {
           "CurryEngine.API.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "CurryEngine.Core/1.0.0": {
+        "runtime": {
+          "CurryEngine.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "CurryEngine.Runtime/1.0.0": {
+        "dependencies": {
+          "CurryEngine.Core": "1.0.0"
+        },
+        "runtime": {
+          "CurryEngine.Runtime.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -30,8 +54,18 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CurryEngine.API/1.0.0.0": {
-      "type": "reference",
+    "CurryEngine.API/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CurryEngine.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CurryEngine.Runtime/1.0.0": {
+      "type": "project",
       "serviceable": false,
       "sha512": ""
     }

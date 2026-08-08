@@ -1,4 +1,4 @@
-﻿
+
 using CurryEngine;
 using CurryEngine.Math;
 
@@ -32,13 +32,12 @@ public class TestBehaviour : Behaviour
         Vector3 translation = new Vector3(1f, 0f, 1f);
         //transform.Translate(translation * speed * Time.deltaTime);
 
-        float inputX = Input.GetAxis(GamepadSide.Left, GamepadAxis.X);
-        float inputY = Input.GetAxis(GamepadSide.Left, GamepadAxis.Y);
+        Vector2 input = Input.GetAxis(GamepadStick.LeftStick);
 
-        translation.x = inputX * speed * Time.deltaTime;
-        translation.z = inputY * speed * Time.deltaTime;
+        translation.x = input.x * speed * Time.DeltaTime;
+        translation.z = input.y * speed * Time.DeltaTime;
 
-        if (Mathf.Abs(inputX) > Mathf.Epsilon || Mathf.Abs(inputY) > Mathf.Epsilon)
+        if (Mathf.Abs(input.x) > Mathf.Epsilon || Mathf.Abs(input.y) > Mathf.Epsilon)
         {
             transform.Translate(translation);
         }

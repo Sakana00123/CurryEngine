@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+	<AssemblyName>CurryEngine.Core</AssemblyName>
+	<RootNamespace>CurryEngine</RootNamespace>
+	<Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <!--CurryEngine.Runtimeに対して内部可視性を許可する-->
+	  <InternalsVisibleTo Include="CurryEngine.Runtime" />
+	  <!--CurryEngine.APIに対して内部可視性を許可する-->
+	  <InternalsVisibleTo Include="CurryEngine.API" />
+
+	  <!--Enums の自動生成コードを参照-->
+	  <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Enums\*.g.cs">
+		  <Link>Enums\%(RecursiveDir)%(Filename)%(Extension)</Link>
+	  </Compile>
+	  <!--Structs の自動生成コードを参照-->
+	  <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Structs\*.g.cs">
+		  <Link>Structs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+	  </Compile>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Copy SourceFiles="$(OutDir)CurryEngine.Core.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.Core.pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+  </Target>
+</Project>

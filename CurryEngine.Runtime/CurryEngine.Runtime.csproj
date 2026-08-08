@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+	<AssemblyName>CurryEngine.Runtime</AssemblyName>
+	<RootNamespace>CurryEngine.Runtime</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<EnableDynamicLoading>true</EnableDynamicLoading>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<Platforms>x64</Platforms>
+
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ComponentCache.cs" />
+    <Compile Include="ComponentAccessor.cs" />
+    <Compile Include="EngineBootstrap.cs" />
+    <Compile Include="EngineRuntime.cs" />
+    <Compile Include="GameObjectAccessor.cs" />
+    <Compile Include="GameObjectCache.cs" />
+    <Compile Include="HotReload\HotReloadManager.cs" />
+    <Compile Include="HotReload\ScriptLoadContext.cs" />
+    <Compile Include="BehaviourMethodCache.cs" />
+    <Compile Include="NativeInputProvider.cs" />
+    <Compile Include="Native\CollisionConverter.cs" />
+    <Compile Include="Native\CollisionInfoDto.cs" />
+    <Compile Include="Native\NativeMethods.cs" />
+    <Compile Include="Native\ScriptBridge.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\FieldMeta.cs" />
+    <Compile Include="Reflection\ScriptInspector.cs" />
+    <Compile Include="ScriptRegistry.cs" />
+    <Compile Include="TransformAccessor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+	  <!-- Core プロジェクトを参照 -->
+	  <ProjectReference Include="..\CurryEngine.Core\CurryEngine.Core.csproj" />
+	  <!--CurryEngine.Coreに対して内部可視性を許可する-->
+	  <InternalsVisibleTo Include="CurryEngine.Core" />
+	  <!--CurryEngine.APIに対して内部可視性を許可する-->
+	  <InternalsVisibleTo Include="CurryEngine.API" />
+	  
+	  <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Native\*.g.cs">
+		  <Link>Native\%(RecursiveDir)%(Filename)%(Extension)</Link>
+	  </Compile>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Copy SourceFiles="$(OutDir)CurryEngine.Runtime.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.Runtime.pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.Runtime.deps.json" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+	<Copy SourceFiles="$(OutDir)CurryEngine.Runtime.runtimeconfig.json" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
+  </Target>
+
+</Project>

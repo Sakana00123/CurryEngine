@@ -15,22 +15,21 @@ public class Character : Behaviour
     // Update is called once per frame
     public override void Update()
     {
-        float inputX = Input.GetAxis(GamepadSide.Left, GamepadAxis.X);
-        float inputY = Input.GetAxis(GamepadSide.Left, GamepadAxis.Y);
+        Vector2 input = Input.GetAxis(GamepadStick.LeftStick);
 
         Vector3 cameraForward = Camera.main != null ? Camera.main.transform.forward : transform.forward;
         Vector3 cameraRight = Camera.main != null ? Camera.main.transform.right : transform.right;
-        Vector3 direction = cameraForward * inputY + cameraRight * inputX;
+        Vector3 direction = cameraForward * input.y + cameraRight * input.x;
         direction.y = 0f; // 水平方向のみに制限
 
         // 移動処理
-        transform.position += direction * Time.deltaTime * speed;
+        transform.position += direction * Time.DeltaTime * speed;
 
         // 回転処理
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.DeltaTime * 5f);
         }
 
         // ジャンプ処理

@@ -16,6 +16,9 @@ public:
 	/** @brief スクリプトシステムの初期化。*/
 	static void Initialize();
 
+	/** @brief スクリプトシステムの更新処理。*/
+	static void Update();
+
 	/** @brief スクリプトシステムの終了処理。*/
 	static void Shutdown();
 
