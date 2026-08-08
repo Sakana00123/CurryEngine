@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using CurryEngine.Math;
 namespace CurryEngine;
@@ -174,7 +174,7 @@ public struct Quaternion
         // 最短経路を保証
         if (dot < 0f) { b = new(-b.x, -b.y, -b.z, -b.w); dot = -dot; }
 
-        if (dot > 1f - Mathf.Epsilon)
+        if (dot > 0.9995f)
             return Lerp(a, b, t);  // 角度が小さい場合は線形補間
 
         float angle = MathF.Acos(dot);
