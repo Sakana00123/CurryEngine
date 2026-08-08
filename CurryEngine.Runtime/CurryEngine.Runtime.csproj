@@ -16,6 +16,7 @@
   <ItemGroup>
     <Compile Include="ComponentCache.cs" />
     <Compile Include="ComponentAccessor.cs" />
+    <Compile Include="EngineBootstrap.cs" />
     <Compile Include="EngineRuntime.cs" />
     <Compile Include="GameObjectAccessor.cs" />
     <Compile Include="GameObjectCache.cs" />

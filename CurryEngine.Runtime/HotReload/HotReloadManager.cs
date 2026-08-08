@@ -15,25 +15,28 @@ public sealed class HotReloadManager : IDisposable
     /// <summary>
     /// DLLをロードして、ScriptRegistry を更新する。
     /// </summary>
-    /// <param name="context">AssemblyLoadContext</param>
     /// <returns>ロードされたアセンブリ</returns>
-    public Assembly Load(AssemblyLoadContext context)
+    public Assembly Load()
     {
         // 古いコンテキストをアンロード
         Dispose();
 
         // DLLを一時ファイルにコピー（ロック回避のため）
-        m_currentTempPath = Path.GetTempFileName();
+        string tempDir = Path.Combine(EngineRuntime.GetExecutableDirectory()!, "Temp");
+        Directory.CreateDirectory(tempDir);
+        string tempFileName = Path.GetFileNameWithoutExtension(m_dllPath) + "_" + Guid.NewGuid().ToString("N") + ".dll";
+        m_currentTempPath = Path.Combine(tempDir, tempFileName);
         File.Copy(m_dllPath, m_currentTempPath, true);
 
         // 新しいコンテキストを作成
         m_current = new ScriptLoadContext(m_currentTempPath);
 
         // ファイルをバイト配列として読み込む（ロック回避のため）
-        byte[] dllBytes = File.ReadAllBytes(m_dllPath);
-        using var stream = new MemoryStream(dllBytes);
-        var asm = m_current.LoadFromStream(stream);
+        //byte[] dllBytes = File.ReadAllBytes(m_dllPath);
+        //using var stream = new MemoryStream(dllBytes);
+        //var asm = m_current.LoadFromStream(stream);
 
+        var asm = m_current.LoadFromAssemblyPath(m_currentTempPath);
         //var asm = context.LoadFromAssemblyPath(m_dllPath);
 
         // ScriptRegistry を更新

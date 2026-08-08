@@ -45,13 +45,15 @@ namespace CurryEngine.Runtime
         public Vector2 GetAxis(GamepadStick side)
         {
             // NativeMethods (P/Invoke) 経由で C++ 側の軸状態を問い合わせる
-            return NativeMethods.Input_GetAxis((int)side);
+            NativeMethods.Input_GetAxis((int)side, out Vector2 axis);
+            return axis;
         }
 
         public Vector2 GetAxisRaw(GamepadStick side)
         {
             // NativeMethods (P/Invoke) 経由で C++ 側の軸状態を問い合わせる
-            return NativeMethods.Input_GetAxisRaw((int)side);
+            NativeMethods.Input_GetAxisRaw((int)side, out Vector2 axis);
+            return axis;
         }
 
         public Vector2 MousePosition

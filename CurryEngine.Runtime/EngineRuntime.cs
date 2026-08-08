@@ -1,6 +1,7 @@
 
 using CurryEngine.Runtime.HotReload;
 using CurryEngine.Runtime.Native;
+using CurryEngine.Scripting;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -54,31 +55,40 @@ public static class EngineRuntime
         try
         {
             // エンジンの初期化処理をここに書く。
+            EngineBootstrap.Initialize();
 
             // GC のレイテンシモードを SustainedLowLatency に設定する。これにより、GC が長時間の停止を避けるようになる。
             GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
 
-            // AssemblyResolve イベントを設定する。これにより、C# 側でアセンブリが見つからない場合に、指定したパスからアセンブリをロードすることができる。
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+            // AssemblyLoadContext.Default の Resolving イベントを設定する。これにより、CurryEngine.Core.dll、CurryEngine.Runtime.dll、CurryEngine.API.dll は SharedAssemblyRegistry からロードされるようになる。
+            AssemblyLoadContext.Default.Resolving += (context, assemblyName) =>
             {
-                // 探しているアセンブリの名前を取得
-                var assemblyName = new AssemblyName(args.Name).Name;
-
-                string? exeDir = GetExecutableDirectory();
-                if (exeDir == null)
+                // CurryEngine.Core.dll、CurryEngine.Runtime.dll、CurryEngine.API.dll は SharedAssemblyRegistry からロードする。
+                var shared = SharedAssemblyRegistry.TryGet(assemblyName.Name!);
+                if (shared != null)
                 {
-                    Debug.LogError("AssemblyResolve: 実行ファイルのディレクトリが取得できません。");
-                    return null;
+                    Debug.Log($"[Resolving] SharedAssemblyRegistry からロード: {assemblyName.Name}");
+                    return shared;
                 }
-                string assemblyPath = Path.Combine(exeDir, $"{assemblyName}.dll");
-
-                if (File.Exists(assemblyPath))
+                // System系アセンブリは、Default ALCと共有する
+                if (assemblyName.Name!.StartsWith("System.") ||
+                    assemblyName.Name.StartsWith("Microsoft.") ||
+                    assemblyName.Name == "netstandard" ||
+                    assemblyName.Name == "mscorlib")
                 {
-                    return Assembly.LoadFrom(assemblyPath);
+                    Debug.Log($"[Resolving] Default ALC からロード: {assemblyName.Name}");
+                    return null; // 親ALCに委譲
                 }
-                Debug.LogError($"AssemblyResolve: アセンブリが見つかりません: {assemblyPath}");
-
-                return null;
+                // それ以外のアセンブリは、実行可能ファイルのディレクトリからロードする。
+                var exeDir = GetExecutableDirectory() ?? string.Empty;
+                var path = Path.Combine(exeDir, $"{assemblyName.Name}.dll");
+                if (File.Exists(path))
+                {
+                    Debug.Log($"[Resolving] {path} からロード");
+                    return context.LoadFromAssemblyPath(path);
+                }
+                Debug.Log($"[Resolving] {assemblyName.Name} は見つからず、親ALCに委譲");
+                return null; // 親ALCに委譲
             };
 
             // Debug クラスのネイティブログハンドラを設定する。これにより、C# 側のログ出力が C++ 側のログ出力関数に渡されるようになる。
@@ -116,8 +126,14 @@ public static class EngineRuntime
             // GameObject クラスの Accessor を設定する。これにより、C# 側で GameObject の操作が可能になる。
             GameObject.Accessor = new GameObjectAccessor();
 
+            // Transform クラスの Accessor を設定する。これにより、C# 側で Transform の操作が可能になる。
+            Transform.TransformAccessor = new TransformAccessor();
+
             // CurryEngine.API.dll 内の Behaviour サブクラスを ScriptRegistry に登録する。
             ScriptRegistry.RegisterAssembly(typeof(Behaviour).Assembly);
+
+            // Input クラスの　Provider を設定する。これにより、C# 側で Input の操作が可能になる。
+            Input.Provider = new NativeInputProvider();
 
             // UserScripts.dll をロードして ScriptRegistry に登録する。
             var exeDir = GetExecutableDirectory() ?? string.Empty;
@@ -131,7 +147,9 @@ public static class EngineRuntime
             if (File.Exists(userScriptsPath))
             {
                 s_hotReloadManager = new HotReloadManager(userScriptsPath);
-                s_hotReloadManager.Load(currentAlc);
+                s_hotReloadManager.Load();
+
+                ReloadDiagnostics.AssertSharedTypeIdentity();
 
                 // 初期化完了ログ
                 Debug.Log("EngineInitialize 完了");
@@ -175,8 +193,6 @@ public static class EngineRuntime
                 var exeDir = GetExecutableDirectory() ?? string.Empty;
                 dllPath = /*GetUserScriptsPath() ?? */Path.Combine(exeDir, "Assembly-CSharp.dll");
             }
-            //Debug.Log($"ReloadScripts called with path: {dllPath}");
-            var currentAlc = AssemblyLoadContext.GetLoadContext(typeof(EngineRuntime).Assembly)!;
             // HotReloadManager がまだ作られていない場合は作る。通常は EngineInitialize で作られているはず。
             if (s_hotReloadManager == null)
             {
@@ -184,7 +200,9 @@ public static class EngineRuntime
             }
 
             // HotReloadManager でリロードする。これにより、ScriptRegistry も更新される。
-            s_hotReloadManager.Load(currentAlc);
+            s_hotReloadManager.Load();
+            ReloadDiagnostics.AssertSharedTypeIdentity();
+
 
             Debug.Log("ReloadScripts 完了");
             foreach (var typeName in ScriptRegistry.RegisteredNames)

@@ -219,7 +219,12 @@ public static unsafe class ScriptBridge
             // フィールド名からFieldInfoを取得
             var fieldName = Marshal.PtrToStringUTF8((nint)fieldNameUtf8)!;
             // JSON文字列をC#の値に変換してセットする。ScriptInspector側で型に応じて適切に変換される想定。
-            var value = Marshal.PtrToStringUTF8((nint)valueJson)!;
+            var value = Marshal.PtrToStringUTF8((nint)valueJson);
+            if (value == null || value == "null")
+            {
+                Debug.LogError($"SetScriptField: valueJson is null for fieldName={fieldName}");
+                return;
+            }
             ScriptInspector.SetFieldValue(obj, fieldName, value);
             
         }

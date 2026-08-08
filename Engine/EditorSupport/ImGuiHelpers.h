@@ -426,7 +426,7 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 								"Set " + name + " Component reference", \
 								[this](const std::pair<std::string, std::pair<ObjectId, ObjectId>>& pair) { \
 								std::string valueStr = "Component(objectId: " + std::to_string(pair.second.first.Value()) + ", ownerId: " + std::to_string(pair.second.second.Value()) + ")"; \
-									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr.c_str()); \
+									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
 								}, \
 								std::make_pair(name, std::make_pair(v, ownerV)), /* 変更前の値 */ \
 								std::make_pair(name, std::make_pair(droppedId, droppedOwnerId)) /* 変更後の値 */ \
@@ -434,7 +434,7 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 						); \
 						/*スクリプトフィールドを更新する*/ \
 						std::string valueStr = "Component(objectId: " + std::to_string(droppedId.Value()) + ", ownerId: " + std::to_string(droppedOwnerId.Value()) + ")"; \
-						ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), valueStr.c_str()); \
+						ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), valueStr); \
 						v = droppedId; \
 						ownerV = droppedOwnerId; \
 					} \
@@ -448,7 +448,7 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 							"Clear " + name + " Component reference", \
 							[this](const std::pair<std::string, std::pair<ObjectId, ObjectId>>& pair) { \
 								std::string valueStr = "Component(objectId: " + std::to_string(pair.second.first.Value()) + ", ownerId: " + std::to_string(pair.second.second.Value()) + ")"; \
-								ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr.c_str()); \
+								ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
 							}, \
 							std::make_pair(name, std::make_pair(v, ownerV)), /* 変更前の値 */ \
 							std::make_pair(name, std::make_pair(ObjectId::Invalid(), ObjectId::Invalid())) /* 変更後の値 */ \
@@ -479,7 +479,7 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 								"Set " + name + " GameObject reference", \
 								[this](const std::pair<std::string, ObjectId>& pair) { \
 									std::string valueStr = "GameObject(objectId: " + std::to_string(pair.second.Value()) + ")"; \
-									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr.c_str()); \
+									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
 								}, \
 								std::make_pair(name, v), /* 変更前の値 */ \
 								std::make_pair(name, droppedId) /* 変更後の値 */ \
@@ -487,7 +487,7 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 						); \
 						/*スクリプトフィールドを更新する*/ \
 						std::string valueStr = "GameObject(objectId: " + std::to_string(droppedId.Value()) + ")"; \
-						ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), valueStr.c_str()); \
+						ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), valueStr); \
 						v = droppedId; \
 					} \
 					ImGui::EndDragDropTarget(); \

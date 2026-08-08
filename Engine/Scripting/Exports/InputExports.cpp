@@ -81,20 +81,28 @@ ENGINE_API bool Input_GetActionUp(const char* action)
 //	return InputSystem::GetAxisRaw(static_cast<Side>(side), static_cast<Axis>(axis));
 //}
 
-ENGINE_API Vector2 Input_GetAxis(int axis)
+ENGINE_API void Input_GetAxis(int axis, Vector2* outValue)
 {
-	if (!InputSystem::IsInputEnabled()) return Vector2(0.f, 0.f);
-	float x = InputSystem::GetAxis(Side::Left, static_cast<Axis>(axis));
-	float y = InputSystem::GetAxis(Side::Right, static_cast<Axis>(axis));
-	return Vector2(x, y);
+	if (!InputSystem::IsInputEnabled()) {
+		*outValue = Vector2(0.f, 0.f);
+		return;
+	}
+	Side side = axis == 0 ? Side::Left : Side::Right; // 0: Left, 1: Right
+	float x = InputSystem::GetAxis(side, Axis::X);
+	float y = InputSystem::GetAxis(side, Axis::Y);
+	*outValue = Vector2(x, y);
 }
 
-ENGINE_API Vector2 Input_GetAxisRaw(int axis)
+ENGINE_API void Input_GetAxisRaw(int axis, Vector2* outValue)
 {
-	if (!InputSystem::IsInputEnabled()) return Vector2(0.f, 0.f);
-	int x = InputSystem::GetAxisRaw(Side::Left, static_cast<Axis>(axis));
-	int y = InputSystem::GetAxisRaw(Side::Right, static_cast<Axis>(axis));
-	return Vector2(static_cast<float>(x), static_cast<float>(y));
+	if (!InputSystem::IsInputEnabled()) {
+		*outValue = Vector2(0.f, 0.f);
+		return;
+	}
+	Side side = axis == 0 ? Side::Left : Side::Right; // 0: Left, 1: Right
+	int x = InputSystem::GetAxisRaw(side, Axis::X);
+	int y = InputSystem::GetAxisRaw(side, Axis::Y);
+	*outValue = Vector2(static_cast<float>(x), static_cast<float>(y));
 }
 
 ENGINE_API int Input_GetMouseDeltaX()

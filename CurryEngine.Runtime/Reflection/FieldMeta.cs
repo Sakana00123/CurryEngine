@@ -136,12 +136,25 @@ public class FieldMeta
         {
             return e.ToString();
         }
-        if (value is Component component) // コンポーネントはidを文字列ででシリアライズ
+        bool isComponent = false;
+        var baseType = value.GetType().BaseType;
+        while (baseType != null)
         {
+            if (baseType.Name == "Component")
+            {
+                isComponent = true;
+                break;
+            }
+            baseType = baseType.BaseType;
+        }
+        if (isComponent) // Componentはidを文字列でシリアライズ
+        {
+            var component = (Component)value;
             return new string($"Component(objectId: {component.objectId}, ownerId: {component.ownerId})");
         }
-        if (value is GameObject gameObject) // オブジェクトはidを文字列でシリアライズ
+        if (value.GetType().Name == "GameObject") // GameObjectはidを文字列でシリアライズ
         {
+            var gameObject = (GameObject)value;
             return new string($"GameObject(objectId: {gameObject.objectId})");
         }
 

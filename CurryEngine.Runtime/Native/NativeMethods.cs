@@ -57,8 +57,8 @@ internal static partial class NativeMethods
     //[return: MarshalAs(UnmanagedType.Bool)]
     //internal static partial bool Input_GetMouseButtonUp(int button);
 
-    [LibraryImport(Dll)] internal static partial Vector2 Input_GetAxis(int axis);
-    [LibraryImport(Dll)] internal static partial Vector2 Input_GetAxisRaw(int axis);
+    [LibraryImport(Dll)] internal static partial void Input_GetAxis(int axis, out Vector2 value);
+    [LibraryImport(Dll)] internal static partial void Input_GetAxisRaw(int axis, out Vector2 value);
     [LibraryImport(Dll)] internal static partial int Input_GetMouseDeltaX();
     [LibraryImport(Dll)] internal static partial int Input_GetMouseDeltaY();
     [LibraryImport(Dll)] internal static partial int Input_GetMousePositionX();

@@ -93,7 +93,7 @@ void ScriptComponent::Initialize()
             {
                 std::string valueStr = value.dump();
                 //LOG_INFO("[Deserialize] field: " + fieldName + " = " + valueStr);
-                ScriptSystem::SetScriptField(m_gcHandle, fieldName.c_str(), valueStr.c_str());
+                ScriptSystem::SetScriptField(m_gcHandle, fieldName.c_str(), valueStr);
             }
             m_pendingFields.clear();
         }
@@ -235,7 +235,8 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                 if (value.type() == typeid(float))
                 {
                     float v = std::any_cast<float>(value);
-                    ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(), std::to_string(v).c_str());
+					std::string valueStr = std::to_string(v);
+                    ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(), valueStr);
                     comp->m_fieldValues[name]["value"] = v;
                 }
 				};
@@ -258,7 +259,8 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                 if (value.type() == typeid(int))
                 {
                     int v = std::any_cast<int>(value);
-                    ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(), std::to_string(v).c_str());
+                    std::string valueStr = std::to_string(v);
+                    ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(), valueStr);
                     comp->m_fieldValues[name]["value"] = v;
                 }
 				};
@@ -334,8 +336,9 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                 if (value.type() == typeid(Vector3))
                 {
                     Vector3 v = std::any_cast<Vector3>(value);
+					std::string valueStr = "{\"x\":" + std::to_string(v.x) + ",\"y\":" + std::to_string(v.y) + ",\"z\":" + std::to_string(v.z) + "}";
                     ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
-                        ("{\"x\":" + std::to_string(v.x) + ",\"y\":" + std::to_string(v.y) + ",\"z\":" + std::to_string(v.z) + "}").c_str());
+                        valueStr);
 					comp->m_fieldValues[name]["value"] = { {"x", v.x}, {"y", v.y}, {"z", v.z} };
 				}
                 };
@@ -365,8 +368,8 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                 if (value.type() == typeid(Quaternion))
                 {
                     Quaternion v = std::any_cast<Quaternion>(value);
-                    ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
-						("{\"x\":" + std::to_string(v.x) + ",\"y\":" + std::to_string(v.y) + ",\"z\":" + std::to_string(v.z) + ",\"w\":" + std::to_string(v.w) + "}").c_str());
+					std::string valueStr = "{\"x\":" + std::to_string(v.x) + ",\"y\":" + std::to_string(v.y) + ",\"z\":" + std::to_string(v.z) + ",\"w\":" + std::to_string(v.w) + "}";
+                    ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(), valueStr);
 					comp->m_fieldValues[name]["value"] = { {"x", v.x}, {"y", v.y}, {"z", v.z}, {"w", v.w} };
                     }
                 };
@@ -396,8 +399,9 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
                 if (value.type() == typeid(Color))
                 {
                     Color v = std::any_cast<Color>(value);
+					std::string valueStr = "{\"r\":" + std::to_string(v.r) + ",\"g\":" + std::to_string(v.g) + ",\"b\":" + std::to_string(v.b) + ",\"a\":" + std::to_string(v.a) + "}";
 					ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
-						("{\"r\":" + std::to_string(v.r) + ",\"g\":" + std::to_string(v.g) + ",\"b\":" + std::to_string(v.b) + ",\"a\":" + std::to_string(v.a) + "}").c_str());
+						valueStr);
                     comp->m_fieldValues[name]["value"] = { {"r", v.r}, {"g", v.g}, {"b", v.b}, {"a", v.a} };
                 }
                 };
@@ -451,7 +455,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 					uint64_t goId = id.Value();
 					std::string valueStr = "GameObject(objectId: " + std::to_string(goId) + ")";
                     ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
-						valueStr.c_str()); // GameObject の参照を文字列として渡す
+						valueStr); // GameObject の参照を文字列として渡す
                     comp->m_fieldValues[name]["value"] = valueStr;
                 }
                 };
@@ -524,7 +528,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 					uint64_t compId = c.Value();
 					std::string valueStr = "Component(objectId: " + std::to_string(compId) + ", ownerId: " + std::to_string(comp->GetOwner()->GetId().Value()) + ")";
                     ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
-						valueStr.c_str()); // Component の参照を文字列として渡す
+						valueStr); // Component の参照を文字列として渡す
 					comp->m_fieldValues[name]["value"] = valueStr;
                     }
 				};
@@ -614,7 +618,8 @@ void ScriptComponent::OnPostScriptReload()
     // スクリプトのリロード後に、m_pendingFields に保持しておいたフィールドの値をスクリプトインスタンスに適用する
     for (auto& [name, value] : m_pendingFields.items())
     {
-        ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), value.dump().c_str());
+		std::string valueStr = value.dump();
+        ScriptSystem::SetScriptField(m_gcHandle, name.c_str(), valueStr);
     }
     m_pendingFields.clear();
 }
