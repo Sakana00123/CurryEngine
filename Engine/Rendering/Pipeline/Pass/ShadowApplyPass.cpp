@@ -33,6 +33,7 @@ void ShadowApplyPass::Finalize()
 void ShadowApplyPass::Execute(RenderContext* rtx, Scene* scene)
 {
 	ZoneScopedN("ShadowApplyPass::Execute");
+	TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "ShadowApplyPass::Execute");
 
 	// シャドウマップ適用パスの実行コードを記述する
 	auto immediateContext = rtx->immediateContext;

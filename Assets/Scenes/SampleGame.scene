@@ -1,7 +1,7 @@
 {
     "editorCamera": {
         "aspect": 1.7777777910232544,
-        "distance": 4.399999141693115,
+        "distance": 6.999996662139893,
         "farZ": 1000.0,
         "fieldOfView": 60.0,
         "maxAngleX": 70.0,
@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            5.1501641273498535,
-            2.946577787399292,
-            -1.9285805225372314
+            21.058088302612305,
+            9.596787452697754,
+            8.266131401062012
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.1819046139717102,
-            -0.2740496098995209,
-            0.0528705008327961,
-            0.9428744912147522
+            0.06967221200466156,
+            -0.6788548827171326,
+            0.06496211886405945,
+            0.72806715965271
         ],
         "speed": 3.0
     },
@@ -101,6 +101,85 @@
             "isDefaultOpenOnHierarchy": true,
             "layer": 0,
             "name": "MainCamera",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 0,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "15964857650119753199",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.10000000149011612,
+                        0.10000000149011612,
+                        0.10000000149011612
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": ".\\TestAssets\\Player\\SK_Mannequin.gltf",
+                    "id": "2837815180153153587",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": ""
+                            },
+                            "1": {
+                                "materialTextures[1]": ""
+                            },
+                            "2": {
+                                "materialTextures[2]": ""
+                            },
+                            "3": {
+                                "materialTextures[3]": ""
+                            },
+                            "4": {
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                }
+            ],
+            "id": "837495356795042458",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "GltfModel",
             "parent": "0",
             "parentId": "0",
             "priority": 0,

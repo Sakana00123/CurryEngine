@@ -16,6 +16,7 @@ void FinalPass::Initialize()
 
 void FinalPass::Execute(RenderContext* rtx, Scene* scene)
 {
+	TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "FinalPass::Execute");
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 	// 最終描画のレンダーターゲットをアクティブ化

@@ -2,6 +2,7 @@
 #include "UIPass.h"
 #include "Engine/Resources/ResourceManager.h"
 #include "Engine/Rendering/Pipeline/RenderState.h"
+#include <Engine\Rendering\Pipeline\Graphics.h>
 
 void UIPass::Initialize()
 {
@@ -10,6 +11,7 @@ void UIPass::Initialize()
 
 void UIPass::Execute(RenderContext* rtx, Scene* scene)
 {
+	TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "UIPass::Execute");
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 	

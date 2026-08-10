@@ -22,6 +22,7 @@ void SkyBoxPass::Execute(RenderContext* rtx, Scene* scene)
 	// スカイマップの描画
 	if (skymap)
 	{
+		TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "SkyBoxPass::Execute");
 		renderState->BindDepthStencilState(immediateContext, DepthStencilState::NoTestNoWrite);
 		renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
 		skymap->Draw(immediateContext);

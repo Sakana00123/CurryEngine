@@ -270,7 +270,8 @@ void Framework::BeginFrame()
 {
 	// フレーム開始処理
     {
-         SceneManager::BeginFrame();
+		ZoneScopedN("Framework::BeginFrame");
+        SceneManager::BeginFrame();
 	}
 }
 
@@ -278,6 +279,7 @@ void Framework::EndFrame()
 {
     // フレーム終了処理
     {
+		ZoneScopedN("Framework::EndFrame");
         InputSystem::EndFrame();
         SceneManager::EndFrame();
     }
@@ -285,6 +287,7 @@ void Framework::EndFrame()
 
 void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
 {
+	ZoneScopedN("Framework::Update");
 #ifdef USE_IMGUI
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -292,7 +295,10 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
     ImGuizmo::BeginFrame();
 #endif
     // Audio更新
-    Audio::Update(deltaTime);
+    {
+		ZoneScopedN("Audio::Update");
+        Audio::Update(deltaTime);
+    }
 
 	//// リソースマネージャ更新
  //   {
@@ -360,6 +366,7 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
 
 void Framework::Render(float deltaTime/*Elapsed seconds from last frame*/)
 {
+	ZoneScopedN("Framework::Render");
 	// 描画処理
     {
 		ZoneScopedN("RenderSystem::Render");
@@ -370,6 +377,11 @@ void Framework::Render(float deltaTime/*Elapsed seconds from last frame*/)
     {
 		ZoneScopedN("Graphics::Present");
         Graphics::Present(vsync);
+
+#ifdef TRACY_ENABLE
+        // GPU クエリデータを Tracy に収集・同期させる
+		TracyD3D11Collect(Graphics::GetTracyD3D11Ctx());
+#endif // TRACY_ENABLE
     }
 
     // 共有リソースのリセット

@@ -3,6 +3,8 @@
 #include <wrl.h>
 #include <dxgi1_6.h>
 
+#include <tracy/TracyD3D11.hpp>
+
 #include <memory>
 #include <sstream>
 #include "Engine/Core/Misc.h"
@@ -80,6 +82,11 @@ public:
 	// 共有リソースのリセット
 	static void ResetSharedResources() { sharedResources.clear(); }
 
+#ifdef TRACY_ENABLE
+	// TracyのD3D11コンテキストを取得
+	static tracy::D3D11Ctx* GetTracyD3D11Ctx() { return m_tracyD3D11Ctx; }
+#endif // TRACY_ENABLE
+
 private:
 	static inline HWND m_hwnd;
 
@@ -107,6 +114,11 @@ private:
 	static inline DirectX::XMFLOAT4X4 m_Projection;
 
 	static inline std::unordered_map<std::string, void*> sharedResources;
+
+#ifdef TRACY_ENABLE
+	static inline tracy::D3D11Ctx* m_tracyD3D11Ctx{ nullptr };
+#endif // TRACY_ENABLE
+
 public:
 	//フルスクリーンクアッド
 	static inline std::unique_ptr<FullScreenQuad> fullScreenQuad;

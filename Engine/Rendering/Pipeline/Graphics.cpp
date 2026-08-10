@@ -63,11 +63,18 @@ void Graphics::Initialize(HWND hwnd, bool fullScreenMode)
 	create_device_flag |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
+	// デバイス作成
 	D3D_FEATURE_LEVEL feature_levels{ D3D_FEATURE_LEVEL_11_1 };
 	hr = D3D11CreateDevice(adapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, 0, create_device_flag,
 		&feature_levels, 1, D3D11_SDK_VERSION, device.GetAddressOf(), NULL, immediate_context.GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
+#ifdef TRACY_ENABLE
+	// TracyのD3D11コンテキストを初期化
+	m_tracyD3D11Ctx = TracyD3D11Context(device.Get(), immediate_context.Get());
+#endif // TRACY_ENABLE
+
+	// スワップチェーン作成
 	CreateSwapChain(dxgi_factory6.Get());
 
 	// レンダーステート生成
@@ -91,6 +98,13 @@ void Graphics::Initialize(HWND hwnd, bool fullScreenMode)
 void Graphics::Finalize()
 {
 	BOOL fullscreen{};
+
+#ifdef TRACY_ENABLE
+	if (m_tracyD3D11Ctx)
+	{
+		TracyD3D11Destroy(m_tracyD3D11Ctx);
+	}
+#endif // TRACY_ENABLE
 
 	swap_chain->GetFullscreenState(&fullscreen, 0);
 	if (fullscreen)

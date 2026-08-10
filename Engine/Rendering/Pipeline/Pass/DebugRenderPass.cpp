@@ -3,6 +3,7 @@
 #include "Engine/Rendering/Renderers/DebugRenderer.h"
 #include "Engine/Rendering/Pipeline/RenderState.h"
 #include "Engine/Physics/Physics.h"
+#include <Engine\Rendering\Pipeline\Graphics.h>
 
 void DebugRenderPass::Initialize()
 {
@@ -21,7 +22,7 @@ void DebugRenderPass::Execute(RenderContext* rtx, Scene* scene)
 	// DebugRenderPassの実行処理を実装
 #ifdef _DEBUG
 // グリッドの描画
-
+	TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "DebugRenderPass::Execute");
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 

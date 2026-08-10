@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ParticlePass.h"
 #include "Engine/Effects/EffectManager.h"
+#include "Engine/Rendering/Pipeline/Graphics.h"
 
 void ParticlePass::Initialize()
 {
@@ -21,5 +22,6 @@ void ParticlePass::Execute(RenderContext* rtx, Scene* scene)
     renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullNone);
 
     // パーティクル描画
+	TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "EffectManager::Render");
     EffectManager::Render(rtx);
 }

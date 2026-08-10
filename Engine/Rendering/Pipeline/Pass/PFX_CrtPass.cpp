@@ -30,6 +30,7 @@ void PfxCrtPass::Execute(RenderContext* rtx, Scene* scene)
 	auto renderTexture = static_cast<RenderTexture*>(rtx->GetSharedResource("PFX_OutLinePass_RenderTexture"));
 	if (renderTexture)
 	{
+		TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "PfxCrtPass::Execute");
 		// レンダーターゲットをセット
 		rtx->SetRenderTarget(m_pfxCrtTexture);
 		rtx->ClearCurrentRenderTarget(Color::Black);

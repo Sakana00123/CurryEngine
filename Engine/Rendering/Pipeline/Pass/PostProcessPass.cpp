@@ -27,6 +27,8 @@ void PostProcessPass::Execute(RenderContext* rtx, Scene* scene)
 	auto renderTexture = static_cast<RenderTexture*>(rtx->GetSharedResource("ShadowApplyPass_RenderTexture"));
 	if (renderTexture)
 	{
+		TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "PostProcessPass::Execute");
+
 		// レンダーターゲットをセット
 		rtx->SetRenderTarget(m_postProcessTexture);
 		rtx->ClearCurrentRenderTarget(Color::Black);

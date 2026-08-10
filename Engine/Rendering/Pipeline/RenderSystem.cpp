@@ -288,6 +288,7 @@ void RenderSystem::Render()
     }
     {
 		ZoneScopedN("RenderSystem::ImGui::RenderDrawData");
+		TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "ImGui::RenderDrawData");
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     }
 #endif // USE_IMGUI

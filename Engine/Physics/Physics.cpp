@@ -499,6 +499,7 @@ Physics::~Physics()
 
 void Physics::Initialize()
 {
+	ZoneScopedN("Physics::Initialize");
 	// 基盤生成
 	{
 		pxFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, pxAllocator, pxErrorCallback);
@@ -593,6 +594,7 @@ void Physics::Initialize()
 
 void Physics::Terminate()
 {
+	ZoneScopedN("Physics::Terminate()");
 #ifdef _DEBUG
 	// データのシリアライズ
 	SaveSettings();
@@ -637,6 +639,7 @@ void Physics::Terminate()
 
 void Physics::SaveSettings()
 {
+	ZoneScopedN("Physics::SaveSettings()");
 	// データのシリアライズ
 	{
 		json serializedData = Serialize();
@@ -650,6 +653,7 @@ void Physics::SaveSettings()
 
 void Physics::Clean()
 {
+	ZoneScopedN("Physics::Clean()");
 	// 登録されたActorをすべてシーンから削除して解放
 	GetScene()->lockWrite(); // シーンへの書き込みをロック
 
@@ -770,53 +774,58 @@ void Physics::Deserialize(const json& j)
 
 void Physics::FixedUpdate(float fixedDeltaTime)
 {
+	ZoneScopedN("Physics::FixedUpdate()");
 	// 物理シミュレーションの更新とゲームオブジェクトへの反映
 	
 	FlushPendingRegistrations(); // 保留中の登録をフラッシュして、シミュレーションに反映する
 
 	// シミュレーションの更新前に、必要に応じてゲームオブジェクトの状態を物理エンジンに反映する処理を実装
-	for (const auto& [handle, data] : m_actorMap)
 	{
-		if (physx::PxRigidActor* actor = data.actor)
+		ZoneScopedN("Sync Transform to physx actor");
+
+		for (const auto& [handle, data] : m_actorMap)
 		{
-			// ActorHandleに対応するTransformを取得
-			if (Transform* transform = data.transform)
+			if (physx::PxRigidActor* actor = data.actor)
 			{
-				if (!transform->IsChangedThisFrame())
+				// ActorHandleに対応するTransformを取得
+				if (Transform* transform = data.transform)
 				{
-					// Transformがこのフレームで変更されていない場合は位置と回転を更新しない
-					continue;
-				}
-
-				// Transformからワールド位置と回転を取得
-				Vector3 worldPos = transform->GetWorldPosition();
-				Quaternion worldRot = transform->GetWorldRotation();
-				physx::PxVec3 pxWorldPos = ToPxVec3(worldPos);
-				physx::PxQuat pxWorldRot = ToPxQuat(worldRot).getNormalized(); // PhysXの回転は正規化されている必要があるため、正規化してから使用する
-				physx::PxTransform pxTransform(pxWorldPos, pxWorldRot);
-
-				bool isKinematic = false;
-				auto* dynamic = actor->is<physx::PxRigidDynamic>();
-				if (dynamic)
-				{
-					if (dynamic->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC)
+					if (!transform->IsChangedThisFrame())
 					{
-						if (dynamic->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION)
-						{
-							continue; // キネマティックなActorがスリープ中の場合は位置と回転を更新しない
-						}
-						isKinematic = true; // Actorがキネマティックな場合はフラグを立てる
+						// Transformがこのフレームで変更されていない場合は位置と回転を更新しない
+						continue;
 					}
-				}
-				if (isKinematic)
-				{
-					// キネマティックなActorの場合はsetKinematicTargetを使用して位置と回転を更新
-					dynamic->setKinematicTarget(pxTransform);
-				}
-				else
-				{
-					// Actorのグローバルポーズを更新
-					actor->setGlobalPose(pxTransform);
+
+					// Transformからワールド位置と回転を取得
+					Vector3 worldPos = transform->GetWorldPosition();
+					Quaternion worldRot = transform->GetWorldRotation();
+					physx::PxVec3 pxWorldPos = ToPxVec3(worldPos);
+					physx::PxQuat pxWorldRot = ToPxQuat(worldRot).getNormalized(); // PhysXの回転は正規化されている必要があるため、正規化してから使用する
+					physx::PxTransform pxTransform(pxWorldPos, pxWorldRot);
+
+					bool isKinematic = false;
+					auto* dynamic = actor->is<physx::PxRigidDynamic>();
+					if (dynamic)
+					{
+						if (dynamic->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC)
+						{
+							if (dynamic->getActorFlags() & physx::PxActorFlag::eDISABLE_SIMULATION)
+							{
+								continue; // キネマティックなActorがスリープ中の場合は位置と回転を更新しない
+							}
+							isKinematic = true; // Actorがキネマティックな場合はフラグを立てる
+						}
+					}
+					if (isKinematic)
+					{
+						// キネマティックなActorの場合はsetKinematicTargetを使用して位置と回転を更新
+						dynamic->setKinematicTarget(pxTransform);
+					}
+					else
+					{
+						// Actorのグローバルポーズを更新
+						actor->setGlobalPose(pxTransform);
+					}
 				}
 			}
 		}
@@ -826,44 +835,49 @@ void Physics::FixedUpdate(float fixedDeltaTime)
 	// 物理シミュレーションの更新
 	if (fixedDeltaTime > 0.0f)
 	{
+		ZoneScopedN("Physics Simulation Step");
 		pxScene->simulate(fixedDeltaTime);
 		pxScene->fetchResults(true);
 	}
 
 	// ここで物理シミュレーションの結果をゲームオブジェクトに反映する処理を実装
-
-	m_simulationEventCallback.CallCollisionEvents(); // 衝突イベントを呼び出す
-	m_simulationEventCallback.CallTriggerEvents(); // トリガーイベントを呼び出す
+	{
+		ZoneScopedN("Call Simulation Events");
+		m_simulationEventCallback.CallCollisionEvents(); // 衝突イベントを呼び出す
+		m_simulationEventCallback.CallTriggerEvents(); // トリガーイベントを呼び出す
+	}
 
 	// 登録されたActorの位置と回転を対応するTransformに反映
-	for (const auto& [handle, data] : m_actorMap)
 	{
-		if (physx::PxRigidActor* actor = data.actor)
+		ZoneScopedN("Sync physx actor to Transform");
+		for (const auto& [handle, data] : m_actorMap)
 		{
-			if (auto* dynamic = actor->is<physx::PxRigidDynamic>())
+			if (physx::PxRigidActor* actor = data.actor)
 			{
-				if (dynamic->isSleeping())
+				if (auto* dynamic = actor->is<physx::PxRigidDynamic>())
 				{
-					continue; // 動的なActorがスリープ中の場合は位置と回転を更新しない
-				}
-				if (dynamic->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC)
-				{
-					continue; // キネマティックなActorの場合は位置と回転を更新しない
-				}
+					if (dynamic->isSleeping())
+					{
+						continue; // 動的なActorがスリープ中の場合は位置と回転を更新しない
+					}
+					if (dynamic->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC)
+					{
+						continue; // キネマティックなActorの場合は位置と回転を更新しない
+					}
 
-				// Actorのグローバルポーズを取得
-				physx::PxTransform globalPose = actor->getGlobalPose();
-				// ActorHandleに対応するTransformを取得
-				if (Transform* transform = data.transform)
-				{
-					// Transformに位置と回転を反映
-					transform->SetWorldPosition(ToVector3(globalPose.p));
-					transform->SetWorldRotation(ToQuaternion(globalPose.q));
+					// Actorのグローバルポーズを取得
+					physx::PxTransform globalPose = actor->getGlobalPose();
+					// ActorHandleに対応するTransformを取得
+					if (Transform* transform = data.transform)
+					{
+						// Transformに位置と回転を反映
+						transform->SetWorldPosition(ToVector3(globalPose.p));
+						transform->SetWorldRotation(ToQuaternion(globalPose.q));
+					}
 				}
 			}
 		}
 	}
-
 }
 
 void Physics::RenderDebug(RenderContext* renderContext)

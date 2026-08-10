@@ -15,6 +15,7 @@ void ShadowMapPass::Initialize()
 void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
 {
 	ZoneScopedN("ShadowMapPass::Execute");
+	TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "ShadowMapPass::Execute");
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 

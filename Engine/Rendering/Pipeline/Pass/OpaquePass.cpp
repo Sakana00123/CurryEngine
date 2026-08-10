@@ -6,6 +6,7 @@
 
 void OpaquePass::Execute(RenderContext* rtx, Scene* scene)
 {
+	TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "OpaquePass::Execute");
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 	

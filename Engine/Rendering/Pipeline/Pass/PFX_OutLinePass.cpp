@@ -27,6 +27,7 @@ void PFX_OutLinePass::Execute(RenderContext* rtx, Scene* scene)
 	auto renderTexture = static_cast<RenderTexture*>(rtx->GetSharedResource("ShadowApplyPass_RenderTexture"));
 	if (renderTexture)
 	{
+		TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "PFX_OutLinePass::Execute");
 		// レンダーターゲットをセット
 		rtx->SetRenderTarget(m_renderTexture);
 		rtx->ClearCurrentRenderTarget(Color::Black);
