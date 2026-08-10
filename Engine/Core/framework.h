@@ -81,12 +81,6 @@ public:
     // ウィンドウプロシージャ
     LRESULT CALLBACK HandleMessage(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-public:
-    
-    static inline bool isPaused = false;// Profiler用
-    static void SetPause(bool pause) {
-        isPaused = pause;
-    }
 private:
     bool Initialize();
     void BeginFrame();

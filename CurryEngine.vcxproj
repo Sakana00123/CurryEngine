@@ -56,9 +56,9 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;USE_IMGUI;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -95,7 +95,7 @@ popd</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -454,6 +454,10 @@ popd</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="External\tracy-0.13.1\public\TracyClient.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -610,10 +614,6 @@ popd</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="External\imgui-docking\ImSequencer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="External\imgui-docking\profiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -898,7 +898,6 @@ popd</Command>
     <ClInclude Include="External\imgui-docking\imstb_rectpack.h" />
     <ClInclude Include="External\imgui-docking\imstb_textedit.h" />
     <ClInclude Include="External\imgui-docking\imstb_truetype.h" />
-    <ClInclude Include="External\imgui-docking\profiler.h" />
     <ClInclude Include="External\imgui-docking\timer.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ShadowMapPass.h"
 #include "Engine/Rendering/Pipeline/Graphics.h"
-#include <profiler.h>
 #include "Engine/Rendering/Renderers/GltfModelRenderer.h"
 
 CONST LONG SHADOWMAP_WIDTH{ 2048 };
@@ -15,6 +14,7 @@ void ShadowMapPass::Initialize()
 
 void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
 {
+	ZoneScopedN("ShadowMapPass::Execute");
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 
@@ -44,7 +44,6 @@ void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
 
     //シャドウマップ生成描画
     {
-        ProfileScopedSection_2(0, "CastShadows", ImGuiControl::Profiler::Red);
         for (const std::shared_ptr<GameObject>& object : scene->objectManager->GetAll())
         {
             if (GltfModelRenderer* renderer = object->GetComponent<GltfModelRenderer>())

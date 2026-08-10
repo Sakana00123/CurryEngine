@@ -16,7 +16,6 @@
 #include "Engine/Editor/SceneParametersEditor.h"
 #include "Engine/Editor/BuildSettingsWindow.h"
 #include "Engine/Effects/EffectManager.h"
-#include <profiler.h>
 
 #include "Engine/Audio/BeatManager.h"
 #include "Engine/Physics/Physics.h"

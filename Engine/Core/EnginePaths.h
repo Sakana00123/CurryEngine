@@ -22,4 +22,7 @@ namespace EnginePaths
 	inline constexpr const char* PhysicsSettingsFile = "./ProjectSettings/Physics.json";
 	inline constexpr const char* EditorConfigFile = "./ProjectSettings/EditorConfig.json";
     inline constexpr const char* SolutionFile        = "./CurryEngine.sln";
+
+	// ツール関連
+	inline constexpr const char* TracyProfilerExe = "./Tools/tracy/windows-0.13.1/tracy-profiler.exe";
 }

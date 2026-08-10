@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ParticlePass.h"
-#include <profiler.h>
 #include "Engine/Effects/EffectManager.h"
 
 void ParticlePass::Initialize()
@@ -14,7 +13,7 @@ void ParticlePass::Execute(RenderContext* rtx, Scene* scene)
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
 	
-    ProfileScopedSection_2(0, "Particles", ImGuiControl::Profiler::Green);
+	ZoneScopedN("ParticlePass::Execute");
 
     //深度ステンシルステート設定
     renderState->BindDepthStencilState(immediateContext, DepthStencilState::TestOnly, 1);

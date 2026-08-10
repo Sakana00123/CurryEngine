@@ -24,12 +24,10 @@
 #include "Engine/Editor/History.h"
 #include "Engine/Editor/ImGuiTheme.h"
 
-#include <profiler.h>
 #include "Generated/ReflectionGenerated.h"
 #include "Engine/Rendering/Camera/CameraSystem.h"
 #include "Engine/Rendering/Camera/CameraComponent.h"
 #include "Engine/Rendering/Camera/EditorCamera.h"
-#include <implot.h>
 
 #include "Engine/Scripting/ScriptSystem.h"
 #include "Engine/Scripting/ScriptHost.h"
@@ -50,10 +48,6 @@ CONST LONG SHADOWMAP_HEIGHT{ 2048 };
 
 Framework::Framework(HWND hwnd)
 {
-    //プロファイラ初期化
-    ProfileInitialize(&isPaused, Framework::SetPause, ImGuiControl::Profiler::DefaultMaxThreads);
-    ProfileThreadName(0, "Main Thread");
-
 	// ログ初期化
 	Console::Initialize();
 
@@ -136,11 +130,6 @@ int Framework::Run()
     ImGui_ImplDX11_Init(device/*.Get()*/, immediate_context/*.Get()*/);
     ImGui::StyleColorsDark();
 
-	// ImPlot初期化
-	ImPlotContext* imPlotContext = ImPlot::CreateContext();
-	ImPlot::SetImGuiContext(imguiContext);
-
-    
     // ImGuiテーマ初期化
     ImGuiTheme::Initialize();
 #endif
@@ -180,6 +169,8 @@ int Framework::Run()
 
 #endif      
             EndFrame();
+
+            FrameMark;
         }
     }
 
@@ -299,7 +290,6 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
     ImGuizmo::BeginFrame();
-    ProfileNewFrame();
 #endif
     // Audio更新
     Audio::Update(deltaTime);
@@ -313,7 +303,7 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
     // 入力システム更新
     if (GetForegroundWindow() == Graphics::GetHwnd())
     {
-        ProfileScopedSection_2(0, "InputSystem::Update", ImGuiControl::Profiler::Green);
+		ZoneScopedN("InputSystem::Update");
         InputSystem::Update(Time::UnscaledDeltaTime());
     }
 #ifdef _DEBUG
@@ -327,7 +317,7 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
     // イベントシステム更新
     if ((SceneManager::GetCurrentScene() && SceneManager::GetCurrentScene()->IsStarted()) && SceneManager::state == SceneManager::State::Playing)
     {
-        ProfileScopedSection_2(0, "EventSystem::Update", ImGuiControl::Profiler::Yellow);
+		ZoneScopedN("EventSystem::Update");
         EventSystem::Update(Time::UnscaledDeltaTime());
     }
 
@@ -339,27 +329,30 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
     }
 
 	// アセットデータベース更新
-    CurryEngine::Resources::AssetDatabase::Update();
+    {
+		ZoneScopedN("AssetDatabase::Update");
+        CurryEngine::Resources::AssetDatabase::Update();
+    }
 
 #endif // _DEBUG
 
 
     // シーン更新
     {
-        ProfileScopedSection_2(0, "SceneManager::Update", ImGuiControl::Profiler::Red);
+		ZoneScopedN("SceneManager::Update");
         SceneManager::Update(deltaTime);
     }
 
     // パーティクルシステム更新
     {
-        ProfileScopedSection_2(0, "EffectManager::Update", ImGuiControl::Profiler::Blue);
+		ZoneScopedN("ParticleSystem::Update");
         // エフェクトマネージャ更新
         EffectManager::Update(deltaTime);
     }
 
     // スクリプトシステム更新
     {
-        ProfileScopedSection_2(0, "ScriptSystem::Update", ImGuiControl::Profiler::Green);
+		ZoneScopedN("ScriptSystem::Update");
         ScriptSystem::Update();
 	}
 
@@ -368,28 +361,26 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
 void Framework::Render(float deltaTime/*Elapsed seconds from last frame*/)
 {
 	// 描画処理
-	renderSystem->Render();
+    {
+		ZoneScopedN("RenderSystem::Render");
+        renderSystem->Render();
+    }
 
     //vsyncがtrueの場合、描画間隔が固定フレームレートで動作するようになる
     {
-        ProfileScopedSection_2(0, "Graphics::Present", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("Graphics::Present");
         Graphics::Present(vsync);
     }
 
     // 共有リソースのリセット
     {
-        ProfileScopedSection_2(0, "Graphics::ResetSharedResources", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("Graphics::ResetSharedResources");
         Graphics::ResetSharedResources();
     }
 }
 
 bool Framework::Uninitialize(HWND hwnd)
 {
-#ifdef USE_IMGUI
-    // ImPlot終了
-    ImPlot::DestroyContext();
-#endif // USE_IMGUI
-
 	// VcxprojHelperの保留中のシェーダー登録処理を完了させる
 	VcxprojHelper::ProcessPendingShaderRegistrations();
 	// VcxprojHelperの保留中のシェーダー登録解除処理を完了させる
@@ -404,9 +395,6 @@ bool Framework::Uninitialize(HWND hwnd)
 
     // スクリプトシステム終了
     ScriptSystem::Shutdown();
-
-    //プロファイラ終了
-    ProfileShutdown();
 
     // エフェクトマネージャー終了
     EffectManager::ClearAll();

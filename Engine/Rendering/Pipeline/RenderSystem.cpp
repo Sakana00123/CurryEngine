@@ -17,7 +17,6 @@
 #ifdef USE_IMGUI
 #include <imgui.h>
 #include <ImGuizmo.h>
-#include <profiler.h>
 #include <imgui_internal.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
@@ -71,7 +70,7 @@ void RenderSystem::Render()
             //新カメラシステム
 #ifdef _DEBUG
             {
-                ProfileScopedSection_2(0, "SceneView::Rendering", ImGuiControl::Profiler::Yellow);
+				ZoneScopedN("RenderSystem::Render");
                 // エディタビュー用の描画処理
 				EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW);
                 cameraPos = editorCamera->GetPosition();
@@ -154,9 +153,7 @@ void RenderSystem::Render()
 #endif // DEBUG
             {
                 // ゲームビュー用の描画処理
-#ifdef _DEBUG
-                ProfileScopedSection_2(0, "GameView::Rendering", ImGuiControl::Profiler::Purple);
-#endif // _DEBUG
+				ZoneScopedN("RenderSystem::Render_GameView");
                 auto* cam = scene->cameraSystem.GetMainCamera();
                 if (cam)
                 {
@@ -202,49 +199,49 @@ void RenderSystem::Render()
 #ifdef USE_IMGUI
     // ImGui描画
     {
-        ProfileScopedSection_2(0, "SceneManager::DrawGUI", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::DrawGUI");
         SceneManager::DrawGUI(&sceneContext, &gameContext);
     }
 
     // RenderSystemのGUI描画
     {
-        ProfileScopedSection_2(0, "RenderSystem::DrawEditorGUI", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::DrawEditorGUI");
         DrawEditorGUI();
     }
 
 	// インポート設定ウィンドウのGUI描画
     {
-        ProfileScopedSection_2(0, "ImportSettingsWindow::DrawGUI", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::DrawImportSettingsGUI");
         CurryEngine::Resources::ImportSettingsWindow::DrawGUI(&previewContext);
     }
 
 	// ImGuiデバッグログウィンドウの表示
     {
-        ProfileScopedSection_2(0, "ImGui::DebugLogWindow", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::ShowDebugLogWindow");
         ImGui::ShowDebugLogWindow();
     }
 
     // ImGuiTheme描画
     {
-        ProfileScopedSection_2(0, "ImGuiTheme::DrawGUI", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::DrawImGuiTheme");
         ImGuiTheme::DrawGUI();
     }
 
     //エフェクトエディタGUI描画
     {
-        ProfileScopedSection_2(0, "EffectEditor::DrawGUI", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::DrawEffectEditorGUI");
         EffectEditor::DrawGUI(&effectPreviewContext);
     }
 
     //物理エンジンデバッグ描画
     {
-        ProfileScopedSection_2(0, "Physics::DrawGUI", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::DrawPhysicsDebugGUI");
         Physics::DrawGUI();
     }
 
     //レイヤー設定GUI描画
     {
-        ProfileScopedSection_2(0, "LayerManager::DrawLayerSettingsGUI", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::DrawLayerSettingsGUI");
         LayerManager::Get().DrawLayerSettingsGUI();
     }
 
@@ -284,18 +281,13 @@ void RenderSystem::Render()
     }
     //ImGui::Text("Video memory usage %d MB", VideoMemoryUsage());
 
-    {
-        ProfileScopedSection_2(0, "ProfileDrawUI", ImGuiControl::Profiler::Purple);
-
-        ProfileDrawUI();
-    }
     // ImGui描画
     {
-		ProfileScopedSection_2(0, "ImGui::Render", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::ImGui::Render");
         ImGui::Render();
     }
     {
-		ProfileScopedSection_2(0, "ImGui_ImplDX11_RenderDrawData", ImGuiControl::Profiler::Purple);
+		ZoneScopedN("RenderSystem::ImGui::RenderDrawData");
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     }
 #endif // USE_IMGUI

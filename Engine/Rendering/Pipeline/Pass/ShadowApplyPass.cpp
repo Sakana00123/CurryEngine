@@ -2,7 +2,6 @@
 #include "ShadowApplyPass.h"
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include "Engine/Resources/ResourceManager.h"
-#include <profiler.h>
 
 void ShadowApplyPass::Initialize()
 {
@@ -33,6 +32,8 @@ void ShadowApplyPass::Finalize()
 
 void ShadowApplyPass::Execute(RenderContext* rtx, Scene* scene)
 {
+	ZoneScopedN("ShadowApplyPass::Execute");
+
 	// シャドウマップ適用パスの実行コードを記述する
 	auto immediateContext = rtx->immediateContext;
 	auto renderState = rtx->renderState;
@@ -44,8 +45,6 @@ void ShadowApplyPass::Execute(RenderContext* rtx, Scene* scene)
 	// シャドウマップを合成するためのレンダーターゲットを共有リソースとしてRenderContextに設定
 	rtx->SetSharedResource("ShadowApplyPass_RenderTexture", &m_shadowRenderTexture);
 	
-	// プロファイラーにセクションを追加
-	ProfileScopedSection_2(0, "ShadowApplyPass::Execute", ImGuiControl::Profiler::Red);
 	
 #if 0
 

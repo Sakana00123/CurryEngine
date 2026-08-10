@@ -14,7 +14,7 @@
 #include "HlslEditor.h"
 #include "Console.h"
 #include "SceneParametersEditor.h"
-#include "Profiler.h"
+#include "FileOpener.h"
 #include "EffectEditor.h"
 #include "Engine/Utils/JsonFileHandler.h"
 #include "ImGuiTheme.h"
@@ -561,7 +561,15 @@ void EditorGUI::DrawWindowMenu()
 	}
 	if (ImGui::MenuItem("Profiler"))
 	{
-		ProfilerInstance.m_isWindowOpen = true;
+		// tracy-profilerを起動する
+		std::filesystem::path tracyPath = EnginePaths::TracyProfilerExe;
+		tracyPath = std::filesystem::absolute(tracyPath);
+		if (std::filesystem::exists(tracyPath)) {
+			OpenFileWithDefaultApplication(tracyPath.wstring());
+		}
+		else {
+			LOG_ERROR("Tracy profiler executable not found: " + tracyPath.string());
+		}
 	}
 	if (ImGui::MenuItem("Effect Editor"))
 	{

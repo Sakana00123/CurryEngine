@@ -18,7 +18,6 @@
 #include "Engine/UI/RectTransform.h"
 
 #include "Engine/Utils/JsonFileHandler.h"
-#include <profiler.h>
 
 #include "ScriptComponent.h"
 #include "Engine/Rendering/Camera/EditorCamera.h"
@@ -147,7 +146,7 @@ void ObjectManager::PreUpdate(float deltaTime)
 {
 	// 削除予約されたオブジェクトを削除
 	{
-		ProfileScopedSection_2(0, "EraseObjects", ImGuiControl::Profiler::Blue);
+		ZoneScopedN("ObjectManager::PreUpdate - Handle Erases");
 
 		if (!erases.empty())
 		{
@@ -197,7 +196,7 @@ void ObjectManager::PreUpdate(float deltaTime)
 	}
 	// コンポーネントキャッシュを更新
 	{
-		ProfileScopedSection_2(0, "UpdateComponentCache", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("ObjectManager::PreUpdate - Update Component Cache");
 
 		componentCacheMap.clear();
 		for (auto& object : objects) {
@@ -215,7 +214,7 @@ void ObjectManager::Update(float elapsedTime)
 {
 	//優先度でソート
 	{
-		ProfileScopedSection_2(0, "SortObjects", ImGuiControl::Profiler::Yellow);
+		ZoneScopedN("ObjectManager::Update - Sort Objects");
 		CurryEngine::OrderManager::Sort(objects);
 	}
 
@@ -247,7 +246,7 @@ void ObjectManager::Update(float elapsedTime)
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 
 		// 計測開始
-		ProfileScopedSection_3(0, object->name.c_str(), ImGuiControl::Profiler::Green);
+
 
 		// 親を持たないオブジェクトに対してUpdateを呼び出す
 		Update(object.get());
@@ -260,7 +259,6 @@ void ObjectManager::Update(float elapsedTime)
 		if (weakObj.expired() || weakObj.lock()->parent) continue;
 
 		// 計測開始
-		ProfileScopedSection_3(0, object->name.c_str(), ImGuiControl::Profiler::Dark);
 
 		// 親を持たないオブジェクトに対してUpdateを呼び出す
 		Update(object.get());

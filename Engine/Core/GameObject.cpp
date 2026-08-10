@@ -11,7 +11,6 @@
 #include "Engine/EditorSupport/EditorSelection.h"
 #include <Engine\UI\RectTransform.h>
 
-#include <profiler.h>
 
 GameObject::~GameObject() {
     for (auto child : children) {
@@ -102,13 +101,12 @@ void GameObject::SetParent(GameObject* newParent) {
 
 void GameObject::BeginFrame()
 {
-	ProfileScopedSection_2(0, "GameObject::BeginFrame", ImGuiControl::Profiler::Color::Green);
+	ZoneScopedN("GameObject::BeginFrame");
     for (size_t i = 0; i < _components.size(); i++) {
         std::weak_ptr<Component> weakComp = _components.at(i);
         if (const auto& component = weakComp.lock()) {
             if (component->IsEnabled())
             {
-				ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Yellow);
                 component->BeginFrame();
             }
         }
@@ -137,13 +135,12 @@ void GameObject::BeginFrame()
 
 void GameObject::EndFrame()
 {
-	ProfileScopedSection_2(0, "GameObject::EndFrame", ImGuiControl::Profiler::Color::Green);
+	ZoneScopedN("GameObject::EndFrame");
     for (size_t i = 0; i < _components.size(); i++) {
         std::weak_ptr<Component> weakComp = _components.at(i);
         if (const auto& component = weakComp.lock()) {
             if (component->IsEnabled())
             {
-				ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Yellow);
                 component->EndFrame();
             }
         }
@@ -163,12 +160,12 @@ void GameObject::Update(float deltaTime)
     //    });
 	// ソートの安定性を保つため、OrderManager::Sort を使用してソートする
     {
-		ProfileScopedSection_3(0, "GameObject::Update - Sort Components", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::Update::SortComponents");
         CurryEngine::OrderManager::Sort(_components);
     }
 
     if (IsActive()) {
-		ProfileScopedSection_2(0, "GameObject::Update", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::Update");
         for (size_t i = 0; i < _components.size(); i++) {
             std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
@@ -178,12 +175,10 @@ void GameObject::Update(float deltaTime)
                     if (component->IsEnabled())
                     {
 						if (component->m_started == false) { // Start() がまだ呼び出されていない場合は呼び出す
-							ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Yellow);
                             component->Start();
                             component->m_started = true;
 						}
 						else { // Start() が呼び出された後は Update() を呼び出す(Start() が呼び出されたフレームでは Update() は呼び出さない)
-							ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Blue);
                             component->Update(deltaTime);
                         }
                     }
@@ -195,14 +190,12 @@ void GameObject::Update(float deltaTime)
 
 void GameObject::LateUpdate(float deltaTime) {
     if (IsActive()) {
-		ProfileScopedSection_2(0, "GameObject::LateUpdate", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::LateUpdate");
         for (size_t i = 0; i < _components.size(); i++) {
             std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
                 if (component->IsEnabled())
                 {
-					ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Purple);
-
                     component->LateUpdate(deltaTime);
                 }
             }
@@ -212,14 +205,12 @@ void GameObject::LateUpdate(float deltaTime) {
 
 void GameObject::FixedUpdate(float fixedDeltaTime) {
     if (IsActive()) {
-		ProfileScopedSection_2(0, "GameObject::FixedUpdate", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::FixedUpdate");
         for (size_t i = 0; i < _components.size(); i++) {
             std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
                 if (component->IsEnabled())
                 {
-					ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Purple);
-
                     component->FixedUpdate(fixedDeltaTime);
                 }
             }
@@ -229,13 +220,12 @@ void GameObject::FixedUpdate(float fixedDeltaTime) {
 
 void GameObject::BeginRendering(RenderContext* rtx) {
     if (IsActive()) {
-		ProfileScopedSection_2(0, "GameObject::BeginRendering", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::BeginRendering");
         for (size_t i = 0; i < _components.size(); i++) {
 			std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
                 if (component->IsEnabled())
                 {
-					ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Yellow);
                     component->BeginRendering(rtx);
                 }
             }
@@ -244,13 +234,12 @@ void GameObject::BeginRendering(RenderContext* rtx) {
 }
 void GameObject::Render(RenderContext* rtx) {
     if (IsActive()) {
-        ProfileScopedSection_2(0, "GameObject::Render", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::Render");
         for (size_t i = 0; i < _components.size(); i++) {
             std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
                 if (component->IsEnabled())
                 {
-					ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Red);
                     component->Render(rtx);
                 }
             }
@@ -259,13 +248,12 @@ void GameObject::Render(RenderContext* rtx) {
 }
 void GameObject::EndRendering(RenderContext* rtx) {
     if (IsActive()) {
-		ProfileScopedSection_2(0, "GameObject::EndRendering", ImGuiControl::Profiler::Color::Yellow);
+		ZoneScopedN("GameObject::EndRendering");
         for (size_t i = 0; i < _components.size(); i++) {
             std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
                 if (component->IsEnabled())
                 {
-					ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Yellow);
                     component->EndRendering(rtx);
                 }
             }
@@ -274,13 +262,12 @@ void GameObject::EndRendering(RenderContext* rtx) {
 }
 void GameObject::Begin(RenderContext* rtx) {
     if (IsActive()) {
-		ProfileScopedSection_2(0, "GameObject::Begin", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::Begin");
         for (size_t i = 0; i < _components.size(); i++) {
             std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
                 if (component->IsEnabled())
                 {
-					ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Yellow);
                     component->Begin(rtx);
                 }
             }
@@ -290,13 +277,12 @@ void GameObject::Begin(RenderContext* rtx) {
 //すべてのコンポーネントの2D描画処理
 void GameObject::Draw(RenderContext* rtx) {
     if (IsActive()) {
-		ProfileScopedSection_2(0, "GameObject::Draw", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::Draw");
         for (size_t i = 0; i < _components.size(); i++) {
             std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
                 if (component->IsEnabled())
                 {
-					ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Red);
                     component->Draw(rtx);
                 }
             }
@@ -306,13 +292,12 @@ void GameObject::Draw(RenderContext* rtx) {
 //すべてのコンポーネントの2D描画後処理
 void GameObject::End(RenderContext* rtx) {
     if (IsActive()) {
-		ProfileScopedSection_2(0, "GameObject::End", ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::End");
         for (size_t i = 0; i < _components.size(); i++) {
             std::weak_ptr<Component> weakComp = _components.at(i);
             if (const auto& component = weakComp.lock()) {
                 if (component->IsEnabled())
                 {
-                    ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Yellow);
                     component->End(rtx);
                 }
             }
@@ -321,7 +306,7 @@ void GameObject::End(RenderContext* rtx) {
 }
 //すべてのコンポーネントの破棄コールバック処理
 void GameObject::OnDestroy() {
-    ProfileScopedSection_3(0, (name + " OnDestroy").c_str(), ImGuiControl::Profiler::Color::Red);
+	ZoneScopedN("GameObject::OnDestroy");
     
     for (size_t i = 0; i < _components.size(); i++) {
         std::weak_ptr<Component> weakComp = _components.at(i);
@@ -451,9 +436,7 @@ void GameObject::SetLayer(int layer)
 
 void GameObject::AttachComponent(const std::string& name, std::shared_ptr<Component>& component, bool generateId)
 {
-	std::string sectionName = GetName() + " AttachComponent: " + name;
-	ProfileScopedSection_3(0, sectionName.c_str(), ImGuiControl::Profiler::Color::Green);
-
+	ZoneScopedN("GameObject::AttachComponent");
 	int tailPriority = _components.empty()
         ? 0
 		: _components.back()->GetPriority() + CurryEngine::OrderManager::STEP; // 追加されたコンポーネントの優先度を、現在の最後尾のコンポーネントの優先度よりも大きくする
@@ -469,7 +452,7 @@ void GameObject::InitializeComponent(std::shared_ptr<Component>& component)
     //初期化処理
 	if (!component->m_initialized)
     {
-		ProfileScopedSection_3(0, (name + " Initialize: " + component->name).c_str(), ImGuiControl::Profiler::Color::Green);
+		ZoneScopedN("GameObject::InitializeComponent");
         component->Initialize();
         component->m_initialized = true; // 初期化フラグを立てる
     }
@@ -477,13 +460,12 @@ void GameObject::InitializeComponent(std::shared_ptr<Component>& component)
 
 void GameObject::AwakeComponents()
 {
-	ProfileScopedSection_2(0, "GameObject::AwakeComponents", ImGuiControl::Profiler::Color::Green);
+	ZoneScopedN("GameObject::AwakeComponents");
 
     for (size_t i = 0; i < _components.size(); i++) {
         std::weak_ptr<Component> weakComp = _components.at(i);
         if (const auto& component = weakComp.lock()) {
             if (!component->m_awaked) {
-				ProfileScopedSection_3(0, component->name.c_str(), ImGuiControl::Profiler::Color::Green);
                 component->Awake();
                 component->m_awaked = true; // Awakeが呼び出されたフラグを立てる
             }
@@ -493,7 +475,7 @@ void GameObject::AwakeComponents()
 
 json GameObject::Serialize() const {
 
-	ProfileScopedSection_3(0, name.c_str(), ImGuiControl::Profiler::Color::Green);
+	ZoneScopedN("GameObject::Serialize");
 
     json j;
 	// バージョン情報を追加(将来の互換性のため)
@@ -689,7 +671,7 @@ json GameObject::Serialize() const {
 
 void GameObject::Deserialize(const json& j)
 {
-	ProfileScopedSection_3(0, name.c_str(), ImGuiControl::Profiler::Color::Green);
+	ZoneScopedN("GameObject::Deserialize");
 
     // バージョン情報を取得
     version = static_cast<int>(

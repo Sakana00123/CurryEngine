@@ -13,7 +13,6 @@
 #include "Engine/EditorSupport/EditorSelection.h"
 
 #include <imgui.h>
-#include <profiler.h>
 #include <Engine\Scripting\ScriptSystem.h>
 #include <Engine\Core\ScriptComponent.h>
 #include "AssetBrowser.h"
@@ -375,7 +374,7 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
 {
     if (selection->IsEmpty()) return;
 	auto primaryObject = selection->GetPrimary();
-    ProfileScopedSection_3(0, (primaryObject->name + " DrawProperty").c_str(), ImGuiControl::Profiler::Color::Green);
+	ZoneScopedN("DrawInspectorProperties");
 
     ImGui::BeginChild("##Components", ImVec2(0, 0), true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysUseWindowPadding);
     ImVec2 cursorPos = ImGui::GetCursorPos(); // 現在のカーソル位置を保存
