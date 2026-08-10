@@ -200,6 +200,7 @@ void AssetBrowser::DrawGUI()
 #ifdef USE_IMGUI
 	if (isOpen)
 	{
+		ZoneScopedN("AssetBrowser::DrawGUI");
 		ImGui::Begin("Asset Browser", &isOpen);
 		ImGuiWindow* window = ImGui::GetCurrentWindow();
 #if 1
@@ -217,22 +218,29 @@ void AssetBrowser::DrawGUI()
 
 		if (ImGui::BeginTable("ProjectView", 2, ImGuiTableFlags_Resizable))
 		{
+			ZoneScopedN("ProjectView");
 			ImGui::TableSetupColumn("Folders", ImGuiTableColumnFlags_WidthFixed, 200.0f);
 			ImGui::TableSetupColumn("Assets");
 			ImGui::TableNextRow();
 
 			//左側：フォルダ階層
-			ImGui::TableSetColumnIndex(0);
-			ImGui::BeginChild("FolderPanel");
-			DrawFolderTree("./", currentDirectory);
-			ImGui::EndChild();
+			{
+				ZoneScopedN("Folder Panel");
+				ImGui::TableSetColumnIndex(0);
+				ImGui::BeginChild("FolderPanel");
+				DrawFolderTree("./", currentDirectory);
+				ImGui::EndChild();
+			}
 
 			//右側：アセットグリッド
-			ImGui::TableSetColumnIndex(1);
-			ImGui::BeginChild("AssetPanel");
-			DrawUnityPath(currentDirectory);
-			DrawAssetGrid(currentDirectory, searchBuffer);
-			ImGui::EndChild();
+			{
+				ZoneScopedN("Asset Panel");
+				ImGui::TableSetColumnIndex(1);
+				ImGui::BeginChild("AssetPanel");
+				DrawUnityPath(currentDirectory);
+				DrawAssetGrid(currentDirectory, searchBuffer);
+				ImGui::EndChild();
+			}
 
 			ImGui::EndTable();
 		}

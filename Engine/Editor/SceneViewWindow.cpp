@@ -19,6 +19,7 @@ namespace CurryEngine
 
 	void SceneViewWindow::Draw(RenderContext* rtx, Scene* scene)
 	{
+		ZoneScopedN("SceneViewWindow::Draw");
 		// シーンのレンダリングとオブジェクト選択の管理をここに実装します。
 		ImGui::Begin("Scene");
 
@@ -98,12 +99,16 @@ namespace CurryEngine
 		if (scene != nullptr)
 		{
 			//ギズモ
-			scene->GetObjectManager()->DrawGuizmo(rtx);
+			{
+				ZoneScopedN("DrawGuizmo");
+				scene->GetObjectManager()->DrawGuizmo(rtx);
+			}
 
 
 			// シーンビューのレイキャストによるオブジェクト選択
 			if (isSceneWindowFocused && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 			{
+				ZoneScopedN("SceneViewWindow::RaycastSelection");
 				// ギズモに触れている場合は完全スキップ
 				bool isOverGuizmo = ImGuizmo::IsOver() || ImGuizmo::IsUsing();
 

@@ -276,6 +276,7 @@ void Console::DrawGUI()
 {
 #ifdef USE_IMGUI
 	std::lock_guard<std::mutex> lock(s_logMutex);
+	ZoneScopedN("Console::DrawGUI");
 	ImGui::Begin("Console", &isOpen);
 
 	// ---- クリアボタン ----

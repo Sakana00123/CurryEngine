@@ -375,6 +375,7 @@ std::vector<Scene*> SceneManager::GetActiveScenes()
 
 void SceneManager::EnterEdit()
 {
+	ZoneScopedN("SceneManager::EnterEdit");
 	// 現在のシーンが存在しなければ何もしない。
 	if (currentScene == nullptr) return;
 
@@ -404,6 +405,7 @@ void SceneManager::EnterEdit()
 
 void SceneManager::EnterPlay()
 {
+	ZoneScopedN("SceneManager::EnterPlay");
 	// 現在のシーンが存在しなければ何もしない。
 	if (currentScene == nullptr) return;
 
@@ -456,6 +458,7 @@ void SceneManager::Register(const std::string& path)
 
 json SceneManager::Serialize()
 {
+	ZoneScopedN("SceneManager::Serialize");
 	json j;
 	// エディタで、最初に開くシーンを保存する。
 	std::string editorFirstSceneName;
@@ -498,6 +501,7 @@ json SceneManager::Serialize()
 
 void SceneManager::Deserialize(const json& j)
 {
+	ZoneScopedN("SceneManager::Deserialize");
 	// ビルド設定のシーンリストを読み込む。
 	{
 		json scenesInBuild = j.value("scenesInBuild", json::object());
@@ -528,6 +532,7 @@ void SceneManager::Deserialize(const json& j)
 
 void SceneManager::CleanRuntimeFiles()
 {
+	ZoneScopedN("SceneManager::CleanRuntimeFiles");
 	// ランタイム用シーンファイルを削除する。
 	for (auto& entry : fs::directory_iterator("./Assets/Scenes/")) {
 		std::string stem = entry.path().stem().string();

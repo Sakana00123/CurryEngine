@@ -9,6 +9,7 @@ namespace CurryEngine
 {
 	void GameViewWindow::Draw(RenderContext* rtx, Scene* scene)
 	{
+		ZoneScopedN("GameViewWindow::Draw");
 		ImGui::Begin("Game");
 		const float targetAspect = 16.0f / 9.0f;
 		ImVec2 avail = ImGui::GetContentRegionAvail();

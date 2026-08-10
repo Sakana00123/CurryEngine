@@ -755,6 +755,7 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 void ObjectManager::DrawHierarchy()
 {
 #ifdef USE_IMGUI
+	ZoneScopedN("ObjectManager::DrawHierarchy");
 	CurryEngine::HierarchyWindow::Get().Draw(this);
 #endif // USE_IMGUI
 }
@@ -762,12 +763,14 @@ void ObjectManager::DrawHierarchy()
 void ObjectManager::DrawProperty()
 {
 #ifdef USE_IMGUI
+	ZoneScopedN("ObjectManager::DrawProperty");
 	CurryEngine::InspectorWindow::Get().Draw(this);
 #endif // USE_IMGUI
 }
 
 GameObject* ObjectManager::Find(const std::string& name)
 {
+	ZoneScopedN("ObjectManager::Find");
 	for (Scene* scene : SceneManager::GetActiveScenes())
 	{
 		if (scene)
@@ -802,6 +805,7 @@ GameObject* ObjectManager::Find(const std::string& name)
 }
 GameObject* ObjectManager::Find(const ObjectId& id)
 {
+	ZoneScopedN("ObjectManager::Find");
 	for (Scene* scene : SceneManager::GetActiveScenes())
 	{
 		if (scene)
@@ -835,6 +839,7 @@ GameObject* ObjectManager::Find(const ObjectId& id)
 
 std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const std::string& name)
 {
+	ZoneScopedN("ObjectManager::Find_Ptr");
 	for (Scene* scene : SceneManager::GetActiveScenes())
 	{
 		if (scene)
@@ -867,6 +872,7 @@ std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const std::string& name)
 }
 std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const ObjectId& id)
 {
+	ZoneScopedN("ObjectManager::Find_Ptr");
 	for (Scene* scene : SceneManager::GetActiveScenes())
 	{
 		if (scene)
@@ -900,6 +906,7 @@ std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const ObjectId& id)
 
 std::shared_ptr<Component> ObjectManager::FindComponent(const ObjectId& id)
 {
+	ZoneScopedN("ObjectManager::FindComponent");
 	for (Scene* scene : SceneManager::GetActiveScenes())
 	{
 		if (scene)
@@ -920,6 +927,7 @@ std::shared_ptr<Component> ObjectManager::FindComponent(const ObjectId& id)
 
 GameObject* ObjectManager::FindInObjects(const std::string& name)
 {
+	ZoneScopedN("ObjectManager::FindInObjects");
 	for (auto& object : objects) {
 		// オブジェクトがnullptrの場合はスキップ
 		if (!object) continue;
@@ -937,6 +945,7 @@ GameObject* ObjectManager::FindInObjects(const std::string& name)
 
 GameObject* ObjectManager::FindInObjects(const ObjectId& id)
 {
+	ZoneScopedN("ObjectManager::FindInObjects");
 	for (auto& object : objects) {
 		// オブジェクトがnullptrの場合はスキップ
 		if (!object) continue;
@@ -953,6 +962,7 @@ GameObject* ObjectManager::FindInObjects(const ObjectId& id)
 }
 
 void ObjectManager::Destroy(const std::string& name) {
+	ZoneScopedN("ObjectManager::Destroy");
 	std::shared_ptr<GameObject> object = Find_Ptr(name);
 	if (object) {
 		// すでに削除予定リストにあるかどうかを確認
@@ -1213,6 +1223,7 @@ GameObject* ObjectManager::Duplicate(GameObject* original)
 
 GameObject* ObjectManager::Instantiate(const json& j)
 {
+	ZoneScopedN("ObjectManager::Instantiate");
 	if (j.is_null()) return nullptr;
 	std::unordered_map<ObjectId, ObjectId> idMap; // 古いIDから新しいIDへのマッピング
 	// 新しいIDを生成してマッピングを作成
@@ -1357,6 +1368,7 @@ GameObject* ObjectManager::Instantiate(const json& j)
 
 void ObjectManager::SaveGameObject(GameObject* object, const std::string& filePath)
 {
+	ZoneScopedN("ObjectManager::SaveGameObject");
 	if (!object) return;
 	
 	std::vector<GameObject*> targets;

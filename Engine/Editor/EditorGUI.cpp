@@ -34,6 +34,7 @@
 
 float EditorGUI::DrawMainMenu()
 {
+	ZoneScopedN("EditorGUI::DrawMainMenu");
 	float mainMenuBarHeight = 0.0f;
 #ifdef USE_IMGUI
 	//上のメニューバー
@@ -91,6 +92,7 @@ float EditorGUI::DrawMainMenu()
 
 float EditorGUI::DrawToolbar(float offsetY)
 {
+	ZoneScopedN("EditorGUI::DrawToolbar");
 	// ツールバー
 	float toolbarHeight = 40.0f;
 #ifdef USE_IMGUI
@@ -186,6 +188,7 @@ float EditorGUI::DrawToolbar(float offsetY)
 
 float EditorGUI::DrawSceneViewToolbar()
 {
+	ZoneScopedN("EditorGUI::DrawSceneViewToolbar");
 	float toolbarHeight = 30.0f;
 #ifdef USE_IMGUI
 	// ツールバーの内容をここに描画
@@ -352,6 +355,7 @@ float EditorGUI::DrawSceneViewToolbar()
 
 void EditorGUI::DrawFileMenu()
 {
+	ZoneScopedN("EditorGUI::DrawFileMenu");
 #ifdef USE_IMGUI
 	// ------------- ファイルメニュー ---------------
 	// 新規シーン
@@ -388,6 +392,7 @@ void EditorGUI::DrawFileMenu()
 
 void EditorGUI::DrawSceneMenu()
 {
+	ZoneScopedN("EditorGUI::DrawSceneMenu");
 #ifdef USE_IMGUI
 	//シーン変更ボタン
 
@@ -419,6 +424,7 @@ void EditorGUI::DrawSceneMenu()
 
 void EditorGUI::DrawGameObjectMenu()
 {
+	ZoneScopedN("EditorGUI::DrawGameObjectMenu");
 #ifdef USE_IMGUI
 	Scene* scene = SceneManager::GetCurrentScene();
 	if (!scene)	return;
@@ -542,6 +548,7 @@ void EditorGUI::DrawGameObjectMenu()
 
 void EditorGUI::DrawWindowMenu()
 {
+	ZoneScopedN("EditorGUI::DrawWindowMenu");
 #ifdef USE_IMGUI
 	if (ImGui::MenuItem("AssetBrowser"))
 	{
