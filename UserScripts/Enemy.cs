@@ -73,10 +73,14 @@ public class Enemy : Behaviour
                 return;
             }
 
-            Vector3 movement = directionToPlayer.normalized * speed * Time.DeltaTime;
+            Vector3 movement = directionToPlayer.normalized * speed;
 
             // プレイヤーに向かって移動する
-            transform.position += movement;
+            //transform.position += movement * Time.DeltaTime;
+            if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+            {
+                rigidbody.AddForce(movement, ForceMode.Force);
+            }
         }
     }
 }

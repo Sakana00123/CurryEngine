@@ -90,7 +90,7 @@ public abstract class Behaviour : Component
         //var newId = NativeMethods.GameObject_InstantiateFromId(original.objectId, parent != null ? parent.ownerId : 0, position, rotation);
         var newId = Component.Accessor?.InstantiateFromId(original.objectId, parent != null ? parent.ownerId : 0, position, rotation) ?? 0;
         if (newId == 0) throw new InvalidOperationException("Failed to instantiate object.");
-        return new GameObject(newId);
+        return GameObject.Accessor?.GetOrCreate(newId) ?? throw new InvalidOperationException($"Failed to retrieve GameObject with ID: {newId}");
     }
 
     public static GameObject Instantiate(GameObject original, Transform? parent = null)
@@ -114,7 +114,7 @@ public abstract class Behaviour : Component
         //var newId = NativeMethods.GameObject_InstantiateFromResource(resourcePath, parent != null ? parent.ownerId : 0, position, rotation);
         var newId = Component.Accessor?.InstantiateFromResource(resourcePath, parent != null ? parent.ownerId : 0, position, rotation) ?? 0;
         if (newId == 0) throw new InvalidOperationException($"Failed to instantiate object from resource: {resourcePath}");
-        return new GameObject(newId);
+        return GameObject.Accessor?.GetOrCreate(newId) ?? throw new InvalidOperationException($"Failed to retrieve GameObject with ID: {newId}");
     }
 
     public static GameObject Instantiate(string resourcePath, Transform? parent = null)
@@ -138,6 +138,27 @@ public abstract class Behaviour : Component
         //var id = NativeMethods.GameObject_FindByName(name);
         var id = Component.Accessor?.FindGameObjectByName(name) ?? 0;
         if (id == 0) return null;
-        return new GameObject(id);
+        return GameObject.Accessor?.GetOrCreate(id);
+    }
+
+    /// <summary>
+    /// 指定されたオブジェクトIDに対応する GameObject を取得します。存在しない場合は null を返します。
+    /// </summary>
+    /// <param name="objectId"> 取得したい GameObject のオブジェクトID。</param>
+    /// <returns> 存在する場合は GameObject、存在しない場合は null。</returns>
+    public static GameObject? GetGameObjectById(ulong objectId)
+    {
+        return GameObject.Accessor?.GetOrCreate(objectId);
+    }
+
+    /// <summary>
+    /// 指定されたコンポーネントIDに対応する Component を取得します。存在しない場合は null を返します。
+    /// </summary>
+    /// <typeparam name="T"> 取得したいコンポーネントの型。</typeparam>
+    /// <param name="componentId"> 取得したいコンポーネントのオブジェクトID。</param>
+    /// <returns> 存在する場合は指定された型のコンポーネント、存在しない場合は null。</returns>
+    public static T? GetComponentById<T>(ulong componentId) where T : Component
+    {
+        return Component.Accessor?.Get<T>(componentId);
     }
 }

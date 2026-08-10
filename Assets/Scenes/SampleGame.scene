@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            3.524261236190796,
-            3.8005125522613525,
-            -2.6716225147247314
+            10.243951797485352,
+            6.391150951385498,
+            -2.1654369831085205
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.23990553617477417,
-            -0.30973944067955017,
-            0.08107932657003403,
-            0.9164785742759705
+            0.1893700808286667,
+            -0.4304220676422119,
+            0.09287234395742416,
+            0.8776392340660095
         ],
         "speed": 3.0
     },
@@ -376,7 +376,7 @@
                 {
                     "enabledSelf": true,
                     "fields": {
-                        "attackForce": 10,
+                        "attackForce": 1,
                         "attackPoint": "GameObject(objectId: 2113710056714824385)",
                         "attackPrefabPath": "TestAssets/Prefabs/PlayerBall.prefab",
                         "attackTarget": "GameObject(objectId: 1481355775892858889)",
@@ -505,7 +505,7 @@
                     "enabledSelf": true,
                     "id": "17271518682239132870",
                     "isKinematic": false,
-                    "mass": 1.0,
+                    "mass": 0.10000000149011612,
                     "name": "Rigidbody",
                     "priority": 1000,
                     "sleepThreshold": 0.004999999888241291,
@@ -557,7 +557,7 @@
                     "enabledSelf": true,
                     "id": "6354122492459396998",
                     "isTrigger": false,
-                    "material": 0,
+                    "material": 9,
                     "name": "BoxCollider",
                     "priority": 3000,
                     "size": [
@@ -706,6 +706,60 @@
             "parent": "0",
             "parentId": "0",
             "priority": 7000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "12618310695223710795",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        3.799999952316284,
+                        6.900000095367432
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "prefabPath": "TestAssets/Prefabs/Enemy.prefab",
+                        "spawnInterval": 5
+                    },
+                    "id": "7382290606927597226",
+                    "name": "ScriptComponent",
+                    "priority": 1000,
+                    "scriptName": "Spawner",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "8508778239898977567",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "EnemySpawner",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 8000,
             "version": 1
         }
     ]

@@ -14,6 +14,9 @@ internal sealed class ComponentAccessor : IComponentAccessor
     public T[] GetAll<T>(ulong ownerId) where T : Component
         => ComponentCache.GetAll<T>(ownerId);
 
+    public T? GetOrCreate<T>(ulong ownerId, ulong componentId) where T : Component
+        => (T?)ComponentCache.GetOrCreate(ownerId, componentId, typeof(T));
+
     public bool IsValid(ulong componentId) =>
         NativeMethods.Entity_IsValid(componentId);
 

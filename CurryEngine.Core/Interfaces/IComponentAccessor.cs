@@ -4,6 +4,7 @@ internal interface IComponentAccessor
 {
     T? Get<T>(ulong ownerId) where T : Component;
     T[] GetAll<T>(ulong ownerId) where T : Component;
+    T? GetOrCreate<T>(ulong ownerId, ulong componentId) where T : Component;
 
     bool IsValid(ulong componentId);
 

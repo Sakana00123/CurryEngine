@@ -36,45 +36,52 @@ internal static class ComponentCache
         return [.. ids.Select(id => (T)GetOrCreate(ownerId, id, typeof(T)))];
     }
 
-
-    /// コンポーネント単体の破棄（Detach時など）
-    internal static void RemoveComponent(ulong componentId)
-        => s_cache.Remove(componentId);
-
-    // ---- 内部実装 ----
-
-    private static Component GetOrCreate(ulong ownerId, ulong componentId, Type type)
+    /// <summary>
+    /// コンポーネントをキャッシュに登録します。
+    /// </summary>
+    /// <param name="component"> 登録するコンポーネント</param>
+    /// <exception cref="ArgumentException"> component.objectId が 0 の場合にスローされます。</exception>
+    internal static void Register(Component component)
     {
-        //if (!s_cache.TryGetValue(componentId, out var component))
-        //{
-        //    component = CreateInstance(type, ownerId, componentId);
-        //    s_cache[componentId] = component;
-        //}
-        var component = CreateInstance(type, ownerId, componentId);
+        if (component.objectId == 0)
+            throw new ArgumentException("Component ID must not be zero.", nameof(component));
 
+        s_cache[component.objectId] = component;
+    }
+
+    /// <summary>
+    /// キャッシュからコンポーネントを削除します。
+    /// </summary>
+    /// <param name="component"> 削除するコンポーネント</param>
+    internal static void Remove(Component component)
+    {
+        if (s_cache.TryGetValue(component.objectId, out var cached) &&
+            ReferenceEquals(cached, component))
+        {
+            s_cache.Remove(component.objectId);
+        }
+    }
+
+    /// <summary>
+    /// キャッシュからコンポーネントを取得するか、存在しない場合は新しいインスタンスを作成して返します。
+    /// </summary>
+    /// <param name="ownerId"> 所属するGameObjectのID</param>
+    /// <param name="componentId"> コンポーネントのID</param>
+    /// <param name="type"> コンポーネントの型</param>
+    /// <returns> キャッシュされたコンポーネント、または新しく作成されたコンポーネント</returns>
+    internal static Component GetOrCreate(ulong ownerId, ulong componentId, Type type)
+    {
+        if (!s_cache.TryGetValue(componentId, out var component))
+        {
+            // CreateInstanceを呼び出して新しいインスタンスを作成し、キャッシュに追加
+            component = CreateInstance(type, ownerId, componentId);
+            s_cache[componentId] = component;
+        }
         return component;
     }
 
     internal static Component CreateInstance(Type type, ulong ownerId, ulong componentId)
     {
-        //if (!s_factories.TryGetValue(type, out var factory))
-        //{
-        //    var ctor = type.GetConstructor(
-        //        System.Reflection.BindingFlags.NonPublic |
-        //        System.Reflection.BindingFlags.Instance,
-        //        [typeof(ulong)])
-        //        ?? throw new InvalidOperationException(
-        //            $"{type.Name} has no internal ctor(ulong)");
-
-        //    var setup = type.GetMethod(
-        //        "Setup",
-        //        System.Reflection.BindingFlags.NonPublic |
-        //        System.Reflection.BindingFlags.Instance,
-        //        [typeof(ulong), typeof(ulong)]);
-
-        //    factory = id => (Component)ctor.Invoke([id]);
-        //    s_factories[type] = factory;
-        //}
         var component = Activator.CreateInstance(type) as Component
             ?? throw new InvalidOperationException($"Failed to create instance of {type.Name}");
         component.Setup(ownerId, componentId);

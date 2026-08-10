@@ -8,7 +8,7 @@ namespace CurryEngine.Interfaces
 {
     internal interface IGameObjectAccessor
     {
-        GameObject GetGameObject(ulong gameObjectId);
+        GameObject GetOrCreate(ulong gameObjectId);
 
         string GetName(ulong gameObjectId);
 

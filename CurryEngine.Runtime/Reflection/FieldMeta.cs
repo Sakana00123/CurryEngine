@@ -33,7 +33,7 @@ public class FieldMeta
 
         // フィールドがComponentへの参照かどうかを判定
         //IsComponentReference = fieldInfo.FieldType.IsSubclassOf(typeof(Component));
-        IsComponentReference = fieldInfo.FieldType?.BaseType?.Name == "Component"; // ALCの型同一性の問題を回避するため、BaseTypeの名前で判定
+        IsComponentReference = ScriptInspector.IsComponentType(fieldInfo.FieldType);
 
         // フィールドの属性を取得
         Header = fieldInfo.GetCustomAttribute<Header>()?.Text;

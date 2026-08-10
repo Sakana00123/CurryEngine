@@ -38,7 +38,7 @@ public class AtackBall : Behaviour
 
     public override void OnCollisionEnter(Collision collision)
     {
-        var otherObject = new GameObject(collision.otherColliderId);
+        var otherObject = GetGameObjectById(collision.otherColliderId);
         if (otherObject == null)
         {
             Debug.Log("Other object is null.");

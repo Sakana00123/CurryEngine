@@ -6,7 +6,7 @@ namespace CurryEngine.Runtime
 {
     public class GameObjectAccessor : IGameObjectAccessor
     {
-        public GameObject GetGameObject(ulong objectId)
+        public GameObject GetOrCreate(ulong objectId)
         {
             return GameObjectCache.GetOrCreate(objectId);
         }

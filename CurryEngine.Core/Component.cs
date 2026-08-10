@@ -58,7 +58,7 @@ public abstract class Component : Object
     /// このコンポーネントがアタッチされている GameObject を取得する。
     /// </summary>
     public GameObject gameObject
-        => GameObject.Accessor?.GetGameObject(ownerId)
+        => GameObject.Accessor?.GetOrCreate(ownerId)
            ?? throw new InvalidOperationException($"GameObject not found for Entity {ownerId}");
 
     /// <summary>

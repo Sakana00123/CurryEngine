@@ -81,9 +81,6 @@ public class Character : Behaviour
 
                         //if (attackInstance.TryGetComponent<Rigidbody>(out Rigidbody attackRigidbody))
                         //{
-                        //    Vector3 attackDir = (attackTarget != null) ? (attackTarget.transform.position - attackPoint.transform.position).normalized : attackPoint.transform.forward;
-                        //    attackDir.y = 0f; // 水平方向のみに制限
-                        //    attackDir = attackDir.normalized; // 正規化して方向ベクトルにする
                         //    Debug.Log($"Attack Direction: {attackDir}");
                         //    attackRigidbody.AddForce(attackDir * attackForce, ForceMode.Impulse);
                         //}

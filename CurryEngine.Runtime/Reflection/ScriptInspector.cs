@@ -10,6 +10,19 @@ public static class ScriptInspector
         => field.GetCustomAttributes()
             .Any(a => a.GetType().Name == attributeName);
 
+    // Type が Component の派生型かどうかを判定するためのヘルパーメソッド
+    internal static bool IsComponentType(Type type)
+    {
+        for (Type? current = type; current != null; current = current.BaseType)
+        {
+            if (current.Name == nameof(Component))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // インスペクタに表示するフィールドの情報を取得するためのヘルパーメソッド
     public static List<FieldMeta> GetFields(object instance)
     {
@@ -185,7 +198,9 @@ public static class ScriptInspector
                 {
                     // 最後に、コンポーネントが継承されている可能性を考慮して、field.FieldType.IsSubclassOf(typeof(Component)) をチェックする
                     //if (field.FieldType.IsSubclassOf(typeof(Component)))
-                    if (field.FieldType?.BaseType?.Name == "Component") // ALC 型同一性問題を回避するため、BaseType の Name を比較する
+
+                    //if (field.FieldType?.BaseType?.Name == "Component") // ALC 型同一性問題を回避するため、BaseType の Name を比較する
+                    if (IsComponentType(field.FieldType))
                     {
                         try
                         {
@@ -211,7 +226,7 @@ public static class ScriptInspector
                             }
                             var objectId = ulong.Parse(valueJson[objectIdStart..objectIdEnd]);
                             var ownerId = ulong.Parse(valueJson[ownerIdStart..ownerIdEnd]);
-                            return ComponentCache.CreateInstance(field.FieldType, ownerId, objectId);
+                            return ComponentCache.GetOrCreate(ownerId, objectId, field.FieldType);
                         }
                         catch (Exception e)
                         {

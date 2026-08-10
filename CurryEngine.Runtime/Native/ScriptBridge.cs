@@ -25,11 +25,14 @@ public static unsafe class ScriptBridge
 
             // まずはScriptRegistryに生のobjectを作らせる。これならBehaviour継承してなくてもOK。
             var instance = ScriptRegistry.CreateRaw(typeName, ownerId, componentId);
-            if (instance is null)
+            if (instance is not Component component)
             {
-                Debug.LogError($"CreateScript: {typeName} が見つかりません");
+                Debug.LogError($"CreateScript: {typeName} is not a Component.");
                 return null;
             }
+
+            // ComponentCacheに登録しておく。
+            ComponentCache.Register(component);
 
             // Behaviour にキャストせず object として GCHandle に入れる
             var handle = GCHandle.Alloc(instance);
@@ -50,8 +53,25 @@ public static unsafe class ScriptBridge
     public static void ReleaseScript(void* gcHandle)
     {
         var ptr = (nint)gcHandle;
-        if (s_handles.Remove(ptr, out var handle))
+        if (!s_handles.Remove(ptr, out var handle))
+            return;
+
+        try
+        {
+            if (handle.Target is Component component)
+            {
+                // キャッシュから削除
+                ComponentCache.Remove(component);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"ReleaseScript 例外: {ex.Message}, StackTrace: {ex.StackTrace}, InnerException: {ex.InnerException}");
+        }
+        finally
+        {
             handle.Free();
+        }
     }
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
