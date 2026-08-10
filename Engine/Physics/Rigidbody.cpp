@@ -39,6 +39,9 @@ void Rigidbody::PostColliderRegister()
 	
 	// 質量の設定の適用
 	Physics::SetMass(m_actorHandle, mass);
+
+	// Actorの有効化状態を設定
+	Physics::SetActorEnable(m_actorHandle, IsEnabled());
 }
 
 void Rigidbody::OnDestroy()
