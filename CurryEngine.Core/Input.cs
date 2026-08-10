@@ -10,9 +10,9 @@ namespace CurryEngine
     public enum KeyCode
     {
         // マウス
-        Mouse0 = 0x01, // VK_LBUTTON
-        Mouse1 = 0x02, // VK_RBUTTON
-        Mouse2 = 0x04, // VK_MBUTTON
+        MouseLeft = 0x01, // VK_LBUTTON
+        MouseRight = 0x02, // VK_RBUTTON
+        MouseMiddle = 0x04, // VK_MBUTTON
 
         // アルファベット
         A = 0x41, B = 0x42, C = 0x43, D = 0x44, E = 0x45,

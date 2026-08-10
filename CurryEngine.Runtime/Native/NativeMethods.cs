@@ -183,7 +183,7 @@ internal static partial class NativeMethods
 
     [LibraryImport(Dll)] internal static partial ulong Object_Instantiate(ulong objectId);
 
-    [LibraryImport(Dll)] internal static partial void Object_Destroy(ulong objectId);
+    [LibraryImport(Dll)] internal static partial void Component_Destroy(ulong objectId);
 
     // ------------------------------------ GameObject -----------------------------------------
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
@@ -223,7 +223,7 @@ internal static partial class NativeMethods
 
     //[LibraryImport(Dll)] internal static partial int Entity_GetCount();
 
-    [LibraryImport(Dll)] internal static partial void Entity_Destroy(ulong objectId); // GameObjectのDestroyと同じ。Entityの破棄はGameObjectの破棄と同義。
+    [LibraryImport(Dll)] internal static partial void Entity_Destroy(ulong objectId, float delay); // GameObjectのDestroyと同じ。Entityの破棄はGameObjectの破棄と同義。
     //[LibraryImport(Dll)] internal static partial ulong Entity_Create();
     //[LibraryImport(Dll)] internal static partial ulong Entity_CreateWithName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
     //[LibraryImport(Dll)] internal static partial void Entity_SetName(ulong objectId, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);

@@ -32,9 +32,9 @@ namespace CurryEngine.Runtime
             NativeMethods.GameObject_SetActive(gameObjectId, active);
         }
 
-        public void Destroy(ulong gameObjectId)
+        public void Destroy(ulong gameObjectId, float delay)
         {
-            NativeMethods.Entity_Destroy(gameObjectId);
+            NativeMethods.Entity_Destroy(gameObjectId, delay);
         }
     }
 }

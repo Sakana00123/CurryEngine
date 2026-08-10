@@ -29,11 +29,34 @@ public abstract class Behaviour : Component
     // ----- C#側でのエンティティ管理 -----
 
     /// <summary>
-    /// このコンポーネントがアタッチされているエンティティを破棄する。
+    /// 指定した GameObject を破棄します。null の場合は何もしません。
     /// </summary>
-    public void Destroy()
+    public static void Destroy(GameObject target, float delay = 0f)
     {
-        GameObject.Accessor?.Destroy(ownerId);
+        if (target != null)
+        {
+            GameObject.Accessor?.Destroy(target.objectId, delay);
+        }
+        else
+        {
+            Debug.LogWarning("Destroy called with null GameObject.");
+        }
+    }
+
+    /// <summary>
+    /// 指定した Component を破棄します。null の場合は何もしません。
+    /// </summary>
+    /// <param name="target"></param>
+    public static void Destroy(Component target)
+    {
+        if (target != null)
+        {
+            Component.Accessor?.Destroy(target.objectId);
+        }
+        else
+        {
+            Debug.LogWarning("Destroy called with null Component.");
+        }
     }
 
     // ----- エンジンAPI へのアクセス -----

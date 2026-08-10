@@ -26,7 +26,9 @@ public class Enemy : Behaviour
     {
         if (timeSinceLastLog >= 2f)
         {
-            Debug.Log($"GC.GetTotalAllocatedBytes(): {GC.GetTotalAllocatedBytes()} bytes");
+            float memoryUsageMB = GC.GetTotalMemory(false) / (1024f * 1024f);
+            string memoryUsageString = memoryUsageMB.ToString("F2");
+            Debug.Log($"GC.GetTotalMemory(): {memoryUsageString} MB");
             timeSinceLastLog = 0f;
         }
         else

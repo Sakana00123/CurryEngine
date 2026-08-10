@@ -5,6 +5,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <json.hpp>
 
 // TODO: MeshColliderのための正しいデータを作るために追加した処理のせいで、スキニングするときに変なことになってたので、直すこと。
 //#define TEST_CONVERT
@@ -26,6 +27,65 @@ namespace CurryEngine
         bool _NullLoadImageData(tinygltf::Image*, const int, std::string*, std::string*, int, int, const unsigned char*, int, void*) {
             return true;
         }
+
+        bool LoadTolerantGltf(
+            tinygltf::TinyGLTF& loader,
+            tinygltf::Model* model,
+            std::string* error,
+            std::string* warning,
+            const std::filesystem::path& filePath)
+        {
+            std::ifstream file(filePath);
+            if (!file) {
+                *error = "Failed to open: " + filePath.string();
+                return false;
+            }
+
+            nlohmann::json json;
+            file >> json;
+
+            if (json.contains("meshes") && json["meshes"].is_array()) {
+                for (auto& mesh : json["meshes"]) {
+					if (!mesh.contains("primitives") || !mesh["primitives"].is_array())
+                    {
+                        continue;
+                    }
+
+                    auto& primitives = mesh["primitives"];
+
+                    for (auto it = primitives.begin(); it != primitives.end();) {
+                        const auto attributes = it->find("attributes");
+
+                        const bool invalid =
+                            attributes == it->end() ||
+                            !attributes->is_object() ||
+							attributes->empty() ||
+                            !attributes->contains("POSITION");
+
+                        if (invalid) {
+                            it = primitives.erase(it);
+                        }
+                        else {
+                            ++it;
+                        }
+                    }
+                }
+            }
+
+            const std::string cleanedJson = json.dump();
+
+            std::string baseDir = filePath.parent_path().string();
+            baseDir += std::filesystem::path::preferred_separator;
+
+            return loader.LoadASCIIFromString(
+                model,
+                error,
+                warning,
+                cleanedJson.c_str(),
+                static_cast<unsigned int>(cleanedJson.size()),
+                baseDir);
+        }
+
 
 		bool GltfImporter::Import(const std::string& path, ModelAsset& asset)
 		{
@@ -73,7 +133,11 @@ namespace CurryEngine
                     succeded = tinyGltf.LoadBinaryFromFile(gltfModel.get(), &error, &warning, filePath.c_str());
                 }
                 if (filePath.find(".gltf") != std::string::npos) {
-                    succeded = tinyGltf.LoadASCIIFromFile(gltfModel.get(), &error, &warning, filePath.c_str());
+
+                    if (LoadTolerantGltf(tinyGltf, gltfModel.get(), &error, &warning, filePath)) {
+                        succeded = true;
+                    }
+                    //succeded = tinyGltf.LoadASCIIFromFile(gltfModel.get(), &error, &warning, filePath.c_str());
                 }
 
                 _ASSERT_EXPR_A(warning.empty(), warning.c_str());
@@ -98,7 +162,7 @@ namespace CurryEngine
                     FetchAnimations(*gltfModel, asset);
                 }
 
-                std::ofstream ofs(cerealFilePath.c_str(), std::ios::binary);
+                /*std::ofstream ofs(cerealFilePath.c_str(), std::ios::binary);
                 cereal::BinaryOutputArchive serialization(ofs);
                 serialization(
                     cereal::make_nvp("scenes", scenes),
@@ -109,7 +173,7 @@ namespace CurryEngine
                 serialization(cereal::make_nvp("batchMeshes", batchMeshes));
                 serialization(cereal::make_nvp("meshes", meshes));
                 serialization(cereal::make_nvp("textures", textures), cereal::make_nvp("images", images));
-                serialization(cereal::make_nvp("skins", skins), cereal::make_nvp("animations", animations));
+                serialization(cereal::make_nvp("skins", skins), cereal::make_nvp("animations", animations));*/
             }
 
 			return true;

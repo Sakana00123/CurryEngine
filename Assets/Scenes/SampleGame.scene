@@ -1,7 +1,7 @@
 {
     "editorCamera": {
         "aspect": 1.7777777910232544,
-        "distance": 4.099999904632568,
+        "distance": 4.399999141693115,
         "farZ": 1000.0,
         "fieldOfView": 60.0,
         "maxAngleX": 70.0,
@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            -0.7887340188026428,
-            8.294135093688965,
-            -7.728487491607666
+            3.524261236190796,
+            3.8005125522613525,
+            -2.6716225147247314
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.2717015743255615,
-            -0.0591580793261528,
-            0.016734719276428223,
-            0.9604158401489258
+            0.23990553617477417,
+            -0.30973944067955017,
+            0.08107932657003403,
+            0.9164785742759705
         ],
         "speed": 3.0
     },
@@ -112,6 +112,48 @@
                 {
                     "coordinateSystem": 0,
                     "enabledSelf": true,
+                    "id": "6490871832306547110",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.19999992847442627,
+                        0.5
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                }
+            ],
+            "id": "2113710056714824385",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "AttackPoint",
+            "parent": "3215127106798646221",
+            "parentId": "0",
+            "priority": 1000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
                     "id": "15976930243107168005",
                     "m_eulerAngles": [
                         0.0,
@@ -145,7 +187,7 @@
             "name": "CameraFocus",
             "parent": "3215127106798646221",
             "parentId": "0",
-            "priority": 1000,
+            "priority": 2000,
             "version": 1
         },
         {
@@ -200,7 +242,7 @@
             "name": "Directional Light",
             "parent": "0",
             "parentId": "0",
-            "priority": 2000,
+            "priority": 3000,
             "version": 1
         },
         {
@@ -296,7 +338,7 @@
             "name": "Cube",
             "parent": "0",
             "parentId": "0",
-            "priority": 3000,
+            "priority": 4000,
             "version": 1
         },
         {
@@ -334,7 +376,13 @@
                 {
                     "enabledSelf": true,
                     "fields": {
+                        "attackForce": 10,
+                        "attackPoint": "GameObject(objectId: 2113710056714824385)",
+                        "attackPrefabPath": "TestAssets/Prefabs/PlayerBall.prefab",
+                        "attackTarget": "GameObject(objectId: 1481355775892858889)",
+                        "enableAttack": true,
                         "enableJump": true,
+                        "jumpForce": 5,
                         "speed": 5
                     },
                     "id": "10962852155025648948",
@@ -412,12 +460,12 @@
                 }
             ],
             "id": "3215127106798646221",
-            "isDefaultOpenOnHierarchy": false,
+            "isDefaultOpenOnHierarchy": true,
             "layer": 4,
             "name": "character",
             "parent": "0",
             "parentId": "0",
-            "priority": 4000,
+            "priority": 5000,
             "version": 1
         },
         {
@@ -540,7 +588,124 @@
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
-            "priority": 5000,
+            "priority": 6000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "1292775827731419065",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.800000011920929
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.20000000298023224,
+                        0.20000000298023224,
+                        0.20000000298023224
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "6411710892207316857",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 0,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 2,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "13800265213290108400",
+                    "isTrigger": false,
+                    "material": 2,
+                    "name": "SphereCollider",
+                    "priority": 2000,
+                    "radius": 0.20000000298023224,
+                    "type": "SphereCollider"
+                },
+                {
+                    "constraints": 0,
+                    "enabledSelf": true,
+                    "id": "14642583231852991953",
+                    "isKinematic": false,
+                    "mass": 0.019999999552965164,
+                    "name": "Rigidbody",
+                    "priority": 3000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": false,
+                    "useGravity": true
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "damage": 10,
+                        "lifetime": 5
+                    },
+                    "id": "11544608586342225309",
+                    "name": "ScriptComponent",
+                    "priority": 4000,
+                    "scriptName": "AtackBall",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "6622164222014649124",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 8,
+            "name": "PlayerBall",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 7000,
             "version": 1
         }
     ]

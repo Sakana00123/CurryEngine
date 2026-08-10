@@ -69,11 +69,11 @@ ENGINE_API int Entity_HasComponent(uint64_t objectId, const char* componentName)
 
 // --------- Destroy ---------
 
-ENGINE_API void Entity_Destroy(uint64_t objectId)
+ENGINE_API void Entity_Destroy(uint64_t objectId, float delay)
 {
 	if (GameObject* obj = ObjectManager::Find(ObjectId::FromValue(objectId)))
 	{
-		obj->Destroy();
+		obj->Destroy(delay);
 	}
 }
 

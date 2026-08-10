@@ -9,53 +9,63 @@
 
 // -------- Component のプロパティアクセス関数 ---------
 
+static std::shared_ptr<Component> FindComponentById(uint64_t componentId)
+{
+	Scene* currentScene = SceneManager::GetLoadingSceneOrCurrentScene();
+	if (!currentScene) return nullptr; // シーンが存在しない場合は nullptr を返す
+	auto& cache = currentScene->objectManager->GetComponentCacheMap();
+	auto it = cache.find(ObjectId::FromValue(componentId));
+	if (it != cache.end())
+	{
+		return it->second.lock(); // weak_ptr を shared_ptr に変換して返す
+	}
+	return nullptr; // コンポーネントが見つからない場合は nullptr を返す
+}
+
 // --------- Enable ---------
 
 ENGINE_API int Component_GetEnable(uint64_t objectId)
 {
-	if (GameObject* obj = ObjectManager::Find(ObjectId::FromValue(objectId)))
+	if (auto comp = FindComponentById(objectId))
 	{
-		for (const auto& comp : obj->GetAllComponents())
-		{
-			if (comp && comp->id.Value() == objectId)
-			{
-				return comp->IsEnabled() ? 1 : 0; // 有効なら 1、無効なら 0 を返す
-			}
-		}
+		return comp->IsEnabled() ? 1 : 0; // 有効なら 1、無効なら 0 を返す
 	}
+	LOG_WARNING(std::format("Component_GetEnable: Component with ID %llu not found.", objectId));
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
 }
 
 ENGINE_API void Component_SetEnable(uint64_t objectId, int enable)
 {
-	if (GameObject* obj = ObjectManager::Find(ObjectId::FromValue(objectId)))
+	if (auto comp = FindComponentById(objectId))
 	{
-		for (const auto& comp : obj->GetAllComponents())
-		{
-			if (comp && comp->id.Value() == objectId)
-			{
-				comp->SetEnabled(enable != 0); // 0 以外は有効とみなす
-				return;
-			}
-		}
+		comp->SetEnabled(enable != 0); // enable が 0 でなければ有効にする
 	}
+	LOG_WARNING(std::format("Component_SetEnable: Component with ID %llu not found.", objectId));
 }
 
 ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
 {
-	Scene* currentScene = SceneManager::GetLoadingSceneOrCurrentScene();
-	if (!currentScene) return 0; // シーンが存在しない場合は 0 を返す
-	auto& cache = currentScene->objectManager->GetComponentCacheMap();
-	if (cache.find(ObjectId::FromValue(objectId)) != cache.end())
+	if (auto comp = FindComponentById(objectId))
 	{
-		auto& comp = cache.at(ObjectId::FromValue(objectId));
-		if (comp.lock())
+		if (GameObject* owner = comp->GetOwner())
 		{
-			GameObject* owner = comp.lock()->GetOwner();
-			return owner ? owner->GetId().Value() : 0; // 所有者が存在すればそのIDを返し、存在しなければ0を返す
+			return owner->GetId().Value(); // 所有者の ID を返す
 		}
 	}
+	LOG_WARNING(std::format("Component_GetOwner: Component with ID %llu not found or has no owner.", objectId));
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
+}
+
+ENGINE_API void Component_Destroy(uint64_t objectId)
+{
+	if (auto comp = FindComponentById(objectId))
+	{
+		comp->Destroy(); // コンポーネントを破棄する
+	}
+	else
+	{
+		LOG_WARNING(std::format("Component_Destroy: Component with ID %llu not found.", objectId));
+	}
 }
 
 //ENGINE_API uint64_t Component_InstantiateFromId(uint64_t objectId, uint64_t parentId, Vector3 position, Quaternion rotation)

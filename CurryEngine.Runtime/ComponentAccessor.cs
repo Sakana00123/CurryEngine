@@ -25,7 +25,7 @@ internal sealed class ComponentAccessor : IComponentAccessor
 
 
     public void Destroy(ulong componentId)
-        => NativeMethods.Object_Destroy(componentId);
+        => NativeMethods.Component_Destroy(componentId);
 
     public ulong InstantiateFromId(ulong prefabId, ulong parentId, Vector3 position, Quaternion rotation)
         => NativeMethods.GameObject_InstantiateFromId(prefabId, parentId, position, rotation);

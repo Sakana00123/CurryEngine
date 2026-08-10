@@ -18,6 +18,6 @@ namespace CurryEngine.Interfaces
 
         void SetActive(ulong gameObjectId, bool active);
 
-        void Destroy(ulong gameObjectId);
+        void Destroy(ulong gameObjectId, float delay);
     }
 }
