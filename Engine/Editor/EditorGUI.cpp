@@ -16,6 +16,7 @@
 #include "SceneParametersEditor.h"
 #include "FileOpener.h"
 #include "EffectEditor.h"
+#include "AnimationEditor.h"
 #include "Engine/Utils/JsonFileHandler.h"
 #include "ImGuiTheme.h"
 #include "Engine/Scripting/ScriptSystem.h"
@@ -581,6 +582,10 @@ void EditorGUI::DrawWindowMenu()
 	if (ImGui::MenuItem("Effect Editor"))
 	{
 		EffectEditor::Show();
+	}
+	if (ImGui::MenuItem("Animation Editor"))
+	{
+		AnimationEditor::Open();
 	}
 	if (ImGui::MenuItem("ImGui Theme"))
 	{

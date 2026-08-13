@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "TypeSerializerRegistry.h"
 
-C_REGISTER_TYPE(int);
-C_REGISTER_TYPE(float);
-C_REGISTER_TYPE(bool);
-C_REGISTER_TYPE(std::string);
-
 
 // 登録
 void TypeSerializerRegistry::Register(

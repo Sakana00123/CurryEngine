@@ -24,6 +24,8 @@ namespace CurryEngine
 			if (typeStr == "Prefab") return AssetType::Prefab;
 			if (typeStr == "Script") return AssetType::Script;
 			if (typeStr == "Shader") return AssetType::Shader;
+			if (typeStr == "Material") return AssetType::Material;
+			if (typeStr == "Animation") return AssetType::Animation;
 			return AssetType::Unknown;
 		}
 
@@ -38,6 +40,8 @@ namespace CurryEngine
 			case AssetType::Prefab: return "Prefab";
 			case AssetType::Script: return "Script";
 			case AssetType::Shader: return "Shader";
+			case AssetType::Material: return "Material";
+			case AssetType::Animation: return "Animation";
 			default: return "Unknown";
 			}
 		}

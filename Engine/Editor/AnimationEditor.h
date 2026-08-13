@@ -60,7 +60,8 @@ public:
 	static AnimationClip* GetAnimationClip();
 
 	/** @brief 編集中のアニメーションクリップを設定。*/
-	static void SetAnimationClip(std::unique_ptr<AnimationClip> clip);
+	static void SetAnimationClip(std::shared_ptr<AnimationClip> clip);
+	static void OpenAsset(const std::filesystem::path& path);
 
 	/** @brief アニメーションエディタの GUI を描画。*/
 	static void DrawGUI();
@@ -149,7 +150,8 @@ private:
 
 private:
 	static inline bool isOpen = false;
-	static inline std::unique_ptr<AnimationClip> animationClip;
+	static inline std::shared_ptr<AnimationClip> animationClip;
+	static inline std::filesystem::path assetPath;
 
 	static inline bool isPlaying = false;
 	static inline bool isLooping = false;

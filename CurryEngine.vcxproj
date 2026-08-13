@@ -152,6 +152,8 @@ popd</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Engine\Animation\Animator.cpp" />
+    <ClCompile Include="Engine\Animation\AnimatorController.cpp" />
     <ClCompile Include="Engine\Animation\RhythmAnimationController.cpp" />
     <ClCompile Include="Engine\Animation\RhythmStateMachine.cpp" />
     <ClCompile Include="Engine\Audio\3DAudio.cpp">
@@ -637,6 +639,8 @@ popd</Command>
     <ClInclude Include="Archive\sprite.h" />
     <ClInclude Include="Archive\sprite_batch.h" />
     <ClInclude Include="Archive\static_mesh.h" />
+    <ClInclude Include="Engine\Animation\Animator.h" />
+    <ClInclude Include="Engine\Animation\AnimatorController.h" />
     <ClInclude Include="Engine\Animation\RhythmAnimationController.h" />
     <ClInclude Include="Engine\Animation\RhythmAnimationClip.h" />
     <ClInclude Include="Engine\Animation\RhythmAnimState.h" />
@@ -723,6 +727,7 @@ popd</Command>
     <ClInclude Include="Engine\Resources\ModelAsset.h" />
     <ClInclude Include="Engine\Resources\SkinnedMesh.h" />
     <ClInclude Include="Engine\Scripting\ScriptFieldSerializer.h" />
+    <ClInclude Include="Engine\Types\Range.h" />
     <ClInclude Include="Engine\UI\CanvasScaler.h" />
     <ClInclude Include="Engine\UI\GridLayoutGroup.h" />
     <ClInclude Include="Engine\UI\HorizontalLayoutGroup.h" />

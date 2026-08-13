@@ -28,17 +28,17 @@ public:
 private:
 #ifdef USE_IMGUI
 	// 範囲指定スライダー描画 ( int 用 )
-	static bool DrawRangeInt(const char* label, ::Range<int>& range, int speed = 1, int min = 0, int max = 0);
+	static bool DrawRangeInt(const char* label, CurryEngine::Range<int>& range, int speed = 1, int min = 0, int max = 0);
 	// 範囲指定スライダー描画 ( unsigned int 用 )
-	static bool DrawRangeUInt(const char* label, ::Range<unsigned int>& range, unsigned int speed = 1, unsigned int min = 0, unsigned int max = 0);
+	static bool DrawRangeUInt(const char* label, CurryEngine::Range<unsigned int>& range, unsigned int speed = 1, unsigned int min = 0, unsigned int max = 0);
 	// 範囲指定スライダー描画 ( float 用 )
-	static bool DrawRangeFloat(const char* label, ::Range<float>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
+	static bool DrawRangeFloat(const char* label, CurryEngine::Range<float>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
 	// 範囲指定スライダー描画 ( Vector2 用 )
-	static bool DrawRangeVector2(const char* label, ::Range<Vector2>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
+	static bool DrawRangeVector2(const char* label, CurryEngine::Range<Vector2>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
 	// 範囲指定スライダー描画 ( Vector3 用 )
-	static bool DrawRangeVector3(const char* label, ::Range<Vector3>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
+	static bool DrawRangeVector3(const char* label, CurryEngine::Range<Vector3>& range, float speed = 0.1f, float min = 0.0f, float max = 0.0f);
 	// 範囲指定スライダー描画 ( Color 用 )
-	static bool DrawRangeColor(const char* label, ::Range<Color>& range);
+	static bool DrawRangeColor(const char* label, CurryEngine::Range<Color>& range);
 
 	// スライダー描画 ( int 用 )
 	static bool DrawInt(const char* label, int& value, int speed = 1, int min = 0, int max = 0);

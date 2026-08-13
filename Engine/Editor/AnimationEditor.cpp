@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "AnimationEditor.h"
+#include "Engine/Resources/AssetDatabase.h"
+#include "Engine/Resources/AnimationClip.h"
 
 // ------------------------------- メンバ関数群 ----------------------------------------
 
@@ -23,9 +25,34 @@ AnimationClip* AnimationEditor::GetAnimationClip()
 	return animationClip.get();
 }
 
-void AnimationEditor::SetAnimationClip(std::unique_ptr<AnimationClip> clip)
+void AnimationEditor::SetAnimationClip(std::shared_ptr<AnimationClip> clip)
 {
-	animationClip = std::move(clip);
+	animationClip = clip;
+	if (animationClip)
+	{
+		length = animationClip->duration;
+		currentTime = 0.0f;
+	}
+}
+
+void AnimationEditor::OpenAsset(const std::filesystem::path& path)
+{
+	auto meta = CurryEngine::Resources::AssetDatabase::GetOrImport(path);
+	if (!meta) 
+	{
+		LOG_ERROR("Failed to get or import asset meta: " + path.string());
+		return;
+	}
+	auto& id = meta->id;
+	auto clip = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(id);
+	if (!clip)
+	{
+		LOG_ERROR("Failed to load animation asset: " + path.string());
+		return;
+	}
+	assetPath = path;
+	SetAnimationClip(clip);
+	Open();
 }
 
 // ------------------------------- 汎用関数 ----------------------------------------
@@ -124,19 +151,20 @@ void AnimationEditor::DrawGUI()
 	ImGui::Begin("Animation Editor", &isOpen);
 
 	// 初期化
-	static bool isInitialized = false;
-	if (!isInitialized)
+	if (!animationClip)
 	{
 		// 初期化処理
 		animationClip = std::make_unique<AnimationClip>();
-		animationClip->length = 3.0f;
-		animationClip->fps = 60.0f;
+		animationClip->duration = 3.0f;
+		//animationClip->samplingRate = 60.0f;
+#if 0
 		animationClip->tracks.clear();
 		for (int i = 0; i < 3; ++i)
 		{
 			// 仮に3つのトラックを追加
 			// 実際には具体的なトラッククラスを実装して追加する必要があります
 			Track track;
+			track.type = TrackType::Value;
 			track.name = "Value Track " + std::to_string(i + 1);
 			track.value = std::make_unique<ValueTrack>();
 			for (int k = 0; k <= 10; ++k)
@@ -148,10 +176,11 @@ void AnimationEditor::DrawGUI()
 			}
 			animationClip->tracks.push_back(std::move(track));
 		}
+#endif // 0
 
-		length = animationClip->length; // デフォルトのアニメーション長さ
+
+		length = animationClip->duration; // デフォルトのアニメーション長さ
 		currentTime = 0.0f;
-		isInitialized = true;
 	}
 
 	// ツールバー
@@ -173,6 +202,16 @@ void AnimationEditor::DrawGUI()
 
 void AnimationEditor::DrawToolbar()
 {
+	if (ImGui::Button("Save") && animationClip)
+	{
+		if (assetPath.empty() || !animationClip->SaveToFile(assetPath))
+		{
+			LOG_ERROR("Failed to save animation asset.");
+		}
+	}
+	ImGui::SameLine();
+	ImGui::TextDisabled("%s", assetPath.empty() ? "Untitled" : assetPath.filename().string().c_str());
+	ImGui::SameLine();
 	// ツールバー描画ロジックをここに実装
 
 	// 再生制御
@@ -312,6 +351,7 @@ void AnimationEditor::DrawTimelineArea()
 
 void AnimationEditor::DrawTrackList()
 {
+#if 0
 	int i = 0;
 	// トラックリスト描画ロジックをここに実装
 	for (const auto& track : animationClip->tracks)
@@ -327,6 +367,8 @@ void AnimationEditor::DrawTrackList()
 		}
 		ImGui::PopID();
 	}
+#endif // 0
+
 }
 
 void AnimationEditor::DrawTimeline()
@@ -565,6 +607,7 @@ void AnimationEditor::DrawKeyframes()
 	ImVec2 size = ImGui::GetContentRegionAvail();
 
 	
+#if 0
 	for (const auto& track : animationClip->tracks)
 	{
 		if (auto valueTrack = (track.value.get()))
@@ -584,6 +627,8 @@ void AnimationEditor::DrawKeyframes()
 			}
 		}
 	}
+#endif // 0
+
 }
 
 void AnimationEditor::DrawInspector()

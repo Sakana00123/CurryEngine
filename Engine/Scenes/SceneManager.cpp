@@ -15,6 +15,7 @@
 #include "Engine/Editor/Console.h"
 #include "Engine/Editor/SceneParametersEditor.h"
 #include "Engine/Editor/BuildSettingsWindow.h"
+#include "Engine/Editor/AnimationEditor.h"
 #include "Engine/Effects/EffectManager.h"
 
 #include "Engine/Audio/BeatManager.h"
@@ -298,6 +299,7 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 
 	// ------------------- アセットブラウザ --------------------
 	AssetBrowser::DrawGUI();
+	if (AnimationEditor::IsOpen()) AnimationEditor::DrawGUI();
 
 	// ------------------- HLSLエディタ ---------------------
 	//HlslEditor::DrawGUI();

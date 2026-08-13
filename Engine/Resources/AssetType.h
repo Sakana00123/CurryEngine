@@ -13,4 +13,5 @@ enum class AssetType
 	Script,
 	Shader,
 	Material,
+	Animation,
 };

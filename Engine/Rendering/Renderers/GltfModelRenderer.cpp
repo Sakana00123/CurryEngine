@@ -328,7 +328,7 @@ void GltfModelRenderer::CreateAndUploadResources(ID3D11Device* device) {
 
 void GltfModelRenderer::Update(float deltaTime)
 {
-#if 1
+#if 0
 	auto& nodes = m_asset->nodes;
 	auto& animations = m_asset->animations;
 
@@ -368,46 +368,6 @@ void GltfModelRenderer::Update(float deltaTime)
         //アニメーションが最後に到達したら
         if (animationDuration < time)
         {
-            if (loop) {
-                time = 0;
-                isBlendStart = false;
-            }
-            else {
-                isAnimationCompleted = true;
-            }
-        }
-    }
-#else
-    if (animations.size() <= animationIndex) return;
-
-    if (nodes.size() > 0)
-    {
-        time += (deltaTime * timeRate);
-
-        if (useRange)
-        {
-            if (time < rangeStart)
-            {
-                time = rangeStart;
-            }
-            if (time > rangeEnd)
-            {
-                if (loop)
-                {
-                    time = rangeStart;
-                    isBlendStart = false;
-                }
-                else
-                {
-                    isAnimationCompleted = true;
-                    return;
-                }
-            }
-        }
-
-        Animate(animationIndex, time, nodes);
-
-        if (!useRange && animations.at(animationIndex).duration < time) {
             if (loop) {
                 time = 0;
                 isBlendStart = false;

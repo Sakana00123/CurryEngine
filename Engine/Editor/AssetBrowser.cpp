@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AssetBrowser.h"
+#include "AnimationEditor.h"
 #include <string>
 #include <vector>
 #include <filesystem>
@@ -648,6 +649,10 @@ void AssetBrowser::OpenAsset(const fs::path& assetPath)
 		{
 			LOG_ERROR(u8"Failed to open material editor: Material asset not found in database for path: " + assetPath.u8string());
 		}
+	}
+	else if (type == AssetType::Animation)
+	{
+		AnimationEditor::OpenAsset(assetPath);
 	}
 	else
 	{
@@ -1737,6 +1742,17 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 			ofs << "{}"; // 空のマテリアルデータをJSON形式で書き込む
 			ofs.close();
 			Refresh();
+		}
+		if (ImGui::MenuItem("Create Animation"))
+		{
+			fs::path newAnimationPath = MakeUniqueFilePath(folderPath, "New Animation", ".anim");
+			AnimationClip clip;
+			clip.name = newAnimationPath.stem().string();
+			clip.duration = 3.0f;
+			if (clip.SaveToFile(newAnimationPath))
+			{
+				OpenAsset(newAnimationPath);
+			}
 		}
 		ImGui::EndPopup();
 	}

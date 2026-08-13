@@ -59,25 +59,25 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 				{
 					emitterData.emitData.maxParticles = emitterJson.value("maxParticles", 1000);
 					if (emitterJson.contains("emitCount"))
-						emitterData.emitData.emitCount = emitterJson["emitCount"].get<Range<int>>();
+						emitterData.emitData.emitCount = emitterJson["emitCount"].get<CurryEngine::Range<int>>();
 					else
 						emitterData.emitData.emitCount = { 10, 10 };
 					if (emitterJson.contains("initialDelay"))
-						emitterData.emitData.initialDelay = emitterJson["initialDelay"].get<Range<float>>();
+						emitterData.emitData.initialDelay = emitterJson["initialDelay"].get<CurryEngine::Range<float>>();
 					else
 						emitterData.emitData.initialDelay = { 0.0f, 0.0f };
 					if (emitterJson.contains("emitInterval"))
-						emitterData.emitData.emitInterval = emitterJson["emitInterval"].get<Range<float>>();
+						emitterData.emitData.emitInterval = emitterJson["emitInterval"].get<CurryEngine::Range<float>>();
 					else
 						emitterData.emitData.emitInterval = { 0.1f, 0.1f };
 					if (emitterJson.contains("positionOffset"))
 						emitterData.emitData.positionOffset = emitterJson["positionOffset"].get<Vector3>();
 					if (emitterJson.contains("rotationEuler"))
-						emitterData.emitData.rotationEuler = emitterJson["rotationEuler"].get<Range<Vector3>>();
+						emitterData.emitData.rotationEuler = emitterJson["rotationEuler"].get<CurryEngine::Range<Vector3>>();
 					if (emitterJson.contains("endRotationEuler"))
-						emitterData.emitData.endRotationEuler = emitterJson["endRotationEuler"].get<Range<Vector3>>();
+						emitterData.emitData.endRotationEuler = emitterJson["endRotationEuler"].get<CurryEngine::Range<Vector3>>();
 					if (emitterJson.contains("rotationEasingTime"))
-						emitterData.emitData.rotationEasingTime = emitterJson["rotationEasingTime"].get<Range<float>>();
+						emitterData.emitData.rotationEasingTime = emitterJson["rotationEasingTime"].get<CurryEngine::Range<float>>();
 					if (emitterJson.contains("rotationEasingType"))
 						emitterData.emitData.rotationEasingType = emitterJson["rotationEasingType"].get<int>();
 					emitterData.emitData.loop = emitterJson.value("loop", false);
@@ -89,9 +89,9 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 					emitterData.shapeData.directionMode = static_cast<DirectionMode>(emitterJson.value("directionMode", 0));
 					if (emitterJson.contains("directionAxis"))
 						emitterData.shapeData.directionAxis = emitterJson["directionAxis"].get<Vector3>();
-					emitterData.shapeData.speed = emitterJson.value("speed", Range<float>{ 1.0f, 1.0f });
-					emitterData.shapeData.endSpeed = emitterJson.value("endSpeed", Range<float>{ 1.0f, 1.0f });
-					emitterData.shapeData.speedEasingTime = emitterJson.value("speedEasingTime", Range<float>{ 0.0f, 0.0f });
+					emitterData.shapeData.speed = emitterJson.value("speed", CurryEngine::Range<float>{ 1.0f, 1.0f });
+					emitterData.shapeData.endSpeed = emitterJson.value("endSpeed", CurryEngine::Range<float>{ 1.0f, 1.0f });
+					emitterData.shapeData.speedEasingTime = emitterJson.value("speedEasingTime", CurryEngine::Range<float>{ 0.0f, 0.0f });
 					emitterData.shapeData.speedEasingType = emitterJson.value("speedEasingType", 0);
 					emitterData.shapeData.radius = emitterJson.value("radius", 1.0f);
 					emitterData.shapeData.height = emitterJson.value("height", 1.0f);
@@ -99,11 +99,11 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 				// 動作設定
 				{
 					if (emitterJson.contains("velocity"))
-						emitterData.motionData.velocity = emitterJson["velocity"].get<Range<Vector3>>();
+						emitterData.motionData.velocity = emitterJson["velocity"].get<CurryEngine::Range<Vector3>>();
 					if (emitterJson.contains("acceleration"))
-						emitterData.motionData.acceleration = emitterJson["acceleration"].get<Range<Vector3>>();
+						emitterData.motionData.acceleration = emitterJson["acceleration"].get<CurryEngine::Range<Vector3>>();
 					if (emitterJson.contains("lifeTime"))
-						emitterData.motionData.lifeTime = emitterJson["lifeTime"].get<Range<float>>();
+						emitterData.motionData.lifeTime = emitterJson["lifeTime"].get<CurryEngine::Range<float>>();
 					emitterData.motionData.useGravity = emitterJson.value("useGravity", false);
 				}
 				// ビジュアル設定
@@ -116,27 +116,27 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 					}
 					emitterData.visualData.blendState = static_cast<BlendState>(emitterJson.value("blendState", 0));
 					if (emitterJson.contains("startSize"))
-						emitterData.visualData.startSize = emitterJson["startSize"].get<Range<Vector2>>();
+						emitterData.visualData.startSize = emitterJson["startSize"].get<CurryEngine::Range<Vector2>>();
 					if (emitterJson.contains("endSize"))
-						emitterData.visualData.endSize = emitterJson["endSize"].get<Range<Vector2>>();
+						emitterData.visualData.endSize = emitterJson["endSize"].get<CurryEngine::Range<Vector2>>();
 					if (emitterJson.contains("sizeEasingTime"))
-						emitterData.visualData.sizeEasingTime = emitterJson["sizeEasingTime"].get<Range<float>>();
+						emitterData.visualData.sizeEasingTime = emitterJson["sizeEasingTime"].get<CurryEngine::Range<float>>();
 					if (emitterJson.contains("sizeEasingType"))
 						emitterData.visualData.sizeEasingType = emitterJson["sizeEasingType"].get<int>();
 					if (emitterJson.contains("useGradient"))
 						emitterData.visualData.useGradient = emitterJson["useGradient"].get<bool>();
 					if (emitterJson.contains("startColor"))
-						emitterData.visualData.startColor = emitterJson["startColor"].get<Range<Color>>();
+						emitterData.visualData.startColor = emitterJson["startColor"].get<CurryEngine::Range<Color>>();
 					if (emitterJson.contains("endColor"))
-						emitterData.visualData.endColor = emitterJson["endColor"].get<Range<Color>>();
+						emitterData.visualData.endColor = emitterJson["endColor"].get<CurryEngine::Range<Color>>();
 					if (emitterJson.contains("enableFadeIn"))
 						emitterData.visualData.enableFadeIn = emitterJson["enableFadeIn"].get<bool>();
 					if (emitterJson.contains("enableFadeOut"))
 						emitterData.visualData.enableFadeOut = emitterJson["enableFadeOut"].get<bool>();
 					if (emitterJson.contains("fadeInTime"))
-						emitterData.visualData.fadeInTime = emitterJson["fadeInTime"].get<Range<float>>();
+						emitterData.visualData.fadeInTime = emitterJson["fadeInTime"].get<CurryEngine::Range<float>>();
 					if (emitterJson.contains("fadeOutTime"))
-						emitterData.visualData.fadeOutTime = emitterJson["fadeOutTime"].get<Range<float>>();
+						emitterData.visualData.fadeOutTime = emitterJson["fadeOutTime"].get<CurryEngine::Range<float>>();
 
 					// グラデーション設定
 					{

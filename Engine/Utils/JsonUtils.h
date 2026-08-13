@@ -1,22 +1,28 @@
 #pragma once
 #include "json.hpp"
 using namespace nlohmann;
-#include "Engine/Core/Transform.h"
+#include "Engine/Core/ObjectId.h"
+#include "Engine/Core/Math/Vector2.h"
+#include "Engine/Core/Math/Vector3.h"
+#include "Engine/Core/Math/Quaternion.h"
 #include "Engine/Core/Color.h"
-#include "Engine/Effects/EffectManager.h"
+#include "Engine/Types/Range.h"
 #include "Engine/Core/Reflection/TypeSerializerRegistry.h"
 //#include "Engine/Core/Reference.h"
 
-template<typename T>
-void from_json(const json& j, ::Range<T>& r) {
-	if (j.is_array() && j.size() == 2) {
-		r.min = j.at(0).get<T>();
-		r.max = j.at(1).get<T>();
+namespace CurryEngine
+{
+	template<typename T>
+	void from_json(const nlohmann::json & j, Range<T>&r) {
+		if (j.is_array() && j.size() == 2) {
+			r.min = j.at(0).get<T>();
+			r.max = j.at(1).get<T>();
+		}
 	}
-}
-template<typename T>
-void to_json(json& j, const ::Range<T>& r) {
-	j = json::array({ r.min, r.max });
+	template<typename T>
+	void to_json(nlohmann::json & j, const Range<T>&r) {
+		j = nlohmann::json::array({ r.min, r.max });
+	}
 }
 
 //template<typename T>

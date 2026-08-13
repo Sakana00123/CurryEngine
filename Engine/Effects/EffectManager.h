@@ -4,43 +4,7 @@
 
 #include "Engine/Core/Transform.h"
 #include "Engine/Core/Color.h"
-#include <random>
-
-template<typename T>
-struct Range
-{
-	// 範囲の最小値と最大値
-	T min;
-	T max;
-
-	// min から max の範囲でランダムな値を取得
-	T GetRandom() const
-	{
-		if (min == max) return min;
-		//float t = static_cast<float>(rand()) / RAND_MAX;
-		//return min + (max - min) * t;
-
-		// std::mt19937 と std::uniform_real_distribution を使用してランダムな値を生成
-		static std::random_device rd;  // 非決定的な乱数生成器
-		static std::mt19937 gen(rd()); // メルセンヌ・ツイスターの乱数生成器
-		if constexpr (std::is_integral_v<T>)
-		{
-			std::uniform_int_distribution<T> dis(min, max);
-			return dis(gen);
-		}
-		else if constexpr (std::is_floating_point_v<T>)
-		{
-			std::uniform_real_distribution<T> dis(min, max);
-			return dis(gen);
-		}
-		else
-		{
-			// T が整数型でも浮動小数点型でもない場合は、rand() を使用して値を生成
-			float t = static_cast<float>(rand()) / RAND_MAX;
-			return min + (max - min) * t;
-		}
-	}
-};
+#include "Engine/Types/Range.h"
 
 // エフェクトハンドル
 typedef int EffectHandle;
@@ -166,13 +130,13 @@ public:
 	struct EmitterEmitData
 	{
 		int maxParticles{ 1000 };						// 最大パーティクル数
-		::Range<int> emitCount{ 10,10 };				// エミット数
-		::Range<float> initialDelay{ 0,0 };				// 初期遅延時間
-		::Range<float> emitInterval{ 0,0 };				// エミット間隔
+		CurryEngine::Range<int> emitCount{ 10,10 };				// エミット数
+		CurryEngine::Range<float> initialDelay{ 0,0 };				// 初期遅延時間
+		CurryEngine::Range<float> emitInterval{ 0,0 };				// エミット間隔
 		Vector3 positionOffset;							// 生成位置
-		::Range<Vector3> rotationEuler;					// 回転
-		::Range<Vector3> endRotationEuler;				// 終了回転
-		::Range<float> rotationEasingTime{ 0.0f,0.0f };	// 回転イージング時間
+		CurryEngine::Range<Vector3> rotationEuler;					// 回転
+		CurryEngine::Range<Vector3> endRotationEuler;				// 終了回転
+		CurryEngine::Range<float> rotationEasingTime{ 0.0f,0.0f };	// 回転イージング時間
 		int rotationEasingType{ 0 };					// 回転イージングタイプ（ComputeParticleUpdateCS.hlslのEase関数参照）
 		bool loop{ false };								// ループフラグ
 		float duration{ 1.0f };							// エミット持続時間（ループする場合は1サイクルの時間）TODO: durationはループする場合の1サイクルの時間にするか、ループフラグと分けてエミット持続時間を別途設けるか要検討
@@ -183,9 +147,9 @@ public:
 		ShapeType shape = ShapeType::Point;						// 形状タイプ
 		DirectionMode directionMode = DirectionMode::Default;	// 方向生成モード
 		Vector3 directionAxis{ 0,1,0 };							// 方向軸（DirectionMode::Axisで使用）
-		::Range<float> speed = { 1.0f,1.0f };					// 速度（DirectionModeで使用）
-		::Range<float> endSpeed = { 1.0f,1.0f };				// 終了速度（DirectionModeで使用）
-		::Range<float> speedEasingTime{ 0.0f, 0.0f };			// 速度イージング時間
+		CurryEngine::Range<float> speed = { 1.0f,1.0f };					// 速度（DirectionModeで使用）
+		CurryEngine::Range<float> endSpeed = { 1.0f,1.0f };				// 終了速度（DirectionModeで使用）
+		CurryEngine::Range<float> speedEasingTime{ 0.0f, 0.0f };			// 速度イージング時間
 		int speedEasingType{ 0 };								// 速度イージングタイプ（ComputeParticleUpdateCS.hlslのEase関数参照）
 		float radius = 1.0f;									// 円/球で使用
 		float height = 1.0f;									// Cylinderで使用
@@ -193,9 +157,9 @@ public:
 	// 動作設定構造体
 	struct EmitterMotionData
 	{
-		::Range<Vector3> velocity;					// 初速
-		::Range<Vector3> acceleration;				// 加速度
-		::Range<float> lifeTime{ 1.0f, 1.0f };		// 生存時間
+		CurryEngine::Range<Vector3> velocity;					// 初速
+		CurryEngine::Range<Vector3> acceleration;				// 加速度
+		CurryEngine::Range<float> lifeTime{ 1.0f, 1.0f };		// 生存時間
 		bool useGravity{ false };					// 重力使用フラグ
 	};
 	// ビジュアル設定構造体
@@ -205,17 +169,17 @@ public:
 		std::string texturePath;								// テクスチャパス
 		DirectX::XMUINT2 textureSplitCount{ 1, 1 };				// テクスチャ分割数
 		BlendState blendState = BlendState::Transparency;		// ブレンドステート
-		::Range<Vector2> startSize{ { 1,1 }, { 1,1 } };			// 開始サイズ
-		::Range<Vector2> endSize{ { 1,1 }, { 1,1 } };			// 終了サイズ
-		::Range<float> sizeEasingTime{ 0.0f,0.0f };				// サイズイージング時間
+		CurryEngine::Range<Vector2> startSize{ { 1,1 }, { 1,1 } };			// 開始サイズ
+		CurryEngine::Range<Vector2> endSize{ { 1,1 }, { 1,1 } };			// 終了サイズ
+		CurryEngine::Range<float> sizeEasingTime{ 0.0f,0.0f };				// サイズイージング時間
 		int sizeEasingType{ 0 };								// サイズイージングタイプ（ComputeParticleUpdateCS.hlslのEase関数参照）
 		bool useGradient{ false };								// グラデーション使用フラグ
-		::Range<Color> startColor;								// 開始色
-		::Range<Color> endColor;								// 終了色
+		CurryEngine::Range<Color> startColor;								// 開始色
+		CurryEngine::Range<Color> endColor;								// 終了色
 		bool enableFadeIn{ false };								// フェードイン有効フラグ
 		bool enableFadeOut{ false };							// フェードアウト有効フラグ
-		::Range<float> fadeInTime{ 0.0f, 0.0f };				// フェードイン時間
-		::Range<float> fadeOutTime{ 0.0f, 0.0f };				// フェードアウト時間
+		CurryEngine::Range<float> fadeInTime{ 0.0f, 0.0f };				// フェードイン時間
+		CurryEngine::Range<float> fadeOutTime{ 0.0f, 0.0f };				// フェードアウト時間
 
 		ImGradientHDRState gradientState{};						// グラデーション状態
 		ImGradientHDRTemporaryState gradientTempState{};		// グラデーション一時状態(エディタ用、保存しない)

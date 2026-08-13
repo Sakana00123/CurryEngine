@@ -544,7 +544,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 
 #ifdef USE_IMGUI
 
-bool EffectEditor::DrawRangeInt(const char* label, ::Range<int>& range, int speed, int min, int max)
+bool EffectEditor::DrawRangeInt(const char* label, CurryEngine::Range<int>& range, int speed, int min, int max)
 {
 	IMGUI_PROPERTY_BEGIN();
 	ImGui::PushID(label); // 一意のIDをプッシュ
@@ -591,9 +591,9 @@ bool EffectEditor::DrawRangeInt(const char* label, ::Range<int>& range, int spee
 		int newMax = range.max;
 		std::string oldValueStr = "Min:" + std::to_string(prevMin) + " Max:" + std::to_string(prevMax);
 		std::string newValueStr = "Min:" + std::to_string(newMin) + " Max:" + std::to_string(newMax);
-		auto setter = [&, label](const Range<int>& value) { range = value; };
-		Range<int> oldValue = { prevMin, prevMax };
-		Range<int> newValue = { newMin, newMax };
+		auto setter = [&, label](const CurryEngine::Range<int>& value) { range = value; };
+		CurryEngine::Range<int> oldValue = { prevMin, prevMax };
+		CurryEngine::Range<int> newValue = { newMin, newMax };
 		
 		// 変更前後の値をクランプしてコマンド登録
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
@@ -603,7 +603,7 @@ bool EffectEditor::DrawRangeInt(const char* label, ::Range<int>& range, int spee
 	return changed;
 }
 
-bool EffectEditor::DrawRangeUInt(const char* label, ::Range<unsigned int>& range, unsigned int speed, unsigned int min, unsigned int max)
+bool EffectEditor::DrawRangeUInt(const char* label, CurryEngine::Range<unsigned int>& range, unsigned int speed, unsigned int min, unsigned int max)
 {
 	IMGUI_PROPERTY_BEGIN();
 	ImGui::PushID(label);
@@ -651,9 +651,9 @@ bool EffectEditor::DrawRangeUInt(const char* label, ::Range<unsigned int>& range
 		uint32_t newMax = range.max;
 		std::string oldValueStr = "Min:" + std::to_string(prevMin) + " Max:" + std::to_string(prevMax);
 		std::string newValueStr = "Min:" + std::to_string(newMin) + " Max:" + std::to_string(newMax);
-		Range<unsigned int> oldValue = { prevMin, prevMax };
-		Range<unsigned int> newValue = { newMin, newMax };
-		auto setter = [&, label](const Range<unsigned int>& value) { range = value; };
+		CurryEngine::Range<unsigned int> oldValue = { prevMin, prevMax };
+		CurryEngine::Range<unsigned int> newValue = { newMin, newMax };
+		auto setter = [&, label](const CurryEngine::Range<unsigned int>& value) { range = value; };
 		// 変更前後の値をクランプしてコマンド登録
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
@@ -662,7 +662,7 @@ bool EffectEditor::DrawRangeUInt(const char* label, ::Range<unsigned int>& range
 	return changed;
 }
 
-bool EffectEditor::DrawRangeFloat(const char* label, ::Range<float>& range, float speed, float min, float max)
+bool EffectEditor::DrawRangeFloat(const char* label, CurryEngine::Range<float>& range, float speed, float min, float max)
 {
 	IMGUI_PROPERTY_BEGIN();
 	ImGui::PushID(label);
@@ -729,9 +729,9 @@ bool EffectEditor::DrawRangeFloat(const char* label, ::Range<float>& range, floa
 		float newMax = range.max;
 		std::string oldValueStr = "Min:" + std::to_string(prevMin) + " Max:" + std::to_string(prevMax);
 		std::string newValueStr = "Min:" + std::to_string(newMin) + " Max:" + std::to_string(newMax);
-		Range<float> oldValue = { prevMin, prevMax };
-		Range<float> newValue = { newMin, newMax };
-		auto setter = [&, label](const Range<float>& value) { range = value; };
+		CurryEngine::Range<float> oldValue = { prevMin, prevMax };
+		CurryEngine::Range<float> newValue = { newMin, newMax };
+		auto setter = [&, label](const CurryEngine::Range<float>& value) { range = value; };
 
 		// 変更前後の値をクランプしてコマンド登録
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
@@ -741,7 +741,7 @@ bool EffectEditor::DrawRangeFloat(const char* label, ::Range<float>& range, floa
 	return changed;
 }
 
-bool EffectEditor::DrawRangeVector2(const char* label, ::Range<Vector2>& range, float speed, float min, float max)
+bool EffectEditor::DrawRangeVector2(const char* label, CurryEngine::Range<Vector2>& range, float speed, float min, float max)
 {
 	bool changed = false;
 	bool edited = false;
@@ -817,9 +817,9 @@ bool EffectEditor::DrawRangeVector2(const char* label, ::Range<Vector2>& range, 
 		Vector2 newMax = range.max;
 		std::string oldValueStr = "Min:(" + std::to_string(prevMin.x) + "," + std::to_string(prevMin.y) + ") Max:(" + std::to_string(prevMax.x) + "," + std::to_string(prevMax.y) + ")";
 		std::string newValueStr = "Min:(" + std::to_string(newMin.x) + "," + std::to_string(newMin.y) + ") Max:(" + std::to_string(newMax.x) + "," + std::to_string(newMax.y) + ")";
-		Range<Vector2> oldValue = { prevMin, prevMax };
-		Range<Vector2> newValue = { newMin, newMax };
-		auto setter = [&, label](const Range<Vector2>& value) { range = value; };
+		CurryEngine::Range<Vector2> oldValue = { prevMin, prevMax };
+		CurryEngine::Range<Vector2> newValue = { newMin, newMax };
+		auto setter = [&, label](const CurryEngine::Range<Vector2>& value) { range = value; };
 		// 変更前後の値をクランプしてコマンド登録
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
@@ -827,7 +827,7 @@ bool EffectEditor::DrawRangeVector2(const char* label, ::Range<Vector2>& range, 
 	return changed;
 }
 
-bool EffectEditor::DrawRangeVector3(const char* label, ::Range<Vector3>& range, float speed, float min, float max)
+bool EffectEditor::DrawRangeVector3(const char* label, CurryEngine::Range<Vector3>& range, float speed, float min, float max)
 {
 	
 	bool changed = false;
@@ -903,9 +903,9 @@ bool EffectEditor::DrawRangeVector3(const char* label, ::Range<Vector3>& range, 
 		Vector3 newMax = range.max;
 		std::string oldValueStr = "Min:(" + std::to_string(prevMin.x) + "," + std::to_string(prevMin.y) + "," + std::to_string(prevMin.z) + ") Max:(" + std::to_string(prevMax.x) + "," + std::to_string(prevMax.y) + "," + std::to_string(prevMax.z) + ")";
 		std::string newValueStr = "Min:(" + std::to_string(newMin.x) + "," + std::to_string(newMin.y) + "," + std::to_string(newMin.z) + ") Max:(" + std::to_string(newMax.x) + "," + std::to_string(newMax.y) + "," + std::to_string(newMax.z) + ")";
-		Range<Vector3> oldValue = { prevMin, prevMax };
-		Range<Vector3> newValue = { newMin, newMax };
-		auto setter = [&, label](const Range<Vector3>& value) { range = value; };
+		CurryEngine::Range<Vector3> oldValue = { prevMin, prevMax };
+		CurryEngine::Range<Vector3> newValue = { newMin, newMax };
+		auto setter = [&, label](const CurryEngine::Range<Vector3>& value) { range = value; };
 		// 変更前後の値をクランプしてコマンド登録
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);
 	}
@@ -913,7 +913,7 @@ bool EffectEditor::DrawRangeVector3(const char* label, ::Range<Vector3>& range, 
 	return changed;
 }
 
-bool EffectEditor::DrawRangeColor(const char* label, ::Range<Color>& range)
+bool EffectEditor::DrawRangeColor(const char* label, CurryEngine::Range<Color>& range)
 {
 	bool changed = false;
 	bool edited = false;
@@ -957,14 +957,14 @@ bool EffectEditor::DrawRangeColor(const char* label, ::Range<Color>& range)
 
 	if (edited)
 	{
-		Range<Color> oldValue = { prevMin, prevMax };
-		Range<Color> newValue = { range.min, range.max };
+		CurryEngine::Range<Color> oldValue = { prevMin, prevMax };
+		CurryEngine::Range<Color> newValue = { range.min, range.max };
 		std::string oldValueStr = "Min:(" + std::to_string(prevMin.r) + "," + std::to_string(prevMin.g) + "," + std::to_string(prevMin.b) + "," + std::to_string(prevMin.a)
 			+ ") Max:(" + std::to_string(prevMax.r) + "," + std::to_string(prevMax.g) + "," + std::to_string(prevMax.b) + "," + std::to_string(prevMax.a) + ")";
 		std::string newValueStr = "Min:(" + std::to_string(newValue.min.r) + "," + std::to_string(newValue.min.g) + "," + std::to_string(newValue.min.b) + "," + std::to_string(newValue.min.a)
 			+ ") Max:(" + std::to_string(newValue.max.r) + "," + std::to_string(newValue.max.g) + "," + std::to_string(newValue.max.b) + "," + std::to_string(newValue.max.a) + ")";
 		
-		auto setter = [&, label](const Range<Color>& value) { range = value; };
+		auto setter = [&, label](const CurryEngine::Range<Color>& value) { range = value; };
 
 		// 変更前後の値をクランプしてコマンド登録
 		IMGUI_PROPERTY_COMMAND_CUSTOM(label, newValue, oldValue, newValueStr, oldValueStr, setter);

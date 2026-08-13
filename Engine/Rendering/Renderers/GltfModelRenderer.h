@@ -273,6 +273,7 @@ private:
     void CreateAndUploadResources(ID3D11Device* device);
 
 	friend class RhythmAnimationController;
+	friend class Animator;
 	using Node = ModelAsset::Node;
     void Animate(size_t animationIndex, float time, std::vector<Node>& animatedNodes);
 

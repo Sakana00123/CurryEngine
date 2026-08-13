@@ -58,3 +58,11 @@ private:
 #define C_REGISTER_TYPE(Type) \
 	C_REGISTER_TYPE_IMPL(Type, __COUNTER__)
 
+// プリミティブ型のシリアライザを登録
+#ifndef C_REGISTER_PRIMITIVE_TYPES
+#define C_REGISTER_PRIMITIVE_TYPES
+C_REGISTER_TYPE(int)
+C_REGISTER_TYPE(float)
+C_REGISTER_TYPE(bool)
+C_REGISTER_TYPE(std::string)
+#endif // C_REGISTER_PRIMITIVE_TYPES

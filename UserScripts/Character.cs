@@ -10,7 +10,7 @@ public class Character : Behaviour
     [SerializeField] string attackPrefabPath = "TestAssets/Prefabs/PlayerBall.prefab";
     [SerializeField] GameObject? attackPoint;
     [SerializeField] float attackForce = 30f;
-    [SerializeField] GameObject? attackTarget;
+    [SerializeField] Transform? attackTarget;
 
     // Start is called before the first frame update
     public override void Start()
@@ -66,7 +66,7 @@ public class Character : Behaviour
                         GameObject attackInstance = Instantiate(attackPrefabPath, attackPoint.transform.position, attackPoint.transform.rotation);
                         Debug.Log($"Instantiated: {attackInstance.name}/{attackInstance.ToString()}");
 
-                        Vector3 attackDir = (attackTarget != null) ? (attackTarget.transform.position - attackPoint.transform.position).normalized : attackPoint.transform.forward;
+                        Vector3 attackDir = (attackTarget != null) ? (attackTarget.position - attackPoint.transform.position).normalized : attackPoint.transform.forward;
                         attackDir.y = 0f; // 水平方向のみに制限
                         attackDir = attackDir.normalized; // 正規化して方向ベクトルにする
                         if (attackInstance.TryGetComponent<AtackBall>(out AtackBall attackBall))
