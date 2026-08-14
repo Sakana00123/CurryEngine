@@ -88,6 +88,15 @@ public abstract class Component : Object
         set => Accessor?.SetEnabled(objectId, ownerId, value);
     }
 
+
+    /// <summary>
+    /// このコンポーネントが有効かを bool 型として評価する。
+    /// </summary>
+    /// <param name="component"> 評価するコンポーネント </param>
+    public static implicit operator bool(Component? component)
+        => component != null && component.IsValid;
+
+
 #if false // TODO: 今後実装するか検討中。
     // ----- ライフサイクルコールバック (override して使う) -----
 

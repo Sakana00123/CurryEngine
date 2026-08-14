@@ -24,6 +24,17 @@ static std::shared_ptr<Component> FindComponentById(uint64_t componentId)
 
 // --------- Enable ---------
 
+ENGINE_API bool Component_IsValid(uint64_t objectId)
+{
+	if (auto comp = FindComponentById(objectId))
+	{
+		return true; // コンポーネントが見つかれば有効
+	}
+	LOG_WARNING(std::format("Component_IsValid: Component with ID %llu not found.", objectId));
+	return false; // コンポーネントが見つからない場合は無効
+}
+
+
 ENGINE_API int Component_GetEnable(uint64_t objectId)
 {
 	if (auto comp = FindComponentById(objectId))

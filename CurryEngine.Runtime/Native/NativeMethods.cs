@@ -183,8 +183,6 @@ internal static partial class NativeMethods
 
     [LibraryImport(Dll)] internal static partial ulong Object_Instantiate(ulong objectId);
 
-    [LibraryImport(Dll)] internal static partial void Component_Destroy(ulong objectId);
-
     // ------------------------------------ GameObject -----------------------------------------
     [return: MarshalAs(UnmanagedType.LPUTF8Str)]
     [LibraryImport(Dll)] internal static partial string GameObject_GetName(ulong objectId);
@@ -197,6 +195,11 @@ internal static partial class NativeMethods
     [LibraryImport(Dll)]
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static partial bool GameObject_IsActive(ulong objectId);
+
+    [LibraryImport(Dll)] 
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static partial bool GameObject_IsValid(ulong objectId);
+
 
     [LibraryImport(Dll)]
     internal static partial int GameObject_GetComponentIds(ulong ownerId, 
@@ -230,7 +233,6 @@ internal static partial class NativeMethods
     //[LibraryImport(Dll)] internal static partial void Entity_GetName(ulong objectId, [MarshalAs(UnmanagedType.LPUTF8Str)] StringBuilder name, int maxLength);
     //[LibraryImport(Dll)] internal static partial void Entity_SetActive(ulong objectId, bool active);
     //[LibraryImport(Dll)] internal static partial bool Entity_IsActive(ulong objectId);
-    [LibraryImport(Dll)] [return: MarshalAs(UnmanagedType.Bool)] internal static partial bool Entity_IsValid(ulong objectId);
     //[LibraryImport(Dll)] internal static partial void Entity_SetStatic(ulong objectId, bool isStatic);
     //[LibraryImport(Dll)] internal static partial bool Entity_IsStatic(ulong objectId);
     //[LibraryImport(Dll)] internal static partial void Entity_SetTag(ulong objectId, [MarshalAs(UnmanagedType.LPUTF8Str)] string tag);
@@ -239,6 +241,27 @@ internal static partial class NativeMethods
     //[LibraryImport(Dll)] internal static partial void Entity_RemoveComponent(ulong ownerId, [MarshalAs(UnmanagedType.LPUTF8Str)] string typeName);
     //[LibraryImport(Dll)] internal static partial void Entity_GetComponent(ulong ownerId, [MarshalAs(UnmanagedType.LPUTF8Str)] string typeName, out IntPtr componentData);
     [LibraryImport(Dll)] [return: MarshalAs(UnmanagedType.Bool)] internal static partial bool Entity_HasComponent(ulong ownerId, [MarshalAs(UnmanagedType.LPUTF8Str)] string typeName);
+
+
+    [LibraryImport(Dll)] internal static partial int Scene_GetAllIds(ulong[] outBuffer, int bufferSize); // 事前に確保されたバッファを渡す方式。呼び出し側でサイズを管理する。
+
+    internal static ulong[] Scene_GetAllIdsHelper(int maxBufferSize = 16)
+    {
+        var buffer = new ulong[maxBufferSize]; // 最初は適当なサイズで試す
+        int count = Scene_GetAllIds(buffer, buffer.Length);
+        return buffer[..count]; // 必要なサイズだけ切り取って返す
+    }
+
+    [LibraryImport(Dll)] internal static partial int Scene_FindAllByType([MarshalAs(UnmanagedType.LPUTF8Str)] string typeName, [Out] ulong[] outBuffer, int bufferSize);
+
+    internal static ulong[] Scene_FindAllByTypeHelper(string typeName, int maxBufferSize = 16)
+    {
+        var buffer = new ulong[maxBufferSize]; // 最初は適当なサイズで試す
+        int count = Scene_FindAllByType(typeName, buffer, buffer.Length);
+        return buffer[..count]; // 必要なサイズだけ切り取って返す
+    }
+
+
 
     // ------------------------------------ Transform -----------------------------------------
 
@@ -284,6 +307,12 @@ internal static partial class NativeMethods
     // ------------------------------------ Component -----------------------------------------
     [LibraryImport(Dll)] internal static partial int Component_GetEnabled(ulong ownerId, ulong objectId);
     [LibraryImport(Dll)] internal static partial void Component_SetEnabled(ulong ownerId, ulong objectId, int enabled);
+
+    [LibraryImport(Dll)] internal static partial void Component_Destroy(ulong objectId);
+
+    [LibraryImport(Dll)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static partial bool Component_IsValid(ulong objectId);
 
     [LibraryImport(Dll)] internal static partial ulong Component_GetOwner(ulong objectId);
 

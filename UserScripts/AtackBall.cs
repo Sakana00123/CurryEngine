@@ -38,16 +38,27 @@ public class AtackBall : Behaviour
 
     public override void OnCollisionEnter(Collision collision)
     {
-        var otherObject = GetGameObjectById(collision.otherColliderId);
+        var otherCollider = GetComponentById<Collider>(collision.otherColliderId);
+        if (otherCollider == null)
+        {
+            Debug.LogWarning("Other collider not found for ID: " + collision.otherColliderId);
+            return;
+        }
+        var otherObject = otherCollider.gameObject;
         if (otherObject == null)
         {
             Debug.Log("Other object is null.");
             return;
         }
-        if (otherObject.TryGetComponent<Character>(out Character character))
+        if (otherObject.TryGetComponent<Enemy>(out var enemy))
         {
-            Debug.Log("Hit Character!");
-            // キャラクターにダメージを与える処理をここに追加
+            enemy.TakeDamage(damage);
+            Debug.Log("Enemy hit! Damage: " + damage);
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Collided with non-enemy object: " + otherObject.name);
         }
     }
 

@@ -159,6 +159,27 @@ public abstract class Behaviour : Component
     /// <returns> 存在する場合は指定された型のコンポーネント、存在しない場合は null。</returns>
     public static T? GetComponentById<T>(ulong componentId) where T : Component
     {
-        return Component.Accessor?.Get<T>(componentId);
+        return Component.Accessor?.GetByComponentId<T>(componentId);
+    }
+
+    /// <summary>
+    /// すべての GameObject を取得します。存在しない場合は空の配列を返します。
+    /// </summary>
+    /// <param name="maxCount"> 取得する最大数。デフォルトは 64。</param>
+    /// <returns> すべての GameObject の配列。存在しない場合は空の配列。</returns>
+    public static GameObject[] GetAllGameObjects(int maxCount = 64)
+    {
+        return GameObject.Accessor?.GetAllGameObjects(maxCount) ?? [];
+    }
+
+    /// <summary>
+    /// 指定された型のコンポーネントを持つすべての GameObject を取得します。存在しない場合は空の配列を返します。
+    /// </summary>
+    /// <typeparam name="T"> 取得したいコンポーネントの型。</typeparam>
+    /// <param name="maxCount"> 取得する最大数。デフォルトは 64。</param>
+    /// <returns> 指定された型のコンポーネントを持つすべての GameObject の配列。存在しない場合は空の配列。</returns>
+    public static GameObject[] FindAllByType<T>(int maxCount = 64) where T : Component
+    {
+        return GameObject.Accessor?.FindGameObjectsByType(typeof(T).Name, maxCount) ?? [];
     }
 }

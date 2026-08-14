@@ -248,6 +248,7 @@ popd</Command>
     <ClCompile Include="Engine\Resources\ModelAsset.cpp" />
     <ClCompile Include="Engine\Resources\SkinnedMesh.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\GameObjectExports.cpp" />
+    <ClCompile Include="Engine\Scripting\Exports\SceneExports.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\TransformExports.cpp" />
     <ClCompile Include="Engine\UI\CanvasScaler.cpp" />
     <ClCompile Include="Engine\UI\Graphic.cpp" />

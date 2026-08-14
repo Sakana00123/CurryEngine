@@ -32,9 +32,26 @@ namespace CurryEngine.Runtime
             NativeMethods.GameObject_SetActive(gameObjectId, active);
         }
 
+        public bool IsValid(ulong gameObjectId)
+        {
+            return NativeMethods.GameObject_IsValid(gameObjectId);
+        }
+
         public void Destroy(ulong gameObjectId, float delay)
         {
             NativeMethods.Entity_Destroy(gameObjectId, delay);
+        }
+
+        public GameObject[] GetAllGameObjects(int maxCount = 64)
+        {
+            ulong[] ids = NativeMethods.Scene_GetAllIdsHelper(maxCount);
+            return [.. ids.Select(id => GameObjectCache.GetOrCreate(id))];
+        }
+
+        public GameObject[] FindGameObjectsByType(string typeName, int maxCount = 64)
+        {
+            ulong[] ids = NativeMethods.Scene_FindAllByTypeHelper(typeName, maxCount);
+            return [.. ids.Select(id => GameObjectCache.GetOrCreate(id))];
         }
     }
 }

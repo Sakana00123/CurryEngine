@@ -53,6 +53,20 @@ namespace CurryEngine
             return false;
         }
 
+        public static bool operator ==(GameObject? a, GameObject? b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a is null || b is null) return false;
+            return a.objectId == b.objectId;
+        }
+
+        public static bool operator !=(GameObject? a, GameObject? b)
+            => !(a == b);
+
+        public static implicit operator bool(GameObject? obj)
+            => obj != null && (Accessor?.IsActive(obj.objectId) ?? false);
+
+
         public override int GetHashCode()
             => objectId.GetHashCode();
 

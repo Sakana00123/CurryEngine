@@ -17,8 +17,14 @@ internal sealed class ComponentAccessor : IComponentAccessor
     public T? GetOrCreate<T>(ulong ownerId, ulong componentId) where T : Component
         => (T?)ComponentCache.GetOrCreate(ownerId, componentId, typeof(T));
 
+    public T? GetByComponentId<T>(ulong componentId) where T : Component
+    {
+        ulong ownerId = NativeMethods.Component_GetOwner(componentId);
+        return (T?)ComponentCache.GetOrCreate(ownerId, componentId, typeof(T));
+    }
+
     public bool IsValid(ulong componentId) =>
-        NativeMethods.Entity_IsValid(componentId);
+        NativeMethods.Component_IsValid(componentId);
 
     public bool IsEnabled(ulong componentId, ulong ownerId) =>
         NativeMethods.Component_GetEnabled(componentId, ownerId) != 0;
@@ -39,5 +45,6 @@ internal sealed class ComponentAccessor : IComponentAccessor
     public ulong FindGameObjectByName(string name)
         => NativeMethods.GameObject_FindByName(name);
 
-
+    public ulong FindGameObjectById(ulong componentId)
+        => NativeMethods.Component_GetOwner(componentId);
 }

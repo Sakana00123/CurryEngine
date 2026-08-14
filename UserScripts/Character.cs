@@ -10,6 +10,8 @@ public class Character : Behaviour
     [SerializeField] string attackPrefabPath = "TestAssets/Prefabs/PlayerBall.prefab";
     [SerializeField] GameObject? attackPoint;
     [SerializeField] float attackForce = 30f;
+
+    // 攻撃対象のTransformを指定するためのフィールド
     [SerializeField] Transform? attackTarget;
 
     // Start is called before the first frame update
@@ -64,8 +66,10 @@ public class Character : Behaviour
                     if (Path.Exists(attackPrefabPath))
                     {
                         GameObject attackInstance = Instantiate(attackPrefabPath, attackPoint.transform.position, attackPoint.transform.rotation);
-                        Debug.Log($"Instantiated: {attackInstance.name}/{attackInstance.ToString()}");
-
+                        if (!attackTarget)
+                        {
+                            attackTarget = FindAttackTarget();
+                        }
                         Vector3 attackDir = (attackTarget != null) ? (attackTarget.position - attackPoint.transform.position).normalized : attackPoint.transform.forward;
                         attackDir.y = 0f; // 水平方向のみに制限
                         attackDir = attackDir.normalized; // 正規化して方向ベクトルにする
@@ -98,4 +102,38 @@ public class Character : Behaviour
         }
 
     }
+
+
+    Transform? FindAttackTarget()
+    {
+        // ここで攻撃対象を見つけるロジックを実装します。
+        if (attackTarget == null)
+        {
+            Transform? closestEnemy = null;
+            float closestDistance = float.MaxValue;
+            GameObject[] enemies = FindAllByType<Enemy>();
+            Debug.Log($"[FindAttackTarget] Found {enemies.Length} enemies.");
+            foreach (var obj in enemies)
+            {
+                //if (obj.CompareTag("Enemy")) // 例えば、攻撃対象のタグが "Enemy" の場合
+                if (obj.transform)
+                {
+                    float distance = Vector3.Distance(transform.position, obj.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestEnemy = obj.transform;
+                    }
+                }
+            }
+            if (closestEnemy != null) {
+                Debug.Log($"[FindAttackTarget] Found closest enemy at distance: {closestDistance}");
+            } else {
+                Debug.Log("[FindAttackTarget] No enemies found.");
+            }
+            return closestEnemy;
+        }
+        return null;
+    }
+
 }

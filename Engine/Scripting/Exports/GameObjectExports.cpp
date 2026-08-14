@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Engine/Core/GameObject.h"
+#include "Engine/Scenes/SceneManager.h"
 
 // GameObject クラスのメソッドをスクリプトから呼び出せるようにするためのエクスポート関数
 
@@ -16,6 +17,10 @@ ENGINE_API const char* GameObject_GetName(uint64_t objectId)
 	{
 		name = obj->name;
 	}
+	else
+	{
+		LOG_ERROR("GameObject not found for objectId: " + std::to_string(objectId));
+	}
 
 	size_t size = name.size() + 1; // +1 for null terminator
 	char* buffer = static_cast<char*>(CoTaskMemAlloc(size));
@@ -24,6 +29,8 @@ ENGINE_API const char* GameObject_GetName(uint64_t objectId)
 		strcpy_s(buffer, size, name.c_str());
 		return buffer; // CoTaskMemAlloc で確保したメモリを返す
 	}
+
+	LOG_ERROR("Failed to allocate memory for GameObject name.");
 	return nullptr; // メモリ確保に失敗した場合は nullptr を返す
 }
 
@@ -33,11 +40,15 @@ ENGINE_API void GameObject_SetName(uint64_t objectId, const char* name)
 	{
 		obj->name = name;
 	}
+	else
+	{
+		LOG_ERROR("GameObject not found for objectId: " + std::to_string(objectId));
+	}
 }
 
 // --------- Valid ---------
 
-ENGINE_API int Entity_IsValid(uint64_t objectId)
+ENGINE_API int GameObject_IsValid(uint64_t objectId)
 {
 	if (GameObject* obj = ObjectManager::Find(ObjectId::FromValue(objectId)))
 	{
@@ -63,6 +74,7 @@ ENGINE_API int Entity_HasComponent(uint64_t objectId, const char* componentName)
 			}
 		}
 	}
+	LOG_ERROR("GameObject not found or component not found for objectId: " + std::to_string(objectId) + ", componentName: " + std::string(componentName));
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
 }
 
@@ -74,6 +86,10 @@ ENGINE_API void Entity_Destroy(uint64_t objectId, float delay)
 	if (GameObject* obj = ObjectManager::Find(ObjectId::FromValue(objectId)))
 	{
 		obj->Destroy(delay);
+	}
+	else
+	{
+		LOG_ERROR("GameObject not found for objectId: " + std::to_string(objectId));
 	}
 }
 
@@ -110,6 +126,7 @@ ENGINE_API int GameObject_GetComponentIds(uint64_t ownerId, const char* componen
 		}
 		return count; // 見つかったコンポーネントの数を返す
 	}
+	LOG_ERROR("GameObject not found for ownerId: " + std::to_string(ownerId));
 	return 0; // オブジェクトが見つからない場合は 0 を返す
 }
 
@@ -125,6 +142,10 @@ ENGINE_API void GameObject_SetActive(uint64_t objectId, bool active)
 	{
 		obj->SetActive(active);
 	}
+	else
+	{
+		LOG_ERROR("GameObject not found for objectId: " + std::to_string(objectId));
+	}
 }
 
 ENGINE_API bool GameObject_IsActive(uint64_t objectId)
@@ -133,6 +154,7 @@ ENGINE_API bool GameObject_IsActive(uint64_t objectId)
 	{
 		return obj->IsActive();
 	}
+	LOG_ERROR("GameObject not found for objectId: " + std::to_string(objectId));
 	return false; // オブジェクトが見つからない場合は 0 を返す
 }
 

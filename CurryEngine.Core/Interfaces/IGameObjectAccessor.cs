@@ -18,6 +18,14 @@ namespace CurryEngine.Interfaces
 
         void SetActive(ulong gameObjectId, bool active);
 
+        bool IsValid(ulong gameObjectId);
+
         void Destroy(ulong gameObjectId, float delay);
+
+
+        GameObject[] GetAllGameObjects(int maxCount = 64);
+
+        GameObject[] FindGameObjectsByType(string typeName, int maxCount = 64);
+
     }
 }

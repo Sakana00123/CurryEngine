@@ -13,6 +13,8 @@ public class Enemy : Behaviour
     // 近づいたら静止する距離
     [SerializeField] float stopDistance = 5f;
 
+    [SerializeField] int health = 100;
+
     float timeSinceLastLog = 0f;
 
     // Start is called before the first frame update
@@ -82,5 +84,22 @@ public class Enemy : Behaviour
                 rigidbody.AddForce(movement, ForceMode.Force);
             }
         }
+    }
+
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        Debug.Log($"Enemy took {damage} damage. Remaining health: {health}");
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Enemy died.");
+        Destroy(gameObject);
     }
 }
