@@ -40,6 +40,13 @@ struct Vector2
 	Vector2 operator/(float a) const { return Vector2(this->x / a, this->y / a); }
 	bool operator==(const Vector2& a) const { return (this->x == a.x && this->y == a.y); }
 
+	static const Vector2 Zero;
+	static const Vector2 One;
+	static const Vector2 Up;
+	static const Vector2 Down;
+	static const Vector2 Right;
+	static const Vector2 Left;
+
 	/* ベクトルの長さを計算して返します。*/
 	float Length() const;
 

@@ -106,7 +106,7 @@ public class FieldMeta
 
         // 型名で判定 (ALC 型同一性の問題を回避するため)
         var typeName = value.GetType().Name;
-        if (typeName == "Vector3")
+        if (value is Vector3)
         {
             var t = value.GetType();
             var x = (float)t.GetField("x")!.GetValue(value)!;
@@ -114,7 +114,7 @@ public class FieldMeta
             var z = (float)t.GetField("z")!.GetValue(value)!;
             return new { x, y, z };
         }
-        if (typeName == "Quaternion")
+        if (value is Quaternion)
         {
             var t = value.GetType();
             var x = (float)t.GetField("x")!.GetValue(value)!;
@@ -152,9 +152,8 @@ public class FieldMeta
             var component = (Component)value;
             return new string($"Component(objectId: {component.objectId}, ownerId: {component.ownerId})");
         }
-        if (value.GetType().Name == "GameObject") // GameObjectはidを文字列でシリアライズ
+        if (value is GameObject gameObject) // GameObjectはidを文字列でシリアライズ
         {
-            var gameObject = (GameObject)value;
             return new string($"GameObject(objectId: {gameObject.objectId})");
         }
 

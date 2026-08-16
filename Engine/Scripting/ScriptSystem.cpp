@@ -282,10 +282,12 @@ void ScriptSystem::OnDisableScript(void* gcHandle)
 	s_scriptHost->GetCallbacks().OnDisableScript(gcHandle);
 }
 
-void ScriptSystem::HotSwapScript(void* gcHandle, uint64_t ownerId, uint64_t componentId)
+void* ScriptSystem::HotSwapScript(void* gcHandle, uint64_t ownerId, uint64_t componentId)
 {
-	if (!s_scriptHost || !gcHandle) return;
-	s_scriptHost->GetCallbacks().HotSwapScript(gcHandle, ownerId, componentId);
+	if (!s_scriptHost || !gcHandle) return nullptr;
+
+	const auto hotSwap = s_scriptHost->GetCallbacks().HotSwapScript;
+	return hotSwap ? hotSwap(gcHandle, ownerId, componentId) : nullptr;
 }
 
 void* ScriptSystem::GetScriptFields(void* gcHandle)
@@ -297,7 +299,15 @@ void* ScriptSystem::GetScriptFields(void* gcHandle)
 void ScriptSystem::SetScriptField(void* gcHandle, const std::string& fieldName, const std::string& value)
 {
 	if (!s_scriptHost || !gcHandle) return;
-	s_scriptHost->GetCallbacks().SetScriptField(gcHandle, fieldName.c_str(), value.c_str());
+
+	const auto setField = s_scriptHost->GetCallbacks().SetScriptField;
+	if (!setField)
+	{
+		LOG_ERROR("[ScriptSystem] SetScriptField callback is not initialized.");
+		return;
+	}
+
+	setField(gcHandle, fieldName.c_str(), value.c_str());
 }
 
 static const CollisionInfoDto& ConvertCollisionInfoToPrimitiveData(const CollisionInfo& info)

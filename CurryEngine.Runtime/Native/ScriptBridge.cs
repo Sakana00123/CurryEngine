@@ -190,6 +190,12 @@ public static unsafe class ScriptBridge
             var next = manager.HotSwap(old, ownerId, componentId);
             if (next == null || ReferenceEquals(next, old)) return gcHandle;
 
+            if (old is Component oldComponent && next is Component nextComponent)
+            {
+                // ComponentCacheの中身を置き換える。これでC++側のハンドルはそのまま使える。
+                ComponentCache.Replace(oldComponent, nextComponent);
+            }
+
             // 旧ハンドルを解放
             var oldPtr = (nint)gcHandle;
             if (s_handles.Remove(oldPtr, out var oldHandle))
@@ -216,7 +222,7 @@ public static unsafe class ScriptBridge
         try
         {
             // スクリプトオブジェクトを取得
-            var obj = Unwrap(gcHandle);
+            object obj = Unwrap(gcHandle);
             // ScriptInspectorを使ってフィールド情報をJSON化して返す。C++側でパースして使う想定。
             string json = ScriptInspector.GetFieldsJson(obj);
             return Marshal.StringToCoTaskMemUTF8(json);
@@ -235,8 +241,15 @@ public static unsafe class ScriptBridge
         try
         {
             // スクリプトオブジェクトを取得
-            var obj = Unwrap(gcHandle);
+            // Validate the native handle before calling GCHandle.FromIntPtr.
             // フィールド名からFieldInfoを取得
+            var handleKey = (nint)gcHandle;
+            if (!s_handles.TryGetValue(handleKey, out var handle) || !handle.IsAllocated || handle.Target is not { } target)
+            {
+                Debug.LogError("SetScriptField: received an invalid or released GCHandle.");
+                return;
+            }
+
             var fieldName = Marshal.PtrToStringUTF8((nint)fieldNameUtf8)!;
             // JSON文字列をC#の値に変換してセットする。ScriptInspector側で型に応じて適切に変換される想定。
             var value = Marshal.PtrToStringUTF8((nint)valueJson);
@@ -245,7 +258,7 @@ public static unsafe class ScriptBridge
                 Debug.LogError($"SetScriptField: valueJson is null for fieldName={fieldName}");
                 return;
             }
-            ScriptInspector.SetFieldValue(obj, fieldName, value);
+            ScriptInspector.SetFieldValue(target, fieldName, value);
             
         }
         catch (Exception ex)

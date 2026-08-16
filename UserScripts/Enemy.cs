@@ -1,5 +1,6 @@
 // This is a generated C# script.
 using CurryEngine;
+using System.Runtime.CompilerServices;
 
 public class Enemy : Behaviour
 {
@@ -14,13 +15,21 @@ public class Enemy : Behaviour
     [SerializeField] float stopDistance = 5f;
 
     [SerializeField] int health = 100;
+    [SerializeField] int attackDamage = 10;
 
     float timeSinceLastLog = 0f;
+
+    public int AttackDamage
+    {
+        get => attackDamage;
+        private set => attackDamage = value;
+    }
+
 
     // Start is called before the first frame update
     public override void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -38,6 +47,14 @@ public class Enemy : Behaviour
             timeSinceLastLog += Time.DeltaTime;
         }
 
+
+        // 奈落に落ちた場合は死亡処理を行う
+        if (transform.position.y < -10f)
+        {
+            Die();
+        }
+
+        // プレイヤーオブジェクトがまだ見つかっていない場合は、Findで探す
         if (playerObject == null)
         {
             if (Find("character") is GameObject player)
@@ -102,4 +119,5 @@ public class Enemy : Behaviour
         Debug.Log("Enemy died.");
         Destroy(gameObject);
     }
+
 }

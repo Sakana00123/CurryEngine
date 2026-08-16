@@ -10,9 +10,18 @@ public class Character : Behaviour
     [SerializeField] string attackPrefabPath = "TestAssets/Prefabs/PlayerBall.prefab";
     [SerializeField] GameObject? attackPoint;
     [SerializeField] float attackForce = 30f;
+    public int health = 100;
 
     // 攻撃対象のTransformを指定するためのフィールド
     [SerializeField] Transform? attackTarget;
+
+
+    private Action<int>? _onHealthChanged;
+    public Action<int>? OnHealthChanged
+    { 
+        get => _onHealthChanged;
+        set => _onHealthChanged = value;
+    }
 
     // Start is called before the first frame update
     public override void Start()
@@ -134,6 +143,31 @@ public class Character : Behaviour
             return closestEnemy;
         }
         return null;
+    }
+    
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        OnHealthChanged?.Invoke(health);
+        Debug.Log($"Character took {damage} damage. Remaining health: {health}");
+        if (health <= 0)
+        {
+            Debug.Log("Character has died.");
+        }
+    }
+
+    public override void OnCollisionEnter(Collision collision)
+    {
+        Collider? other = GetComponentById<Collider>(collision.otherColliderId);
+        var otherGameObject = other?.gameObject;
+        if (otherGameObject != null)
+        {
+            if (otherGameObject.TryGetComponent<Enemy>(out Enemy enemy))
+            {
+                Debug.Log($"Collided with Enemy: {otherGameObject.name}");
+                TakeDamage(enemy.AttackDamage);
+            }
+        }
     }
 
 }

@@ -110,6 +110,254 @@
             "activeSelf": true,
             "components": [
                 {
+                    "anchorMax": [
+                        0.0,
+                        1.0
+                    ],
+                    "anchorMin": [
+                        0.0,
+                        1.0
+                    ],
+                    "anchoredPosition": [
+                        50.0,
+                        -50.0
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "5760666468693288683",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.0,
+                        1.0
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        700.0,
+                        50.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "color": [
+                        0.0,
+                        1.0,
+                        0.007117271423339844,
+                        1.0
+                    ],
+                    "enableMask": false,
+                    "enabledSelf": true,
+                    "id": "3321737088959810830",
+                    "isInputEnabled": true,
+                    "isRaycastTarget": true,
+                    "maskMaterial": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/SpriteMaskPS.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "maskTexture": ""
+                            },
+                            "1": {
+                                "colorMap": ""
+                            }
+                        }
+                    },
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/sprite_ps.cso",
+                            "1": "./Assets/Shaders/sprite_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "color_map": ""
+                            }
+                        }
+                    },
+                    "name": "Image",
+                    "priority": 1000,
+                    "sh": 100.0,
+                    "sw": 100.0,
+                    "sx": 0.0,
+                    "sy": 0.0,
+                    "type": "Image",
+                    "uv": [
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "id": "18216994681373106723",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "PlayerHPBar",
+            "parent": "7087144494191658523",
+            "parentId": "0",
+            "priority": 1000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "anchorMax": [
+                        0.0,
+                        0.0
+                    ],
+                    "anchorMin": [
+                        0.0,
+                        0.0
+                    ],
+                    "anchoredPosition": [
+                        0.0,
+                        0.0
+                    ],
+                    "angle": 0.0,
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "17703575540430974973",
+                    "localSortingOrder": 0,
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "RectTransform",
+                    "pivot": [
+                        0.0,
+                        0.0
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "size": [
+                        1920.0,
+                        1080.0
+                    ],
+                    "type": "RectTransform"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "4321816561037325004",
+                    "isInputEnabled": true,
+                    "name": "Canvas",
+                    "priority": 1000,
+                    "type": "Canvas"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "13824799574093386864",
+                    "isInputEnabled": true,
+                    "name": "GraphicRaycaster",
+                    "priority": 2000,
+                    "type": "GraphicRaycaster"
+                }
+            ],
+            "id": "7087144494191658523",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Canvas",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 2000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "17148939381605366838",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "id": "4447885525637893367",
+                    "name": "InputModule",
+                    "priority": 1000,
+                    "type": "InputModule"
+                }
+            ],
+            "id": "6530204860239739402",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "EventSystem",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 3000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
                     "coordinateSystem": 0,
                     "enabledSelf": true,
                     "id": "15964857650119753199",
@@ -190,7 +438,7 @@
             "name": "GltfModel",
             "parent": "0",
             "parentId": "0",
-            "priority": 1000,
+            "priority": 4000,
             "version": 1
         },
         {
@@ -232,7 +480,7 @@
             "name": "AttackPoint",
             "parent": "3215127106798646221",
             "parentId": "0",
-            "priority": 2000,
+            "priority": 5000,
             "version": 1
         },
         {
@@ -274,7 +522,7 @@
             "name": "CameraFocus",
             "parent": "3215127106798646221",
             "parentId": "0",
-            "priority": 3000,
+            "priority": 6000,
             "version": 1
         },
         {
@@ -329,7 +577,7 @@
             "name": "Directional Light",
             "parent": "0",
             "parentId": "0",
-            "priority": 4000,
+            "priority": 7000,
             "version": 1
         },
         {
@@ -425,7 +673,7 @@
             "name": "Cube",
             "parent": "0",
             "parentId": "0",
-            "priority": 5000,
+            "priority": 8000,
             "version": 1
         },
         {
@@ -469,6 +717,7 @@
                         "attackTarget": "Component(objectId: 4928842743748726023, ownerId: 1481355775892858889)",
                         "enableAttack": true,
                         "enableJump": true,
+                        "health": 100,
                         "jumpForce": 5,
                         "speed": 5
                     },
@@ -544,6 +793,18 @@
                         1.0
                     ],
                     "type": "BoxCollider"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "character": "Component(objectId: 10962852155025648948, ownerId: 3215127106798646221)",
+                        "hpBarRectTransform": "Component(objectId: 5760666468693288683, ownerId: 3215127106798646221)"
+                    },
+                    "id": "11659400083781505513",
+                    "name": "ScriptComponent",
+                    "priority": 5000,
+                    "scriptName": "HPBinder",
+                    "type": "ScriptComponent"
                 }
             ],
             "id": "3215127106798646221",
@@ -552,7 +813,7 @@
             "name": "character",
             "parent": "0",
             "parentId": "0",
-            "priority": 6000,
+            "priority": 9000,
             "version": 1
         },
         {
@@ -657,7 +918,9 @@
                 {
                     "enabledSelf": true,
                     "fields": {
+                        "attackDamage": 10,
                         "chaseDistance": 10,
+                        "health": 100,
                         "playerObject": "GameObject(objectId: 3215127106798646221)",
                         "speed": 3,
                         "stopDistance": 3
@@ -675,7 +938,7 @@
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
-            "priority": 7000,
+            "priority": 10000,
             "version": 1
         },
         {
@@ -792,7 +1055,7 @@
             "name": "PlayerBall",
             "parent": "0",
             "parentId": "0",
-            "priority": 8000,
+            "priority": 11000,
             "version": 1
         },
         {
@@ -846,7 +1109,7 @@
             "name": "EnemySpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 9000,
+            "priority": 12000,
             "version": 1
         }
     ]

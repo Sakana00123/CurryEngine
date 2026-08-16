@@ -302,11 +302,21 @@ std::string CSharpGenerater::BuildFieldImportLines(
     std::ostringstream oss;
 
     // Getter
-    if (!marshal.empty())
-        oss << ind << "[return: MarshalAs(" << marshal << ")]\n";
-    oss << ind << "[LibraryImport(Dll)] "
-        << "internal static partial " << csType << " "
-        << prefix << "Get" << capName << "(ulong objectId);\n";
+    if (csType == "Vector2" || csType == "Vector3")
+    {
+		// Vector2/Vector3 は out 引数で返す
+        oss << ind << "[LibraryImport(Dll)] "
+            << "internal static partial void "
+			<< prefix << "Get" << capName << "(ulong objectId, out " << csType << " value);\n";
+    }   
+    else
+    {
+        if (!marshal.empty())
+            oss << ind << "[return: MarshalAs(" << marshal << ")]\n";
+        oss << ind << "[LibraryImport(Dll)] "
+            << "internal static partial " << csType << " "
+            << prefix << "Get" << capName << "(ulong objectId);\n";
+    }
 
     // Setter
     std::string setParam = marshal.empty()
@@ -337,6 +347,12 @@ std::string CSharpGenerater::BuildLibraryImportLine(
 
     std::ostringstream params;
     params << "ulong objectId";
+	bool isVectorType = (m.returnType == "Vector2" || m.returnType == "Vector3");
+	if (isVectorType)
+    {
+        // Vector2/Vector3 は out 引数で返す
+        params << ", out " << csRet << " outValue";
+	}
     for (const auto& p : m.parameters)
     {
 		bool pIsEnum = IsEnumType(p.type, knownEnums, typeMap);
@@ -351,9 +367,19 @@ std::string CSharpGenerater::BuildLibraryImportLine(
     std::ostringstream oss;
     if (!retMarshal.empty())
         oss << ind << "[return: MarshalAs(" << retMarshal << ")]\n";
-    oss << ind << "[LibraryImport(Dll)] "
-        << "internal static partial " << csRet << " "
-        << className << "_" << m.name << "(" << params.str() << ");\n";
+    if (isVectorType)
+    {
+        // Vector2/Vector3 は out 引数で返すので戻り値は void
+        oss << ind << "[LibraryImport(Dll)] "
+            << "internal static partial void "
+            << className << "_" << m.name << "(" << params.str() << ");\n";
+    }
+	else
+    {
+        oss << ind << "[LibraryImport(Dll)] "
+            << "internal static partial " << csRet << " "
+            << className << "_" << m.name << "(" << params.str() << ");\n";
+    }
 
     return oss.str();
 }
@@ -390,11 +416,28 @@ std::string CSharpGenerater::BuildPropertyImpl(
     if (hideInInspector)
         oss << ind << "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]\n";
 
-    oss << ind << "public " << csType << " " << f.name << "\n";
-    oss << ind << "{\n";
-    oss << ind2 << "get => " << nm << "." << className << "_Get" << capName << "(objectId);\n";
-    oss << ind2 << "set => " << nm << "." << className << "_Set" << capName << "(objectId, value);\n";
-    oss << ind << "}\n";
+    if (csType == "Vector2" || csType == "Vector3")
+    {
+        // Vector2/Vector3 は out 引数で返す
+        oss << ind << "public " << csType << " " << f.name << "\n";
+        oss << ind << "{\n";
+        oss << ind2 << "get\n";
+        oss << ind2 << "{\n";
+        oss << ind2 << "    " << csType << " value;\n";
+        oss << ind2 << "    " << nm << "." << className << "_Get" << capName << "(objectId, out value);\n";
+        oss << ind2 << "    return value;\n";
+        oss << ind2 << "}\n";
+        oss << ind2 << "set => " << nm << "." << className << "_Set" << capName << "(objectId, value);\n";
+        oss << ind << "}\n";
+    }
+	else
+    {
+        oss << ind << "public " << csType << " " << f.name << "\n";
+        oss << ind << "{\n";
+        oss << ind2 << "get => " << nm << "." << className << "_Get" << capName << "(objectId);\n";
+        oss << ind2 << "set => " << nm << "." << className << "_Set" << capName << "(objectId, value);\n";
+        oss << ind << "}\n";
+    }
 
     return oss.str();
 }
@@ -446,8 +489,23 @@ std::string CSharpGenerater::BuildMethodImpl(
     oss << ind << Indent(1);
     if (retIsEnum)
 		oss << "=> (" << csRet << ") " << nm << "." << className << "_" << m.name << "(" << callParams.str() << ");\n";
-    else if (csRet != "void")
-        oss << "=> " << nm << "." << className << "_" << m.name << "(" << callParams.str() << ");\n";
+    else if (csRet == "Vector2" || csRet == "Vector3")
+    {
+		// Vector2/Vector3 は out 引数で返すので戻り値は void
+        oss << "{\n";
+		oss << ind << Indent(1) << csRet << " value;\n";
+        oss << ind << Indent(1) << nm << "." << className << "_" << m.name << "(objectId, out value";
+        for (const auto& p : m.parameters)
+        {
+            oss << ", ";
+            bool isEnum = IsEnumType(p.type, knownEnums, typeMap);
+            if (isEnum) oss << "(int)";
+            oss << p.name;
+		}
+        oss << ");\n";
+        oss << ind << Indent(1) << "return value;\n";
+		oss << ind << "}\n";
+    }
     else
         oss << "=> " << nm << "." << className << "_" << m.name << "(" << callParams.str() << ");\n";
 

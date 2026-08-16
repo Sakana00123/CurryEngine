@@ -41,7 +41,7 @@ public:
 	static void OnEnableScript(void* gcHandle);
 	static void OnDisableScript(void* gcHandle);
 
-	static void HotSwapScript(void* gcHandle, uint64_t ownerId, uint64_t componentId);
+	static void* HotSwapScript(void* gcHandle, uint64_t ownerId, uint64_t componentId);
 	static void* GetScriptFields(void* gcHandle);
 	static void SetScriptField(void* gcHandle, const std::string& fieldName, const std::string& value);
 

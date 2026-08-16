@@ -88,6 +88,30 @@ public abstract class Component : Object
         set => Accessor?.SetEnabled(objectId, ownerId, value);
     }
 
+    public static bool operator ==(Component? a, Component? b)
+    {
+        if (ReferenceEquals(a, b)) return true;
+        // isValid=false は null と同等に扱う
+        uint bitA = (uint)a;// 有効かどうかの判定をビット演算で行うために uint に変換
+        uint bitB = (uint)b;// 有効かどうかの判定をビット演算で行うために uint に変換
+        if ((bitA ^ bitB) == 1) return false; // どちらか一方が有効で、もう一方が無効の場合は等しくない
+        if (bitA == 0 && bitB == 0) return true; // 両方とも無効の場合は等しいとみなす
+        if (a is null || b is null) return false; // どちらか一方が null の場合は等しくない
+        return a.objectId == b.objectId && a.ownerId == b.ownerId; // 同じ型で objectId と ownerId が同じなら等しいとみなす
+    }
+
+    public static bool operator !=(Component? a, Component? b)
+        => !(a == b);
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is Component other)
+            return this == other;
+        return false;
+    }
+
+    public override int GetHashCode()
+        => HashCode.Combine(objectId, ownerId);
 
     /// <summary>
     /// このコンポーネントが有効かを bool 型として評価する。
@@ -95,6 +119,8 @@ public abstract class Component : Object
     /// <param name="component"> 評価するコンポーネント </param>
     public static implicit operator bool(Component? component)
         => component != null && component.IsValid;
+
+
 
 
 #if false // TODO: 今後実装するか検討中。

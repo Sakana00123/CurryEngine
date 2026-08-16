@@ -332,26 +332,46 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		std::string exportType = fieldIsEnum ? "int" : field.type;
 
 		// Get 関数
-		ofs << "extern \"""C\"" << " __declspec(dllexport) " << exportType << " " << className << "_Get" << capName << "(uint64_t objectId)\n{\n";
+		bool isVectorType = (field.type == "Vector2" || field.type == "Vector3");
+		std::string returnType = exportType;
+		std::string inputSignature = "uint64_t objectId";
+
+		// Vector2/Vector3 の場合は outValue 引数を追加して void を返す
+		if (isVectorType)
+		{
+			returnType = "void";
+			inputSignature += ", " + exportType + "* outValue";
+		}
+
+		ofs << "extern \"""C\"" << " __declspec(dllexport) " << returnType << " " << className << "_Get" << capName << "(" << inputSignature << ")\n{\n";
 		ofs << "    if (auto comp = Get" << className << "ById(objectId)) {\n";
-		if (fieldIsEnum)
+		if (isVectorType)
 		{
-			// 列挙型は int にキャストして返す
-			ofs << "        return static_cast<int>(comp->" << fieldName << ");\n";
+			ofs << "        *outValue = comp->" << fieldName << ";\n";
+			ofs << "    }\n";
 		}
 		else
 		{
-			ofs << "        return comp->" << fieldName << ";\n";
-		}
-		ofs << "    }\n";
-		if (fieldIsEnum)
-		{
-			// 列挙型は int から元の型にキャストして戻り値を返す
-			ofs << "    return static_cast<int>(" << field.type << "{}); // Return Value When an Object Is Not Found\n";
-		}
-		else
-		{
-			ofs << "    return " << exportType << "{}; // Return Value When an Object Is Not Found\n";
+			if (fieldIsEnum)
+			{
+				// 列挙型は int にキャストして返す
+				ofs << "        return static_cast<int>(comp->" << fieldName << ");\n";
+			}
+			else
+			{
+				ofs << "        return comp->" << fieldName << ";\n";
+			}
+			ofs << "    }\n";
+			if (fieldIsEnum)
+			{
+				// 列挙型は int から元の型にキャストして戻り値を返す
+				ofs << "    return static_cast<int>(" << field.type << "{}); // Return Value When an Object Is Not Found\n";
+			}
+			else
+			{
+				std::string returnValue = returnType + "{};";
+				ofs << "    return " << returnValue << "// Return Value When an Object Is Not Found\n";
+			}
 		}
 		ofs << "}\n";
 		// Set 関数
@@ -379,7 +399,19 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		bool retIsEnum = IsEnumType(method.returnType, knownEnums, typeMap);
 		std::string exportRetType = retIsEnum ? "int" : method.returnType;
 
-		ofs << "extern \"""C\"" << " __declspec(dllexport) " << exportRetType << " " << className << "_" << method.name << "(uint64_t objectId";
+		// Vector2/Vector3 の場合は outValue 引数を追加して void を返す
+		bool isVectorType = (method.returnType == "Vector2" || method.returnType == "Vector3");
+		std::string returnType = exportRetType;
+		std::string inputSignature = "uint64_t objectId";
+
+		// Vector2/Vector3 の場合は outValue 引数を追加して void を返す
+		if (isVectorType)
+		{
+			returnType = "void";
+			inputSignature += ", " + exportRetType + "* outValue";
+		}
+
+		ofs << "extern \"""C\"" << " __declspec(dllexport) " << returnType << " " << className << "_" << method.name << "(" << inputSignature;
 		for (const auto& param : method.parameters)
 		{
 			bool paramIsEnum = IsEnumType(param.type, knownEnums, typeMap);
@@ -391,7 +423,7 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		ofs << "    if (auto comp = Get" << className << "ById(objectId)) {\n";
 		ofs << "        // Implementing API processing using `comp`\n";
 		// メソッドの呼び出し
-		if (method.returnType != "void")
+		if (returnType != "void")
 		{
 			if (retIsEnum)
 			{
@@ -424,15 +456,16 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		}
 		ofs << ");\n";
 		ofs << "    }\n";
-		if (method.returnType != "void")
+		if (returnType != "void")
 		{
 			if (retIsEnum)
 			{
-				ofs << "    return static_cast<int>(" << method.returnType << "{}); // Return Value When an Object Is Not Found\n";
+				ofs << "    return static_cast<int>(" << returnType << "{}); // Return Value When an Object Is Not Found\n";
 			}
 			else
 			{
-				ofs << "    return " << method.returnType << "{}; // Return Value When an Object Is Not Found\n";
+				std::string returnValue = returnType + "{};";
+				ofs << "    return " << returnValue << "// Return Value When an Object Is Not Found\n";
 			}
 		}
 		ofs << "}\n";

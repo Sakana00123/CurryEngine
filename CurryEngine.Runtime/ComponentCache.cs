@@ -87,4 +87,12 @@ internal static class ComponentCache
         component.Setup(ownerId, componentId);
         return component;
     }
+
+    internal static void Replace(Component previous, Component replacement)
+    {
+        if (previous.objectId != replacement.objectId)
+            throw new InvalidOperationException("Cannot replace components with different IDs.");
+
+        s_cache[replacement.objectId] = replacement;
+    }
 }

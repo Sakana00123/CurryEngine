@@ -775,17 +775,24 @@ GameObject* ObjectManager::Find(const std::string& name)
 	{
 		if (scene)
 		{
-			for (auto& object : scene->objectManager->objects) {
-				// オブジェクトがnullptrの場合はスキップ
-				if (!object) continue;
-				// 弱参照が切れている場合はスキップ
-				std::weak_ptr<GameObject> weakObj = object;
-				if (weakObj.expired()) continue;
+			if (auto objectManager = scene->GetObjectManager())
+			{
+				for (auto& object : objectManager->objects) {
+					// オブジェクトがnullptrの場合はスキップ
+					if (!object) continue;
+					// 弱参照が切れている場合はスキップ
+					std::weak_ptr<GameObject> weakObj = object;
+					if (weakObj.expired()) continue;
 
-				// 名前が一致したら返す
-				if (object->GetName() == name) {
-					return object.get();
+					// 名前が一致したら返す
+					if (object->GetName() == name) {
+						return object.get();
+					}
 				}
+			}
+			else {
+				// objectManagerがnullptrの場合の処理（必要に応じてログ出力など）
+				// ここでは何もしない
 			}
 		}
 	}
@@ -810,16 +817,23 @@ GameObject* ObjectManager::Find(const ObjectId& id)
 	{
 		if (scene)
 		{
-			for (auto& object : scene->objectManager->objects) {
-				// オブジェクトがnullptrの場合はスキップ
-				if (!object) continue;
-				// 弱参照が切れている場合はスキップ
-				std::weak_ptr<GameObject> weakObj = object;
-				if (weakObj.expired()) continue;
-				// IDが一致したら返す
-				if (object->GetId() == id) {
-					return object.get();
+			if (auto objectManager = scene->GetObjectManager())
+			{
+				for (auto& object : objectManager->objects) {
+					// オブジェクトがnullptrの場合はスキップ
+					if (!object) continue;
+					// 弱参照が切れている場合はスキップ
+					std::weak_ptr<GameObject> weakObj = object;
+					if (weakObj.expired()) continue;
+					// IDが一致したら返す
+					if (object->GetId() == id) {
+						return object.get();
+					}
 				}
+			}
+			else {
+				// objectManagerがnullptrの場合の処理（必要に応じてログ出力など）
+				// ここでは何もしない
 			}
 		}
 	}
@@ -844,16 +858,23 @@ std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const std::string& name)
 	{
 		if (scene)
 		{
-			for (auto& object : scene->objectManager->objects) {
-				// オブジェクトがnullptrの場合はスキップ
-				if (!object) continue;
-				// 弱参照が切れている場合はスキップ
-				std::weak_ptr<GameObject> weakObj = object;
-				if (weakObj.expired()) continue;
-				// 名前が一致したら返す
-				if (object->GetName() == name) {
-					return object;
+			if (auto objectManager = scene->GetObjectManager())
+			{
+				for (auto& object : objectManager->objects) {
+					// オブジェクトがnullptrの場合はスキップ
+					if (!object) continue;
+					// 弱参照が切れている場合はスキップ
+					std::weak_ptr<GameObject> weakObj = object;
+					if (weakObj.expired()) continue;
+					// 名前が一致したら返す
+					if (object->GetName() == name) {
+						return object;
+					}
 				}
+			}
+			else {
+				// objectManagerがnullptrの場合の処理（必要に応じてログ出力など）
+				// ここでは何もしない
 			}
 		}
 	}
@@ -877,16 +898,23 @@ std::shared_ptr<GameObject> ObjectManager::Find_Ptr(const ObjectId& id)
 	{
 		if (scene)
 		{
-			for (auto& object : scene->objectManager->objects) {
-				// オブジェクトがnullptrの場合はスキップ
-				if (!object) continue;
-				// 弱参照が切れている場合はスキップ
-				std::weak_ptr<GameObject> weakObj = object;
-				if (weakObj.expired()) continue;
-				// IDが一致したら返す
-				if (object->GetId() == id) {
-					return object;
+			if (auto objectManager = scene->GetObjectManager())
+			{
+				for (auto& object : objectManager->objects) {
+					// オブジェクトがnullptrの場合はスキップ
+					if (!object) continue;
+					// 弱参照が切れている場合はスキップ
+					std::weak_ptr<GameObject> weakObj = object;
+					if (weakObj.expired()) continue;
+					// IDが一致したら返す
+					if (object->GetId() == id) {
+						return object;
+					}
 				}
+			}
+			else {
+				// objectManagerがnullptrの場合の処理（必要に応じてログ出力など）
+				// ここでは何もしない
 			}
 		}
 	}
@@ -911,6 +939,7 @@ std::shared_ptr<Component> ObjectManager::FindComponent(const ObjectId& id)
 	{
 		if (scene)
 		{
+			if (!scene->GetObjectManager()) continue;
 			const auto& components = scene->GetObjectManager()->GetComponentCacheMap();
 			auto it = components.find(id);
 			if (it != components.end()) {

@@ -632,6 +632,6 @@ void ScriptComponent::OnScriptReload()
 	// 既存のスクリプトインスタンスをホットスワップで更新する
     uint64_t ownerId = GetOwner()->GetId().Value();
     uint64_t componentId = GetId().Value();
-	ScriptSystem::HotSwapScript(m_gcHandle, ownerId, componentId);
+	m_gcHandle = ScriptSystem::HotSwapScript(m_gcHandle, ownerId, componentId);
 	OnPostScriptReload(); // ホットスワップ後にフィールドの値を再適用
 }
