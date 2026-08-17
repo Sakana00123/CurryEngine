@@ -15,6 +15,8 @@ public class Character : Behaviour
     // 攻撃対象のTransformを指定するためのフィールド
     [SerializeField] Transform? attackTarget;
 
+    // 効果音を再生するためのAudioSourceを指定するためのフィールド
+    [SerializeField] AudioSource? attackAudioSource;
 
     private Action<int>? _onHealthChanged;
     public Action<int>? OnHealthChanged
@@ -85,6 +87,12 @@ public class Character : Behaviour
                         if (attackInstance.TryGetComponent<AtackBall>(out AtackBall attackBall))
                         {
                             attackBall.SetInitialImpact(attackDir * attackForce);
+
+                            // 攻撃音を再生する
+                            if (attackAudioSource != null)
+                            {
+                                attackAudioSource.PlayOneShot();
+                            }
                         }
                         else
                         {

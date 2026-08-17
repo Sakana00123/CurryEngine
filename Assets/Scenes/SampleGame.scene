@@ -711,6 +711,7 @@
                 {
                     "enabledSelf": true,
                     "fields": {
+                        "attackAudioSource": "Component(objectId: 17599436381421624838, ownerId: 3215127106798646221)",
                         "attackForce": 1,
                         "attackPoint": "GameObject(objectId: 2113710056714824385)",
                         "attackPrefabPath": "TestAssets/Prefabs/PlayerBall.prefab",
@@ -805,6 +806,19 @@
                     "priority": 5000,
                     "scriptName": "HPBinder",
                     "type": "ScriptComponent"
+                },
+                {
+                    "enabledSelf": true,
+                    "filePath": "./TestAssets\\Sounds\\SE\\shot.wav",
+                    "id": "17599436381421624838",
+                    "loop": false,
+                    "name": "AudioSource",
+                    "playOnStart": false,
+                    "priority": 6000,
+                    "soundType": 1,
+                    "type": "AudioSource",
+                    "use3DAudio": false,
+                    "volume": 1.0
                 }
             ],
             "id": "3215127106798646221",

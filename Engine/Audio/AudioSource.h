@@ -44,6 +44,14 @@ public:
 	 */
 	C_FUNCTION()
 	void Play();
+
+	/**
+	 * @brief 再生を一回だけ開始します。
+	 * @details 音を重ねて再生する場合に使用します。再生中であっても新たに再生されます。(内部的にはAudio::PlayOneShotを呼び出します)
+	 */
+	C_FUNCTION()
+	void PlayOneShot();
+
 	/**
 	 * @brief 再生を停止します。
 	 * @param playTails テイル（残響等）を再生してから停止するか。

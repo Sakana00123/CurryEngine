@@ -121,6 +121,12 @@ void AudioSource::Play()
 	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 }
 
+void AudioSource::PlayOneShot()
+{
+	// AudioのPlayOneShotを呼び出すことで、AudioSourceの設定に関係なく一度だけ再生される(音を重ねて再生できる)
+	Audio::PlayOneShot(filePath.c_str(), volume);
+}
+
 void AudioSource::Stop(bool playTails)
 {
 	//バッファやソースボイスが設定されていなければ何もしない
