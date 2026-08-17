@@ -40,13 +40,13 @@ class Transform : public Component
 	C_REFLECT(Transform)
 public:
 	/** @brief ローカル座標の位置。*/
-	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetPosition"), CurryEngine::PropertyAttributes::Setter("SetPosition"))
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetPosition"), CurryEngine::PropertyAttributes::Setter("SetPosition"), CurryEngine::PropertyAttributes::HideInClass("RectTransform"))
 	Vector3 position;
 	/** @brief ローカル回転（クォータニオン）。*/
-	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetRotation"), CurryEngine::PropertyAttributes::Setter("SetRotation"), CurryEngine::PropertyAttributes::CustomDrawer("Quaternion_Euler"))
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetRotation"), CurryEngine::PropertyAttributes::Setter("SetRotation"), CurryEngine::PropertyAttributes::CustomDrawer("Quaternion_Euler"), CurryEngine::PropertyAttributes::HideInClass("RectTransform"))
 	Quaternion rotation;
 	/** @brief ローカルスケール。*/
-	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetScale"), CurryEngine::PropertyAttributes::Setter("SetScale"))
+	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("GetScale"), CurryEngine::PropertyAttributes::Setter("SetScale"), CurryEngine::PropertyAttributes::HideInClass("RectTransform"))
 	Vector3 scale;
 
 	/** @brief ローカル回転（オイラー角、度）。*/

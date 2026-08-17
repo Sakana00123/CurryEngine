@@ -21,6 +21,13 @@ struct PropertyDrawContext
 	 */
 	bool isMultiSelect = false;
 
+	/**
+	 * @brief 継承されたプロパティも表示するかどうか。デフォルトでは true です。
+	 * @details 継承されたプロパティを非表示にしたい場合は false に設定してください。
+	 * @note このフラグを false に設定すると、派生クラスで定義されたプロパティのみが表示され、基底クラスのプロパティは非表示になります。
+	 */
+	bool showInheritedProperties = true;
+
 
 	// --- 静的ファクトリーメソッド ---
 

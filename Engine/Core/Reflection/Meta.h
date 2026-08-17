@@ -51,6 +51,13 @@ namespace CurryEngine
 		// プロパティをインスペクタで編集できないようにする
 		struct ReadOnly {};
 
+		// プロパティを特定のクラス内で非表示にする
+		struct HideInClass
+		{
+			const char* className; // 非表示にするクラス名
+			constexpr HideInClass(const char* cn) : className(cn) {}
+		};
+
 		// プロパティにツールチップを表示する
 		struct Tooltip
 		{

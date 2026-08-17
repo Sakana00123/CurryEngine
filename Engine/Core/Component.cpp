@@ -164,12 +164,31 @@ void Component::DrawProperty(const PropertyDrawContext& context)
 		// プロパティ描画の開始
 		IMGUI_PROPERTY_BEGIN();
 
+		// クラス階層の最初のメタデータを取得
+		auto firstMeta = classMetas.front();
+
 		for (int i = static_cast<int>(classMetas.size()) - 1; i >= 0; --i) // クラス階層の順序で描画するために逆順でループ
 		{
 			const ClassMeta* meta = classMetas[i];
 
 			for (const auto& prop : meta->properties)
 			{
+				bool isPropertyVisible = true;
+				if (auto* hideAttr = prop.GetAttribute("HideInInspector")) // HideInInspector 属性がある場合は非表示にする
+				{
+					isPropertyVisible = false;
+				}
+				if (auto* hideInClassAttr = prop.GetAttribute("HideInClass")) // HideInClass 属性がある場合は、指定されたクラス名と一致する場合に非表示にする
+				{
+					if (hideInClassAttr->args[0] == firstMeta->name)
+					{
+						isPropertyVisible = false;
+					}
+				}
+				if (!isPropertyVisible)
+				{
+					continue; // 非表示のプロパティはスキップ
+				}
 				CurryEngine::PropertyEditor::DrawProperty(&prop, &context);
 			}
 
