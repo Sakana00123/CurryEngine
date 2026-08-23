@@ -129,6 +129,20 @@ namespace CurryEngine
 			constexpr Enum(const char* et) : enumType(et) {}
 		};
 
+		//// 非推奨のプロパティに付ける属性。エディタで警告を表示するために使用します。
+		//struct Deprecated
+		//{
+		//	const char* message; // 非推奨の理由や代替手段を説明するメッセージ
+		//	constexpr Deprecated(const char* msg) : message(msg) {}
+		//};
+
+		// アセットの拡張子を指定する属性。エディタでアセットの種類を判別するために使用します。
+		struct AssetTypeExtension
+		{
+			const char* extension; // アセットの拡張子 (例: ".png", ".fbx" など)
+			constexpr AssetTypeExtension(const char* ext) : extension(ext) {}
+		};
+
 		//struct ObjectPicker
 		//{
 		//	const char* targetType; // ピッカーで選択するオブジェクトの型名 (例: "Component", "GameObject")

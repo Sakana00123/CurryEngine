@@ -8,6 +8,7 @@ using namespace nlohmann;
 #include "Engine/Core/Color.h"
 #include "Engine/Types/Range.h"
 #include "Engine/Core/Reflection/TypeSerializerRegistry.h"
+#include "Engine/Resources/AssetId.h"
 //#include "Engine/Core/Reference.h"
 
 namespace CurryEngine
@@ -47,6 +48,30 @@ namespace CurryEngine
 //		j = ObjectId::Invalid().ToString(); // 無効なIDは常に同じ文字列になる
 //	}
 //}
+
+namespace CurryEngine
+{
+	namespace Resources
+	{
+		template<typename T>
+		void from_json(const json& j, std::vector<T>& vec) {
+			if (j.is_array()) {
+				vec.clear();
+				for (const auto& item : j) {
+					vec.push_back(item.get<T>());
+				}
+			}
+		}
+		template<typename T>
+		void to_json(json& j, const std::vector<T>& vec) {
+			j = json::array();
+			for (const auto& item : vec) {
+				j.push_back(item);
+			}
+		}
+		C_REGISTER_TYPE(AssetId);
+	}
+}
 
 inline void from_json(const json& j, ObjectId& id) {
 	if (j.is_string()) {

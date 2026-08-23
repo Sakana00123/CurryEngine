@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include <atomic>
+#include "AssetId.h"
 
 class Resource {
 public:
@@ -10,6 +11,9 @@ public:
 
     // ファイルからロード
     virtual bool LoadFromFile(const std::string& path) = 0;
+
+	// アセットIDからロード
+    virtual bool Load(const CurryEngine::Resources::AssetId& assetId);
 
     // リロード用（ホットリロード対応）
     virtual bool Reload() { return LoadFromFile(_path); }

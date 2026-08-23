@@ -218,6 +218,19 @@ namespace CurryEngine
 			return nullptr;
 		}
 
+		std::vector<AssetMeta> AssetDatabase::FindAllByType(AssetType type)
+		{
+			std::vector<AssetMeta> result;
+			for (const auto& [path, meta] : s_metaByPath)
+			{
+				if (meta.type == type)
+				{
+					result.push_back(meta);
+				}
+			}
+			return result;
+		}
+
 		void AssetDatabase::ReBuild()
 		{
 			s_metaByPath.clear();

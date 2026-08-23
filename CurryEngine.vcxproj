@@ -197,6 +197,7 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\EditorRaycast.cpp" />
     <ClCompile Include="Engine\EditorSupport\ImGuiHelpers.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawContext.cpp" />
+    <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\AssetIdDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\AssetReferenceDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\BoolDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\ColorDrawer.cpp" />
@@ -214,6 +215,7 @@ popd</Command>
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
     <ClCompile Include="Engine\Editor\GameViewWindow.cpp" />
     <ClCompile Include="Engine\Editor\HierarchyWindow.cpp" />
+    <ClCompile Include="Engine\Editor\AnimatorControllerEditor.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\FbxImportSettingsDrawer.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\ImportSettingsDrawerRegistry.cpp" />
     <ClCompile Include="Engine\Editor\ImportSettings\ImportSettingsWindow.cpp" />
@@ -241,11 +243,14 @@ popd</Command>
     <ClCompile Include="Engine\Resources\AssetReferenceIndex.cpp" />
     <ClCompile Include="Engine\Resources\AssetTypeUtils.cpp" />
     <ClCompile Include="Engine\Resources\AssetWatcher.cpp" />
+    <ClCompile Include="Engine\Resources\Importers\AnimationImporter.cpp" />
+    <ClCompile Include="Engine\Resources\Importers\AnimatorControllerImporter.cpp" />
     <ClCompile Include="Engine\Resources\Importers\FbxImporter.cpp" />
     <ClCompile Include="Engine\Resources\Importers\ImporterRegistry.cpp" />
     <ClCompile Include="Engine\Resources\Importers\ModelImporter.cpp" />
     <ClCompile Include="Engine\Resources\Importers\TextureImporter.cpp" />
     <ClCompile Include="Engine\Resources\ModelAsset.cpp" />
+    <ClCompile Include="Engine\Resources\Resource.cpp" />
     <ClCompile Include="Engine\Resources\SkinnedMesh.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\GameObjectExports.cpp" />
     <ClCompile Include="Engine\Scripting\Exports\SceneExports.cpp" />
@@ -260,6 +265,9 @@ popd</Command>
     <ClCompile Include="Engine\Utils\AssetIdGenerator.cpp" />
     <ClCompile Include="Engine\Resources\AssetMetaSerializer.cpp" />
     <ClCompile Include="Engine\Utils\GltfImporter.cpp" />
+    <ClCompile Include="External\imgui-docking\crude_json.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="External\imgui-docking\ImGradientHDR.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -445,6 +453,15 @@ popd</Command>
     <ClCompile Include="Engine\UI\Slider.cpp" />
     <ClCompile Include="Engine\UI\Toggle.cpp" />
     <ClCompile Include="Engine\Utils\UniqueIdGenerator.cpp" />
+    <ClCompile Include="External\imgui-docking\imgui_canvas.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_node_editor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\imgui-docking\imgui_node_editor_api.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="External\imgui-docking\implot.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -670,6 +687,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\EditorRaycast.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawContext.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\DrawerState.h" />
+    <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\AssetIdDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\AssetReferenceDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\BoolDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\ColorDrawer.h" />
@@ -685,6 +703,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawerRegistry.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\IPropertyDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.h" />
+    <ClInclude Include="Engine\Editor\AnimatorControllerEditor.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
     <ClInclude Include="Engine\Editor\GameViewWindow.h" />
     <ClInclude Include="Engine\Editor\HierarchyWindow.h" />
@@ -716,6 +735,8 @@ popd</Command>
     <ClInclude Include="Engine\Resources\AssetType.h" />
     <ClInclude Include="Engine\Resources\AssetTypeUtils.h" />
     <ClInclude Include="Engine\Resources\AssetWatcher.h" />
+    <ClInclude Include="Engine\Resources\Importers\AnimationImporter.h" />
+    <ClInclude Include="Engine\Resources\Importers\AnimatorControllerImporter.h" />
     <ClInclude Include="Engine\Resources\Importers\FbxImporter.h" />
     <ClInclude Include="Engine\Resources\Importers\IImporter.h" />
     <ClInclude Include="Engine\Resources\Importers\ImporterRegistry.h" />
@@ -738,6 +759,7 @@ popd</Command>
     <ClInclude Include="Engine\Resources\AssetMetaSerializer.h" />
     <ClInclude Include="Engine\Utils\GltfImporter.h" />
     <ClInclude Include="Engine\Utils\IModelImporter.h" />
+    <ClInclude Include="External\imgui-docking\crude_json.h" />
     <ClInclude Include="External\imgui-docking\ImGradientHDR.h" />
     <ClInclude Include="Engine\Core\EnginePaths.h" />
     <ClInclude Include="Engine\Core\Layer.h" />
@@ -831,6 +853,11 @@ popd</Command>
     <ClInclude Include="Engine\Scripting\Exports\ScriptBridgeTypes.h" />
     <ClInclude Include="Engine\Scripting\ScriptHost.h" />
     <ClInclude Include="Engine\Scripting\ScriptWatcher.h" />
+    <ClInclude Include="External\imgui-docking\imgui_bezier_math.h" />
+    <ClInclude Include="External\imgui-docking\imgui_canvas.h" />
+    <ClInclude Include="External\imgui-docking\imgui_extra_math.h" />
+    <ClInclude Include="External\imgui-docking\imgui_node_editor.h" />
+    <ClInclude Include="External\imgui-docking\imgui_node_editor_internal.h" />
     <ClInclude Include="External\imgui-docking\implot.h" />
     <ClInclude Include="External\imgui-docking\implot_internal.h" />
     <ClInclude Include="Engine\Events\AxisEventData.h" />
@@ -1108,6 +1135,9 @@ popd</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="External\imgui-docking\imgui_bezier_math.inl" />
+    <None Include="External\imgui-docking\imgui_extra_math.inl" />
+    <None Include="External\imgui-docking\imgui_node_editor_internal.inl" />
     <None Include="Shader\bidirectional_reflectance_distribution_function.hlsli" />
     <None Include="Shader\ComputeParticle.hlsli" />
     <None Include="Shader\ComputeParticleBitonicSort.hlsli" />

@@ -20,7 +20,12 @@ public:
 
 private:
 	
-	std::unique_ptr<AnimatorController> controller;
+	std::shared_ptr<AnimatorController> controller;
+
+	RuntimeAnimatorController runtimeController;
+
+	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("AssetId"), CurryEngine::PropertyAttributes::AssetTypeExtension(".controller"))
+	CurryEngine::Resources::AssetId controllerAssetId; // AnimatorController の AssetId
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("GltfModelRenderer"))
 	ObjectId targetModelRendererId; // アニメーションを適用する対象の GltfModelRenderer の ObjectId

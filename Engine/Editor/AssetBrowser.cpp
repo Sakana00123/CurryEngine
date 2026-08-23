@@ -27,6 +27,8 @@
 #include "Engine/Resources/Importers/ImporterRegistry.h"
 #include "Engine/Editor/ImportSettings/ImportSettingsWindow.h"
 #include "Engine/Editor/ImportSettings/ImportSettingsDrawerRegistry.h"
+#include <Engine\Animation\AnimatorController.h>
+#include "AnimatorControllerEditor.h"
 
 void AssetBrowser::Initialize()
 {
@@ -654,6 +656,11 @@ void AssetBrowser::OpenAsset(const fs::path& assetPath)
 	{
 		AnimationEditor::OpenAsset(assetPath);
 	}
+	else if (type == AssetType::AnimatorController)
+	{
+		// AnimatorControllerファイルならAnimatorControllerエディタで開く
+		AnimatorControllerEditor::OpenAsset(assetPath);
+	}
 	else
 	{
 		// それ以外のファイルなら既定のアプリで開く
@@ -878,6 +885,8 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 				case AssetType::Prefab:    badge = "PFB";    badgeColor = { 0.9f, 0.5f, 0.1f, 1.0f }; break;
 				case AssetType::Script:    badge = "C#";     badgeColor = { 0.2f, 0.8f, 0.6f, 1.0f }; break;
 				case AssetType::Material:  badge = "MAT";    badgeColor = { 0.6f, 0.4f, 0.9f, 1.0f }; break;
+				case AssetType::Animation: badge = "ANIM";   badgeColor = { 0.9f, 0.3f, 0.3f, 1.0f }; break;
+				case AssetType::AnimatorController: badge = "AC"; badgeColor = { 0.9f, 0.6f, 0.2f, 1.0f }; break;
 				default: break;
 				}
 				if (badge)
@@ -1751,7 +1760,17 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 			clip.duration = 3.0f;
 			if (clip.SaveToFile(newAnimationPath))
 			{
-				OpenAsset(newAnimationPath);
+				//OpenAsset(newAnimationPath);
+			}
+		}
+		if (ImGui::MenuItem("Create Animator Controller"))
+		{
+			fs::path newAnimatorPath = MakeUniqueFilePath(folderPath, "New Animator Controller", ".controller");
+			AnimatorController controller;
+			controller.name = newAnimatorPath.stem().string();
+			if (controller.SaveToFile(newAnimatorPath))
+			{
+				//OpenAsset(newAnimatorPath);
 			}
 		}
 		ImGui::EndPopup();

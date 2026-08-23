@@ -22,6 +22,7 @@
 #include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Camera/CameraSystem.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
+#include <Engine\Editor\AnimatorControllerEditor.h>
 
 void SceneManager::Initialize()
 {
@@ -300,6 +301,7 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 	// ------------------- アセットブラウザ --------------------
 	AssetBrowser::DrawGUI();
 	if (AnimationEditor::IsOpen()) AnimationEditor::DrawGUI();
+	if (AnimatorControllerEditor::IsOpen()) AnimatorControllerEditor::DrawGUI();
 
 	// ------------------- HLSLエディタ ---------------------
 	//HlslEditor::DrawGUI();

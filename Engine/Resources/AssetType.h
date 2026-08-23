@@ -14,4 +14,5 @@ enum class AssetType
 	Shader,
 	Material,
 	Animation,
+	AnimatorController,
 };

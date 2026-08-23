@@ -13,6 +13,7 @@
 #include "Drawers/ObjectIdDrawer.h"
 #include "Drawers/AssetReferenceDrawer.h"
 #include "Drawers/EnumDrawer.h"
+#include "Drawers/AssetIdDrawer.h"
 
 
 namespace CurryEngine
@@ -40,6 +41,7 @@ namespace CurryEngine
 		Register("Color", std::make_unique<ColorDrawer>());
 		Register("ObjectId", std::make_unique<ObjectIdDrawer>());
 		Register("String_AssetReference", std::make_unique<AssetReferenceDrawer>());
+		Register("AssetId", std::make_unique<AssetIdDrawer>());
 		// EnumDrawer は特定の型に依存しないため、"Enum" というキーで登録します。CustomDrawer 属性でこのキーを指定することで、任意の列挙型に対して EnumDrawer を使用できます。
 		Register("Enum", std::make_unique<EnumDrawer>());
 	}

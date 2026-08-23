@@ -19,6 +19,7 @@
 #include "Engine/Audio/BeatManager.h"
 
 #include "Engine/Resources/ModelAsset.h"
+#include <Engine\Resources\AnimationClip.h>
 
 struct AnimationEvent
 {
@@ -106,6 +107,13 @@ public:
         SetAnimation(GetAnimationIndex(name), blend, animEvent);
     }
 
+	// アニメーション再生
+	C_FUNCTION()
+    void PlayAnimation(int index, bool blend = true)
+    {
+		SetAnimation(index, blend);
+    }
+
     // アニメーションの再生速度を設定
     void SetAnimationTimeRate(float rate) { timeRate = rate; }
     // アニメーションの再生速度を取得
@@ -181,41 +189,14 @@ public:
     // ループ取得
     bool IsLoop() const { return loop; }
 
-    ////指定のノード取得
-    //struct Node;
-    //Node* FindNode(const std::string& name) {
-    //    //指定のノードの名前が存在するか検索
-    //    for (Node& node : nodes) {
-    //        if (node.name == name) {
-    //            return &node;
-    //        }
-    //    }
-    //    //指定のノードが見つからなかったらnullを返す
-    //    return nullptr;
-    //}
 
-    //// モデルのジョイントのワールド空間の position を返す関数
-    //DirectX::XMFLOAT3 GetJointWorldPosition(/*size_t nodeIndex,*/const std::string& name, const std::vector<Node>& animatedNodes, const DirectX::XMFLOAT4X4& transform)
-    //{
-    //    // 該当するノードを探す
-    //    for (auto needNode : animatedNodes)
-    //    {
-    //        if (needNode.name == name)
-    //        {
-    //            DirectX::XMFLOAT3 position = { 0,0,0 };
-    //            const Node& node = needNode;
-    //            DirectX::XMMATRIX M = DirectX::XMLoadFloat4x4(&node.globalTransform) * DirectX::XMLoadFloat4x4(&transform);
-    //            DirectX::XMStoreFloat3(&position, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat3(&position), M));
-    //            return position;
-    //        }
-    //    }
 
-    //    // もしなければ
-    //    _ASSERT("Node's name is mistake or here is not your want nodes!!");
+	// アニメーションのポーズを適用
+    void ApplyPose(const std::vector<NodePose>& poses);
 
-    //    return { 0.0f,0.0f,0.0f };
+	// ノードの総数を取得
+    size_t GetNodeCount() const;
 
-    //}
 public:
     GltfModelRenderer();
     virtual ~GltfModelRenderer() = default;

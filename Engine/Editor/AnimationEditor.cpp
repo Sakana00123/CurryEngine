@@ -3,6 +3,20 @@
 #include "Engine/Resources/AssetDatabase.h"
 #include "Engine/Resources/AnimationClip.h"
 
+
+void ValueTrack::Sort()
+{
+	std::sort(keys.begin(), keys.end(), [](const ValueKeyframe& a, const ValueKeyframe& b) {
+		return a.time < b.time;
+	});
+}
+
+void ValueTrack::AddKeyframe(float time, float value)
+{
+	keys.push_back({ time, value });
+	Sort();
+}
+
 // ------------------------------- メンバ関数群 ----------------------------------------
 
 void AnimationEditor::Open()
@@ -54,6 +68,8 @@ void AnimationEditor::OpenAsset(const std::filesystem::path& path)
 	SetAnimationClip(clip);
 	Open();
 }
+
+#ifdef USE_IMGUI
 
 // ------------------------------- 汎用関数 ----------------------------------------
 // 時間をX座標に変換
@@ -142,6 +158,7 @@ void AnimationEditor::HandleZoom(TimelineView& view)
 		view.origin.x = newOriginX;
 	}
 }
+
 
 // ------------------------------- メイン関数群 ----------------------------------------
 
@@ -744,3 +761,4 @@ void AnimationEditor::DeleteSelectedKey()
 		UnselectKey(); // 選択解除
 	}
 }
+#endif // USE_IMGUI

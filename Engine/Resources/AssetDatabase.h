@@ -116,6 +116,13 @@ namespace CurryEngine
 			static const AssetMeta* FindByPath(const std::filesystem::path& assetPath);
 
 			/**
+			 * @brief 指定されたアセットタイプのすべてのアセットを取得します。
+			 * @param type 取得するアセットのタイプ
+			 * @return アセットのメタデータへのポインタの配列
+			 */
+			static std::vector<AssetMeta> FindAllByType(AssetType type);
+
+			/**
 			 * @brief アセットデータベースを再構築します。すべてのアセットを再スキャンしてメタデータを更新します。
 			 * @details 例えば、アセットの移動や削除があった場合に、データベースの整合性を保つために呼び出されます。
 			 */

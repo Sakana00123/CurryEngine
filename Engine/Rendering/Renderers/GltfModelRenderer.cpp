@@ -753,3 +753,23 @@ void GltfModelRenderer::Deserialize(const json& jsonData)
 	// モデルの再読み込み
     LoadModel(Graphics::GetDevice(), filePath, staticBatching);
 }
+
+
+void GltfModelRenderer::ApplyPose(const std::vector<NodePose>& poses)
+{
+	_ASSERT_EXPR(poses.size() == m_asset->nodes.size(), L"Pose size does not match node size.");
+
+    for (size_t i = 0; i < poses.size(); ++i) {
+        const NodePose& pose = poses.at(i);
+        Node& node = m_asset->nodes.at(i);
+        node.translation = pose.translation;
+        node.rotation = pose.rotation;
+        node.scale = pose.scale;
+	}
+	m_asset->CumulateTransforms(m_asset->nodes);
+}
+
+size_t GltfModelRenderer::GetNodeCount() const
+{
+	return m_asset->nodes.size();
+}

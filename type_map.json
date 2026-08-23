@@ -8,6 +8,8 @@
   "float":                { "csType": "float",      "source": "primitive" },
   "double":               { "csType": "double",     "source": "primitive" },
   "ObjectId":             { "csType": "ulong",      "source": "primitive" },
+  "size_t":               { "csType": "UIntPtr",    "source": "primitive" },
+  "CurryEngine::Resources::AssetId": { "csType": "string", "source": "primitive", "marshalAttr": "UnmanagedType.LPUTF8Str" },
   "int8_t":               { "csType": "sbyte",      "source": "primitive" },
   "uint8_t":              { "csType": "byte",       "source": "primitive" },
   "int16_t":              { "csType": "short",      "source": "primitive" },

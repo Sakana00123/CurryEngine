@@ -26,6 +26,7 @@ namespace CurryEngine
 			if (typeStr == "Shader") return AssetType::Shader;
 			if (typeStr == "Material") return AssetType::Material;
 			if (typeStr == "Animation") return AssetType::Animation;
+			if (typeStr == "AnimatorController") return AssetType::AnimatorController;
 			return AssetType::Unknown;
 		}
 
@@ -42,6 +43,7 @@ namespace CurryEngine
 			case AssetType::Shader: return "Shader";
 			case AssetType::Material: return "Material";
 			case AssetType::Animation: return "Animation";
+			case AssetType::AnimatorController: return "AnimatorController";
 			default: return "Unknown";
 			}
 		}

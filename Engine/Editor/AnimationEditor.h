@@ -2,6 +2,22 @@
 #include "Engine/Resources/AnimationClip.h"
 #include <imgui.h>
 
+struct ValueKeyframe
+{
+	float time = 0.0f;
+	float value = 0.0f;
+};
+
+struct ValueTrack
+{
+	std::string name;
+	std::vector<ValueKeyframe> keys;
+
+	// キーフレームを時間でソート
+	void Sort();
+	void AddKeyframe(float time, float value);
+};
+
 struct DragState
 {
 	bool dragging = false;
@@ -62,6 +78,8 @@ public:
 	/** @brief 編集中のアニメーションクリップを設定。*/
 	static void SetAnimationClip(std::shared_ptr<AnimationClip> clip);
 	static void OpenAsset(const std::filesystem::path& path);
+
+#ifdef USE_IMGUI
 
 	/** @brief アニメーションエディタの GUI を描画。*/
 	static void DrawGUI();
@@ -146,6 +164,8 @@ private:
 
 	/** @brief 選択中のキーフレームを削除。*/
 	static void DeleteSelectedKey();
+
+#endif // USE_IMGUI
 
 
 private:

@@ -3,6 +3,8 @@
 #include <Engine\Core\Misc.h>
 #include <Engine\Rendering\Pipeline\Graphics.h>
 
+#include "Engine/Resources/AnimationClip.h"
+
 #include <filesystem>
 #include <fstream>
 #include <json.hpp>
@@ -174,6 +176,39 @@ namespace CurryEngine
                 serialization(cereal::make_nvp("meshes", meshes));
                 serialization(cereal::make_nvp("textures", textures), cereal::make_nvp("images", images));
                 serialization(cereal::make_nvp("skins", skins), cereal::make_nvp("animations", animations));*/
+
+				// .animファイルを出力する
+                for (size_t i = 0; i < animations.size(); ++i) {
+					// アニメーションデータを保存するファイルパスを生成
+					std::filesystem::path animFilePath = cerealFilePath;
+					animFilePath.replace_extension(".anim");
+					animFilePath.replace_filename(animFilePath.stem().string() + "_" + std::to_string(i) + ".anim");
+
+					// アニメーションクリップを作成して保存
+					AnimationClip clip;
+					clip.name = animations[i].name;
+					clip.duration = animations[i].duration;
+                    for (const auto& channel : animations[i].channels) {
+                        AnimationClip::Channel clipChannel;
+                        clipChannel.sampler = channel.sampler;
+                        clipChannel.targetNode = channel.targetNode;
+                        clipChannel.targetPath = channel.targetPath;
+                        clip.channels.push_back(clipChannel);
+                    }
+                    for (const auto& sampler : animations[i].samplers) {
+                        AnimationClip::Sampler clipSampler;
+                        clipSampler.input = sampler.input;
+                        clipSampler.output = sampler.output;
+                        clipSampler.interpolation = sampler.interpolation;
+                        clip.samplers.push_back(clipSampler);
+					}
+					clip.timelines = animations[i].timelines;
+                    clip.scales = animations[i].scales;
+                    clip.rotations = animations[i].rotations;
+					clip.translations = animations[i].translations;
+
+					clip.SaveToFile(animFilePath);
+                }
             }
 
 			return true;
