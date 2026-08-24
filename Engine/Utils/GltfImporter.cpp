@@ -2,7 +2,7 @@
 #include "GltfImporter.h"
 #include <Engine\Core\Misc.h>
 #include <Engine\Rendering\Pipeline\Graphics.h>
-
+#include "Engine/Resources/AssetDatabase.h"
 #include "Engine/Resources/AnimationClip.h"
 
 #include <filesystem>
@@ -89,21 +89,21 @@ namespace CurryEngine
         }
 
 
-		bool GltfImporter::Import(const std::string& path, ModelAsset& asset)
-		{
+        bool GltfImporter::Import(const std::string& path, ModelAsset& asset)
+        {
             bool staticBatching = asset.staticBatching;
-			std::string filePath = path;
+            std::string filePath = path;
             auto device = Graphics::GetDevice();
-			auto& scenes = asset.scenes;
-			auto& defaultScene = asset.defaultScene;
-			auto& nodes = asset.nodes;
-			auto& materials = asset.materials;
-			auto& batchMeshes = asset.batchMeshes;
-			auto& meshes = asset.meshes;
-			auto& textures = asset.textures;
-			auto& images = asset.images;
-			auto& skins = asset.skins;
-			auto& animations = asset.animations;
+            auto& scenes = asset.scenes;
+            auto& defaultScene = asset.defaultScene;
+            auto& nodes = asset.nodes;
+            auto& materials = asset.materials;
+            auto& batchMeshes = asset.batchMeshes;
+            auto& meshes = asset.meshes;
+            auto& textures = asset.textures;
+            auto& images = asset.images;
+            auto& skins = asset.skins;
+            auto& animations = asset.animations;
             // キャッシュファイルがあればそちらを読み込む
             std::filesystem::path cerealFilePath(filePath);
             cerealFilePath.replace_extension(staticBatching ? "batchCereal" : "cereal");
