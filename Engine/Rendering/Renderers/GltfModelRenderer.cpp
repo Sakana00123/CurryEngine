@@ -769,6 +769,17 @@ void GltfModelRenderer::ApplyPose(const std::vector<NodePose>& poses)
 	m_asset->CumulateTransforms(m_asset->nodes);
 }
 
+std::vector<NodePose> GltfModelRenderer::GetBindPose() const
+{
+    std::vector<NodePose> pose(m_asset->nodes.size());
+    for (size_t i = 0; i < pose.size(); ++i) {
+        pose[i].translation = m_asset->nodes[i].translation;
+        pose[i].rotation = m_asset->nodes[i].rotation;
+        pose[i].scale = m_asset->nodes[i].scale;
+    }
+    return pose;
+}
+
 size_t GltfModelRenderer::GetNodeCount() const
 {
 	return m_asset->nodes.size();

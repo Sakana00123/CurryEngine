@@ -2,6 +2,7 @@
 #include "Engine/Core/Reflection/Meta.h"
 #include "Engine/Resources/AnimationClip.h"
 #include "Engine/Resources/AssetId.h"
+#include <unordered_map>
 
 struct AnimatorParameter
 {
@@ -46,7 +47,7 @@ struct AnimatorTransition
 struct AnimatorState
 {
 	std::string name;
-	int clipIndex; // アニメーションクリップのインデックス
+	CurryEngine::Resources::AssetId clipId; // アニメーションクリップのID
 	float speed = 1.0f; // 再生速度
 	bool loop = true; // ループ再生するかどうか
 	Vector2 editorPosition; // エディタ上での位置（ノードの配置用）
@@ -55,32 +56,13 @@ struct AnimatorState
 class AnimatorController : public Resource
 {
 public:
-	struct PlayingState
-	{
-		int clipIndex = -1;
-		float time = 0.0f;
-	};
 	std::string name;
-
-	std::vector<PlayingState> playingStates; // 複数のアニメーションを同時に再生する場合の状態を保持
-
-	float transitionElapsedTime = 0.0f; // 遷移の経過時間
-	float transitionDuration = 0.0f; // アニメーションの遷移時間
-
-	int currentClipIndex = 0;
-	float currentTime = 0.0f;
-	float weight = 1.0f; // アニメーションの重み（ブレンド用）
-
-	std::vector<std::string> animationNames; // アニメーションクリップの名前リスト
-	std::vector<CurryEngine::Resources::AssetId> animationClipIds; // アニメーションクリップのIDリスト
 	std::vector<AnimatorParameter> parameters; // アニメーションパラメータのリスト
 	std::vector<AnimatorState> states; // アニメーションステートのリスト
 	std::vector<AnimatorTransition> transitions; // アニメーション遷移のリスト
 	int defaultStateIndex = 0; // デフォルトのアニメーションステートのインデックス
 
-	std::vector<std::shared_ptr<AnimationClip>> animationClips; // アニメーションクリップのリスト
-	std::vector<NodePose> currentPose; // 現在のノードポーズのリスト
-
+	std::unordered_map< CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> animationClips; // アニメーションクリップのリスト
 
 	bool LoadFromFile(const std::string& path) override;
 
@@ -95,7 +77,7 @@ struct RuntimeAnimatorController
 {
 	struct PlayingState
 	{
-		int clipIndex = -1;
+		CurryEngine::Resources::AssetId clipId; // アニメーションクリップのID
 		float time = 0.0f;
 		int stateIndex = -1; // AnimatorController::statesのインデックス
 	};
@@ -106,7 +88,7 @@ struct RuntimeAnimatorController
 	float transitionDuration = 0.0f;
 	std::vector<NodePose> currentPose;
 
-	void Initialize(const AnimatorController& controller);
+	void Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose = {});
 
 	// アニメーションの再生を開始する
 	void Play(const AnimatorController& controller, int stateIndex, float blendDuration = 0.0f);

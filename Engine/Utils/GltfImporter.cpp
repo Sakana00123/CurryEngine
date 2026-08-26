@@ -105,8 +105,13 @@ namespace CurryEngine
             auto& skins = asset.skins;
             auto& animations = asset.animations;
             // キャッシュファイルがあればそちらを読み込む
-            std::filesystem::path cerealFilePath(filePath);
-            cerealFilePath.replace_extension(staticBatching ? "batchCereal" : "cereal");
+			auto* meta = CurryEngine::Resources::AssetDatabase::FindByPath(filePath);
+            if (!meta) {
+				meta = CurryEngine::Resources::AssetDatabase::Import(filePath);
+            }
+
+            std::filesystem::path cerealFilePath(EnginePaths::ArtifactDir / std::filesystem::path(meta->id.id));
+            //cerealFilePath.replace_extension(staticBatching ? "batchCereal" : "cereal");
             if (std::filesystem::exists(cerealFilePath.c_str())) {
                 std::ifstream ifs(cerealFilePath.c_str(), std::ios::binary);
                 cereal::BinaryInputArchive deserialization(ifs);
@@ -119,7 +124,7 @@ namespace CurryEngine
                 deserialization(cereal::make_nvp("batchMeshes", batchMeshes));
                 deserialization(cereal::make_nvp("meshes", meshes));
                 deserialization(cereal::make_nvp("textures", textures), cereal::make_nvp("images", images));
-                deserialization(cereal::make_nvp("skins", skins), cereal::make_nvp("animations", animations));
+                deserialization(cereal::make_nvp("skins", skins)/*, cereal::make_nvp("animations", animations)*/);
             }
             else
             {
@@ -164,7 +169,7 @@ namespace CurryEngine
                     FetchAnimations(*gltfModel, asset);
                 }
 
-                /*std::ofstream ofs(cerealFilePath.c_str(), std::ios::binary);
+                std::ofstream ofs(cerealFilePath.c_str(), std::ios::binary);
                 cereal::BinaryOutputArchive serialization(ofs);
                 serialization(
                     cereal::make_nvp("scenes", scenes),
@@ -175,12 +180,12 @@ namespace CurryEngine
                 serialization(cereal::make_nvp("batchMeshes", batchMeshes));
                 serialization(cereal::make_nvp("meshes", meshes));
                 serialization(cereal::make_nvp("textures", textures), cereal::make_nvp("images", images));
-                serialization(cereal::make_nvp("skins", skins), cereal::make_nvp("animations", animations));*/
+                serialization(cereal::make_nvp("skins", skins)/*, cereal::make_nvp("animations", animations)*/);
 
 				// .animファイルを出力する
                 for (size_t i = 0; i < animations.size(); ++i) {
 					// アニメーションデータを保存するファイルパスを生成
-					std::filesystem::path animFilePath = cerealFilePath;
+					std::filesystem::path animFilePath = filePath;
 					animFilePath.replace_extension(".anim");
 					animFilePath.replace_filename(animFilePath.stem().string() + "_" + std::to_string(i) + ".anim");
 

@@ -13,6 +13,7 @@
 
 bool AnimatorController::LoadFromFile(const std::string& path)
 {
+	_path = path;
 	// ファイルからアニメーションクリップのIDリストを読み込む
 	// ここでは仮にJSON形式で保存されていると仮定する
 	std::ifstream file(path);
@@ -23,23 +24,77 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 	}
 	nlohmann::json jsonData;
 	file >> jsonData;
+	if (jsonData.contains("name"))
+	{
+		name = jsonData["name"].get<std::string>();
+	}
 	if (jsonData.contains("animationClipIds"))
 	{
 		for (const auto& clipIdStr : jsonData["animationClipIds"])
 		{
 			CurryEngine::Resources::AssetId clipId(clipIdStr.get<std::string>());
-			animationClipIds.push_back(clipId);
 			// アセットデータベースからアニメーションクリップをロード
 			auto clip = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(clipId);
-			if (clip)
-			{
-				animationClips.push_back(clip);
-			}
-			else
+			if (!clip)
 			{
 				LOG_ERROR(u8"[AnimatorController] アニメーションクリップの読み込みに失敗しました: " + std::u8string(clipId.ToString().begin(), clipId.ToString().end()));
 			}
+			animationClips[clipId] = clip;
 		}
+	}
+	if (jsonData.contains("parameters"))
+	{
+		for (const auto& paramJson : jsonData["parameters"])
+		{
+			AnimatorParameter param;
+			param.name = paramJson["name"].get<std::string>();
+			param.type = static_cast<AnimatorParameter::Type>(paramJson["type"].get<int>());
+			param.defaultValue = paramJson["defaultValue"].get<float>();
+			parameters.push_back(param);
+		}
+	}
+	if (jsonData.contains("states"))
+	{
+		for (const auto& stateJson : jsonData["states"])
+		{
+			AnimatorState state;
+			state.name = stateJson["name"].get<std::string>();
+			state.clipId = stateJson["clipId"].get<CurryEngine::Resources::AssetId>();
+			state.speed = stateJson["speed"].get<float>();
+			state.loop = stateJson["loop"].get<bool>();
+			auto posArray = stateJson["editorPosition"];
+			if (posArray.is_array() && posArray.size() == 2)
+			{
+				state.editorPosition.x = posArray[0].get<float>();
+				state.editorPosition.y = posArray[1].get<float>();
+			}
+			states.push_back(state);
+		}
+	}
+	if (jsonData.contains("transitions"))
+	{
+		for (const auto& transitionJson : jsonData["transitions"])
+		{
+			AnimatorTransition transition;
+			transition.fromStateIndex = transitionJson["fromStateIndex"].get<int>();
+			transition.toStateIndex = transitionJson["toStateIndex"].get<int>();
+			transition.blendDuration = transitionJson["blendDuration"].get<float>();
+			transition.hasExitTime = transitionJson["hasExitTime"].get<bool>();
+			transition.exitTime = transitionJson["exitTime"].get<float>();
+			for (const auto& conditionJson : transitionJson["conditions"])
+			{
+				AnimatorCondition condition;
+				condition.parameterName = conditionJson["parameterName"].get<std::string>();
+				condition.comparison = static_cast<AnimatorCondition::Comparison>(conditionJson["comparison"].get<int>());
+				condition.value = conditionJson["value"].get<float>();
+				transition.conditions.push_back(condition);
+			}
+			transitions.push_back(transition);
+		}
+	}
+	if (jsonData.contains("defaultStateIndex"))
+	{
+		defaultStateIndex = jsonData["defaultStateIndex"].get<int>();
 	}
 	return true;
 }
@@ -48,11 +103,54 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 {
 	// アニメーションクリップのIDリストをJSON形式で保存する
 	nlohmann::json jsonData;
+	jsonData["name"] = name;
 	jsonData["animationClipIds"] = nlohmann::json::array();
-	for (const auto& clipId : animationClipIds)
+	for (const auto& [clipId, clip] : animationClips)
 	{
 		jsonData["animationClipIds"].push_back(clipId.ToString());
 	}
+	jsonData["parameters"] = nlohmann::json::array();
+	for (const auto& param : parameters)
+	{
+		nlohmann::json paramJson;
+		paramJson["name"] = param.name;
+		paramJson["type"] = static_cast<int>(param.type);
+		paramJson["defaultValue"] = param.defaultValue;
+		jsonData["parameters"].push_back(paramJson);
+	}
+	jsonData["states"] = nlohmann::json::array();
+	for (const auto& state : states)
+	{
+		nlohmann::json stateJson;
+		stateJson["name"] = state.name;
+		stateJson["clipId"] = state.clipId;
+		stateJson["speed"] = state.speed;
+		stateJson["loop"] = state.loop;
+		stateJson["editorPosition"] = { state.editorPosition.x, state.editorPosition.y };
+		jsonData["states"].push_back(stateJson);
+	}
+	jsonData["transitions"] = nlohmann::json::array();
+	for (const auto& transition : transitions)
+	{
+		nlohmann::json transitionJson;
+		transitionJson["fromStateIndex"] = transition.fromStateIndex;
+		transitionJson["toStateIndex"] = transition.toStateIndex;
+		transitionJson["blendDuration"] = transition.blendDuration;
+		transitionJson["hasExitTime"] = transition.hasExitTime;
+		transitionJson["exitTime"] = transition.exitTime;
+		transitionJson["conditions"] = nlohmann::json::array();
+		for (const auto& condition : transition.conditions)
+		{
+			nlohmann::json conditionJson;
+			conditionJson["parameterName"] = condition.parameterName;
+			conditionJson["comparison"] = static_cast<int>(condition.comparison);
+			conditionJson["value"] = condition.value;
+			transitionJson["conditions"].push_back(conditionJson);
+		}
+		jsonData["transitions"].push_back(transitionJson);
+	}
+	jsonData["defaultStateIndex"] = defaultStateIndex;
+
 	std::ofstream file(path);
 	if (!file.is_open())
 	{
@@ -109,8 +207,11 @@ namespace
 	}
 }
 
-void RuntimeAnimatorController::Initialize(const AnimatorController& controller)
+void RuntimeAnimatorController::Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose)
 {
+	// 初期ポーズの設定
+	currentPose = std::move(initialPose);
+
 	// パラメータの初期化
 	for (const auto& param : controller.parameters)
 	{
@@ -134,20 +235,20 @@ void RuntimeAnimatorController::Play(const AnimatorController& controller, int s
 		return;
 	}
 	const auto& state = controller.states[stateIndex];
-	if (state.clipIndex < 0 || state.clipIndex >= controller.animationClips.size())
+	if (!state.clipId.IsValid())
 	{
-		std::string errorMsg = "[RuntimeAnimatorController] 無効なクリップインデックス: " + std::to_string(state.clipIndex);
+		std::string errorMsg = "[RuntimeAnimatorController] 無効なクリップインデックス: " + state.clipId.id;
 		std::u8string u8ErrorMsg(errorMsg.begin(), errorMsg.end());
 		LOG_ERROR(u8ErrorMsg);
 		return;
 	}
 	if (blendDuration <= 0.0f || playing.empty())
 	{
-		playing = { {state.clipIndex, 0.0f} };
+		playing = { {state.clipId, 0.0f} };
 	}
 	else
 	{
-		playing.push_back({ state.clipIndex, 0.0f, stateIndex });
+		playing.push_back({ state.clipId, 0.0f, stateIndex });
 		transitionElapsed = 0.0f;
 		transitionDuration = blendDuration;
 	}
@@ -192,9 +293,9 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	auto& state = playing[INDEX_FRONT];
 	state.time += deltaTime * currentState.speed; // 再生速度を考慮して時間を進める
 
-	if (state.clipIndex < 0 || state.clipIndex >= controller.animationClips.size()) return;
+	if (!state.clipId.IsValid()) return;
 
-	auto& clip = controller.animationClips[state.clipIndex];
+	auto& clip = controller.animationClips.at(state.clipId);
 	if (!clip) return;
 	
 	float normalizedTime = currentState.loop ? fmod(state.time / clip->duration, 1.0f) : (std::min)(state.time / clip->duration, 1.0f);
@@ -231,9 +332,9 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		// 遷移の進行度を計算
 		float t = std::clamp(transitionElapsed / transitionDuration, 0.0f, 1.0f);
 		// 遷移中のアニメーションをサンプリングして現在のポーズを更新
-		if (nextPlayingState.clipIndex >= 0 && nextPlayingState.clipIndex < controller.animationClips.size())
+		if (nextPlayingState.clipId.IsValid())
 		{
-			auto& nextClip = controller.animationClips[nextPlayingState.clipIndex];
+			auto& nextClip = controller.animationClips.at(nextPlayingState.clipId);
 			if (nextClip)
 			{
 				float nextNormalizedTime = nextState.loop ? fmod(nextPlayingState.time / nextClip->duration, 1.0f) : (std::min)(nextPlayingState.time / nextClip->duration, 1.0f);
@@ -261,7 +362,7 @@ void RuntimeAnimatorController::BeginTransition(const AnimatorTransition& transi
 	// 遷移の開始処理
 	if (transition.toStateIndex >= 0 && transition.toStateIndex < controller.states.size())
 	{
-		playing.push_back({ controller.states[transition.toStateIndex].clipIndex, 0.0f, transition.toStateIndex });
+		playing.push_back({ controller.states[transition.toStateIndex].clipId, 0.0f, transition.toStateIndex });
 		transitionElapsed = 0.0f;
 		transitionDuration = transition.blendDuration;
 	}

@@ -13,15 +13,15 @@ struct FieldInfo
 	std::string type;
 	std::string name;
 	std::vector<AttributeInfo> attributes;
-	std::string customGetter; // Getter‘®«‚Åw’è‚³‚ê‚½ƒQƒbƒ^[ƒƒ\ƒbƒh‚Ì–¼‘Oi‚È‚¯‚ê‚Î‹ó•¶š—ñj
-	std::string customSetter; // Setter‘®«‚Åw’è‚³‚ê‚½ƒZƒbƒ^[ƒƒ\ƒbƒh‚Ì–¼‘Oi‚È‚¯‚ê‚Î‹ó•¶š—ñj
+	std::string customGetter; // Getterå±æ€§ã§æŒ‡å®šã•ã‚ŒãŸã‚²ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ã®åå‰ï¼ˆãªã‘ã‚Œã°ç©ºæ–‡å­—åˆ—ï¼‰
+	std::string customSetter; // Setterå±æ€§ã§æŒ‡å®šã•ã‚ŒãŸã‚»ãƒƒã‚¿ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰ã®åå‰ï¼ˆãªã‘ã‚Œã°ç©ºæ–‡å­—åˆ—ï¼‰
 };
 
 struct ParameterInfo
 {
 	std::string type;
 	std::string name;
-	std::string defaultValue; // ƒfƒtƒHƒ‹ƒgˆø”‚Ì’li‚È‚¯‚ê‚Î‹ó•¶š—ñj
+	std::string defaultValue; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå¼•æ•°ã®å€¤ï¼ˆãªã‘ã‚Œã°ç©ºæ–‡å­—åˆ—ï¼‰
 };
 
 struct MethodInfo
@@ -30,8 +30,8 @@ struct MethodInfo
 	std::string name;
 	std::vector<ParameterInfo> parameters;
 	std::vector<AttributeInfo> attributes;
-	bool isConst = false; // const ƒƒ\ƒbƒh‚©‚Ç‚¤‚©
-	bool isPropertyAccessor = false; // ƒvƒƒpƒeƒB‚ÌƒAƒNƒZƒTƒŠ‚©‚Ç‚¤‚©igetter/setterj
+	bool isConst = false; // const ãƒ¡ã‚½ãƒƒãƒ‰ã‹ã©ã†ã‹
+	bool isPropertyAccessor = false; // ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã‚¢ã‚¯ã‚»ã‚µãƒªã‹ã©ã†ã‹ï¼ˆgetter/setterï¼‰
 };
 
 struct ClassInfo
@@ -47,14 +47,14 @@ struct EnumValueInfo
 {
 	std::string name;
 	int         value = 0;
-	bool        hasExplicitValue = false; // ’l‚ª–¾¦‚³‚ê‚Ä‚¢‚é‚©
+	bool        hasExplicitValue = false; // å€¤ãŒæ˜ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹
 };
 
 struct EnumInfo
 {
 	std::string name;
-	std::string underlyingType = "int"; // enum class : uint ‚È‚Ç
-	bool        isClass = false; // enum class ‚©‚Ç‚¤‚©
+	std::string underlyingType = "int"; // enum class : uint ãªã©
+	bool        isClass = false; // enum class ã‹ã©ã†ã‹
 	std::vector<EnumValueInfo> values;
 };
 

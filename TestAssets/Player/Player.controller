@@ -1,3 +1,21 @@
 {
-    "animationClipIds": []
+    "animationClipIds": [
+        "1ff05b65e994c72e36f11a39a9643dca"
+    ],
+    "defaultStateIndex": 0,
+    "name": "",
+    "parameters": [],
+    "states": [
+        {
+            "clipId": "1ff05b65e994c72e36f11a39a9643dca",
+            "editorPosition": [
+                0.0,
+                0.0
+            ],
+            "loop": true,
+            "name": "Idle",
+            "speed": 1.0
+        }
+    ],
+    "transitions": []
 }

@@ -108,6 +108,13 @@ namespace CurryEngine
 			constexpr Setter(const char* fn) : functionName(fn) {}
 		};
 
+		// 値変更時に呼び出すメソッドを指定する属性。プロパティの値が変更されたときに、指定したメソッドを呼び出すために使用します。
+		struct OnPropertyChanged
+		{
+			const char* functionName; // 値変更時に呼び出すメソッドの名前 (例: "OnHealthChanged")
+			constexpr OnPropertyChanged(const char* fn) : functionName(fn) {}
+		};
+
 		// カスタムドロワーを指定する属性。エディタでプロパティの描画に使用するカスタムドロワーを指定します。
 		struct CustomDrawer
 		{

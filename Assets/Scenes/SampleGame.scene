@@ -424,6 +424,7 @@
                     "type": "GltfModelRenderer"
                 },
                 {
+                    "controllerAssetId": "89edb9e261040a218a81045d4f37d4d9",
                     "enabledSelf": true,
                     "id": "6586322265198753071",
                     "name": "Animator",

@@ -76,6 +76,19 @@ namespace CurryEngine
 			for (Object* target : context.targets)
 			{
 				prop.setter(target, value);
+
+				// TODO: 毎回探すのは効率が悪いので、キャッシュするようにする
+				if (auto* attr = prop.GetAttribute("OnPropertyChanged"))
+				{
+					if (!attr->args.empty())
+					{
+						std::string methodName = attr->args[0];
+						if (auto* method = target->GetClassMeta()->FindMethod(methodName))
+						{
+							method->InvokeVoid(target);
+						}
+					}
+				}
 			}
 		}
 

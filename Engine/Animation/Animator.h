@@ -9,7 +9,7 @@ public:
 	Animator() = default;
 	virtual ~Animator() = default;
 
-	void Initialize() override;
+	void Awake() override;
 
 	void Update(float deltaTime) override;
 
@@ -18,13 +18,22 @@ public:
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
+	C_FUNCTION()
+	void ResetController();
+
+	// シリアライズ
+	json Serialize() const override;
+
+	// デシリアライズ
+	void Deserialize(const json& jsonData) override;
+
 private:
 	
 	std::shared_ptr<AnimatorController> controller;
 
 	RuntimeAnimatorController runtimeController;
 
-	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("AssetId"), CurryEngine::PropertyAttributes::AssetTypeExtension(".controller"))
+	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("AssetId"), CurryEngine::PropertyAttributes::AssetTypeExtension(".controller"), CurryEngine::PropertyAttributes::OnPropertyChanged("ResetController"))
 	CurryEngine::Resources::AssetId controllerAssetId; // AnimatorController の AssetId
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("GltfModelRenderer"))

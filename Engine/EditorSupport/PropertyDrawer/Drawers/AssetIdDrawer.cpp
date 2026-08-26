@@ -64,6 +64,17 @@ namespace CurryEngine
 				ImGui::EndPopup();
 			}
 		}
+		ImGui::SameLine();
+		// クリアボタン
+		if (ImGui::Button("X"))
+		{
+			value = Resources::AssetId();
+			PropertyDrawHelper::CommitEdit<Resources::AssetId>(prop, context, m_state, value,
+				[](const Resources::AssetId& v) { return v.id; },
+				[](const Resources::AssetId& a, const Resources::AssetId& b) { return a == b; },
+				nullptr,
+				[]() { return true; });
+		}
 
 
 

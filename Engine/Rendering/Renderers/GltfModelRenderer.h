@@ -194,6 +194,9 @@ public:
 	// アニメーションのポーズを適用
     void ApplyPose(const std::vector<NodePose>& poses);
 
+	// アニメーションのバインドポーズを取得
+    std::vector<NodePose> GetBindPose() const;
+
 	// ノードの総数を取得
     size_t GetNodeCount() const;
 
