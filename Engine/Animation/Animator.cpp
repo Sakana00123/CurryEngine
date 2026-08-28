@@ -57,17 +57,6 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
         return;
 	}
 
-	// コントローラーエディタを開くボタン
-	{
-		static bool isOpen = false;
-		static CurryEngine::Editor::AnimatorControllerEditorWindow animatorControllerEditorWindow;
-		if (ImGui::Button("Open Animator Controller Editor"))
-		{
-			isOpen = true;
-		}
-		animatorControllerEditorWindow.Draw(&isOpen, controller);
-	}
-
     if (controller)
     {
 		for (const auto& [clipId, clip] : controller->animationClips)

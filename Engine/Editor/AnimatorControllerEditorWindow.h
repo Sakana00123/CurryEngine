@@ -8,6 +8,8 @@ namespace CurryEngine::Editor
     class AnimatorControllerEditorWindow
     {
     public:
+		AnimatorControllerEditorWindow(std::shared_ptr<AnimatorController> controller = nullptr);
+
         void Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller);
 
     private:
@@ -23,6 +25,9 @@ namespace CurryEngine::Editor
         int selectedTransitionIndex = -1;
         int draggingNodeIndex = -1;
         int transitionSourceIndex = -2; // -1ならAnyState、-2は「未設定」
+
+		// transitionで、２つのノードで相互の遷移がある場合、nodeA→nodeBとnodeB→nodeAの両方の遷移を描画する際に、線が重なってしまうので、ずらすtransitionのインデックスを保持するための配列
+		std::vector<int> transitionOffsetIndices;
 
         ImVec2 rightClickStartPos = { 0.0f, 0.0f };
         ImVec2 pendingContextMenuScreenPos = { 0.0f, 0.0f };
@@ -62,8 +67,14 @@ namespace CurryEngine::Editor
         void DrawParametersTab(std::shared_ptr<AnimatorController>& controller);
 
         // --- ヘルパー ---
+		// 2つのノードの中心座標から、線分がノードの矩形に接する点を計算する
         ImVec2 GetNodeEdgePoint(const ImVec2& fromCenter, const ImVec2& toCenter, const ImVec2& nodeSize) const;
+		// 2つのノードの中心座標からオフセットされた2点の線分が接続先のノードの矩形に接する点を計算する
+		ImVec2 GetOffsetNodeEdgePoint(const ImVec2& fromCenter, const ImVec2& toCenter, const ImVec2& nodeSize, float offset) const;
+
+		// 点pから線分abまでの距離を計算する
         float DistancePointToSegment(const ImVec2& p, const ImVec2& a, const ImVec2& b) const;
+		void UpdateTransitionOffsetIndices(std::shared_ptr<AnimatorController>& controller);
     };
 }
 #endif // USE_IMGUI

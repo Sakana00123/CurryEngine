@@ -26,8 +26,8 @@
         {
             "clipId": "1ff05b65e994c72e36f11a39a9643dca",
             "editorPosition": [
-                0.0,
-                0.0
+                -1.111109733581543,
+                46.666664123535156
             ],
             "loop": true,
             "name": "Idle",
@@ -36,8 +36,8 @@
         {
             "clipId": "67459e3f68dbb785e284e6d0760aa113",
             "editorPosition": [
-                0.0,
-                0.0
+                47.77777862548828,
+                235.55560302734375
             ],
             "loop": false,
             "name": "Attack",
@@ -46,8 +46,8 @@
         {
             "clipId": "7d6d2aba72073aa6962c208b193d3e51",
             "editorPosition": [
-                0.0,
-                0.0
+                71.111083984375,
+                -84.4444808959961
             ],
             "loop": true,
             "name": "Walk",

@@ -8,6 +8,15 @@
 
 namespace CurryEngine::Editor
 {
+    AnimatorControllerEditorWindow::AnimatorControllerEditorWindow(std::shared_ptr<AnimatorController> controller)
+    {
+        if (controller)
+        {
+            // 初期化時にAnimatorControllerが指定されている場合、相互遷移のインデックスを更新
+            UpdateTransitionOffsetIndices(controller);
+        }
+	}
+
     ImVec2 AnimatorControllerEditorWindow::WorldToScreen(const Vector2& worldPos, const ImVec2& canvasOrigin) const
     {
         return ImVec2(
@@ -39,6 +48,60 @@ namespace CurryEngine::Editor
         return ImVec2(fromCenter.x + dir.x * t, fromCenter.y + dir.y * t);
     }
 
+    ImVec2 AnimatorControllerEditorWindow::GetOffsetNodeEdgePoint(const ImVec2& fromCenter, const ImVec2& toCenter, const ImVec2& nodeSize, float offset) const
+    {
+        ImVec2 dir(toCenter.x - fromCenter.x, toCenter.y - fromCenter.y);
+		if (dir.x == 0.0f && dir.y == 0.0f) return fromCenter + ImVec2(offset, offset);
+
+		// オフセット方向を計算するために、dirを正規化して垂直方向のベクトルを求める
+		float length = std::sqrt(dir.x * dir.x + dir.y * dir.y);
+		ImVec2 dirNormalized(dir.x / length, dir.y / length); // dirの正規化
+		ImVec2 normal(-dirNormalized.y, dirNormalized.x); // 垂直方向の単位ベクトル
+		// オフセットを加えた点を計算
+		ImVec2 offsetPoint = fromCenter + normal * offset;
+
+		float left = fromCenter.x - nodeSize.x * 0.5f;
+		float right = fromCenter.x + nodeSize.x * 0.5f;
+		float top = fromCenter.y - nodeSize.y * 0.5f;
+		float bottom = fromCenter.y + nodeSize.y * 0.5f;
+
+		float bestT = FLT_MAX;
+		ImVec2 bestPoint = fromCenter;
+
+        auto checkVerticalEdge = [&](float edgeX) {
+			if (dir.x == 0.0f) return; // 垂直線は交差しない
+            float t = (edgeX - offsetPoint.x) / dir.x;
+			if (t < 0.0f) return; // 交点が線分の範囲外
+
+			float y = offsetPoint.y + dir.y * t;
+            if (y >= top && y <= bottom) {
+				if (t < bestT) {
+                    bestT = t;
+                    bestPoint = ImVec2(edgeX, y);
+                }
+            }
+			};
+		auto checkHorizontalEdge = [&](float edgeY) {
+            if (dir.y == 0.0f) return; // 水平線は交差しない
+            float t = (edgeY - offsetPoint.y) / dir.y;
+            if (t < 0.0f) return; // 交点が線分の範囲外
+            float x = offsetPoint.x + dir.x * t;
+            if (x >= left && x <= right) {
+                if (t < bestT) {
+                    bestT = t;
+                    bestPoint = ImVec2(x, edgeY);
+                }
+            }
+			};
+
+		checkVerticalEdge(left);
+		checkVerticalEdge(right);
+		checkHorizontalEdge(top);
+		checkHorizontalEdge(bottom);
+
+		return bestPoint;
+	}
+
     // 遷移ラインのクリック判定用(ImGuiにはライン用InvisibleButtonが無いため自前で距離計算)
     float AnimatorControllerEditorWindow::DistancePointToSegment(const ImVec2& p, const ImVec2& a, const ImVec2& b) const
     {
@@ -49,6 +112,27 @@ namespace CurryEngine::Editor
         float dx = p.x - proj.x, dy = p.y - proj.y;
         return std::sqrt(dx * dx + dy * dy);
     }
+
+	// 遷移ラインをずらすために、相互遷移があるtransitionのインデックスを計算して保持する
+    void AnimatorControllerEditorWindow::UpdateTransitionOffsetIndices(std::shared_ptr<AnimatorController>& controller)
+    {
+		// 相互遷移のペアをキーとして、出現回数をカウントするマップを作成
+		using TransitionPair = std::pair<int, int>; // <stateIndexA, stateIndexB> (小さい方のインデックスを先にする)
+        std::map<TransitionPair, int> transitionCountMap;
+        for (size_t i = 0; i < controller->transitions.size(); ++i)
+        {
+            int sourceIndex = controller->transitions[i].fromStateIndex;
+			int targetIndex = controller->transitions[i].toStateIndex;
+            if (sourceIndex < 0 || targetIndex < 0) continue;
+			TransitionPair pair = TransitionPair((std::min)(sourceIndex, targetIndex), (std::max)(sourceIndex, targetIndex));
+			transitionCountMap[pair]++;
+            if (transitionCountMap[pair] > 1)
+            {
+				// 相互遷移がある場合、ずらす必要があるのでインデックスを保持
+                transitionOffsetIndices.push_back(i);
+            }
+        }
+	}
 
     void AnimatorControllerEditorWindow::DrawGrid(ImDrawList* drawList, const ImVec2& canvasOrigin, const ImVec2& canvasSize) const
     {
@@ -210,6 +294,7 @@ namespace CurryEngine::Editor
             if (transitionSourceIndex != stateIndex) // 自己遷移は許可しない設計にするならここで弾く
             {
                 controller->transitions.push_back(AnimatorTransition{ transitionSourceIndex, stateIndex, 0.25f, {}, false, 0.0f });
+				UpdateTransitionOffsetIndices(controller); // 相互遷移のインデックスを更新
             }
             mode = InteractionMode::None;
             transitionSourceIndex = -2;
@@ -267,10 +352,33 @@ namespace CurryEngine::Editor
             ImVec2 fromCenter = (t.fromStateIndex == -1)
                 ? WorldToScreen(anyStatePosition, canvasOrigin)
                 : WorldToScreen(controller->states[t.fromStateIndex].editorPosition, canvasOrigin);
-            ImVec2 toCenter = WorldToScreen(controller->states[t.toStateIndex].editorPosition, canvasOrigin);
+            ImVec2 toCenter = WorldToScreen((controller->states[t.toStateIndex].editorPosition), canvasOrigin);
 
-            ImVec2 from = GetNodeEdgePoint(fromCenter, toCenter, nodeSize);
-            ImVec2 to = GetNodeEdgePoint(toCenter, fromCenter, nodeSize);
+            ImVec2 from;
+            ImVec2 to;
+            
+            int index = -1;
+            for (size_t j = 0; j < transitionOffsetIndices.size(); ++j)
+            {
+                if (transitionOffsetIndices[j] == i)
+                {
+                    index = transitionOffsetIndices[j];
+                    break;
+                }
+            }
+            // 相互遷移がある場合、遷移ラインをずらす
+            if (index != -1)
+            {
+                // 遷移ラインの方向に垂直な方向にオフセットする
+                float offsetAmount = 10.0f * zoom;
+                from = GetOffsetNodeEdgePoint(fromCenter, toCenter, nodeSize, offsetAmount);
+                to = GetOffsetNodeEdgePoint(toCenter, fromCenter, nodeSize, -offsetAmount);
+            }
+			else // 相互遷移がない場合は通常通りノードの縁にクリップ
+            {
+                from = GetNodeEdgePoint(fromCenter, toCenter, nodeSize);
+				to = GetNodeEdgePoint(toCenter, fromCenter, nodeSize);
+			}
 
             bool isSelected = (selectedTransitionIndex == i);
             ImU32 color = isSelected ? IM_COL32(255, 180, 60, 255) : IM_COL32(180, 180, 180, 255);
@@ -307,11 +415,32 @@ namespace CurryEngine::Editor
         ImVec2 fromCenter = (transitionSourceIndex == -1)
             ? WorldToScreen(anyStatePosition, canvasOrigin)
             : WorldToScreen(controller->states[transitionSourceIndex].editorPosition, canvasOrigin);
+		ImVec2 toCenter = ImGui::GetIO().MousePos;
+		ImU32 color = IM_COL32(255, 220, 100, 200);
 
-        drawList->AddLine(fromCenter, ImGui::GetIO().MousePos, IM_COL32(255, 220, 100, 200), 2.0f);
+        drawList->AddLine(fromCenter, toCenter, color, 2.0f);
 
+        // 矢印head
+        ImVec2 dir(toCenter.x - fromCenter.x, toCenter.y - fromCenter.y);
+        float len = std::sqrt(dir.x * dir.x + dir.y * dir.y);
+        if (len > 0.0f)
+        {
+            dir.x /= len; dir.y /= len;
+            ImVec2 perp(-dir.y, dir.x);
+            float arrowSize = 8.0f * zoom;
+            ImVec2 tip = toCenter;
+            ImVec2 left(tip.x - dir.x * arrowSize + perp.x * arrowSize * 0.5f, tip.y - dir.y * arrowSize + perp.y * arrowSize * 0.5f);
+            ImVec2 right(tip.x - dir.x * arrowSize - perp.x * arrowSize * 0.5f, tip.y - dir.y * arrowSize - perp.y * arrowSize * 0.5f);
+            drawList->AddTriangleFilled(tip, left, right, color);
+        }
+
+		bool cancelTransition = false;
         // Escで作成キャンセル
-        if (ImGui::IsKeyPressed(ImGuiKey_Escape))
+		cancelTransition |= ImGui::IsKeyPressed(ImGuiKey_Escape);
+		// 右クリックで作成キャンセル
+		cancelTransition |= ImGui::IsMouseClicked(ImGuiMouseButton_Right);
+
+        if (cancelTransition)
         {
             mode = InteractionMode::None;
             transitionSourceIndex = -2;
@@ -406,16 +535,19 @@ namespace CurryEngine::Editor
                 }),
             controller->transitions.end());
 
+		// 削除したStateより後ろのStateのインデックスを1つずつ減らす
         for (auto& t : controller->transitions)
         {
             if (t.fromStateIndex > stateIndex) t.fromStateIndex--;
             if (t.toStateIndex > stateIndex) t.toStateIndex--;
         }
-
         controller->states.erase(controller->states.begin() + stateIndex);
 
         if (controller->defaultStateIndex >= (int)controller->states.size())
             controller->defaultStateIndex = 0;
+
+        // 相互遷移のインデックスを更新
+        UpdateTransitionOffsetIndices(controller);
 
         selectedStateIndex = -1;
     }
@@ -424,6 +556,9 @@ namespace CurryEngine::Editor
     {
         if (transitionIndex < 0 || transitionIndex >= (int)controller->transitions.size()) return;
         controller->transitions.erase(controller->transitions.begin() + transitionIndex);
+
+        // 相互遷移のインデックスを更新
+        UpdateTransitionOffsetIndices(controller);
         selectedTransitionIndex = -1;
     }
 
