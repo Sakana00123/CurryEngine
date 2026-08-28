@@ -2,6 +2,8 @@
 #include "AnimatorController.h"
 #include "Engine/Resources/AssetDatabase.h"
 #include <fstream>
+#include <Engine\Core\ObjectManager.h>
+#include <any>
 
 // アニメーションの遷移中に使用するインデックス
 #define INDEX_FRONT 0
@@ -50,6 +52,14 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			param.name = paramJson["name"].get<std::string>();
 			param.type = static_cast<AnimatorParameter::Type>(paramJson["type"].get<int>());
 			param.defaultValue = paramJson["defaultValue"].get<float>();
+			// バインディング情報がある場合は読み込む
+			if (paramJson.contains("binding"))
+			{
+				AnimatorParameterBinding binding;
+				binding.sourceComponentId = ObjectId::FromString(paramJson["binding"]["sourceComponentId"].get<std::string>());
+				binding.propertyName = paramJson["binding"]["propertyName"].get<std::string>();
+				param.binding = binding;
+			}
 			parameters.push_back(param);
 		}
 	}
@@ -84,7 +94,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			for (const auto& conditionJson : transitionJson["conditions"])
 			{
 				AnimatorCondition condition;
-				condition.parameterName = conditionJson["parameterName"].get<std::string>();
+				condition.parameterIndex = conditionJson["parameterIndex"].get<int>();
 				condition.comparison = static_cast<AnimatorCondition::Comparison>(conditionJson["comparison"].get<int>());
 				condition.value = conditionJson["value"].get<float>();
 				transition.conditions.push_back(condition);
@@ -116,6 +126,14 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 		paramJson["name"] = param.name;
 		paramJson["type"] = static_cast<int>(param.type);
 		paramJson["defaultValue"] = param.defaultValue;
+		// バインディング情報がある場合は保存する
+		if (param.binding.has_value())
+		{
+			nlohmann::json bindingJson;
+			bindingJson["sourceComponentId"] = param.binding->sourceComponentId.ToString();
+			bindingJson["propertyName"] = param.binding->propertyName;
+			paramJson["binding"] = bindingJson;
+		}
 		jsonData["parameters"].push_back(paramJson);
 	}
 	jsonData["states"] = nlohmann::json::array();
@@ -142,7 +160,7 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 		for (const auto& condition : transition.conditions)
 		{
 			nlohmann::json conditionJson;
-			conditionJson["parameterName"] = condition.parameterName;
+			conditionJson["parameterIndex"] = condition.parameterIndex;
 			conditionJson["comparison"] = static_cast<int>(condition.comparison);
 			conditionJson["value"] = condition.value;
 			transitionJson["conditions"].push_back(conditionJson);
@@ -171,40 +189,6 @@ AnimatorParameter::Type AnimatorController::GetParameterType(const std::string& 
 		}
 	}
 	return AnimatorParameter::Type::Float; // デフォルトでFloatを返す（存在しない場合の扱い）
-}
-
-namespace
-{
-	bool AllConditionsMet(const std::vector<AnimatorCondition>& conditions, const std::unordered_map<std::string, float>& parameterValues)
-	{
-		for (const auto& condition : conditions)
-		{
-			auto it = parameterValues.find(condition.parameterName);
-			if (it == parameterValues.end())
-			{
-				return false; // パラメータが見つからない場合は条件を満たさない
-			}
-			float paramValue = it->second;
-			switch (condition.comparison)
-			{
-			case AnimatorCondition::Comparison::Equal:
-				if (paramValue != condition.value) return false;
-				break;
-			case AnimatorCondition::Comparison::NotEqual:
-				if (paramValue == condition.value) return false;
-				break;
-			case AnimatorCondition::Comparison::Greater:
-				if (paramValue <= condition.value) return false;
-				break;
-			case AnimatorCondition::Comparison::Less:
-				if (paramValue >= condition.value) return false;
-				break;
-			default:
-				return false; // 未知の比較タイプ
-			}
-		}
-		return true; // すべての条件を満たす
-	}
 }
 
 void RuntimeAnimatorController::Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose)
@@ -282,12 +266,111 @@ const std::vector<NodePose>& RuntimeAnimatorController::GetPose() const
 	return currentPose;
 }
 
+bool RuntimeAnimatorController::AllConditionsMet(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions) const
+{
+	for (const auto& condition : conditions)
+	{
+		auto& parameter = controller.parameters[condition.parameterIndex];
+
+		float paramValue = GetParameterValue(controller, condition.parameterIndex);
+		switch (condition.comparison)
+		{
+		case AnimatorCondition::Comparison::Equal:
+			if (paramValue != condition.value) return false;
+			break;
+		case AnimatorCondition::Comparison::NotEqual:
+			if (paramValue == condition.value) return false;
+			break;
+		case AnimatorCondition::Comparison::Greater:
+			if (paramValue <= condition.value) return false;
+			break;
+		case AnimatorCondition::Comparison::Less:
+			if (paramValue >= condition.value) return false;
+			break;
+		default:
+			return false; // 未知の比較タイプ
+		}
+	}
+	return true; // すべての条件を満たす
+}
+
+float RuntimeAnimatorController::GetParameterValue(const AnimatorController& controller, int parameterIndex) const
+{
+	const auto& param = controller.parameters[parameterIndex];
+	auto it = parameterValues.find(param.name);
+	return (it != parameterValues.end()) ? it->second : param.defaultValue; // 初期化前はdefaultValueにフォールバック
+}
+
 void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController& controller)
 {
 	// アニメーションの更新処理
 	if (playing.empty()) return;
 	if (currentStateIndex < 0 || currentStateIndex >= controller.states.size()) return;
 
+	// bindingsの更新
+	for (const auto& param : controller.parameters)
+	{
+		if (parameterValues.find(param.name) == parameterValues.end())
+		{
+			parameterValues[param.name] = param.defaultValue;
+		}
+
+		// バインディングが設定されていない場合はスキップ
+		if (!param.binding.has_value())
+		{
+			continue;
+		}
+
+		// バインディングが設定されている場合、外部の変数を参照し、値を反映する
+		auto& binding = param.binding.value();
+		auto component = ObjectManager::FindComponent(binding.sourceComponentId);
+		if (!component)
+		{
+			LOG_WARNING("[RuntimeAnimatorController] バインディング先のコンポーネントが見つかりません: " + binding.sourceComponentId.ToString());
+			continue;
+		}
+		// リフレクションを使ってプロパティの値を取得する
+		auto* meta = component->GetClassMeta(); // クラスメタデータを取得
+		if (!meta)
+		{
+			LOG_WARNING("[RuntimeAnimatorController] バインディング先のコンポーネントのクラスメタデータが見つかりません: " + binding.sourceComponentId.ToString());
+			continue;
+		}
+		auto* prop = meta->FindProperty(binding.propertyName); // プロパティ情報を取得
+		if (!prop)
+		{
+			LOG_WARNING("[RuntimeAnimatorController] バインディング先のプロパティが見つかりません: " + binding.propertyName);
+			continue;
+		}
+		switch (param.type)
+		{
+			case AnimatorParameter::Type::Float:
+			{
+				// float型のプロパティを取得
+				float value = std::any_cast<float>(prop->getter(component.get()));
+				parameterValues[param.name] = value;
+				break;
+			}
+			case AnimatorParameter::Type::Int:
+			{
+				// int型のプロパティを取得
+				int value = std::any_cast<int>(prop->getter(component.get()));
+				parameterValues[param.name] = static_cast<float>(value);
+				break;
+			}
+			case AnimatorParameter::Type::Bool:
+			{
+				// bool型のプロパティを取得
+				bool value = std::any_cast<bool>(prop->getter(component.get()));
+				parameterValues[param.name] = value ? 1.0 : 0.0f;
+				break;
+			}
+		default:
+			break;
+		}
+	}
+
+	// 現在のステートを取得
 	auto& currentState = controller.states[currentStateIndex];
 
 	auto& state = playing[INDEX_FRONT];
@@ -299,6 +382,10 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	if (!clip) return;
 	
 	float normalizedTime = currentState.loop ? fmod(state.time / clip->duration, 1.0f) : (std::min)(state.time / clip->duration, 1.0f);
+	static int count = 0;
+	if (count++ % 60 == 0) {
+		LOG_INFO("[RuntimeAnimatorController] Update: currentStateIndex=" + std::to_string(currentStateIndex) + ", normalizedTime=" + std::to_string(normalizedTime));
+	}
 
 	// アニメーションをサンプリングして現在のポーズを更新(weightは1.0fで固定)
 	clip->Sample(normalizedTime * clip->duration, currentPose, 1.0f);
@@ -310,7 +397,10 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		{
 			if (transition.fromStateIndex != -1 && transition.fromStateIndex != currentStateIndex) continue; // 遷移元が現在のステートでない場合はスキップ
 			if (transition.hasExitTime && normalizedTime < transition.exitTime) continue; // ExitTimeが設定されていて、まだExitTimeに達していない場合はスキップ
-			if (!AllConditionsMet(transition.conditions, parameterValues)) continue; // 条件を満たしていない場合はスキップ
+			if (transition.conditions.size() > 0)
+			{
+				if (!AllConditionsMet(controller, transition.conditions)) continue; // 条件を満たしていない場合はスキップ
+			}
 			// 遷移条件を満たした場合、遷移を開始
 			BeginTransition(transition, controller);
 
@@ -373,8 +463,9 @@ void RuntimeAnimatorController::ConsumeTrigger(const AnimatorController& control
 	// Triggerの消費処理
 	for (const auto& c : conditions) {
 		// parameterがTrigger型のものだけリセット。Float/Bool/Intは触らない
-		if (controller.GetParameterType(c.parameterName) == AnimatorParameter::Type::Trigger) {
-			parameterValues[c.parameterName] = 0.0f;
+		std::string paramName = controller.parameters[c.parameterIndex].name;
+		if (controller.GetParameterType(paramName) == AnimatorParameter::Type::Trigger) {
+			parameterValues[paramName] = 0.0f;
 		}
 	}
 

@@ -115,6 +115,8 @@ bool ScriptHost::Initialize()
 		L"EngineShutdown");
 	load(m_callbacks.RegisterAllScriptMeta, engineRuntimeDll, engineRuntimeType,
 		L"RegisterAllScriptMeta");
+	load(m_callbacks.GetScriptMeta, engineRuntimeDll, engineRuntimeType,
+		L"GetScriptMeta");
 
 	// スクリプトブリッジの関数をロード
 	const wchar_t* scriptBridgeType = L"CurryEngine.Runtime.Native.ScriptBridge, CurryEngine.Runtime";

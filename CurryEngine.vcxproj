@@ -212,6 +212,7 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\Vector3Drawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawerRegistry.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.cpp" />
+    <ClCompile Include="Engine\Editor\AnimatorControllerEditorWindow.cpp" />
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
     <ClCompile Include="Engine\Editor\GameViewWindow.cpp" />
     <ClCompile Include="Engine\Editor\HierarchyWindow.cpp" />
@@ -704,6 +705,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\IPropertyDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.h" />
     <ClInclude Include="Engine\Editor\AnimatorControllerEditor.h" />
+    <ClInclude Include="Engine\Editor\AnimatorControllerEditorWindow.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
     <ClInclude Include="Engine\Editor\GameViewWindow.h" />
     <ClInclude Include="Engine\Editor\HierarchyWindow.h" />

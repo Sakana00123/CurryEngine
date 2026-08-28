@@ -1,5 +1,6 @@
 
 using CurryEngine;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace CurryEngine.Runtime.Native;

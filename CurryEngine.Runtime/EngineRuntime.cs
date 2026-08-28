@@ -1,6 +1,7 @@
 
 using CurryEngine.Runtime.HotReload;
 using CurryEngine.Runtime.Native;
+using CurryEngine.Runtime.Reflection;
 using CurryEngine.Scripting;
 using System.Reflection;
 using System.Runtime;
@@ -297,6 +298,36 @@ public static class EngineRuntime
             }
         }
 
+    }
+
+
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
+    public static unsafe nint GetScriptMeta(byte* scriptNameUtf8)
+    {
+        try
+        {
+            var scriptName = Marshal.PtrToStringUTF8((nint)scriptNameUtf8);
+            if (string.IsNullOrEmpty(scriptName))
+            {
+                Debug.LogError("GetScriptMeta: scriptName が null または空です。");
+                return nint.Zero;
+            }
+            Type? scriptType = ScriptRegistry.Resolve(scriptName) ?? throw new InvalidOperationException($"GetScriptMeta: Script type not found: {scriptName}");
+            object? instance = Activator.CreateInstance(scriptType);
+            if (instance == null)
+            {
+                Debug.LogError($"GetScriptMeta: {scriptName} のインスタンスを作成できませんでした。");
+                return nint.Zero;
+            }
+            // スクリプトのメタデータを取得
+            string jsonMeta = ScriptInspector.GetFieldsJson(instance);
+            return Marshal.StringToCoTaskMemUTF8(jsonMeta);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"GetScriptMeta 例外: {ex.Message}");
+            return nint.Zero;
+        }
     }
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]

@@ -63,6 +63,8 @@ public:
 
 	static void AddTempScriptName(const std::string& name);
 
+	static void* GetScriptMeta(const std::string& scriptName);
+
 private:
 	// スクリプトホストのインスタンスへのポインタ
 	static inline ScriptHost* s_scriptHost = nullptr;

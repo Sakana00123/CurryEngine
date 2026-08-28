@@ -434,7 +434,9 @@
                 },
                 {
                     "enabledSelf": true,
-                    "fields": null,
+                    "fields": {
+                        "speed": 0
+                    },
                     "id": "12604352157080046631",
                     "name": "ScriptComponent",
                     "priority": 3000,

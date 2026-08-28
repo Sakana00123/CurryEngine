@@ -4,6 +4,12 @@
 #include "Engine/Resources/AssetId.h"
 #include <unordered_map>
 
+struct AnimatorParameterBinding
+{
+	ObjectId sourceComponentId; // ObjectReference属性で選択（targetModelRendererIdと同じパターン）
+	std::string propertyName;   // リフレクション情報からコンボボックスで選択
+};
+
 struct AnimatorParameter
 {
 	enum class Type
@@ -16,6 +22,7 @@ struct AnimatorParameter
 	std::string name;
 	Type type;
 	float defaultValue;
+	std::optional<AnimatorParameterBinding> binding; // パラメータのバインディング情報(未設定ならスクリプト側で制御)
 };
 
 struct AnimatorCondition
@@ -29,7 +36,7 @@ struct AnimatorCondition
 		Equal,
 		NotEqual
 	};
-	std::string parameterName;
+	int parameterIndex = -1; // AnimatorParameterのインデックス
 	Comparison comparison;
 	float value;
 };
@@ -99,6 +106,12 @@ struct RuntimeAnimatorController
 	void SetTrigger(const std::string& name);
 
 	const std::vector<NodePose>& GetPose() const;
+
+	// 条件をすべて満たしているかを判定する
+	bool AllConditionsMet(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions) const;
+
+	// アニメーションパラメータの値を取得する
+	float GetParameterValue(const AnimatorController& controller, int parameterIndex) const;
 
 	void Update(float deltaTime, const AnimatorController& controller);
 

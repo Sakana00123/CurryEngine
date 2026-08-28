@@ -1,10 +1,27 @@
 {
     "animationClipIds": [
-        "1ff05b65e994c72e36f11a39a9643dca"
+        "1ff05b65e994c72e36f11a39a9643dca",
+        "67459e3f68dbb785e284e6d0760aa113",
+        "7d6d2aba72073aa6962c208b193d3e51"
     ],
     "defaultStateIndex": 0,
     "name": "",
-    "parameters": [],
+    "parameters": [
+        {
+            "defaultValue": 0.0,
+            "name": "AttackTrigger",
+            "type": 3
+        },
+        {
+            "binding": {
+                "propertyName": "speed",
+                "sourceComponentId": "12604352157080046631"
+            },
+            "defaultValue": 0.0,
+            "name": "Speed",
+            "type": 0
+        }
+    ],
     "states": [
         {
             "clipId": "1ff05b65e994c72e36f11a39a9643dca",
@@ -15,7 +32,72 @@
             "loop": true,
             "name": "Idle",
             "speed": 1.0
+        },
+        {
+            "clipId": "67459e3f68dbb785e284e6d0760aa113",
+            "editorPosition": [
+                0.0,
+                0.0
+            ],
+            "loop": false,
+            "name": "Attack",
+            "speed": 1.0
+        },
+        {
+            "clipId": "7d6d2aba72073aa6962c208b193d3e51",
+            "editorPosition": [
+                0.0,
+                0.0
+            ],
+            "loop": true,
+            "name": "Walk",
+            "speed": 1.0
         }
     ],
-    "transitions": []
+    "transitions": [
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 2.5,
+            "fromStateIndex": 0,
+            "hasExitTime": false,
+            "toStateIndex": 1
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 1.0,
+            "fromStateIndex": 1,
+            "hasExitTime": true,
+            "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 2,
+                    "parameterIndex": 1,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": 0,
+            "hasExitTime": false,
+            "toStateIndex": 2
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 1,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": 2,
+            "hasExitTime": false,
+            "toStateIndex": 0
+        }
+    ]
 }

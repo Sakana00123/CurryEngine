@@ -24,6 +24,7 @@ using ManagedRegisterAllScriptMetaFunc = void(__stdcall*)(RegisterScriptClassFun
 //using ManagedGetComponentFunc = void* (__stdcall*)(void* gcHandle, const char* typeName);
 using VoidFunc = void(__stdcall*)();
 using ReloadScriptsFunc = void(__stdcall*)(const char* assemblyPath);
+using GetScriptMetaFunc = void*(__stdcall*)(const char* scriptName);
 
 struct ScriptCallbacks
 {
@@ -42,6 +43,7 @@ struct ScriptCallbacks
 	//ManagedGetFieldFunc GetScriptField = nullptr;
 	ManagedSetFieldFunc SetScriptField = nullptr;
 	ManagedRegisterAllScriptMetaFunc RegisterAllScriptMeta = nullptr;
+	GetScriptMetaFunc GetScriptMeta = nullptr;
 
 	ReloadScriptsFunc ReloadScripts = nullptr;
 
