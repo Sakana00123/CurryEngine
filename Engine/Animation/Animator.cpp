@@ -7,6 +7,7 @@
 #include "Engine/Resources/AnimationClip.h"
 #include "Engine/Resources/AssetDatabase.h"
 #include <Engine\Editor\AnimatorControllerEditorWindow.h>
+#include <Engine\Editor\AnimatorControllerEditor.h>
 
 REGISTER_COMPONENT(Animator, "Animation")
 
@@ -19,28 +20,28 @@ void Animator::Awake()
 void Animator::Update(float deltaTime)
 {
 	// コントローラーが存在する場合、アニメーションの更新処理を行う
-	if (controller)
+	if (controller && runtimeController)
 	{
 		// コントローラーの更新処理を呼び出す
-		if (runtimeController.GetPose().empty())
+		if (runtimeController->GetPose().empty())
 		{
 			if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
 			{
-				runtimeController.Initialize(*controller, renderer->GetBindPose());
+				runtimeController->Initialize(*controller, renderer->GetBindPose());
 			}
 			else
 			{
 				LOG_WARNING(u8"[Animator] GltfModelRenderer が見つかりません。アニメーションを再生できません。");
 			}
 		}
-		runtimeController.Update(deltaTime, *controller);
+		runtimeController->Update(deltaTime, *controller);
 
 		// GltfModelRenderer にアニメーションを適用する
 		if (targetModelRendererId.IsValid())
 		{
 			if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
 			{
-				renderer->ApplyPose(runtimeController.GetPose());
+				renderer->ApplyPose(runtimeController->GetPose());
 			}
 		}
 
@@ -68,18 +69,21 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			const auto& state = controller->states[i];
 			if (ImGui::Button(("Play State: " + state.name).c_str()))
 			{
-				if (runtimeController.GetPose().empty())
+				if (runtimeController)
 				{
-					if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
+					if (runtimeController->GetPose().empty())
 					{
-						runtimeController.Initialize(*controller, renderer->GetBindPose());
+						if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
+						{
+							runtimeController->Initialize(*controller, renderer->GetBindPose());
+						}
+						else
+						{
+							LOG_WARNING(u8"[Animator] GltfModelRenderer が見つかりません。アニメーションを再生できません。");
+						}
 					}
-					else
-					{
-						LOG_WARNING(u8"[Animator] GltfModelRenderer が見つかりません。アニメーションを再生できません。");
-					}
+					runtimeController->Play(*controller, i);
 				}
-				runtimeController.Play(*controller, i);
 			}
 		}
 
@@ -166,7 +170,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			ImGui::PushID(i);
 			auto& parameter = controller->parameters[i];
 			bool isChanged = false;
-			float parameterValue = runtimeController.GetParameterValue(*controller.get(), i);
+			float parameterValue = runtimeController->GetParameterValue(*controller.get(), i);
 			// パラメータの名前を編集可能にする
 			char buffer[128];
 			strncpy_s(buffer, parameter.name.c_str(), sizeof(buffer));
@@ -227,7 +231,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 					if (ImGui::RadioButton("##Trigger", parameterValue))
 					{
 						// Triggerはボタンを押すと1.0fに設定される
-						runtimeController.SetTrigger(parameter.name);
+						runtimeController->SetTrigger(parameter.name);
 					}
 					break;
 				}
@@ -236,7 +240,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			}
 			if (isChanged)
 			{
-				runtimeController.SetFloat(parameter.name, parameterValue);
+				runtimeController->SetFloat(parameter.name, parameterValue);
 			}
 			if (parameter.type != AnimatorParameter::Type::Trigger)
 			{
@@ -494,14 +498,18 @@ void Animator::ResetController()
 	controller = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimatorController>(controllerAssetId);
 	if (!controller) 
 	{
-		runtimeController = RuntimeAnimatorController();
-		return;
+		runtimeController = nullptr;
 	}
-	// コントローラーの初期化
-	if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
+	else
 	{
-		runtimeController.Initialize(*controller, renderer->GetBindPose());
+		// コントローラーの初期化
+		runtimeController = std::make_shared<RuntimeAnimatorController>();
+		if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
+		{
+			runtimeController->Initialize(*controller, renderer->GetBindPose());
+		}
 	}
+	AnimatorControllerEditor::SetRuntimeController(runtimeController);
 }
 
 json Animator::Serialize() const

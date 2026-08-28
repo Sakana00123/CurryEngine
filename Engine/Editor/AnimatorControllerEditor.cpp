@@ -66,6 +66,11 @@ void AnimatorControllerEditor::OpenAsset(const std::filesystem::path& path)
 	Open();
 }
 
+void AnimatorControllerEditor::SetRuntimeController(std::weak_ptr<RuntimeAnimatorController> runtimeController)
+{
+	s_runtimeController = runtimeController;
+}
+
 void AnimatorControllerEditor::DrawGUI()
 {
 #ifdef USE_IMGUI
@@ -76,7 +81,7 @@ void AnimatorControllerEditor::DrawGUI()
 		return;
 	}
 	// エディタウィンドウの描画
-	s_editorWindow->Draw(&s_isOpen, s_animatorController);
+	s_editorWindow->Draw(&s_isOpen, s_animatorController, s_runtimeController);
 
 #endif // USE_IMGUI
 }

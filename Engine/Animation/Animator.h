@@ -30,8 +30,7 @@ public:
 private:
 	
 	std::shared_ptr<AnimatorController> controller;
-
-	RuntimeAnimatorController runtimeController;
+	std::shared_ptr<RuntimeAnimatorController> runtimeController;
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("AssetId"), CurryEngine::PropertyAttributes::AssetTypeExtension(".controller"), CurryEngine::PropertyAttributes::OnPropertyChanged("ResetController"))
 	CurryEngine::Resources::AssetId controllerAssetId; // AnimatorController の AssetId

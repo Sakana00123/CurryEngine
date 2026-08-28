@@ -162,13 +162,20 @@ namespace CurryEngine::Editor
         }
     }
 
-    void AnimatorControllerEditorWindow::DrawNodes(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller)
+	void AnimatorControllerEditorWindow::DrawNodes(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
         ImVec2 nodeSize(NodeWidth * zoom, NodeHeight * zoom);
+
+        int currentStateIndex = -1;
+        if (auto runtimeControllerPtr = runtimeController.lock())
+        {
+            currentStateIndex = runtimeControllerPtr->currentStateIndex;
+        }
 
         for (int i = 0; i < (int)controller->states.size(); ++i)
         {
             const auto& state = controller->states[i];
+			bool isCurrentState = (currentStateIndex == i);
             ImVec2 nodeCenter = WorldToScreen(state.editorPosition, canvasOrigin);
             ImVec2 nodeMin(nodeCenter.x - nodeSize.x * 0.5f, nodeCenter.y - nodeSize.y * 0.5f);
             ImVec2 nodeMax(nodeCenter.x + nodeSize.x * 0.5f, nodeCenter.y + nodeSize.y * 0.5f);
@@ -181,9 +188,17 @@ namespace CurryEngine::Editor
             bool isCreatingSource = (mode == InteractionMode::CreatingTransition && transitionSourceIndex == i);
 
             ImU32 fillColor = isDefault ? IM_COL32(90, 110, 70, 255) : IM_COL32(70, 70, 75, 255);
+			if (isCurrentState) // 現在のステートを示す場合は色を変える
+            {
+				fillColor = isDefault ? IM_COL32(120, 150, 90, 255) : IM_COL32(100, 100, 105, 255);
+			}
             ImU32 borderColor = isSelected ? IM_COL32(255, 180, 60, 255)
                 : isCreatingSource ? IM_COL32(255, 220, 100, 255)
                 : IM_COL32(20, 20, 20, 255);
+            if (isCurrentState && !isSelected && !isCreatingSource)
+            {
+                borderColor = IM_COL32(255, 220, 100, 255); // 現在のステートを示す場合は色を変える
+			}
             float rounding = 6.0f * zoom;
 
             drawList->AddRectFilled(nodeMin, nodeMax, fillColor, rounding);
@@ -563,7 +578,7 @@ namespace CurryEngine::Editor
     }
 
 
-    void AnimatorControllerEditorWindow::Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller)
+	void AnimatorControllerEditorWindow::Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
         if (!controller) return;
 
@@ -597,7 +612,7 @@ namespace CurryEngine::Editor
             DrawTransitionPreview(drawList, canvasOrigin, controller);
 
             DrawAnyStateNode(drawList, canvasOrigin, controller);
-            DrawNodes(drawList, canvasOrigin, controller);
+            DrawNodes(drawList, canvasOrigin, controller, runtimeController);
 
             drawList->PopClipRect();
         }

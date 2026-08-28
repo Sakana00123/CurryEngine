@@ -10,7 +10,7 @@ namespace CurryEngine::Editor
     public:
 		AnimatorControllerEditorWindow(std::shared_ptr<AnimatorController> controller = nullptr);
 
-        void Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller);
+		void Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
 
     private:
         // --- キャンバス変換 ---
@@ -44,9 +44,9 @@ namespace CurryEngine::Editor
 
         // --- 描画 ---
         void DrawGrid(ImDrawList* drawList, const ImVec2& canvasOrigin, const ImVec2& canvasSize) const;
-        void DrawNodes(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller);
+        void DrawNodes(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
         void DrawAnyStateNode(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller);
-        void DrawTransitions(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller);
+		void DrawTransitions(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller);
         void DrawTransitionPreview(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller);
 
         // --- 入力処理 ---
