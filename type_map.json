@@ -18,6 +18,7 @@
   "uint32_t":             { "csType": "uint",       "source": "primitive" },
   "int64_t":              { "csType": "long",       "source": "primitive" },
   "uint64_t":             { "csType": "ulong",      "source": "primitive" },
+  "const char*":          { "csType": "string",     "source": "primitive", "marshalAttr": "UnmanagedType.LPUTF8Str" },
   "std::string":          { "csType": "string",     "source": "primitive", "marshalAttr": "UnmanagedType.LPUTF8Str" },
   "Vector2":              { "csType": "Vector2",    "source": "existing" },
   "Vector3":              { "csType": "Vector3",    "source": "existing" },

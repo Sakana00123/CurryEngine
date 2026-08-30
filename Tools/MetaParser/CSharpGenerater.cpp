@@ -64,7 +64,12 @@ void CSharpGenerater::LoadTypeMap(const std::string& path)
 std::string CSharpGenerater::ResolveCsType(const std::string& cppType) const
 {
 	std::string baseType = cppType;
-	// まずは const 修飾子を取り除く
+	// 取り除く前にまずは完全一致で検索
+    {
+		auto it = typeMap.find(baseType);
+		if (it != typeMap.end()) return it->second.csType;
+    }
+	// "const " を取り除く
     if (baseType.compare(0, 6, "const ") == 0)
 		baseType = baseType.substr(6);
 	// 先頭と末尾からスペース、'*', '&' を取り除く

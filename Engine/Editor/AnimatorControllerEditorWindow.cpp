@@ -588,7 +588,10 @@ namespace CurryEngine::Editor
             ImGui::End();
             return;
         }
-
+        if (ImGui::Button("Save"))
+        {
+            controller->SaveToFile(controller->GetPath());
+		}
         const float inspectorWidth = 340.0f;
         ImVec2 avail = ImGui::GetContentRegionAvail();
 

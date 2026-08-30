@@ -512,6 +512,38 @@ void Animator::ResetController()
 	AnimatorControllerEditor::SetRuntimeController(runtimeController);
 }
 
+void Animator::SetFloat(const char* name, float value)
+{
+	if (runtimeController)
+	{
+		runtimeController->SetFloat(name, value);
+	}
+}
+
+void Animator::SetInt(const char* name, int value)
+{
+	if (runtimeController)
+	{
+		runtimeController->SetInt(name, value);
+	}
+}
+
+void Animator::SetBool(const char* name, bool value)
+{
+	if (runtimeController)
+	{
+		runtimeController->SetBool(name, value);
+	}
+}
+
+void Animator::SetTrigger(const char* name)
+{
+	if (runtimeController)
+	{
+		runtimeController->SetTrigger(name);
+	}
+}
+
 json Animator::Serialize() const
 {
 	json j = Component::Serialize();

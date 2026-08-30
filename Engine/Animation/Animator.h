@@ -21,6 +21,15 @@ public:
 	C_FUNCTION()
 	void ResetController();
 
+	C_FUNCTION()
+	void SetFloat(const char* name, float value);
+	C_FUNCTION()
+	void SetInt(const char* name, int value);
+	C_FUNCTION()
+	void SetBool(const char* name, bool value);
+	C_FUNCTION()
+	void SetTrigger(const char* name);
+
 	// シリアライズ
 	json Serialize() const override;
 

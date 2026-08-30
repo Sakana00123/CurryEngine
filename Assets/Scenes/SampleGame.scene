@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            21.058088302612305,
-            9.596787452697754,
-            8.266131401062012
+            24.08711814880371,
+            10.43919849395752,
+            1.6048222780227661
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.06967221200466156,
-            -0.6788548827171326,
-            0.06496211886405945,
-            0.72806715965271
+            0.07566840201616287,
+            -0.6046629548072815,
+            0.05785970762372017,
+            0.7907648682594299
         ],
         "speed": 3.0
     },
@@ -447,7 +447,7 @@
             "id": "837495356795042458",
             "isDefaultOpenOnHierarchy": true,
             "layer": 0,
-            "name": "GltfModel",
+            "name": "Player",
             "parent": "0",
             "parentId": "0",
             "priority": 4000,
@@ -689,7 +689,7 @@
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "coordinateSystem": 0,
@@ -830,11 +830,11 @@
                     "soundType": 1,
                     "type": "AudioSource",
                     "use3DAudio": false,
-                    "volume": 1.0
+                    "volume": 0.0
                 }
             ],
             "id": "3215127106798646221",
-            "isDefaultOpenOnHierarchy": true,
+            "isDefaultOpenOnHierarchy": false,
             "layer": 4,
             "name": "character",
             "parent": "0",
@@ -843,7 +843,7 @@
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "coordinateSystem": 0,
@@ -1085,7 +1085,7 @@
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "coordinateSystem": 0,

@@ -32,6 +32,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 	}
 	if (jsonData.contains("animationClipIds"))
 	{
+		animationClips.clear();
 		for (const auto& clipIdStr : jsonData["animationClipIds"])
 		{
 			CurryEngine::Resources::AssetId clipId(clipIdStr.get<std::string>());
@@ -46,6 +47,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 	}
 	if (jsonData.contains("parameters"))
 	{
+		parameters.clear();
 		for (const auto& paramJson : jsonData["parameters"])
 		{
 			AnimatorParameter param;
@@ -65,6 +67,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 	}
 	if (jsonData.contains("states"))
 	{
+		states.clear();
 		for (const auto& stateJson : jsonData["states"])
 		{
 			AnimatorState state;
@@ -83,6 +86,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 	}
 	if (jsonData.contains("transitions"))
 	{
+		transitions.clear();
 		for (const auto& transitionJson : jsonData["transitions"])
 		{
 			AnimatorTransition transition;
@@ -228,7 +232,9 @@ void RuntimeAnimatorController::Play(const AnimatorController& controller, int s
 	}
 	if (blendDuration <= 0.0f || playing.empty())
 	{
-		playing = { {state.clipId, 0.0f} };
+		playing = { {state.clipId, 0.0f, stateIndex} };
+		transitionElapsed = 0.0f;
+		transitionDuration = 0.0f;
 	}
 	else
 	{
@@ -270,9 +276,17 @@ bool RuntimeAnimatorController::AllConditionsMet(const AnimatorController& contr
 {
 	for (const auto& condition : conditions)
 	{
+		if (condition.parameterIndex < 0 || condition.parameterIndex >= controller.parameters.size())
+		{
+			continue; // 無効なパラメータインデックスはスキップ
+		}
 		auto& parameter = controller.parameters[condition.parameterIndex];
 
 		float paramValue = GetParameterValue(controller, condition.parameterIndex);
+		if (parameter.type == AnimatorParameter::Type::Trigger)
+		{
+			return paramValue > 0.9f; // Triggerは1.0fで表現されるため、0.9f以上ならトリガーが有効とみなす
+		}
 		switch (condition.comparison)
 		{
 		case AnimatorCondition::Comparison::Equal:

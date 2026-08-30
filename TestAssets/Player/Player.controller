@@ -1,8 +1,11 @@
 {
     "animationClipIds": [
+        "5de2d5d76a110e5e7a2b1f4339ff4b6b",
         "1ff05b65e994c72e36f11a39a9643dca",
         "67459e3f68dbb785e284e6d0760aa113",
-        "7d6d2aba72073aa6962c208b193d3e51"
+        "bb610cfdfa4498b7ecdb197352a977e4",
+        "7d6d2aba72073aa6962c208b193d3e51",
+        "d68cb684a9cff921066f73594470e365"
     ],
     "defaultStateIndex": 0,
     "name": "",
@@ -13,10 +16,6 @@
             "type": 3
         },
         {
-            "binding": {
-                "propertyName": "speed",
-                "sourceComponentId": "12604352157080046631"
-            },
             "defaultValue": 0.0,
             "name": "Speed",
             "type": 0
@@ -26,8 +25,8 @@
         {
             "clipId": "1ff05b65e994c72e36f11a39a9643dca",
             "editorPosition": [
-                -1.111109733581543,
-                46.666664123535156
+                161.2500457763672,
+                57.22222137451172
             ],
             "loop": true,
             "name": "Idle",
@@ -36,43 +35,61 @@
         {
             "clipId": "67459e3f68dbb785e284e6d0760aa113",
             "editorPosition": [
-                47.77777862548828,
-                235.55560302734375
+                188.77777099609375,
+                209.55560302734375
             ],
             "loop": false,
             "name": "Attack",
             "speed": 1.0
         },
         {
+            "clipId": "d68cb684a9cff921066f73594470e365",
+            "editorPosition": [
+                151.611083984375,
+                -110.6944808959961
+            ],
+            "loop": false,
+            "name": "WalkStart",
+            "speed": 1.0
+        },
+        {
             "clipId": "7d6d2aba72073aa6962c208b193d3e51",
             "editorPosition": [
-                71.111083984375,
-                -84.4444808959961
+                373.8596496582031,
+                -120.19442749023438
             ],
             "loop": true,
-            "name": "Walk",
+            "name": "WalkLoop",
+            "speed": 1.0
+        },
+        {
+            "clipId": "5de2d5d76a110e5e7a2b1f4339ff4b6b",
+            "editorPosition": [
+                325.081787109375,
+                -9.666656494140625
+            ],
+            "loop": false,
+            "name": "WalkEnd",
             "speed": 1.0
         }
     ],
     "transitions": [
         {
             "blendDuration": 0.25,
-            "conditions": [],
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 0,
+                    "value": 0.0
+                }
+            ],
             "exitTime": 2.5,
             "fromStateIndex": 0,
             "hasExitTime": false,
             "toStateIndex": 1
         },
         {
-            "blendDuration": 0.25,
-            "conditions": [],
-            "exitTime": 1.0,
-            "fromStateIndex": 1,
-            "hasExitTime": true,
-            "toStateIndex": 0
-        },
-        {
-            "blendDuration": 0.25,
+            "blendDuration": 0.4000000059604645,
             "conditions": [
                 {
                     "comparison": 2,
@@ -87,6 +104,36 @@
         },
         {
             "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.7990000247955322,
+            "fromStateIndex": 2,
+            "hasExitTime": true,
+            "toStateIndex": 3
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 1,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": 3,
+            "hasExitTime": false,
+            "toStateIndex": 4
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.6320000290870667,
+            "fromStateIndex": 4,
+            "hasExitTime": true,
+            "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.25,
             "conditions": [
                 {
                     "comparison": 4,
@@ -97,6 +144,14 @@
             "exitTime": 0.0,
             "fromStateIndex": 2,
             "hasExitTime": false,
+            "toStateIndex": 4
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.7889999747276306,
+            "fromStateIndex": 1,
+            "hasExitTime": true,
             "toStateIndex": 0
         }
     ]

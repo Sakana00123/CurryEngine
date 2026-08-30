@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AnimatorControllerImporter.h"
 #include <Engine\Animation\AnimatorController.h>
+#include <Engine\Resources\ResourceManager.h>
 
 namespace CurryEngine
 {
@@ -8,8 +9,8 @@ namespace CurryEngine
 	{
 		std::shared_ptr<Resource> AnimatorControllerImporter::Import(const AssetMeta& meta)
 		{
-			auto animatorController = std::make_shared<AnimatorController>();
-			if (!animatorController->LoadFromFile(meta.path.string()))
+			auto animatorController = ResourceManager::GetOrLoad<AnimatorController>(meta.path.string());
+			if (!animatorController)
 			{
 				LOG_ERROR(u8"[AnimatorControllerImporter] AnimatorControllerのインポートに失敗しました: " + meta.path.u8string());
 				return nullptr;

@@ -10,16 +10,16 @@ class Generater
 public:
 	Generater(const std::string& outputDir);
 
-	// �N���X��񂩂�R�[�h�𐶐�(ignoreClasses �Ɏw�肳�ꂽ�N���X��cpp�t�@�C���͐������Ȃ����A�w�b�_�[�t�@�C���͐�������)
+	// クラス情報からコードを生成(ignoreClasses に指定されたクラスはcppファイルは生成しないが、ヘッダーファイルは生成する)
 	void Generate(const std::vector<FileInfo>& files, const std::vector<std::string>& ignoreClasses = {});
 private:
 	std::unordered_set<std::string> knownEnums;
 	std::unordered_map<std::string, TypeMapping> typeMap;
 	std::string outputDirectory;
-	std::string headerDir = "Reflection"; // �w�b�_�[�t�@�C���̏o�̓T�u�f�B���N�g��
-	std::string sourceDir = "Interop"; // �\�[�X�t�@�C���̏o�̓T�u�f�B���N�g��
-	std::string enumDir = "Reflection/Enums"; // �񋓌^�̃w�b�_�[�t�@�C���̏o�̓T�u�f�B���N�g��
-	std::string structDir = "Reflection/Structs"; // �\���̂̃w�b�_�[�t�@�C���̏o�̓T�u�f�B���N�g��
+	std::string headerDir = "Reflection"; // ヘッダーファイルの出力サブディレクトリ
+	std::string sourceDir = "Interop"; // ソースファイルの出力サブディレクトリ
+	std::string enumDir = "Reflection/Enums"; // 列挙型のヘッダーファイルの出力サブディレクトリ
+	std::string structDir = "Reflection/Structs"; // 構造体のヘッダーファイルの出力サブディレクトリ
 	
 	void GenerateHeader(const ClassInfo& info, const std::string& outPath, const std::string& includePath);
 	void GenerateSource(const ClassInfo& info, const std::string& outPath, const std::string& includePath, const std::string& relativeSolutionPath = "");
