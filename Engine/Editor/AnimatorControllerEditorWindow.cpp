@@ -214,6 +214,14 @@ namespace CurryEngine::Editor
                 drawList->AddTriangleFilled(tip, top, bottom, IM_COL32(140, 200, 90, 255));
             }
 
+            if (state.blendType != BlendTreeType::None)
+            {
+                // ブレンドツリーであることを示す右上の小さいマーカー
+                float markerRadius = 4.0f * zoom;
+                ImVec2 markerCenter(nodeMax.x - markerRadius - 4.0f * zoom, nodeMin.y + markerRadius + 4.0f * zoom);
+                drawList->AddCircleFilled(markerCenter, markerRadius, IM_COL32(120, 170, 240, 255));
+            }
+
             // ノード内にクリップしてタイトルを描画(ズームでフォントサイズは変えず可読性を優先)
             ImVec2 textSize = ImGui::CalcTextSize(state.name.c_str());
             ImVec2 textPos(nodeCenter.x - textSize.x * 0.5f, nodeCenter.y - textSize.y * 0.5f);
@@ -625,14 +633,14 @@ namespace CurryEngine::Editor
 
         // --- 右: インスペクタ ---
         ImGui::BeginChild("AnimatorInspector", ImVec2(inspectorWidth, avail.y), true);
-        DrawInspectorPanel(controller);
+        DrawInspectorPanel(controller, runtimeController);
         ImGui::EndChild();
 
         ImGui::End();
     }
 
 
-    void AnimatorControllerEditorWindow::DrawInspectorPanel(std::shared_ptr<AnimatorController>& controller)
+    void AnimatorControllerEditorWindow::DrawInspectorPanel(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
         if (ImGui::BeginTabBar("InspectorTabs"))
         {
@@ -657,7 +665,7 @@ namespace CurryEngine::Editor
 
             if (ImGui::BeginTabItem("Parameters"))
             {
-                DrawParametersTab(controller);
+                DrawParametersTab(controller, runtimeController);
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();
@@ -676,42 +684,29 @@ namespace CurryEngine::Editor
             state.name = nameBuffer;
         }
 
-        std::string clipName = "None";
-        if (state.clipId.IsValid())
+        const char* blendTypeNames[] = { "Single Clip", "Blend Tree (1D)", "Blend Tree (2D Freeform)" };
+        int blendTypeIndex = static_cast<int>(state.blendType);
+        if (ImGui::BeginCombo("Motion Type", blendTypeNames[blendTypeIndex]))
         {
-            auto it = controller->animationClips.find(state.clipId);
-            if (it != controller->animationClips.end() && it->second)
+            for (int i = 0; i < IM_ARRAYSIZE(blendTypeNames); ++i)
             {
-                clipName = it->second->name;
-            }
-        }
-        ImGui::Text("Clip: %s", clipName.c_str());
-        ImGui::SameLine();
-        static std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> clipMap;
-        if (ImGui::Button("..."))
-        {
-            ImGui::OpenPopup("SelectAnimationClipPopup");
-            clipMap.clear();
-            std::vector<CurryEngine::Resources::AssetMeta> metas = CurryEngine::Resources::AssetDatabase::FindAllByType(AssetType::Animation);
-            for (const auto& meta : metas)
-            {
-                clipMap[meta.id] = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(meta.id);
-            }
-        }
-        if (ImGui::BeginPopup("SelectAnimationClipPopup"))
-        {
-            for (const auto& [clipId, clip] : clipMap)
-            {
-                if (!clip) continue;
-                if (ImGui::Selectable(clip->name.c_str()))
+                bool isSelected = (blendTypeIndex == i);
+                if (ImGui::Selectable(blendTypeNames[i], isSelected))
                 {
-                    controller->animationClips[clipId] = clip;
-                    state.clipId = clipId;
+                    state.blendType = static_cast<BlendTreeType>(i);
                 }
+                if (isSelected) ImGui::SetItemDefaultFocus();
             }
-            ImGui::EndPopup();
+            ImGui::EndCombo();
         }
+        ImGui::Spacing();
 
+        if (state.blendType == BlendTreeType::None)
+            DrawSingleClipSection(state, controller);
+        else
+            DrawBlendTreeSection(state, controller);
+
+        ImGui::Spacing();
         ImGui::InputFloat("Speed", &state.speed);
         ImGui::Checkbox("Loop", &state.loop);
 
@@ -725,8 +720,82 @@ namespace CurryEngine::Editor
         ImGui::Spacing();
         if (ImGui::Button("Delete State", ImVec2(-1, 0)))
         {
-            DeleteState(stateIndex, controller); // 呼んだ後はstate参照が無効なので、この関数はここで抜ける
+            DeleteState(stateIndex, controller);
         }
+    }
+
+    void AnimatorControllerEditorWindow::DrawSingleClipSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller)
+    {
+        ImGui::Text("Clip: %s", GetClipDisplayName(controller, state.clipId).c_str());
+        ImGui::SameLine();
+        state.clipId = DrawClipPickerButton("SelectAnimationClipPopup", controller, state.clipId);
+    }
+
+    void AnimatorControllerEditorWindow::DrawBlendTreeSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller)
+    {
+        const bool is2D = (state.blendType == BlendTreeType::FreeformCartesian2D);
+
+        auto drawParamCombo = [&](const char* label, int& paramIndex)
+            {
+                std::string current = (paramIndex >= 0 && paramIndex < (int)controller->parameters.size())
+                    ? controller->parameters[paramIndex].name : "None";
+                if (ImGui::BeginCombo(label, current.c_str()))
+                {
+                    for (int k = 0; k < (int)controller->parameters.size(); ++k)
+                    {
+                        // Trigger/Boolはブレンド軸として不向きなので候補から除外
+                        if (controller->parameters[k].type == AnimatorParameter::Type::Trigger ||
+                            controller->parameters[k].type == AnimatorParameter::Type::Bool)
+                            continue;
+                        bool isSelected = (paramIndex == k);
+                        if (ImGui::Selectable(controller->parameters[k].name.c_str(), isSelected))
+                            paramIndex = k;
+                        if (isSelected) ImGui::SetItemDefaultFocus();
+                    }
+                    ImGui::EndCombo();
+                }
+            };
+
+        drawParamCombo(is2D ? "Blend Param X" : "Blend Param", state.blendParamXIndex);
+        if (is2D) drawParamCombo("Blend Param Y", state.blendParamYIndex);
+
+        ImGui::Spacing();
+        ImGui::SeparatorText("Entries");
+
+        // 1Dはしきい値順でないとComputeBlendWeights側の補間が破綻するため描画毎にソート
+        if (state.blendType == BlendTreeType::Simple1D)
+        {
+            std::sort(state.blendEntries.begin(), state.blendEntries.end(),
+                [](const BlendTreeEntry& a, const BlendTreeEntry& b) { return a.threshold < b.threshold; });
+        }
+
+        int removeIndex = -1;
+        for (int i = 0; i < (int)state.blendEntries.size(); ++i)
+        {
+            ImGui::PushID(i);
+            auto& entry = state.blendEntries[i];
+
+            ImGui::Text("[%d] %s", i, GetClipDisplayName(controller, entry.clipId).c_str());
+            ImGui::SameLine();
+            entry.clipId = DrawClipPickerButton("SelectBlendEntryClipPopup", controller, entry.clipId);
+            ImGui::SameLine();
+            if (ImGui::SmallButton("Remove")) removeIndex = i;
+
+            if (state.blendType == BlendTreeType::Simple1D)
+                ImGui::InputFloat("Threshold", &entry.threshold);
+            else
+                ImGui::InputFloat2("Position (X, Y)", &entry.position.x);
+
+            ImGui::Separator();
+            ImGui::PopID();
+        }
+        if (removeIndex >= 0) state.blendEntries.erase(state.blendEntries.begin() + removeIndex);
+
+        if (ImGui::Button(" + Entry", ImVec2(-1, 0)))
+            state.blendEntries.push_back(BlendTreeEntry{});
+
+        if (state.blendEntries.size() < 2)
+            ImGui::TextColored(ImVec4(1.0f, 0.7f, 0.3f, 1.0f), "ブレンドには2つ以上のEntryが必要です。");
     }
 
     void AnimatorControllerEditorWindow::DrawTransitionInspector(int transitionIndex, std::shared_ptr<AnimatorController>& controller)
@@ -821,7 +890,7 @@ namespace CurryEngine::Editor
         }
     }
 
-    void AnimatorControllerEditorWindow::DrawParametersTab(std::shared_ptr<AnimatorController>& controller)
+    void AnimatorControllerEditorWindow::DrawParametersTab(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
         for (int i = 0; i < (int)controller->parameters.size(); ++i)
         {
@@ -850,24 +919,31 @@ namespace CurryEngine::Editor
                 }
                 ImGui::EndCombo();
             }
+			bool runtimeControllerActive = !runtimeController.expired();
+			float* runtimeParam = &parameter.defaultValue;
+			if (auto runtimeCtrl = runtimeController.lock())
+            {
+				if (runtimeCtrl->parameterValues.find(parameter.name) != runtimeCtrl->parameterValues.end())
+                {
+                    runtimeParam = &runtimeCtrl->parameterValues[parameter.name];
+				}
+			}
 
             switch (parameter.type)
             {
             case AnimatorParameter::Type::Float:
-                ImGui::InputFloat("Default", &parameter.defaultValue);
+            {
+                ImGui::InputFloat("Default", runtimeParam);
                 break;
+            }
             case AnimatorParameter::Type::Int:
             {
-                int intValue = static_cast<int>(parameter.defaultValue);
-                if (ImGui::InputInt("Default", &intValue))
-                    parameter.defaultValue = static_cast<float>(intValue);
+                ImGui::InputInt("Default", reinterpret_cast<int*>(runtimeParam));
                 break;
             }
             case AnimatorParameter::Type::Bool:
             {
-                bool boolValue = (parameter.defaultValue != 0.0f);
-                if (ImGui::Checkbox("Default", &boolValue))
-                    parameter.defaultValue = boolValue ? 1.0f : 0.0f;
+				ImGui::Checkbox("Default", reinterpret_cast<bool*>(runtimeParam));
                 break;
             }
             default:
@@ -891,6 +967,52 @@ namespace CurryEngine::Editor
         }
     }
 
+    CurryEngine::Resources::AssetId AnimatorControllerEditorWindow::DrawClipPickerButton(
+        const char* popupId, std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& currentClipId)
+    {
+        static std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> clipMap;
+        CurryEngine::Resources::AssetId result = currentClipId;
+
+        if (ImGui::SmallButton("..."))
+        {
+            ImGui::OpenPopup(popupId);
+            clipMap.clear();
+            std::vector<CurryEngine::Resources::AssetMeta> metas = CurryEngine::Resources::AssetDatabase::FindAllByType(AssetType::Animation);
+            for (const auto& meta : metas)
+                clipMap[meta.id] = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(meta.id);
+        }
+        if (ImGui::BeginPopup(popupId))
+        {
+            // 検索ボックス
+            static char searchBuffer[128] = "";
+            ImGui::InputText("##Search", searchBuffer, sizeof(searchBuffer));
+
+            for (const auto& [clipId, clip] : clipMap)
+            {
+                if (!clip) continue;
+
+				// 検索文字列が空でない場合、名前に検索文字列が含まれていないクリップはスキップ
+                if (searchBuffer[0] != '\0' && clip->name.find(searchBuffer) == std::string::npos)
+					continue;
+
+                if (ImGui::Selectable(clip->name.c_str()))
+                {
+                    controller->animationClips[clipId] = clip;
+                    result = clipId;
+                }
+            }
+            ImGui::EndPopup();
+        }
+        return result;
+    }
+
+    std::string AnimatorControllerEditorWindow::GetClipDisplayName(
+        std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& clipId) const
+    {
+        if (!clipId.IsValid()) return "None";
+        auto it = controller->animationClips.find(clipId);
+        return (it != controller->animationClips.end() && it->second) ? it->second->name : "None";
+    }
 }
 
 

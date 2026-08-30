@@ -75,12 +75,33 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			state.clipId = stateJson["clipId"].get<CurryEngine::Resources::AssetId>();
 			state.speed = stateJson["speed"].get<float>();
 			state.loop = stateJson["loop"].get<bool>();
-			auto posArray = stateJson["editorPosition"];
+			auto& posArray = stateJson["editorPosition"];
 			if (posArray.is_array() && posArray.size() == 2)
 			{
 				state.editorPosition.x = posArray[0].get<float>();
 				state.editorPosition.y = posArray[1].get<float>();
 			}
+
+			state.blendType = static_cast<BlendTreeType>(stateJson.value<int>("blendType", 0));
+			state.blendParamXIndex = stateJson.value<int>("blendParamXIndex", -1);
+			state.blendParamYIndex = stateJson.value<int>("blendParamYIndex", -1);
+			if (stateJson.contains("blendEntries"))
+			{
+				for (const auto& entryJson : stateJson["blendEntries"])
+				{
+					BlendTreeEntry entry;
+					entry.clipId = entryJson["clipId"].get<CurryEngine::Resources::AssetId>();
+					entry.threshold = entryJson["threshold"].get<float>();
+					auto& entryPosArray = entryJson["position"];
+					if (entryPosArray.is_array() && entryPosArray.size() == 2)
+					{
+						entry.position.x = entryPosArray[0].get<float>();
+						entry.position.y = entryPosArray[1].get<float>();
+					}
+					state.blendEntries.push_back(entry);
+				}
+			}
+
 			states.push_back(state);
 		}
 	}
@@ -149,6 +170,20 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 		stateJson["speed"] = state.speed;
 		stateJson["loop"] = state.loop;
 		stateJson["editorPosition"] = { state.editorPosition.x, state.editorPosition.y };
+
+		stateJson["blendType"] = static_cast<int>(state.blendType);
+		stateJson["blendParamXIndex"] = state.blendParamXIndex;
+		stateJson["blendParamYIndex"] = state.blendParamYIndex;
+		stateJson["blendEntries"] = nlohmann::json::array();
+		for (const auto& entry : state.blendEntries)
+		{
+			nlohmann::json entryJson;
+			entryJson["clipId"] = entry.clipId;
+			entryJson["threshold"] = entry.threshold;
+			entryJson["position"] = { entry.position.x, entry.position.y };
+			stateJson["blendEntries"].push_back(entryJson);
+		}
+
 		jsonData["states"].push_back(stateJson);
 	}
 	jsonData["transitions"] = nlohmann::json::array();
@@ -232,13 +267,13 @@ void RuntimeAnimatorController::Play(const AnimatorController& controller, int s
 	}
 	if (blendDuration <= 0.0f || playing.empty())
 	{
-		playing = { {state.clipId, 0.0f, stateIndex} };
+		playing = { { 0.0f, stateIndex} };
 		transitionElapsed = 0.0f;
 		transitionDuration = 0.0f;
 	}
 	else
 	{
-		playing.push_back({ state.clipId, 0.0f, stateIndex });
+		playing.push_back({ 0.0f, stateIndex });
 		transitionElapsed = 0.0f;
 		transitionDuration = blendDuration;
 	}
@@ -306,6 +341,86 @@ bool RuntimeAnimatorController::AllConditionsMet(const AnimatorController& contr
 		}
 	}
 	return true; // すべての条件を満たす
+}
+
+std::vector<RuntimeAnimatorController::BlendedClipWeight>
+RuntimeAnimatorController::ComputeBlendWeights(const AnimatorController& controller, const PlayingState& state) const
+{
+	std::vector<BlendedClipWeight> result;
+	if (state.stateIndex < 0 || state.stateIndex >= (int)controller.states.size()) return result;
+
+	const AnimatorState& animState = controller.states[state.stateIndex];
+
+	if (!animState.IsBlendTree())
+	{
+		if (animState.clipId.IsValid()) result.push_back({ animState.clipId, 1.0f });
+		return result;
+	}
+	if (animState.blendEntries.empty()) return result;
+	if (animState.blendEntries.size() == 1)
+	{
+		result.push_back({ animState.blendEntries[0].clipId, 1.0f });
+		return result;
+	}
+
+	if (animState.blendType == BlendTreeType::Simple1D)
+	{
+		const float value = GetParameterValue(controller, animState.blendParamXIndex);
+		const auto& entries = animState.blendEntries; // しきい値昇順ソート済み前提
+
+		if (value <= entries.front().threshold) { result.push_back({ entries.front().clipId, 1.0f }); return result; }
+		if (value >= entries.back().threshold) { result.push_back({ entries.back().clipId, 1.0f });  return result; }
+
+		for (size_t i = 0; i + 1 < entries.size(); ++i)
+		{
+			if (value >= entries[i].threshold && value <= entries[i + 1].threshold)
+			{
+				const float span = entries[i + 1].threshold - entries[i].threshold;
+				const float t = span > 0.0f ? (value - entries[i].threshold) / span : 0.0f;
+				result.push_back({ entries[i].clipId, 1.0f - t });
+				result.push_back({ entries[i + 1].clipId, t });
+				break;
+			}
+		}
+		return result;
+	}
+
+	if (animState.blendType == BlendTreeType::FreeformCartesian2D)
+	{
+		const Vector2 p{ GetParameterValue(controller, animState.blendParamXIndex),
+						  GetParameterValue(controller, animState.blendParamYIndex) };
+		const size_t n = animState.blendEntries.size();
+		std::vector<float> w(n, 1.0f);
+
+		// Gradient Band Interpolation（Juckett方式）
+		for (size_t i = 0; i < n; ++i)
+		{
+			const Vector2& pi = animState.blendEntries[i].position;
+			for (size_t j = 0; j < n; ++j)
+			{
+				if (i == j) continue;
+				const Vector2& pj = animState.blendEntries[j].position;
+				const Vector2 hij{ pj.x - pi.x, pj.y - pi.y };
+				const float lenSq = hij.x * hij.x + hij.y * hij.y;
+				if (lenSq < 1e-6f) continue;
+
+				const Vector2 diff{ p.x - pi.x, p.y - pi.y };
+				const float proj = (diff.x * hij.x + diff.y * hij.y) / lenSq;
+				w[i] = std::min(w[i], std::clamp(1.0f - proj, 0.0f, 1.0f));
+			}
+		}
+
+		float sum = 0.0f;
+		for (float wi : w) sum += wi;
+		if (sum <= 1e-6f) { result.push_back({ animState.blendEntries.front().clipId, 1.0f }); return result; }
+
+		for (size_t i = 0; i < n; ++i)
+			if (w[i] > 1e-6f) result.push_back({ animState.blendEntries[i].clipId, w[i] / sum });
+		return result;
+	}
+
+	result.push_back({ animState.blendEntries.front().clipId, 1.0f });
+	return result;
 }
 
 float RuntimeAnimatorController::GetParameterValue(const AnimatorController& controller, int parameterIndex) const
@@ -387,77 +502,61 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	// 現在のステートを取得
 	auto& currentState = controller.states[currentStateIndex];
 
-	auto& state = playing[INDEX_FRONT];
-	state.time += deltaTime * currentState.speed; // 再生速度を考慮して時間を進める
+	auto& frontPlaying = playing[INDEX_FRONT];
+	frontPlaying.time += deltaTime * currentState.speed;
 
-	if (!state.clipId.IsValid()) return;
+	auto frontWeights = ComputeBlendWeights(controller, frontPlaying);
+	const float frontAvgDuration = ResolveAverageDuration(controller, frontWeights);
+	if (frontAvgDuration <= 0.0f) return;
+	const float frontNormalizedTime = currentState.loop
+		? fmod(frontPlaying.time / frontAvgDuration, 1.0f)
+		: (std::min)(frontPlaying.time / frontAvgDuration, 1.0f);
 
-	auto& clip = controller.animationClips.at(state.clipId);
-	if (!clip) return;
-	
-	float normalizedTime = currentState.loop ? fmod(state.time / clip->duration, 1.0f) : (std::min)(state.time / clip->duration, 1.0f);
-	static int count = 0;
-	if (count++ % 60 == 0) {
-		LOG_INFO("[RuntimeAnimatorController] Update: currentStateIndex=" + std::to_string(currentStateIndex) + ", normalizedTime=" + std::to_string(normalizedTime));
-	}
-
-	// アニメーションをサンプリングして現在のポーズを更新(weightは1.0fで固定)
-	clip->Sample(normalizedTime * clip->duration, currentPose, 1.0f);
-
-	// 遷移中でなければ、AnyStateの遷移条件 -> 現在のStateの遷移条件の順で条件をチェック
 	if (transitionDuration <= 0.0f)
 	{
 		for (const auto& transition : controller.transitions)
 		{
-			if (transition.fromStateIndex != -1 && transition.fromStateIndex != currentStateIndex) continue; // 遷移元が現在のステートでない場合はスキップ
-			if (transition.hasExitTime && normalizedTime < transition.exitTime) continue; // ExitTimeが設定されていて、まだExitTimeに達していない場合はスキップ
-			if (transition.conditions.size() > 0)
-			{
-				if (!AllConditionsMet(controller, transition.conditions)) continue; // 条件を満たしていない場合はスキップ
-			}
-			// 遷移条件を満たした場合、遷移を開始
+			if (transition.fromStateIndex != -1 && transition.fromStateIndex != currentStateIndex) continue;
+			if (transition.hasExitTime && frontNormalizedTime < transition.exitTime) continue;
+			if (transition.conditions.size() > 0 && !AllConditionsMet(controller, transition.conditions)) continue;
 			BeginTransition(transition, controller);
-
-			// Triggerを消費する
 			ConsumeTrigger(controller, transition.conditions);
-
-			break; // 最初に条件を満たした遷移だけを処理する
+			break;
 		}
 	}
-	// 遷移中の場合、遷移の経過時間を更新
-	else if (playing.size() == TRANSITION_SIZE)
+
+	float t = 0.0f;
+	std::vector<BlendedClipWeight> nextWeights;
+	float nextNormalizedTime = 0.0f;
+	const bool transitioning = (transitionDuration > 0.0f && playing.size() == TRANSITION_SIZE);
+
+	if (transitioning)
 	{
-		auto& nextPlayingState = playing[INDEX_NEXT];
-		if (nextPlayingState.stateIndex < 0 || nextPlayingState.stateIndex >= controller.states.size()) return;
-		auto& nextState = controller.states[nextPlayingState.stateIndex];
-		nextPlayingState.time += deltaTime * nextState.speed; // 遷移先のステートの再生速度を考慮して時間を進める
+		auto& nextPlaying = playing[INDEX_NEXT];
+		if (nextPlaying.stateIndex < 0 || nextPlaying.stateIndex >= (int)controller.states.size()) return;
+		auto& nextState = controller.states[nextPlaying.stateIndex];
+		nextPlaying.time += deltaTime * nextState.speed;
 		transitionElapsed += deltaTime;
+		t = std::clamp(transitionElapsed / transitionDuration, 0.0f, 1.0f);
 
-		// 遷移の進行度を計算
-		float t = std::clamp(transitionElapsed / transitionDuration, 0.0f, 1.0f);
-		// 遷移中のアニメーションをサンプリングして現在のポーズを更新
-		if (nextPlayingState.clipId.IsValid())
+		nextWeights = ComputeBlendWeights(controller, nextPlaying);
+		const float nextAvgDuration = ResolveAverageDuration(controller, nextWeights);
+		if (nextAvgDuration > 0.0f)
 		{
-			auto& nextClip = controller.animationClips.at(nextPlayingState.clipId);
-			if (nextClip)
-			{
-				float nextNormalizedTime = nextState.loop ? fmod(nextPlayingState.time / nextClip->duration, 1.0f) : (std::min)(nextPlayingState.time / nextClip->duration, 1.0f);
-				// 遷移先のアニメーションをサンプリングして現在のポーズを更新(weightはtでブレンド)
-				nextClip->Sample(nextNormalizedTime * nextClip->duration, currentPose, t);
-			}
+			nextNormalizedTime = nextState.loop
+				? fmod(nextPlaying.time / nextAvgDuration, 1.0f)
+				: (std::min)(nextPlaying.time / nextAvgDuration, 1.0f);
 		}
+	}
 
-		if (transitionElapsed >= transitionDuration)
-		{
-			// 遷移が完了したら、最初のアニメーションを削除
-			if (playing.size() > 1)
-			{
-				playing.erase(playing.begin());
-			}
-			transitionElapsed = 0.0f;
-			transitionDuration = 0.0f;
-			currentStateIndex = playing[INDEX_FRONT].stateIndex; // 遷移後のステートに更新
-		}
+	CompositePose(controller, frontWeights, frontNormalizedTime, 1.0f - t, nextWeights, nextNormalizedTime, t);
+
+	if (transitioning && transitionElapsed >= transitionDuration)
+	{
+		if (playing.size() > 1) playing.erase(playing.begin());
+		transitionElapsed = 0.0f;
+		transitionDuration = 0.0f;
+		currentStateIndex = playing[INDEX_FRONT].stateIndex;
 	}
 }
 
@@ -466,7 +565,7 @@ void RuntimeAnimatorController::BeginTransition(const AnimatorTransition& transi
 	// 遷移の開始処理
 	if (transition.toStateIndex >= 0 && transition.toStateIndex < controller.states.size())
 	{
-		playing.push_back({ controller.states[transition.toStateIndex].clipId, 0.0f, transition.toStateIndex });
+		playing.push_back({ 0.0f, transition.toStateIndex });
 		transitionElapsed = 0.0f;
 		transitionDuration = transition.blendDuration;
 	}
@@ -483,4 +582,40 @@ void RuntimeAnimatorController::ConsumeTrigger(const AnimatorController& control
 		}
 	}
 
+}
+
+// weightsの平均クリップ長を求める（single-clipなら単にそのクリップの長さになる = 既存挙動と一致）
+float RuntimeAnimatorController::ResolveAverageDuration(const AnimatorController& controller, const std::vector<BlendedClipWeight>& weights) const
+{
+	float avg = 0.0f;
+	for (const auto& bw : weights)
+	{
+		auto it = controller.animationClips.find(bw.clipId);
+		if (it != controller.animationClips.end() && it->second) avg += bw.weight * it->second->duration;
+	}
+	return avg;
+}
+
+// フロント/ネクストの全エントリを(1-t)/tでスケールしてまとめ、1本の累積合成ループでcurrentPoseに書き込む
+void RuntimeAnimatorController::CompositePose(
+	const AnimatorController& controller,
+	const std::vector<BlendedClipWeight>& frontWeights, float frontTime, float frontScale,
+	const std::vector<BlendedClipWeight>& nextWeights, float nextTime, float nextScale)
+{
+	struct FlatSample { CurryEngine::Resources::AssetId clipId; float time; float weight; };
+	std::vector<FlatSample> flat;
+	for (const auto& bw : frontWeights) if (bw.weight > 0.0f) flat.push_back({ bw.clipId, frontTime, bw.weight * frontScale });
+	for (const auto& bw : nextWeights)  if (bw.weight > 0.0f && nextScale > 0.0f) flat.push_back({ bw.clipId, nextTime, bw.weight * nextScale });
+	if (flat.empty()) return;
+
+	float cumulative = 0.0f;
+	for (auto& s : flat)
+	{
+		auto it = controller.animationClips.find(s.clipId);
+		if (it == controller.animationClips.end() || !it->second) continue;
+		const float sampleTime = s.time * it->second->duration;
+
+		if (cumulative <= 0.0f) { it->second->Sample(sampleTime, currentPose, 1.0f); cumulative = s.weight; }
+		else { cumulative += s.weight; it->second->Sample(sampleTime, currentPose, s.weight / cumulative); }
+	}
 }

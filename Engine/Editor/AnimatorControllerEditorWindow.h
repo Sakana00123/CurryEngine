@@ -59,12 +59,17 @@ namespace CurryEngine::Editor
         void DeleteTransition(int transitionIndex, std::shared_ptr<AnimatorController>& controller);
 
         // --- インスペクタ(既存Animator.cppのUIをここに移植) ---
-        void DrawInspectorPanel(std::shared_ptr<AnimatorController>& controller);
+        void DrawInspectorPanel(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
 
 		// --- インスペクタ描画 ---
         void DrawStateInspector(int stateIndex, std::shared_ptr<AnimatorController>& controller);
         void DrawTransitionInspector(int transitionIndex, std::shared_ptr<AnimatorController>& controller);
-        void DrawParametersTab(std::shared_ptr<AnimatorController>& controller);
+        void DrawParametersTab(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
+
+        void DrawSingleClipSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller);
+        void DrawBlendTreeSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller);
+        CurryEngine::Resources::AssetId DrawClipPickerButton(const char* popupId, std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& currentClipId);
+        std::string GetClipDisplayName(std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& clipId) const;
 
         // --- ヘルパー ---
 		// 2つのノードの中心座標から、線分がノードの矩形に接する点を計算する

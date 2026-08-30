@@ -1,11 +1,32 @@
 {
     "animationClipIds": [
-        "5de2d5d76a110e5e7a2b1f4339ff4b6b",
         "1ff05b65e994c72e36f11a39a9643dca",
+        "135edde904e3bf3510a9c270d87f9188",
+        "5de2d5d76a110e5e7a2b1f4339ff4b6b",
         "67459e3f68dbb785e284e6d0760aa113",
-        "bb610cfdfa4498b7ecdb197352a977e4",
+        "e53d01451c6771ea5129d6e38f5f025f",
         "7d6d2aba72073aa6962c208b193d3e51",
-        "d68cb684a9cff921066f73594470e365"
+        "bb610cfdfa4498b7ecdb197352a977e4",
+        "d68cb684a9cff921066f73594470e365",
+        "770e772f8d486535d1e51e47e35ceca7",
+        "22fa192b5aeb849ae2a97ad690dd9b16",
+        "4b4c2fa64eeba99e7fdb17798f8dda53",
+        "5c199d1207155f7a66357343ba5e01cf",
+        "446431230060056a2169782ce69224e8",
+        "de80b053bf307ff1784aef0f2fc44965",
+        "d729f2a253d193a9af7d77faa93b528c",
+        "6d00a95662b233628699e6c1d34db0ad",
+        "a1ac6dc918a185f35127b79451b9ac82",
+        "b7c647f1f6e79bee4b1b7d58a6d08370",
+        "50bc6fa152161df8cd2cadb685f0840c",
+        "5c7a3b5c499b3c304618ad7011c18dcb",
+        "a370bca20f7185fcafdb2be5aa7b874a",
+        "a574fd786605aaac839c3d6a0cdd7c12",
+        "964c641dc1d9808b3e313d91d3a99aa0",
+        "e1980c981cbb490e11ec8bab90d68a43",
+        "b0d143e4a0dc1bc523ca66367ecce7e9",
+        "7f0e8eda6eb41fa7b51a154779b674a3",
+        "2798ea3edab4b24af2cc66daa6559304"
     ],
     "defaultStateIndex": 0,
     "name": "",
@@ -19,10 +40,34 @@
             "defaultValue": 0.0,
             "name": "Speed",
             "type": 0
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "InputX",
+            "type": 0
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "InputY",
+            "type": 0
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "PrevInputX",
+            "type": 0
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "PrevInputY",
+            "type": 0
         }
     ],
     "states": [
         {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendType": 0,
             "clipId": "1ff05b65e994c72e36f11a39a9643dca",
             "editorPosition": [
                 161.2500457763672,
@@ -33,6 +78,10 @@
             "speed": 1.0
         },
         {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendType": 0,
             "clipId": "67459e3f68dbb785e284e6d0760aa113",
             "editorPosition": [
                 188.77777099609375,
@@ -43,16 +92,154 @@
             "speed": 1.0
         },
         {
+            "blendEntries": [
+                {
+                    "clipId": "d68cb684a9cff921066f73594470e365",
+                    "position": [
+                        0.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "135edde904e3bf3510a9c270d87f9188",
+                    "position": [
+                        1.0,
+                        0.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "770e772f8d486535d1e51e47e35ceca7",
+                    "position": [
+                        1.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "22fa192b5aeb849ae2a97ad690dd9b16",
+                    "position": [
+                        -1.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "4b4c2fa64eeba99e7fdb17798f8dda53",
+                    "position": [
+                        -1.0,
+                        0.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "5c199d1207155f7a66357343ba5e01cf",
+                    "position": [
+                        0.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "d729f2a253d193a9af7d77faa93b528c",
+                    "position": [
+                        1.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "6d00a95662b233628699e6c1d34db0ad",
+                    "position": [
+                        -1.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                }
+            ],
+            "blendParamXIndex": 2,
+            "blendParamYIndex": 3,
+            "blendType": 2,
             "clipId": "d68cb684a9cff921066f73594470e365",
             "editorPosition": [
-                151.611083984375,
-                -110.6944808959961
+                152.72218322753906,
+                -108.47225189208984
             ],
             "loop": false,
             "name": "WalkStart",
             "speed": 1.0
         },
         {
+            "blendEntries": [
+                {
+                    "clipId": "7d6d2aba72073aa6962c208b193d3e51",
+                    "position": [
+                        0.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "446431230060056a2169782ce69224e8",
+                    "position": [
+                        -1.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "a1ac6dc918a185f35127b79451b9ac82",
+                    "position": [
+                        1.0,
+                        0.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "50bc6fa152161df8cd2cadb685f0840c",
+                    "position": [
+                        -1.0,
+                        0.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "5c7a3b5c499b3c304618ad7011c18dcb",
+                    "position": [
+                        1.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "e53d01451c6771ea5129d6e38f5f025f",
+                    "position": [
+                        -1.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "a370bca20f7185fcafdb2be5aa7b874a",
+                    "position": [
+                        0.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "a574fd786605aaac839c3d6a0cdd7c12",
+                    "position": [
+                        1.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                }
+            ],
+            "blendParamXIndex": 2,
+            "blendParamYIndex": 3,
+            "blendType": 2,
             "clipId": "7d6d2aba72073aa6962c208b193d3e51",
             "editorPosition": [
                 373.8596496582031,
@@ -63,6 +250,75 @@
             "speed": 1.0
         },
         {
+            "blendEntries": [
+                {
+                    "clipId": "de80b053bf307ff1784aef0f2fc44965",
+                    "position": [
+                        1.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "964c641dc1d9808b3e313d91d3a99aa0",
+                    "position": [
+                        -1.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "e1980c981cbb490e11ec8bab90d68a43",
+                    "position": [
+                        1.0,
+                        0.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "b0d143e4a0dc1bc523ca66367ecce7e9",
+                    "position": [
+                        -1.0,
+                        0.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "5de2d5d76a110e5e7a2b1f4339ff4b6b",
+                    "position": [
+                        0.0,
+                        1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "7f0e8eda6eb41fa7b51a154779b674a3",
+                    "position": [
+                        -1.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "b7c647f1f6e79bee4b1b7d58a6d08370",
+                    "position": [
+                        0.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                },
+                {
+                    "clipId": "2798ea3edab4b24af2cc66daa6559304",
+                    "position": [
+                        1.0,
+                        -1.0
+                    ],
+                    "threshold": 0.0
+                }
+            ],
+            "blendParamXIndex": 4,
+            "blendParamYIndex": 5,
+            "blendType": 2,
             "clipId": "5de2d5d76a110e5e7a2b1f4339ff4b6b",
             "editorPosition": [
                 325.081787109375,
@@ -153,6 +409,20 @@
             "fromStateIndex": 1,
             "hasExitTime": true,
             "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 2,
+                    "parameterIndex": 1,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": 4,
+            "hasExitTime": false,
+            "toStateIndex": 2
         }
     ]
 }

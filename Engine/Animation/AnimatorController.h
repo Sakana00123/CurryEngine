@@ -51,6 +51,20 @@ struct AnimatorTransition
 	float exitTime = 1.0f; // 正規化時間(0.0f〜1.0f)での遷移開始タイミング
 };
 
+enum class BlendTreeType
+{
+	None,                // 通常の単一クリップステート
+	Simple1D,            // 1軸のみでブレンド（移動速度など）
+	FreeformCartesian2D, // 2軸を自由配置でブレンド（前後+左右ストレイフなど）
+};
+
+struct BlendTreeEntry
+{
+	CurryEngine::Resources::AssetId clipId;
+	float threshold = 0.0f; // Simple1D用
+	Vector2 position;       // FreeformCartesian2D用
+};
+
 struct AnimatorState
 {
 	std::string name;
@@ -58,6 +72,13 @@ struct AnimatorState
 	float speed = 1.0f; // 再生速度
 	bool loop = true; // ループ再生するかどうか
 	Vector2 editorPosition; // エディタ上での位置（ノードの配置用）
+
+	BlendTreeType blendType = BlendTreeType::None;
+	int blendParamXIndex = -1;    // Simple1Dはこれのみ使用 / FreeformCartesian2DはX軸
+	int blendParamYIndex = -1;    // FreeformCartesian2Dの場合のみ使用
+	std::vector<BlendTreeEntry> blendEntries; // blendType != None のときのみ使用
+
+	bool IsBlendTree() const { return blendType != BlendTreeType::None; }
 };
 
 class AnimatorController : public Resource
@@ -82,9 +103,13 @@ public:
 
 struct RuntimeAnimatorController
 {
+	struct BlendedClipWeight
+	{
+		CurryEngine::Resources::AssetId clipId;
+		float weight = 1.0f; // クリップの重み（0.0f〜1.0f）
+	};
 	struct PlayingState
 	{
-		CurryEngine::Resources::AssetId clipId; // アニメーションクリップのID
 		float time = 0.0f;
 		int stateIndex = -1; // AnimatorController::statesのインデックス
 	};
@@ -110,6 +135,9 @@ struct RuntimeAnimatorController
 	// 条件をすべて満たしているかを判定する
 	bool AllConditionsMet(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions) const;
 
+	// ブレンドツリーの重みを計算する
+	std::vector<BlendedClipWeight> ComputeBlendWeights(const AnimatorController& controller, const PlayingState& state) const;
+
 	// アニメーションパラメータの値を取得する
 	float GetParameterValue(const AnimatorController& controller, int parameterIndex) const;
 
@@ -117,4 +145,10 @@ struct RuntimeAnimatorController
 
 	void BeginTransition(const AnimatorTransition& transition, const AnimatorController& controller);
 	void ConsumeTrigger(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions);
+
+	// 再生中のアニメーションの平均再生時間を計算する
+	float ResolveAverageDuration(const AnimatorController& controller, const std::vector<BlendedClipWeight>& weights) const;
+	// 再生中のアニメーションの平均ループフラグを計算する
+	void CompositePose(const AnimatorController& controller, const std::vector<BlendedClipWeight>& frontWeights, float frontTime, float frontScale,
+		const std::vector<BlendedClipWeight>& nextWeights, float nextTime, float nextScale);
 };

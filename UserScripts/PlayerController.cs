@@ -5,6 +5,7 @@ public class PlayerController : Behaviour
 {
     Animator? animator;
     public float speed = 0.0f;
+    Vector2 prevInput = Vector2.zero;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -21,11 +22,19 @@ public class PlayerController : Behaviour
         if (animator != null)
         {
             animator.SetFloat("Speed", speed);
+            animator.SetFloat("InputX", input.x);
+            animator.SetFloat("InputY", input.y);
+            animator.SetFloat("PrevInputX", prevInput.x);
+            animator.SetFloat("PrevInputY", prevInput.y);
 
             if (Input.GetKeyDown(KeyCode.F))
             {
                 animator.SetTrigger("AttackTrigger");
             }
+        }
+        if (input != Vector2.zero)
+        { 
+            prevInput = input;
         }
     }
 }
