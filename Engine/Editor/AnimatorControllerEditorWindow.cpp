@@ -760,6 +760,10 @@ namespace CurryEngine::Editor
         if (is2D) drawParamCombo("Blend Param Y", state.blendParamYIndex);
 
         ImGui::Spacing();
+		ImGui::InputFloat("Blend Smooth Time", &state.blendSmoothTime);
+        state.blendSmoothTime = (std::max)(0.0f, state.blendSmoothTime);
+
+		ImGui::Spacing();
         ImGui::SeparatorText("Entries");
 
         // 1Dはしきい値順でないとComputeBlendWeights側の補間が破綻するため描画毎にソート

@@ -77,6 +77,7 @@ struct AnimatorState
 	int blendParamXIndex = -1;    // Simple1Dはこれのみ使用 / FreeformCartesian2DはX軸
 	int blendParamYIndex = -1;    // FreeformCartesian2Dの場合のみ使用
 	std::vector<BlendTreeEntry> blendEntries; // blendType != None のときのみ使用
+	float blendSmoothTime = 0.0f;
 
 	bool IsBlendTree() const { return blendType != BlendTreeType::None; }
 };
@@ -112,6 +113,7 @@ struct RuntimeAnimatorController
 	{
 		float time = 0.0f;
 		int stateIndex = -1; // AnimatorController::statesのインデックス
+		std::unordered_map<CurryEngine::Resources::AssetId, float> blendWeights;
 	};
 	std::unordered_map<std::string, float> parameterValues; // Trigger含め全部float運用が楽
 	std::vector<PlayingState> playing; // 複数のアニメーションを同時に再生する場合の状態を保持
@@ -151,4 +153,9 @@ struct RuntimeAnimatorController
 	// 再生中のアニメーションの平均ループフラグを計算する
 	void CompositePose(const AnimatorController& controller, const std::vector<BlendedClipWeight>& frontWeights, float frontTime, float frontScale,
 		const std::vector<BlendedClipWeight>& nextWeights, float nextTime, float nextScale);
+	// ブレンドウェイトをスムーズに補間する
+	std::vector<BlendedClipWeight> SmoothBlendWeights(
+		std::unordered_map<CurryEngine::Resources::AssetId, float>& current,
+		const std::vector<BlendedClipWeight>& target,
+		float smoothTime, float deltaTime) const;
 };

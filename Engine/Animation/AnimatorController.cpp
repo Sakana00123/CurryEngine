@@ -101,6 +101,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 					state.blendEntries.push_back(entry);
 				}
 			}
+			state.blendSmoothTime = stateJson.value<float>("blendSmoothTime", 0.0f);
 
 			states.push_back(state);
 		}
@@ -183,6 +184,7 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 			entryJson["position"] = { entry.position.x, entry.position.y };
 			stateJson["blendEntries"].push_back(entryJson);
 		}
+		stateJson["blendSmoothTime"] = state.blendSmoothTime;
 
 		jsonData["states"].push_back(stateJson);
 	}
@@ -505,7 +507,8 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	auto& frontPlaying = playing[INDEX_FRONT];
 	frontPlaying.time += deltaTime * currentState.speed;
 
-	auto frontWeights = ComputeBlendWeights(controller, frontPlaying);
+	auto frontTargetWeights = ComputeBlendWeights(controller, frontPlaying);
+	auto frontWeights = SmoothBlendWeights(frontPlaying.blendWeights, frontTargetWeights, currentState.blendSmoothTime, deltaTime);
 	const float frontAvgDuration = ResolveAverageDuration(controller, frontWeights);
 	if (frontAvgDuration <= 0.0f) return;
 	const float frontNormalizedTime = currentState.loop
@@ -539,7 +542,8 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		transitionElapsed += deltaTime;
 		t = std::clamp(transitionElapsed / transitionDuration, 0.0f, 1.0f);
 
-		nextWeights = ComputeBlendWeights(controller, nextPlaying);
+		auto nextTargetWeights = ComputeBlendWeights(controller, nextPlaying);
+		nextWeights = SmoothBlendWeights(nextPlaying.blendWeights, nextTargetWeights, nextState.blendSmoothTime, deltaTime);
 		const float nextAvgDuration = ResolveAverageDuration(controller, nextWeights);
 		if (nextAvgDuration > 0.0f)
 		{
@@ -618,4 +622,51 @@ void RuntimeAnimatorController::CompositePose(
 		if (cumulative <= 0.0f) { it->second->Sample(sampleTime, currentPose, 1.0f); cumulative = s.weight; }
 		else { cumulative += s.weight; it->second->Sample(sampleTime, currentPose, s.weight / cumulative); }
 	}
+}
+
+std::vector<RuntimeAnimatorController::BlendedClipWeight> RuntimeAnimatorController::SmoothBlendWeights(
+	std::unordered_map<CurryEngine::Resources::AssetId, float>& current,
+	const std::vector<BlendedClipWeight>& target,
+	float smoothTime, float deltaTime) const
+{
+	std::unordered_map<CurryEngine::Resources::AssetId, float> targetMap;
+	for (const auto& t : target) targetMap[t.clipId] = t.weight;
+
+	if (smoothTime <= 0.0f)
+	{
+		current = targetMap; // 従来通り即時切替
+	}
+	else
+	{
+		const float alpha = 1.0f - std::exp(-deltaTime / smoothTime);
+
+		// 既存エントリを目標へ近づける(目標に無いものは0へ収束させて消す)
+		for (auto it = current.begin(); it != current.end(); )
+		{
+			auto found = targetMap.find(it->first);
+			const float targetWeight = (found != targetMap.end()) ? found->second : 0.0f;
+			it->second += (targetWeight - it->second) * alpha;
+
+			if (it->second < 1e-4f && found == targetMap.end())
+				it = current.erase(it); // 完全にフェードアウトしたら破棄(マップ肥大化防止)
+			else
+				++it;
+		}
+		// 新しく現れたエントリは0から立ち上げる
+		for (const auto& [clipId, weight] : targetMap)
+		{
+			if (current.find(clipId) == current.end())
+				current[clipId] = weight * alpha;
+		}
+	}
+
+	// 合計1.0になるよう正規化
+	float sum = 0.0f;
+	for (const auto& [clipId, weight] : current) sum += weight;
+
+	std::vector<BlendedClipWeight> result;
+	if (sum <= 1e-6f) return result;
+	for (const auto& [clipId, weight] : current)
+		if (weight > 1e-6f) result.push_back({ clipId, weight / sum });
+	return result;
 }

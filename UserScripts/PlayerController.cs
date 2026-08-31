@@ -5,6 +5,7 @@ public class PlayerController : Behaviour
 {
     Animator? animator;
     public float speed = 0.0f;
+    public float acceleration = 5.0f;
     Vector2 prevInput = Vector2.zero;
     // Start is called before the first frame update
     public override void Start()
@@ -17,7 +18,7 @@ public class PlayerController : Behaviour
     {
         Vector2 input = Input.GetAxis(GamepadStick.LeftStick);
         Vector3 movement = new Vector3(input.x, 0, input.y);
-        speed = movement.magnitude;
+        speed = movement.magnitude * acceleration;
         transform.Translate(movement.normalized * speed * Time.DeltaTime);
         if (animator != null)
         {

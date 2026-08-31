@@ -67,6 +67,7 @@
             "blendEntries": [],
             "blendParamXIndex": -1,
             "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
             "blendType": 0,
             "clipId": "1ff05b65e994c72e36f11a39a9643dca",
             "editorPosition": [
@@ -81,6 +82,7 @@
             "blendEntries": [],
             "blendParamXIndex": -1,
             "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
             "blendType": 0,
             "clipId": "67459e3f68dbb785e284e6d0760aa113",
             "editorPosition": [
@@ -160,6 +162,7 @@
             ],
             "blendParamXIndex": 2,
             "blendParamYIndex": 3,
+            "blendSmoothTime": 0.25,
             "blendType": 2,
             "clipId": "d68cb684a9cff921066f73594470e365",
             "editorPosition": [
@@ -239,6 +242,7 @@
             ],
             "blendParamXIndex": 2,
             "blendParamYIndex": 3,
+            "blendSmoothTime": 0.25,
             "blendType": 2,
             "clipId": "7d6d2aba72073aa6962c208b193d3e51",
             "editorPosition": [
@@ -318,6 +322,7 @@
             ],
             "blendParamXIndex": 4,
             "blendParamYIndex": 5,
+            "blendSmoothTime": 0.25,
             "blendType": 2,
             "clipId": "5de2d5d76a110e5e7a2b1f4339ff4b6b",
             "editorPosition": [
@@ -345,7 +350,7 @@
             "toStateIndex": 1
         },
         {
-            "blendDuration": 0.4000000059604645,
+            "blendDuration": 0.30000001192092896,
             "conditions": [
                 {
                     "comparison": 2,
@@ -361,7 +366,7 @@
         {
             "blendDuration": 0.25,
             "conditions": [],
-            "exitTime": 0.7990000247955322,
+            "exitTime": 0.6470000147819519,
             "fromStateIndex": 2,
             "hasExitTime": true,
             "toStateIndex": 3
