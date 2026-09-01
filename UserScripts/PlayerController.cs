@@ -18,7 +18,12 @@ public class PlayerController : Behaviour
     {
         Vector2 input = Input.GetAxis(GamepadStick.LeftStick);
         Vector3 movement = new Vector3(input.x, 0, input.y);
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
         speed = movement.magnitude * acceleration;
+        if (isRunning)
+        {
+            speed *= 2.0f; // Double the speed when running
+        }
         transform.Translate(movement.normalized * speed * Time.DeltaTime);
         if (animator != null)
         {
