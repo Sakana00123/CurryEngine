@@ -75,6 +75,10 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			state.clipId = stateJson["clipId"].get<CurryEngine::Resources::AssetId>();
 			state.speed = stateJson["speed"].get<float>();
 			state.loop = stateJson["loop"].get<bool>();
+			state.rootMotion = stateJson.value<bool>("rootMotion", false);
+			state.rootNodeIndex = stateJson.value<int>("rootNodeIndex", -1);
+			state.rootMotionXZ = stateJson.value<bool>("rootMotionXZ", true);
+			state.rootMotionY = stateJson.value<bool>("rootMotionY", true);
 			auto& posArray = stateJson["editorPosition"];
 			if (posArray.is_array() && posArray.size() == 2)
 			{
@@ -170,6 +174,10 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 		stateJson["clipId"] = state.clipId;
 		stateJson["speed"] = state.speed;
 		stateJson["loop"] = state.loop;
+		stateJson["rootMotion"] = state.rootMotion;
+		stateJson["rootNodeIndex"] = state.rootNodeIndex;
+		stateJson["rootMotionXZ"] = state.rootMotionXZ;
+		stateJson["rootMotionY"] = state.rootMotionY;
 		stateJson["editorPosition"] = { state.editorPosition.x, state.editorPosition.y };
 
 		stateJson["blendType"] = static_cast<int>(state.blendType);
@@ -235,7 +243,8 @@ AnimatorParameter::Type AnimatorController::GetParameterType(const std::string& 
 void RuntimeAnimatorController::Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose)
 {
 	// 初期ポーズの設定
-	currentPose = std::move(initialPose);
+	currentPose = initialPose;
+	bindPose = std::move(initialPose);
 
 	// パラメータの初期化
 	for (const auto& param : controller.parameters)
@@ -515,6 +524,36 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		? fmod(frontPlaying.time / frontAvgDuration, 1.0f)
 		: (std::min)(frontPlaying.time / frontAvgDuration, 1.0f);
 
+	if (currentState.rootMotion)
+	{
+		for (const auto& bw : frontWeights)
+		{
+			auto it = controller.animationClips.find(bw.clipId);
+			if (it == controller.animationClips.end() || !it->second) continue;
+			const float duration = it->second->duration;
+
+			XMFLOAT3 dT{}; XMFLOAT4 dR{ 0,0,0,1 };
+			if (currentState.loop && frontNormalizedTime < rootMotionLastNormalizedTime)
+			{
+				// ループで先頭に戻った：終端までの分＋先頭からの分を合成
+				XMFLOAT3 t1{}, t2{}; XMFLOAT4 r1{ 0,0,0,1 }, r2{ 0,0,0,1 };
+				it->second->SampleRootMotion(rootMotionLastNormalizedTime * duration, duration, t1, r1, currentState.rootNodeIndex, currentState.rootMotionXZ, currentState.rootMotionY);
+				it->second->SampleRootMotion(0.0f, frontNormalizedTime * duration, t2, r2, currentState.rootNodeIndex, currentState.rootMotionXZ, currentState.rootMotionY);
+				dT = { t1.x + t2.x, t1.y + t2.y, t1.z + t2.z };
+				XMStoreFloat4(&dR, XMQuaternionMultiply(XMLoadFloat4(&r1), XMLoadFloat4(&r2)));
+			}
+			else
+			{
+				it->second->SampleRootMotion(rootMotionLastNormalizedTime * duration, frontNormalizedTime * duration, dT, dR, currentState.rootNodeIndex, currentState.rootMotionXZ, currentState.rootMotionY);
+			}
+			rootMotionDeltaPosition.x += dT.x; rootMotionDeltaPosition.y += dT.y; rootMotionDeltaPosition.z += dT.z;
+			XMStoreFloat4(&rootMotionDeltaRotation,
+				XMQuaternionMultiply(XMLoadFloat4(&rootMotionDeltaRotation), XMLoadFloat4(&dR)));
+			break; // 最初の有効クリップのみ（ブレンドツリー中の合成は今後の課題）
+		}
+	}
+	rootMotionLastNormalizedTime = frontNormalizedTime;
+
 	if (transitionDuration <= 0.0f)
 	{
 		for (const auto& transition : controller.transitions)
@@ -553,7 +592,27 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		}
 	}
 
+	// フロントとネクストのウェイトを合成して最終的なポーズを計算
 	CompositePose(controller, frontWeights, frontNormalizedTime, 1.0f - t, nextWeights, nextNormalizedTime, t);
+	
+	// ルートモーションで抜き出した軸は、スケルトンのローカル姿勢からは打ち消す
+	if (currentState.rootMotion &&
+		currentState.rootNodeIndex >= 0 &&
+		currentState.rootNodeIndex < (int)currentPose.size() &&
+		currentState.rootNodeIndex < (int)bindPose.size())
+	{
+		auto& rootPose = currentPose[currentState.rootNodeIndex];
+		const auto& bindRoot = bindPose[currentState.rootNodeIndex];
+		if (currentState.rootMotionXZ)
+		{
+			rootPose.translation.x = bindRoot.translation.x;
+			rootPose.translation.z = bindRoot.translation.z;
+		}
+		if (currentState.rootMotionY)
+		{
+			rootPose.translation.y = bindRoot.translation.y;
+		}
+	}
 
 	if (transitioning && transitionElapsed >= transitionDuration)
 	{
@@ -585,7 +644,14 @@ void RuntimeAnimatorController::ConsumeTrigger(const AnimatorController& control
 			parameterValues[paramName] = 0.0f;
 		}
 	}
+}
 
+void RuntimeAnimatorController::ConsumeRootMotion(const AnimatorController& controller, XMFLOAT3& outDeltaPosition, XMFLOAT4& outDeltaRotation)
+{
+	outDeltaPosition = rootMotionDeltaPosition;
+	outDeltaRotation = rootMotionDeltaRotation;
+	rootMotionDeltaPosition = { 0.0f, 0.0f, 0.0f };
+	rootMotionDeltaRotation = { 0.0f, 0.0f, 0.0f, 1.0f };
 }
 
 // weightsの平均クリップ長を求める（single-clipなら単にそのクリップの長さになる = 既存挙動と一致）

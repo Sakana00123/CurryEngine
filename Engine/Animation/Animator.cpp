@@ -36,6 +36,15 @@ void Animator::Update(float deltaTime)
 		}
 		runtimeController->Update(deltaTime, *controller);
 
+		XMFLOAT3 deltaPosition; XMFLOAT4 deltaRotation;
+		runtimeController->ConsumeRootMotion(*controller, deltaPosition, deltaRotation);
+
+		// ルートモーションを適用する
+		Quaternion rotation = GetTransform()->GetWorldRotation();
+		XMVECTOR worldDelta = XMVector3Rotate(XMLoadFloat3(&deltaPosition), XMLoadFloat4(&rotation));
+		XMStoreFloat3(&deltaPosition, worldDelta);
+		GetOwner()->GetTransform()->Translate((Vector3)deltaPosition);
+
 		// GltfModelRenderer にアニメーションを適用する
 		if (targetModelRendererId.IsValid())
 		{
@@ -153,7 +162,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 
 		if (ImGui::Button(" + ##state"))
 		{
-			controller->states.push_back(AnimatorState{ "NewState", CurryEngine::Resources::AssetId(), 1.0f, true, Vector2(0, 0)});
+			controller->states.push_back(AnimatorState{ "NewState", CurryEngine::Resources::AssetId(), 1.0f, Vector2(0, 0) });
 		}
 		ImGui::SameLine();
 		if (ImGui::Button(" - ##state"))

@@ -14,6 +14,8 @@ struct NodePose
 	DirectX::XMFLOAT3 translation;
 	DirectX::XMFLOAT4 rotation;
 	DirectX::XMFLOAT3 scale;
+	std::string nodeName; // デバッグ用にノード名を保持
+	DirectX::XMFLOAT4X4 globalTransform;
 };
 
 
@@ -67,4 +69,15 @@ public:
 
 	// アニメーションをサンプリングして、指定された時間における各ノードのポーズを取得する
 	void Sample(float time, std::vector<NodePose>& out, float weight = 1.0f) const;
+
+	// 2時刻間のルートノードの移動/回転差分を取得する
+	void SampleRootMotion(float previousTime, float currentTime,
+		DirectX::XMFLOAT3& outDeltaTranslation, DirectX::XMFLOAT4& outDeltaRotation, int rootNodeIndex, bool rootMotionXZ, bool rootMotionY) const;
+
+	// 指定時刻のルートノードの移動/回転差分を取得する（前フレームとの差分ではなく、0秒時点からの差分）
+	void GetRootMotionDelta(float time, DirectX::XMFLOAT3& outDeltaTranslation, DirectX::XMFLOAT4& outDeltaRotation, int rootNodeIndex, bool rootMotionXZ, bool rootMotionY) const;
+private:
+	// 指定ノードのローカルT/Rを直接サンプリングする内部ヘルパー（Sample()と共通化）
+	void SampleNodeChannel(int nodeIndex, float time,
+		DirectX::XMFLOAT3* outT, DirectX::XMFLOAT4* outR) const;
 };

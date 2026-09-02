@@ -342,6 +342,23 @@
             "handle": 9,
             "name": "Test",
             "staticFriction": 0.5
+        },
+        {
+            "bounceCombineMode": 1,
+            "bounciness": 0.0,
+            "dynamicFriction": 0.5,
+            "frictionCombineMode": 0,
+            "handle": 10,
+            "name": "Player",
+            "staticFriction": 1.0
         }
-    ]
+    ],
+    "scene": {
+        "bounceThresholdVelocity": 0.05000000074505806,
+        "gravity": [
+            0.0,
+            -36.0,
+            0.0
+        ]
+    }
 }

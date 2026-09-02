@@ -776,6 +776,8 @@ std::vector<NodePose> GltfModelRenderer::GetBindPose() const
         pose[i].translation = m_asset->nodes[i].translation;
         pose[i].rotation = m_asset->nodes[i].rotation;
         pose[i].scale = m_asset->nodes[i].scale;
+		pose[i].nodeName = m_asset->nodes[i].name;
+		pose[i].globalTransform = m_asset->nodes[i].globalTransform;
     }
     return pose;
 }

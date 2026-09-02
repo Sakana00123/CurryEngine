@@ -707,6 +707,15 @@ json Physics::Serialize()
 	json j;
 	// ここで保存するデータをシリアライズする処理を実装
 
+	// シーンの設定をシリアライズする
+	{
+		json sceneJson;
+		Vector3 gravity = GetGravity();
+		sceneJson["gravity"] = { gravity.x, gravity.y, gravity.z };
+		sceneJson["bounceThresholdVelocity"] = GetBounceThresholdVelocity();
+		j["scene"] = sceneJson;
+	}
+
 	// 登録されたマテリアルのデータをシリアライズする
 	json materialsJson = json::array();
 	for (const auto& pair : m_materialMap)
@@ -738,6 +747,25 @@ json Physics::Serialize()
 void Physics::Deserialize(const json& j)
 {
 	// ここで保存されたデータをデシリアライズして復元する処理を実装
+
+	// シーンの設定のデシリアライズ
+	if (j.contains("scene"))
+	{
+		const json& sceneJson = j["scene"];
+		if (sceneJson.contains("gravity") && sceneJson["gravity"].is_array() && sceneJson["gravity"].size() == 3)
+		{
+			Vector3 gravity;
+			gravity.x = sceneJson["gravity"][0].get<float>();
+			gravity.y = sceneJson["gravity"][1].get<float>();
+			gravity.z = sceneJson["gravity"][2].get<float>();
+			SetGravity(gravity);
+		}
+		if (sceneJson.contains("bounceThresholdVelocity"))
+		{
+			float bounceThresholdVelocity = sceneJson["bounceThresholdVelocity"].get<float>();
+			SetBounceThresholdVelocity(bounceThresholdVelocity);
+		}
+	}
 
 	// マテリアルのデシリアライズ
 	if (j.contains("materials") && j["materials"].is_array())
@@ -1334,7 +1362,7 @@ void Physics::DrawGUI()
 
 		// 重力の編集
 		ImGui::Separator();
-		/*{
+		{
 			Vector3 gravity = GetGravity();
 			if (ImGui::DragFloat3("Gravity", &gravity.x, 0.1f))
 			{
@@ -1344,7 +1372,16 @@ void Physics::DrawGUI()
 			{
 				SetGravity({0.0f, -9.81f, 0.0f});
 			}
-		}*/
+		}
+		// 反発の閾値速度の編集
+		ImGui::Separator();
+		{
+			float bounceThresholdVelocity = GetBounceThresholdVelocity();
+			if (ImGui::DragFloat("Bounce Threshold Velocity", &bounceThresholdVelocity, 0.1f, 0.0f, 100.0f))
+			{
+				SetBounceThresholdVelocity(bounceThresholdVelocity);
+			}
+		}
 
 		// 物理マテリアルの一覧を表示
 		if (ImGui::CollapsingHeader("Materials", ImGuiTreeNodeFlags_DefaultOpen))
@@ -1712,6 +1749,11 @@ bool Physics::AddBoxShape(Transform* transform, const BoxColliderData& data, Sha
 		// BoxColliderのサイズを設定してPxBoxGeometryを生成
 		physx::PxBoxGeometry boxGeometry(data.halfExtents.x, data.halfExtents.y, data.halfExtents.z);
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
+		if (pxMaterial == nullptr)
+		{
+			pxMaterial = GetMaterial(DEFAULT_MATERIAL_HANDLE); // デフォルトマテリアルを使用
+			LOG_ERROR("Failed to get material for BoxCollider. Using default material.");
+		}
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, boxGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, "Failed to create shape!");
 
@@ -1758,6 +1800,11 @@ bool Physics::AddSphereShape(Transform* transform, const SphereColliderData& dat
 		// SphereColliderの半径を設定してPxSphereGeometryを生成
 		physx::PxSphereGeometry sphereGeometry(data.radius);
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
+		if (pxMaterial == nullptr)
+		{
+			pxMaterial = GetMaterial(DEFAULT_MATERIAL_HANDLE); // デフォルトマテリアルを使用
+			LOG_ERROR("Failed to get material for BoxCollider. Using default material.");
+		}
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, sphereGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, "Failed to create shape!");
 		
@@ -1803,6 +1850,11 @@ bool Physics::AddCapsuleShape(Transform* transform, const CapsuleColliderData& d
 		// CapsuleColliderの半径と高さを設定してPxCapsuleGeometryを生成
 		physx::PxCapsuleGeometry capsuleGeometry(data.radius, data.height * 0.5f); // PhysXのカプセルは半分の高さを指定する必要がある
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
+		if (pxMaterial == nullptr)
+		{
+			pxMaterial = GetMaterial(DEFAULT_MATERIAL_HANDLE); // デフォルトマテリアルを使用
+			LOG_ERROR("Failed to get material for BoxCollider. Using default material.");
+		}
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, capsuleGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, "Failed to create shape!");
 
@@ -1886,6 +1938,11 @@ bool Physics::AddTriangleMeshShape(Transform* transform, const MeshColliderData&
 		physx::PxMeshScale meshScale(ToPxVec3(worldScale)); // メッシュのスケールを設定
 		physx::PxTriangleMeshGeometry triangleMeshGeometry(triangleMesh, meshScale);
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
+		if (pxMaterial == nullptr)
+		{
+			pxMaterial = GetMaterial(DEFAULT_MATERIAL_HANDLE); // デフォルトマテリアルを使用
+			LOG_ERROR("Failed to get material for BoxCollider. Using default material.");
+		}
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, triangleMeshGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, L"Failed to create shape!");
 
@@ -1960,6 +2017,11 @@ bool Physics::AddConvexMeshShape(Transform* transform, const MeshColliderData& d
 		physx::PxMeshScale meshScale(ToPxVec3(worldScale)); // メッシュのスケールを設定
 		physx::PxConvexMeshGeometry convexMeshGeometry(convexMesh, meshScale);
 		physx::PxMaterial* pxMaterial = GetMaterial(data.materialHandle);
+		if (pxMaterial == nullptr)
+		{
+			pxMaterial = GetMaterial(DEFAULT_MATERIAL_HANDLE); // デフォルトマテリアルを使用
+			LOG_ERROR("Failed to get material for BoxCollider. Using default material.");
+		}
 		physx::PxShape* shape = physx::PxRigidActorExt::createExclusiveShape(*actor, convexMeshGeometry, *pxMaterial);
 		_ASSERT_EXPR(shape != nullptr, L"Failed to create shape!");
 
@@ -1998,14 +2060,59 @@ bool Physics::AddConvexMeshShape(Transform* transform, const MeshColliderData& d
 void Physics::SetGravity(const Vector3& gravity)
 {
 	// ここでシーンの重力を設定する処理を実装
-	GetScene()->setGravity(ToPxVec3(gravity)); // PhysXのシーンに重力を設定
+	if (auto* scene = GetScene())
+	{
+		scene->setGravity(ToPxVec3(gravity)); // PhysXのシーンに重力を設定
+	}
+	else
+	{
+		// シーンが存在しない場合はエラーメッセージを出力
+		LOG_ERROR("Failed to set gravity: Scene is not initialized.");
+	}
 }
 
 Vector3 Physics::GetGravity()
 {
 	// ここでシーンの重力を取得する処理を実装
-	physx::PxVec3 gravity = GetScene()->getGravity(); // PhysXのシーンから重力を取得
-	return ToVector3(gravity); // Vector3に変換して返す
+	if (auto* scene = GetScene())
+	{
+		return ToVector3(scene->getGravity()); // PhysXのシーンから重力を取得して返す
+	}
+	else
+	{
+		// シーンが存在しない場合はエラーメッセージを出力し、デフォルトの重力を返す
+		LOG_ERROR("Failed to get gravity: Scene is not initialized.");
+		return Vector3(0.0f, -9.81f, 0.0f); // デフォルトの重力を返す
+	}
+}
+
+void Physics::SetBounceThresholdVelocity(float thresholdVelocity)
+{
+	// ここでシーンのバウンス閾値速度を設定する処理を実装
+	if (auto* scene = GetScene())
+	{
+		scene->setBounceThresholdVelocity(thresholdVelocity); // PhysXのシーンにバウンス閾値速度を設定
+	}
+	else
+	{
+		// シーンが存在しない場合はエラーメッセージを出力
+		LOG_ERROR("Failed to set bounce threshold velocity: Scene is not initialized.");
+	}
+}
+
+float Physics::GetBounceThresholdVelocity()
+{
+	// ここでシーンのバウンス閾値速度を取得する処理を実装
+	if (auto* scene = GetScene())
+	{
+		return scene->getBounceThresholdVelocity(); // PhysXのシーンからバウンス閾値速度を取得して返す
+	}
+	else
+	{
+		// シーンが存在しない場合はエラーメッセージを出力し、デフォルトのバウンス閾値速度を返す
+		LOG_ERROR("Failed to get bounce threshold velocity: Scene is not initialized.");
+		return 0.05f; // デフォルトのバウンス閾値速度を返す
+	}
 }
 
 // --- レイキャスト ---
@@ -2957,6 +3064,16 @@ void Physics::RemoveShape(ShapeHandle shapeHandle)
 			}
 		}
 	}
+}
+
+physx::PxMaterial* Physics::GetMaterial(MaterialHandle materialHandle)
+{
+	// ここでMaterialHandle に対応する PxMaterial* を取得、存在しない場合はnullptrを返す処理を実装
+	if (m_materialMap.contains(materialHandle))
+	{
+		return m_materialMap[materialHandle].pxMaterial;
+	}
+	return nullptr; // 存在しない場合はnullptrを返す
 }
 
 //void Physics::ClearShapes(ActorHandle actorHandle)

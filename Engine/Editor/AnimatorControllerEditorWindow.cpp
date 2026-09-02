@@ -534,7 +534,7 @@ namespace CurryEngine::Editor
             else if (ImGui::MenuItem("Create State"))
             {
                 Vector2 worldPos = ScreenToWorld(pendingContextMenuScreenPos, canvasOrigin);
-                controller->states.push_back(AnimatorState{ "NewState", CurryEngine::Resources::AssetId(), 1.0f, true, worldPos });
+                controller->states.push_back(AnimatorState{ "NewState", CurryEngine::Resources::AssetId(), 1.0f, worldPos });
             }
             ImGui::EndPopup();
         }
@@ -648,7 +648,7 @@ namespace CurryEngine::Editor
             {
                 if (selectedStateIndex >= 0 && selectedStateIndex < (int)controller->states.size())
                 {
-                    DrawStateInspector(selectedStateIndex, controller);
+                    DrawStateInspector(selectedStateIndex, controller, runtimeController);
                 }
                 else if (selectedTransitionIndex >= 0 && selectedTransitionIndex < (int)controller->transitions.size())
                 {
@@ -672,7 +672,7 @@ namespace CurryEngine::Editor
         }
     }
 
-    void AnimatorControllerEditorWindow::DrawStateInspector(int stateIndex, std::shared_ptr<AnimatorController>& controller)
+    void AnimatorControllerEditorWindow::DrawStateInspector(int stateIndex, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
         AnimatorState& state = controller->states[stateIndex];
         ImGui::SeparatorText("State");
@@ -704,11 +704,59 @@ namespace CurryEngine::Editor
         if (state.blendType == BlendTreeType::None)
             DrawSingleClipSection(state, controller);
         else
-            DrawBlendTreeSection(state, controller);
+            DrawBlendTreeSection(state, controller, runtimeController);
 
         ImGui::Spacing();
         ImGui::InputFloat("Speed", &state.speed);
         ImGui::Checkbox("Loop", &state.loop);
+		ImGui::Checkbox("RootMotion", &state.rootMotion);
+        if (state.rootMotion)
+        {
+			// RootMotionのルートノードを設定するUI
+			static std::unordered_map<int, std::string> rootMotionNodeNames; // nodeIndex -> nodeName
+
+			ImGui::PushID("RootMotionNodePicker");
+            std::string currentRootNodeName = (state.rootNodeIndex >= 0 && state.rootNodeIndex < (int)rootMotionNodeNames.size())
+				? rootMotionNodeNames[state.rootNodeIndex] : "None";
+            ImGui::Text("RootMotionNode: %s", currentRootNodeName.c_str());
+			ImGui::SameLine();
+            if (ImGui::Button("..."))
+            {
+				// rootMotionNodeNamesを更新する処理
+				rootMotionNodeNames.clear();
+                if (auto runtimeControllerPtr = runtimeController.lock())
+                {
+                    for (size_t i = 0; i < runtimeControllerPtr->currentPose.size(); ++i)
+                    {
+						rootMotionNodeNames[i] = runtimeControllerPtr->currentPose[i].nodeName;
+                    }
+                }
+
+                // RootMotionノード選択ポップアップを開く処理
+				ImGui::OpenPopup("SelectRootMotionNodePopup");
+            }
+			ImGui::SameLine();
+			ImGui::InputInt("RootNodeIndex", &state.rootNodeIndex);
+			ImGui::PopID();
+            if (ImGui::BeginPopup("SelectRootMotionNodePopup"))
+            {
+                // ここでrootMotionNodeNamesを使ってノード選択UIを描画する
+                for (const auto& pair : rootMotionNodeNames)
+                {
+                    int nodeIndex = pair.first;
+                    const std::string& nodeName = pair.second;
+                    bool isSelected = (state.rootNodeIndex == nodeIndex);
+                    if (ImGui::Selectable(nodeName.c_str(), isSelected))
+                    {
+                        state.rootNodeIndex = nodeIndex;
+                    }
+                    if (isSelected) ImGui::SetItemDefaultFocus();
+                }
+                ImGui::EndPopup();
+			}
+			ImGui::Checkbox("RootMotionXZ", &state.rootMotionXZ);
+			ImGui::Checkbox("RootMotionY", &state.rootMotionY);
+		}
 
         ImGui::Spacing();
         bool isDefault = (stateIndex == controller->defaultStateIndex);
@@ -731,7 +779,7 @@ namespace CurryEngine::Editor
         state.clipId = DrawClipPickerButton("SelectAnimationClipPopup", controller, state.clipId);
     }
 
-    void AnimatorControllerEditorWindow::DrawBlendTreeSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller)
+    void AnimatorControllerEditorWindow::DrawBlendTreeSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
         const bool is2D = (state.blendType == BlendTreeType::FreeformCartesian2D);
 
@@ -762,6 +810,12 @@ namespace CurryEngine::Editor
         ImGui::Spacing();
 		ImGui::InputFloat("Blend Smooth Time", &state.blendSmoothTime);
         state.blendSmoothTime = (std::max)(0.0f, state.blendSmoothTime);
+        
+        /*if (is2D)
+        {
+            ImGui::Spacing();
+            DrawBlendSpace2D(state, controller, runtimeController);
+        }*/
 
 		ImGui::Spacing();
         ImGui::SeparatorText("Entries");
@@ -793,13 +847,125 @@ namespace CurryEngine::Editor
             ImGui::Separator();
             ImGui::PopID();
         }
-        if (removeIndex >= 0) state.blendEntries.erase(state.blendEntries.begin() + removeIndex);
+        if (removeIndex >= 0)
+        {
+            state.blendEntries.erase(state.blendEntries.begin() + removeIndex);
+            if (selectedBlendEntryIndex >= (int)state.blendEntries.size()) selectedBlendEntryIndex = -1;
+        }
 
         if (ImGui::Button(" + Entry", ImVec2(-1, 0)))
             state.blendEntries.push_back(BlendTreeEntry{});
 
         if (state.blendEntries.size() < 2)
             ImGui::TextColored(ImVec4(1.0f, 0.7f, 0.3f, 1.0f), "ブレンドには2つ以上のEntryが必要です。");
+    }
+
+    void AnimatorControllerEditorWindow::DrawBlendSpace2D(
+        AnimatorState& state, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
+    {
+        constexpr float CanvasSize = 260.0f;
+        constexpr float PointRadius = 6.0f;
+
+        ImGui::Text("Blend Space");
+        ImGui::BeginChild("BlendSpaceCanvas", ImVec2(CanvasSize, CanvasSize), true, ImGuiWindowFlags_NoScrollbar);
+
+        ImDrawList* drawList = ImGui::GetWindowDrawList();
+        const ImVec2 canvasOrigin = ImGui::GetCursorScreenPos();
+        const ImVec2 canvasEnd = ImVec2(canvasOrigin.x + CanvasSize, canvasOrigin.y + CanvasSize);
+        drawList->AddRectFilled(canvasOrigin, canvasEnd, IM_COL32(30, 30, 34, 255));
+
+        // --- 表示範囲: エントリ座標を包む正方形 + 余白で自動調整 ---
+        float extent = 1.0f;
+        //for (const auto& entry : state.blendEntries)
+        //    extent = (std::max)(extent, (std::max)(std::fabs(entry.position.x), std::fabs(entry.position.y)));
+        //extent *= 1.25f;
+
+        auto worldToCanvas = [&](const Vector2& w) -> ImVec2
+            {
+                const float nx = (w.x / extent) * 0.5f + 0.5f;
+                const float ny = (w.y / extent) * 0.5f + 0.5f;
+                return ImVec2(canvasOrigin.x + nx * CanvasSize, canvasOrigin.y + (1.0f - ny) * CanvasSize);
+            };
+        auto canvasToWorld = [&](const ImVec2& s) -> Vector2
+            {
+                const float nx = (s.x - canvasOrigin.x) / CanvasSize;
+                const float ny = 1.0f - (s.y - canvasOrigin.y) / CanvasSize;
+                return Vector2((nx - 0.5f) * 2.0f * extent, (ny - 0.5f) * 2.0f * extent);
+            };
+
+        // --- 原点軸のグリッド線 ---
+        const ImVec2 originScreen = worldToCanvas(Vector2(0.0f, 0.0f));
+        drawList->AddLine(ImVec2(canvasOrigin.x, originScreen.y), ImVec2(canvasEnd.x, originScreen.y), IM_COL32(70, 70, 76, 255));
+        drawList->AddLine(ImVec2(originScreen.x, canvasOrigin.y), ImVec2(originScreen.x, canvasEnd.y), IM_COL32(70, 70, 76, 255));
+
+        // --- 現在のパラメータ位置と、再生中なら実際の重みを取得 ---
+        Vector2 currentParamPos(0.0f, 0.0f);
+        if (state.blendParamXIndex >= 0 && state.blendParamXIndex < (int)controller->parameters.size())
+            currentParamPos.x = controller->parameters[state.blendParamXIndex].defaultValue;
+        if (state.blendParamYIndex >= 0 && state.blendParamYIndex < (int)controller->parameters.size())
+            currentParamPos.y = controller->parameters[state.blendParamYIndex].defaultValue;
+
+        std::unordered_map<CurryEngine::Resources::AssetId, float> liveWeights;
+        if (auto runtime = runtimeController.lock())
+        {
+            if (state.blendParamXIndex >= 0) currentParamPos.x = runtime->GetParameterValue(*controller, state.blendParamXIndex);
+            if (state.blendParamYIndex >= 0) currentParamPos.y = runtime->GetParameterValue(*controller, state.blendParamYIndex);
+
+            for (const auto& p : runtime->playing)
+            {
+                if (p.stateIndex >= 0 && &controller->states[p.stateIndex] == &state)
+                {
+                    float sum = 0.0f;
+                    for (const auto& [clipId, w] : p.blendWeights) sum += w;
+                    if (sum > 1e-6f)
+                        for (const auto& [clipId, w] : p.blendWeights) liveWeights[clipId] = w / sum;
+                    break;
+                }
+            }
+        }
+
+        const ImVec2 markerScreen = worldToCanvas(currentParamPos);
+        drawList->AddLine(ImVec2(markerScreen.x - 8, markerScreen.y), ImVec2(markerScreen.x + 8, markerScreen.y), IM_COL32(255, 210, 80, 255), 2.0f);
+        drawList->AddLine(ImVec2(markerScreen.x, markerScreen.y - 8), ImVec2(markerScreen.x, markerScreen.y + 8), IM_COL32(255, 210, 80, 255), 2.0f);
+
+        // --- エントリ点の描画と操作 ---
+        ImGui::SetCursorScreenPos(canvasOrigin);
+        ImGui::InvisibleButton("BlendSpaceInteraction", ImVec2(CanvasSize, CanvasSize));
+        const bool canvasHovered = ImGui::IsItemHovered();
+
+        for (int i = 0; i < (int)state.blendEntries.size(); ++i)
+        {
+            auto& entry = state.blendEntries[i];
+            const ImVec2 pointScreen = worldToCanvas(entry.position);
+            const float weight = liveWeights.count(entry.clipId) ? liveWeights[entry.clipId] : 0.0f;
+            const bool isSelected = (i == selectedBlendEntryIndex);
+
+            if (weight > 0.01f) // 現在の寄与度をリングの太さ/濃さで可視化
+                drawList->AddCircle(pointScreen, PointRadius + 4.0f, IM_COL32(255, 210, 80, (int)(weight * 255)), 16, 2.0f + weight * 2.0f);
+
+            drawList->AddCircleFilled(pointScreen, PointRadius, isSelected ? IM_COL32(255, 255, 255, 255) : IM_COL32(120, 170, 240, 255));
+            drawList->AddText(ImVec2(pointScreen.x + PointRadius + 2.0f, pointScreen.y - 7.0f), IM_COL32(220, 220, 220, 255),
+                GetClipDisplayName(controller, entry.clipId).c_str());
+
+            const ImVec2 mouse = ImGui::GetMousePos();
+            const float distSq = (pointScreen.x - mouse.x) * (pointScreen.x - mouse.x) + (pointScreen.y - mouse.y) * (pointScreen.y - mouse.y);
+            if (canvasHovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && distSq <= (PointRadius + 3.0f) * (PointRadius + 3.0f))
+            {
+                selectedBlendEntryIndex = i;
+                isDraggingBlendEntry = true;
+            }
+        }
+
+        if (isDraggingBlendEntry && selectedBlendEntryIndex >= 0 && selectedBlendEntryIndex < (int)state.blendEntries.size())
+        {
+            if (ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+                state.blendEntries[selectedBlendEntryIndex].position = canvasToWorld(ImGui::GetMousePos());
+            if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
+                isDraggingBlendEntry = false;
+        }
+
+        ImGui::EndChild();
+        ImGui::TextDisabled("表示範囲: 原点から±%.1f（自動調整）", extent);
     }
 
     void AnimatorControllerEditorWindow::DrawTransitionInspector(int transitionIndex, std::shared_ptr<AnimatorController>& controller)
@@ -976,7 +1142,7 @@ namespace CurryEngine::Editor
     {
         static std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> clipMap;
         CurryEngine::Resources::AssetId result = currentClipId;
-
+		ImGui::PushID(popupId);
         if (ImGui::SmallButton("..."))
         {
             ImGui::OpenPopup(popupId);
@@ -1007,6 +1173,7 @@ namespace CurryEngine::Editor
             }
             ImGui::EndPopup();
         }
+		ImGui::PopID();
         return result;
     }
 

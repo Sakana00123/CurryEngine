@@ -360,6 +360,18 @@ public:
 	 */
 	static Vector3 GetGravity();
 
+	/**
+	 * @brief シーンのバウンス閾値速度を設定する
+	 * @param thresholdVelocity 設定するバウンス閾値速度。衝突時の相対速度がこの値を下回る場合、反発が無視されます。
+	 */
+	static void SetBounceThresholdVelocity(float thresholdVelocity);
+
+	/**
+	 * @brief シーンのバウンス閾値速度を取得する
+	 * @return 現在のシーンのバウンス閾値速度
+	 */
+	static float GetBounceThresholdVelocity();
+
 
 	// --- レイキャスト ---
 
@@ -890,7 +902,7 @@ public:
 
 	static physx::PxPhysics* GetPhysics() { return pxPhysics; }
 
-	static physx::PxMaterial* GetMaterial(MaterialHandle handle) { return m_materialMap[handle].pxMaterial; }
+	static physx::PxMaterial* GetMaterial(MaterialHandle handle);
 
 	static physx::PxControllerManager* GetControllerManager() { return pxControllerManager; }
 

@@ -161,3 +161,112 @@ void AnimationClip::Sample(float time, std::vector<NodePose>& out, float weight)
         }
     }
 }
+
+void AnimationClip::SampleRootMotion(float previousTime, float currentTime,
+	XMFLOAT3& outDeltaTranslation, XMFLOAT4& outDeltaRotation, int rootNodeIndex, bool rootMotionXZ, bool rootMotionY) const
+{
+	outDeltaTranslation = { 0, 0, 0 };
+	outDeltaRotation = { 0, 0, 0, 1 };
+	if (rootNodeIndex < 0) return;
+
+	XMFLOAT3 t0, t1;
+	XMFLOAT4 r0, r1;
+	SampleNodeChannel(rootNodeIndex, previousTime, &t0, &r0);
+	SampleNodeChannel(rootNodeIndex, currentTime, &t1, &r1);
+
+	XMVECTOR delta = XMVectorSubtract(XMLoadFloat3(&t1), XMLoadFloat3(&t0));
+	if (!rootMotionXZ) delta = XMVectorSetX(XMVectorSetZ(delta, 0.0f), 0.0f);
+	if (!rootMotionY)  delta = XMVectorSetY(delta, 0.0f);
+	XMStoreFloat3(&outDeltaTranslation, delta);
+
+	XMVECTOR R0 = XMQuaternionNormalize(XMLoadFloat4(&r0));
+	XMVECTOR R1 = XMQuaternionNormalize(XMLoadFloat4(&r1));
+	XMVECTOR deltaR = XMQuaternionMultiply(XMQuaternionInverse(R0), R1);
+	XMStoreFloat4(&outDeltaRotation, deltaR);
+}
+
+void AnimationClip::GetRootMotionDelta(float time, XMFLOAT3& outDeltaTranslation, XMFLOAT4& outDeltaRotation, int rootNodeIndex, bool rootMotionXZ, bool rootMotionY) const
+{
+    outDeltaTranslation = { 0, 0, 0 };
+    outDeltaRotation = { 0, 0, 0, 1 };
+    if (rootNodeIndex < 0) return;
+    XMFLOAT3 t0, t1;
+    XMFLOAT4 r0, r1;
+    SampleNodeChannel(rootNodeIndex, 0.0f, &t0, &r0);
+    SampleNodeChannel(rootNodeIndex, time, &t1, &r1);
+    XMVECTOR delta = XMVectorSubtract(XMLoadFloat3(&t1), XMLoadFloat3(&t0));
+    if (!rootMotionXZ) delta = XMVectorSetX(XMVectorSetZ(delta, 0.0f), 0.0f);
+    if (!rootMotionY)  delta = XMVectorSetY(delta, 0.0f);
+    XMStoreFloat3(&outDeltaTranslation, delta);
+    XMVECTOR R0 = XMQuaternionNormalize(XMLoadFloat4(&r0));
+    XMVECTOR R1 = XMQuaternionNormalize(XMLoadFloat4(&r1));
+    XMVECTOR deltaR = XMQuaternionMultiply(XMQuaternionInverse(R0), R1);
+    XMStoreFloat4(&outDeltaRotation, deltaR);
+}
+
+void AnimationClip::SampleNodeChannel(int nodeIndex, float time, XMFLOAT3* outTranslation, XMFLOAT4* outRotation) const
+{
+    std::function<size_t(const std::vector<float>&, float, float&)> indexof = [](const std::vector<float>& timelines, float time, float& interpolationFactor)->size_t {
+        const size_t keyframeCount = timelines.size();
+        if (time > timelines.at(keyframeCount - 1)) {
+            interpolationFactor = 1.0f;
+            return keyframeCount - 2;
+        }
+        else if (time < timelines.at(0)) {
+            interpolationFactor = 0.0f;
+            return 0;
+        }
+        size_t keyframeIndex = 0;
+        for (size_t timeIndex = 1; timeIndex < keyframeCount; ++timeIndex) {
+            if (time < timelines.at(timeIndex)) {
+                keyframeIndex = std::max<size_t>(0LL, timeIndex - 1);
+                break;
+            }
+        }
+        interpolationFactor = (time - timelines.at(keyframeIndex + 0)) / (timelines.at(keyframeIndex + 1) - timelines.at(keyframeIndex + 0));
+        return keyframeIndex;
+        };
+
+	// 指定ノードに関連するチャネルを検索
+    for (std::vector<Channel>::const_reference channel : channels)
+    {
+        if (channel.targetNode != nodeIndex) {
+            continue; // このチャネルは指定ノードに関連していない
+		}
+        const Sampler& sampler{ samplers.at(channel.sampler) };
+        const std::vector<float>& timeline{ timelines.at(sampler.input) };
+
+        // キーフレームがなければスキップ
+        if (timeline.size() == 0)
+        {
+            continue;
+        }
+		// 補間係数を計算してキーフレームインデックスを取得
+        float interpolationFactor{};
+        size_t keyframeIndex{ indexof(timeline, time, interpolationFactor) };
+
+        // 対象のプロパティ（回転・位置）に応じて補間と適用を行う
+        if (channel.targetPath == "rotation")
+        {
+            const std::vector<XMFLOAT4>& l_rotations{ rotations.at(sampler.output) };
+
+            XMVECTOR R0 = XMLoadFloat4(&l_rotations.at(keyframeIndex + 0));
+            XMVECTOR R1 = XMLoadFloat4(&l_rotations.at(keyframeIndex + 1));
+
+            // 球面線形補間（Slerp）で回転を補間し、正規化して適用
+            XMStoreFloat4(outRotation,
+                XMQuaternionNormalize(XMQuaternionSlerp(R0, R1, interpolationFactor)));
+        }
+        else if (channel.targetPath == "translation")
+        {
+            const std::vector<XMFLOAT3>& l_translations{ translations.at(sampler.output) };
+
+            XMVECTOR T0 = XMLoadFloat3(&l_translations.at(keyframeIndex + 0));
+            XMVECTOR T1 = XMLoadFloat3(&l_translations.at(keyframeIndex + 1));
+
+            // 線形補間で位置を求めてノードに格納
+            XMStoreFloat3(outTranslation,
+                XMVectorLerp(T0, T1, interpolationFactor));
+        }
+    }
+}

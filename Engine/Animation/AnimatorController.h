@@ -70,8 +70,12 @@ struct AnimatorState
 	std::string name;
 	CurryEngine::Resources::AssetId clipId; // アニメーションクリップのID
 	float speed = 1.0f; // 再生速度
-	bool loop = true; // ループ再生するかどうか
 	Vector2 editorPosition; // エディタ上での位置（ノードの配置用）
+	bool loop = true; // ループ再生するかどうか
+	bool rootMotion = false; // ルートモーションを使用するかどうか
+	int rootNodeIndex = -1; // ルートモーションを適用するノードのインデックス（-1ならルートノード）
+	bool rootMotionXZ = true; // ルートモーションのXZ軸を使用するかどうか
+	bool rootMotionY = true; // ルートモーションのY軸を使用するかどうか
 
 	BlendTreeType blendType = BlendTreeType::None;
 	int blendParamXIndex = -1;    // Simple1Dはこれのみ使用 / FreeformCartesian2DはX軸
@@ -121,6 +125,11 @@ struct RuntimeAnimatorController
 	float transitionElapsed = 0.0f;
 	float transitionDuration = 0.0f;
 	std::vector<NodePose> currentPose;
+	std::vector<NodePose> bindPose; // Initialize時の初期ポーズを保持（ルートモーション適用時の基準値）
+
+	XMFLOAT3 rootMotionDeltaPosition{};   // このフレーム分の移動量（呼び出し側が毎フレームConsumeする）
+	XMFLOAT4 rootMotionDeltaRotation{ 0,0,0,1 };
+	float rootMotionLastNormalizedTime = 0.0f; // 直前フレームの正規化時間（ルートモーション差分計算用）
 
 	void Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose = {});
 
@@ -147,6 +156,8 @@ struct RuntimeAnimatorController
 
 	void BeginTransition(const AnimatorTransition& transition, const AnimatorController& controller);
 	void ConsumeTrigger(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions);
+	// 蓄積したルートモーション差分を取得してリセットする
+	void ConsumeRootMotion(const AnimatorController& controller, XMFLOAT3& outDeltaPosition, XMFLOAT4& outDeltaRotation);
 
 	// 再生中のアニメーションの平均再生時間を計算する
 	float ResolveAverageDuration(const AnimatorController& controller, const std::vector<BlendedClipWeight>& weights) const;
@@ -158,4 +169,5 @@ struct RuntimeAnimatorController
 		std::unordered_map<CurryEngine::Resources::AssetId, float>& current,
 		const std::vector<BlendedClipWeight>& target,
 		float smoothTime, float deltaTime) const;
+
 };

@@ -123,7 +123,7 @@ void GameRenderPipeline::SetupRenderPasses()
 	AddRenderPass(std::make_unique<UIPass>());
 	AddRenderPass(std::make_unique<PostProcessPass>());
 	//PFX
-	AddRenderPass(std::make_unique<PfxCrtPass>());
+	//AddRenderPass(std::make_unique<PfxCrtPass>());
 	AddRenderPass(std::make_unique<TransitionPass>());
 
 	AddRenderPass(std::make_unique<FinalPass>());

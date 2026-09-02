@@ -28,6 +28,7 @@
         "a574fd786605aaac839c3d6a0cdd7c12",
         "964c641dc1d9808b3e313d91d3a99aa0",
         "e1980c981cbb490e11ec8bab90d68a43",
+        "a00d466470c87897c3bd44027f9c994b",
         "b0d143e4a0dc1bc523ca66367ecce7e9",
         "5bddd51e79efd1aa216b0b34a65d1cda",
         "04208556212b8c6734113c6a6f777b98",
@@ -50,7 +51,9 @@
         "79d8ecfdbda63861b809a2c89a7c3691",
         "c7db0b5610f94e6fa5789a36f5e8bdaf",
         "48bdfa1e8d41ad27338cc7e1bbd3f33c",
-        "1a9a0ca3acb0d9eee111eec5617e0abe"
+        "1a9a0ca3acb0d9eee111eec5617e0abe",
+        "dad5fc419885ad8f2cec24069b3e56f4",
+        "c9eeb53b53644b97124286b0df12cd4d"
     ],
     "defaultStateIndex": 0,
     "name": "",
@@ -84,6 +87,11 @@
             "defaultValue": 0.0,
             "name": "PrevInputY",
             "type": 0
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "Jumping",
+            "type": 2
         }
     ],
     "states": [
@@ -100,6 +108,10 @@
             ],
             "loop": true,
             "name": "Idle",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
             "speed": 1.0
         },
         {
@@ -115,6 +127,10 @@
             ],
             "loop": false,
             "name": "Attack",
+            "rootMotion": true,
+            "rootMotionXZ": true,
+            "rootMotionY": false,
+            "rootNodeIndex": 2,
             "speed": 1.0
         },
         {
@@ -190,12 +206,16 @@
             "blendType": 2,
             "clipId": "d68cb684a9cff921066f73594470e365",
             "editorPosition": [
-                147.72218322753906,
-                -83.47225189208984
+                53.97218322753906,
+                -85.97225189208984
             ],
             "loop": false,
             "name": "WalkStart",
-            "speed": 1.0
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.5
         },
         {
             "blendEntries": [
@@ -275,7 +295,11 @@
             ],
             "loop": true,
             "name": "WalkLoop",
-            "speed": 1.0
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.5
         },
         {
             "blendEntries": [
@@ -350,12 +374,16 @@
             "blendType": 2,
             "clipId": "5de2d5d76a110e5e7a2b1f4339ff4b6b",
             "editorPosition": [
-                325.081787109375,
-                -9.666656494140625
+                317.581787109375,
+                -2.1666550636291504
             ],
             "loop": false,
             "name": "WalkEnd",
-            "speed": 1.0
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.5
         },
         {
             "blendEntries": [
@@ -430,11 +458,15 @@
             "blendType": 2,
             "clipId": "",
             "editorPosition": [
-                8.0,
-                -180.0
+                241.75,
+                -207.5
             ],
-            "loop": true,
+            "loop": false,
             "name": "RunStart",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
             "speed": 1.0
         },
         {
@@ -510,11 +542,15 @@
             "blendType": 2,
             "clipId": "",
             "editorPosition": [
-                542.7772827148438,
-                -182.33328247070313
+                566.5272827148438,
+                -203.58328247070313
             ],
             "loop": true,
             "name": "RunLoop",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
             "speed": 1.0
         },
         {
@@ -590,11 +626,72 @@
             "blendType": 2,
             "clipId": "",
             "editorPosition": [
-                538.1112060546875,
-                24.11111068725586
+                565.6112060546875,
+                -4.638885974884033
+            ],
+            "loop": false,
+            "name": "RunEnd",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "a00d466470c87897c3bd44027f9c994b",
+            "editorPosition": [
+                -221.14300537109375,
+                116.24998474121094
+            ],
+            "loop": false,
+            "name": "JumpStart",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "dad5fc419885ad8f2cec24069b3e56f4",
+            "editorPosition": [
+                -223.54373168945313,
+                199.27777099609375
             ],
             "loop": true,
-            "name": "RunEnd",
+            "name": "JumpLoop",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "c9eeb53b53644b97124286b0df12cd4d",
+            "editorPosition": [
+                -221.93663024902344,
+                276.4204406738281
+            ],
+            "loop": false,
+            "name": "JumpStop",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
             "speed": 1.0
         }
     ],
@@ -699,7 +796,7 @@
                 {
                     "comparison": 2,
                     "parameterIndex": 1,
-                    "value": 25.0
+                    "value": 7.0
                 }
             ],
             "exitTime": 0.0,
@@ -713,7 +810,7 @@
                 {
                     "comparison": 2,
                     "parameterIndex": 1,
-                    "value": 25.0
+                    "value": 7.0
                 }
             ],
             "exitTime": 0.0,
@@ -727,7 +824,7 @@
                 {
                     "comparison": 2,
                     "parameterIndex": 1,
-                    "value": 25.0
+                    "value": 7.0
                 }
             ],
             "exitTime": 0.0,
@@ -749,7 +846,7 @@
                 {
                     "comparison": 2,
                     "parameterIndex": 1,
-                    "value": 25.0
+                    "value": 7.0
                 }
             ],
             "exitTime": 0.0,
@@ -785,7 +882,7 @@
                 {
                     "comparison": 0,
                     "parameterIndex": 1,
-                    "value": 25.0
+                    "value": 7.0
                 }
             ],
             "exitTime": 0.0,
@@ -804,7 +901,7 @@
                 {
                     "comparison": 0,
                     "parameterIndex": 1,
-                    "value": 25.0
+                    "value": 7.0
                 }
             ],
             "exitTime": 0.0,
@@ -818,13 +915,57 @@
                 {
                     "comparison": 2,
                     "parameterIndex": 1,
-                    "value": 25.0
+                    "value": 7.0
                 }
             ],
             "exitTime": 0.0,
             "fromStateIndex": 7,
             "hasExitTime": false,
             "toStateIndex": 5
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.7450000047683716,
+            "fromStateIndex": 8,
+            "hasExitTime": true,
+            "toStateIndex": 9
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 6,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": 9,
+            "hasExitTime": false,
+            "toStateIndex": 10
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.48500001430511475,
+            "fromStateIndex": 10,
+            "hasExitTime": true,
+            "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.20000000298023224,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 6,
+                    "value": 1.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": 0,
+            "hasExitTime": false,
+            "toStateIndex": 8
         }
     ]
 }

@@ -25,6 +25,8 @@ namespace CurryEngine::Editor
         int selectedTransitionIndex = -1;
         int draggingNodeIndex = -1;
         int transitionSourceIndex = -2; // -1ならAnyState、-2は「未設定」
+		int selectedBlendEntryIndex = -1; // BlendTreeのブレンドエントリのインデックス
+		bool isDraggingBlendEntry = false;
 
 		// transitionで、２つのノードで相互の遷移がある場合、nodeA→nodeBとnodeB→nodeAの両方の遷移を描画する際に、線が重なってしまうので、ずらすtransitionのインデックスを保持するための配列
 		std::vector<int> transitionOffsetIndices;
@@ -62,12 +64,13 @@ namespace CurryEngine::Editor
         void DrawInspectorPanel(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
 
 		// --- インスペクタ描画 ---
-        void DrawStateInspector(int stateIndex, std::shared_ptr<AnimatorController>& controller);
+        void DrawStateInspector(int stateIndex, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
         void DrawTransitionInspector(int transitionIndex, std::shared_ptr<AnimatorController>& controller);
         void DrawParametersTab(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
 
         void DrawSingleClipSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller);
-        void DrawBlendTreeSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller);
+        void DrawBlendTreeSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
+        void DrawBlendSpace2D(AnimatorState& state, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
         CurryEngine::Resources::AssetId DrawClipPickerButton(const char* popupId, std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& currentClipId);
         std::string GetClipDisplayName(std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& clipId) const;
 
