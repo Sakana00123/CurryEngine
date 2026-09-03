@@ -2,10 +2,11 @@
 #include "Lights.hlsli"
 #include "ShaderFunctions.hlsli"
 
-VS_OUT main( float3 position : POSITION, float3 normal : NORMAL)
+VS_OUT main(float3 position : POSITION, float3 normal : NORMAL, float2 texcoord : TEXCOORD)
 {
     VS_OUT vout;
     vout.position = mul(float4(position, 1.0), mul(world, viewProjection));
+    vout.texcoord = texcoord;
     float3 worldPosition = mul(float4(position, 1.0), world).xyz;
     float3 worldNormal = normalize(mul(float4(normal, 0.0), world).xyz);
     
@@ -14,27 +15,27 @@ VS_OUT main( float3 position : POSITION, float3 normal : NORMAL)
     float3 C = directionalLightColor.rgb;
     float3 K = materialColor.rgb;
     
-    const float3 V = normalize(cameraPositon.xyz - worldPosition.xyz); // 視線ベクトル
+    const float3 V = normalize(cameraPositon.xyz - worldPosition.xyz); // 隕也ｷ壹�吶け繝医Ν
     
     //vout.color.rgb = materialColor.rgb * max(0, LightColor * dot(L, N));
     //vout.color.rgb = CalcLambert(N.xyz, L.xyz, C, K);
     
-    // DirectionalLightの適用
+    // DirectionalLight縺ｮ驕ｩ逕ｨ
     vout.color.rgb = ClacHalfLambert(N.xyz, L.xyz, C, K);
     
-    // PointLightの適用
+    // PointLight縺ｮ驕ｩ逕ｨ
     float3 pointDiffuse = float3(0, 0, 0);
     float3 pointSpecular = float3(0, 0, 0);
     CalcPointLights(worldPosition, worldNormal, V, pointDiffuse, pointSpecular);
     vout.color.rgb += pointDiffuse * K;
     
-    // SpotLightの適用
+    // SpotLight縺ｮ驕ｩ逕ｨ
     float3 spotDiffuse = float3(0, 0, 0);
     float3 spotSpecular = float3(0, 0, 0);
     CalcSpotLights(worldPosition, spotDiffuse, spotSpecular);
     vout.color.rgb += spotDiffuse * K;
     
-    // アルファ値は定数
+    // 繧｢繝ｫ繝輔ぃ蛟､縺ｯ螳壽焚
     vout.color.a = materialColor.a;
 	return vout;
 }

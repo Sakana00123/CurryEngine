@@ -82,6 +82,7 @@ public class PlayerController : Behaviour
         {
             if (otherGameObject.name == "Ground")
             {
+                Debug.Log("PlayerController: OnCollisionEnter with Ground");
                 jumpCount = 0;
                 if (animator != null)
                 {

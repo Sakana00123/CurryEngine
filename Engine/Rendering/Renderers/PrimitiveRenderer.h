@@ -25,8 +25,9 @@ public:
 	/** @brief 頂点フォーマット。*/
 	struct Vertex
 	{
-		DirectX::XMFLOAT3 position;
-		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT3 position{};
+		DirectX::XMFLOAT3 normal{};
+		DirectX::XMFLOAT2 texcoord{};
 	};
 #ifndef USE_MATERIAL
 	struct Constants

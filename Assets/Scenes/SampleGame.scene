@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            1.2051142454147339,
-            -0.6247472167015076,
-            5.079659461975098
+            1.0787608623504639,
+            3.075270891189575,
+            -2.6239545345306396
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.23069164156913757,
-            -0.034149009734392166,
-            0.008100499399006367,
-            0.9723937511444092
+            0.20763497054576874,
+            -0.07185158133506775,
+            0.015293280594050884,
+            0.9754440784454346
         ],
         "speed": 3.0
     },
@@ -164,6 +164,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -434,6 +439,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -946,6 +956,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ".\\TestAssets\\kenney_prototype-textures\\PNG\\Light\\texture_06.png"
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -1075,6 +1090,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -1209,6 +1229,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -1321,6 +1346,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",

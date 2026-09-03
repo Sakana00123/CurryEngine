@@ -130,6 +130,12 @@ void PrimitiveRenderer::CreateCube(ID3D11Device* device)
 		vertices[20].normal = vertices[21].normal = vertices[22].normal = vertices[23].normal = { 0,-1,0 };
 	}
 
+	// テクスチャ座標を設定する。正立方体の各面は、左上が(0,0)、右下が(1,1)となるように設定する。
+	for (int i = 0; i < 24; i++)
+	{
+		vertices[i].texcoord = { (i % 2 == 0) ? 0.f : 1.f, (i / 2 % 2 == 0) ? 0.f : 1.f };
+	}
+
 	uint32_t indices[36]{};
 	// 正立方体は６面持ち、１つの面は２つの３角形ポリゴンで構成されるので、３角形ポリゴンの総数は６x２＝１２個、
 	// 正立方体を描画するために１２回の３角形ポリゴン描画が必要、よって参照される頂点情報は１２x３＝３６回、
@@ -432,6 +438,8 @@ json PrimitiveRenderer::Serialize() const
 	material->GetValue("materialColor", color);
 	j["color"] = { color.r, color.g, color.b, color.a };
 
+	j["material"] = material->Serialize();
+
 	return j;
 }
 void PrimitiveRenderer::Deserialize(const json& j)
@@ -442,6 +450,13 @@ void PrimitiveRenderer::Deserialize(const json& j)
 		shape = static_cast<Shape>(j["shape"].get<int>());
 		SetShape(shape);
 	}
+
+	if (j.contains("material"))
+	{
+		json materialJson = j["material"];
+		material->Deserialize(materialJson);
+	}
+
 	if (j.contains("color"))
 	{
 		json colorArray = j["color"];
