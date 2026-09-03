@@ -251,6 +251,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			{
 				runtimeController->SetFloat(parameter.name, parameterValue);
 			}
+#ifdef ENABLE_ANIMATOR_PARAMETER_BINDING
 			if (parameter.type != AnimatorParameter::Type::Trigger)
 			{
 				ImGui::SameLine();
@@ -276,7 +277,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 					// 検索ボックス
 					static char searchBuffer[128] = "";
 					ImGui::InputText("##Search", searchBuffer, sizeof(searchBuffer));
-					
+
 					auto scene = GetScene();
 					if (scene)
 					{
@@ -330,6 +331,8 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 					ImGui::EndPopup();
 				}
 			}
+#endif // ENABLE_ANIMATOR_PARAMETER_BINDING
+
 
 			ImGui::Separator();
 

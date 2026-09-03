@@ -54,6 +54,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			param.name = paramJson["name"].get<std::string>();
 			param.type = static_cast<AnimatorParameter::Type>(paramJson["type"].get<int>());
 			param.defaultValue = paramJson["defaultValue"].get<float>();
+#ifdef ENABLE_ANIMATOR_PARAMETER_BINDING
 			// バインディング情報がある場合は読み込む
 			if (paramJson.contains("binding"))
 			{
@@ -62,6 +63,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 				binding.propertyName = paramJson["binding"]["propertyName"].get<std::string>();
 				param.binding = binding;
 			}
+#endif // ENABLE_ANIMATOR_PARAMETER_BINDING
 			parameters.push_back(param);
 		}
 	}
@@ -156,6 +158,7 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 		paramJson["name"] = param.name;
 		paramJson["type"] = static_cast<int>(param.type);
 		paramJson["defaultValue"] = param.defaultValue;
+#ifdef ENABLE_ANIMATOR_PARAMETER_BINDING
 		// バインディング情報がある場合は保存する
 		if (param.binding.has_value())
 		{
@@ -164,6 +167,7 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 			bindingJson["propertyName"] = param.binding->propertyName;
 			paramJson["binding"] = bindingJson;
 		}
+#endif // ENABLE_ANIMATOR_PARAMETER_BINDING
 		jsonData["parameters"].push_back(paramJson);
 	}
 	jsonData["states"] = nlohmann::json::array();
@@ -447,6 +451,7 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	if (playing.empty()) return;
 	if (currentStateIndex < 0 || currentStateIndex >= controller.states.size()) return;
 
+#ifdef ENABLE_ANIMATOR_PARAMETER_BINDING
 	// bindingsの更新
 	for (const auto& param : controller.parameters)
 	{
@@ -484,31 +489,32 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		}
 		switch (param.type)
 		{
-			case AnimatorParameter::Type::Float:
-			{
-				// float型のプロパティを取得
-				float value = std::any_cast<float>(prop->getter(component.get()));
-				parameterValues[param.name] = value;
-				break;
-			}
-			case AnimatorParameter::Type::Int:
-			{
-				// int型のプロパティを取得
-				int value = std::any_cast<int>(prop->getter(component.get()));
-				parameterValues[param.name] = static_cast<float>(value);
-				break;
-			}
-			case AnimatorParameter::Type::Bool:
-			{
-				// bool型のプロパティを取得
-				bool value = std::any_cast<bool>(prop->getter(component.get()));
-				parameterValues[param.name] = value ? 1.0 : 0.0f;
-				break;
-			}
+		case AnimatorParameter::Type::Float:
+		{
+			// float型のプロパティを取得
+			float value = std::any_cast<float>(prop->getter(component.get()));
+			parameterValues[param.name] = value;
+			break;
+		}
+		case AnimatorParameter::Type::Int:
+		{
+			// int型のプロパティを取得
+			int value = std::any_cast<int>(prop->getter(component.get()));
+			parameterValues[param.name] = static_cast<float>(value);
+			break;
+		}
+		case AnimatorParameter::Type::Bool:
+		{
+			// bool型のプロパティを取得
+			bool value = std::any_cast<bool>(prop->getter(component.get()));
+			parameterValues[param.name] = value ? 1.0 : 0.0f;
+			break;
+		}
 		default:
 			break;
 		}
 	}
+#endif // ENABLE_ANIMATOR_PARAMETER_BINDING
 
 	// 現在のステートを取得
 	auto& currentState = controller.states[currentStateIndex];

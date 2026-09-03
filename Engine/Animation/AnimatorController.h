@@ -4,11 +4,15 @@
 #include "Engine/Resources/AssetId.h"
 #include <unordered_map>
 
+#undef ENABLE_ANIMATOR_PARAMETER_BINDING
+
+#ifdef ENABLE_ANIMATOR_PARAMETER_BINDING
 struct AnimatorParameterBinding
 {
 	ObjectId sourceComponentId; // ObjectReference属性で選択（targetModelRendererIdと同じパターン）
 	std::string propertyName;   // リフレクション情報からコンボボックスで選択
 };
+#endif // ENABLE_ANIMATOR_PARAMETER_BINDING
 
 struct AnimatorParameter
 {
@@ -22,7 +26,10 @@ struct AnimatorParameter
 	std::string name;
 	Type type;
 	float defaultValue;
-	std::optional<AnimatorParameterBinding> binding; // パラメータのバインディング情報(未設定ならスクリプト側で制御)
+#ifdef ENABLE_ANIMATOR_PARAMETER_BINDING
+	std::optional<AnimatorParameterBinding> binding; // パラメータのバインディング情報(未設定ならスクリプト側で制御)  
+#endif // ENABLE_ANIMATOR_PARAMETER_BINDING
+
 };
 
 struct AnimatorCondition
