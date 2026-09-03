@@ -570,7 +570,7 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	float t = 0.0f;
 	std::vector<BlendedClipWeight> nextWeights;
 	float nextNormalizedTime = 0.0f;
-	const bool transitioning = (transitionDuration > 0.0f && playing.size() == TRANSITION_SIZE);
+	const bool transitioning = (playing.size() == TRANSITION_SIZE);
 
 	if (transitioning)
 	{
@@ -579,7 +579,7 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		auto& nextState = controller.states[nextPlaying.stateIndex];
 		nextPlaying.time += deltaTime * nextState.speed;
 		transitionElapsed += deltaTime;
-		t = std::clamp(transitionElapsed / transitionDuration, 0.0f, 1.0f);
+		t = transitionDuration > 0.0f ? std::clamp(transitionElapsed / transitionDuration, 0.0f, 1.0f) : 1.0f;
 
 		auto nextTargetWeights = ComputeBlendWeights(controller, nextPlaying);
 		nextWeights = SmoothBlendWeights(nextPlaying.blendWeights, nextTargetWeights, nextState.blendSmoothTime, deltaTime);
@@ -628,7 +628,15 @@ void RuntimeAnimatorController::BeginTransition(const AnimatorTransition& transi
 	// 遷移の開始処理
 	if (transition.toStateIndex >= 0 && transition.toStateIndex < controller.states.size())
 	{
-		playing.push_back({ 0.0f, transition.toStateIndex });
+		if (playing.size() == TRANSITION_SIZE)
+		{
+			// 既に遷移中の場合は、ネクストを入れ替える
+			playing[INDEX_NEXT] = { 0.0f, transition.toStateIndex };
+		}
+		else
+		{
+			playing.push_back({ 0.0f, transition.toStateIndex });
+		}
 		transitionElapsed = 0.0f;
 		transitionDuration = transition.blendDuration;
 	}
