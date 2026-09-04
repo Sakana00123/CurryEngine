@@ -244,6 +244,18 @@ AnimatorParameter::Type AnimatorController::GetParameterType(const std::string& 
 	return AnimatorParameter::Type::Float; // デフォルトでFloatを返す（存在しない場合の扱い）
 }
 
+int AnimatorController::GetStateIndexByName(const std::string& name) const
+{
+	for (size_t i = 0; i < states.size(); ++i)
+	{
+		if (states[i].name == name)
+		{
+			return static_cast<int>(i);
+		}
+	}
+	return -1; // 見つからなかった場合は-1を返す
+}
+
 void RuntimeAnimatorController::Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose)
 {
 	// 初期ポーズの設定

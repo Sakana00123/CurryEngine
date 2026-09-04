@@ -556,6 +556,33 @@ void Animator::SetTrigger(const char* name)
 	}
 }
 
+void Animator::Play(const char* name)
+{
+	if (runtimeController && controller)
+	{
+		int index = controller->GetStateIndexByName(name);
+		runtimeController->Play(*controller, index);
+	}
+}
+
+void Animator::CrossFade(const char* name, float duration)
+{
+	if (runtimeController && controller)
+	{
+		int index = controller->GetStateIndexByName(name);
+		runtimeController->BeginTransition(AnimatorTransition{ runtimeController->currentStateIndex, index, duration, {}, false, 0.0f }, *controller);
+	}
+}
+
+void Animator::CrossFadeInFixedTime(const char* name, float duration)
+{
+	if (runtimeController && controller)
+	{
+		int index = controller->GetStateIndexByName(name);
+		runtimeController->BeginTransition(AnimatorTransition{ runtimeController->currentStateIndex, index, duration, {}, false, 0.0f }, *controller);
+	}
+}
+
 json Animator::Serialize() const
 {
 	json j = Component::Serialize();

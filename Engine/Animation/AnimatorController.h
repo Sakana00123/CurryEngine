@@ -111,6 +111,8 @@ public:
 	// アニメーションパラメータの型を取得する
 	AnimatorParameter::Type GetParameterType(const std::string& name) const;
 
+	// アニメーションステートのインデックスを名前から取得する
+	int GetStateIndexByName(const std::string& name) const;
 };
 
 struct RuntimeAnimatorController

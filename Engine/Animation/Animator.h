@@ -30,6 +30,15 @@ public:
 	C_FUNCTION()
 	void SetTrigger(const char* name);
 
+	C_FUNCTION()
+	void Play(const char* name);
+
+	C_FUNCTION()
+	void CrossFade(const char* name, float duration);
+
+	C_FUNCTION()
+	void CrossFadeInFixedTime(const char* name, float duration);
+
 	// シリアライズ
 	json Serialize() const override;
 
