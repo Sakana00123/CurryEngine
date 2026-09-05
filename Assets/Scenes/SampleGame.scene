@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            1.4034194946289063,
-            1.6331244707107544,
-            4.197873115539551
+            0.20826707780361176,
+            2.521627187728882,
+            -0.10985220968723297
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.012785917147994041,
-            -0.040709178894758224,
-            0.0005199511651881039,
-            0.9990890622138977
+            0.14733204245567322,
+            0.15313589572906494,
+            -0.023096656426787376,
+            0.976887583732605
         ],
         "speed": 3.0
     },
@@ -191,7 +191,7 @@
                         "attackDamage": 10,
                         "chaseDistance": 30,
                         "health": 100,
-                        "knockbackForce": 1000,
+                        "knockbackForce": 500,
                         "playerObject": "GameObject(objectId: 837495356795042458)",
                         "speed": 3,
                         "stopDistance": 3
@@ -237,7 +237,7 @@
             "id": "17485635321023068941",
             "isDefaultOpenOnHierarchy": true,
             "layer": 0,
-            "name": "Enemy (1)",
+            "name": "Enemy",
             "parent": "0",
             "parentId": "0",
             "priority": 1000,
@@ -1301,138 +1301,6 @@
                 {
                     "coordinateSystem": 0,
                     "enabledSelf": true,
-                    "id": "4928842743748726023",
-                    "m_eulerAngles": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "name": "Transform",
-                    "position": [
-                        0.0,
-                        1.0,
-                        5.300000190734863
-                    ],
-                    "priority": 0,
-                    "rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "type": "Transform"
-                },
-                {
-                    "constraints": 56,
-                    "enabledSelf": true,
-                    "id": "17271518682239132870",
-                    "isKinematic": false,
-                    "mass": 0.10000000149011612,
-                    "name": "Rigidbody",
-                    "priority": 1000,
-                    "sleepThreshold": 0.004999999888241291,
-                    "type": "Rigidbody",
-                    "useCCD": false,
-                    "useGravity": true
-                },
-                {
-                    "color": [
-                        0.0,
-                        0.30000001192092896,
-                        0.699999988079071,
-                        1.0
-                    ],
-                    "enabledSelf": true,
-                    "id": "3998117232673022026",
-                    "material": {
-                        "blendState": 5,
-                        "cbuffers": {
-                            "1": {
-                                "materialColor": [
-                                    0.0,
-                                    0.30000001192092896,
-                                    0.699999988079071,
-                                    1.0
-                                ]
-                            }
-                        },
-                        "depthStencilState": 4,
-                        "rasterizerState": 6,
-                        "shaders": {
-                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
-                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
-                        },
-                        "textures": {
-                            "0": {
-                                "texture0": ""
-                            }
-                        }
-                    },
-                    "name": "PrimitiveRenderer",
-                    "priority": 2000,
-                    "shape": 0,
-                    "type": "PrimitiveRenderer"
-                },
-                {
-                    "autoFit": true,
-                    "center": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "contactOffset": 0.019999999552965164,
-                    "enabledSelf": true,
-                    "id": "6354122492459396998",
-                    "isTrigger": false,
-                    "material": 9,
-                    "name": "BoxCollider",
-                    "priority": 3000,
-                    "size": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "type": "BoxCollider"
-                },
-                {
-                    "enabledSelf": true,
-                    "fields": {
-                        "attackCooldown": 3,
-                        "attackDamage": 10,
-                        "chaseDistance": 10,
-                        "health": 100,
-                        "knockbackForce": 5,
-                        "playerObject": "GameObject(objectId: 3215127106798646221)",
-                        "speed": 3,
-                        "stopDistance": 3
-                    },
-                    "id": "9169283374165616344",
-                    "name": "ScriptComponent",
-                    "priority": 4000,
-                    "scriptName": "Enemy",
-                    "type": "ScriptComponent"
-                }
-            ],
-            "id": "1481355775892858889",
-            "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
-            "name": "Enemy",
-            "parent": "0",
-            "parentId": "0",
-            "priority": 14000,
-            "version": 1
-        },
-        {
-            "activeSelf": false,
-            "components": [
-                {
-                    "coordinateSystem": 0,
-                    "enabledSelf": true,
                     "id": "1292775827731419065",
                     "m_eulerAngles": [
                         0.0,
@@ -1546,11 +1414,11 @@
             "name": "PlayerBall",
             "parent": "0",
             "parentId": "0",
-            "priority": 15000,
+            "priority": 14000,
             "version": 1
         },
         {
-            "activeSelf": false,
+            "activeSelf": true,
             "components": [
                 {
                     "coordinateSystem": 0,
@@ -1600,7 +1468,7 @@
             "name": "EnemySpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 16000,
+            "priority": 15000,
             "version": 1
         }
     ]

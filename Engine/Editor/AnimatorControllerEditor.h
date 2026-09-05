@@ -22,6 +22,9 @@ public:
 
 	/** @brief 編集中のAnimatorControllerを設定。*/
 	static void SetRuntimeController(std::weak_ptr<RuntimeAnimatorController> runtimeController);
+
+	/** @brief 編集中のAnimatorControllerを取得。*/
+	static std::shared_ptr<AnimatorController> GetEditingController() { return s_animatorController; }
 	
 	/** @brief エディタのGUIを描画。*/
 	static void DrawGUI();

@@ -69,6 +69,11 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 
     if (controller)
     {
+		if (AnimatorControllerEditor::IsOpen() == false || AnimatorControllerEditor::GetEditingController() != controller)
+		{
+			AnimatorControllerEditor::OpenAsset(controller->GetPath());
+			AnimatorControllerEditor::SetRuntimeController(runtimeController);
+		}
 #if 0
 		for (const auto& [clipId, clip] : controller->animationClips)
 		{
@@ -525,7 +530,7 @@ void Animator::ResetController()
 			runtimeController->Initialize(*controller, renderer->GetBindPose());
 		}
 	}
-	AnimatorControllerEditor::SetRuntimeController(runtimeController);
+	
 }
 
 void Animator::SetFloat(const char* name, float value)
