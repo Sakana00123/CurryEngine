@@ -69,10 +69,12 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 
     if (controller)
     {
+#if 0
 		for (const auto& [clipId, clip] : controller->animationClips)
 		{
 			ImGui::Text("Clip: %s", clip->name.c_str());
 		}
+#endif // 0
 		for (int i = 0; i < controller->states.size(); ++i)
 		{
 			const auto& state = controller->states[i];
@@ -99,7 +101,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 		ImGui::Separator();
 
 		// controller->statesのエディタ
-
+#if 0
 		for (int i = 0; i < controller->states.size(); ++i)
 		{
 			ImGui::PushID(i);
@@ -154,7 +156,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			//ImGui::InputInt(("Clip Index##" + std::to_string(i)).c_str(), &controller->states[i].clipIndex);
 			// ステートの再生
 			ImGui::InputFloat(("Speed##" + std::to_string(i)).c_str(), &controller->states[i].speed);
-			ImGui::Checkbox(("Loop##" + std::to_string(i)).c_str(),&controller->states[i].loop);
+			ImGui::Checkbox(("Loop##" + std::to_string(i)).c_str(), &controller->states[i].loop);
 
 			ImGui::Separator();
 			ImGui::PopID();
@@ -210,40 +212,40 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			// パラメータのデフォルト値を編集可能にする
 			switch (parameter.type)
 			{
-				case AnimatorParameter::Type::Float:
+			case AnimatorParameter::Type::Float:
+			{
+				isChanged |= ImGui::InputFloat(("Default Value##" + std::to_string(i)).c_str(), &parameterValue);
+				break;
+			}
+			case AnimatorParameter::Type::Int:
+			{
+				int intValue = static_cast<int>(parameterValue);
+				if (ImGui::InputInt(("Default Value##" + std::to_string(i)).c_str(), &intValue))
 				{
-					isChanged |= ImGui::InputFloat(("Default Value##" + std::to_string(i)).c_str(), &parameterValue);
-					break;
+					parameterValue = static_cast<float>(intValue);
+					isChanged |= true;
 				}
-				case AnimatorParameter::Type::Int:
+				break;
+			}
+			case AnimatorParameter::Type::Bool:
+			{
+				bool boolValue = (parameterValue != 0.0f);
+				if (ImGui::Checkbox(("Default Value##" + std::to_string(i)).c_str(), &boolValue))
 				{
-					int intValue = static_cast<int>(parameterValue);
-					if (ImGui::InputInt(("Default Value##" + std::to_string(i)).c_str(), &intValue))
-					{
-						parameterValue = static_cast<float>(intValue);
-						isChanged |= true;
-					}
-					break;
+					parameterValue = boolValue ? 1.0f : 0.0f;
+					isChanged |= true;
 				}
-				case AnimatorParameter::Type::Bool:
+				break;
+			}
+			case AnimatorParameter::Type::Trigger:
+			{
+				if (ImGui::RadioButton("##Trigger", parameterValue))
 				{
-					bool boolValue = (parameterValue != 0.0f);
-					if (ImGui::Checkbox(("Default Value##" + std::to_string(i)).c_str(), &boolValue))
-					{
-						parameterValue = boolValue ? 1.0f : 0.0f;
-						isChanged |= true;
-					}
-					break;
+					// Triggerはボタンを押すと1.0fに設定される
+					runtimeController->SetTrigger(parameter.name);
 				}
-				case AnimatorParameter::Type::Trigger:
-				{
-					if (ImGui::RadioButton("##Trigger", parameterValue))
-					{
-						// Triggerはボタンを押すと1.0fに設定される
-						runtimeController->SetTrigger(parameter.name);
-					}
-					break;
-				}
+				break;
+			}
 			default:
 				break;
 			}
@@ -461,7 +463,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			// 遷移条件の追加
 			if (ImGui::Button((" + ##condition" + std::to_string(i)).c_str()))
 			{
-				controller->transitions[i].conditions.push_back(AnimatorCondition{ -1, AnimatorCondition::Comparison::Equal, 0.0f});
+				controller->transitions[i].conditions.push_back(AnimatorCondition{ -1, AnimatorCondition::Comparison::Equal, 0.0f });
 			}
 			ImGui::SameLine();
 			// 遷移条件の削除
@@ -501,6 +503,8 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 				controller->transitions.pop_back();
 			}
 		}
+#endif // 0
+
 	}
 }
 #endif // USE_IMGUI

@@ -1,0 +1,265 @@
+{
+    "animationClipIds": [
+        "b02ae92be3315c975b9c11a75845da20",
+        "20608e65daa760ba394b9543e41a63b4",
+        "f8ab8ac2eac917fc3d8056eb3d74ca87",
+        "6733838f7460490c3eae08b62b079f3f",
+        "b245e39dc8759a5931d469dbe255c31b",
+        "c0361a9d1ea30397a037933fdb581560"
+    ],
+    "defaultStateIndex": 0,
+    "name": "New Animator Controller",
+    "parameters": [
+        {
+            "defaultValue": 0.0,
+            "name": "Speed",
+            "type": 0
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "AttackTrigger",
+            "type": 3
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "DeathTrigger",
+            "type": 3
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "SetupTrigger",
+            "type": 3
+        },
+        {
+            "defaultValue": 0.0,
+            "name": "HitTrigger",
+            "type": 3
+        }
+    ],
+    "states": [
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "b02ae92be3315c975b9c11a75845da20",
+            "editorPosition": [
+                207.06182861328125,
+                49.465187072753906
+            ],
+            "loop": true,
+            "name": "Idle",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "20608e65daa760ba394b9543e41a63b4",
+            "editorPosition": [
+                204.82382202148438,
+                -98.70535278320313
+            ],
+            "loop": true,
+            "name": "Run",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "f8ab8ac2eac917fc3d8056eb3d74ca87",
+            "editorPosition": [
+                -30.541458129882813,
+                150.60411071777344
+            ],
+            "loop": false,
+            "name": "Attack",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "b245e39dc8759a5931d469dbe255c31b",
+            "editorPosition": [
+                -351.3032531738281,
+                146.88980102539063
+            ],
+            "loop": false,
+            "name": "Die",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "c0361a9d1ea30397a037933fdb581560",
+            "editorPosition": [
+                -22.174707412719727,
+                30.888866424560547
+            ],
+            "loop": false,
+            "name": "Setup",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "6733838f7460490c3eae08b62b079f3f",
+            "editorPosition": [
+                -36.143245697021484,
+                -73.07939147949219
+            ],
+            "loop": false,
+            "name": "Hit",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        }
+    ],
+    "transitions": [
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 2,
+                    "parameterIndex": 0,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": 0,
+            "hasExitTime": false,
+            "toStateIndex": 1
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 2,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": -1,
+            "hasExitTime": false,
+            "toStateIndex": 3
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 1,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": -1,
+            "hasExitTime": false,
+            "toStateIndex": 2
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 0,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": 1,
+            "hasExitTime": false,
+            "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 3,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": -1,
+            "hasExitTime": false,
+            "toStateIndex": 4
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [
+                {
+                    "comparison": 4,
+                    "parameterIndex": 4,
+                    "value": 0.0
+                }
+            ],
+            "exitTime": 0.0,
+            "fromStateIndex": -1,
+            "hasExitTime": false,
+            "toStateIndex": 5
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.3580000102519989,
+            "fromStateIndex": 5,
+            "hasExitTime": true,
+            "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.828000009059906,
+            "fromStateIndex": 2,
+            "hasExitTime": true,
+            "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.7839999794960022,
+            "fromStateIndex": 4,
+            "hasExitTime": true,
+            "toStateIndex": 0
+        }
+    ]
+}

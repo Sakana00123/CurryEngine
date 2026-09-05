@@ -1,5 +1,6 @@
 // This is a generated C# script.
 using CurryEngine;
+using CurryEngine.Math;
 using System.Runtime.CompilerServices;
 
 public class Enemy : Behaviour
@@ -16,8 +17,13 @@ public class Enemy : Behaviour
 
     [SerializeField] int health = 100;
     [SerializeField] int attackDamage = 10;
+    [SerializeField] float attackCooldown = 3f;
+    [SerializeField] float knockbackForce = 5f;
+    Animator? animator;
 
-    float timeSinceLastLog = 0f;
+    float attackTimer = 0f;
+
+    bool isDead = false;
 
     public int AttackDamage
     {
@@ -29,29 +35,25 @@ public class Enemy : Behaviour
     // Start is called before the first frame update
     public override void Start()
     {
-
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     public override void Update()
     {
-        if (timeSinceLastLog >= 2f)
+        if (isDead)
         {
-            float memoryUsageMB = GC.GetTotalMemory(false) / (1024f * 1024f);
-            string memoryUsageString = memoryUsageMB.ToString("F2");
-            Debug.Log($"GC.GetTotalMemory(): {memoryUsageString} MB");
-            timeSinceLastLog = 0f;
+            return; // 死亡している場合は何もしない
         }
-        else
-        {
-            timeSinceLastLog += Time.DeltaTime;
-        }
-
-
         // 奈落に落ちた場合は死亡処理を行う
         if (transform.position.y < -10f)
         {
             Die();
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(20);
         }
 
         // プレイヤーオブジェクトがまだ見つかっていない場合は、Findで探す
@@ -85,28 +87,82 @@ public class Enemy : Behaviour
 
             if (distanceToPlayer > chaseDistance) {
                 // プレイヤーが追いかける距離より遠い場合は何もしない
+                if (animator != null)
+                {
+                    animator.SetFloat("Speed", 0.0f);
+                }
                 return;
             }
             if (distanceToPlayer < stopDistance) {
                 // プレイヤーが静止する距離より近い場合は何もしない
+                if (animator != null)
+                {
+                    animator.SetFloat("Speed", 0.0f);
+                }
                 return;
             }
 
             Vector3 movement = directionToPlayer.normalized * speed;
 
             // プレイヤーに向かって移動する
-            //transform.position += movement * Time.DeltaTime;
-            if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+            transform.position += movement * Time.DeltaTime;
+            if (animator != null)
             {
-                rigidbody.AddForce(movement, ForceMode.Force);
+                animator.SetFloat("Speed", movement.magnitude);
+            }
+
+            //if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+            //{
+            //    rigidbody.AddForce(movement, ForceMode.Force);
+            //}
+
+            // 攻撃処理
+            if (distanceToPlayer <= stopDistance && attackTimer >= attackCooldown)
+            {
+                // プレイヤーに攻撃する処理をここに追加
+                Debug.Log($"Enemy attacks the player for {attackDamage} damage!");
+                if (playerObject.TryGetComponent<Character>(out Character player))
+                {
+                    player.TakeDamage(attackDamage);
+                }
+                attackTimer = 0f;
+                if (animator != null)
+                {
+                    animator.SetTrigger("AttackTrigger");
+                }
+            }
+            else
+            {
+                attackTimer += Time.DeltaTime;
             }
         }
     }
 
-
+    // ダメージを受ける処理
     public void TakeDamage(int damage)
     {
+        if (isDead)
+        {
+            return; // すでに死亡している場合はダメージを受けない
+        }
         health -= damage;
+        if (health > 0)
+        {
+            // ダメージを受けたときのアニメーションを再生する
+            if (animator != null)
+            {
+                animator.SetTrigger("HitTrigger");
+            }
+        }
+        if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+        {
+            // ダメージを受けたときに少し後ろに吹き飛ばす
+            Vector3 knockbackDirection = -transform.forward;
+            rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+
+            Debug.Log($"Enemy knocked back with force: {knockbackDirection * knockbackForce}");
+        }
+
         Debug.Log($"Enemy took {damage} damage. Remaining health: {health}");
         if (health <= 0)
         {
@@ -114,10 +170,18 @@ public class Enemy : Behaviour
         }
     }
 
+    // 敵が死亡する処理
     private void Die()
     {
         Debug.Log("Enemy died.");
-        Destroy(gameObject);
+        isDead = true;
+
+        if (animator != null)
+        {
+            animator.SetTrigger("DeathTrigger");
+        }
+
+        Destroy(gameObject, 4f);
     }
 
 }
