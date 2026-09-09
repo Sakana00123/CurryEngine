@@ -136,6 +136,9 @@ public static class EngineRuntime
             // Input クラスの　Provider を設定する。これにより、C# 側で Input の操作が可能になる。
             Input.Provider = new NativeInputProvider();
 
+            // LayerMask クラスの Accessor を設定する。これにより、C# 側で LayerMask の操作が可能になる。
+            LayerMask.Accessor = new LayerManagerAccessor();
+
             // UserScripts.dll をロードして ScriptRegistry に登録する。
             var exeDir = GetExecutableDirectory() ?? string.Empty;
             var userScriptsPath = /*GetUserScriptsPath() ?? */Path.Combine(exeDir, "Assembly-CSharp.dll");

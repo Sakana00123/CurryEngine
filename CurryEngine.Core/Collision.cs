@@ -37,3 +37,13 @@ public struct Trigger
     public ulong thisColliderId;    // トリガーに入った自分のコライダー
     public ulong otherColliderId;   // トリガーに入った相手のコライダー
 }
+
+
+[StructLayout(LayoutKind.Sequential)]
+public struct RaycastHit
+{
+    public Vector3 point;           // ヒットした位置
+    public Vector3 normal;          // ヒットした面の法線ベクトル
+    public float distance;          // レイの原点からヒット位置までの距離
+    public ulong colliderId;        // ヒットしたコライダーのID
+}

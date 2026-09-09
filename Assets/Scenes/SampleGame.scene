@@ -231,7 +231,7 @@
             ],
             "id": "8037685245638611363",
             "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
+            "layer": 4,
             "name": "Mixamo",
             "parent": "0",
             "parentId": "0",
@@ -368,7 +368,7 @@
             ],
             "id": "17485635321023068941",
             "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
+            "layer": 9,
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
@@ -1021,7 +1021,7 @@
             ],
             "id": "837495356795042458",
             "isDefaultOpenOnHierarchy": false,
-            "layer": 0,
+            "layer": 4,
             "name": "Player",
             "parent": "0",
             "parentId": "0",
@@ -1550,7 +1550,7 @@
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "coordinateSystem": 0,

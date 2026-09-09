@@ -41,6 +41,34 @@ public class PlayerController : Behaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.DeltaTime * 5f);
         }
 
+        // 接地判定
+        if (TryGetComponent<Rigidbody>(out Rigidbody rigidbody))
+        {
+            Vector3 velocity = rigidbody.GetVelocity();
+            // 下降中のみ接地判定を行う
+            if (velocity.y <= 0.0f)
+            {
+                // 接地判定のためのレイキャスト
+                Vector3 origin = transform.position + Vector3.up * 0.1f; // 少し上からレイを飛ばす
+                Vector3 directionDown = Vector3.down;
+                float maxDistance = 0.15f; // 接地判定の距離
+                LayerMask layerMask = LayerMask.NameToLayer("Default"); // 接地判定を行うレイヤーを指定
+                if (Physics.Raycast(origin, directionDown, out RaycastHit hitInfo, maxDistance, layerMask))
+                {
+                    var hitCollider = GetComponentById<Collider>(hitInfo.colliderId);
+                    if (hitCollider != null)
+                    {
+                        OnGround();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("PlayerController: Raycast hit unknown collider with ID " + hitInfo.colliderId);
+                    }
+                }
+            }
+        }
+
+        // アニメーションの更新
         if (animator != null)
         {
             animator.SetFloat("Speed", speed);
@@ -76,21 +104,40 @@ public class PlayerController : Behaviour
         }
     }
 
-    public override void OnCollisionEnter(Collision collision)
+    void OnGround()
     {
-        Collider? other = GetComponentById<Collider>(collision.otherColliderId);
-        var otherGameObject = other?.gameObject;
-        if (otherGameObject != null)
+        jumpCount = 0;
+        if (animator != null)
         {
-            if (otherGameObject.name == "Ground")
-            {
-                Debug.Log("PlayerController: OnCollisionEnter with Ground");
-                jumpCount = 0;
-                if (animator != null)
-                {
-                    animator.SetBool("Jumping", false);
-                }
-            }
+            animator.SetBool("Jumping", false);
         }
     }
+
+    //private void OnGui()
+    //{
+    //    if (animator != null)
+    //    {
+    //        GUILayout.Label("Speed: " + speed.ToString("F2"));
+    //        GUILayout.Label("Jump Count: " + jumpCount);
+    //        GUILayout.Label("Is Jumping: " + animator.GetBool("Jumping"));
+    //    }
+    //}
+
+    //public override void OnCollisionEnter(Collision collision)
+    //{
+    //    Collider? other = GetComponentById<Collider>(collision.otherColliderId);
+    //    var otherGameObject = other?.gameObject;
+    //    if (otherGameObject != null)
+    //    {
+    //        if (otherGameObject.name == "Ground")
+    //        {
+    //            Debug.Log("PlayerController: OnCollisionEnter with Ground");
+    //            jumpCount = 0;
+    //            if (animator != null)
+    //            {
+    //                animator.SetBool("Jumping", false);
+    //            }
+    //        }
+    //    }
+    //}
 }

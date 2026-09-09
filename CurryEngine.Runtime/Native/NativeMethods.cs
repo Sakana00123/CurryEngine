@@ -139,45 +139,20 @@ internal static partial class NativeMethods
 
 
     // ------------------------------------ Physics -----------------------------------------
-    //[LibraryImport(Dll)] internal static partial void Physics_Raycast(Vector3 origin, Vector3 direction, float maxDistance, out RaycastHit hitInfo);
+    [LibraryImport(Dll)] internal static partial void Physics_SetGravity(Vector3 gravity);
+    [LibraryImport(Dll)] internal static partial Vector3 Physics_GetGravity();
+
+    [return: MarshalAs(UnmanagedType.Bool)]
+    [LibraryImport(Dll)] internal static partial bool Physics_Raycast(Vector3 origin, Vector3 direction, out RaycastHit hitInfo, float maxDistance, int layerMask);
+
     //[LibraryImport(Dll)] internal static partial void Physics_RaycastAll(Vector3 origin, Vector3 direction, float maxDistance, out IntPtr hitInfos, out int hitCount);
     //[LibraryImport(Dll)] internal static partial void Physics_OverlapSphere(Vector3 center, float radius, out IntPtr colliders, out int colliderCount);
 
+    // ------------------------------------ Layer -----------------------------------------
 
-    // -------------------------------------------- Rigidbody -----------------------------------------
-    //[LibraryImport(Dll)] internal static partial void Rigidbody_AddForce(ulong ownerId, Vector3 force, int forceMode);
-    //[LibraryImport(Dll)] internal static partial void Rigidbody_AddTorque(ulong ownerId, Vector3 torque, int forceMode);
-    //[LibraryImport(Dll)] internal static partial Vector3 Rigidbody_GetVelocity(ulong ownerId);
-    //[LibraryImport(Dll)] internal static partial void Rigidbody_SetVelocity(ulong ownerId, Vector3 velocity);
-    //[LibraryImport(Dll)] internal static partial Vector3 Rigidbody_GetAngularVelocity(ulong ownerId);
-    //[LibraryImport(Dll)] internal static partial void Rigidbody_SetAngularVelocity(ulong ownerId, Vector3 angularVelocity);
-    //[LibraryImport(Dll)] internal static partial void Rigidbody_SetMass(ulong ownerId, float mass);
-    //[LibraryImport(Dll)] internal static partial float Rigidbody_GetMass(ulong ownerId);
-    //[LibraryImport(Dll)] internal static partial void Rigidbody_SetDrag(ulong ownerId, float drag);
-    //[LibraryImport(Dll)] internal static partial float Rigidbody_GetDrag(ulong ownerId);
-    //[LibraryImport(Dll)] internal static partial void Rigidbody_SetAngularDrag(ulong ownerId, float angularDrag);
-    //[LibraryImport(Dll)] internal static partial float Rigidbody_GetAngularDrag(ulong ownerId);
-    //[LibraryImport(Dll)] internal static partial void Rigidbody_SetKinematicTarget(ulong ownerId, Vector3 position, Quaternion rotation);
-
-
-    //[LibraryImport(Dll)]
-    //internal static partial void Rigidbody_SetUseGravity(ulong ownerId,[MarshalAs(UnmanagedType.Bool)] bool useGravity);
-    //[LibraryImport(Dll)]
-    //[return: MarshalAs(UnmanagedType.Bool)]
-    //internal static partial bool Rigidbody_GetUseGravity(ulong ownerId);
-
-    //[LibraryImport(Dll)]
-    //internal static partial void Rigidbody_SetIsKinematic(ulong ownerId, [MarshalAs(UnmanagedType.Bool)] bool isKinematic);
-    //[LibraryImport(Dll)]
-    //[return: MarshalAs(UnmanagedType.Bool)]
-    //internal static partial bool Rigidbody_GetIsKinematic(ulong ownerId);
-
-    //// ------------------------------------- Collider -----------------------------------------
-    //[LibraryImport(Dll)] internal static partial void Collider_SetIsTrigger(ulong ownerId, ulong componentId, [MarshalAs(UnmanagedType.Bool)] bool isTrigger);
-    //[LibraryImport(Dll)]
-    //[return: MarshalAs(UnmanagedType.Bool)]
-    //internal static partial bool Collider_GetIsTrigger(ulong ownerId, ulong componentId);
-
+    [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+    [LibraryImport(Dll)] internal static partial string LayerManager_GetLayerName(LayerMask layer);
+    [LibraryImport(Dll)] internal static partial LayerMask LayerManager_GetLayerMaskByName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
 
 
     // ------------------------------------ Object -----------------------------------------

@@ -23,6 +23,7 @@
     <Compile Include="HotReload\HotReloadManager.cs" />
     <Compile Include="HotReload\ScriptLoadContext.cs" />
     <Compile Include="BehaviourMethodCache.cs" />
+    <Compile Include="LayerManagerAccessor.cs" />
     <Compile Include="NativeInputProvider.cs" />
     <Compile Include="Native\CollisionConverter.cs" />
     <Compile Include="Native\CollisionInfoDto.cs" />
