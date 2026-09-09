@@ -39,6 +39,18 @@ public:
 	C_FUNCTION()
 	void CrossFadeInFixedTime(const char* name, float duration);
 
+	// インデックスからステート名を取得する
+	C_FUNCTION()
+	const char* GetStateNameFromIndex(int stateIndex) const;
+
+	// ステート名からインデックスを取得する
+	C_FUNCTION()
+	int GetStateIndexFromName(const char* stateName) const;
+
+	// 現在のステートインデックスを取得する
+	C_FUNCTION()
+	int GetCurrentStateIndex() const;
+
 	// シリアライズ
 	json Serialize() const override;
 

@@ -300,7 +300,15 @@ void RuntimeAnimatorController::Play(const AnimatorController& controller, int s
 	}
 	else
 	{
-		playing.push_back({ 0.0f, stateIndex });
+		if (playing.size() < TRANSITION_SIZE)
+		{
+			playing[INDEX_NEXT] = { 0.0f, stateIndex };
+		}
+		else 
+		{
+			playing[INDEX_FRONT] = playing[INDEX_NEXT];
+			playing[INDEX_NEXT] = { 0.0f, stateIndex };
+		}
 		transitionElapsed = 0.0f;
 		transitionDuration = blendDuration;
 	}
@@ -648,7 +656,8 @@ void RuntimeAnimatorController::BeginTransition(const AnimatorTransition& transi
 	{
 		if (playing.size() == TRANSITION_SIZE)
 		{
-			// 既に遷移中の場合は、ネクストを入れ替える
+			// 既に遷移中の場合は、現在の遷移前のステートを遷移後のステートに置き換え、ネクストステートに遷移先を設定する
+			playing[INDEX_FRONT] = playing[INDEX_NEXT];
 			playing[INDEX_NEXT] = { 0.0f, transition.toStateIndex };
 		}
 		else
@@ -665,6 +674,7 @@ void RuntimeAnimatorController::ConsumeTrigger(const AnimatorController& control
 	// Triggerの消費処理
 	for (const auto& c : conditions) {
 		// parameterがTrigger型のものだけリセット。Float/Bool/Intは触らない
+		if (c.parameterIndex < 0 || c.parameterIndex >= controller.parameters.size()) continue;
 		std::string paramName = controller.parameters[c.parameterIndex].name;
 		if (controller.GetParameterType(paramName) == AnimatorParameter::Type::Trigger) {
 			parameterValues[paramName] = 0.0f;

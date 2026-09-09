@@ -1,0 +1,121 @@
+{
+    "animationClipIds": [
+        "8815b2626151ccf0d4e75e4428dac612",
+        "12cc8ccfb9a7bcaad96065f0b9467aea",
+        "38679cb8bb58c4f9c2d3d40ba163829f",
+        "6c4a5a55b324ecc0a88caeec875b60fc"
+    ],
+    "defaultStateIndex": 0,
+    "name": "New Animator Controller",
+    "parameters": [
+        {
+            "defaultValue": 0.0,
+            "name": "IsMoving",
+            "type": 2
+        }
+    ],
+    "states": [
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "8815b2626151ccf0d4e75e4428dac612",
+            "editorPosition": [
+                -5.0,
+                39.0
+            ],
+            "loop": true,
+            "name": "Move",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "12cc8ccfb9a7bcaad96065f0b9467aea",
+            "editorPosition": [
+                183.94456481933594,
+                -122.6944351196289
+            ],
+            "loop": true,
+            "name": "Flip",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "38679cb8bb58c4f9c2d3d40ba163829f",
+            "editorPosition": [
+                -106.57144927978516,
+                -112.17855072021484
+            ],
+            "loop": true,
+            "name": "Jump",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "6c4a5a55b324ecc0a88caeec875b60fc",
+            "editorPosition": [
+                -0.6540958881378174,
+                -236.7178955078125
+            ],
+            "loop": true,
+            "name": "Falling",
+            "rootMotion": false,
+            "rootMotionXZ": true,
+            "rootMotionY": true,
+            "rootNodeIndex": -1,
+            "speed": 1.0
+        }
+    ],
+    "transitions": [
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 0.7799999713897705,
+            "fromStateIndex": 2,
+            "hasExitTime": true,
+            "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 1.0,
+            "fromStateIndex": 1,
+            "hasExitTime": true,
+            "toStateIndex": 0
+        },
+        {
+            "blendDuration": 0.25,
+            "conditions": [],
+            "exitTime": 1.0,
+            "fromStateIndex": 2,
+            "hasExitTime": true,
+            "toStateIndex": 3
+        }
+    ]
+}

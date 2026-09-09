@@ -592,6 +592,33 @@ void Animator::CrossFadeInFixedTime(const char* name, float duration)
 	}
 }
 
+const char* Animator::GetStateNameFromIndex(int stateIndex) const
+{
+	if (controller && stateIndex >= 0 && stateIndex < controller->states.size())
+	{
+		return controller->states[stateIndex].name.c_str();
+	}
+	return nullptr;
+}
+
+int Animator::GetStateIndexFromName(const char* stateName) const
+{
+	if (controller)
+	{
+		return controller->GetStateIndexByName(stateName);
+	}
+	return -1;
+}
+
+int Animator::GetCurrentStateIndex() const
+{
+	if (runtimeController)
+	{
+		return runtimeController->currentStateIndex;
+	}
+	return -1;
+}
+
 json Animator::Serialize() const
 {
 	json j = Component::Serialize();

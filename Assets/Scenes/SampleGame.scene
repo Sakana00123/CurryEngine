@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            0.20826707780361176,
-            2.521627187728882,
-            -0.10985220968723297
+            0.5564521551132202,
+            0.502933144569397,
+            3.1607625484466553
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.14733204245567322,
-            0.15313589572906494,
-            -0.023096656426787376,
-            0.976887583732605
+            0.12631508708000183,
+            0.012699891813099384,
+            -0.001618406269699335,
+            0.99190753698349
         ],
         "speed": 3.0
     },
@@ -104,6 +104,138 @@
             "parent": "0",
             "parentId": "0",
             "priority": 0,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "11180860193780720355",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.6000000834465027,
+                        0.5,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.009999999776482582,
+                        0.009999999776482582,
+                        0.009999999776482582
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": ".\\TestAssets\\Player\\MixamoModel.gltf",
+                    "id": "14368976616419720433",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": ""
+                            },
+                            "1": {
+                                "materialTextures[1]": ""
+                            },
+                            "2": {
+                                "materialTextures[2]": ""
+                            },
+                            "3": {
+                                "materialTextures[3]": ""
+                            },
+                            "4": {
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                },
+                {
+                    "controllerAssetId": "8bed862655b87467b3d2ce9efe37f02e",
+                    "enabledSelf": true,
+                    "id": "5239486733374276845",
+                    "name": "Animator",
+                    "priority": 2000,
+                    "targetModelRendererId": "14368976616419720433",
+                    "type": "Animator"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "acceleration": 5,
+                        "jumpForce": 10,
+                        "speed": 0
+                    },
+                    "id": "15060408681317537193",
+                    "name": "ScriptComponent",
+                    "priority": 3000,
+                    "scriptName": "MixamoController",
+                    "type": "ScriptComponent"
+                },
+                {
+                    "constraints": 61,
+                    "enabledSelf": true,
+                    "id": "2425194428662299802",
+                    "isKinematic": false,
+                    "mass": 50.0,
+                    "name": "Rigidbody",
+                    "priority": 4000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": false,
+                    "useGravity": true
+                },
+                {
+                    "autoFit": false,
+                    "center": [
+                        -0.00040709972381591797,
+                        0.699999988079071,
+                        0.009907610714435577
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "height": 0.5,
+                    "id": "17731228527847555189",
+                    "isTrigger": false,
+                    "material": 10,
+                    "name": "CapsuleCollider",
+                    "priority": 5000,
+                    "radius": 0.21274735033512115,
+                    "type": "CapsuleCollider"
+                }
+            ],
+            "id": "8037685245638611363",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Mixamo",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 1000,
             "version": 1
         },
         {
@@ -240,7 +372,7 @@
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
-            "priority": 1000,
+            "priority": 2000,
             "version": 1
         },
         {
@@ -354,7 +486,7 @@
             "name": "can",
             "parent": "0",
             "parentId": "0",
-            "priority": 2000,
+            "priority": 3000,
             "version": 1
         },
         {
@@ -396,7 +528,7 @@
             "name": "CameraFocusTarget",
             "parent": "837495356795042458",
             "parentId": "0",
-            "priority": 3000,
+            "priority": 4000,
             "version": 1
         },
         {
@@ -515,7 +647,7 @@
             "name": "PlayerHPBar",
             "parent": "7087144494191658523",
             "parentId": "0",
-            "priority": 4000,
+            "priority": 5000,
             "version": 1
         },
         {
@@ -629,7 +761,7 @@
             "name": "box",
             "parent": "0",
             "parentId": "0",
-            "priority": 5000,
+            "priority": 6000,
             "version": 1
         },
         {
@@ -709,7 +841,7 @@
             "name": "Canvas",
             "parent": "0",
             "parentId": "0",
-            "priority": 6000,
+            "priority": 7000,
             "version": 1
         },
         {
@@ -758,7 +890,7 @@
             "name": "EventSystem",
             "parent": "0",
             "parentId": "0",
-            "priority": 7000,
+            "priority": 8000,
             "version": 1
         },
         {
@@ -893,7 +1025,7 @@
             "name": "Player",
             "parent": "0",
             "parentId": "0",
-            "priority": 8000,
+            "priority": 9000,
             "version": 1
         },
         {
@@ -935,7 +1067,7 @@
             "name": "AttackPoint",
             "parent": "3215127106798646221",
             "parentId": "0",
-            "priority": 9000,
+            "priority": 10000,
             "version": 1
         },
         {
@@ -977,7 +1109,7 @@
             "name": "CameraFocus",
             "parent": "3215127106798646221",
             "parentId": "0",
-            "priority": 10000,
+            "priority": 11000,
             "version": 1
         },
         {
@@ -1032,7 +1164,7 @@
             "name": "Directional Light",
             "parent": "0",
             "parentId": "0",
-            "priority": 11000,
+            "priority": 12000,
             "version": 1
         },
         {
@@ -1133,7 +1265,7 @@
             "name": "Ground",
             "parent": "0",
             "parentId": "0",
-            "priority": 12000,
+            "priority": 13000,
             "version": 1
         },
         {
@@ -1292,7 +1424,7 @@
             "name": "character",
             "parent": "0",
             "parentId": "0",
-            "priority": 13000,
+            "priority": 14000,
             "version": 1
         },
         {
@@ -1414,11 +1546,11 @@
             "name": "PlayerBall",
             "parent": "0",
             "parentId": "0",
-            "priority": 14000,
+            "priority": 15000,
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "coordinateSystem": 0,
@@ -1468,7 +1600,7 @@
             "name": "EnemySpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 15000,
+            "priority": 16000,
             "version": 1
         }
     ]
