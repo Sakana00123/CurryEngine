@@ -57,6 +57,14 @@ ObjectManager::~ObjectManager()
 		selection = nullptr;
 	}
 
+	// erasesに残っているオブジェクトを削除
+	for (auto& obj : erases) {
+		if (obj) {
+			obj->OnDestroy();
+			obj->SetActive(false);
+		}
+	}
+	erases.clear();
 
 	// すべてのオブジェクトを削除
 	objects.clear();

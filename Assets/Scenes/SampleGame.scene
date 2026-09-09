@@ -1550,7 +1550,7 @@
             "version": 1
         },
         {
-            "activeSelf": false,
+            "activeSelf": true,
             "components": [
                 {
                     "coordinateSystem": 0,
@@ -1585,7 +1585,7 @@
                     "enabledSelf": true,
                     "fields": {
                         "prefabPath": "TestAssets/Prefabs/Enemy.prefab",
-                        "spawnInterval": 5
+                        "spawnInterval": 1
                     },
                     "id": "7382290606927597226",
                     "name": "ScriptComponent",
