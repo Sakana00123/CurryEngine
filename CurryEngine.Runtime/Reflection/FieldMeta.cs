@@ -64,8 +64,11 @@ public class FieldMeta
         if (type == typeof(int)) return "int";
         if (type == typeof(bool)) return "bool";
         if (type == typeof(string)) return "string";
+        if (type == typeof(Vector2)) return "Vector2";
         if (type == typeof(Vector3)) return "Vector3";
         if (type == typeof(Quaternion)) return "Quaternion";
+        if (type == typeof(Color)) return "Color";
+        if (type == typeof(PrefabReference)) return "PrefabReference";
         if (type == typeof(GameObject)) return "GameObject";
 
         return type.Name;
@@ -98,14 +101,21 @@ public class FieldMeta
     {
         if (value == null)
             return null;
-        if (value is float f)             return f; // JSONではfloatはそのまま数値として表現される
-        if (value is double d)            return d; // JSONではdoubleもそのまま数値として表現される
-        if (value is int i)               return i; // JSONではintもそのまま数値として表現される
-        if (value is string s)            return s; // JSONではstringもそのまま文字列として表現される
-        if (value is bool b)              return b; // JSONではboolもそのままtrue/falseとして表現される
+        if (value is float t_f)             return t_f; // JSONではfloatはそのまま数値として表現される
+        if (value is double t_d)            return t_d; // JSONではdoubleもそのまま数値として表現される
+        if (value is int t_i)               return t_i; // JSONではintもそのまま数値として表現される
+        if (value is string t_s)            return t_s; // JSONではstringもそのまま文字列として表現される
+        if (value is bool t_b)              return t_b; // JSONではboolもそのままtrue/falseとして表現される
 
         // 型名で判定 (ALC 型同一性の問題を回避するため)
         var typeName = value.GetType().Name;
+        if (value is Vector2)
+        {
+            var t = value.GetType();
+            var x = (float)t.GetField("x")!.GetValue(value)!;
+            var y = (float)t.GetField("y")!.GetValue(value)!;
+            return new { x, y };
+        }
         if (value is Vector3)
         {
             var t = value.GetType();
@@ -122,6 +132,21 @@ public class FieldMeta
             var z = (float)t.GetField("z")!.GetValue(value)!;
             var w = (float)t.GetField("w")!.GetValue(value)!;
             return new { x, y, z, w };
+        }
+        if (value is Color)
+        {
+            var t = value.GetType();
+            var r = (float)t.GetField("r")!.GetValue(value)!;
+            var g = (float)t.GetField("g")!.GetValue(value)!;
+            var b = (float)t.GetField("b")!.GetValue(value)!;
+            var a = (float)t.GetField("a")!.GetValue(value)!;
+            return new { r, g, b, a };
+        }
+        if (value is PrefabReference)
+        {
+            var t = value.GetType();
+            string assetId = (string)t.GetField("AssetId")!.GetValue(value)!;
+            return new string(assetId);
         }
         if (value is IEnumerable<object> enumerable) // 配列やリストなどのコレクション型をシリアライズ
         {

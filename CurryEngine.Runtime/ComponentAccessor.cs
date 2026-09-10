@@ -39,6 +39,9 @@ internal sealed class ComponentAccessor : IComponentAccessor
     public ulong InstantiateFromId(ulong prefabId, ulong parentId, Vector3 position, Quaternion rotation)
         => NativeMethods.GameObject_InstantiateFromId(prefabId, parentId, position, rotation);
 
+    public ulong InstantiateFromResourceId(string resourceId, ulong parentId, Vector3 position, Quaternion rotation)
+        => NativeMethods.GameObject_InstantiateFromResourceId(resourceId, parentId, position, rotation);
+
     public ulong InstantiateFromResource(string resourcePath, ulong parentId, Vector3 position, Quaternion rotation)
         => NativeMethods.GameObject_InstantiateFromResource(resourcePath, parentId, position, rotation);
 

@@ -108,6 +108,23 @@ public abstract class Behaviour : Component
         return Instantiate(original, null, Vector3.zero, Quaternion.identity);
     }
 
+    public static GameObject Instantiate(PrefabReference reference, Transform? parent, Vector3 position, Quaternion rotation)
+    {
+        //var newId = NativeMethods.GameObject_InstantiateFromResource(resourcePath, parent != null ? parent.ownerId : 0, position, rotation);
+        var newId = Component.Accessor?.InstantiateFromResourceId(reference.AssetId, parent != null ? parent.ownerId : 0, position, rotation) ?? 0;
+        if (newId == 0) throw new InvalidOperationException($"Failed to instantiate object from prefab reference: {reference.AssetId}");
+        return GameObject.Accessor?.GetOrCreate(newId) ?? throw new InvalidOperationException($"Failed to retrieve GameObject with ID: {newId}");
+    }
+
+    public static GameObject Instantiate(PrefabReference reference, Transform? parent = null)
+    {
+        return Instantiate(reference, parent, Vector3.zero, Quaternion.identity);
+    }
+
+    public static GameObject Instantiate(PrefabReference reference, Vector3 position, Quaternion rotation)
+    {
+        return Instantiate(reference, null, position, rotation);
+    }
 
     public static GameObject Instantiate(string resourcePath, Transform? parent, Vector3 position, Quaternion rotation)
     {

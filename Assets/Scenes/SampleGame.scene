@@ -1585,6 +1585,7 @@
                     "enabledSelf": true,
                     "fields": {
                         "prefabPath": "TestAssets/Prefabs/Enemy.prefab",
+                        "prefabReference": "db1e152d027e40487cf08da7a41d1b56",
                         "spawnInterval": 1
                     },
                     "id": "7382290606927597226",

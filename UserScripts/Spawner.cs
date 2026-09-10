@@ -5,6 +5,7 @@ using System.ComponentModel;
 public class Spawner : Behaviour
 {
     [SerializeField] string prefabPath = "TestAssets/Prefabs/Enemy.prefab";
+    [SerializeField] PrefabReference prefabReference;
     [SerializeField] float spawnInterval = 5f;
     float spawnTimer = 0f;
 
@@ -20,14 +21,15 @@ public class Spawner : Behaviour
         spawnTimer -= Time.DeltaTime;
         if (spawnTimer <= 0f)
         {
-            GameObject? spawnedObject = Instantiate(prefabPath, transform.position, Quaternion.identity);
+            GameObject? spawnedObject = Instantiate(prefabReference, transform.position, Quaternion.identity);
             if (spawnedObject != null)
             {
                 Debug.Log($"Spawned object: {spawnedObject.name}");
             }
             else
             {
-                Debug.LogWarning($"Failed to spawn object from prefab path: {prefabPath}");
+                //Debug.LogWarning($"Failed to spawn object from prefab path: {prefabPath}");
+                Debug.LogWarning($"Failed to spawn object from prefab reference: {prefabReference}");
             }
             spawnTimer = spawnInterval; // Reset the spawn interval
         }

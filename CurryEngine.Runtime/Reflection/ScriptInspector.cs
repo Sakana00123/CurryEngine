@@ -118,7 +118,7 @@ public static class ScriptInspector
         }
         catch (Exception e)
         {
-            Debug.LogError($"[ScriptInspector] SetFailedValue failed: {e.Message}");
+            Debug.LogError(e.ToString());
             throw;
         }
     }
@@ -141,6 +141,16 @@ public static class ScriptInspector
             case "String": // string
             case "string":
                 return JsonSerializer.Deserialize<string>(valueJson);
+            case "Vector2":
+            {
+                var doc = JsonDocument.Parse(valueJson).RootElement;
+                float x = doc.GetProperty("x").GetSingle();
+                float y = doc.GetProperty("y").GetSingle();
+                // リフレクションで生成(ALC 型同一性問題を回避するため)
+                var ctor = field.FieldType.GetConstructor(
+                    [typeof(float), typeof(float)]);
+                return ctor?.Invoke([x, y]);
+            }
             case "Vector3":
             {
                 var doc = JsonDocument.Parse(valueJson).RootElement;
@@ -164,6 +174,30 @@ public static class ScriptInspector
                 var ctor = field.FieldType.GetConstructor(
                     [typeof(float), typeof(float), typeof(float), typeof(float)]);
                 return ctor?.Invoke([x, y, z, w]);
+            }
+            case "Color":
+            {
+                var doc = JsonDocument.Parse(valueJson).RootElement;
+                float r = doc.GetProperty("r").GetSingle();
+                float g = doc.GetProperty("g").GetSingle();
+                float b = doc.GetProperty("b").GetSingle();
+                float a = doc.GetProperty("a").GetSingle();
+                // リフレクションで生成(ALC 型同一性問題を回避するため)
+                var ctor = field.FieldType.GetConstructor(
+                    [typeof(float), typeof(float), typeof(float), typeof(float)]);
+                return ctor?.Invoke([r, g, b, a]);
+            }
+            case "PrefabReference":
+            {
+                string? AssetId = JsonSerializer.Deserialize<string>(valueJson);
+                if (AssetId == null)
+                {
+                    Debug.LogError($"[ScriptInspector] Failed to parse PrefabReference from JSON. Value: {valueJson}");
+                    return null;
+                }
+                // リフレクションで生成(ALC 型同一性問題を回避するため)
+                var ctor = field.FieldType.GetConstructor([typeof(string)]);
+                return ctor?.Invoke([AssetId]);
             }
             case "GameObject":
                 {

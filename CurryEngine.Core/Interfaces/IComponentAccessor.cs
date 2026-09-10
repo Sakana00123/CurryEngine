@@ -18,6 +18,8 @@ internal interface IComponentAccessor
 
     ulong InstantiateFromId(ulong prefabId, ulong parentId, Vector3 position, Quaternion rotation);
 
+    ulong InstantiateFromResourceId(string resourceId, ulong parentId, Vector3 position, Quaternion rotation);
+
     ulong InstantiateFromResource(string resourcePath, ulong parentId, Vector3 position, Quaternion rotation);
 
     ulong FindGameObjectByName(string name);

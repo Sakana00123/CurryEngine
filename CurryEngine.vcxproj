@@ -206,6 +206,7 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\FloatDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\IntDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\ObjectIdDrawer.cpp" />
+    <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\PrefabReferenceDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\QuaternionDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\StringDrawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\Vector2Drawer.cpp" />
@@ -699,6 +700,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\FloatDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\IntDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\ObjectIdDrawer.h" />
+    <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\PrefabReferenceDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\QuaternionDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\StringDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\Drawers\Vector2Drawer.h" />

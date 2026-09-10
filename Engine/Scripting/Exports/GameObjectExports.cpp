@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Engine/Core/GameObject.h"
 #include "Engine/Scenes/SceneManager.h"
+#include "Engine/Resources/AssetDatabase.h"
 
 // GameObject クラスのメソッドをスクリプトから呼び出せるようにするためのエクスポート関数
 
@@ -175,6 +176,30 @@ ENGINE_API uint64_t GameObject_InstantiateFromId(uint64_t prefabId, uint64_t par
 		GameObject* parent = parentObjId.IsValid() ? ObjectManager::Find(ObjectId::FromValue(parentId)) : nullptr;
 		GameObject* instance = Component::Instantiate(original, parent ? parent->transform : nullptr, position, rotation);
 		assert(instance && "Failed to instantiate GameObject."); // デバッグ用のアサーション
+		return instance ? instance->GetId().Value() : 0;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
+		return 0; // JSONの解析に失敗した場合は 0 を返す
+	}
+}
+
+ENGINE_API uint64_t GameObject_InstantiateFromResourceId(const char* resourceId, uint64_t parentId, Vector3 position, Quaternion rotation)
+{
+	try
+	{
+		CurryEngine::Resources::AssetId assetId;
+		assetId.id = resourceId;
+		auto assetMeta = CurryEngine::Resources::AssetDatabase::Find(assetId);
+		if (!assetMeta) {
+			LOG_ERROR("AssetMeta not found for resourceId: " + std::string(resourceId));
+			return 0; // アセットメタデータが見つからない場合は 0 を返す
+		}
+		ObjectId parentObjId = ObjectId::FromValue(parentId);
+		GameObject* parent = parentObjId.IsValid() ? ObjectManager::Find(ObjectId::FromValue(parentId)) : nullptr;
+		std::string resourcePath = assetMeta->path.string();
+		GameObject* instance = Component::Instantiate(resourcePath, parent ? parent->transform : nullptr, position, rotation);
 		return instance ? instance->GetId().Value() : 0;
 	}
 	catch (const std::exception& e)

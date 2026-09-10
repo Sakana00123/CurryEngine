@@ -193,6 +193,9 @@ internal static partial class NativeMethods
     [LibraryImport(Dll)]
     internal static partial ulong GameObject_InstantiateFromId(ulong prefabId, ulong parentId, Vector3 position, Quaternion rotation);
     [LibraryImport(Dll)]
+    internal static partial ulong GameObject_InstantiateFromResourceId([MarshalAs(UnmanagedType.LPUTF8Str)] string? resourceId, ulong parentId, Vector3 position, Quaternion rotation);
+
+    [LibraryImport(Dll)]
     internal static partial ulong GameObject_InstantiateFromResource([MarshalAs(UnmanagedType.LPUTF8Str)] string? resourcePath, ulong parentId, Vector3 position, Quaternion rotation);
 
 
