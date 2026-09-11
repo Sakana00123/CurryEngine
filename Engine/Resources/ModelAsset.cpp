@@ -8,6 +8,7 @@
 
 bool ModelAsset::LoadFromFile(const std::string& path)
 {
+	ZoneScopedN("ModelAsset::LoadFromFile");
 	// ファイルからモデルデータを読み込む処理をここに実装します。
 	_path = path;
 	CurryEngine::Utils::GltfImporter importer;
@@ -16,7 +17,7 @@ bool ModelAsset::LoadFromFile(const std::string& path)
 	}
     
     // リソースの作成とアップロード
-	auto device = Graphics::GetDevice();
+    auto device = Graphics::GetDevice();
     CreateAndUploadResources(device);
 	return true;
 }

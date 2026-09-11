@@ -143,6 +143,10 @@ void Scene::LateUpdate(float deltaTime)
 
 void Scene::FixedUpdate(float fixedDeltaTime)
 {
+	if (fixedDeltaTime > SCENE_MAX_FIXED_DELTA_TIME) {
+		fixedDeltaTime = SCENE_MAX_FIXED_DELTA_TIME; // 最大固定更新間隔を1/60秒に制限
+	}
+
 	// シーン内の全オブジェクトの固定更新
 	objectManager->FixedUpdate(fixedDeltaTime);
 

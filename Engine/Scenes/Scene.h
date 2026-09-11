@@ -16,6 +16,8 @@ class SpotLightComponent;
 #define EDITOR_CAMERA_EFFECT_PREVIEW 2
 #define EDITOR_CAMERA_COUNT 3
 
+#define SCENE_MAX_FIXED_DELTA_TIME (1.0f / 60.0f)
+
 /**
  * @file
  * @brief シーンクラス。

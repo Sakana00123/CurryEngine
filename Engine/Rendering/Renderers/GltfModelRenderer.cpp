@@ -105,20 +105,14 @@ GltfModelRenderer::GltfModelRenderer()
 
 void GltfModelRenderer::LoadModel(ID3D11Device* device, const std::string& filePath, bool staticBatching)
 {
+	ZoneScopedN("GltfModelRenderer::LoadModel");
 	this->filePath = filePath;
 
     if (m_asset)
     {
 		m_asset.reset();
     }
-	m_asset = std::make_shared<ModelAsset>();
-
-	m_asset->staticBatching = staticBatching;
-
-    if (!m_asset->LoadFromFile(filePath)) {
-		LOG_ERROR("Failed to load model asset from file: " + filePath);
-        return;
-	}
+	m_asset = ResourceManager::GetOrLoad<ModelAsset>(filePath);
 	
 	// リソースの作成とアップロード
     CreateAndUploadResources(device);

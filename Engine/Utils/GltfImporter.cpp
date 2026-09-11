@@ -91,6 +91,7 @@ namespace CurryEngine
 
         bool GltfImporter::Import(const std::string& path, ModelAsset& asset)
         {
+			ZoneScopedN("GltfImporter::Import");
             bool staticBatching = asset.staticBatching;
             std::string filePath = path;
             auto device = Graphics::GetDevice();
@@ -113,6 +114,7 @@ namespace CurryEngine
             std::filesystem::path cerealFilePath(EnginePaths::ArtifactDir / std::filesystem::path(meta->id.id));
             //cerealFilePath.replace_extension(staticBatching ? "batchCereal" : "cereal");
             if (std::filesystem::exists(cerealFilePath.c_str())) {
+				ZoneScopedN("GltfImporter::Import::LoadCachedResource");
                 std::ifstream ifs(cerealFilePath.c_str(), std::ios::binary);
                 cereal::BinaryInputArchive deserialization(ifs);
                 deserialization(
@@ -128,6 +130,7 @@ namespace CurryEngine
             }
             else
             {
+				ZoneScopedN("GltfImporter::Import::LoadGltf");
                 tinygltf::TinyGLTF tinyGltf;
                 tinyGltf.SetImageLoader(_NullLoadImageData, nullptr);
 
