@@ -275,6 +275,31 @@ void RuntimeAnimatorController::Initialize(const AnimatorController& controller,
 	}
 }
 
+void RuntimeAnimatorController::SyncParameters(const AnimatorController& controller)
+{
+	// コントローラーのパラメータを同期する
+	for (const auto& param : controller.parameters)
+	{
+		if (parameterValues.find(param.name) == parameterValues.end())
+		{
+			parameterValues[param.name] = param.defaultValue;
+		}
+	}
+	// 不要なパラメータを削除する
+	for (auto it = parameterValues.begin(); it != parameterValues.end(); )
+	{
+		auto found = std::find_if(controller.parameters.begin(), controller.parameters.end(), [&](const AnimatorParameter& p) { return p.name == it->first; });
+		if (found == controller.parameters.end())
+		{
+			it = parameterValues.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
 void RuntimeAnimatorController::Play(const AnimatorController& controller, int stateIndex, float blendDuration)
 {
 	if (stateIndex < 0 || stateIndex >= controller.states.size())

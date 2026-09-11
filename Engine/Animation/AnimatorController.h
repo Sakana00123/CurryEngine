@@ -142,6 +142,9 @@ struct RuntimeAnimatorController
 
 	void Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose = {});
 
+	// アニメーションパラメータの初期値を同期する
+	void SyncParameters(const AnimatorController& controller);
+
 	// アニメーションの再生を開始する
 	void Play(const AnimatorController& controller, int stateIndex, float blendDuration = 0.0f);
 

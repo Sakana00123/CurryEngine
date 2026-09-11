@@ -429,3 +429,9 @@ public:
 
 
 };
+
+
+struct ModelInstance
+{
+    std::vector<ModelAsset::Node> nodes;
+};

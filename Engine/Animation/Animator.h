@@ -19,7 +19,7 @@ public:
 #endif // USE_IMGUI
 
 	C_FUNCTION()
-	void ResetController();
+	void SyncController();
 
 	C_FUNCTION()
 	void SetFloat(const char* name, float value);
@@ -62,7 +62,7 @@ private:
 	std::shared_ptr<AnimatorController> controller;
 	std::shared_ptr<RuntimeAnimatorController> runtimeController;
 
-	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("AssetId"), CurryEngine::PropertyAttributes::AssetTypeExtension(".controller"), CurryEngine::PropertyAttributes::OnPropertyChanged("ResetController"))
+	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("AssetId"), CurryEngine::PropertyAttributes::AssetTypeExtension(".controller"), CurryEngine::PropertyAttributes::OnPropertyChanged("SyncController"))
 	CurryEngine::Resources::AssetId controllerAssetId; // AnimatorController の AssetId
 
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("GltfModelRenderer"))

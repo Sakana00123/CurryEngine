@@ -14,7 +14,7 @@ REGISTER_COMPONENT(Animator, "Animation")
 void Animator::Awake()
 {
 	// コントローラーのリセット
-	ResetController();
+	SyncController();
 }
 
 void Animator::Update(float deltaTime)
@@ -69,7 +69,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 
     if (controller)
     {
-		if (AnimatorControllerEditor::IsOpen() == false || AnimatorControllerEditor::GetEditingController() != controller)
+		if (AnimatorControllerEditor::IsOpen() == false || AnimatorControllerEditor::GetRuntimeController().lock() != runtimeController)
 		{
 			AnimatorControllerEditor::OpenAsset(controller->GetPath());
 			AnimatorControllerEditor::SetRuntimeController(runtimeController);
@@ -514,7 +514,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 }
 #endif // USE_IMGUI
 
-void Animator::ResetController()
+void Animator::SyncController()
 {
 	controller = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimatorController>(controllerAssetId);
 	if (!controller) 
@@ -523,11 +523,18 @@ void Animator::ResetController()
 	}
 	else
 	{
-		// コントローラーの初期化
-		runtimeController = std::make_shared<RuntimeAnimatorController>();
-		if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
+		// コントローラーが存在する場合、RuntimeAnimatorControllerを初期化または同期する
+		if (runtimeController)
 		{
-			runtimeController->Initialize(*controller, renderer->GetBindPose());
+			runtimeController->SyncParameters(*controller);
+		}
+		else
+		{
+			runtimeController = std::make_shared<RuntimeAnimatorController>();
+			if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
+			{
+				runtimeController->Initialize(*controller, renderer->GetBindPose());
+			}
 		}
 	}
 	
@@ -646,5 +653,5 @@ void Animator::Deserialize(const json& j)
 		controllerAssetId = CurryEngine::Resources::AssetId();
 	}
 	// controllerをロード
-	ResetController();
+	SyncController();
 }

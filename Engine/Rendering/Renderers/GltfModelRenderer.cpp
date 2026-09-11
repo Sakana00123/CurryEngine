@@ -34,7 +34,7 @@ Math::BoundingBox GltfModelRenderer::CalculateAABB() const
     DirectX::XMStoreFloat4x4(&matrix, M);
 
     // Traverse nodes
-	auto& nodes = m_asset->nodes;
+    auto& nodes = m_modelInstance.nodes;
 	auto& scenes = m_asset->scenes;
 	auto& defaultScene = m_asset->defaultScene;
     std::function<void(int, const DirectX::XMFLOAT4X4&)> traverse;
@@ -304,6 +304,9 @@ void GltfModelRenderer::CreateAndUploadResources(ID3D11Device* device) {
     hr = device->CreateBuffer(&bufferDesc, nullptr, primitiveJointCbuffer.ReleaseAndGetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
+	// モデルインスタンスの初期化
+	m_modelInstance.nodes = m_asset->nodes;
+
 	if (Renderer::material == nullptr)
     {
         Renderer::material = std::make_shared<::Material>();
@@ -390,7 +393,7 @@ void GltfModelRenderer::Render(RenderContext* rtx)
 
     ID3D11DeviceContext* immediateContext = rtx->immediateContext;
 	
-	auto& nodes = m_asset->nodes;
+	auto& nodes = m_modelInstance.nodes;
 	auto& materials = m_asset->materials;
 	auto& textures = m_asset->textures;
 	auto& images = m_asset->images;
@@ -554,7 +557,7 @@ void GltfModelRenderer::Render(RenderContext* rtx)
 
 void GltfModelRenderer::CastShadow(RenderContext* rtx)
 {
-    auto& nodes = m_asset->nodes;
+    auto& nodes = m_modelInstance.nodes;
     auto& materials = m_asset->materials;
     auto& textures = m_asset->textures;
     auto& images = m_asset->images;
@@ -751,27 +754,29 @@ void GltfModelRenderer::Deserialize(const json& jsonData)
 
 void GltfModelRenderer::ApplyPose(const std::vector<NodePose>& poses)
 {
-	_ASSERT_EXPR(poses.size() == m_asset->nodes.size(), L"Pose size does not match node size.");
+	auto& nodes = m_modelInstance.nodes;
+	_ASSERT_EXPR(poses.size() == nodes.size(), L"Pose size does not match node size.");
 
     for (size_t i = 0; i < poses.size(); ++i) {
         const NodePose& pose = poses.at(i);
-        Node& node = m_asset->nodes.at(i);
+        Node& node = nodes.at(i);
         node.translation = pose.translation;
         node.rotation = pose.rotation;
         node.scale = pose.scale;
 	}
-	m_asset->CumulateTransforms(m_asset->nodes);
+	m_asset->CumulateTransforms(nodes);
 }
 
 std::vector<NodePose> GltfModelRenderer::GetBindPose() const
 {
-    std::vector<NodePose> pose(m_asset->nodes.size());
+	auto& nodes = m_asset->nodes;
+    std::vector<NodePose> pose(nodes.size());
     for (size_t i = 0; i < pose.size(); ++i) {
-        pose[i].translation = m_asset->nodes[i].translation;
-        pose[i].rotation = m_asset->nodes[i].rotation;
-        pose[i].scale = m_asset->nodes[i].scale;
-		pose[i].nodeName = m_asset->nodes[i].name;
-		pose[i].globalTransform = m_asset->nodes[i].globalTransform;
+        pose[i].translation = nodes[i].translation;
+        pose[i].rotation = nodes[i].rotation;
+        pose[i].scale = nodes[i].scale;
+		pose[i].nodeName = nodes[i].name;
+		pose[i].globalTransform = nodes[i].globalTransform;
     }
     return pose;
 }

@@ -268,4 +268,5 @@ public:
     int animationIndex = 0; // 現在のアニメーションインデックス
     bool loop = true;//ループ設定
 	std::shared_ptr<ModelAsset> m_asset; // モデルアセット
+	ModelInstance m_modelInstance; // モデルインスタンス
 };
