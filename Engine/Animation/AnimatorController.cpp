@@ -490,7 +490,7 @@ float RuntimeAnimatorController::GetParameterValue(const AnimatorController& con
 	return (it != parameterValues.end()) ? it->second : param.defaultValue; // 初期化前はdefaultValueにフォールバック
 }
 
-void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController& controller)
+void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController& controller, const DirectX::XMFLOAT4X4& worldTransform)
 {
 	// アニメーションの更新処理
 	if (playing.empty()) return;
@@ -588,16 +588,43 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 			{
 				// ループで先頭に戻った：終端までの分＋先頭からの分を合成
 				XMFLOAT3 t1{}, t2{}; XMFLOAT4 r1{ 0,0,0,1 }, r2{ 0,0,0,1 };
-				it->second->SampleRootMotion(rootMotionLastNormalizedTime * duration, duration, t1, r1, currentState.rootNodeIndex, currentState.rootMotionXZ, currentState.rootMotionY);
-				it->second->SampleRootMotion(0.0f, frontNormalizedTime * duration, t2, r2, currentState.rootNodeIndex, currentState.rootMotionXZ, currentState.rootMotionY);
+				it->second->SampleRootMotion(rootMotionLastNormalizedTime * duration, duration, t1, r1, currentState.rootNodeIndex);
+				it->second->SampleRootMotion(0.0f, frontNormalizedTime * duration, t2, r2, currentState.rootNodeIndex);
 				dT = { t1.x + t2.x, t1.y + t2.y, t1.z + t2.z };
+				// グローバル座標系に変換
+				XMMATRIX globalTransform = XMLoadFloat4x4(&currentPose[currentState.rootNodeIndex].globalTransform);
+				XMVECTOR globalDelta = XMVector3TransformNormal(XMLoadFloat3(&dT), globalTransform);
+				// ワールド座標系に変換
+				XMMATRIX worldMatrix = XMLoadFloat4x4(&worldTransform);
+				XMVECTOR worldDelta = XMVector3TransformNormal(globalDelta, worldMatrix);
+				XMStoreFloat3(&dT, worldDelta);
 				XMStoreFloat4(&dR, XMQuaternionMultiply(XMLoadFloat4(&r1), XMLoadFloat4(&r2)));
+
+				std::string rootMotionLastTimeStr = std::to_string(rootMotionLastNormalizedTime);
+				std::string frontNormalizedTimeStr = std::to_string(frontNormalizedTime);
+				std::u8string logMsg = u8"[RuntimeAnimatorController] ループで先頭に戻った: " + std::u8string(rootMotionLastTimeStr.begin(), rootMotionLastTimeStr.end()) + u8" -> " + std::u8string(frontNormalizedTimeStr.begin(), frontNormalizedTimeStr.end());
+				LOG_INFO(logMsg);
 			}
 			else
 			{
-				it->second->SampleRootMotion(rootMotionLastNormalizedTime * duration, frontNormalizedTime * duration, dT, dR, currentState.rootNodeIndex, currentState.rootMotionXZ, currentState.rootMotionY);
+				it->second->SampleRootMotion(rootMotionLastNormalizedTime * duration, frontNormalizedTime * duration, dT, dR, currentState.rootNodeIndex);
+				// グローバル座標系に変換
+				XMMATRIX globalTransform = XMLoadFloat4x4(&currentPose[currentState.rootNodeIndex].globalTransform);
+				XMVECTOR globalDelta = XMVector3TransformNormal(XMLoadFloat3(&dT), globalTransform);
+				// ワールド座標系に変換
+				XMMATRIX worldMatrix = XMLoadFloat4x4(&worldTransform);
+				XMVECTOR worldDelta = XMVector3TransformNormal(globalDelta, worldMatrix);
+				XMStoreFloat3(&dT, worldDelta);
+
+				std::string rootMotionLastTimeStr = std::to_string(rootMotionLastNormalizedTime);
+				std::string frontNormalizedTimeStr = std::to_string(frontNormalizedTime);
+				std::u8string logMsg = u8"[RuntimeAnimatorController] RootMotionを サンプリング: " + std::u8string(rootMotionLastTimeStr.begin(), rootMotionLastTimeStr.end()) + u8" -> " + std::u8string(frontNormalizedTimeStr.begin(), frontNormalizedTimeStr.end());
+				LOG_INFO(logMsg);
 			}
-			rootMotionDeltaPosition.x += dT.x; rootMotionDeltaPosition.y += dT.y; rootMotionDeltaPosition.z += dT.z;
+			if (dT.x != 0.0f || dT.y != 0.0f || dT.z != 0.0f)
+			{
+				rootMotionDeltaPosition.x += dT.x; rootMotionDeltaPosition.y += dT.y; rootMotionDeltaPosition.z += dT.z;
+			}
 			XMStoreFloat4(&rootMotionDeltaRotation,
 				XMQuaternionMultiply(XMLoadFloat4(&rootMotionDeltaRotation), XMLoadFloat4(&dR)));
 			break; // 最初の有効クリップのみ（ブレンドツリー中の合成は今後の課題）

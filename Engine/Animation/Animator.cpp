@@ -34,15 +34,12 @@ void Animator::Update(float deltaTime)
 				LOG_WARNING(u8"[Animator] GltfModelRenderer が見つかりません。アニメーションを再生できません。");
 			}
 		}
-		runtimeController->Update(deltaTime, *controller);
+		runtimeController->Update(deltaTime, *controller, GetTransform()->GetWorld());
 
 		XMFLOAT3 deltaPosition; XMFLOAT4 deltaRotation;
 		runtimeController->ConsumeRootMotion(*controller, deltaPosition, deltaRotation);
 
 		// ルートモーションを適用する
-		Quaternion rotation = GetTransform()->GetWorldRotation();
-		XMVECTOR worldDelta = XMVector3Rotate(XMLoadFloat3(&deltaPosition), XMLoadFloat4(&rotation));
-		XMStoreFloat3(&deltaPosition, worldDelta);
 		GetOwner()->GetTransform()->Translate((Vector3)deltaPosition);
 
 		// GltfModelRenderer にアニメーションを適用する

@@ -164,7 +164,7 @@ struct RuntimeAnimatorController
 	// アニメーションパラメータの値を取得する
 	float GetParameterValue(const AnimatorController& controller, int parameterIndex) const;
 
-	void Update(float deltaTime, const AnimatorController& controller);
+	void Update(float deltaTime, const AnimatorController& controller, const XMFLOAT4X4& worldTransform);
 
 	void BeginTransition(const AnimatorTransition& transition, const AnimatorController& controller);
 	void ConsumeTrigger(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions);

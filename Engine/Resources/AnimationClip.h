@@ -72,10 +72,10 @@ public:
 
 	// 2時刻間のルートノードの移動/回転差分を取得する
 	void SampleRootMotion(float previousTime, float currentTime,
-		DirectX::XMFLOAT3& outDeltaTranslation, DirectX::XMFLOAT4& outDeltaRotation, int rootNodeIndex, bool rootMotionXZ, bool rootMotionY) const;
+		DirectX::XMFLOAT3& outDeltaTranslation, DirectX::XMFLOAT4& outDeltaRotation, int rootNodeIndex) const;
 
 	// 指定時刻のルートノードの移動/回転差分を取得する（前フレームとの差分ではなく、0秒時点からの差分）
-	void GetRootMotionDelta(float time, DirectX::XMFLOAT3& outDeltaTranslation, DirectX::XMFLOAT4& outDeltaRotation, int rootNodeIndex, bool rootMotionXZ, bool rootMotionY) const;
+	void GetRootMotionDelta(float time, DirectX::XMFLOAT3& outDeltaTranslation, DirectX::XMFLOAT4& outDeltaRotation, int rootNodeIndex) const;
 private:
 	// 指定ノードのローカルT/Rを直接サンプリングする内部ヘルパー（Sample()と共通化）
 	void SampleNodeChannel(int nodeIndex, float time,

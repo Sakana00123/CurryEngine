@@ -163,7 +163,7 @@ void AnimationClip::Sample(float time, std::vector<NodePose>& out, float weight)
 }
 
 void AnimationClip::SampleRootMotion(float previousTime, float currentTime,
-	XMFLOAT3& outDeltaTranslation, XMFLOAT4& outDeltaRotation, int rootNodeIndex, bool rootMotionXZ, bool rootMotionY) const
+	XMFLOAT3& outDeltaTranslation, XMFLOAT4& outDeltaRotation, int rootNodeIndex) const
 {
 	outDeltaTranslation = { 0, 0, 0 };
 	outDeltaRotation = { 0, 0, 0, 1 };
@@ -175,17 +175,16 @@ void AnimationClip::SampleRootMotion(float previousTime, float currentTime,
 	SampleNodeChannel(rootNodeIndex, currentTime, &t1, &r1);
 
 	XMVECTOR delta = XMVectorSubtract(XMLoadFloat3(&t1), XMLoadFloat3(&t0));
-	if (!rootMotionXZ) delta = XMVectorSetX(XMVectorSetZ(delta, 0.0f), 0.0f);
-	if (!rootMotionY)  delta = XMVectorSetY(delta, 0.0f);
 	XMStoreFloat3(&outDeltaTranslation, delta);
 
 	XMVECTOR R0 = XMQuaternionNormalize(XMLoadFloat4(&r0));
 	XMVECTOR R1 = XMQuaternionNormalize(XMLoadFloat4(&r1));
 	XMVECTOR deltaR = XMQuaternionMultiply(XMQuaternionInverse(R0), R1);
+
 	XMStoreFloat4(&outDeltaRotation, deltaR);
 }
 
-void AnimationClip::GetRootMotionDelta(float time, XMFLOAT3& outDeltaTranslation, XMFLOAT4& outDeltaRotation, int rootNodeIndex, bool rootMotionXZ, bool rootMotionY) const
+void AnimationClip::GetRootMotionDelta(float time, XMFLOAT3& outDeltaTranslation, XMFLOAT4& outDeltaRotation, int rootNodeIndex) const
 {
     outDeltaTranslation = { 0, 0, 0 };
     outDeltaRotation = { 0, 0, 0, 1 };
@@ -195,8 +194,6 @@ void AnimationClip::GetRootMotionDelta(float time, XMFLOAT3& outDeltaTranslation
     SampleNodeChannel(rootNodeIndex, 0.0f, &t0, &r0);
     SampleNodeChannel(rootNodeIndex, time, &t1, &r1);
     XMVECTOR delta = XMVectorSubtract(XMLoadFloat3(&t1), XMLoadFloat3(&t0));
-    if (!rootMotionXZ) delta = XMVectorSetX(XMVectorSetZ(delta, 0.0f), 0.0f);
-    if (!rootMotionY)  delta = XMVectorSetY(delta, 0.0f);
     XMStoreFloat3(&outDeltaTranslation, delta);
     XMVECTOR R0 = XMQuaternionNormalize(XMLoadFloat4(&r0));
     XMVECTOR R1 = XMQuaternionNormalize(XMLoadFloat4(&r1));

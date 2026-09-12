@@ -53,7 +53,7 @@ public class Enemy : Behaviour
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            TakeDamage(20);
+            TakeDamage(1000);
         }
 
         // プレイヤーオブジェクトがまだ見つかっていない場合は、Findで探す
