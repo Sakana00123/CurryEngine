@@ -2,8 +2,8 @@
     "animationClipIds": [
         "b02ae92be3315c975b9c11a75845da20",
         "20608e65daa760ba394b9543e41a63b4",
-        "6733838f7460490c3eae08b62b079f3f",
         "f8ab8ac2eac917fc3d8056eb3d74ca87",
+        "6733838f7460490c3eae08b62b079f3f",
         "b245e39dc8759a5931d469dbe255c31b",
         "c0361a9d1ea30397a037933fdb581560"
     ],
@@ -51,8 +51,6 @@
             "loop": true,
             "name": "Idle",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         },
@@ -70,8 +68,6 @@
             "loop": true,
             "name": "Run",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         },
@@ -89,8 +85,6 @@
             "loop": false,
             "name": "Attack",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         },
@@ -108,8 +102,6 @@
             "loop": false,
             "name": "Die",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         },
@@ -127,8 +119,6 @@
             "loop": false,
             "name": "Setup",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         },
@@ -146,8 +136,6 @@
             "loop": false,
             "name": "Hit",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         }

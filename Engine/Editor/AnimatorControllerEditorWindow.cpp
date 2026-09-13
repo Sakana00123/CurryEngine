@@ -754,8 +754,6 @@ namespace CurryEngine::Editor
                 }
                 ImGui::EndPopup();
 			}
-			ImGui::Checkbox("RootMotionXZ", &state.rootMotionXZ);
-			ImGui::Checkbox("RootMotionY", &state.rootMotionY);
 		}
 
         ImGui::Spacing();

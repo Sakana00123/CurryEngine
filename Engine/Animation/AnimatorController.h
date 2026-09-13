@@ -81,8 +81,6 @@ struct AnimatorState
 	bool loop = true; // ループ再生するかどうか
 	bool rootMotion = false; // ルートモーションを使用するかどうか
 	int rootNodeIndex = -1; // ルートモーションを適用するノードのインデックス（-1ならルートノード）
-	bool rootMotionXZ = true; // ルートモーションのXZ軸を使用するかどうか
-	bool rootMotionY = true; // ルートモーションのY軸を使用するかどうか
 
 	BlendTreeType blendType = BlendTreeType::None;
 	int blendParamXIndex = -1;    // Simple1Dはこれのみ使用 / FreeformCartesian2DはX軸

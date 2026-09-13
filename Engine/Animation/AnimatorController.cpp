@@ -79,8 +79,6 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			state.loop = stateJson["loop"].get<bool>();
 			state.rootMotion = stateJson.value<bool>("rootMotion", false);
 			state.rootNodeIndex = stateJson.value<int>("rootNodeIndex", -1);
-			state.rootMotionXZ = stateJson.value<bool>("rootMotionXZ", true);
-			state.rootMotionY = stateJson.value<bool>("rootMotionY", true);
 			auto& posArray = stateJson["editorPosition"];
 			if (posArray.is_array() && posArray.size() == 2)
 			{
@@ -180,8 +178,6 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 		stateJson["loop"] = state.loop;
 		stateJson["rootMotion"] = state.rootMotion;
 		stateJson["rootNodeIndex"] = state.rootNodeIndex;
-		stateJson["rootMotionXZ"] = state.rootMotionXZ;
-		stateJson["rootMotionY"] = state.rootMotionY;
 		stateJson["editorPosition"] = { state.editorPosition.x, state.editorPosition.y };
 
 		stateJson["blendType"] = static_cast<int>(state.blendType);
@@ -575,6 +571,7 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		? fmod(frontPlaying.time / frontAvgDuration, 1.0f)
 		: (std::min)(frontPlaying.time / frontAvgDuration, 1.0f);
 
+	// ルートモーションのサンプリング
 	if (currentState.rootMotion)
 	{
 		for (const auto& bw : frontWeights)
@@ -632,6 +629,7 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	}
 	rootMotionLastNormalizedTime = frontNormalizedTime;
 
+	// 遷移条件のチェックと遷移の開始
 	if (transitionDuration <= 0.0f)
 	{
 		for (const auto& transition : controller.transitions)
@@ -650,6 +648,7 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	float nextNormalizedTime = 0.0f;
 	const bool transitioning = (playing.size() == TRANSITION_SIZE);
 
+	// 遷移中の場合、ネクストステートのウェイトと正規化時間を計算
 	if (transitioning)
 	{
 		auto& nextPlaying = playing[INDEX_NEXT];
@@ -673,7 +672,7 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	// フロントとネクストのウェイトを合成して最終的なポーズを計算
 	CompositePose(controller, frontWeights, frontNormalizedTime, 1.0f - t, nextWeights, nextNormalizedTime, t);
 	
-	// ルートモーションで抜き出した軸は、スケルトンのローカル姿勢からは打ち消す
+	// ルートモーションの適用（ルートノードの位置をバインドポーズに戻す）
 	if (currentState.rootMotion &&
 		currentState.rootNodeIndex >= 0 &&
 		currentState.rootNodeIndex < (int)currentPose.size() &&
@@ -681,17 +680,14 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 	{
 		auto& rootPose = currentPose[currentState.rootNodeIndex];
 		const auto& bindRoot = bindPose[currentState.rootNodeIndex];
-		if (currentState.rootMotionXZ)
 		{
 			rootPose.translation.x = bindRoot.translation.x;
-			rootPose.translation.z = bindRoot.translation.z;
-		}
-		if (currentState.rootMotionY)
-		{
 			rootPose.translation.y = bindRoot.translation.y;
+			rootPose.translation.z = bindRoot.translation.z;
 		}
 	}
 
+	// 遷移が完了した場合、フロントステートをネクストステートに置き換え、遷移を終了する
 	if (transitioning && transitionElapsed >= transitionDuration)
 	{
 		if (playing.size() > 1) playing.erase(playing.begin());

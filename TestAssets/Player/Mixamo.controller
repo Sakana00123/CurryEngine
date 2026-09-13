@@ -29,8 +29,6 @@
             "loop": true,
             "name": "Move",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         },
@@ -48,8 +46,6 @@
             "loop": true,
             "name": "Flip",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         },
@@ -67,8 +63,6 @@
             "loop": true,
             "name": "Jump",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         },
@@ -86,8 +80,6 @@
             "loop": true,
             "name": "Falling",
             "rootMotion": false,
-            "rootMotionXZ": true,
-            "rootMotionY": true,
             "rootNodeIndex": -1,
             "speed": 1.0
         }
