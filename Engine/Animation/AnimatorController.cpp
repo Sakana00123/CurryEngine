@@ -45,6 +45,21 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			animationClips[clipId] = clip;
 		}
 	}
+	if (jsonData.contains("animationTimelineIds"))
+	{
+		animationTimelines.clear();
+		for (const auto& timelineIdStr : jsonData["animationTimelineIds"])
+		{
+			CurryEngine::Resources::AssetId timelineId(timelineIdStr.get<std::string>());
+			// アセットデータベースからAnimationTimelineをロード
+			auto timeline = CurryEngine::Resources::AssetDatabase::LoadAsset<CurryEngine::Resources::AnimationTimeline>(timelineId);
+			if (!timeline)
+			{
+				LOG_ERROR(u8"[AnimatorController] AnimationTimelineの読み込みに失敗しました: " + std::u8string(timelineId.ToString().begin(), timelineId.ToString().end()));
+			}
+			animationTimelines[timelineId] = timeline;
+		}
+	}
 	if (jsonData.contains("parameters"))
 	{
 		parameters.clear();
@@ -75,6 +90,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			AnimatorState state;
 			state.name = stateJson["name"].get<std::string>();
 			state.clipId = stateJson["clipId"].get<CurryEngine::Resources::AssetId>();
+			state.timelineId = stateJson.value<CurryEngine::Resources::AssetId>("timelineId", CurryEngine::Resources::AssetId());
 			state.speed = stateJson["speed"].get<float>();
 			state.loop = stateJson["loop"].get<bool>();
 			state.rootMotion = stateJson.value<bool>("rootMotion", false);
@@ -149,6 +165,11 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 	{
 		jsonData["animationClipIds"].push_back(clipId.ToString());
 	}
+	jsonData["animationTimelineIds"] = nlohmann::json::array();
+	for (const auto& [timelineId, timeline] : animationTimelines)
+	{
+		jsonData["animationTimelineIds"].push_back(timelineId.ToString());
+	}
 	jsonData["parameters"] = nlohmann::json::array();
 	for (const auto& param : parameters)
 	{
@@ -174,6 +195,7 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 		nlohmann::json stateJson;
 		stateJson["name"] = state.name;
 		stateJson["clipId"] = state.clipId;
+		stateJson["timelineId"] = state.timelineId;
 		stateJson["speed"] = state.speed;
 		stateJson["loop"] = state.loop;
 		stateJson["rootMotion"] = state.rootMotion;
@@ -571,6 +593,9 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		? fmod(frontPlaying.time / frontAvgDuration, 1.0f)
 		: (std::min)(frontPlaying.time / frontAvgDuration, 1.0f);
 
+	// イベントのディスパッチ
+	DispatchStateEvents(controller, frontPlaying, frontNormalizedTime);
+
 	// ルートモーションのサンプリング
 	if (currentState.rootMotion)
 	{
@@ -666,6 +691,8 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 			nextNormalizedTime = nextState.loop
 				? fmod(nextPlaying.time / nextAvgDuration, 1.0f)
 				: (std::min)(nextPlaying.time / nextAvgDuration, 1.0f);
+			// ネクストステートのイベントのディスパッチ
+			DispatchStateEvents(controller, nextPlaying, nextNormalizedTime);
 		}
 	}
 
@@ -818,5 +845,31 @@ std::vector<RuntimeAnimatorController::BlendedClipWeight> RuntimeAnimatorControl
 	if (sum <= 1e-6f) return result;
 	for (const auto& [clipId, weight] : current)
 		if (weight > 1e-6f) result.push_back({ clipId, weight / sum });
+	return result;
+}
+
+void RuntimeAnimatorController::DispatchStateEvents(
+	const AnimatorController& controller, PlayingState& state, float normalizedTime)
+{
+	const auto& animState = controller.states[state.stateIndex];
+	if (!animState.timelineId.IsValid()) { state.lastNormalizedTime = normalizedTime; return; }
+
+	auto it = controller.animationTimelines.find(animState.timelineId);
+	if (it == controller.animationTimelines.end() || !it->second) { state.lastNormalizedTime = normalizedTime; return; }
+
+	const auto& timeline = *it->second;
+	const float duration = timeline.GetDuration();
+	if (duration <= 0.0f) { state.lastNormalizedTime = normalizedTime; return; }
+
+	const bool looped = animState.loop && normalizedTime < state.lastNormalizedTime;
+	CurryEngine::Resources::CollectFiredEvents(timeline, state.lastNormalizedTime * duration, normalizedTime * duration, looped, firedEvents);
+
+	state.lastNormalizedTime = normalizedTime;
+}
+
+std::vector<CurryEngine::Resources::FiredAnimationEvent> RuntimeAnimatorController::ConsumeFiredEvents()
+{
+	auto result = std::move(firedEvents);
+	firedEvents.clear();
 	return result;
 }

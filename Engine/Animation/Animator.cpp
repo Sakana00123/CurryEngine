@@ -51,6 +51,15 @@ void Animator::Update(float deltaTime)
 			}
 		}
 
+		// イベントの処理
+		for (const auto& event : runtimeController->ConsumeFiredEvents())
+		{
+			event.eventName; // イベント名
+			event.stringParam; // イベントの文字列パラメータ
+			std::string eventLog = "[Animator] Fired Animation Event: " + event.eventName + ", Param: " + event.stringParam;
+			LOG_INFO(eventLog);
+		}
+
 	}
 }
 

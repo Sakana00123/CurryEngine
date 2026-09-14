@@ -5,6 +5,7 @@
         "38679cb8bb58c4f9c2d3d40ba163829f",
         "6c4a5a55b324ecc0a88caeec875b60fc"
     ],
+    "animationTimelineIds": [],
     "defaultStateIndex": 0,
     "name": "New Animator Controller",
     "parameters": [
@@ -30,7 +31,8 @@
             "name": "Move",
             "rootMotion": false,
             "rootNodeIndex": -1,
-            "speed": 1.0
+            "speed": 1.0,
+            "timelineId": ""
         },
         {
             "blendEntries": [],
@@ -47,7 +49,8 @@
             "name": "Flip",
             "rootMotion": false,
             "rootNodeIndex": -1,
-            "speed": 1.0
+            "speed": 1.0,
+            "timelineId": ""
         },
         {
             "blendEntries": [],
@@ -64,7 +67,8 @@
             "name": "Jump",
             "rootMotion": false,
             "rootNodeIndex": -1,
-            "speed": 1.0
+            "speed": 1.0,
+            "timelineId": ""
         },
         {
             "blendEntries": [],
@@ -81,7 +85,8 @@
             "name": "Falling",
             "rootMotion": false,
             "rootNodeIndex": -1,
-            "speed": 1.0
+            "speed": 1.0,
+            "timelineId": ""
         }
     ],
     "transitions": [

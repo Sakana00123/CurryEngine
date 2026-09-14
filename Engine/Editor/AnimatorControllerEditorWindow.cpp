@@ -534,7 +534,7 @@ namespace CurryEngine::Editor
             else if (ImGui::MenuItem("Create State"))
             {
                 Vector2 worldPos = ScreenToWorld(pendingContextMenuScreenPos, canvasOrigin);
-                controller->states.push_back(AnimatorState{ "NewState", CurryEngine::Resources::AssetId(), 1.0f, worldPos });
+                controller->states.push_back(AnimatorState{ "NewState", CurryEngine::Resources::AssetId(), CurryEngine::Resources::AssetId(), 1.0f, worldPos });
             }
             ImGui::EndPopup();
         }
@@ -637,6 +637,14 @@ namespace CurryEngine::Editor
         ImGui::EndChild();
 
         ImGui::End();
+
+		// --- タイムラインエディタ ---
+        if (isTimelineEditorOpen)
+        {
+            ImGui::Begin("Animation Timeline", &isTimelineEditorOpen);
+            timelineEditor.Draw();
+            ImGui::End();
+        }
     }
 
 
@@ -705,6 +713,8 @@ namespace CurryEngine::Editor
             DrawSingleClipSection(state, controller);
         else
             DrawBlendTreeSection(state, controller, runtimeController);
+        ImGui::Spacing();
+        DrawTimelineSection(state, controller);
 
         ImGui::Spacing();
         ImGui::InputFloat("Speed", &state.speed);
@@ -1181,6 +1191,78 @@ namespace CurryEngine::Editor
         if (!clipId.IsValid()) return "None";
         auto it = controller->animationClips.find(clipId);
         return (it != controller->animationClips.end() && it->second) ? it->second->name : "None";
+    }
+
+    void AnimatorControllerEditorWindow::DrawTimelineSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller)
+    {
+        ImGui::SeparatorText("Animation Events");
+        ImGui::Text("Timeline: %s", GetTimelineDisplayName(controller, state.timelineId).c_str());
+        ImGui::SameLine();
+        state.timelineId = DrawTimelinePickerButton("SelectTimelinePopup", controller, state);
+
+        if (state.timelineId.IsValid())
+        {
+            ImGui::SameLine();
+            if (ImGui::SmallButton("Edit..."))
+            {
+                auto it = controller->animationTimelines.find(state.timelineId);
+                if (it != controller->animationTimelines.end() && it->second)
+                {
+                    timelineEditor.SetTarget(it->second);
+                    isTimelineEditorOpen = true;
+                }
+            }
+        }
+    }
+
+    CurryEngine::Resources::AssetId AnimatorControllerEditorWindow::DrawTimelinePickerButton(
+        const char* popupId, std::shared_ptr<AnimatorController>& controller, AnimatorState& state)
+    {
+        static std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<CurryEngine::Resources::AnimationTimeline>> timelineMap;
+        CurryEngine::Resources::AssetId result = state.timelineId;
+
+        ImGui::PushID(popupId);
+        if (ImGui::SmallButton("..."))
+        {
+            ImGui::OpenPopup(popupId);
+            timelineMap.clear();
+            // AssetType::AnimationTimeline は既存のenumに無ければ追加が必要
+            std::vector<CurryEngine::Resources::AssetMeta> metas =
+                CurryEngine::Resources::AssetDatabase::FindAllByType(AssetType::AnimationTimeline);
+            for (const auto& meta : metas)
+                timelineMap[meta.id] = CurryEngine::Resources::AssetDatabase::LoadAsset<CurryEngine::Resources::AnimationTimeline>(meta.id);
+        }
+        if (ImGui::BeginPopup(popupId))
+        {
+            if (ImGui::Selectable("None")) result = CurryEngine::Resources::AssetId();
+            ImGui::Separator();
+            for (const auto& [id, timeline] : timelineMap)
+            {
+                if (!timeline) continue;
+                std::string label = std::filesystem::path(timeline->GetPath()).stem().string();
+                if (ImGui::Selectable(label.c_str()))
+                {
+                    controller->animationTimelines[id] = timeline;
+                    result = id;
+                }
+            }
+            ImGui::Separator();
+            if (ImGui::Selectable("+ Create New..."))
+            {
+                // ここが未確定: 新規アセットの登録方法がAssetDatabase側の仕様次第
+            }
+            ImGui::EndPopup();
+        }
+        ImGui::PopID();
+        return result;
+    }
+
+    std::string AnimatorControllerEditorWindow::GetTimelineDisplayName(
+        std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& timelineId) const
+    {
+        if (!timelineId.IsValid()) return "None";
+        auto it = controller->animationTimelines.find(timelineId);
+        return (it != controller->animationTimelines.end() && it->second) ? std::filesystem::path(it->second->GetPath()).stem().string() : "None";
     }
 }
 

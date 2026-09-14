@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Animation/AnimatorController.h"
 #include <memory>
+#include "AnimationTimelineEditor.h"
 
 #ifdef USE_IMGUI
 namespace CurryEngine::Editor
@@ -30,6 +31,9 @@ namespace CurryEngine::Editor
 
 		// transitionで、２つのノードで相互の遷移がある場合、nodeA→nodeBとnodeB→nodeAの両方の遷移を描画する際に、線が重なってしまうので、ずらすtransitionのインデックスを保持するための配列
 		std::vector<int> transitionOffsetIndices;
+
+		AnimationTimelineEditor timelineEditor;
+		bool isTimelineEditorOpen = false;
 
         ImVec2 rightClickStartPos = { 0.0f, 0.0f };
         ImVec2 pendingContextMenuScreenPos = { 0.0f, 0.0f };
@@ -73,6 +77,10 @@ namespace CurryEngine::Editor
         void DrawBlendSpace2D(AnimatorState& state, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
         CurryEngine::Resources::AssetId DrawClipPickerButton(const char* popupId, std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& currentClipId);
         std::string GetClipDisplayName(std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& clipId) const;
+
+        void DrawTimelineSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller);
+        CurryEngine::Resources::AssetId DrawTimelinePickerButton(const char* popupId, std::shared_ptr<AnimatorController>& controller, AnimatorState& state);
+		std::string GetTimelineDisplayName(std::shared_ptr<AnimatorController>& controller, const CurryEngine::Resources::AssetId& timelineId) const;
 
         // --- ヘルパー ---
 		// 2つのノードの中心座標から、線分がノードの矩形に接する点を計算する

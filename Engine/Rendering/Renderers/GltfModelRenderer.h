@@ -21,18 +21,6 @@
 #include "Engine/Resources/ModelAsset.h"
 #include <Engine\Resources\AnimationClip.h>
 
-struct AnimationEvent
-{
-    struct Event
-    {
-        float time = 0.0f; // イベント発生時間
-        std::function<void()> func; // イベント関数
-        bool isCalled = false; // イベントが呼び出されたか(内部用。設定不要)
-    };
-
-    std::vector<Event> events; // イベントリスト
-};
-
 class GltfModelRenderer : public Renderer
 {
 	C_REFLECT(GltfModelRenderer)
@@ -54,8 +42,6 @@ class GltfModelRenderer : public Renderer
     std::function<void(RenderContext*)> preRenderFunc;
     std::function<void(RenderContext*)> postRenderFunc;
 
-    // アニメーション中のイベント設定
-    AnimationEvent animationEvent;
 
 #ifdef _DEBUG
     bool editorStaticBatchingFlag = false;
@@ -92,19 +78,18 @@ public:
     void ReplaceCSMVertexShader(ID3D11Device* device, const char* filePath);
 
     // アニメーション再生
-    void SetAnimation(int index, bool blend = true, const AnimationEvent& animEvent = {}) {
+    void SetAnimation(int index, bool blend = true) {
         animationIndex = index; // アニメーションインデックスを設定
         time = 0; // アニメーション時間をリセット
         timeRate = 1.0f; // 再生速度をリセット
         isBlendStart = blend; // ブレンド開始フラグを設定
         isAnimationCompleted = false; // アニメーション完了フラグをリセット
-        animationEvent = animEvent; // アニメーションイベントを設定
 		time = BeatManager::GetTimeInCurrentBeat(); // ビートに同期させる
     }
     // アニメーション再生
-    void SetAnimation(const std::string& name, bool blend = true, const AnimationEvent& animEvent = {})
+    void SetAnimation(const std::string& name, bool blend = true)
     {
-        SetAnimation(GetAnimationIndex(name), blend, animEvent);
+        SetAnimation(GetAnimationIndex(name), blend);
     }
 
 	// アニメーション再生

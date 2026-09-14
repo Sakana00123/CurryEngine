@@ -3,6 +3,7 @@
 #include "Engine/Resources/AnimationClip.h"
 #include "Engine/Resources/AssetId.h"
 #include <unordered_map>
+#include <Engine\Resources\AnimationEvent.h>
 
 #undef ENABLE_ANIMATOR_PARAMETER_BINDING
 
@@ -76,6 +77,7 @@ struct AnimatorState
 {
 	std::string name;
 	CurryEngine::Resources::AssetId clipId; // アニメーションクリップのID
+	CurryEngine::Resources::AssetId timelineId; // AnimationTimelineのID
 	float speed = 1.0f; // 再生速度
 	Vector2 editorPosition; // エディタ上での位置（ノードの配置用）
 	bool loop = true; // ループ再生するかどうか
@@ -100,7 +102,8 @@ public:
 	std::vector<AnimatorTransition> transitions; // アニメーション遷移のリスト
 	int defaultStateIndex = 0; // デフォルトのアニメーションステートのインデックス
 
-	std::unordered_map< CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> animationClips; // アニメーションクリップのリスト
+	std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> animationClips; // アニメーションクリップのリスト
+	std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<CurryEngine::Resources::AnimationTimeline>> animationTimelines; // AnimationTimelineのリスト
 
 	bool LoadFromFile(const std::string& path) override;
 
@@ -125,6 +128,7 @@ struct RuntimeAnimatorController
 		float time = 0.0f;
 		int stateIndex = -1; // AnimatorController::statesのインデックス
 		std::unordered_map<CurryEngine::Resources::AssetId, float> blendWeights;
+		float lastNormalizedTime = 0.0f;
 	};
 	std::unordered_map<std::string, float> parameterValues; // Trigger含め全部float運用が楽
 	std::vector<PlayingState> playing; // 複数のアニメーションを同時に再生する場合の状態を保持
@@ -180,4 +184,13 @@ struct RuntimeAnimatorController
 		const std::vector<BlendedClipWeight>& target,
 		float smoothTime, float deltaTime) const;
 
+
+	std::vector<CurryEngine::Resources::FiredAnimationEvent> firedEvents; // このフレームで発火したイベント（Consume想定）
+
+	// 発火イベントを取得してクリアする（ConsumeRootMotionと同じパターン）
+	std::vector<CurryEngine::Resources::FiredAnimationEvent> ConsumeFiredEvents();
+
+private:
+	// 指定ステートの正規化時間の進みからイベント発火を判定する
+	void DispatchStateEvents(const AnimatorController& controller, PlayingState& state, float normalizedTime);
 };

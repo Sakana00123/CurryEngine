@@ -15,4 +15,5 @@ enum class AssetType
 	Material,
 	Animation,
 	AnimatorController,
+	AnimationTimeline,
 };

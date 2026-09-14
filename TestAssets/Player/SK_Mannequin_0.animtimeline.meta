@@ -1,5 +1,5 @@
 {
-    "id": "ba43a2cca3b92fb762c77928caed8bf1",
+    "id": "cdc555a6bef9f50d0a1fcf41099057e6",
     "importSettings": null,
     "isFolder": false,
     "path": [
@@ -34,12 +34,20 @@
         105,
         110,
         95,
-        49,
+        48,
         46,
         97,
         110,
         105,
-        109
+        109,
+        116,
+        105,
+        109,
+        101,
+        108,
+        105,
+        110,
+        101
     ],
-    "type": "Animation"
+    "type": "AnimationTimeline"
 }

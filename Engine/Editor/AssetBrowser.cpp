@@ -887,6 +887,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 				case AssetType::Material:  badge = "MAT";    badgeColor = { 0.6f, 0.4f, 0.9f, 1.0f }; break;
 				case AssetType::Animation: badge = "ANIM";   badgeColor = { 0.9f, 0.3f, 0.3f, 1.0f }; break;
 				case AssetType::AnimatorController: badge = "AC"; badgeColor = { 0.9f, 0.6f, 0.2f, 1.0f }; break;
+				case AssetType::AnimationTimeline: badge = "AT"; badgeColor = { 0.9f, 0.6f, 0.2f, 1.0f }; break;
 				default: break;
 				}
 				if (badge)

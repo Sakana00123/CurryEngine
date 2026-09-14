@@ -213,6 +213,7 @@ popd</Command>
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\Drawers\Vector3Drawer.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawerRegistry.cpp" />
     <ClCompile Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.cpp" />
+    <ClCompile Include="Engine\Editor\AnimationTimelineEditor.cpp" />
     <ClCompile Include="Engine\Editor\AnimatorControllerEditorWindow.cpp" />
     <ClCompile Include="Engine\Editor\BuildSettingsWindow.cpp" />
     <ClCompile Include="Engine\Editor\GameViewWindow.cpp" />
@@ -239,6 +240,7 @@ popd</Command>
     <ClCompile Include="Engine\Rendering\Renderers\MeshRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\Renderers\ModelRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\Renderers\TrailRenderer.cpp" />
+    <ClCompile Include="Engine\Resources\AnimationEvent.cpp" />
     <ClCompile Include="Engine\Resources\AssetDatabase.cpp" />
     <ClCompile Include="Engine\Resources\AssetMaterial.cpp" />
     <ClCompile Include="Engine\Resources\AssetModel.cpp" />
@@ -246,6 +248,7 @@ popd</Command>
     <ClCompile Include="Engine\Resources\AssetTypeUtils.cpp" />
     <ClCompile Include="Engine\Resources\AssetWatcher.cpp" />
     <ClCompile Include="Engine\Resources\Importers\AnimationImporter.cpp" />
+    <ClCompile Include="Engine\Resources\Importers\AnimationTimelineImporter.cpp" />
     <ClCompile Include="Engine\Resources\Importers\AnimatorControllerImporter.cpp" />
     <ClCompile Include="Engine\Resources\Importers\FbxImporter.cpp" />
     <ClCompile Include="Engine\Resources\Importers\ImporterRegistry.cpp" />
@@ -708,6 +711,7 @@ popd</Command>
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawerRegistry.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\IPropertyDrawer.h" />
     <ClInclude Include="Engine\EditorSupport\PropertyDrawer\PropertyDrawHelper.h" />
+    <ClInclude Include="Engine\Editor\AnimationTimelineEditor.h" />
     <ClInclude Include="Engine\Editor\AnimatorControllerEditor.h" />
     <ClInclude Include="Engine\Editor\AnimatorControllerEditorWindow.h" />
     <ClInclude Include="Engine\Editor\BuildSettingsWindow.h" />
@@ -732,6 +736,7 @@ popd</Command>
     <ClInclude Include="Engine\Rendering\Renderers\MeshRenderer.h" />
     <ClInclude Include="Engine\Rendering\Renderers\ModelRenderer.h" />
     <ClInclude Include="Engine\Rendering\Renderers\TrailRenderer.h" />
+    <ClInclude Include="Engine\Resources\AnimationEvent.h" />
     <ClInclude Include="Engine\Resources\AssetDatabase.h" />
     <ClInclude Include="Engine\Resources\AssetId.h" />
     <ClInclude Include="Engine\Resources\AssetMaterial.h" />
@@ -742,6 +747,7 @@ popd</Command>
     <ClInclude Include="Engine\Resources\AssetTypeUtils.h" />
     <ClInclude Include="Engine\Resources\AssetWatcher.h" />
     <ClInclude Include="Engine\Resources\Importers\AnimationImporter.h" />
+    <ClInclude Include="Engine\Resources\Importers\AnimationTimelineImporter.h" />
     <ClInclude Include="Engine\Resources\Importers\AnimatorControllerImporter.h" />
     <ClInclude Include="Engine\Resources\Importers\FbxImporter.h" />
     <ClInclude Include="Engine\Resources\Importers\IImporter.h" />

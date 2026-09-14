@@ -6,6 +6,7 @@
 #include "FbxImporter.h"
 #include "AnimationImporter.h"
 #include "AnimatorControllerImporter.h"
+#include "AnimationTimelineImporter.h"
 
 
 namespace CurryEngine
@@ -20,6 +21,7 @@ namespace CurryEngine
 			Register(AssetType::Model, std::make_unique<ModelImporter>());
 			Register(AssetType::Animation, std::make_unique<AnimationImporter>());
 			Register(AssetType::AnimatorController, std::make_unique<AnimatorControllerImporter>());
+			Register(AssetType::AnimationTimeline, std::make_unique<AnimationTimelineImporter>());
 		}
 
 		IImporter* ImporterRegistry::Find(AssetType type, const std::filesystem::path& extension)

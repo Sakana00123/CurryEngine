@@ -2,7 +2,7 @@
 #include "AnimationEditor.h"
 #include "Engine/Resources/AssetDatabase.h"
 #include "Engine/Resources/AnimationClip.h"
-
+#include "Engine/Editor/AnimationTimelineEditor.h"
 
 void ValueTrack::Sort()
 {
@@ -167,6 +167,66 @@ void AnimationEditor::DrawGUI()
 	// GUI 描画ロジックをここに実装
 	ImGui::Begin("Animation Editor", &isOpen);
 
+	static bool isOpenAnimationEventWindow = false;
+	static CurryEngine::Editor::AnimationTimelineEditor animationTimelineEditor;
+	if (ImGui::Button("Create New AnimationEvent"))
+	{
+		isOpenAnimationEventWindow = true;
+		
+		auto clipMeta = CurryEngine::Resources::AssetDatabase::GetOrImport(assetPath);
+		CurryEngine::Resources::AssetId clipId = clipMeta ? clipMeta->id : CurryEngine::Resources::AssetId();
+		auto newAnimationTimeline = std::make_shared<CurryEngine::Resources::AnimationTimeline>();
+		std::filesystem::path newAnimationTimelinePath = assetPath;
+		newAnimationTimelinePath.replace_extension(".animtimeline");
+		newAnimationTimeline->SetTargetClip(clipId);
+		auto clip = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(clipId);
+		if (clip)
+		{
+			newAnimationTimeline->SetDuration(clip->duration);
+		}
+		else
+		{
+			LOG_WARNING("Failed to load animation clip for new animation timeline: " + assetPath.string());
+			newAnimationTimeline->SetDuration(0.0f);
+		}
+
+		newAnimationTimeline->SaveToFile(newAnimationTimelinePath);
+		newAnimationTimeline->LoadFromFile(newAnimationTimelinePath.string());
+
+		animationTimelineEditor.SetTarget(newAnimationTimeline);
+	}
+	if (ImGui::Button("Open AnimationEvent Editor"))
+	{
+		isOpenAnimationEventWindow = true;
+		auto clipMeta = CurryEngine::Resources::AssetDatabase::GetOrImport(assetPath);
+		CurryEngine::Resources::AssetId clipId = clipMeta ? clipMeta->id : CurryEngine::Resources::AssetId();
+		std::filesystem::path animationTimelinePath = assetPath;
+		animationTimelinePath.replace_extension(".animtimeline");
+		auto meta = CurryEngine::Resources::AssetDatabase::GetOrImport(animationTimelinePath);
+		if (!meta)
+		{
+			LOG_WARNING("Animation timeline asset not found: " + animationTimelinePath.string());
+		}
+		else
+		{
+			//auto animationTimeline = CurryEngine::Resources::AssetDatabase::LoadAsset<CurryEngine::Resources::AnimationTimeline>(meta->id);
+			auto animationTimeline = std::make_shared<CurryEngine::Resources::AnimationTimeline>();
+			if (!animationTimeline->LoadFromFile(animationTimelinePath.string()))
+			{
+				LOG_ERROR("Failed to load animation timeline: " + animationTimelinePath.string());
+				isOpenAnimationEventWindow = false;
+			}
+			else
+			{
+				animationTimelineEditor.SetTarget(animationTimeline);
+			}
+		}
+	}
+
+	if (isOpenAnimationEventWindow)
+	{
+		animationTimelineEditor.Draw(); // アニメーションイベントエディタを開く
+	}
 	// 初期化
 	if (!animationClip)
 	{
@@ -219,7 +279,7 @@ void AnimationEditor::DrawGUI()
 
 void AnimationEditor::DrawToolbar()
 {
-	if (ImGui::Button("Save") && animationClip)
+	if (ImGui::Button("Save##Animation") && animationClip)
 	{
 		if (assetPath.empty() || !animationClip->SaveToFile(assetPath))
 		{
