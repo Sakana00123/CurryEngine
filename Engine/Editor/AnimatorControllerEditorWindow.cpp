@@ -228,6 +228,26 @@ namespace CurryEngine::Editor
             drawList->PushClipRect(nodeMin, nodeMax, true);
             drawList->AddText(textPos, IM_COL32(240, 240, 240, 255), state.name.c_str());
             drawList->PopClipRect();
+
+			// 現在のステートが再生中の場合、ノード下部に再生中のアニメーションの進行状況を示すバーを描画する
+            if (isCurrentState)
+            {
+                float progress = 0.0f;
+                if (auto runtimeControllerPtr = runtimeController.lock())
+                {
+                    auto& clip = controller->animationClips[state.clipId];
+					float clipDuration = (clip) ? clip->duration : 0.0f;
+                    auto playingStateIt = std::find_if(runtimeControllerPtr->playing.begin(), runtimeControllerPtr->playing.end(),
+						[&](const RuntimeAnimatorController::PlayingState& ps) { return ps.stateIndex == i; });
+					float playTime = (playingStateIt != runtimeControllerPtr->playing.end()) ? playingStateIt->time : 0.0f;
+					progress = clipDuration > 0.0f ? std::fmod(playTime, clipDuration) / clipDuration : 0.0f;
+                }
+                float barHeight = 4.0f * zoom;
+                ImVec2 barMin(nodeMin.x, nodeMax.y - barHeight);
+                ImVec2 barMax(nodeMax.x, nodeMax.y);
+                drawList->AddRectFilled(barMin, barMax, IM_COL32(100, 200, 100, 255), rounding);
+				drawList->AddRectFilled(barMin, ImVec2(barMin.x + (barMax.x - barMin.x) * progress, barMax.y), IM_COL32(200, 255, 200, 255), rounding);
+            }
         }
     }
 

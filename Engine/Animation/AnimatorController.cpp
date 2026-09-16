@@ -17,13 +17,13 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 {
 	_path = path;
 	// ファイルからアニメーションクリップのIDリストを読み込む
-	// ここでは仮にJSON形式で保存されていると仮定する
 	std::ifstream file(path);
 	if (!file.is_open())
 	{
 		LOG_ERROR(u8"[AnimatorController] ファイルの読み込みに失敗しました: " + std::u8string(path.begin(), path.end()));
 		return false;
 	}
+	bool success = true;
 	nlohmann::json jsonData;
 	file >> jsonData;
 	if (jsonData.contains("name"))
@@ -40,7 +40,8 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			auto clip = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(clipId);
 			if (!clip)
 			{
-				LOG_ERROR(u8"[AnimatorController] アニメーションクリップの読み込みに失敗しました: " + std::u8string(clipId.ToString().begin(), clipId.ToString().end()));
+				LOG_WARNING(u8"[AnimatorController] アニメーションクリップの読み込みに失敗しました: " + std::u8string(clipId.ToString().begin(), clipId.ToString().end()));
+				success = false;
 			}
 			animationClips[clipId] = clip;
 		}
@@ -55,7 +56,8 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			auto timeline = CurryEngine::Resources::AssetDatabase::LoadAsset<CurryEngine::Resources::AnimationTimeline>(timelineId);
 			if (!timeline)
 			{
-				LOG_ERROR(u8"[AnimatorController] AnimationTimelineの読み込みに失敗しました: " + std::u8string(timelineId.ToString().begin(), timelineId.ToString().end()));
+				LOG_WARNING(u8"[AnimatorController] AnimationTimelineの読み込みに失敗しました: " + std::u8string(timelineId.ToString().begin(), timelineId.ToString().end()));
+				success = false;
 			}
 			animationTimelines[timelineId] = timeline;
 		}
@@ -152,6 +154,12 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 	{
 		defaultStateIndex = jsonData["defaultStateIndex"].get<int>();
 	}
+
+	if (!success)
+	{
+		LOG_ERROR(u8"[AnimatorController] AnimationClipまたはAnimationTimelineのロードに失敗しました: " + std::u8string(path.begin(), path.end()));
+	}
+	// アニメーションクリップやAnimationTimelineのロードに失敗しても、AnimatorController自体はロード成功とする
 	return true;
 }
 
@@ -637,11 +645,6 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 				XMMATRIX worldMatrix = XMLoadFloat4x4(&worldTransform);
 				XMVECTOR worldDelta = XMVector3TransformNormal(globalDelta, worldMatrix);
 				XMStoreFloat3(&dT, worldDelta);
-
-				std::string rootMotionLastTimeStr = std::to_string(rootMotionLastNormalizedTime);
-				std::string frontNormalizedTimeStr = std::to_string(frontNormalizedTime);
-				std::u8string logMsg = u8"[RuntimeAnimatorController] RootMotionを サンプリング: " + std::u8string(rootMotionLastTimeStr.begin(), rootMotionLastTimeStr.end()) + u8" -> " + std::u8string(frontNormalizedTimeStr.begin(), frontNormalizedTimeStr.end());
-				LOG_INFO(logMsg);
 			}
 			if (dT.x != 0.0f || dT.y != 0.0f || dT.z != 0.0f)
 			{

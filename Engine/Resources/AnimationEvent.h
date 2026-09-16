@@ -6,11 +6,19 @@
 
 namespace CurryEngine::Resources
 {
+    enum class AnimationEventType
+    {
+        Custom,
+		SoundEffect,
+		ParticleEffect,
+	};
+
     struct AnimationEventKey
     {
         float time = 0.0f;
+		AnimationEventType type = AnimationEventType::Custom;
         std::string eventName = "";
-        std::string stringParam = "";  // 任意: SEアセット名など
+		std::string stringParam = "";  // 引数として文字列を渡す場合に使用
     };
 
     struct AnimationEventTrack
@@ -61,6 +69,7 @@ namespace CurryEngine::Resources
 
     struct FiredAnimationEvent
     {
+		AnimationEventType type;
         std::string eventName;
         std::string stringParam;
     };
@@ -78,7 +87,7 @@ namespace CurryEngine::Resources
                 for (const auto& track : timeline.GetEventTracks())
                     for (const auto& key : track.keys)
                         if (key.time > from && key.time <= to)
-                            outEvents.push_back({ key.eventName, key.stringParam });
+                            outEvents.push_back({ key.type, key.eventName, key.stringParam });
             };
 
         if (looped) { checkRange(prevTime, timeline.GetDuration()); checkRange(0.0f, currentTime); }

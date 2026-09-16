@@ -8,6 +8,7 @@
 #include "Engine/Resources/AssetDatabase.h"
 #include <Engine\Editor\AnimatorControllerEditorWindow.h>
 #include <Engine\Editor\AnimatorControllerEditor.h>
+#include "Engine/Audio/Audio.h"
 
 REGISTER_COMPONENT(Animator, "Animation")
 
@@ -58,6 +59,51 @@ void Animator::Update(float deltaTime)
 			event.stringParam; // イベントの文字列パラメータ
 			std::string eventLog = "[Animator] Fired Animation Event: " + event.eventName + ", Param: " + event.stringParam;
 			LOG_INFO(eventLog);
+			switch (event.type)
+			{
+				case CurryEngine::Resources::AnimationEventType::SoundEffect:
+				{
+					// サウンドを再生
+					CurryEngine::Resources::AssetId soundAssetId(event.stringParam);
+					auto* meta = CurryEngine::Resources::AssetDatabase::Find(soundAssetId);
+					if (meta && meta->type == AssetType::Sound)
+					{
+						std::wstring soundPath = meta->path.wstring();
+						Audio::PlayOneShot(soundPath.c_str());
+					}
+					break;
+				}
+				case CurryEngine::Resources::AnimationEventType::ParticleEffect:
+				{
+					// パーティクルエフェクトの再生処理をここに追加
+					LOG_INFO("[Animator] Play Particle Effect: " + event.stringParam);
+					break;
+				}
+				case CurryEngine::Resources::AnimationEventType::Custom:
+				{
+					const ClassMeta* meta = nullptr;
+					for (const auto& comp : GetOwner()->GetAllComponents())
+					{
+						meta = comp->GetClassMeta();
+						if (meta)
+						{
+							const MethodInfo* method = meta->FindMethod(event.eventName);
+							if (method)
+							{
+								method->InvokeVoid(comp.get(), { event.stringParam });
+								break; // イベントを処理したらループを抜ける
+							}
+						}
+					}
+					break;
+				}
+			default:
+				break;
+			}
+
+			{
+				
+			}
 		}
 
 	}

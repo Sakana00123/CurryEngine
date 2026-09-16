@@ -296,7 +296,7 @@ public:
 	static const StructInfo* FindStruct(const std::string& name);
 	// 全スクリプトのメタ情報をクリア
 	static void UnregisterScriptClasses();
-private:
+
 	static std::unordered_map<std::string, ClassMeta>& GetClassRegistry();
 	static std::unordered_map<std::string, EnumInfo>& GetEnumRegistry();
 	static std::unordered_map<std::string, StructInfo>& GetStructRegistry();

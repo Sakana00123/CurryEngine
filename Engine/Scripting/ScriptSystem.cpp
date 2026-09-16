@@ -297,7 +297,7 @@ void ScriptSystem::Reload()
 					}
 					};
 			}
-			else if (typeName == "string")
+			else if (typeName == "string" || typeName == "PrefabReference")
 			{
 				prop.getter = [name](void* instance) -> std::any {
 					auto comp = static_cast<ScriptComponent*>(instance);
@@ -341,6 +341,36 @@ void ScriptSystem::Reload()
 						bool v = std::any_cast<bool>(value);
 						ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(), v ? "true" : "false");
 						comp->m_fieldValues[name]["value"] = v;
+					}
+					};
+			}
+			else if (typeName == "Vector2")
+			{
+				prop.getter = [name](void* instance) -> std::any {
+					auto comp = static_cast<ScriptComponent*>(instance);
+					if (!comp || !comp->GetGCHandle()) return std::any();
+					auto it = comp->m_fieldValues.find(name);
+					if (it != comp->m_fieldValues.end())
+					{
+						json& field = it->second;
+						bool hasValue = !field["value"].is_null();
+						if (!hasValue) return std::any();
+						float x = field["value"]["x"].get<float>();
+						float y = field["value"]["y"].get<float>();
+						return Vector2(x, y);
+					}
+					return Vector2::Zero;
+					};
+				prop.setter = [name](void* instance, std::any value) {
+					auto comp = static_cast<ScriptComponent*>(instance);
+					if (!comp || !comp->GetGCHandle()) return;
+					if (value.type() == typeid(Vector2))
+					{
+						Vector2 v = std::any_cast<Vector2>(value);
+						std::string valueStr = "{\"x\":" + std::to_string(v.x) + ",\"y\":" + std::to_string(v.y) + "}";
+						ScriptSystem::SetScriptField(comp->GetGCHandle(), name.c_str(),
+							valueStr);
+						comp->m_fieldValues[name]["value"] = { {"x", v.x}, {"y", v.y} };
 					}
 					};
 			}

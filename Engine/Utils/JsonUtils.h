@@ -70,6 +70,7 @@ namespace CurryEngine
 			}
 		}
 		C_REGISTER_TYPE(AssetId);
+		C_REGISTER_TYPE(CurryEngine::Resources::AssetId);
 	}
 }
 

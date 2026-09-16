@@ -44,6 +44,7 @@ namespace CurryEngine::Resources
 						{
 							AnimationEventKey key;
 							key.time = keyJson.value("time", 0.0f);
+							key.type = keyJson.value("type", AnimationEventType::Custom);
 							key.eventName = keyJson.value("eventName", "");
 							key.stringParam = keyJson.value("stringParam", "");
 							track.keys.push_back(key);
@@ -77,6 +78,7 @@ namespace CurryEngine::Resources
 			{
 				json keyJson;
 				keyJson["time"] = key.time;
+				keyJson["type"] = key.type;
 				keyJson["eventName"] = key.eventName;
 				keyJson["stringParam"] = key.stringParam;
 				trackJson["keys"].push_back(keyJson);

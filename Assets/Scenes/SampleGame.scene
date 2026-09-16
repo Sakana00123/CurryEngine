@@ -1017,6 +1017,19 @@
                         0.5
                     ],
                     "type": "BoxCollider"
+                },
+                {
+                    "enabledSelf": true,
+                    "filePath": ".\\Assets\\Sounds\\SE\\hitPin.wav\u0000",
+                    "id": "3570022331393135091",
+                    "loop": false,
+                    "name": "AudioSource",
+                    "playOnStart": false,
+                    "priority": 6000,
+                    "soundType": 1,
+                    "type": "AudioSource",
+                    "use3DAudio": false,
+                    "volume": 1.0
                 }
             ],
             "id": "837495356795042458",
