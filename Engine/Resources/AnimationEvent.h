@@ -16,7 +16,6 @@ namespace CurryEngine::Resources
     struct AnimationEventKey
     {
         float time = 0.0f;
-		AnimationEventType type = AnimationEventType::Custom;
         std::string eventName = "";
 		std::string stringParam = "";  // 引数として文字列を渡す場合に使用
     };
@@ -24,6 +23,7 @@ namespace CurryEngine::Resources
     struct AnimationEventTrack
     {
         std::string name;
+        AnimationEventType type = AnimationEventType::Custom;
         std::vector<AnimationEventKey> keys{};
     };
 
@@ -87,7 +87,7 @@ namespace CurryEngine::Resources
                 for (const auto& track : timeline.GetEventTracks())
                     for (const auto& key : track.keys)
                         if (key.time > from && key.time <= to)
-                            outEvents.push_back({ key.type, key.eventName, key.stringParam });
+                            outEvents.push_back({ track.type, key.eventName, key.stringParam });
             };
 
         if (looped) { checkRange(prevTime, timeline.GetDuration()); checkRange(0.0f, currentTime); }

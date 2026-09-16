@@ -84,7 +84,7 @@ namespace CurryEngine::Editor
         {
             float t = XToTime(ImGui::GetMousePos().x, rowOrigin.x, width);
 			size_t k = track.keys.size();
-            track.keys.push_back({ t, CurryEngine::Resources::AnimationEventType::Custom, "NewEvent", "" });
+            track.keys.push_back({ t, "NewEvent", "" });
             m_selectedKey = KeySelection{ trackIndex, k };
         }
 
@@ -166,11 +166,62 @@ namespace CurryEngine::Editor
 
         float y = origin.y + 20;
         auto& tracks = m_timeline->GetEventTracks();
+
+		static const char* typeLabels[] = { "Custom", "Sound", "Particle" };
+
         for (size_t i = 0; i < tracks.size(); ++i)
         {
             // トラック名ラベル
             ImGui::SetCursorScreenPos(ImVec2(origin.x, y));
-            ImGui::Text("%s", tracks[i].name.c_str());
+            
+			static constexpr float optionButtonWidth = 20.0f;
+			static constexpr float spacing = 4.0f;
+			ImGui::BeginChild(("TrackLabelChild" + std::to_string(i)).c_str(), ImVec2(kLabelWidth, kTrackHeight), false);
+            ImGui::SetNextItemWidth(kLabelWidth - spacing);
+			ImGui::PushID(static_cast<int>(i));
+            std::string labelStr = tracks[i].name.empty() ? "Track " + std::to_string(i) : tracks[i].name;
+            if (labelStr.length() > 10)
+            {
+                labelStr = labelStr.substr(0, 7) + "...";
+			}
+			labelStr += "(" + std::string(typeLabels[static_cast<int>(tracks[i].type)]) + ")";
+            if (ImGui::Button(labelStr.c_str()))
+            {
+                ImGui::OpenPopup(("TrackOptionsPopup" + std::to_string(i)).c_str());
+			}
+            if (ImGui::BeginPopup(("TrackOptionsPopup" + std::to_string(i)).c_str()))
+            {
+				// トラック名の編集
+                char label[128];
+                strncpy_s(label, tracks[i].name.c_str(), sizeof(label));
+                if (ImGui::InputText(("##TrackName" + std::to_string(i)).c_str(), label, sizeof(label)))
+                {
+                    tracks[i].name = label;
+                }
+				// イベントタイプの選択
+                const char* eventTypes[] = { "Custom", "SoundEffect", "ParticleEffect" };
+                int currentTypeIndex = static_cast<int>(tracks[i].type);
+				ImGui::Text("Event Type");
+				ImGui::SameLine();
+                if (ImGui::Combo(("##Event Type" + std::to_string(i)).c_str(), &currentTypeIndex, eventTypes, IM_ARRAYSIZE(eventTypes)))
+                {
+                    tracks[i].type = static_cast<CurryEngine::Resources::AnimationEventType>(currentTypeIndex);
+				}
+				// トラック削除
+                if (ImGui::Button("Delete Track"))
+                {
+                    tracks.erase(tracks.begin() + i);
+                    ImGui::CloseCurrentPopup();
+					ImGui::EndPopup();
+					ImGui::PopID();
+					ImGui::EndChild();
+                    break; // イテレータ無効化のためこの行の描画を打ち切り
+				}
+                ImGui::EndPopup();
+			}
+			ImGui::PopID();
+			ImGui::EndChild();
+            
 
             DrawTrackRow(dl, ImVec2(timelineOrigin.x, y), width, i);
             y += kTrackHeight;
@@ -185,7 +236,8 @@ namespace CurryEngine::Editor
             }
             else
             {
-                auto& key = tracks[m_selectedKey->trackIndex].keys[m_selectedKey->keyIndex];
+				auto& track = tracks[m_selectedKey->trackIndex];
+                auto& key = track.keys[m_selectedKey->keyIndex];
                 ImGui::SetCursorScreenPos(ImVec2(origin.x, y + 10));
                 ImGui::Separator();
 
@@ -277,36 +329,14 @@ namespace CurryEngine::Editor
                     ImGui::EndPopup();
 				}
 
-				// イベントタイプの選択
-				const char* eventTypes[] = { "Custom", "SoundEffect", "ParticleEffect" };
-                int currentTypeIndex = static_cast<int>(key.type);
 				static std::unordered_map<std::string, std::string> assetIdToNameMap; // アセットIDからアセット名へのマッピング
-				if (ImGui::Combo("Event Type", &currentTypeIndex, eventTypes, IM_ARRAYSIZE(eventTypes)))
+                if (ImGui::Button("Update Asset Map"))
                 {
-                    key.type = static_cast<CurryEngine::Resources::AnimationEventType>(currentTypeIndex);
-					// 選択されたイベントタイプに応じて、必要なパラメータを初期化する
-                    switch (key.type)
-                    {
-                    case CurryEngine::Resources::AnimationEventType::Custom:
-                        key.eventName = "CustomEvent";
-                        key.stringParam = ""; // カスタムイベントのパラメータを格納する
-                        break;
-                    case CurryEngine::Resources::AnimationEventType::SoundEffect:
-                        key.eventName = "PlaySound";
-                        key.stringParam = ""; // サウンドのアセットIDを格納する
-                        break;
-                    case CurryEngine::Resources::AnimationEventType::ParticleEffect:
-                        key.eventName = "PlayParticle";
-                        key.stringParam = ""; // パーティクルのアセットIDを格納する
-                        break;
-                    default:
-                        break;
-					}
-					assetIdToNameMap.clear(); // イベントタイプが変更された場合、アセットIDからアセット名へのマッピングをクリアする
+                    assetIdToNameMap.clear();
 				}
 
 				// イベントタイプに応じたパラメータの編集
-                switch (key.type)
+                switch (track.type)
                 {
                 case CurryEngine::Resources::AnimationEventType::Custom:
                 {

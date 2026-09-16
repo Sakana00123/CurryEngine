@@ -38,13 +38,13 @@ namespace CurryEngine::Resources
 				{
 					AnimationEventTrack track;
 					track.name = trackJson.value("name", "");
+					track.type = trackJson.value("type", AnimationEventType::Custom);
 					if (trackJson.contains("keys") && trackJson["keys"].is_array())
 					{
 						for (const auto& keyJson : trackJson["keys"])
 						{
 							AnimationEventKey key;
 							key.time = keyJson.value("time", 0.0f);
-							key.type = keyJson.value("type", AnimationEventType::Custom);
 							key.eventName = keyJson.value("eventName", "");
 							key.stringParam = keyJson.value("stringParam", "");
 							track.keys.push_back(key);
@@ -73,12 +73,12 @@ namespace CurryEngine::Resources
 		{
 			json trackJson;
 			trackJson["name"] = track.name;
+			trackJson["type"] = track.type;
 			trackJson["keys"] = json::array();
 			for (const auto& key : track.keys)
 			{
 				json keyJson;
 				keyJson["time"] = key.time;
-				keyJson["type"] = key.type;
 				keyJson["eventName"] = key.eventName;
 				keyJson["stringParam"] = key.stringParam;
 				trackJson["keys"].push_back(keyJson);
