@@ -138,6 +138,12 @@ namespace CurryEngine::Editor
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Right))
             {
                 track.keys.erase(track.keys.begin() + k);
+				// 選択中キーが削除された場合、選択を解除する
+                bool isSelectedKeyDeleted = m_selectedKey && m_selectedKey->trackIndex == trackIndex && (m_selectedKey->keyIndex == k || (m_selectedKey->keyIndex >= 0 && m_selectedKey->keyIndex < track.keys.size()));
+                if (isSelectedKeyDeleted)
+                {
+                    m_selectedKey.reset();
+				}
                 ImGui::PopID();
                 break; // イテレータ無効化のためこの行の描画を打ち切り
             }
@@ -171,15 +177,22 @@ namespace CurryEngine::Editor
         // 選択中キーのインスペクタ
         if (m_selectedKey)
         {
-            auto& key = tracks[m_selectedKey->trackIndex].keys[m_selectedKey->keyIndex];
-            ImGui::SetCursorScreenPos(ImVec2(origin.x, y + 10));
-            ImGui::Separator();
-            char nameBuf[128];
-            strncpy_s(nameBuf, key.eventName.c_str(), sizeof(nameBuf));
-            if (ImGui::InputText("Event Name", nameBuf, sizeof(nameBuf))) key.eventName = nameBuf;
-            char paramBuf[128];
-            strncpy_s(paramBuf, key.stringParam.c_str(), sizeof(paramBuf));
-            if (ImGui::InputText("String Param", paramBuf, sizeof(paramBuf))) key.stringParam = paramBuf;
+            if (m_selectedKey->trackIndex >= tracks.size() || m_selectedKey->keyIndex >= tracks[m_selectedKey->trackIndex].keys.size())
+            {
+                m_selectedKey.reset();
+            }
+            else
+            {
+                auto& key = tracks[m_selectedKey->trackIndex].keys[m_selectedKey->keyIndex];
+                ImGui::SetCursorScreenPos(ImVec2(origin.x, y + 10));
+                ImGui::Separator();
+                char nameBuf[128];
+                strncpy_s(nameBuf, key.eventName.c_str(), sizeof(nameBuf));
+                if (ImGui::InputText("Event Name", nameBuf, sizeof(nameBuf))) key.eventName = nameBuf;
+                char paramBuf[128];
+                strncpy_s(paramBuf, key.stringParam.c_str(), sizeof(paramBuf));
+                if (ImGui::InputText("String Param", paramBuf, sizeof(paramBuf))) key.stringParam = paramBuf;
+            }
         }
 
         ImGui::Dummy(ImVec2(width + kLabelWidth, y - origin.y + 100));
