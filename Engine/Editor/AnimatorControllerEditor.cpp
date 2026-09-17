@@ -71,7 +71,7 @@ void AnimatorControllerEditor::SetRuntimeController(std::weak_ptr<RuntimeAnimato
 	s_runtimeController = runtimeController;
 }
 
-void AnimatorControllerEditor::DrawGUI()
+void AnimatorControllerEditor::DrawGUI(RenderContext* context)
 {
 #ifdef USE_IMGUI
 	if (!s_isOpen) return;
@@ -81,7 +81,7 @@ void AnimatorControllerEditor::DrawGUI()
 		return;
 	}
 	// エディタウィンドウの描画
-	s_editorWindow->Draw(&s_isOpen, s_animatorController, s_runtimeController);
+	s_editorWindow->Draw(&s_isOpen, s_animatorController, s_runtimeController, context);
 
 #endif // USE_IMGUI
 }

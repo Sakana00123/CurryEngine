@@ -606,7 +606,7 @@ namespace CurryEngine::Editor
     }
 
 
-	void AnimatorControllerEditorWindow::Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
+	void AnimatorControllerEditorWindow::Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller, std::weak_ptr<RuntimeAnimatorController> runtimeController, RenderContext* context)
     {
         if (!controller) return;
 
@@ -662,7 +662,7 @@ namespace CurryEngine::Editor
         if (isTimelineEditorOpen)
         {
             ImGui::Begin("Animation Timeline", &isTimelineEditorOpen);
-            timelineEditor.Draw();
+            timelineEditor.Draw(context);
             ImGui::End();
         }
     }
@@ -1269,7 +1269,27 @@ namespace CurryEngine::Editor
             ImGui::Separator();
             if (ImGui::Selectable("+ Create New..."))
             {
-                // ここが未確定: 新規アセットの登録方法がAssetDatabase側の仕様次第
+                // 新しいTimelineを作成して保存する
+                if (state.clipId != CurryEngine::Resources::AssetId())
+                {
+                    auto clip = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(state.clipId);
+                    if (clip)
+                    {
+                        std::filesystem::path newTimelinePath = std::filesystem::path(clip->GetPath()).replace_extension(".animtimeline");
+                        auto newAnimationTimeline = std::make_shared<CurryEngine::Resources::AnimationTimeline>();
+                        newAnimationTimeline->SetTargetClip(state.clipId);
+                        newAnimationTimeline->SetDuration(clip->duration);
+                        newAnimationTimeline->SaveToFile(newTimelinePath);
+                        newAnimationTimeline->LoadFromFile(newTimelinePath.string());
+                        auto newTimelineMeta = CurryEngine::Resources::AssetDatabase::GetOrImport(newTimelinePath);
+                        if (newTimelineMeta)
+                        {
+                            auto& newTimelineId = newTimelineMeta->id;
+                            controller->animationTimelines[newTimelineId] = newAnimationTimeline;
+                            result = newTimelineId;
+                        }
+                    }
+				}
             }
             ImGui::EndPopup();
         }

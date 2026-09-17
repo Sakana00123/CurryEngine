@@ -58,7 +58,7 @@ public:
 	void Deserialize(const json& jsonData) override;
 
 private:
-	
+
 	std::shared_ptr<AnimatorController> controller;
 	std::shared_ptr<RuntimeAnimatorController> runtimeController;
 

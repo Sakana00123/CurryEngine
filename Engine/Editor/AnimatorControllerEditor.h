@@ -28,9 +28,12 @@ public:
 
 	/** @brief 編集中のAnimatorControllerを取得。*/
 	static std::shared_ptr<AnimatorController> GetEditingController() { return s_animatorController; }
+
+	/** @brief エディタウィンドウのインスタンスを取得。*/
+	static CurryEngine::Editor::AnimatorControllerEditorWindow* GetEditorWindow() { return s_editorWindow.get(); }
 	
 	/** @brief エディタのGUIを描画。*/
-	static void DrawGUI();
+	static void DrawGUI(RenderContext* context);
 
 private:
 	static inline bool s_isOpen; ///< エディタが開いているかどうかのフラグ

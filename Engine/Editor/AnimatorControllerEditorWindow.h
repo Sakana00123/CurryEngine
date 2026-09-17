@@ -11,7 +11,10 @@ namespace CurryEngine::Editor
     public:
 		AnimatorControllerEditorWindow(std::shared_ptr<AnimatorController> controller = nullptr);
 
-		void Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
+		void Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller, std::weak_ptr<RuntimeAnimatorController> runtimeController, RenderContext* context);
+
+		// --- TimelineEditorの取得 ---
+		AnimationTimelineEditor& GetTimelineEditor() { return timelineEditor; }
 
     private:
         // --- キャンバス変換 ---

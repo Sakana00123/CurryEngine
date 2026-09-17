@@ -25,6 +25,8 @@
 #include <Engine\Physics\Physics.h>
 #include <Engine\Editor\EffectEditor.h>
 #include <Engine\Editor\ImportSettings\ImportSettingsWindow.h>
+#include <Engine\Editor\AnimationEditor.h>
+#include <Engine\Editor\AnimatorControllerEditor.h>
 
 void RenderSystem::Initialize(Time* time)
 {
@@ -48,6 +50,11 @@ void RenderSystem::Initialize(Time* time)
 	effectPreviewRenderPipeline->SetupRenderPasses();
 	effectPreviewRenderPipeline->Initialize();
 
+	// アニメーションプレビュー用の描画パイプラインを作成して初期化
+	animationPreviewRenderPipeline = std::make_unique<AnimationPreviewRenderPipeline>();
+	animationPreviewRenderPipeline->SetupRenderPasses();
+	animationPreviewRenderPipeline->Initialize();
+
 	this->time = time;
 }
 
@@ -62,6 +69,7 @@ void RenderSystem::Render()
     RenderContext gameContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
 	RenderContext previewContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
 	RenderContext effectPreviewContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
+	RenderContext animationPreviewContext(Graphics::GetDeviceContext(), Graphics::fullScreenQuad.get(), Graphics::GetSharedResources());
     // カメラ情報取得
     {
 		auto scene = SceneManager::GetCurrentScene();
@@ -150,6 +158,30 @@ void RenderSystem::Render()
                 effectPreviewRenderPipeline->Execute(&effectPreviewContext, scene);
 			}
 
+            // アニメーションプレビュー用の描画処理
+            {
+                EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_ANIMATION_PREVIEW);
+                cameraPos = editorCamera->GetPosition();
+                View = editorCamera->GetViewMatrix();
+                Projection = editorCamera->GetProjectionMatrix();
+                // RenderContextの設定
+                {
+                    animationPreviewContext.renderState = Graphics::GetRenderState();
+                    animationPreviewContext.deltaTime = Time::DeltaTime();
+                    animationPreviewContext.unscaledDeltaTime = Time::UnscaledDeltaTime();
+                    animationPreviewContext.totalTime = time->TimeStamp();
+                    animationPreviewContext.cameraPosition = cameraPos;
+                    DirectX::XMStoreFloat4x4(&animationPreviewContext.view, View);
+                    DirectX::XMStoreFloat4x4(&animationPreviewContext.projection, Projection);
+                    auto ViewProjection = View * Projection;
+                    DirectX::XMStoreFloat4x4(&animationPreviewContext.viewProjection, ViewProjection);
+                    DirectX::XMStoreFloat4x4(&animationPreviewContext.inverseView, XMMatrixInverse(nullptr, View));
+                    DirectX::XMStoreFloat4x4(&animationPreviewContext.inverseProjection, XMMatrixInverse(nullptr, Projection));
+                    DirectX::XMStoreFloat4x4(&animationPreviewContext.inverseViewProjection, XMMatrixInverse(nullptr, ViewProjection));
+                }
+                animationPreviewRenderPipeline->Execute(&animationPreviewContext, scene);
+			}
+
 #endif // DEBUG
             {
                 // ゲームビュー用の描画処理
@@ -231,6 +263,13 @@ void RenderSystem::Render()
     {
 		ZoneScopedN("RenderSystem::DrawEffectEditorGUI");
         EffectEditor::DrawGUI(&effectPreviewContext);
+    }
+
+    // アニメーションエディタGUI描画
+    {
+        ZoneScopedN("RenderSystem::DrawAnimationEditorGUI");
+        if (AnimationEditor::IsOpen()) AnimationEditor::DrawGUI(&animationPreviewContext);
+        if (AnimatorControllerEditor::IsOpen()) AnimatorControllerEditor::DrawGUI(&animationPreviewContext);
     }
 
     //物理エンジンデバッグ描画

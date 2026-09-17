@@ -41,3 +41,20 @@ void PreviewPass::Execute(RenderContext* rtx, Scene* scene)
 	// デフォルトのレンダーターゲットに切り替える
 	rtx->SetDefaultRenderTarget();
 }
+
+
+
+void AnimationPreviewPass::Execute(RenderContext* rtx, Scene* scene)
+{
+	auto immediateContext = rtx->immediateContext;
+	auto renderState = rtx->renderState;
+	//深度ステンシルステート設定
+	renderState->BindDepthStencilState(immediateContext, DepthStencilState::TestAndWrite, 1);
+	//ラスタライザ設定
+	renderState->BindRasterizerState(immediateContext, RasterizerState::SolidCullBack);
+	// アニメーションプレビューオブジェクトの描画
+	
+
+	// デフォルトのレンダーターゲットに切り替える
+	rtx->SetDefaultRenderTarget();
+}

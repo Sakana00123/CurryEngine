@@ -18,3 +18,10 @@ public:
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 };
+
+class AnimationPreviewPass : public RenderPass
+{
+public:
+	// AnimationPreviewPassの実装
+	void Execute(RenderContext* rtx, Scene* scene) override;
+};

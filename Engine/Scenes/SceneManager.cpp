@@ -15,14 +15,12 @@
 #include "Engine/Editor/Console.h"
 #include "Engine/Editor/SceneParametersEditor.h"
 #include "Engine/Editor/BuildSettingsWindow.h"
-#include "Engine/Editor/AnimationEditor.h"
 #include "Engine/Effects/EffectManager.h"
 
 #include "Engine/Audio/BeatManager.h"
 #include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Camera/CameraSystem.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
-#include <Engine\Editor\AnimatorControllerEditor.h>
 
 void SceneManager::Initialize()
 {
@@ -300,8 +298,6 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 
 	// ------------------- アセットブラウザ --------------------
 	AssetBrowser::DrawGUI();
-	if (AnimationEditor::IsOpen()) AnimationEditor::DrawGUI();
-	if (AnimatorControllerEditor::IsOpen()) AnimatorControllerEditor::DrawGUI();
 
 	// ------------------- HLSLエディタ ---------------------
 	//HlslEditor::DrawGUI();

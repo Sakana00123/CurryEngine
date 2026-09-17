@@ -3,6 +3,7 @@
 #include <optional>
 #ifdef USE_IMGUI
 #include <imgui.h>
+#include <Engine\Rendering\Pipeline\RenderContext.h>
 
 
 namespace CurryEngine::Editor
@@ -11,8 +12,12 @@ namespace CurryEngine::Editor
     {
     public:
         void SetTarget(std::shared_ptr<Resources::AnimationTimeline> timeline) { m_timeline = timeline; m_selectedKey.reset(); }
-        void Draw(); // ImGuiウィンドウ内から呼ぶ
+        void Draw(RenderContext* context); // ImGuiウィンドウ内から呼ぶ
 
+		void RenderPreview(RenderContext* context); // プレビュー用の描画処理
+
+		// プレビューウィンドウがフォーカスされているかどうかを取得
+		bool IsPreviewFocused() const { return isPreviewFocused; }
     private:
         struct KeySelection { size_t trackIndex; size_t keyIndex; bool isDragging = false; };
 
@@ -28,6 +33,7 @@ namespace CurryEngine::Editor
         std::optional<KeySelection> m_selectedKey;
         float m_playhead = 0.0f;
         float m_pixelsPerSecond = 150.0f;
+		bool isPreviewFocused = false;
         static constexpr float kTrackHeight = 28.0f;
         static constexpr float kLabelWidth = 140.0f;
     };

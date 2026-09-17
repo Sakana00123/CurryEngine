@@ -4,6 +4,12 @@
 #include <imgui_internal.h>
 #include "Engine/Core/Reflection/Meta.h"
 #include <Engine\Resources\AssetDatabase.h>
+#include <Engine\Rendering\Buffers\RenderTexture.h>
+#include "Engine/Core/GameObject.h"
+#include "Engine/Rendering/Renderers/GltfModelRenderer.h"
+#include <Engine\Rendering\Pipeline\Graphics.h>
+#include <Engine\Animation\Animator.h>
+#include <Engine\Scenes\SceneManager.h>
 
 namespace CurryEngine::Editor
 {
@@ -17,7 +23,7 @@ namespace CurryEngine::Editor
         return (std::max)(0.0f, (x - originX) / m_pixelsPerSecond);
     }
 
-    void AnimationTimelineEditor::Draw()
+	void AnimationTimelineEditor::Draw(RenderContext* context)
     {
         if (!m_timeline) { ImGui::TextDisabled("No Select"); return; }
 
@@ -27,7 +33,47 @@ namespace CurryEngine::Editor
         ImGui::BeginChild("TimelineScroll", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
         DrawTimelineArea();
         ImGui::EndChild();
+
+#if 0
+        // プレビュー表示
+        ImGui::Separator();
+        ImGui::BeginChild("Preview", ImVec2(0, 100), true);
+        if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
+        {
+            static constexpr float aspectRatio = 9.0f / 16.0f; // 16:9のアスペクト比
+            static constexpr float windowWidth = 400.0f; // ウィンドウの幅を固定
+            static constexpr float windowHeight = windowWidth * aspectRatio; // 高さをアスペクト比に基づいて計算
+            ImVec2 windowSize(windowWidth, windowHeight);
+            ImGui::Image(previewImage->GetSRV(), windowSize);
+
+            // プレビューウィンドウがフォーカスされているかどうかをチェック
+            isPreviewFocused = ImGui::IsItemHovered();
+        }
+        ImGui::EndChild();
+#endif // 0
+
     }
+
+    void AnimationTimelineEditor::RenderPreview(RenderContext* context)
+    {
+#if 0
+        if (!m_timeline) return;
+        static bool initialized = false;
+        static GameObject previewObject;
+        if (!initialized)
+        {
+            previewObject.Create("AnimationPreviewObject");
+            previewObject.AddComponent<GltfModelRenderer>()->LoadModel(Graphics::GetDevice(), "TestAssets/Player/SK_Mannequin.gltf", false);
+            previewObject.AddComponent<Animator>();
+        }
+        else
+        {
+            previewObject.Update(context->deltaTime);
+            auto animator = previewObject.GetComponent<Animator>();
+        }
+#endif // 0
+
+	}
 
     void AnimationTimelineEditor::DrawToolbar()
     {
@@ -48,6 +94,47 @@ namespace CurryEngine::Editor
         {
 			m_timeline->SaveToFile(m_timeline->GetPath());
         }
+		auto scene = SceneManager::GetCurrentScene();
+		if (!scene) return;
+		ImGui::SameLine();
+		// アニメーションバインドオブジェクトの設定
+		static ObjectId selectedAnimatorId;
+
+		if (auto animator = scene->FindComponentById<Animator>(selectedAnimatorId))
+        {
+            ImGui::Text("Target: %s", animator->GetName().c_str());
+            if (auto renderer = scene->FindComponentById<GltfModelRenderer>(animator->targetModelRendererId))
+            {
+				auto clip = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(m_timeline->GetTargetClip());
+				if (clip)
+                {
+					std::vector<NodePose> poses = renderer->GetBindPose();
+					clip->Sample(m_playhead, poses);
+                    renderer->ApplyPose(poses);
+                }
+            }
+        }
+        else
+        {
+            ImGui::Text("Target: None");
+		}
+		ImGui::SameLine();
+        if (ImGui::Button("...##SelectTarget"))
+        {
+			ImGui::OpenPopup("SelectTargetPopup");
+		}
+        if (ImGui::BeginPopup("SelectTargetPopup"))
+        {
+            auto animators = scene->FindComponents<Animator>();
+            for (auto& animator : animators)
+            {
+                if (ImGui::Selectable(animator->GetOwner()->GetName().c_str()))
+                {
+                    selectedAnimatorId = animator->GetId();
+                }
+            }
+            ImGui::EndPopup();
+		}
     }
 
     void AnimationTimelineEditor::DrawRuler(ImDrawList* dl, ImVec2 origin, float width)

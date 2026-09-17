@@ -26,4 +26,5 @@ private:
 	std::unique_ptr<RenderPipeline> gameRenderPipeline;
 	std::unique_ptr<RenderPipeline> previewRenderPipeline;
 	std::unique_ptr<RenderPipeline> effectPreviewRenderPipeline;
+	std::unique_ptr<RenderPipeline> animationPreviewRenderPipeline;
 };

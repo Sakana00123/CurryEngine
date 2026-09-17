@@ -12,6 +12,8 @@
 #include "Engine/Editor/SceneViewWindow.h"
 #include "Engine/Editor/ImportSettings/ImportSettingsWindow.h"
 #include <Engine\Editor\EffectEditor.h>
+#include "Engine/Editor/AnimationTimelineEditor.h"
+#include "Engine/Editor/AnimatorControllerEditor.h"
 
 Scene::Scene() : canTransition(false)
 {
@@ -25,6 +27,7 @@ Scene::Scene() : canTransition(false)
 	editorCameras[EDITOR_CAMERA_SCENE_VIEW]->SetUpdateFlagFunction([]() { return CurryEngine::SceneViewWindow::Get().IsFocused(); }); // シーンビューウィンドウがフォーカスされている場合に更新するように設定
 	editorCameras[EDITOR_CAMERA_PREVIEW]->SetUpdateFlagFunction([]() { return CurryEngine::Resources::ImportSettingsWindow::IsOpen(); }); // インポート設定ウィンドウが開いている場合に更新するように設定
 	editorCameras[EDITOR_CAMERA_EFFECT_PREVIEW]->SetUpdateFlagFunction([]() { return EffectEditor::IsPreviewFocused(); }); // インポート設定ウィンドウが開いている場合に更新するように設定
+	editorCameras[EDITOR_CAMERA_ANIMATION_PREVIEW]->SetUpdateFlagFunction([]() { return AnimatorControllerEditor::GetEditorWindow() ? AnimatorControllerEditor::GetEditorWindow()->GetTimelineEditor().IsPreviewFocused() : false; }); // インポート設定ウィンドウが開いている場合に更新するように設定
 }
 
 void Scene::Initialize()

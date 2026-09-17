@@ -14,7 +14,8 @@ class SpotLightComponent;
 #define EDITOR_CAMERA_SCENE_VIEW 0
 #define EDITOR_CAMERA_PREVIEW 1
 #define EDITOR_CAMERA_EFFECT_PREVIEW 2
-#define EDITOR_CAMERA_COUNT 3
+#define EDITOR_CAMERA_ANIMATION_PREVIEW 3
+#define EDITOR_CAMERA_COUNT 4
 
 #define SCENE_MAX_FIXED_DELTA_TIME (1.0f / 60.0f)
 
@@ -33,7 +34,7 @@ public:
 	CameraSystem cameraSystem;
 
 	/** @brief エディタ用カメラ。*/
-	std::unique_ptr<EditorCamera> editorCameras[EDITOR_CAMERA_COUNT]; // 0: シーンビュー, 1: プレビュー用, 2: エフェクトプレビュー用
+	std::unique_ptr<EditorCamera> editorCameras[EDITOR_CAMERA_COUNT]; // 0: シーンビュー, 1: プレビュー用, 2: エフェクトプレビュー用, 3: アニメーションプレビュー用
 	/** @brief インデックス指定でエディタカメラを取得します。*/
 	EditorCamera* GetEditorCamera(int index) const { return editorCameras[index].get(); }
 

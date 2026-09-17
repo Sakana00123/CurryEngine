@@ -1,6 +1,9 @@
 #pragma once
 #include "Engine/Resources/AnimationClip.h"
+#ifdef USE_IMGUI
 #include <imgui.h>
+#include <Engine\Rendering\Pipeline\RenderContext.h>
+
 
 struct ValueKeyframe
 {
@@ -68,7 +71,7 @@ public:
 
 	/** @brief アニメーションエディタを閉じる。*/
 	static void Close();
-	
+
 	/** @brief アニメーションエディタが開いているかどうかを取得。*/
 	static bool IsOpen();
 
@@ -82,7 +85,7 @@ public:
 #ifdef USE_IMGUI
 
 	/** @brief アニメーションエディタの GUI を描画。*/
-	static void DrawGUI();
+	static void DrawGUI(RenderContext* context);
 
 private:
 
@@ -181,14 +184,16 @@ private:
 	static inline float length = 3.0f;
 
 	static inline TimelineView timelineView;// 未使用
-	
+
 	static inline DragState dragState;
 
 	static inline ValueKeyframe* draggingKey = nullptr;
 
-	
+
 	static inline SelectedKey selectedKey;
 
-	
+
 	static inline SnapSettings snapSettings;
 };
+
+#endif // USE_IMGUI

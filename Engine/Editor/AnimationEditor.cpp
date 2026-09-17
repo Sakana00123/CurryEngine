@@ -162,7 +162,7 @@ void AnimationEditor::HandleZoom(TimelineView& view)
 
 // ------------------------------- メイン関数群 ----------------------------------------
 
-void AnimationEditor::DrawGUI()
+void AnimationEditor::DrawGUI(RenderContext* context)
 {
 	// GUI 描画ロジックをここに実装
 	ImGui::Begin("Animation Editor", &isOpen);
@@ -225,7 +225,7 @@ void AnimationEditor::DrawGUI()
 
 	if (isOpenAnimationEventWindow)
 	{
-		animationTimelineEditor.Draw(); // アニメーションイベントエディタを開く
+		animationTimelineEditor.Draw(context); // アニメーションイベントエディタを開く
 	}
 	// 初期化
 	if (!animationClip)
