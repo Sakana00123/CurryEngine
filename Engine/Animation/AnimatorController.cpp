@@ -42,6 +42,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			{
 				LOG_WARNING(u8"[AnimatorController] アニメーションクリップの読み込みに失敗しました: " + std::u8string(clipId.ToString().begin(), clipId.ToString().end()));
 				success = false;
+				continue;
 			}
 			animationClips[clipId] = clip;
 		}
@@ -58,6 +59,7 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			{
 				LOG_WARNING(u8"[AnimatorController] AnimationTimelineの読み込みに失敗しました: " + std::u8string(timelineId.ToString().begin(), timelineId.ToString().end()));
 				success = false;
+				continue;
 			}
 			animationTimelines[timelineId] = timeline;
 		}
@@ -171,11 +173,21 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 	jsonData["animationClipIds"] = nlohmann::json::array();
 	for (const auto& [clipId, clip] : animationClips)
 	{
+		if (!clipId.IsValid())
+		{
+			LOG_WARNING(u8"[AnimatorController] 無効なアニメーションクリップIDが含まれています。保存をスキップします。");
+			continue;
+		}
 		jsonData["animationClipIds"].push_back(clipId.ToString());
 	}
 	jsonData["animationTimelineIds"] = nlohmann::json::array();
 	for (const auto& [timelineId, timeline] : animationTimelines)
 	{
+		if (!timelineId.IsValid())
+		{
+			LOG_WARNING(u8"[AnimatorController] 無効なAnimationTimelineIDが含まれています。保存をスキップします。");
+			continue;
+		}
 		jsonData["animationTimelineIds"].push_back(timelineId.ToString());
 	}
 	jsonData["parameters"] = nlohmann::json::array();

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <memory>
 #include <filesystem>
 #include <unordered_map>
 #include "AssetMeta.h"
@@ -76,7 +77,10 @@ namespace CurryEngine
 				else
 				{
 					std::u8string idU8Str(id.ToString().begin(), id.ToString().end());
-					LOG_ERROR(u8"[AssetDatabase] アセットの読み込みに失敗しました。AssetId が見つかりません。: " + idU8Str);
+					std::string typeName = typeid(T).name();
+					std::u8string typeU8Str = std::u8string(typeName.begin(), typeName.end());
+					std::u8string logMessage = u8"[AssetDatabase] " + typeU8Str + u8"の読み込みに失敗しました。AssetId が見つかりません。: " + idU8Str;
+					LOG_ERROR(logMessage);
 					return nullptr;
 				}
 			}
