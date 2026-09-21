@@ -431,8 +431,14 @@ bool RuntimeAnimatorController::AllConditionsMet(const AnimatorController& contr
 		case AnimatorCondition::Comparison::Greater:
 			if (paramValue <= condition.value) return false;
 			break;
+		case AnimatorCondition::Comparison::GreaterEqual:
+			if (paramValue < condition.value) return false;
+			break;
 		case AnimatorCondition::Comparison::Less:
 			if (paramValue >= condition.value) return false;
+			break;
+		case AnimatorCondition::Comparison::LessEqual:
+			if (paramValue > condition.value) return false;
 			break;
 		default:
 			return false; // 未知の比較タイプ
@@ -736,6 +742,9 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 		transitionElapsed = 0.0f;
 		transitionDuration = 0.0f;
 		currentStateIndex = playing[INDEX_FRONT].stateIndex;
+
+		// ルートモーションの正規化時間をネクストステートの正規化時間に更新
+		rootMotionLastNormalizedTime = nextNormalizedTime;
 	}
 }
 
@@ -867,23 +876,31 @@ void RuntimeAnimatorController::DispatchStateEvents(
 	const AnimatorController& controller, PlayingState& state, float normalizedTime)
 {
 	const auto& animState = controller.states[state.stateIndex];
+
+	// タイムラインIDが無効な場合はイベントを発火しない
 	if (!animState.timelineId.IsValid()) { state.lastNormalizedTime = normalizedTime; return; }
 
+	// タイムラインが存在しない場合もイベントを発火しない
 	auto it = controller.animationTimelines.find(animState.timelineId);
 	if (it == controller.animationTimelines.end() || !it->second) { state.lastNormalizedTime = normalizedTime; return; }
 
 	const auto& timeline = *it->second;
 	const float duration = timeline.GetDuration();
+	// durationが0以下の場合はイベントを発火しない（無限ループ防止）
 	if (duration <= 0.0f) { state.lastNormalizedTime = normalizedTime; return; }
 
+	// ループが有効で、かつ前回の正規化時間より今回の正規化時間の方が小さい場合はループしたとみなす
 	const bool looped = animState.loop && normalizedTime < state.lastNormalizedTime;
+	// 前回の正規化時間から今回の正規化時間までの間に発火するイベントを収集
 	CurryEngine::Resources::CollectFiredEvents(timeline, state.lastNormalizedTime * duration, normalizedTime * duration, looped, firedEvents);
 
+	// 最後に処理した正規化時間を更新
 	state.lastNormalizedTime = normalizedTime;
 }
 
 std::vector<CurryEngine::Resources::FiredAnimationEvent> RuntimeAnimatorController::ConsumeFiredEvents()
 {
+	// firedEventsの内容を返し、firedEventsをクリアする
 	auto result = std::move(firedEvents);
 	firedEvents.clear();
 	return result;

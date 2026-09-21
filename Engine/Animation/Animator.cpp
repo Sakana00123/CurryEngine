@@ -35,8 +35,11 @@ void Animator::Update(float deltaTime)
 				LOG_WARNING(u8"[Animator] GltfModelRenderer が見つかりません。アニメーションを再生できません。");
 			}
 		}
+
+		// アニメーションの更新処理を呼び出す
 		runtimeController->Update(deltaTime, *controller, GetTransform()->GetWorld());
 
+		// ルートモーションの差分を取得する
 		XMFLOAT3 deltaPosition; XMFLOAT4 deltaRotation;
 		runtimeController->ConsumeRootMotion(*controller, deltaPosition, deltaRotation);
 

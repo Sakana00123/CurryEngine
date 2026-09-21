@@ -24,13 +24,25 @@ public class PlayerController : Behaviour
         Vector3 cameraRight = Camera.main != null ? Camera.main.transform.right : transform.right;
         Vector3 direction = cameraForward * input.y + cameraRight * input.x;
         direction.y = 0f; // 水平方向のみに制限
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        speed = direction.magnitude * acceleration;
-        if (isRunning)
+
+        // 移動処理
+        if (animator != null)
         {
-            speed *= 2.0f; // Double the speed when running
+            if (animator.GetCurrentStateIndex() != animator.GetStateIndexFromName("Attack"))
+            {
+                bool isRunning = Input.GetKey(KeyCode.LeftShift);
+                speed = direction.magnitude * acceleration;
+                if (isRunning)
+                {
+                    speed *= 2.0f; // Double the speed when running
+                }
+                transform.Translate(direction.normalized * speed * Time.DeltaTime);
+            }
+            else
+            {
+                speed = 0.0f;
+            }
         }
-        transform.Translate(direction.normalized * speed * Time.DeltaTime);
 
         // 回転処理
         if (direction != Vector3.zero)

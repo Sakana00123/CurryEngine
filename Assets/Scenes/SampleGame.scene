@@ -1563,7 +1563,7 @@
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "coordinateSystem": 0,
