@@ -19,7 +19,7 @@ namespace CurryEngine::Editor
 		// プレビューウィンドウがフォーカスされているかどうかを取得
 		bool IsPreviewFocused() const { return isPreviewFocused; }
     private:
-        struct KeySelection { size_t trackIndex; size_t keyIndex; bool isDragging = false; };
+        struct KeySelection { size_t trackIndex; size_t keyIndex; bool isDragging = false; bool acceptDrag = false; };
 
         void DrawToolbar();
         void DrawTrackList();
@@ -33,6 +33,8 @@ namespace CurryEngine::Editor
         std::optional<KeySelection> m_selectedKey;
         float m_playhead = 0.0f;
         float m_pixelsPerSecond = 150.0f;
+		bool m_isPlaying = false;
+		bool prevMousePressed = false;
 		bool isPreviewFocused = false;
         static constexpr float kTrackHeight = 28.0f;
         static constexpr float kLabelWidth = 140.0f;

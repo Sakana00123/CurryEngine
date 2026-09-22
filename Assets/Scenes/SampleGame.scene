@@ -16,10 +16,10 @@
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.12631508708000183,
-            0.012699891813099384,
-            -0.001618406269699335,
-            0.99190753698349
+            0.23274002969264984,
+            -0.09496591985225677,
+            0.02284073270857334,
+            0.9676217436790466
         ],
         "speed": 3.0
     },
@@ -1615,6 +1615,61 @@
             "parent": "0",
             "parentId": "0",
             "priority": 16000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "17095563600392909473",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        3.799999952316284,
+                        -1.5
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "prefabPath": "",
+                        "prefabReference": "e357120df204bc178f9a94730b5a3376",
+                        "spawnInterval": 2
+                    },
+                    "id": "14669511584816737295",
+                    "name": "ScriptComponent",
+                    "priority": 1000,
+                    "scriptName": "Spawner",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "5777232332540206776",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "ObjectSpawner",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 17000,
             "version": 1
         }
     ]

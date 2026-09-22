@@ -113,6 +113,13 @@ void AnimationClip::Sample(float time, std::vector<NodePose>& out, float weight)
                 continue;
             }
 
+			// チャネルのターゲットノードが有効な範囲内かをチェック
+            if (channel.targetNode < 0 || channel.targetNode >= static_cast<int>(out.size()))
+            {
+                LOG_ERROR(std::format("Invalid target node index: {} for channel targeting {}", channel.targetNode, channel.targetPath));
+                continue;
+			}
+
             float interpolationFactor{};
             size_t keyframeIndex{ indexof(timeline, time, interpolationFactor) };
 
