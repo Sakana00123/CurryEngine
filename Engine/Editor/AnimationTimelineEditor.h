@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Resources/AnimationEvent.h"
+#include <memory>
 #include <optional>
 #ifdef USE_IMGUI
 #include <imgui.h>
@@ -11,6 +12,8 @@ namespace CurryEngine::Editor
     class AnimationTimelineEditor
     {
     public:
+		AnimationTimelineEditor() { ResetStateFlags(); }
+
         void SetTarget(std::shared_ptr<Resources::AnimationTimeline> timeline) { m_timeline = timeline; m_selectedKey.reset(); }
         void Draw(RenderContext* context); // ImGuiウィンドウ内から呼ぶ
 
@@ -31,10 +34,41 @@ namespace CurryEngine::Editor
 
         std::shared_ptr<Resources::AnimationTimeline> m_timeline = nullptr;
         std::optional<KeySelection> m_selectedKey;
-        float m_playhead = 0.0f;
+        float currentTime = 0.0f;
+		float prevTime = 0.0f;
         float m_pixelsPerSecond = 150.0f;
-		bool m_isPlaying = false;
-		bool prevMousePressed = false;
+
+		uint64_t m_states = 0; // ビットフラグで状態を管理するための変数
+        enum class StateFlags : uint64_t
+        {
+			IsPlaying,
+			IsLooping,
+			IsFireEventEnabled,
+            PrevMousePressed,
+            IsPressingMouseOnRuler,
+		};
+
+		// ビットフラグの設定
+        void SetStateFlag(StateFlags flag, bool value)
+        {
+            if (value)
+                m_states |= (1Ui64 << static_cast<uint64_t>(flag)); // ビットを立てる
+            else
+                m_states &= ~(1Ui64 << static_cast<uint64_t>(flag)); // ビットを下げる
+		}
+		// ビットフラグの取得
+		bool GetStateFlag(StateFlags flag) const { return (m_states & (1Ui64 << static_cast<uint64_t>(flag))) != 0; }
+
+		// 状態フラグをリセットしてデフォルト値を設定
+        void ResetStateFlags()
+        {
+            // フラグをリセット
+            m_states = 0;
+            // デフォルト値を設定
+            SetStateFlag(StateFlags::IsLooping, true);
+            SetStateFlag(StateFlags::IsFireEventEnabled, true);
+        }
+
 		bool isPreviewFocused = false;
         static constexpr float kTrackHeight = 28.0f;
         static constexpr float kLabelWidth = 140.0f;

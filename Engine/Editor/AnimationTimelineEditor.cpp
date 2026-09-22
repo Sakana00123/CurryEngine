@@ -77,29 +77,66 @@ namespace CurryEngine::Editor
 
     void AnimationTimelineEditor::DrawToolbar()
     {
+		// 状態フラグを取得
+		bool isPlaying = GetStateFlag(StateFlags::IsPlaying);
+		bool isLooping = GetStateFlag(StateFlags::IsLooping);
+		bool isFireEventEnabled = GetStateFlag(StateFlags::IsFireEventEnabled);
+		bool isPressingMouseOnRuler = GetStateFlag(StateFlags::IsPressingMouseOnRuler);
+
+
+
+		// トラック追加ボタンと再生・停止ボタン
         if (ImGui::Button("+ Track"))
         {
             m_timeline->AddEventTrack("New Track");
         }
         ImGui::SameLine();
         // 再生ボタン
-        if (ImGui::Button(m_isPlaying ? "Pause" : "Play"))
+        if (ImGui::Button(isPlaying ? "Pause" : "Play"))
         {
-			m_isPlaying = !m_isPlaying;
+			isPlaying = !isPlaying;
         }
-        if (m_isPlaying)
+
+		// 更新前の時間を保存
+		prevTime = currentTime;
+
+		// 再生中かつマウスでルーラーを操作していない場合、時間を進める
+        if (isPlaying && !isPressingMouseOnRuler)
         {
-            m_playhead += ImGui::GetIO().DeltaTime;
-            if (m_playhead > m_timeline->GetDuration())
+            currentTime += ImGui::GetIO().DeltaTime;
+			if (currentTime > m_timeline->GetDuration() && isLooping)
             {
-                m_playhead = 0.0f; // ループ再生
+                currentTime = 0.0f; // ループ再生
             }
+            else if (currentTime > m_timeline->GetDuration())
+            {
+                currentTime = m_timeline->GetDuration(); // 再生終了
+                isPlaying = false;
+			}
 		}
-
-        /*ImGui::PushItemWidth(80);
-
-
-        ImGui::PopItemWidth();*/
+        ImGui::SameLine();
+		// 停止して最初の位置に戻すボタン
+        if (ImGui::Button("Stop"))
+        {
+            isPlaying = false;
+            currentTime = 0.0f;
+        }
+        ImGui::SameLine();
+		// ループ切替
+		ImGui::Text("Loop");
+		ImGui::SameLine();
+        if (ImGui::Checkbox("##Loop", &isLooping))
+        {
+            SetStateFlag(StateFlags::IsLooping, isLooping);
+		}
+        ImGui::SameLine();
+		// イベント発火切替
+        ImGui::Text("Event Fire");
+		ImGui::SameLine();
+        if (ImGui::Checkbox("##Fire Event", &isFireEventEnabled))
+        {
+			SetStateFlag(StateFlags::IsFireEventEnabled, isFireEventEnabled);
+		}
         ImGui::SameLine();
         ImGui::PushItemWidth(100);
         ImGui::DragFloat("Zoom", &m_pixelsPerSecond, 1.0f, 20.0f, 1000.0f);
@@ -124,9 +161,18 @@ namespace CurryEngine::Editor
 				if (clip)
                 {
 					std::vector<NodePose> poses = renderer->GetBindPose();
-					clip->Sample(m_playhead, poses);
+					clip->Sample(currentTime, poses);
                     renderer->ApplyPose(poses);
                 }
+            }
+
+			// イベントの発火(再生中かつマウスでルーラーを操作していない場合)
+			if (isFireEventEnabled && isPlaying && !isPressingMouseOnRuler)
+            {
+				std::vector<CurryEngine::Resources::FiredAnimationEvent> firedEvents;
+                bool looped = isLooping && (prevTime > currentTime);
+                CurryEngine::Resources::CollectFiredEvents(*m_timeline, prevTime, currentTime, looped, firedEvents);
+				animator->ProcessEvents(firedEvents);
             }
         }
         else
@@ -150,10 +196,15 @@ namespace CurryEngine::Editor
             }
             ImGui::EndPopup();
 		}
+
+		// 状態フラグの更新
+		SetStateFlag(StateFlags::IsPlaying, isPlaying);
     }
 
     void AnimationTimelineEditor::DrawRuler(ImDrawList* dl, ImVec2 origin, float width)
     {
+		bool isPressingMouseOnRuler = GetStateFlag(StateFlags::IsPressingMouseOnRuler);
+
         const float duration = m_timeline->GetDuration();
 		ImVec2 rulerSize = ImVec2(width, 20);
 		ImVec2 rulerStart = origin;
@@ -163,9 +214,14 @@ namespace CurryEngine::Editor
 		// メモリのエリア内でクリックされた場合、プレイヘッドを移動
         if (ImGui::IsMouseHoveringRect(rulerStart, rulerEnd) && ImGui::IsMouseDown(ImGuiMouseButton_Left))
         {
-            m_playhead = XToTime(ImGui::GetMousePos().x, origin.x, width);
-            m_playhead = std::clamp(m_playhead, 0.0f, duration);
+            currentTime = XToTime(ImGui::GetMousePos().x, origin.x, width);
+            currentTime = std::clamp(currentTime, 0.0f, duration);
+			SetStateFlag(StateFlags::IsPressingMouseOnRuler, true);
 		}
+		else if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
+        {
+			SetStateFlag(StateFlags::IsPressingMouseOnRuler, false);
+        }
 
 		// 時間目盛りの描画
         for (float t = 0.0f; t <= duration + 0.001f; t += 0.5f)
@@ -177,13 +233,15 @@ namespace CurryEngine::Editor
         }
 
         // プレイヘッド
-        float px = TimeToX(m_playhead, origin.x, width);
+        float px = TimeToX(currentTime, origin.x, width);
         dl->AddLine(ImVec2(px, origin.y), ImVec2(px, origin.y + 20 + kTrackHeight * m_timeline->GetEventTracks().size()),
             IM_COL32(255, 60, 60, 255), 2.0f);
     }
 
     void AnimationTimelineEditor::DrawTrackRow(ImDrawList* dl, ImVec2 rowOrigin, float width, size_t trackIndex)
     {
+        bool prevMousePressed = GetStateFlag(StateFlags::PrevMousePressed);
+
         auto& track = m_timeline->GetEventTracks()[trackIndex];
 
         // 背景(縞模様)
@@ -279,7 +337,7 @@ namespace CurryEngine::Editor
         }
 
 		// 前のフレームのマウス押下状態を更新
-		prevMousePressed = mousePressed;
+		SetStateFlag(StateFlags::PrevMousePressed, mousePressed);
     }
 
     void AnimationTimelineEditor::DrawTimelineArea()

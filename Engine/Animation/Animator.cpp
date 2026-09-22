@@ -56,59 +56,59 @@ void Animator::Update(float deltaTime)
 		}
 
 		// イベントの処理
-		for (const auto& event : runtimeController->ConsumeFiredEvents())
+		auto firedEvents = runtimeController->ConsumeFiredEvents();
+		ProcessEvents(firedEvents);
+	}
+}
+
+void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnimationEvent>& events)
+{
+	for (const auto& event : events)
+	{
+		std::string eventLog = "[Animator] Fired Animation Event: " + event.eventName + ", Param: " + event.stringParam;
+		LOG_INFO(eventLog);
+		switch (event.type)
 		{
-			event.eventName; // イベント名
-			event.stringParam; // イベントの文字列パラメータ
-			std::string eventLog = "[Animator] Fired Animation Event: " + event.eventName + ", Param: " + event.stringParam;
-			LOG_INFO(eventLog);
-			switch (event.type)
+		case CurryEngine::Resources::AnimationEventType::SoundEffect:
+		{
+			// サウンドを再生
+			CurryEngine::Resources::AssetId soundAssetId(event.stringParam);
+			auto* meta = CurryEngine::Resources::AssetDatabase::Find(soundAssetId);
+			if (meta && meta->type == AssetType::Sound)
 			{
-				case CurryEngine::Resources::AnimationEventType::SoundEffect:
-				{
-					// サウンドを再生
-					CurryEngine::Resources::AssetId soundAssetId(event.stringParam);
-					auto* meta = CurryEngine::Resources::AssetDatabase::Find(soundAssetId);
-					if (meta && meta->type == AssetType::Sound)
-					{
-						std::wstring soundPath = meta->path.wstring();
-						Audio::PlayOneShot(soundPath.c_str());
-					}
-					break;
-				}
-				case CurryEngine::Resources::AnimationEventType::ParticleEffect:
-				{
-					// パーティクルエフェクトの再生処理をここに追加
-					LOG_INFO("[Animator] Play Particle Effect: " + event.stringParam);
-					break;
-				}
-				case CurryEngine::Resources::AnimationEventType::Custom:
-				{
-					const ClassMeta* meta = nullptr;
-					for (const auto& comp : GetOwner()->GetAllComponents())
-					{
-						meta = comp->GetClassMeta();
-						if (meta)
-						{
-							const MethodInfo* method = meta->FindMethod(event.eventName);
-							if (method)
-							{
-								method->InvokeVoid(comp.get(), { event.stringParam });
-								break; // イベントを処理したらループを抜ける
-							}
-						}
-					}
-					break;
-				}
-			default:
-				break;
+				std::wstring soundPath = meta->path.wstring();
+				Audio::PlayOneShot(soundPath.c_str());
 			}
-
-			{
-				
-			}
+			break;
 		}
-
+		case CurryEngine::Resources::AnimationEventType::ParticleEffect:
+		{
+			// パーティクルエフェクトの再生処理をここに追加
+			LOG_INFO("[Animator] Play Particle Effect: " + event.stringParam);
+			break;
+		}
+		case CurryEngine::Resources::AnimationEventType::Custom:
+		{
+			const ClassMeta* meta = nullptr;
+			for (const auto& comp : GetOwner()->GetAllComponents())
+			{
+				meta = comp->GetClassMeta();
+				if (meta)
+				{
+					const MethodInfo* method = meta->FindMethod(event.eventName);
+					if (method)
+					{
+						method->InvokeVoid(comp.get(), { event.stringParam });
+						break; // イベントを処理したらループを抜ける
+					}
+				}
+			}
+			break;
+		}
+		default:
+			LOG_WARNING("[Animator] Unknown Animation Event Type: " + std::to_string(static_cast<int>(event.type)));
+			break;
+		}
 	}
 }
 

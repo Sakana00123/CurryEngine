@@ -13,6 +13,9 @@ public:
 
 	void Update(float deltaTime) override;
 
+	/** @brief イベントの処理。*/
+	void ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnimationEvent>& events);
+
 #ifdef USE_IMGUI
 	/** @brief インスペクタ用プロパティ表示。*/
 	void DrawProperty(const PropertyDrawContext& context) override;
