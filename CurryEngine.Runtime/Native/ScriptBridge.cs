@@ -234,7 +234,7 @@ public static unsafe class ScriptBridge
         }
     }
 
-    // フィールドに値をセットする。valueHandleはC++側でGCHandleから渡す想定。
+    // フィールドに値をセットする。
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
     public static void SetScriptField(void* gcHandle, byte* fieldNameUtf8, byte* valueJson)
     {
@@ -264,6 +264,49 @@ public static unsafe class ScriptBridge
         catch (Exception ex)
         {
             Debug.LogError($"SetScriptField 例外: {ex.Message}");
+        }
+    }
+
+    // メソッド呼び出し。parametersJsonはJSON配列文字列で、C++側でシリアライズする必要がある。
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
+    public static void CallScriptMethod(void* gcHandle, byte* methodNameUtf8, byte* parametersJson)
+    {
+        try
+        {
+            var instance = Unwrap(gcHandle);
+            var methodName = Marshal.PtrToStringUTF8((nint)methodNameUtf8)!;
+            var parametersJsonStr = Marshal.PtrToStringUTF8((nint)parametersJson)!;
+            // JSON文字列をC#のオブジェクト配列に変換する。ScriptInspector側で適切に変換される想定。
+            var parameters = ScriptInspector.ParseParameters(parametersJsonStr);
+            // メソッドをリフレクションで呼び出す
+            var methodInfo = instance.GetType().GetMethod(methodName);
+            if (methodInfo == null)
+            {
+                Debug.LogError($"CallScriptMethod: Method {methodName} not found on {instance.GetType().FullName}");
+                return;
+            }
+            methodInfo.Invoke(instance, parameters);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"CallScriptMethod 例外: {ex.Message}");
+        }
+    }
+
+    // スクリプト内のメソッド情報を取得する。C++側でリフレクション情報として使う想定。
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
+    public static nint GetScriptMethods(void* gcHandle)
+    {
+        try
+        {
+            var instance = Unwrap(gcHandle);
+            var methodsJson = ScriptInspector.GetMethodsJson(instance);
+            return Marshal.StringToCoTaskMemUTF8(methodsJson);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"GetScriptMethods 例外: {ex.Message}");
+            return nint.Zero;
         }
     }
 

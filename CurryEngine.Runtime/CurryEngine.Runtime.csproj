@@ -31,6 +31,8 @@
     <Compile Include="Native\ScriptBridge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\FieldMeta.cs" />
+    <Compile Include="Reflection\MethodMeta.cs" />
+    <Compile Include="Reflection\ParameterMeta.cs" />
     <Compile Include="Reflection\ScriptInspector.cs" />
     <Compile Include="ScriptRegistry.cs" />
     <Compile Include="TransformAccessor.cs" />

@@ -2,21 +2,31 @@
 #include "Meta.h"
 #include "Engine/Editor/Console.h"
 
-std::any MethodInfo::Invoke(void* instance, std::vector<std::any> args) const
+std::any MethodInfo::Invoke(const MethodInfo* info, void* instance, std::vector<std::any> args)
 {
-	if (invoker)
+	if (!info) 
 	{
-		return invoker(instance, args);
+		LOG_ERROR("MethodInfoがnullptrです。");
+		return std::any();
+	}
+	if (auto& invoker = info->invoker)
+	{
+		return invoker(info, instance, args);
 	}
 	LOG_ERROR("Method does not return a value or invoker is not set.");
 	return std::any(); // 戻り値なし（void）や invoker が未設定の場合は空の any を返す
 }
 
-void MethodInfo::InvokeVoid(void* instance, std::vector<std::any> args) const
+void MethodInfo::InvokeVoid(const MethodInfo* info, void* instance, std::vector<std::any> args)
 {
-	if (invoker)
+	if (!info) 
 	{
-		invoker(instance, args);
+		LOG_ERROR("MethodInfoがnullptrです。");
+		return;
+	}
+	if (auto& invoker = info->invoker)
+	{
+		invoker(info, instance, args);
 	}
 	else
 	{

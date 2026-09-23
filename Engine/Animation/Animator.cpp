@@ -90,15 +90,14 @@ void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnim
 		case CurryEngine::Resources::AnimationEventType::Custom:
 		{
 			const ClassMeta* meta = nullptr;
-			for (const auto& comp : GetOwner()->GetAllComponents())
+			for (auto& comp : GetOwner()->GetAllComponents())
 			{
 				meta = comp->GetClassMeta();
 				if (meta)
 				{
-					const MethodInfo* method = meta->FindMethod(event.eventName);
-					if (method)
+					if (auto* method = meta->FindMethod(event.eventName))
 					{
-						method->InvokeVoid(comp.get(), { event.stringParam });
+						MethodInfo::InvokeVoid(method, comp.get(), { event.stringParam });
 						break; // イベントを処理したらループを抜ける
 					}
 				}

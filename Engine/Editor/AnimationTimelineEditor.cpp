@@ -26,6 +26,9 @@ namespace CurryEngine::Editor
 	void AnimationTimelineEditor::Draw(RenderContext* context)
     {
         if (!m_timeline) { ImGui::TextDisabled("No Select"); return; }
+		bool mousePressed = ImGui::IsMouseDown(ImGuiMouseButton_Left);
+		// マウス押下状態をビットフラグに設定
+		SetStateFlag(StateFlags::MousePressed, mousePressed);
 
         DrawToolbar();
         ImGui::Separator();
@@ -33,6 +36,9 @@ namespace CurryEngine::Editor
         ImGui::BeginChild("TimelineScroll", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
         DrawTimelineArea();
         ImGui::EndChild();
+
+        // 前のフレームのマウス押下状態を更新
+        SetStateFlag(StateFlags::PrevMousePressed, mousePressed);
 
 #if 0
         // プレビュー表示
@@ -204,6 +210,7 @@ namespace CurryEngine::Editor
     void AnimationTimelineEditor::DrawRuler(ImDrawList* dl, ImVec2 origin, float width)
     {
 		bool isPressingMouseOnRuler = GetStateFlag(StateFlags::IsPressingMouseOnRuler);
+		bool mousePressed = GetStateFlag(StateFlags::MousePressed);
 
         const float duration = m_timeline->GetDuration();
 		ImVec2 rulerSize = ImVec2(width, 20);
@@ -212,13 +219,13 @@ namespace CurryEngine::Editor
         dl->AddRectFilled(rulerStart, rulerEnd, IM_COL32(40, 40, 40, 255));
 
 		// メモリのエリア内でクリックされた場合、プレイヘッドを移動
-        if (ImGui::IsMouseHoveringRect(rulerStart, rulerEnd) && ImGui::IsMouseDown(ImGuiMouseButton_Left))
+        if (ImGui::IsMouseHoveringRect(rulerStart, rulerEnd) && mousePressed)
         {
             currentTime = XToTime(ImGui::GetMousePos().x, origin.x, width);
             currentTime = std::clamp(currentTime, 0.0f, duration);
 			SetStateFlag(StateFlags::IsPressingMouseOnRuler, true);
 		}
-		else if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
+		else if (!mousePressed)
         {
 			SetStateFlag(StateFlags::IsPressingMouseOnRuler, false);
         }
@@ -240,7 +247,9 @@ namespace CurryEngine::Editor
 
     void AnimationTimelineEditor::DrawTrackRow(ImDrawList* dl, ImVec2 rowOrigin, float width, size_t trackIndex)
     {
-        bool prevMousePressed = GetStateFlag(StateFlags::PrevMousePressed);
+		bool mousePressed = GetStateFlag(StateFlags::MousePressed);
+		bool prevMousePressed = GetStateFlag(StateFlags::PrevMousePressed);
+		bool isMousePressed = !prevMousePressed && mousePressed;
 
         auto& track = m_timeline->GetEventTracks()[trackIndex];
 
@@ -251,7 +260,7 @@ namespace CurryEngine::Editor
         // 空白部分ダブルクリックで新規キー追加
         ImGui::SetCursorScreenPos(rowOrigin);
         ImGui::InvisibleButton(("track_bg_" + std::to_string(trackIndex)).c_str(), ImVec2(width, kTrackHeight));
-        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_RectOnly) && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
             float t = XToTime(ImGui::GetMousePos().x, rowOrigin.x, width);
 			size_t k = track.keys.size();
@@ -259,8 +268,6 @@ namespace CurryEngine::Editor
             m_selectedKey = KeySelection{ trackIndex, k };
         }
 
-		bool mousePressed = ImGui::IsMouseDown(ImGuiMouseButton_Left);
-		bool isMousePressed = !prevMousePressed && mousePressed;
 
         // キー描画
         for (size_t k = 0; k < track.keys.size(); ++k)
@@ -282,10 +289,7 @@ namespace CurryEngine::Editor
             ImGui::InvisibleButton("key", ImVec2(14, 14));
 			bool hovered = ImGui::IsItemHovered(ImGuiHoveredFlags_RectOnly | ImGuiHoveredFlags_DelayShort);
 			bool isTrackHovered = ImGui::IsMouseHoveringRect(rowOrigin, ImVec2(rowOrigin.x + width, rowOrigin.y + kTrackHeight));
-			ImVec2 rectMin = ImGui::GetItemRectMin(); // ヒットエリアの最小座標
-			ImVec2 rectMax = ImGui::GetItemRectMax(); // ヒットエリアの最大座標
-			bool isRectHovered = ImGui::IsMouseHoveringRect(rectMin, rectMax);
-			if (isRectHovered && isSelected)
+			if (isTrackHovered && isSelected)
             {
 				// ドラッグ開始の判定
                 if (isMousePressed)
@@ -305,23 +309,24 @@ namespace CurryEngine::Editor
                     m_selectedKey->isDragging = false;
                 }
             }
+
+			// ドラッグ中のキーの位置更新
 			if (isSelected && m_selectedKey->isDragging)
             {
                 key.time = XToTime(ImGui::GetMousePos().x, rowOrigin.x, width);
                 key.time = std::clamp(key.time, 0.0f, m_timeline->GetDuration());
             }
-			if (isMousePressed)
+
+			// 選択中のキーをクリックで選択
+			if (isMousePressed && hovered && !isSelected)
             {
-				if (hovered && !isSelected)
-                {
-                    m_selectedKey = KeySelection{ trackIndex, k };
-                }
+                m_selectedKey = KeySelection{ trackIndex, k };
             }
             if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && isTrackHovered && !hovered && isSelected)
             {
                 m_selectedKey.reset();
 			}
-            if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Right))
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_RectOnly) && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Right))
             {
                 track.keys.erase(track.keys.begin() + k);
 				// 選択中キーが削除された場合、選択を解除する
@@ -335,9 +340,6 @@ namespace CurryEngine::Editor
             }
             ImGui::PopID();
         }
-
-		// 前のフレームのマウス押下状態を更新
-		SetStateFlag(StateFlags::PrevMousePressed, mousePressed);
     }
 
     void AnimationTimelineEditor::DrawTimelineArea()

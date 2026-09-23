@@ -111,7 +111,7 @@ void Button::OnClick()
 					{
 						args.push_back(info.value.second);
 					}
-					method->InvokeVoid(target, args);
+					MethodInfo::InvokeVoid(method, target, args);
                 }
 			}
         }

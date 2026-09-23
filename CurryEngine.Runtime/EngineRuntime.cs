@@ -8,6 +8,7 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
+using System.Text.Json.Nodes;
 
 namespace CurryEngine.Runtime;
 
@@ -323,7 +324,7 @@ public static class EngineRuntime
                 return nint.Zero;
             }
             // スクリプトのメタデータを取得
-            string jsonMeta = ScriptInspector.GetFieldsJson(instance);
+            var jsonMeta = ScriptInspector.GetScriptMetaJson(instance);
             return Marshal.StringToCoTaskMemUTF8(jsonMeta);
         }
         catch (Exception ex)

@@ -44,6 +44,7 @@ namespace CurryEngine::Editor
 			IsPlaying,
 			IsLooping,
 			IsFireEventEnabled,
+            MousePressed,
             PrevMousePressed,
             IsPressingMouseOnRuler,
 		};

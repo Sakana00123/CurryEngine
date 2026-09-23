@@ -199,22 +199,29 @@ struct PropertyInfo
 	}
 };
 
+// メソッドのパラメータ情報
+struct ParameterInfo
+{
+	std::string type;
+	std::string name;
+};
+
 // メソッドのメタ情報
 struct MethodInfo
 {
 	std::string returnType;
 	std::string name;
-	std::vector<std::pair<std::string, std::string>> parameters; // (型, 名前)のペア
+	std::vector<ParameterInfo> parameters{}; // (型, 名前)のペア
 	std::vector<AttributeInfo> attributes{};
 
 	// メソッド呼び出し用の関数オブジェクト。引数は (インスタンスポインタ, 引数のanyベクター) で、戻り値は any。
-	std::function<std::any(void* instance, std::vector<std::any> args)> invoker;
+	std::function<std::any(const MethodInfo* info, void* instance, std::vector<std::any> args)> invoker;
 
 	// 戻り値あり
-	std::any Invoke(void* instance, std::vector<std::any> args = {}) const;
+	static std::any Invoke(const MethodInfo* info, void* instance, std::vector<std::any> args = {});
 
 	// 戻り値なし（void）
-	void InvokeVoid(void* instance, std::vector<std::any> args = {}) const;
+	static void InvokeVoid(const MethodInfo* info, void* instance, std::vector<std::any> args = {});
 
 	// 戻り値を型指定してキャスト
 	template <typename TRet>
@@ -315,7 +322,7 @@ T AnyCast(const std::any& a)
 template <typename TClass, typename TRet, typename... TArgs, std::size_t... I>
 auto MakeInvokerImpl(TRet (TClass::*fn)(TArgs...), std::index_sequence<I...>)
 {
-	return [fn](void* instance, std::vector<std::any> args) -> std::any
+	return [fn](const MethodInfo* info, void* instance, std::vector<std::any> args) -> std::any
 	{
 		TClass* obj = static_cast<TClass*>(instance);
 		if constexpr (std::is_void_v<TRet>)
@@ -333,7 +340,7 @@ auto MakeInvokerImpl(TRet (TClass::*fn)(TArgs...), std::index_sequence<I...>)
 template <typename TClass, typename TRet, typename... TArgs, std::size_t... I>
 auto MakeInvokerImpl(TRet (TClass::*fn)(TArgs...) const, std::index_sequence<I...>)
 {
-	return [fn](void* instance, std::vector<std::any> args) -> std::any
+	return [fn](const MethodInfo* info, void* instance, std::vector<std::any> args) -> std::any
 	{
 		const TClass* obj = static_cast<const TClass*>(instance);
 		if constexpr (std::is_void_v<TRet>)
@@ -440,15 +447,21 @@ auto MakeInvoker(TRet (TClass::*fn)(TArgs...) const)
 				size_t _rm_spacePos = _rm_trimmed.rfind(' ');                                                             \
 				if (_rm_spacePos != std::string::npos)                                                                    \
 				{                                                                                                         \
-					m.parameters.emplace_back(_rm_trimmed.substr(0, _rm_spacePos), _rm_trimmed.substr(_rm_spacePos + 1)); \
+					ParameterInfo param;                                                                                  \
+					param.type = _rm_trimmed.substr(0, _rm_spacePos);                                                     \
+					param.name = _rm_trimmed.substr(_rm_spacePos + 1);                                                    \
+					m.parameters.emplace_back(param);																	  \
 				}                                                                                                         \
 				else                                                                                                      \
 				{                                                                                                         \
-					m.parameters.emplace_back(_rm_trimmed, "");                                                           \
+					ParameterInfo param;                                                                                  \
+					param.type = _rm_trimmed;                                                                             \
+					param.name = "";                                                                                      \
+					m.parameters.emplace_back(param);																	  \
 				}                                                                                                         \
 			}                                                                                                             \
 		}                                                                                                                 \
-		m.invoker = MakeInvoker(##CastExpr);																				  \
+		m.invoker = MakeInvoker(##CastExpr);																			  \
 		meta.methods.push_back(m);                                                                                        \
 	}
 

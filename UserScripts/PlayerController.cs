@@ -125,6 +125,11 @@ public class PlayerController : Behaviour
         }
     }
 
+    public void Test()
+    {
+        Debug.Log("PlayerController: Test method called");
+    }
+
     //private void OnGui()
     //{
     //    if (animator != null)

@@ -20,6 +20,8 @@ using ManagedTriggerCallbackFunc = void(__stdcall*)(void* gcHandle, TriggerInfoD
 using ManagedGetFieldsJsonFunc = void* (__stdcall*)(void* gcHandle);
 using ManagedGetFieldFunc = void* (__stdcall*)(void* gcHandle, const char* fieldName);
 using ManagedSetFieldFunc = void(__stdcall*)(void* gcHandle, const char* fieldName, const char* value);
+using ManagedCallMethodFunc = void(__stdcall*)(void* gcHandle, const char* methodName, const char* argsJson);
+using ManagedGetMethodsFunc = void* (__stdcall*)(void* gcHandle);
 using ManagedRegisterAllScriptMetaFunc = void(__stdcall*)(RegisterScriptClassFunc callback);
 //using ManagedGetComponentFunc = void* (__stdcall*)(void* gcHandle, const char* typeName);
 using VoidFunc = void(__stdcall*)();
@@ -42,6 +44,8 @@ struct ScriptCallbacks
 	ManagedGetFieldsJsonFunc GetScriptFields = nullptr;
 	//ManagedGetFieldFunc GetScriptField = nullptr;
 	ManagedSetFieldFunc SetScriptField = nullptr;
+	ManagedCallMethodFunc CallScriptMethod = nullptr;
+	ManagedGetMethodsFunc GetScriptMethods = nullptr;
 	ManagedRegisterAllScriptMetaFunc RegisterAllScriptMeta = nullptr;
 	GetScriptMetaFunc GetScriptMeta = nullptr;
 

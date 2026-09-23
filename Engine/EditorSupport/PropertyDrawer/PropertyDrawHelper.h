@@ -85,7 +85,7 @@ namespace CurryEngine
 						std::string methodName = attr->args[0];
 						if (auto* method = target->GetClassMeta()->FindMethod(methodName))
 						{
-							method->InvokeVoid(target);
+							MethodInfo::InvokeVoid(method, target);
 						}
 					}
 				}

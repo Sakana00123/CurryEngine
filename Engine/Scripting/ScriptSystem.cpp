@@ -221,11 +221,13 @@ void ScriptSystem::Reload()
 			LOG_ERROR("[ScriptComponent] Failed to parse script fields JSON: " + jsonStr);
 			continue;
 		}
+		json fields = j.value("Fields", json::array());
+		json methods = j.value("Methods", json::array());
 		// フィールド値をマップに格納
 		ClassMeta meta;
 		meta.name = className;
 		meta.isScript = true; // スクリプトクラスであることをマーク
-		for (const auto& field : j)
+		for (const auto& field : fields)
 		{
 			std::string name = field.value("name", "");
 			std::string typeName = field.value("type", "");
@@ -604,6 +606,41 @@ void ScriptSystem::Reload()
 			prop.hasCustomSetter = true;
 			meta.properties.push_back(std::move(prop));
 		}
+		// 関数情報の取得
+		if (methods.is_array() && !methods.empty())
+		{
+			for (const auto& method : methods)
+			{
+				MethodInfo methodInfo;
+				methodInfo.name = method.value("Name", "");
+				methodInfo.returnType = method.value("ReturnTypeName", "");
+				if (method.contains("Parameters") && method["Parameters"].is_array())
+				{
+					for (const auto& param : method["Parameters"])
+					{
+						ParameterInfo paramInfo;
+						paramInfo.name = param.value("Name", "");
+						paramInfo.type = param.value("TypeName", "");
+						methodInfo.parameters.push_back(std::move(paramInfo));
+					}
+				}
+				methodInfo.invoker = [](const MethodInfo* info, void* instance, const std::vector<std::any>& args) -> std::any {
+					if (!info || !instance) return std::any();
+					const std::string& methodName = info->name;
+					auto* sc = static_cast<ScriptComponent*>(instance);
+					if (!sc || !sc->GetGCHandle()) return std::any();
+					std::vector<std::string> stringArgs;
+					for (const auto& arg : args)
+					{
+						stringArgs.push_back(any_cast<std::string>(arg));
+					}
+					ScriptSystem::CallScriptMethod(sc->GetGCHandle(), methodName, stringArgs);
+					return std::any(); // C# 側のメソッドの戻り値を取得する場合は、適切に処理する必要があります
+					};
+				meta.methods.push_back(std::move(methodInfo));
+			}
+		}
+
 		// ReflectionRegistry に登録
 		ReflectionRegistry::Register(meta);
 	}
@@ -711,6 +748,65 @@ void ScriptSystem::SetScriptField(void* gcHandle, const std::string& fieldName, 
 	}
 
 	setField(gcHandle, fieldName.c_str(), value.c_str());
+}
+
+void ScriptSystem::CallScriptMethod(void* gcHandle, const std::string& methodName, const std::vector<std::string>& args)
+{
+	if (!s_scriptHost || !gcHandle) return;
+	const auto callMethod = s_scriptHost->GetCallbacks().CallScriptMethod;
+	if (!callMethod)
+	{
+		LOG_ERROR("[ScriptSystem] CallScriptMethod callback is not initialized.");
+		return;
+	}
+	std::string argsJsonStr = "{";
+	for (size_t i = 0; i < args.size(); ++i)
+	{
+		argsJsonStr += "\"" + std::to_string(i) + "\":\"" + args[i] + "\"";
+		if (i < args.size() - 1)
+			argsJsonStr += ",";
+	}
+	argsJsonStr += "}";
+	callMethod(gcHandle, methodName.c_str(), argsJsonStr.c_str());
+}
+
+std::vector<MethodInfo> ScriptSystem::GetScriptMethods(void* gcHandle)
+{
+	std::vector<MethodInfo> methodInfos;
+	if (!s_scriptHost || !gcHandle) return methodInfos;
+	const auto getMethods = s_scriptHost->GetCallbacks().GetScriptMethods;
+	if (!getMethods)
+	{
+		LOG_ERROR("[ScriptSystem] GetScriptMethods callback is not initialized.");
+		return methodInfos;
+	}
+	if (void* methods = getMethods(gcHandle))
+	{
+		std::string methodsJsonStr = static_cast<char*>(methods);
+		CoTaskMemFree(methods); // C# 側で StringToCoTaskMemUTF8 で確保したメモリを解放
+		// Json を パースして std::vector<std::string> に変換する
+		json j = json::parse(methodsJsonStr, nullptr, false);
+		if (j.is_discarded() || !j.is_array())
+		{
+			LOG_ERROR("[ScriptSystem] Failed to parse script methods JSON: " + methodsJsonStr);
+			return methodInfos;
+		}
+		for (const auto& method : j)
+		{
+			MethodInfo info;
+			info.name = method.value("Name", "");
+			info.returnType = method.value("ReturnTypeName", "");
+			for (const auto& param : method.value("Parameters", json::array()))
+			{
+				ParameterInfo paramInfo;
+				paramInfo.name = param.value("Name", "");
+				paramInfo.type = param.value("TypeName", "");
+				info.parameters.push_back(paramInfo);
+			}
+			methodInfos.push_back(info);
+		}
+	}
+	return methodInfos;
 }
 
 static const CollisionInfoDto& ConvertCollisionInfoToPrimitiveData(const CollisionInfo& info)

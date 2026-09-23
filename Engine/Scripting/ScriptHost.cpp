@@ -147,6 +147,10 @@ bool ScriptHost::Initialize()
 	//	L"GetScriptField");
 	load(m_callbacks.SetScriptField, engineRuntimeDll, scriptBridgeType,
 		L"SetScriptField");
+	load(m_callbacks.CallScriptMethod, engineRuntimeDll, scriptBridgeType,
+		L"CallScriptMethod");
+	load(m_callbacks.GetScriptMethods, engineRuntimeDll, scriptBridgeType,
+		L"GetScriptMethods");
 
 
 	// Physicsイベント用コールバックをロード

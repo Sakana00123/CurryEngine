@@ -276,4 +276,87 @@ public static class ScriptInspector
         }
 
     }
+
+    internal static object?[]? ParseParameters(string parametersJsonStr)
+    {
+        if (string.IsNullOrEmpty(parametersJsonStr))
+        {
+            return Array.Empty<object?>();
+        }
+        try
+        {
+            var parametersJson = JsonDocument.Parse(parametersJsonStr).RootElement;
+            if (parametersJson.ValueKind != JsonValueKind.Array)
+            {
+                return null;
+            }
+            var parameters = new List<object?>();
+            foreach (var param in parametersJson.EnumerateArray())
+            {
+                // パラメータの型を判定して適切にデシリアライズする
+                switch (param.ValueKind)
+                {
+                    case JsonValueKind.Number:
+                        if (param.TryGetInt32(out int intValue))
+                        {
+                            parameters.Add(intValue);
+                        }
+                        else if (param.TryGetDouble(out double doubleValue))
+                        {
+                            parameters.Add(doubleValue);
+                        }
+                        else
+                        {
+                            Debug.LogError($"[ScriptInspector] Unsupported number type in parameters JSON: {param}");
+                            return null;
+                        }
+                        break;
+                    case JsonValueKind.String:
+                        parameters.Add(param.GetString());
+                        break;
+                    case JsonValueKind.True:
+                    case JsonValueKind.False:
+                        parameters.Add(param.GetBoolean());
+                        break;
+                    default:
+                        Debug.LogError($"[ScriptInspector] Unsupported parameter type in JSON: {param}");
+                        return null;
+                }
+            }
+            return parameters.ToArray();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[ScriptInspector] Exception while parsing parameters JSON: {e.Message}. Value: {parametersJsonStr}");
+            return null;
+        }
+    }
+
+    internal static string? GetMethodsJson(object instance)
+    {
+        var type = instance.GetType();
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            .Where(m => !m.IsSpecialName) // プロパティの getter/setter などの特殊メソッドを除外
+            .Select(m => new MethodMeta(m))
+            .ToList();
+        var list = methods.Select(m => m.ToJson()).ToList();
+        return JsonSerializer.Serialize(list);
+    }
+
+    internal static string? GetScriptMetaJson(object instance)
+    {
+        var type = instance.GetType();
+        var fields = GetFields(instance);
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+            .Where(m => !m.IsSpecialName) // プロパティの getter/setter などの特殊メソッドを除外
+            .Select(m => new MethodMeta(m))
+            .ToList();
+        var scriptMeta = new Dictionary<string, object?>
+        {
+            { "TypeName", type.FullName },
+            { "Fields", fields.Select(f => f.ToJson()).ToArray() },
+            { "Methods", methods.Select(m => m.ToJson()).ToArray() }
+        };
+        return JsonSerializer.Serialize(scriptMeta, JsonOptions);
+    }
 }
