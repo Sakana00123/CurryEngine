@@ -44,7 +44,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"CreateScript 例外: {ex.Message}");
+            Debug.LogError($"CreateScript 例外: {ex}");
             return null;
         }
     }
@@ -66,7 +66,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"ReleaseScript 例外: {ex.Message}, StackTrace: {ex.StackTrace}, InnerException: {ex.InnerException}");
+            Debug.LogError($"ReleaseScript 例外: {ex}");
         }
         finally
         {
@@ -85,10 +85,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"AwakeScript 例外: {ex.Message}");
-            Debug.LogError($"スタックトレース: {ex.StackTrace}");
-            Debug.LogError($"InnerException: {ex.InnerException}");
-            Debug.LogError($"Source: {ex.Source}");
+            Debug.LogError($"AwakeScript 例外: {ex}");
         }
     }
 
@@ -110,9 +107,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"StartScript 例外: {ex.Message}");
-            Debug.LogError($"StartScript InnerException: {ex.InnerException?.Message}");
-            Debug.LogError($"StartScript StackTrace: {ex.StackTrace}");
+            Debug.LogError($"StartScript 例外: {ex}");
         }
     }
 
@@ -127,7 +122,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"UpdateScript 例外: {ex.Message}\n\nスタックトレース: {ex.StackTrace}\n\nInnerException: {ex.InnerException}\n\nHelpLink: {ex.HelpLink}");
+            Debug.LogError($"UpdateScript 例外: {ex}");
         }
     }
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
@@ -141,7 +136,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"EnableScript 例外: {ex.Message}");
+            Debug.LogError($"EnableScript 例外: {ex}");
         }
     }
 
@@ -156,7 +151,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"DisableScript 例外: {ex.Message}");
+            Debug.LogError($"DisableScript 例外: {ex}");
         }
     }
 
@@ -174,7 +169,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"DestroyScript 例外: {ex.Message}");
+            Debug.LogError($"DestroyScript 例外: {ex}");
         }
     }
 
@@ -210,7 +205,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"ReloadScript 例外: {ex.Message}");
+            Debug.LogError($"ReloadScript 例外: {ex}");
             return gcHandle;
         }
     }
@@ -229,7 +224,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"GetScriptField 例外: {ex.Message}");
+            Debug.LogError($"GetScriptField 例外: {ex}");
             return nint.Zero;
         }
     }
@@ -263,7 +258,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"SetScriptField 例外: {ex.Message}");
+            Debug.LogError($"SetScriptField 例外: {ex}");
         }
     }
 
@@ -278,6 +273,7 @@ public static unsafe class ScriptBridge
             var parametersJsonStr = Marshal.PtrToStringUTF8((nint)parametersJson)!;
             // JSON文字列をC#のオブジェクト配列に変換する。ScriptInspector側で適切に変換される想定。
             var parameters = ScriptInspector.ParseParameters(parametersJsonStr);
+            Debug.Log($"CallScriptMethod: methodName={methodName}, parametersJson={parametersJsonStr}, parameters.Length={parameters?.Length ?? 0}");
             // メソッドをリフレクションで呼び出す
             var methodInfo = instance.GetType().GetMethod(methodName);
             if (methodInfo == null)
@@ -289,7 +285,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"CallScriptMethod 例外: {ex.Message}");
+            Debug.LogError($"CallScriptMethod 例外: {ex}");
         }
     }
 
@@ -305,7 +301,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"GetScriptMethods 例外: {ex.Message}");
+            Debug.LogError($"GetScriptMethods 例外: {ex}");
             return nint.Zero;
         }
     }
@@ -328,7 +324,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"OnCollisionEnterScript 例外: {ex.Message}");
+            Debug.LogError($"OnCollisionEnterScript 例外: {ex}");
         }
     }
 
@@ -347,7 +343,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"OnCollisionStayScript 例外: {ex.Message}");
+            Debug.LogError($"OnCollisionStayScript 例外: {ex}");
             Debug.LogError($"スタックトレース: {ex.StackTrace}");
             Debug.LogError($"InnerException: {ex.InnerException}");
         }
@@ -368,7 +364,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"OnCollisionExitScript 例外: {ex.Message}");
+            Debug.LogError($"OnCollisionExitScript 例外: {ex}");
         }
     }
 
@@ -387,7 +383,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"OnTriggerEnterScript 例外: {ex.Message}");
+            Debug.LogError($"OnTriggerEnterScript 例外: {ex}");
         }
     }
 
@@ -406,7 +402,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"OnTriggerStayScript 例外: {ex.Message}");
+            Debug.LogError($"OnTriggerStayScript 例外: {ex}");
         }
     }
 
@@ -425,7 +421,7 @@ public static unsafe class ScriptBridge
         }
         catch (Exception ex)
         {
-            Debug.LogError($"OnTriggerExitScript 例外: {ex.Message}");
+            Debug.LogError($"OnTriggerExitScript 例外: {ex}");
         }
     }
 

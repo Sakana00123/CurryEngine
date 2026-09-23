@@ -1,7 +1,7 @@
 {
     "editorCamera": {
         "aspect": 1.7777777910232544,
-        "distance": 5.5999979972839355,
+        "distance": 4.599998950958252,
         "farZ": 1000.0,
         "fieldOfView": 60.0,
         "maxAngleX": 70.0,
@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            0.5564521551132202,
-            0.502933144569397,
-            3.1607625484466553
+            -0.004621667787432671,
+            2.014016628265381,
+            0.27940455079078674
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.23274002969264984,
-            -0.09496591985225677,
-            0.02284073270857334,
-            0.9676217436790466
+            0.00039012476918287575,
+            -0.9987374544143677,
+            0.007816283032298088,
+            0.0496208518743515
         ],
         "speed": 3.0
     },
@@ -104,6 +104,115 @@
             "parent": "0",
             "parentId": "0",
             "priority": 0,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "11953940402882104080",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        130.0,
+                        39.999996185302734
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "enabledSelf": false,
+                    "id": "14328468699220300549",
+                    "material": {
+                        "blendState": 5,
+                        "cbuffers": {
+                            "1": {
+                                "materialColor": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        },
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
+                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
+                        }
+                    },
+                    "name": "PrimitiveRenderer",
+                    "priority": 1000,
+                    "shape": 2,
+                    "type": "PrimitiveRenderer"
+                },
+                {
+                    "autoFit": true,
+                    "center": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "contactOffset": 0.019999999552965164,
+                    "enabledSelf": true,
+                    "id": "6691945147698394091",
+                    "isTrigger": true,
+                    "material": 0,
+                    "name": "SphereCollider",
+                    "priority": 2000,
+                    "radius": 2.0,
+                    "type": "SphereCollider"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "attackCollider": "Component(objectId: 6691945147698394091, ownerId: 837495356795042458)",
+                        "attackCount": 0
+                    },
+                    "id": "16320059543774909838",
+                    "name": "ScriptComponent",
+                    "priority": 3000,
+                    "scriptName": "AttackController",
+                    "type": "ScriptComponent"
+                }
+            ],
+            "id": "7141469550880191553",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 8,
+            "name": "AttackCollider",
+            "parent": "837495356795042458",
+            "parentId": "0",
+            "priority": 1000,
             "version": 1
         },
         {
@@ -235,7 +344,7 @@
             "name": "Mixamo",
             "parent": "0",
             "parentId": "0",
-            "priority": 1000,
+            "priority": 2000,
             "version": 1
         },
         {
@@ -364,6 +473,19 @@
                     "priority": 5000,
                     "radius": 0.24175749719142914,
                     "type": "CapsuleCollider"
+                },
+                {
+                    "enabledSelf": true,
+                    "filePath": ".\\TestAssets\\Sounds\\SE\\shot.wav\u0000",
+                    "id": "7033305961867348724",
+                    "loop": false,
+                    "name": "AudioSource",
+                    "playOnStart": false,
+                    "priority": 6000,
+                    "soundType": 1,
+                    "type": "AudioSource",
+                    "use3DAudio": false,
+                    "volume": 0.5249999761581421
                 }
             ],
             "id": "17485635321023068941",
@@ -372,7 +494,7 @@
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
-            "priority": 2000,
+            "priority": 3000,
             "version": 1
         },
         {
@@ -486,7 +608,7 @@
             "name": "can",
             "parent": "0",
             "parentId": "0",
-            "priority": 3000,
+            "priority": 4000,
             "version": 1
         },
         {
@@ -528,7 +650,7 @@
             "name": "CameraFocusTarget",
             "parent": "837495356795042458",
             "parentId": "0",
-            "priority": 4000,
+            "priority": 5000,
             "version": 1
         },
         {
@@ -647,7 +769,7 @@
             "name": "PlayerHPBar",
             "parent": "7087144494191658523",
             "parentId": "0",
-            "priority": 5000,
+            "priority": 6000,
             "version": 1
         },
         {
@@ -761,7 +883,7 @@
             "name": "box",
             "parent": "0",
             "parentId": "0",
-            "priority": 6000,
+            "priority": 7000,
             "version": 1
         },
         {
@@ -841,7 +963,7 @@
             "name": "Canvas",
             "parent": "0",
             "parentId": "0",
-            "priority": 7000,
+            "priority": 8000,
             "version": 1
         },
         {
@@ -890,7 +1012,7 @@
             "name": "EventSystem",
             "parent": "0",
             "parentId": "0",
-            "priority": 8000,
+            "priority": 9000,
             "version": 1
         },
         {
@@ -975,6 +1097,7 @@
                     "enabledSelf": true,
                     "fields": {
                         "acceleration": 4.8,
+                        "attackColliderObject": "GameObject(objectId: 7141469550880191553)",
                         "jumpForce": 12.5,
                         "speed": 0
                     },
@@ -1033,12 +1156,12 @@
                 }
             ],
             "id": "837495356795042458",
-            "isDefaultOpenOnHierarchy": false,
+            "isDefaultOpenOnHierarchy": true,
             "layer": 4,
             "name": "Player",
             "parent": "0",
             "parentId": "0",
-            "priority": 9000,
+            "priority": 10000,
             "version": 1
         },
         {
@@ -1080,7 +1203,7 @@
             "name": "AttackPoint",
             "parent": "3215127106798646221",
             "parentId": "0",
-            "priority": 10000,
+            "priority": 11000,
             "version": 1
         },
         {
@@ -1122,7 +1245,7 @@
             "name": "CameraFocus",
             "parent": "3215127106798646221",
             "parentId": "0",
-            "priority": 11000,
+            "priority": 12000,
             "version": 1
         },
         {
@@ -1177,7 +1300,7 @@
             "name": "Directional Light",
             "parent": "0",
             "parentId": "0",
-            "priority": 12000,
+            "priority": 13000,
             "version": 1
         },
         {
@@ -1278,7 +1401,7 @@
             "name": "Ground",
             "parent": "0",
             "parentId": "0",
-            "priority": 13000,
+            "priority": 14000,
             "version": 1
         },
         {
@@ -1437,7 +1560,7 @@
             "name": "character",
             "parent": "0",
             "parentId": "0",
-            "priority": 14000,
+            "priority": 15000,
             "version": 1
         },
         {
@@ -1559,7 +1682,7 @@
             "name": "PlayerBall",
             "parent": "0",
             "parentId": "0",
-            "priority": 15000,
+            "priority": 16000,
             "version": 1
         },
         {
@@ -1614,7 +1737,7 @@
             "name": "EnemySpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 16000,
+            "priority": 17000,
             "version": 1
         },
         {
@@ -1669,7 +1792,7 @@
             "name": "ObjectSpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 17000,
+            "priority": 18000,
             "version": 1
         }
     ]

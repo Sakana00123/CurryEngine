@@ -626,15 +626,9 @@ void ScriptSystem::Reload()
 				}
 				methodInfo.invoker = [](const MethodInfo* info, void* instance, const std::vector<std::any>& args) -> std::any {
 					if (!info || !instance) return std::any();
-					const std::string& methodName = info->name;
 					auto* sc = static_cast<ScriptComponent*>(instance);
 					if (!sc || !sc->GetGCHandle()) return std::any();
-					std::vector<std::string> stringArgs;
-					for (const auto& arg : args)
-					{
-						stringArgs.push_back(any_cast<std::string>(arg));
-					}
-					ScriptSystem::CallScriptMethod(sc->GetGCHandle(), methodName, stringArgs);
+					ScriptSystem::CallScriptMethod(sc->GetGCHandle(), info, args);
 					return std::any(); // C# 側のメソッドの戻り値を取得する場合は、適切に処理する必要があります
 					};
 				meta.methods.push_back(std::move(methodInfo));
@@ -750,23 +744,39 @@ void ScriptSystem::SetScriptField(void* gcHandle, const std::string& fieldName, 
 	setField(gcHandle, fieldName.c_str(), value.c_str());
 }
 
-void ScriptSystem::CallScriptMethod(void* gcHandle, const std::string& methodName, const std::vector<std::string>& args)
+void ScriptSystem::CallScriptMethod(void* gcHandle, const MethodInfo* info, std::vector<std::any> args)
 {
-	if (!s_scriptHost || !gcHandle) return;
+	if (!s_scriptHost || !gcHandle || !info) return;
 	const auto callMethod = s_scriptHost->GetCallbacks().CallScriptMethod;
 	if (!callMethod)
 	{
 		LOG_ERROR("[ScriptSystem] CallScriptMethod callback is not initialized.");
 		return;
 	}
-	std::string argsJsonStr = "{";
-	for (size_t i = 0; i < args.size(); ++i)
+	// Json文字列に変換する
+	json argsJson = json::array();
+	int index = 0;
+	for (const auto& param : info->parameters)
 	{
-		argsJsonStr += "\"" + std::to_string(i) + "\":\"" + args[i] + "\"";
-		if (i < args.size() - 1)
-			argsJsonStr += ",";
+		json argJson;
+		argJson["name"] = param.name;
+		argJson["type"] = param.type;
+		auto& argValue = args[index++];
+		if (argValue.has_value())
+		{
+			// std::any から適切な型に変換して Json に格納する
+			argJson["value"] = CurryEngine::ScriptFieldSerializer::ToJson(argValue);
+		}
+		else
+		{
+			argJson["value"] = nullptr; // 値がない場合は null を設定
+		}
+		argsJson.push_back(argJson);
 	}
-	argsJsonStr += "}";
+
+	// メソッド名と引数の Json 文字列を C# 側に渡す
+	std::string methodName = info->name;
+	std::string argsJsonStr = argsJson.dump();
 	callMethod(gcHandle, methodName.c_str(), argsJsonStr.c_str());
 }
 

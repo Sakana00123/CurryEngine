@@ -44,7 +44,7 @@ public:
 	static void* HotSwapScript(void* gcHandle, uint64_t ownerId, uint64_t componentId);
 	static void* GetScriptFields(void* gcHandle);
 	static void SetScriptField(void* gcHandle, const std::string& fieldName, const std::string& value);
-	static void CallScriptMethod(void* gcHandle, const std::string& methodName, const std::vector<std::string>& args);
+	static void CallScriptMethod(void* gcHandle, const MethodInfo* info, std::vector<std::any> args = {});
 	static std::vector<MethodInfo> GetScriptMethods(void* gcHandle);
 
 

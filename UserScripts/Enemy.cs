@@ -20,6 +20,7 @@ public class Enemy : Behaviour
     [SerializeField] float attackCooldown = 3f;
     [SerializeField] float knockbackForce = 5f;
     Animator? animator;
+    AudioSource? audioSource;
 
     float attackTimer = 0f;
 
@@ -36,6 +37,7 @@ public class Enemy : Behaviour
     public override void Start()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -161,6 +163,11 @@ public class Enemy : Behaviour
             rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
 
             Debug.Log($"Enemy knocked back with force: {knockbackDirection * knockbackForce}");
+        }
+        if (audioSource != null)
+        {
+            // ダメージを受けたときの音を再生する
+            audioSource.PlayOneShot();
         }
 
         Debug.Log($"Enemy took {damage} damage. Remaining health: {health}");

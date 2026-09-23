@@ -65,14 +65,15 @@ void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnim
 {
 	for (const auto& event : events)
 	{
-		std::string eventLog = "[Animator] Fired Animation Event: " + event.eventName + ", Param: " + event.stringParam;
+		std::string eventLog = "[Animator] Fired Animation Event: " + event.eventName;
 		LOG_INFO(eventLog);
 		switch (event.type)
 		{
 		case CurryEngine::Resources::AnimationEventType::SoundEffect:
 		{
 			// サウンドを再生
-			CurryEngine::Resources::AssetId soundAssetId(event.stringParam);
+			std::string stringParam = event.paramType == "string" ? std::any_cast<std::string>(event.paramValue) : "";
+			CurryEngine::Resources::AssetId soundAssetId(stringParam);
 			auto* meta = CurryEngine::Resources::AssetDatabase::Find(soundAssetId);
 			if (meta && meta->type == AssetType::Sound)
 			{
@@ -84,7 +85,7 @@ void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnim
 		case CurryEngine::Resources::AnimationEventType::ParticleEffect:
 		{
 			// パーティクルエフェクトの再生処理をここに追加
-			LOG_INFO("[Animator] Play Particle Effect: " + event.stringParam);
+			LOG_INFO("[Animator] ParticleEffect event fired: " + event.eventName + ", but no implementation is provided.");
 			break;
 		}
 		case CurryEngine::Resources::AnimationEventType::Custom:
@@ -97,7 +98,7 @@ void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnim
 				{
 					if (auto* method = meta->FindMethod(event.eventName))
 					{
-						MethodInfo::InvokeVoid(method, comp.get(), { event.stringParam });
+						MethodInfo::InvokeVoid(method, comp.get(), { event.paramValue });
 						break; // イベントを処理したらループを抜ける
 					}
 				}

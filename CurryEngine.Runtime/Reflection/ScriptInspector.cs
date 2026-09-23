@@ -1,5 +1,8 @@
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace CurryEngine.Runtime.Reflection;
 
@@ -285,45 +288,49 @@ public static class ScriptInspector
         }
         try
         {
-            var parametersJson = JsonDocument.Parse(parametersJsonStr).RootElement;
-            if (parametersJson.ValueKind != JsonValueKind.Array)
+            Debug.Log($"[ScriptInspector] Parsing parameters JSON: {parametersJsonStr}");
+            JsonNode? parametersNode = JsonNode.Parse(parametersJsonStr);
+            if (parametersNode == null)
             {
+                Debug.LogError($"[ScriptInspector] Failed to parse parameters JSON: {parametersJsonStr}");
                 return null;
             }
-            var parameters = new List<object?>();
-            foreach (var param in parametersJson.EnumerateArray())
+            List<object?> parameters = new List<object?>();
+            foreach (var paramNode in parametersNode.AsArray())
             {
-                // パラメータの型を判定して適切にデシリアライズする
-                switch (param.ValueKind)
+                if (paramNode == null)
                 {
-                    case JsonValueKind.Number:
-                        if (param.TryGetInt32(out int intValue))
+                    parameters.Add(null);
+                    continue;
+                }
+                var typeJson = paramNode["type"];
+                var valueJson = paramNode["value"];
+
+                // パラメータの型を判定して適切にデシリアライズする
+                switch (valueJson)
+                {
+                    case JsonValue jsonValue:
+                        // JSON の値の型に応じて適切にデシリアライズする
+                        switch (((string?)typeJson?.AsValue()))
                         {
-                            parameters.Add(intValue);
-                        }
-                        else if (param.TryGetDouble(out double doubleValue))
-                        {
-                            parameters.Add(doubleValue);
-                        }
-                        else
-                        {
-                            Debug.LogError($"[ScriptInspector] Unsupported number type in parameters JSON: {param}");
-                            return null;
-                        }
-                        break;
-                    case JsonValueKind.String:
-                        parameters.Add(param.GetString());
-                        break;
-                    case JsonValueKind.True:
-                    case JsonValueKind.False:
-                        parameters.Add(param.GetBoolean());
+                            case "System.Int32":     parameters.Add(jsonValue.Deserialize<int>());    break;
+                            case "System.Single":   parameters.Add(jsonValue.Deserialize<float>());  break;
+                            case "System.Boolean":    parameters.Add(jsonValue.Deserialize<bool>());   break;
+                            case "System.String":  parameters.Add(jsonValue.Deserialize<string>()); break;
+                            default:
+                            Debug.LogWarning($"[ScriptInspector] Unsupported parameter type in JSON: {paramNode}");
+                            parameters.Add(null);
+                            break;
+                        };
                         break;
                     default:
-                        Debug.LogError($"[ScriptInspector] Unsupported parameter type in JSON: {param}");
-                        return null;
+                        Debug.LogWarning($"[ScriptInspector] Unsupported parameter type in JSON: {paramNode}");
+                        parameters.Add(null);
+                        break;
                 }
             }
-            return parameters.ToArray();
+
+            return null;
         }
         catch (Exception e)
         {

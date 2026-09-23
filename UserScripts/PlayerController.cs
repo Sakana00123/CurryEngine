@@ -7,8 +7,10 @@ public class PlayerController : Behaviour
     public float speed = 0.0f;
     public float acceleration = 5.0f;
     public float jumpForce = 5.0f;
+    public GameObject? attackColliderObject;
     Vector2 prevInput = Vector2.zero;
     int jumpCount = 0;
+    int attackCount = 0;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -128,6 +130,44 @@ public class PlayerController : Behaviour
     public void Test()
     {
         Debug.Log("PlayerController: Test method called");
+    }
+
+    private void SetColliderEnabled(bool enabled)
+    {
+        if (attackColliderObject != null)
+        {
+            if (attackColliderObject.TryGetComponent<Collider>(out Collider collider))
+            {
+                collider.Enabled = enabled;
+                Debug.Log($"PlayerController: Attack collider {collider.gameObject.name} enabled set to {enabled}");
+            }
+            if (enabled)
+            {
+                ResetAttackCount();
+            }
+            else
+            {
+            }
+        }
+    }
+
+    public void EnableAttackCollider()
+    {
+        SetColliderEnabled(true);
+    }
+
+    public void DisableAttackCollider()
+    {
+        SetColliderEnabled(false);
+    }
+
+    public void ResetAttackCount()
+    {
+        if (attackColliderObject != null && attackColliderObject.TryGetComponent<AttackController>(out AttackController attackController))
+        {
+            attackController.attackCount = 1;
+            Debug.Log($"AttackController: Reset attack count to {attackController.attackCount}");
+        }
     }
 
     //private void OnGui()

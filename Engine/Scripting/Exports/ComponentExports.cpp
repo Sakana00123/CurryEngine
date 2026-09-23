@@ -35,7 +35,7 @@ ENGINE_API bool Component_IsValid(uint64_t objectId)
 }
 
 
-ENGINE_API int Component_GetEnable(uint64_t objectId)
+ENGINE_API int Component_GetEnabled(uint64_t objectId)
 {
 	if (auto comp = FindComponentById(objectId))
 	{
@@ -45,7 +45,7 @@ ENGINE_API int Component_GetEnable(uint64_t objectId)
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
 }
 
-ENGINE_API void Component_SetEnable(uint64_t objectId, int enable)
+ENGINE_API void Component_SetEnabled(uint64_t objectId, int enable)
 {
 	if (auto comp = FindComponentById(objectId))
 	{

@@ -46,7 +46,23 @@ namespace CurryEngine::Resources
 							AnimationEventKey key;
 							key.time = keyJson.value("time", 0.0f);
 							key.eventName = keyJson.value("eventName", "");
-							key.stringParam = keyJson.value("stringParam", "");
+							key.paramType = keyJson.value("paramType", "");
+							if (key.paramType == "string")
+							{
+								key.paramValue = keyJson.value("stringParam", "");
+							}
+							else if (key.paramType == "int")
+							{
+								key.paramValue = keyJson.value("intParam", 0);
+							}
+							else if (key.paramType == "float")
+							{
+								key.paramValue = keyJson.value("floatParam", 0.0f);
+							}
+							else if (key.paramType == "bool")
+							{
+								key.paramValue = keyJson.value("boolParam", false);
+							}
 							track.keys.push_back(key);
 						}
 					}
@@ -80,7 +96,23 @@ namespace CurryEngine::Resources
 				json keyJson;
 				keyJson["time"] = key.time;
 				keyJson["eventName"] = key.eventName;
-				keyJson["stringParam"] = key.stringParam;
+				keyJson["paramType"] = key.paramType;
+				if (key.paramType == "string")
+				{
+					keyJson["stringParam"] = std::any_cast<std::string>(key.paramValue);
+				}
+				else if (key.paramType == "int")
+				{
+					keyJson["intParam"] = std::any_cast<int>(key.paramValue);
+				}
+				else if (key.paramType == "float")
+				{
+					keyJson["floatParam"] = std::any_cast<float>(key.paramValue);
+				}
+				else if (key.paramType == "bool")
+				{
+					keyJson["boolParam"] = std::any_cast<bool>(key.paramValue);
+				}
 				trackJson["keys"].push_back(keyJson);
 			}
 			j["eventTracks"].push_back(trackJson);

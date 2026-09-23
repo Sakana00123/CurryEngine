@@ -533,14 +533,80 @@ namespace CurryEngine::Editor
                     char nameBuf[128];
                     strncpy_s(nameBuf, key.eventName.c_str(), sizeof(nameBuf));
                     if (ImGui::InputText("Event Name", nameBuf, sizeof(nameBuf))) key.eventName = nameBuf;
-                    char paramBuf[128];
-                    strncpy_s(paramBuf, key.stringParam.c_str(), sizeof(paramBuf));
-                    if (ImGui::InputText("String Param", paramBuf, sizeof(paramBuf))) key.stringParam = paramBuf;
+					// 型に応じたパラメータの編集
+                    ImGui::Text("Type");
+					ImGui::SameLine();
+					const char* paramTypes[] = { "None", "String", "Int", "Float", "Bool"};
+					static const std::string paramTypeNames[] = { "", "string", "int", "float", "bool" };
+                    int selectedParamTypeIndex = 0;
+                    for (int i = 0; i < IM_ARRAYSIZE(paramTypes); ++i)
+                    {
+                        if (key.paramType == paramTypeNames[i])
+                        {
+                            selectedParamTypeIndex = i;
+                            break;
+                        }
+					}
+                    if (ImGui::Combo("##ParamType", &selectedParamTypeIndex, paramTypes, IM_ARRAYSIZE(paramTypes)))
+                    {
+						// 選択された型に応じてパラメータを初期化
+                        switch (selectedParamTypeIndex)
+                        {
+                        case 0: // None
+                            key.paramType = "";
+                            key.paramValue.reset();
+                            break;
+                        case 1: // String
+                            key.paramType = "string";
+                            key.paramValue = std::string("");
+                            break;
+                        case 2: // Int
+                            key.paramType = "int";
+                            key.paramValue = int(0);
+                            break;
+                        case 3: // Float
+                            key.paramType = "float";
+                            key.paramValue = float(0.0f);
+                            break;
+                        case 4: // Bool
+                            key.paramType = "bool";
+                            key.paramValue = bool(false);
+                            break;
+                        default:
+                            break;
+						}
+					}
+
+					// パラメータの編集
+					std::string paramType = key.paramType;
+                    if (paramType == "int")
+                    {
+                        int intParam = std::any_cast<int>(key.paramValue);
+                        if (ImGui::InputInt("Int Param", &intParam)) key.paramValue = intParam;
+                    }
+                    else if (paramType == "float")
+                    {
+                        float floatParam = std::any_cast<float>(key.paramValue);
+                        if (ImGui::InputFloat("Float Param", &floatParam)) key.paramValue = floatParam;
+                    }
+                    else if (paramType == "bool")
+                    {
+                        bool boolParam = std::any_cast<bool>(key.paramValue);
+                        if (ImGui::Checkbox("Bool Param", &boolParam)) key.paramValue = boolParam;
+                    }
+					else if (paramType == "string")
+                    {
+                        char paramBuf[128];
+                        std::string stringParam = std::any_cast<std::string>(key.paramValue);
+                        strncpy_s(paramBuf, stringParam.c_str(), sizeof(paramBuf));
+                        if (ImGui::InputText("String Param", paramBuf, sizeof(paramBuf))) key.paramValue = paramBuf;
+                    }
                     break;
                 }
                 case CurryEngine::Resources::AnimationEventType::SoundEffect:
                 {
                     key.eventName = "PlaySound";
+					key.paramType = "string"; // サウンドのアセットIDを格納するためstring型に設定
                     // サウンドの選択
                     if (assetIdToNameMap.empty())
                     {
@@ -558,18 +624,19 @@ namespace CurryEngine::Editor
                         soundNames.push_back(name);
                     }
                     static int selectedSoundIndex = -1;
-                    if (selectedSoundIndex < 0 && !key.stringParam.empty())
+					std::string stringParam = key.paramValue.has_value() ? std::any_cast<std::string>(key.paramValue) : "";
+                    if (selectedSoundIndex < 0 && !stringParam.empty())
                     {
                         // 既存のstringParamからインデックスを設定
                         auto it = std::find_if(assetIdToNameMap.begin(), assetIdToNameMap.end(),
-                            [&key](const auto& pair) { return pair.second == key.stringParam; });
+                            [&stringParam](const auto& pair) { return pair.second == stringParam; });
                         if (it != assetIdToNameMap.end())
                         {
                             selectedSoundIndex = std::distance(assetIdToNameMap.begin(), it);
                         }
                     }
                     // コンボボックスの表示
-					ImGui::Text("Sound: %s", assetIdToNameMap[key.stringParam].c_str());
+					ImGui::Text("Sound: %s", assetIdToNameMap[stringParam].c_str());
 					ImGui::SameLine();
                     if (ImGui::Button("...##Select Sound"))
                     {
@@ -586,7 +653,7 @@ namespace CurryEngine::Editor
                                 selectedSoundIndex = i;
                                 // 選択されたサウンドのIDをstringParamに設定
                                 auto it = std::next(assetIdToNameMap.begin(), i);
-                                key.stringParam = it->first; // アセットIDを格納
+                                key.paramValue = it->first; // アセットIDを格納
                             }
                             ImGui::PopID();
                             if (isSelected)
@@ -599,6 +666,7 @@ namespace CurryEngine::Editor
 				case CurryEngine::Resources::AnimationEventType::ParticleEffect:
                 {
 					key.eventName = "PlayParticle";
+					key.paramType = "string"; // パーティクルのアセットIDを格納するためstring型に設定
                     
 					ImGui::Text("Particle Effect Selection is not implemented yet.");
 					//// パーティクルの選択

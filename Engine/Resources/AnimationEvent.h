@@ -1,6 +1,7 @@
 #pragma once
 #include "Resource.h"
 #include "AssetId.h"
+#include <any>
 #include <vector>
 #include <string>
 
@@ -17,7 +18,8 @@ namespace CurryEngine::Resources
     {
         float time = 0.0f;
         std::string eventName = "";
-		std::string stringParam = "";  // 引数として文字列を渡す場合に使用
+		std::string paramType = ""; // 引数の型情報
+		std::any paramValue; // 引数の値
     };
 
     struct AnimationEventTrack
@@ -71,7 +73,8 @@ namespace CurryEngine::Resources
     {
 		AnimationEventType type;
         std::string eventName;
-        std::string stringParam;
+		std::string paramType; // 引数の型情報
+		std::any paramValue; // 引数の値
     };
 
     // [prevTime, currentTime] を跨いだイベントキーを収集する。
@@ -87,7 +90,7 @@ namespace CurryEngine::Resources
                 for (const auto& track : timeline.GetEventTracks())
                     for (const auto& key : track.keys)
                         if (key.time > from && key.time <= to)
-                            outEvents.push_back({ track.type, key.eventName, key.stringParam });
+                            outEvents.push_back({ track.type, key.eventName, key.paramType, key.paramValue });
             };
 
         if (looped) { checkRange(prevTime, timeline.GetDuration()); checkRange(0.0f, currentTime); }
