@@ -82,9 +82,12 @@ namespace CurryEngine
 
 			if (ImGui::BeginDragDropTarget()) // ドロップ操作の受け入れを開始
 			{
-				// ドロップされたペイロードのタイプを定義（例: "ReferenceFieldName"）。ここでは referenceAttr の引数から参照先のコンポーネントの型名を取得して使用することを想定
+				// referenceAttr の引数から参照先のコンポーネントの型名を取得して、ドロップ可能なペイロードのタイプを定義する
 				{
-					const char* payloadType = (refTypeName).c_str(); // ドロップ可能なペイロードのタイプを定義（例: "ReferenceFieldName"）
+					const char* payloadType = (refTypeName).c_str(); // ドロップ可能なペイロードのタイプを定義
+
+					const char* currentPayloadType = ImGui::GetDragDropPayload() ? ImGui::GetDragDropPayload()->DataType : nullptr; // 現在のペイロードのタイプを取得
+					std::string currentPayloadTypeStr = currentPayloadType ? std::string(currentPayloadType) : "None"; // 現在のペイロードのタイプを文字列に変換
 
 					// 参照先の型が GameObject でない場合（Component型）は、GameObject のペイロードも受け入れるようにする。これにより、ユーザーは GameObject をドロップして、その GameObject に指定された型のコンポーネントがあれば自動的にそのコンポーネントを参照することができるようになる。
 					if (refTypeName != "GameObject") // 参照先の型が GameObject でない場合は、GameObjectのペイロードも受け入れる
@@ -105,6 +108,28 @@ namespace CurryEngine
 									{
 										value = refComponent->GetId(); // ドロップされた GameObject の指定された型のコンポーネントの ObjectId を使用
 										referenceChanged = true; // 参照が変更されたことを記録
+									}
+									else if (currentPayloadTypeStr != "None")
+									{
+										// payloadTypeの基底クラスのペイロードも受け入れるようにする
+										std::string baseTypeName = currentPayloadTypeStr;
+										bool foundBase = false;
+										if (auto baseClassMeta = ReflectionRegistry::FindClass(baseTypeName))
+										{
+											foundBase = baseClassMeta->IsDerivedFrom(refTypeName); // 基底クラスが参照先の型と一致するかどうかをチェック
+										}
+										if (foundBase)
+										{
+											if (auto refComponent = droppedObj->GetComponentByTypeName(refTypeName))
+											{
+												value = refComponent->GetId(); // ドロップされた GameObject の指定された型のコンポーネントの ObjectId を使用
+												referenceChanged = true; // 参照が変更されたことを記録
+											}
+											else
+											{
+												LOG_WARNING("Dropped GameObject does not have the required component type: " + refTypeName);
+											}
+										}
 									}
 									else
 									{
@@ -128,6 +153,28 @@ namespace CurryEngine
 							ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ペイロードから ObjectId を取得
 							value = droppedId; // フィールドにドロップされた ObjectId を設定
 							referenceChanged = true; // 参照が変更されたことを記録
+						}
+					}
+					else if (currentPayloadTypeStr != "None")
+					{
+						// payloadTypeの基底クラスのペイロードも受け入れるようにする
+						std::string baseTypeName = currentPayloadTypeStr;
+						bool foundBase = false;
+						if (auto baseClassMeta = ReflectionRegistry::FindClass(baseTypeName))
+						{
+							foundBase = baseClassMeta->IsDerivedFrom(refTypeName); // 基底クラスが参照先の型と一致するかどうかをチェック
+						}
+						if (foundBase)
+						{
+							if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(baseTypeName.c_str()))
+							{
+								if (payload->DataSize == sizeof(ObjectId)) // ペイロードのサイズが ObjectId と同じであることを確認
+								{
+									ObjectId droppedId = *reinterpret_cast<const ObjectId*>(payload->Data); // ペイロードから ObjectId を取得
+									value = droppedId; // フィールドにドロップされた ObjectId を設定
+									referenceChanged = true; // 参照が変更されたことを記録
+								}
+							}
 						}
 					}
 				}
@@ -183,11 +230,12 @@ namespace CurryEngine
 								for (const auto& obj : allObjects)
 								{
 									// オブジェクトが refTypeName のコンポーネントを持っているかどうかをチェック
-									if (auto refComponent = obj->GetComponentByTypeName(refTypeName))
+									auto refComponents = obj->GetComponentsByBaseTypeName(refTypeName);
+									if (auto refComponent = refComponents.empty() ? nullptr : refComponents.front()) // refTypeName のコンポーネントが存在する場合のみ表示
 									{
 										// Headerとして、owenerの名前を表示する
 										ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_DefaultOpen;
-										if (obj->GetComponentsByTypeName(refTypeName).size() == 1)
+										if (refComponents.size() == 1)
 										{
 											nodeFlags |= ImGuiTreeNodeFlags_Leaf; // オブジェクトが refTypeName のコンポーネントを1つしか持っていない場合は、HeaderをLeafにする
 											if (value == refComponent->id) // 現在の値とオブジェクトの ID が等しい場合は、Headerを選択状態にする

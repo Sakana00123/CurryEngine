@@ -3,7 +3,7 @@ using CurryEngine;
 
 public class AttackController : Behaviour
 {
-    public SphereCollider? attackCollider;
+    public Collider? attackCollider;
     public int attackCount = 0;
     // Start is called before the first frame update
     public override void Start()

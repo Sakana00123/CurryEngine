@@ -259,6 +259,9 @@ struct ClassMeta
 
 	// 基底クラスを再帰的に検索してメソッドを取得する関数
 	const MethodInfo* FindMethod(const std::string& methodName) const;
+
+	// 指定した基底クラスから派生しているかどうかを判定する関数
+	bool IsDerivedFrom(const std::string& baseName) const;
 };
 
 // 列挙型の値のメタ情報

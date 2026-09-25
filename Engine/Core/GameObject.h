@@ -132,6 +132,35 @@ public:
 	}
 
     /**
+     * @brief 指定型の最初のコンポーネントを取得します。基底クラスも含めて検索します。
+	 * @param typeName 取得するコンポーネントの型名。
+	 * @return 見つかった `std::shared_ptr<Component>`。存在しない場合は `nullptr`。
+     */
+	std::shared_ptr<Component> GetComponentByBaseTypeName(const std::string& typeName) {
+        for (auto& component : _components) {
+            if (component->GetClassMeta()->IsDerivedFrom(typeName)) {
+                return component;
+            }
+        }
+		return nullptr;
+	}
+
+    /**
+     * @brief 指定型のコンポーネントをすべて取得します。基底クラスも含めて検索します。
+     * @param typeName 取得するコンポーネントの型名。
+	 * @return 見つかった `std::shared_ptr<Component>` の配列。存在しない場合は空の配列。
+     */
+    std::vector<std::shared_ptr<Component>> GetComponentsByBaseTypeName(const std::string& typeName) {
+        std::vector<std::shared_ptr<Component>> components;
+        for (auto& component : _components) {
+            if (component->GetClassMeta()->IsDerivedFrom(typeName)) {
+                components.push_back(component);
+            }
+        }
+		return components;
+	}
+
+    /**
      * @brief 指定型のコンポーネントをすべて取得します。
      * @param typeName 取得するコンポーネントの型名。
      * @return 見つかった `std::shared_ptr<Component>` の配列。存在しない場合は空の配列。

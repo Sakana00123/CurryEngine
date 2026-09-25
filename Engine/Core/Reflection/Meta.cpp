@@ -86,6 +86,23 @@ const MethodInfo* ClassMeta::FindMethod(const std::string& methodName) const
 	return nullptr; // 見つからなかった場合
 }
 
+bool ClassMeta::IsDerivedFrom(const std::string& baseName) const
+{
+	if (name == baseName)
+	{
+		return true; // 自身の名前が基底クラス名と一致する場合は true
+	}
+	for (const auto& base : bases)
+	{
+		const ClassMeta* baseMeta = ReflectionRegistry::FindClass(base);
+		if (baseMeta && baseMeta->IsDerivedFrom(baseName))
+		{
+			return true; // 基底クラスの中で再帰的にチェック
+		}
+	}
+	return false; // 見つからなかった場合は false
+}
+
 void ReflectionRegistry::Register(const ClassMeta& meta)
 {
 	GetClassRegistry()[meta.name] = meta;
