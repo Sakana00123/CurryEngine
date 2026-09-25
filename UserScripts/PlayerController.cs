@@ -7,6 +7,7 @@ public class PlayerController : Behaviour
     public float speed = 0.0f;
     public float acceleration = 5.0f;
     public float jumpForce = 5.0f;
+    public Collider? attackCollider;
     public GameObject? attackColliderObject;
     Vector2 prevInput = Vector2.zero;
     int jumpCount = 0;
@@ -134,13 +135,11 @@ public class PlayerController : Behaviour
 
     private void SetColliderEnabled(bool enabled)
     {
-        if (attackColliderObject != null)
+        if (attackCollider != null)
         {
-            if (attackColliderObject.TryGetComponent<Collider>(out Collider collider))
-            {
-                collider.Enabled = enabled;
-                Debug.Log($"PlayerController: Attack collider {collider.gameObject.name} enabled set to {enabled}");
-            }
+            attackCollider.Enabled = enabled;
+            Debug.Log($"PlayerController: Attack collider {attackCollider.gameObject.name} enabled set to {enabled}");
+            Debug.Log(attackCollider.transform.Parent != null ? $"Parent: {attackCollider.transform.Parent.gameObject.name}" : "No Parent");
             if (enabled)
             {
                 ResetAttackCount();

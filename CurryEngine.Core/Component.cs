@@ -12,7 +12,16 @@ public abstract class Component : Object
 {
     internal static IComponentAccessor? Accessor { get; set; }
 
-    internal ulong ownerId { get; private set; }
+    private ulong _ownerId;
+    internal ulong ownerId
+    {
+        get
+        {
+            _ownerId = Accessor?.FindGameObjectById(objectId) ?? 0;
+            return _ownerId;
+        }
+        private set => _ownerId = value;
+    }
 
     protected Component()
     { 

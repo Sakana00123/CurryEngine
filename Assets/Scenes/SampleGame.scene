@@ -196,7 +196,7 @@
                 {
                     "enabledSelf": true,
                     "fields": {
-                        "attackCollider": "Component(objectId: 6691945147698394091, ownerId: 837495356795042458)",
+                        "attackCollider": "Component(objectId: 6691945147698394091, ownerId: 7141469550880191553)",
                         "attackCount": 0
                     },
                     "id": "16320059543774909838",
@@ -1097,6 +1097,7 @@
                     "enabledSelf": true,
                     "fields": {
                         "acceleration": 4.8,
+                        "attackCollider": "Component(objectId: 6691945147698394091, ownerId: 7141469550880191553)",
                         "attackColliderObject": "GameObject(objectId: 7141469550880191553)",
                         "jumpForce": 12.5,
                         "speed": 0
@@ -1443,7 +1444,7 @@
                         "attackForce": 1,
                         "attackPoint": "GameObject(objectId: 2113710056714824385)",
                         "attackPrefabPath": "TestAssets/Prefabs/PlayerBall.prefab",
-                        "attackTarget": "Component(objectId: 4928842743748726023, ownerId: 1481355775892858889)",
+                        "attackTarget": "Component(objectId: 4928842743748726023, ownerId: 0)",
                         "enableAttack": true,
                         "enableJump": true,
                         "health": 100,
@@ -1532,7 +1533,7 @@
                     "enabledSelf": true,
                     "fields": {
                         "character": "Component(objectId: 10962852155025648948, ownerId: 3215127106798646221)",
-                        "hpBarRectTransform": "Component(objectId: 5760666468693288683, ownerId: 3215127106798646221)"
+                        "hpBarRectTransform": "Component(objectId: 5760666468693288683, ownerId: 18216994681373106723)"
                     },
                     "id": "11659400083781505513",
                     "name": "ScriptComponent",

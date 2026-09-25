@@ -19,10 +19,11 @@ public class AttackController : Behaviour
 
     public override void OnTriggerStay(Trigger trigger)
     {
-        var other = GetComponentById<SphereCollider>(trigger.otherColliderId);
+        var other = GetComponentById<Collider>(trigger.otherColliderId);
         var otherGameObject = other?.gameObject;
         if (otherGameObject != null)
         {
+            Debug.Log("PlayerController: OnTriggerStay with: " + otherGameObject.name);
             if (otherGameObject.name.Contains("Enemy"))
             {
                 Debug.Log("PlayerController: Colliding with enemy: " + otherGameObject.name);
