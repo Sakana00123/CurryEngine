@@ -13,6 +13,56 @@
 #include <Engine\Rendering\Camera\EditorCamera.h>
 #include <Engine\Scenes\SceneManager.h>
 
+// エフェクト専用の拡張子が決まったため、以前使用していたjsonファイルの拡張子を変更して新しい拡張子に変更して保存するためのフォルダ選択ダイアログを表示する関数
+static void ShowFileExtensionChangeDialog()
+{
+	// フォルダ選択ダイアログを表示して、ユーザーに参照元のjsonファイルが格納されているフォルダを選択させる
+	char folderPath[1024] = {};
+	if (Dialog::SelectDirectoryName(folderPath, sizeof(folderPath), "Select Folder Containing JSON Files") == DialogResult::OK)
+	{
+		// 選択されたフォルダ内のjsonファイルを取得
+		std::string filePath = folderPath;
+		std::vector<std::string> filePaths;
+
+		for (const auto& entry : std::filesystem::directory_iterator(filePath))
+		{
+			if (entry.is_regular_file() && entry.path().extension() == ".json")
+			{
+				filePaths.push_back(entry.path().string());
+			}
+		}
+		// ファイルが選択されなかった場合のエラーハンドリング
+		if (filePaths.empty())
+		{
+			LOG_ERROR("No files selected for extension change.");
+			return; // ファイルが選択されなかった場合は終了
+		}
+		// 保存するディレクトリを選択するダイアログを表示
+		std::filesystem::path saveDirPath = std::filesystem::path(filePaths[0]).parent_path();
+		char saveDirectory[1024] = {};
+		if (Dialog::SelectDirectoryName(saveDirectory, sizeof(saveDirectory), "Select Directory to Save Changed Files") == DialogResult::OK)
+		{
+			saveDirPath = saveDirectory;
+		}
+
+
+		// 選択されたファイルの拡張子を変更して保存
+		for (const auto& oldFilePath : filePaths)
+		{
+			// 新しい拡張子を設定
+			std::filesystem::path newFilePath = saveDirPath / std::filesystem::path(oldFilePath).filename();
+			newFilePath.replace_extension(".effect");
+
+			// ファイルの拡張子を変更して保存
+			json j;
+			if (JsonFileHandler::LoadJsonFromFile(j, oldFilePath))
+			{
+				JsonFileHandler::SaveJsonToFile(j, newFilePath.string(), JsonIOFormat::Binary);
+			}
+		}
+	}
+}
+
 static const char* EasingTypes[] = {
 	"Linear",
 	"InQuad",
@@ -99,6 +149,12 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			// クリアボタン
 			if (ImGui::Button("Clear")) { EffectManager::ClearAll(); }
 
+			// コンバートボタン
+			ImGui::SameLine(0, 30.0f);
+			if (ImGui::Button("Convert JSON to .effect"))
+			{
+				ShowFileExtensionChangeDialog();
+			}
 		}
 
 		//ImGui::BeginTable("EffectEditorTable", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable);

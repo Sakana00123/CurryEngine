@@ -9,6 +9,7 @@
 #include <Engine\Editor\AnimatorControllerEditorWindow.h>
 #include <Engine\Editor\AnimatorControllerEditor.h>
 #include "Engine/Audio/Audio.h"
+#include "Engine/Effects/EffectManager.h"
 
 REGISTER_COMPONENT(Animator, "Animation")
 
@@ -84,8 +85,20 @@ void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnim
 		}
 		case CurryEngine::Resources::AnimationEventType::ParticleEffect:
 		{
-			// パーティクルエフェクトの再生処理をここに追加
-			LOG_INFO("[Animator] ParticleEffect event fired: " + event.eventName + ", but no implementation is provided.");
+			// エフェクトを再生
+			std::string stringParam = event.paramType == "string" ? std::any_cast<std::string>(event.paramValue) : "";
+			CurryEngine::Resources::AssetId effectAssetId(stringParam);
+			auto* meta = CurryEngine::Resources::AssetDatabase::Find(effectAssetId);
+			if (meta && meta->type == AssetType::Effect)
+			{
+				// エフェクトを再生する
+				EffectHandle handle = EffectManager::LoadEffectData(meta->path.string());
+				EffectManager::Play(handle, GetTransform()->GetWorldPosition(), GetTransform()->GetEulerAngles());
+			}
+			else
+			{
+				LOG_WARNING("[Animator] Particle Effect asset not found or invalid type: " + stringParam);
+			}
 			break;
 		}
 		case CurryEngine::Resources::AnimationEventType::Custom:

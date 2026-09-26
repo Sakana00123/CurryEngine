@@ -26,6 +26,7 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 	// エフェクトデータ読み込み
 	if (std::filesystem::exists(filePath))
 	{
+		std::filesystem::path path(filePath);
 		// すでに同じデータが存在する場合はそれを返す
 		for (int i = 0; i < effectData.size(); ++i)
 		{
@@ -36,7 +37,8 @@ EffectHandle EffectManager::LoadEffectData(const std::string& filePath)
 		}
 
 		json j;
-		if (JsonFileHandler::LoadJsonFromFile(j, filePath))
+		JsonIOFormat format = path.extension() == ".effect" ? JsonIOFormat::Binary : JsonIOFormat::Auto;
+		if (JsonFileHandler::LoadJsonFromFile(j, filePath, format))
 		{
 			// 新しいエフェクトデータ追加用のハンドル
 			EffectHandle handle = CreateEffectData();
@@ -192,15 +194,12 @@ EffectHandle EffectManager::LoadEffectDataWithDialog()
 {
 	// ファイルダイアログ表示
 	{
-		const char* filter = "JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
+		const char* filter = "Effect Files (*.json;*.effect)\0*.json;*.effect\0All Files (*.*)\0*.*\0";
 		char filePath[256] = { 0 };
 		HWND hwnd = Graphics::GetHwnd();
 		DialogResult result = Dialog::OpenFileName(filePath, sizeof(filePath), filter, nullptr, hwnd);
 		if (result == DialogResult::OK) {
 			std::filesystem::path path(filePath);
-			// 拡張子が.jsonでない場合、.jsonを追加
-			path.replace_extension(".json");
-
 			// エフェクトデータ読み込み
 			return LoadEffectData(path.string());
 		}
@@ -311,14 +310,14 @@ void EffectManager::SaveEffectDataWithDialog(EffectHandle handle)
 {
 	// ファイルダイアログ表示
 	{
-		const char* filter = "JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
+		const char* filter = "Effect Files (*.effect)\0*.effect\0All Files (*.*)\0*.*\0";
 		char filePath[256] = { 0 };
 		HWND hwnd = Graphics::GetHwnd();
-		DialogResult result = Dialog::SaveFileName(filePath, sizeof(filePath), filter, nullptr, ".json", hwnd);
+		DialogResult result = Dialog::SaveFileName(filePath, sizeof(filePath), filter, nullptr, ".effect", hwnd);
 		if (result == DialogResult::OK) {
 			std::filesystem::path path(filePath);
-			// 拡張子が.jsonでない場合、.jsonを追加
-			path.replace_extension(".json");
+			// 拡張子を.effectに変更
+			path.replace_extension(".effect");
 			// エフェクトデータ保存
 			SaveEffectData(handle, path.string());
 		}

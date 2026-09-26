@@ -669,53 +669,54 @@ namespace CurryEngine::Editor
 					key.paramType = "string"; // パーティクルのアセットIDを格納するためstring型に設定
                     
 					ImGui::Text("Particle Effect Selection is not implemented yet.");
-					//// パーティクルの選択
-     //               if (assetIdToNameMap.empty())
-     //               {
-     //                   // アセット名からIDへのマッピングを初期化
-     //                   std::vector<CurryEngine::Resources::AssetMeta> particleMetas = CurryEngine::Resources::AssetDatabase::FindAllByType(AssetType::);
-     //                   for (const auto& meta : particleMetas)
-     //                   {
-     //                       assetIdToNameMap[meta.id.ToString()] = meta.path.filename().string();
-     //                   }
-					//}
-					//// パーティクルの選択コンボボックス
-					//std::vector<std::string> particleNames;
-     //               for (const auto& [id, name] : assetIdToNameMap)
-     //               {
-     //                   particleNames.push_back(name);
-					//}
-					//static int selectedParticleIndex = -1;
-     //               if (selectedParticleIndex < 0 && !key.stringParam.empty())
-     //               {
-     //                   // 既存のstringParamからインデックスを設定
-     //                   auto it = std::find_if(assetIdToNameMap.begin(), assetIdToNameMap.end(),
-     //                       [&key](const auto& pair) { return pair.second == key.stringParam; });
-     //                   if (it != assetIdToNameMap.end())
-     //                   {
-     //                       selectedParticleIndex = std::distance(assetIdToNameMap.begin(), it);
-     //                   }
-					//}
-					//// コンボボックスの表示
-					//if (ImGui::BeginCombo("Particle Effect", selectedParticleIndex >= 0 ? particleNames[selectedParticleIndex].c_str() : "Select Particle"))
-					//{
-     //                   for (int i = 0; i < particleNames.size(); ++i)
-     //                   {
-     //                       bool isSelected = (selectedParticleIndex == i);
-     //                       ImGui::PushID(i);
-     //                       if (ImGui::Selectable(particleNames[i].c_str(), isSelected))
-     //                       {
-     //                           selectedParticleIndex = i;
-     //                           // 選択されたパーティクルのIDをstringParamに設定
-     //                           auto it = std::next(assetIdToNameMap.begin(), i);
-     //                           key.stringParam = it->first; // アセットIDを格納
-     //                       }
-     //                       ImGui::PopID();
-     //                       if (isSelected)
-     //                           ImGui::SetItemDefaultFocus();
-     //                   }
-     //                   ImGui::EndCombo();
-					//}
+					// パーティクルの選択
+                    if (assetIdToNameMap.empty())
+                    {
+                        // アセット名からIDへのマッピングを初期化
+                        std::vector<CurryEngine::Resources::AssetMeta> effectMetas = CurryEngine::Resources::AssetDatabase::FindAllByType(AssetType::Effect);
+                        for (const auto& meta : effectMetas)
+                        {
+                            assetIdToNameMap[meta.id.ToString()] = meta.path.filename().string();
+                        }
+					}
+					// パーティクルの選択コンボボックス
+					std::vector<std::string> particleNames;
+                    for (const auto& [id, name] : assetIdToNameMap)
+                    {
+                        particleNames.push_back(name);
+					}
+					static int selectedParticleIndex = -1;
+                    std::string stringParam = key.paramValue.has_value() ? std::any_cast<std::string>(key.paramValue) : "";
+                    if (selectedParticleIndex < 0 && !stringParam.empty())
+                    {
+                        // 既存のstringParamからインデックスを設定
+                        auto it = std::find_if(assetIdToNameMap.begin(), assetIdToNameMap.end(),
+                            [&stringParam](const auto& pair) { return pair.second == stringParam; });
+                        if (it != assetIdToNameMap.end())
+                        {
+                            selectedParticleIndex = std::distance(assetIdToNameMap.begin(), it);
+                        }
+					}
+					// コンボボックスの表示
+					if (ImGui::BeginCombo("Particle Effect", selectedParticleIndex >= 0 ? particleNames[selectedParticleIndex].c_str() : "Select Particle"))
+					{
+                        for (int i = 0; i < particleNames.size(); ++i)
+                        {
+                            bool isSelected = (selectedParticleIndex == i);
+                            ImGui::PushID(i);
+                            if (ImGui::Selectable(particleNames[i].c_str(), isSelected))
+                            {
+                                selectedParticleIndex = i;
+                                // 選択されたパーティクルのIDをstringParamに設定
+                                auto it = std::next(assetIdToNameMap.begin(), i);
+                                key.paramValue = it->first; // アセットIDを格納
+                            }
+                            ImGui::PopID();
+                            if (isSelected)
+                                ImGui::SetItemDefaultFocus();
+                        }
+                        ImGui::EndCombo();
+					}
                     break;
                 }
                 default:
