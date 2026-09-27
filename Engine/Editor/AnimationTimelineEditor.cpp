@@ -156,8 +156,6 @@ namespace CurryEngine::Editor
 		if (!scene) return;
 		ImGui::SameLine();
 		// アニメーションバインドオブジェクトの設定
-		static ObjectId selectedAnimatorId;
-
 		if (auto animator = scene->FindComponentById<Animator>(selectedAnimatorId))
         {
             ImGui::Text("Target: %s", animator->GetName().c_str());
@@ -621,7 +619,14 @@ namespace CurryEngine::Editor
                 case CurryEngine::Resources::AnimationEventType::SoundEffect:
                 {
                     key.eventName = "PlaySound";
-					key.paramType = "string"; // サウンドのアセットIDを格納するためstring型に設定
+					// パラメータの型をSoundEffectEventParamに変更
+                    if (key.paramType == "string" && key.paramValue.has_value())
+                    {
+                        CurryEngine::Resources::SoundEffectEventParam soundParam;
+                        soundParam.soundAssetId = std::any_cast<std::string>(key.paramValue);
+                        key.paramValue = soundParam;
+					}
+					key.paramType = "SoundEffectEventParam"; // サウンドのアセットIDを格納するためstring型に設定
                     // サウンドの選択
                     if (assetIdToNameMap.empty())
                     {
@@ -635,10 +640,13 @@ namespace CurryEngine::Editor
                     // サウンドの選択コンボボックス
                     static std::vector<std::string> soundNames;
 					static int selectedSoundIndex = -1;
-					std::string stringParam = key.paramValue.has_value() ? std::any_cast<std::string>(key.paramValue) : "";
+					CurryEngine::Resources::SoundEffectEventParam soundParam = key.paramValue.has_value() 
+                        ? std::any_cast<CurryEngine::Resources::SoundEffectEventParam>(key.paramValue)
+                        : CurryEngine::Resources::SoundEffectEventParam();
+					std::string assetId = soundParam.soundAssetId;
                     
                     // コンボボックスの表示
-					std::string soundName = assetIdToNameMap.count(stringParam) ? assetIdToNameMap[stringParam] : "None";
+					std::string soundName = assetIdToNameMap.count(assetId) ? assetIdToNameMap[assetId] : "None";
 					ImGui::Text("Sound: %s", soundName.c_str());
 					ImGui::SameLine();
                     if (ImGui::Button("...##Select Sound"))
@@ -655,9 +663,9 @@ namespace CurryEngine::Editor
 						// 選択中のサウンドのインデックスを設定
 						selectedSoundIndex = -1;
                         {
-                            // 既存のstringParamからインデックスを設定
+                            // 既存のassetIdからインデックスを設定
                             auto it = std::find_if(assetIdToNameMap.begin(), assetIdToNameMap.end(),
-                                [&stringParam](const auto& pair) { return pair.first == stringParam; });
+                                [&assetId](const auto& pair) { return pair.first == assetId; });
                             if (it != assetIdToNameMap.end())
                             {
                                 selectedSoundIndex = std::distance(assetIdToNameMap.begin(), it);
@@ -674,9 +682,10 @@ namespace CurryEngine::Editor
                             if (ImGui::Selectable(soundNames[i].c_str(), isSelected))
                             {
                                 selectedSoundIndex = i;
-                                // 選択されたサウンドのIDをkey.paramValueに設定
+                                // 選択されたサウンドのIDを設定
                                 auto it = std::next(assetIdToNameMap.begin(), i);
-                                key.paramValue = it->first; // アセットIDを格納
+								soundParam.soundAssetId = it->first; // アセットIDを格納
+								key.paramValue = soundParam;
                             }
                             ImGui::PopID();
                             if (isSelected)
@@ -684,12 +693,26 @@ namespace CurryEngine::Editor
                         }
                         ImGui::EndPopup();
 					}
+					// サウンドの再生音量の編集
+					ImGui::Text("Volume");
+					ImGui::SameLine();
+					if (ImGui::DragFloat("##SoundVolume", &soundParam.volume, 0.01f, 0.0f, 1.0f))
+                    {
+                        key.paramValue = soundParam;
+					}
 					break;
                 }
 				case CurryEngine::Resources::AnimationEventType::ParticleEffect:
                 {
 					key.eventName = "PlayParticle";
-					key.paramType = "string"; // パーティクルのアセットIDを格納するためstring型に設定
+					// パラメータの型をParticleEffectEventParamに変更
+					if (key.paramType == "string" && key.paramValue.has_value())
+                    {
+						CurryEngine::Resources::ParticleEffectEventParam particleParam;
+						particleParam.particleAssetId = std::any_cast<std::string>(key.paramValue);
+						key.paramValue = particleParam;
+                    }
+					key.paramType = "ParticleEffectEventParam"; // パーティクルのアセットIDを格納するためstring型に設定
                     
 					// パーティクルの選択
                     if (assetIdToNameMap.empty())
@@ -704,10 +727,13 @@ namespace CurryEngine::Editor
 					// パーティクルの選択コンボボックス
 					static std::vector<std::string> particleNames;
 					static int selectedParticleIndex = -1;
-                    std::string stringParam = key.paramValue.has_value() ? std::any_cast<std::string>(key.paramValue) : "";
+                    CurryEngine::Resources::ParticleEffectEventParam particleParam = key.paramValue.has_value() 
+                        ? std::any_cast<CurryEngine::Resources::ParticleEffectEventParam>(key.paramValue)
+						: CurryEngine::Resources::ParticleEffectEventParam();
+					std::string assetId = particleParam.particleAssetId;
                     
 					// コンボボックスの表示
-					std::string particleName = assetIdToNameMap.count(stringParam) ? assetIdToNameMap[stringParam] : "None";
+					std::string particleName = assetIdToNameMap.count(assetId) ? assetIdToNameMap[assetId] : "None";
 					ImGui::Text("Particle: %s", particleName.c_str());
 					ImGui::SameLine();
                     if (ImGui::Button("...##Select Particle"))
@@ -721,11 +747,11 @@ namespace CurryEngine::Editor
                             particleNames.push_back(name);
                         }
                         // 選択中のパーティクルのインデックスを設定
-                        if (!stringParam.empty())
+                        if (!assetId.empty())
                         {
                             // 既存のstringParamからインデックスを設定
                             auto it = std::find_if(assetIdToNameMap.begin(), assetIdToNameMap.end(),
-                                [&stringParam](const auto& pair) { return pair.first == stringParam; });
+                                [&assetId](const auto& pair) { return pair.first == assetId; });
                             if (it != assetIdToNameMap.end())
                             {
                                 selectedParticleIndex = std::distance(assetIdToNameMap.begin(), it);
@@ -743,7 +769,8 @@ namespace CurryEngine::Editor
                                 selectedParticleIndex = i;
                                 // 選択されたパーティクルのIDをkey.paramValueに設定
                                 auto it = std::next(assetIdToNameMap.begin(), i);
-                                key.paramValue = it->first; // アセットIDを格納
+                                particleParam.particleAssetId = it->first; // アセットIDを格納
+								key.paramValue = particleParam;
                             }
                             ImGui::PopID();
                             if (isSelected)
@@ -751,6 +778,58 @@ namespace CurryEngine::Editor
                         }
 						ImGui::EndPopup();
 					}
+					// ターゲットノードの選択
+                    static std::vector<std::string> nodeNames;
+					ImGui::Text("Target Node: %s", particleParam.targetNodeId >= 0 && particleParam.targetNodeId < nodeNames.size() ? nodeNames[particleParam.targetNodeId].c_str() : "None");
+					ImGui::SameLine();
+                    if (ImGui::Button("...##Select Target Node"))
+                    {
+                        ImGui::OpenPopup("TargetNodePopup");
+						// ノード名のリストを更新
+                        nodeNames.clear();
+                        if (auto scene = SceneManager::GetCurrentScene())
+                        {
+                            if (auto animator = scene->FindComponentById<Animator>(selectedAnimatorId))
+                            {
+                                if (auto* renderer = scene->FindComponentById<GltfModelRenderer>(animator->targetModelRendererId))
+                                {
+                                    auto nodes = renderer->GetBindPose();
+                                    for (const auto& node : nodes)
+                                    {
+                                        nodeNames.push_back(node.nodeName);
+                                    }
+                                }
+                            }
+						}
+                    }
+                    if (ImGui::BeginPopup("TargetNodePopup"))
+                    {
+                        // ノードの選択リストを表示する
+                        for (int i = 0; i < nodeNames.size(); ++i)
+                        {
+                            bool isSelected = (particleParam.targetNodeId == i);
+                            ImGui::PushID(i);
+                            if (ImGui::Selectable(nodeNames[i].c_str(), isSelected))
+                            {
+                                particleParam.targetNodeId = i;
+                                key.paramValue = particleParam;
+                            }
+                            ImGui::PopID();
+                            if (isSelected)
+                                ImGui::SetItemDefaultFocus();
+                        }
+                        ImGui::EndPopup();
+					}
+
+
+					// パーティクルの再生位置の編集
+					ImGui::Text("Position");
+					ImGui::SameLine();
+                    if (ImGui::DragFloat3("##ParticlePosition", &particleParam.offset.x, 0.1f))
+                    {
+                        key.paramValue = particleParam;
+					}
+
                     break;
                 }
                 default:

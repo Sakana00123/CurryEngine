@@ -5,6 +5,7 @@
 #ifdef USE_IMGUI
 #include <imgui.h>
 #include <Engine\Rendering\Pipeline\RenderContext.h>
+#include "Engine/Core/ObjectId.h"
 
 
 namespace CurryEngine::Editor
@@ -37,6 +38,7 @@ namespace CurryEngine::Editor
         float currentTime = 0.0f;
 		float prevTime = 0.0f;
         float m_pixelsPerSecond = 150.0f;
+        ObjectId selectedAnimatorId;
 
 		uint64_t m_states = 0; // ビットフラグで状態を管理するための変数
         enum class StateFlags : uint64_t

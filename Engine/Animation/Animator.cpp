@@ -73,7 +73,8 @@ void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnim
 		case CurryEngine::Resources::AnimationEventType::SoundEffect:
 		{
 			// サウンドを再生
-			std::string stringParam = event.paramType == "string" ? std::any_cast<std::string>(event.paramValue) : "";
+			std::string stringParam = event.paramType == "string" ? std::any_cast<std::string>(event.paramValue) 
+				: event.paramType == "SoundEffectEventParam" ? std::any_cast<CurryEngine::Resources::SoundEffectEventParam>(event.paramValue).soundAssetId : "";
 			CurryEngine::Resources::AssetId soundAssetId(stringParam);
 			auto* meta = CurryEngine::Resources::AssetDatabase::Find(soundAssetId);
 			if (meta && meta->type == AssetType::Sound)
@@ -86,7 +87,8 @@ void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnim
 		case CurryEngine::Resources::AnimationEventType::ParticleEffect:
 		{
 			// エフェクトを再生
-			std::string stringParam = event.paramType == "string" ? std::any_cast<std::string>(event.paramValue) : "";
+			std::string stringParam = event.paramType == "string" ? std::any_cast<std::string>(event.paramValue)
+				: event.paramType == "ParticleEffectEventParam" ? std::any_cast<CurryEngine::Resources::ParticleEffectEventParam>(event.paramValue).particleAssetId : "";
 			CurryEngine::Resources::AssetId effectAssetId(stringParam);
 			auto* meta = CurryEngine::Resources::AssetDatabase::Find(effectAssetId);
 			if (meta && meta->type == AssetType::Effect)

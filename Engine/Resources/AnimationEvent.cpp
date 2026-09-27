@@ -63,6 +63,29 @@ namespace CurryEngine::Resources
 							{
 								key.paramValue = keyJson.value("boolParam", false);
 							}
+							else if (key.paramType == "SoundEffectEventParam")
+							{
+								SoundEffectEventParam soundEffectParam;
+								if (keyJson.contains("soundEffectParam"))
+								{
+									const auto& soundEffectParamJson = keyJson["soundEffectParam"];
+									soundEffectParam.soundAssetId = soundEffectParamJson.value("soundAssetId", "");
+									soundEffectParam.volume = soundEffectParamJson.value("volume", 1.0f);
+								}
+								key.paramValue = soundEffectParam;
+							}
+							else if (key.paramType == "ParticleEffectEventParam")
+							{
+								ParticleEffectEventParam particleEffectParam;
+								if (keyJson.contains("particleEffectParam"))
+								{
+									const auto& particleEffectParamJson = keyJson["particleEffectParam"];
+									particleEffectParam.particleAssetId = particleEffectParamJson.value("particleAssetId", "");
+									particleEffectParam.targetNodeId = particleEffectParamJson.value("targetNodeId", 0);
+									particleEffectParam.offset = particleEffectParamJson.value("offset", Vector3::Zero);
+								}
+								key.paramValue = particleEffectParam;
+							}
 							track.keys.push_back(key);
 						}
 					}
@@ -112,6 +135,23 @@ namespace CurryEngine::Resources
 				else if (key.paramType == "bool")
 				{
 					keyJson["boolParam"] = std::any_cast<bool>(key.paramValue);
+				}
+				else if (key.paramType == "SoundEffectEventParam")
+				{
+					json soundEffectParamJson;
+					SoundEffectEventParam soundEffectParam = std::any_cast<SoundEffectEventParam>(key.paramValue);
+					soundEffectParamJson["soundAssetId"] = soundEffectParam.soundAssetId;
+					soundEffectParamJson["volume"] = soundEffectParam.volume;
+					keyJson["soundEffectParam"] = soundEffectParamJson;
+				}
+				else if (key.paramType == "ParticleEffectEventParam")
+				{
+					json particleEffectParamJson;
+					ParticleEffectEventParam particleEffectParam = std::any_cast<ParticleEffectEventParam>(key.paramValue);
+					particleEffectParamJson["particleAssetId"] = particleEffectParam.particleAssetId;
+					particleEffectParamJson["targetNodeId"] = particleEffectParam.targetNodeId;
+					particleEffectParamJson["offset"] = particleEffectParam.offset;
+					keyJson["particleEffectParam"] = particleEffectParamJson;
 				}
 				trackJson["keys"].push_back(keyJson);
 			}

@@ -4,6 +4,7 @@
 #include <any>
 #include <vector>
 #include <string>
+#include "Engine/Core/Math/Vector3.h"
 
 namespace CurryEngine::Resources
 {
@@ -12,6 +13,19 @@ namespace CurryEngine::Resources
         Custom,
 		SoundEffect,
 		ParticleEffect,
+	};
+
+    struct SoundEffectEventParam
+    {
+        std::string soundAssetId; // サウンドのアセットID
+		float volume = 1.0f; // 音量 (0.0f ~ 1.0f)
+	};
+
+    struct ParticleEffectEventParam
+    {
+		std::string particleAssetId; // パーティクルのアセットID
+		int targetNodeId = 0; // パーティクルを再生する対象ノードのID
+		Vector3 offset = Vector3::Zero; // パーティクルの再生位置のオフセット
 	};
 
     struct AnimationEventKey
