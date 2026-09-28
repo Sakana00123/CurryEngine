@@ -780,12 +780,7 @@ namespace CurryEngine::Editor
 					}
 					// ターゲットノードの選択
                     static std::vector<std::string> nodeNames;
-					ImGui::Text("Target Node: %s", particleParam.targetNodeId >= 0 && particleParam.targetNodeId < nodeNames.size() ? nodeNames[particleParam.targetNodeId].c_str() : "None");
-					ImGui::SameLine();
-                    if (ImGui::Button("...##Select Target Node"))
-                    {
-                        ImGui::OpenPopup("TargetNodePopup");
-						// ノード名のリストを更新
+                    auto updateNodeNames = [&]() {
                         nodeNames.clear();
                         if (auto scene = SceneManager::GetCurrentScene())
                         {
@@ -800,7 +795,21 @@ namespace CurryEngine::Editor
                                     }
                                 }
                             }
-						}
+                        }
+                        };
+					// ノード名のリストが空の場合、更新する
+                    if (nodeNames.empty())
+                    {
+                        updateNodeNames();
+					}
+
+					ImGui::Text("Target Node: %s", particleParam.targetNodeId >= 0 && particleParam.targetNodeId < nodeNames.size() ? nodeNames[particleParam.targetNodeId].c_str() : "None");
+					ImGui::SameLine();
+                    if (ImGui::Button("...##Select Target Node"))
+                    {
+                        ImGui::OpenPopup("TargetNodePopup");
+						// ノード名のリストを更新
+                        updateNodeNames();
                     }
                     if (ImGui::BeginPopup("TargetNodePopup"))
                     {

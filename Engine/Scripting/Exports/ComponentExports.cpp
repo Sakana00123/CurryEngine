@@ -30,7 +30,7 @@ ENGINE_API bool Component_IsValid(uint64_t objectId)
 	{
 		return true; // コンポーネントが見つかれば有効
 	}
-	LOG_WARNING(std::format("Component_IsValid: Component with ID %llu not found.", objectId));
+	LOG_WARNING(std::format("Component_IsValid: Component with ID {} not found.", objectId));
 	return false; // コンポーネントが見つからない場合は無効
 }
 
@@ -41,7 +41,7 @@ ENGINE_API int Component_GetEnabled(uint64_t objectId)
 	{
 		return comp->IsEnabled() ? 1 : 0; // 有効なら 1、無効なら 0 を返す
 	}
-	LOG_WARNING(std::format("Component_GetEnable: Component with ID %llu not found.", objectId));
+	LOG_WARNING(std::format("Component_GetEnable: Component with ID {} not found.", objectId));
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
 }
 
@@ -51,7 +51,7 @@ ENGINE_API void Component_SetEnabled(uint64_t objectId, int enable)
 	{
 		comp->SetEnabled(enable != 0); // enable が 0 でなければ有効にする
 	}
-	LOG_WARNING(std::format("Component_SetEnable: Component with ID %llu not found.", objectId));
+	LOG_WARNING(std::format("Component_SetEnable: Component with ID {} not found.", objectId));
 }
 
 ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
@@ -63,7 +63,7 @@ ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
 			return owner->GetId().Value(); // 所有者の ID を返す
 		}
 	}
-	LOG_WARNING(std::format("Component_GetOwner: Component with ID %llu not found or has no owner.", objectId));
+	LOG_WARNING(std::format("Component_GetOwner: Component with ID {} not found or has no owner.", objectId));
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
 }
 
@@ -75,7 +75,7 @@ ENGINE_API void Component_Destroy(uint64_t objectId)
 	}
 	else
 	{
-		LOG_WARNING(std::format("Component_Destroy: Component with ID %llu not found.", objectId));
+		LOG_WARNING(std::format("Component_Destroy: Component with ID {} not found.", objectId));
 	}
 }
 
