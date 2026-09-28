@@ -87,19 +87,51 @@ void Animator::ProcessEvents(const std::vector<CurryEngine::Resources::FiredAnim
 		case CurryEngine::Resources::AnimationEventType::ParticleEffect:
 		{
 			// エフェクトを再生
-			std::string stringParam = event.paramType == "string" ? std::any_cast<std::string>(event.paramValue)
-				: event.paramType == "ParticleEffectEventParam" ? std::any_cast<CurryEngine::Resources::ParticleEffectEventParam>(event.paramValue).particleAssetId : "";
-			CurryEngine::Resources::AssetId effectAssetId(stringParam);
+			CurryEngine::Resources::ParticleEffectEventParam particleParam = {};
+			if (event.paramType == "ParticleEffectEventParam")
+			{
+				particleParam = std::any_cast<CurryEngine::Resources::ParticleEffectEventParam>(event.paramValue);
+			}
+			std::string assetId = particleParam.particleAssetId;
+			CurryEngine::Resources::AssetId effectAssetId(assetId);
 			auto* meta = CurryEngine::Resources::AssetDatabase::Find(effectAssetId);
 			if (meta && meta->type == AssetType::Effect)
 			{
 				// エフェクトを再生する
 				EffectHandle handle = EffectManager::LoadEffectData(meta->path.string());
-				EffectManager::Play(handle, GetTransform()->GetWorldPosition(), GetTransform()->GetEulerAngles());
+				Vector3 position;
+				Quaternion rotation;
+				if (auto* renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
+				{
+					// パーティクルを再生する対象ノードのワールド座標を取得する
+					const auto& bindPose = renderer->GetBindPose();
+					if (particleParam.targetNodeId >= 0 && particleParam.targetNodeId < bindPose.size())
+					{
+						const auto& node = bindPose[particleParam.targetNodeId];
+						XMFLOAT4X4 worldTransform = GetTransform()->GetWorld();
+						XMFLOAT4X4 globalTransform = node.globalTransform;
+						// 指定のノードのワールド座標を計算する
+						XMFLOAT4X4 nodeWorldTransform;
+						XMStoreFloat4x4(&nodeWorldTransform, XMLoadFloat4x4(&globalTransform) * XMLoadFloat4x4(&worldTransform));
+						// ノードのワールド座標にオフセットを加算する
+						position = Vector3(nodeWorldTransform._41, nodeWorldTransform._42, nodeWorldTransform._43) + particleParam.offset;
+						// ノードの回転を取得する
+						XMVECTOR nodeRotationQuat = XMQuaternionRotationMatrix(XMLoadFloat4x4(&globalTransform));
+						rotation = Quaternion(nodeRotationQuat);
+					}
+					else
+					{
+						LOG_WARNING("[Animator] Invalid targetNodeId for ParticleEffectEvent: " + std::to_string(particleParam.targetNodeId));
+						position = GetTransform()->GetWorldPosition() + particleParam.offset;
+						rotation = GetTransform()->GetWorldRotation();
+					}
+				}
+
+				EffectManager::Play(handle, position, rotation.ToEuler());
 			}
 			else
 			{
-				LOG_WARNING("[Animator] Particle Effect asset not found or invalid type: " + stringParam);
+				LOG_WARNING("[Animator] Particle Effect asset not found or invalid type: " + assetId);
 			}
 			break;
 		}
