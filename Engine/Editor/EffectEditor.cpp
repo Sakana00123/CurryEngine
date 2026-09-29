@@ -245,6 +245,8 @@ void EffectEditor::DrawGUI(RenderContext* context)
 #endif // 0
 				ImGui::PopID();
 			}
+
+			// ドラッグアンドドロップでエフェクトデータを追加するためのドロップターゲット(あくまで応急処置)
 			if (ImGui::GetDragDropPayload() && std::strcmp(ImGui::GetDragDropPayload()->DataType, "ASSET_PATH") == 0)
 			{
 				float scrollY = ImGui::GetScrollY();
