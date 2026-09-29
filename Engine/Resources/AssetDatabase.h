@@ -66,7 +66,18 @@ namespace CurryEngine
 					{
 						auto resource = importer->Import(*meta);
 						ResourceManager::Register(meta->path.string(), resource);
-						return std::dynamic_pointer_cast<T>(resource);
+						std::shared_ptr<T> typedResource = std::dynamic_pointer_cast<T>(resource);
+						if (!typedResource)
+						{
+							std::u8string idU8Str(id.ToString().begin(), id.ToString().end());
+							std::string typeName = typeid(T).name();
+							std::u8string typeU8Str = std::u8string(typeName.begin(), typeName.end());
+							std::string importedTypeName = typeid(*resource).name();
+							std::u8string importedTypeU8Str = std::u8string(importedTypeName.begin(), importedTypeName.end());
+							std::u8string logMessage = u8"[AssetDatabase] " + typeU8Str + u8"の読み込みに失敗しました。AssetId: " + idU8Str + u8", インポートされた型: " + importedTypeU8Str;
+							LOG_ERROR(logMessage);
+						}
+						return typedResource;
 					}
 
 					std::string typeStr = std::to_string(static_cast<int>(meta->type));

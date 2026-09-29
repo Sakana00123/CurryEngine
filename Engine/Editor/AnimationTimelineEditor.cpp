@@ -25,6 +25,7 @@ namespace CurryEngine::Editor
 
 	void AnimationTimelineEditor::Draw(RenderContext* context)
     {
+		ZoneScopedN("AnimationTimelineEditor::Draw");
         if (!m_timeline) { ImGui::TextDisabled("No Select"); return; }
 		bool mousePressed = ImGui::IsMouseDown(ImGuiMouseButton_Left);
 		// マウス押下状態をビットフラグに設定

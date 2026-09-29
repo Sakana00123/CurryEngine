@@ -3,6 +3,7 @@
 #include "Engine/Animation/AnimatorController.h"
 #include <Engine\Resources\AssetMeta.h>
 #include <Engine\Resources\AssetDatabase.h>
+#include <Engine\Resources\ModelAsset.h>
 
 #ifdef USE_IMGUI
 
@@ -136,10 +137,51 @@ namespace CurryEngine::Editor
 
     void AnimatorControllerEditorWindow::DrawControllerWindowContents(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
+		ZoneScopedN("AnimatorControllerEditorWindow::DrawControllerWindowContents");
         if (ImGui::Button("Save"))
         {
             controller->SaveToFile(controller->GetPath());
         }
+		ImGui::SameLine();
+
+        // モデルアセットの参照設定
+		static std::pair<CurryEngine::Resources::AssetId, const CurryEngine::Resources::AssetMeta*> lastModelAsset;
+		if (lastModelAsset.first != controller->modelAssetId && !controller->modelAssetId.id.empty())
+		{
+            lastModelAsset.first = controller->modelAssetId;
+            lastModelAsset.second = CurryEngine::Resources::AssetDatabase::Find(controller->modelAssetId);
+		}
+		ImGui::Text("Model: %s", lastModelAsset.second ? lastModelAsset.second->path.filename().string().c_str() : "None");
+		ImGui::SameLine();
+		static std::vector<CurryEngine::Resources::AssetMeta> modelAssets;
+        if (ImGui::Button("...##SetModelRef"))
+        {
+			ImGui::OpenPopup("SetModelRefPopup");
+            // モデルアセットのリストを取得
+			modelAssets = CurryEngine::Resources::AssetDatabase::FindAllByType(AssetType::Model);
+        }
+        if (ImGui::BeginPopup("SetModelRefPopup"))
+        {
+			// モデルアセットのリストを表示して選択可能にする
+            for (const auto& assetMeta : modelAssets)
+            {
+				// 選択肢として表示する際に、現在のモデルアセットが選択されている場合はチェックマークを付ける
+				bool isSelected = (controller->modelAssetId == assetMeta.id);
+				if (ImGui::Selectable(assetMeta.path.filename().string().c_str(), isSelected))
+                {
+                    controller->modelAssetId = assetMeta.id;
+                    ImGui::CloseCurrentPopup();
+				}
+				// デフォルトフォーカスを設定して、現在のモデルアセットが選択されていることを示す
+                if (isSelected)
+                {
+                    ImGui::SetItemDefaultFocus();
+				}
+            }
+
+            ImGui::EndPopup();
+		}
+        
         const float inspectorWidth = 340.0f;
         ImVec2 avail = ImGui::GetContentRegionAvail();
 
@@ -651,6 +693,7 @@ namespace CurryEngine::Editor
 
 	void AnimatorControllerEditorWindow::Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller, std::weak_ptr<RuntimeAnimatorController> runtimeController, RenderContext* context)
     {
+		ZoneScopedN("AnimatorControllerEditorWindow::Draw");
 		// --- メインウィンドウ ---
         if (controller)
         {
@@ -750,6 +793,33 @@ namespace CurryEngine::Editor
         {
 			// RootMotionのルートノードを設定するUI
 			static std::unordered_map<int, std::string> rootMotionNodeNames; // nodeIndex -> nodeName
+            auto updateRootMotionNodeNames = [&]()
+            {
+                rootMotionNodeNames.clear();
+                if (controller)
+                {
+					auto assetMeta = CurryEngine::Resources::AssetDatabase::Find(controller->modelAssetId);
+					auto modelAsset = assetMeta ? ResourceManager::GetOrLoad<ModelAsset>(assetMeta->path.string()) : nullptr;
+					if (modelAsset)
+                    {
+                        for (size_t i = 0; i < modelAsset->nodes.size(); ++i)
+                        {
+                            rootMotionNodeNames[i] = modelAsset->nodes[i].name;
+                        }
+					}
+                    }
+                else if (auto runtimeControllerPtr = runtimeController.lock())
+                {
+                    for (size_t i = 0; i < runtimeControllerPtr->currentPose.size(); ++i)
+                    {
+                        rootMotionNodeNames[i] = runtimeControllerPtr->currentPose[i].nodeName;
+                    }
+                }
+            };
+			if (rootMotionNodeNames.empty())
+            {
+                updateRootMotionNodeNames();
+            }
 
 			ImGui::PushID("RootMotionNodePicker");
             std::string currentRootNodeName = (state.rootNodeIndex >= 0 && state.rootNodeIndex < (int)rootMotionNodeNames.size())
@@ -759,21 +829,11 @@ namespace CurryEngine::Editor
             if (ImGui::Button("..."))
             {
 				// rootMotionNodeNamesを更新する処理
-				rootMotionNodeNames.clear();
-                if (auto runtimeControllerPtr = runtimeController.lock())
-                {
-                    for (size_t i = 0; i < runtimeControllerPtr->currentPose.size(); ++i)
-                    {
-						rootMotionNodeNames[i] = runtimeControllerPtr->currentPose[i].nodeName;
-                    }
-                }
+				updateRootMotionNodeNames();
 
                 // RootMotionノード選択ポップアップを開く処理
 				ImGui::OpenPopup("SelectRootMotionNodePopup");
             }
-			ImGui::SameLine();
-			ImGui::InputInt("RootNodeIndex", &state.rootNodeIndex);
-			ImGui::PopID();
             if (ImGui::BeginPopup("SelectRootMotionNodePopup"))
             {
                 // ここでrootMotionNodeNamesを使ってノード選択UIを描画する
@@ -790,6 +850,7 @@ namespace CurryEngine::Editor
                 }
                 ImGui::EndPopup();
 			}
+			ImGui::PopID();
 		}
 
         ImGui::Spacing();

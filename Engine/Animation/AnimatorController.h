@@ -100,6 +100,7 @@ public:
 	std::vector<AnimatorParameter> parameters; // アニメーションパラメータのリスト
 	std::vector<AnimatorState> states; // アニメーションステートのリスト
 	std::vector<AnimatorTransition> transitions; // アニメーション遷移のリスト
+	CurryEngine::Resources::AssetId modelAssetId; // このAnimatorControllerが対象とするメッシュのアセットID(現状はエディタでの表示用のみ使用)
 	int defaultStateIndex = 0; // デフォルトのアニメーションステートのインデックス
 
 	std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> animationClips; // アニメーションクリップのリスト

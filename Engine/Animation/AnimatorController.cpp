@@ -152,6 +152,10 @@ bool AnimatorController::LoadFromFile(const std::string& path)
 			transitions.push_back(transition);
 		}
 	}
+	if (jsonData.contains("modelAssetId"))
+	{
+		modelAssetId = jsonData["modelAssetId"].get<CurryEngine::Resources::AssetId>();
+	}
 	if (jsonData.contains("defaultStateIndex"))
 	{
 		defaultStateIndex = jsonData["defaultStateIndex"].get<int>();
@@ -258,6 +262,7 @@ bool AnimatorController::SaveToFile(const std::filesystem::path& path) const
 		}
 		jsonData["transitions"].push_back(transitionJson);
 	}
+	jsonData["modelAssetId"] = modelAssetId;
 	jsonData["defaultStateIndex"] = defaultStateIndex;
 
 	std::ofstream file(path);
