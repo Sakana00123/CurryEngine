@@ -27,8 +27,9 @@
 #include "Engine/Resources/Importers/ImporterRegistry.h"
 #include "Engine/Editor/ImportSettings/ImportSettingsWindow.h"
 #include "Engine/Editor/ImportSettings/ImportSettingsDrawerRegistry.h"
-#include <Engine\Animation\AnimatorController.h>
+#include <Engine\Resources\AnimatorController.h>
 #include "AnimatorControllerEditor.h"
+#include <Engine\Resources\AnimatorControllerBuilder.h>
 
 void AssetBrowser::Initialize()
 {
@@ -1767,10 +1768,33 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 		}
 		if (ImGui::MenuItem("Create Animator Controller"))
 		{
-			fs::path newAnimatorPath = MakeUniqueFilePath(folderPath, "New Animator Controller", ".controller");
-			AnimatorController controller;
-			controller.name = newAnimatorPath.stem().string();
-			if (controller.SaveToFile(newAnimatorPath))
+			AssetType type = DetectAssetTypeFromFile(assetPath); // アセットタイプを検出する処理
+			fs::path newAnimatorPath;
+			std::shared_ptr<AnimatorController> controller;
+			if (isSelected && type == AssetType::Model && (assetPath.extension() == ".gltf" || assetPath.extension() == ".glb"))
+			{
+				std::shared_ptr<ModelAsset> modelAsset = ResourceManager::Load<ModelAsset>(assetPath.string());
+				if (!modelAsset)
+				{
+					LOG_ERROR("Failed to load model asset: " + assetPath.string());
+				}
+				else
+				{
+					CurryEngine::Resources::AnimatorControllerBuildOptions options{
+						.generateStateForEachAnimationClip = true,
+					};
+					controller = CurryEngine::Resources::AnimatorControllerBuilder::BuildFromModelAsset(*modelAsset, options);
+					newAnimatorPath = MakeUniqueFilePath(folderPath, controller->name, ".controller");
+				}
+			}
+			else
+			{
+				newAnimatorPath = MakeUniqueFilePath(folderPath, "New Animator Controller", ".controller");
+				controller = std::make_shared<AnimatorController>();
+				controller->name = newAnimatorPath.stem().string();
+			}
+
+			if (controller->SaveToFile(newAnimatorPath))
 			{
 				//OpenAsset(newAnimatorPath);
 			}

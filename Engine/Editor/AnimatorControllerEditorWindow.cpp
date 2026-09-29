@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "AnimatorControllerEditorWindow.h"
-#include "Engine/Animation/AnimatorController.h"
+#include "Engine/Resources/AnimatorController.h"
 #include <Engine\Resources\AssetMeta.h>
 #include <Engine\Resources\AssetDatabase.h>
 #include <Engine\Resources\ModelAsset.h>

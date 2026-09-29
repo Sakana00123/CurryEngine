@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Animation/AnimatorController.h"
+#include "Engine/Resources/AnimatorController.h"
 #include <memory>
 #include "AnimationTimelineEditor.h"
 

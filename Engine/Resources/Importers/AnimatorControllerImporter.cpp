@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "AnimatorControllerImporter.h"
-#include <Engine\Animation\AnimatorController.h>
+#include <Engine\Resources\AnimatorController.h>
 #include <Engine\Resources\ResourceManager.h>
 
 namespace CurryEngine

@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/Core/Component.h"
-#include "AnimatorController.h"
+#include "Engine/Resources/AnimatorController.h"
 
 class Animator : public Component
 {
