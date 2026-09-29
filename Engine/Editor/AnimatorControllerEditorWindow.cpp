@@ -134,6 +134,49 @@ namespace CurryEngine::Editor
         }
 	}
 
+    void AnimatorControllerEditorWindow::DrawControllerWindowContents(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
+    {
+        if (ImGui::Button("Save"))
+        {
+            controller->SaveToFile(controller->GetPath());
+        }
+        const float inspectorWidth = 340.0f;
+        ImVec2 avail = ImGui::GetContentRegionAvail();
+
+        // --- 左: キャンバス ---
+        ImGui::BeginChild("AnimatorCanvas", ImVec2(avail.x - inspectorWidth - 4.0f, avail.y), true,
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+        {
+            ImDrawList* drawList = ImGui::GetWindowDrawList();
+            ImVec2 canvasOrigin = ImGui::GetCursorScreenPos();
+            ImVec2 canvasSize = ImGui::GetContentRegionAvail();
+
+            drawList->PushClipRect(canvasOrigin, ImVec2(canvasOrigin.x + canvasSize.x, canvasOrigin.y + canvasSize.y), true);
+
+            DrawGrid(drawList, canvasOrigin, canvasSize);
+
+            // 背景のInvisibleButtonを先に敷く(パン/ズーム/選択解除/State作成)。
+            // ノード側のInvisibleButtonを後で重ねて描くことで、重なった際はノードのヒットが優先される。
+            HandleCanvasBackground(canvasOrigin, canvasSize, controller);
+
+            DrawTransitions(drawList, canvasOrigin, controller);
+            DrawTransitionPreview(drawList, canvasOrigin, controller);
+
+            DrawAnyStateNode(drawList, canvasOrigin, controller);
+            DrawNodes(drawList, canvasOrigin, controller, runtimeController);
+
+            drawList->PopClipRect();
+        }
+        ImGui::EndChild();
+
+        ImGui::SameLine();
+
+        // --- 右: インスペクタ ---
+        ImGui::BeginChild("AnimatorInspector", ImVec2(inspectorWidth, avail.y), true);
+        DrawInspectorPanel(controller, runtimeController);
+        ImGui::EndChild();
+	}
+
     void AnimatorControllerEditorWindow::DrawGrid(ImDrawList* drawList, const ImVec2& canvasOrigin, const ImVec2& canvasSize) const
     {
         drawList->AddRectFilled(canvasOrigin, ImVec2(canvasOrigin.x + canvasSize.x, canvasOrigin.y + canvasSize.y), IM_COL32(45, 45, 48, 255));
@@ -608,61 +651,24 @@ namespace CurryEngine::Editor
 
 	void AnimatorControllerEditorWindow::Draw(bool* isOpen, std::shared_ptr<AnimatorController> controller, std::weak_ptr<RuntimeAnimatorController> runtimeController, RenderContext* context)
     {
-        if (!controller) return;
-
-        ImGui::SetNextWindowSize(ImVec2(1100, 650), ImGuiCond_FirstUseEver);
-        if (!ImGui::Begin("Animator Controller Editor", isOpen))
+		// --- メインウィンドウ ---
+        if (controller)
         {
+            ImGui::SetNextWindowSize(ImVec2(1100, 650), ImGuiCond_FirstUseEver);
+            if (ImGui::Begin("Animator Controller Editor", isOpen))
+            {
+                DrawControllerWindowContents(controller, runtimeController);
+            }
             ImGui::End();
-            return;
         }
-        if (ImGui::Button("Save"))
-        {
-            controller->SaveToFile(controller->GetPath());
-		}
-        const float inspectorWidth = 340.0f;
-        ImVec2 avail = ImGui::GetContentRegionAvail();
-
-        // --- 左: キャンバス ---
-        ImGui::BeginChild("AnimatorCanvas", ImVec2(avail.x - inspectorWidth - 4.0f, avail.y), true,
-            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-        {
-            ImDrawList* drawList = ImGui::GetWindowDrawList();
-            ImVec2 canvasOrigin = ImGui::GetCursorScreenPos();
-            ImVec2 canvasSize = ImGui::GetContentRegionAvail();
-
-            drawList->PushClipRect(canvasOrigin, ImVec2(canvasOrigin.x + canvasSize.x, canvasOrigin.y + canvasSize.y), true);
-
-            DrawGrid(drawList, canvasOrigin, canvasSize);
-
-            // 背景のInvisibleButtonを先に敷く(パン/ズーム/選択解除/State作成)。
-            // ノード側のInvisibleButtonを後で重ねて描くことで、重なった際はノードのヒットが優先される。
-            HandleCanvasBackground(canvasOrigin, canvasSize, controller);
-
-            DrawTransitions(drawList, canvasOrigin, controller);
-            DrawTransitionPreview(drawList, canvasOrigin, controller);
-
-            DrawAnyStateNode(drawList, canvasOrigin, controller);
-            DrawNodes(drawList, canvasOrigin, controller, runtimeController);
-
-            drawList->PopClipRect();
-        }
-        ImGui::EndChild();
-
-        ImGui::SameLine();
-
-        // --- 右: インスペクタ ---
-        ImGui::BeginChild("AnimatorInspector", ImVec2(inspectorWidth, avail.y), true);
-        DrawInspectorPanel(controller, runtimeController);
-        ImGui::EndChild();
-
-        ImGui::End();
 
 		// --- タイムラインエディタ ---
         if (isTimelineEditorOpen)
         {
-            ImGui::Begin("Animation Timeline", &isTimelineEditorOpen);
-            timelineEditor.Draw(context);
+            if (ImGui::Begin("Animation Timeline", &isTimelineEditorOpen))
+            {
+                timelineEditor.Draw(context);
+            }
             ImGui::End();
         }
     }

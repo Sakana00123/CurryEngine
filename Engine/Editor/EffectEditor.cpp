@@ -245,6 +245,39 @@ void EffectEditor::DrawGUI(RenderContext* context)
 #endif // 0
 				ImGui::PopID();
 			}
+			if (ImGui::GetDragDropPayload() && std::strcmp(ImGui::GetDragDropPayload()->DataType, "ASSET_PATH") == 0)
+			{
+				float scrollY = ImGui::GetScrollY();
+				ImVec2 offset(0, scrollY); // スクロールオフセットを考慮
+				ImGui::SetCursorPos(ImGui::GetCursorPos() + offset); // ドロップターゲットの位置を調整
+				ImVec2 contentRegion = ImGui::GetContentRegionAvail(); // 利用可能な幅を取得
+				ImVec2 size = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
+
+				ImGui::InvisibleButton("##drop_target", size); // 利用可能な領域全体をドロップターゲットにする
+
+				// ドロップされたときの処理
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH")) {
+						const char8_t* p = static_cast<const char8_t*>(payload->Data);
+						std::filesystem::path path = p ? p : u8"";
+						AssetType assetType = AssetBrowser::DetectAssetTypeFromFile(path);
+						switch (assetType) {
+						case AssetType::Effect:
+							{
+								// エフェクトデータをロードして追加
+								if (EffectHandle handle = EffectManager::LoadEffectData(path.string()); handle > -1)
+								{
+									currentEffectHandle = handle;
+								}
+								break;
+							}
+						default:
+							break;
+						}
+					}
+					ImGui::EndDragDropTarget();
+				}
+			}
 
 			ImGui::Dummy(ImVec2(0.0f, 5.0f)); // 少しスペースを空ける
 

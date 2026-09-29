@@ -52,6 +52,7 @@ namespace CurryEngine::Editor
         Vector2 ScreenToWorld(const ImVec2& screenPos, const ImVec2& canvasOrigin) const;
 
         // --- 描画 ---
+		void DrawControllerWindowContents(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
         void DrawGrid(ImDrawList* drawList, const ImVec2& canvasOrigin, const ImVec2& canvasSize) const;
         void DrawNodes(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController);
         void DrawAnyStateNode(ImDrawList* drawList, const ImVec2& canvasOrigin, std::shared_ptr<AnimatorController>& controller);
