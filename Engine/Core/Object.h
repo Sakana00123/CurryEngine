@@ -35,6 +35,9 @@ public:
 	// デシリアライズ
 	virtual void Deserialize(const json& j) {}
 
+	// デシリアライズ後の処理
+	virtual void PostDeserialize() {} 
+
 	/** @brief 名前を設定します。*/
 	virtual void SetName(const std::string& newName) { name = newName; }
 

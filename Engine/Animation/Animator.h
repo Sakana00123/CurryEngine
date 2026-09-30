@@ -60,6 +60,9 @@ public:
 	// デシリアライズ
 	void Deserialize(const json& jsonData) override;
 
+	// デシリアライズ後の処理
+	void PostDeserialize() override;
+
 private:
 
 	std::shared_ptr<AnimatorController> controller;

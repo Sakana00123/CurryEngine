@@ -142,6 +142,8 @@ struct RuntimeAnimatorController
 	XMFLOAT3 rootMotionDeltaPosition{};   // このフレーム分の移動量（呼び出し側が毎フレームConsumeする）
 	XMFLOAT4 rootMotionDeltaRotation{ 0,0,0,1 };
 	float rootMotionLastNormalizedTime = 0.0f; // 直前フレームの正規化時間（ルートモーション差分計算用）
+	ObjectId targetRendererId; // エディタ上で使用する、RuntimeAnimatorControllerが適用されるレンダラーのObjectId
+	ObjectId targetAnimatorId;  // エディタ上で使用する、RuntimeAnimatorControllerが適用されるAnimatorのObjectId
 
 	void Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose = {});
 
@@ -156,7 +158,11 @@ struct RuntimeAnimatorController
 	void SetBool(const std::string& name, bool value);
 	void SetTrigger(const std::string& name);
 
+	// 現在のノードポーズを取得する
 	const std::vector<NodePose>& GetPose() const;
+
+	// 初期ポーズ（BindPose）を取得する
+	//const std::vector<NodePose>& GetBindPose() const;
 
 	// 条件をすべて満たしているかを判定する
 	bool AllConditionsMet(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions) const;

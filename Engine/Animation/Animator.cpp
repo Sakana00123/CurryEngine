@@ -632,7 +632,10 @@ void Animator::SyncController()
 		}
 		else
 		{
+			// コントローラーが存在し、RuntimeAnimatorControllerが存在しない場合、新しいRuntimeAnimatorControllerを作成する
 			runtimeController = std::make_shared<RuntimeAnimatorController>();
+			runtimeController->targetRendererId = this->targetModelRendererId;
+			runtimeController->targetAnimatorId = this->GetId();
 			if (auto renderer = GetScene()->FindComponentById<GltfModelRenderer>(targetModelRendererId))
 			{
 				runtimeController->Initialize(*controller, renderer->GetBindPose());
@@ -754,6 +757,11 @@ void Animator::Deserialize(const json& j)
 	{
 		controllerAssetId = CurryEngine::Resources::AssetId();
 	}
+}
+
+void Animator::PostDeserialize()
+{
+	Component::PostDeserialize();
 	// controllerをロード
 	SyncController();
 }

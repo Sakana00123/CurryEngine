@@ -6,6 +6,7 @@
 #include <imgui.h>
 #include <Engine\Rendering\Pipeline\RenderContext.h>
 #include "Engine/Core/ObjectId.h"
+#include "Engine/Resources/AnimatorController.h"
 
 
 namespace CurryEngine::Editor
@@ -16,7 +17,7 @@ namespace CurryEngine::Editor
 		AnimationTimelineEditor() { ResetStateFlags(); }
 
         void SetTarget(std::shared_ptr<Resources::AnimationTimeline> timeline) { m_timeline = timeline; m_selectedKey.reset(); }
-        void Draw(RenderContext* context); // ImGuiウィンドウ内から呼ぶ
+        void Draw(std::weak_ptr<RuntimeAnimatorController> runtimeController, RenderContext* context); // ImGuiウィンドウ内から呼ぶ
 
 		void RenderPreview(RenderContext* context); // プレビュー用の描画処理
 
@@ -25,9 +26,9 @@ namespace CurryEngine::Editor
     private:
         struct KeySelection { size_t trackIndex; size_t keyIndex; bool isDragging = false; bool acceptDrag = false; };
 
-        void DrawToolbar();
+        void DrawToolbar(std::weak_ptr<RuntimeAnimatorController> runtimeController);
         void DrawTrackList();
-        void DrawTimelineArea();
+        void DrawTimelineArea(std::weak_ptr<RuntimeAnimatorController> runtimeController);
         void DrawRuler(ImDrawList* dl, ImVec2 origin, float width);
         void DrawTrackRow(ImDrawList* dl, ImVec2 rowOrigin, float width, size_t trackIndex);
         float TimeToX(float time, float originX, float width) const;
@@ -38,7 +39,7 @@ namespace CurryEngine::Editor
         float currentTime = 0.0f;
 		float prevTime = 0.0f;
         float m_pixelsPerSecond = 150.0f;
-        ObjectId selectedAnimatorId;
+        //ObjectId selectedAnimatorId;
 
 		uint64_t m_states = 0; // ビットフラグで状態を管理するための変数
         enum class StateFlags : uint64_t

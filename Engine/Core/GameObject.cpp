@@ -942,6 +942,7 @@ void GameObject::DeserializeComponents(const json& j, const std::unordered_map<O
 
                 }
 #endif // 0
+				component->PostDeserialize(); // デシリアライズ後の処理を呼び出す
 
 				component->SetPriority(priority); // デシリアライズ前の優先度を復元
 

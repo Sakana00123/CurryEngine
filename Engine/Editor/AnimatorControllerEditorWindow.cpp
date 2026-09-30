@@ -710,7 +710,7 @@ namespace CurryEngine::Editor
         {
             if (ImGui::Begin("Animation Timeline", &isTimelineEditorOpen))
             {
-                timelineEditor.Draw(context);
+                timelineEditor.Draw(runtimeController, context);
             }
             ImGui::End();
         }

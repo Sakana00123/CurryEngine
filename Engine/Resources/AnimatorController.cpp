@@ -410,6 +410,12 @@ const std::vector<NodePose>& RuntimeAnimatorController::GetPose() const
 	return currentPose;
 }
 
+//const std::vector<NodePose>& RuntimeAnimatorController::GetBindPose() const
+//{
+//	// バインドポーズを返す
+//	return bindPose;
+//}
+
 bool RuntimeAnimatorController::AllConditionsMet(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions) const
 {
 	for (const auto& condition : conditions)

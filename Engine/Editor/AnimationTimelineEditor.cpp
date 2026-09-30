@@ -23,7 +23,7 @@ namespace CurryEngine::Editor
         return (std::max)(0.0f, (x - originX) / m_pixelsPerSecond);
     }
 
-	void AnimationTimelineEditor::Draw(RenderContext* context)
+	void AnimationTimelineEditor::Draw(std::weak_ptr<RuntimeAnimatorController> runtimeController, RenderContext* context)
     {
 		ZoneScopedN("AnimationTimelineEditor::Draw");
         if (!m_timeline) { ImGui::TextDisabled("No Select"); return; }
@@ -31,11 +31,11 @@ namespace CurryEngine::Editor
 		// マウス押下状態をビットフラグに設定
 		SetStateFlag(StateFlags::MousePressed, mousePressed);
 
-        DrawToolbar();
+        DrawToolbar(runtimeController);
         ImGui::Separator();
 
         ImGui::BeginChild("TimelineScroll", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
-        DrawTimelineArea();
+        DrawTimelineArea(runtimeController);
         ImGui::EndChild();
 
         // 前のフレームのマウス押下状態を更新
@@ -82,7 +82,7 @@ namespace CurryEngine::Editor
 
 	}
 
-    void AnimationTimelineEditor::DrawToolbar()
+    void AnimationTimelineEditor::DrawToolbar(std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
 		// 状態フラグを取得
 		bool isPlaying = GetStateFlag(StateFlags::IsPlaying);
@@ -149,38 +149,41 @@ namespace CurryEngine::Editor
         ImGui::DragFloat("Zoom", &m_pixelsPerSecond, 1.0f, 20.0f, 1000.0f);
         ImGui::PopItemWidth();
 		ImGui::SameLine();
+        // ファイルの保存
         if (ImGui::Button("Save##TimelineEditor"))
         {
 			m_timeline->SaveToFile(m_timeline->GetPath());
         }
+
 		auto scene = SceneManager::GetCurrentScene();
 		if (!scene) return;
-		ImGui::SameLine();
-		// アニメーションバインドオブジェクトの設定
-		if (auto animator = scene->FindComponentById<Animator>(selectedAnimatorId))
+        if (auto controller = runtimeController.lock())
         {
-            ImGui::Text("Target: %s", animator->GetName().c_str());
-            if (auto renderer = scene->FindComponentById<GltfModelRenderer>(animator->targetModelRendererId))
+            if (auto renderer = scene->FindComponentById<GltfModelRenderer>(controller->targetRendererId))
             {
-				auto clip = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(m_timeline->GetTargetClip());
-				if (clip)
+                // アニメーションのサンプリングとポーズの適用
+                auto clip = CurryEngine::Resources::AssetDatabase::LoadAsset<AnimationClip>(m_timeline->GetTargetClip());
+                if (clip)
                 {
-					std::vector<NodePose> poses = renderer->GetBindPose();
-					clip->Sample(currentTime, poses);
+                    std::vector<NodePose> poses = renderer->GetBindPose();
+                    clip->Sample(currentTime, poses);
                     renderer->ApplyPose(poses);
                 }
             }
 
-			// イベントの発火(再生中かつマウスでルーラーを操作していない場合)
-			if (isFireEventEnabled && isPlaying && !isPressingMouseOnRuler)
+            if (auto animator = scene->FindComponentById<Animator>(controller->targetAnimatorId))
             {
-				std::vector<CurryEngine::Resources::FiredAnimationEvent> firedEvents;
-                bool looped = isLooping && (prevTime > currentTime);
-                CurryEngine::Resources::CollectFiredEvents(*m_timeline, prevTime, currentTime, looped, firedEvents);
-				animator->ProcessEvents(firedEvents);
+                // イベントの発火(再生中かつマウスでルーラーを操作していない場合)
+                if (isFireEventEnabled && isPlaying && !isPressingMouseOnRuler)
+                {
+                    std::vector<CurryEngine::Resources::FiredAnimationEvent> firedEvents;
+                    bool looped = isLooping && (prevTime > currentTime);
+                    CurryEngine::Resources::CollectFiredEvents(*m_timeline, prevTime, currentTime, looped, firedEvents);
+                    animator->ProcessEvents(firedEvents);
+                }
             }
         }
-        else
+        /*else
         {
             ImGui::Text("Target: None");
 		}
@@ -200,7 +203,7 @@ namespace CurryEngine::Editor
                 }
             }
             ImGui::EndPopup();
-		}
+        }*/
 
 		// 状態フラグの更新
 		SetStateFlag(StateFlags::IsPlaying, isPlaying);
@@ -341,7 +344,7 @@ namespace CurryEngine::Editor
         }
     }
 
-    void AnimationTimelineEditor::DrawTimelineArea()
+    void AnimationTimelineEditor::DrawTimelineArea(std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
         ImVec2 avail = ImGui::GetContentRegionAvail();
         float width = (std::max)(avail.x - kLabelWidth, m_timeline->GetDuration() * m_pixelsPerSecond + 40.0f);
@@ -785,17 +788,17 @@ namespace CurryEngine::Editor
                         nodeNames.clear();
                         if (auto scene = SceneManager::GetCurrentScene())
                         {
-                            if (auto animator = scene->FindComponentById<Animator>(selectedAnimatorId))
+                            if (auto controller = runtimeController.lock())
                             {
-                                if (auto* renderer = scene->FindComponentById<GltfModelRenderer>(animator->targetModelRendererId))
+                                if (auto renderer = scene->FindComponentById<GltfModelRenderer>(controller->targetRendererId))
                                 {
-                                    auto nodes = renderer->GetBindPose();
+                                    const auto& nodes = renderer->GetBindPose();
                                     for (const auto& node : nodes)
                                     {
                                         nodeNames.push_back(node.nodeName);
                                     }
                                 }
-                            }
+							}
                         }
                         };
 					// ノード名のリストが空の場合、更新する
