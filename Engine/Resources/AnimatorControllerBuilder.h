@@ -7,7 +7,7 @@ namespace CurryEngine::Resources
 	struct AnimatorControllerBuildOptions
 	{
 		bool generateStateForEachAnimationClip = false; // アニメーションクリップごとにステートを生成するかどうか
-
+		bool autoLinkAnimationTimelines = false; // AnimationTimelineを自動でリンクするかどうか
 	};
 
 	class AnimatorControllerBuilder

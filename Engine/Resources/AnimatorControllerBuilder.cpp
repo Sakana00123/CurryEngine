@@ -54,7 +54,21 @@ namespace CurryEngine::Resources
 				AnimatorState state;
 				state.name = animationName;
 				state.clipId = animationMeta ? animationMeta->id : CurryEngine::Resources::AssetId(); // AnimationClipのIDを設定
-				state.timelineId = CurryEngine::Resources::AssetId(); // AnimationTimelineのIDは未設定（必要に応じて設定する）
+
+				// AnimationTimelineの自動リンクが有効な場合、名前規則に従ってAnimationTimelineを探してリンクする
+				if (options.autoLinkAnimationTimelines)
+				{
+					// 名前規則に従ってAnimationTimelineが存在する場合はそのIDを設定する
+					std::filesystem::path timelinePath = animationPath;
+					timelinePath.replace_filename(timelinePath.stem().string() + ".timeline");
+					if (std::filesystem::exists(timelinePath))
+					{
+						if (auto timelineMeta = CurryEngine::Resources::AssetDatabase::GetOrImport(timelinePath))
+						{
+							state.timelineId = timelineMeta->id;
+						}
+					}
+				}
 				state.speed = 1.0f;
 				state.loop = false;
 				state.rootMotion = false;
