@@ -1815,6 +1815,7 @@ fs::path AssetBrowser::MakeUniqueFilePath(const fs::path& dir, const fs::path& s
 	{
 		newPath = dir / stem;
 		newPath += "_" + std::to_string(suffix);
+		newPath += extension;
 		suffix++;
 	}
 	return newPath;
