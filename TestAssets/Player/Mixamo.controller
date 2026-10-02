@@ -7,6 +7,7 @@
     ],
     "animationTimelineIds": [],
     "defaultStateIndex": 0,
+    "modelAssetId": "",
     "name": "New Animator Controller",
     "parameters": [
         {
