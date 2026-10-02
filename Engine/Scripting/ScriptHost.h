@@ -28,6 +28,7 @@ using VoidFunc = void(__stdcall*)();
 using ReloadScriptsFunc = void(__stdcall*)(const char* assemblyPath);
 using GetScriptMetaFunc = void*(__stdcall*)(const char* scriptName);
 
+/** @brief ScriptCallbacks を表す構造体です。 */
 struct ScriptCallbacks
 {
 	ManagedUpdateFunc UpdateScript = nullptr;
@@ -66,6 +67,7 @@ struct ScriptCallbacks
 };
 
 // .NETホストの初期化に必要な情報を表す構造体
+/** @brief ScriptHostDesc を表す構造体です。 */
 struct ScriptHostDesc
 {
 	std::wstring runtimeConfigPath; // .NETランタイムのパス
@@ -73,12 +75,14 @@ struct ScriptHostDesc
 	get_hostfxr_parameters parameters; // hostfxrの初期化に必要なパラメータ(内部で使用)
 };
 
+/** @brief ScriptHostConfig を表す構造体です。 */
 struct ScriptHostConfig
 {
 	ScriptCallbacks callbacks; // C#から呼び出す関数のコールバック
 };
 
 // C#アセンブリ内の関数を表す構造体
+/** @brief FunctionDesc を表す構造体です。 */
 struct FunctionDesc
 {
 	std::wstring assemblyPath; // C#アセンブリのパス
@@ -87,12 +91,22 @@ struct FunctionDesc
 };
 
 // .NET Core ホストクラス
+/** @brief ScriptHost を表すクラスです。 */
 class ScriptHost
 {
 public:
 
+	/**
+	 * @brief 初期化します。
+	 */
 	bool Initialize();
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update();
+	/**
+	 * @brief Shutdown の処理を行います。
+	 */
 	void Shutdown();
 
 	const ScriptCallbacks& GetCallbacks() { return m_callbacks; }
@@ -116,8 +130,15 @@ public:
 
 private:
 
+	/**
+	 * @brief LoadHostFxr に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	bool LoadHostFxr();
 
+	/**
+	 * @brief InitRuntime の処理を行います。
+	 */
 	bool InitRuntime(const std::wstring& runtimeConfigPath);
 
 private:

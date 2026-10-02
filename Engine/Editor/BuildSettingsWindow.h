@@ -4,6 +4,7 @@
 #include <vector>
 #include <mutex>
 
+/** @brief BuildSettingsWindow を表すクラスです。 */
 class BuildSettingsWindow
 {
 public:
@@ -23,6 +24,7 @@ public:
 private:
 
 	// --- Build/Package 進捗 ---
+	/** @brief ProcessProgress を表す構造体です。 */
 	struct ProcessProgress
 	{
 		std::vector<std::string> logs;

@@ -5,6 +5,7 @@
 
 namespace CurryEngine
 {
+	/** @brief History を表すクラスです。 */
 	class History
 	{
 	public:
@@ -23,6 +24,10 @@ namespace CurryEngine
 			GetUndoRedoStack().GetUndoRedoDescriptions(undoDescriptions, redoDescriptions);
 		}
 	private:
+		/**
+		 * @brief GetUndoRedoStack に対応する値を取得します。
+		 * @return 処理結果を返します。
+		 */
 		static UndoRedoStack& GetUndoRedoStack();
 	};
 }

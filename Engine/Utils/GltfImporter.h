@@ -20,6 +20,9 @@ namespace CurryEngine
 		class GltfImporter : public IModelImporter
 		{
 		public:
+			/**
+			 * @brief GltfImporter を破棄します。
+			 */
 			virtual ~GltfImporter() = default;
 			/**
 			 * @brief GLTF ファイルを読み込み、`ModelAsset` に変換する関数。
@@ -35,15 +38,39 @@ namespace CurryEngine
 			std::vector<std::string> GetSupportedExtensions() const override;
 
 		private:
+			/**
+			 * @brief FetchScenes の処理を行います。
+			 */
 			void FetchScenes(const tinygltf::Model& gltfModel, ModelAsset& asset);
+			/**
+			 * @brief FetchNodes の処理を行います。
+			 */
 			void FetchNodes(const tinygltf::Model& gltfModel, ModelAsset& asset);
+			/**
+			 * @brief FetchMeshes の処理を行います。
+			 */
 			void FetchMeshes(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset);
 #ifdef SUPPORT_BATCHING
+			/**
+			 * @brief FetchBatchMeshes の処理を行います。
+			 */
 			void FetchBatchMeshes(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset);
 #endif // SUPPORT_BATCHING
+			/**
+			 * @brief FetchMaterials の処理を行います。
+			 */
 			void FetchMaterials(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset);
+			/**
+			 * @brief FetchTextures の処理を行います。
+			 */
 			void FetchTextures(ID3D11Device* device, const tinygltf::Model& gltfModel, ModelAsset& asset);
+			/**
+			 * @brief FetchSkins の処理を行います。
+			 */
 			void FetchSkins(const tinygltf::Model& gltfModel, ModelAsset& asset);
+			/**
+			 * @brief FetchAnimations の処理を行います。
+			 */
 			void FetchAnimations(const tinygltf::Model& gltfModel, ModelAsset& asset);
 		};
 	}

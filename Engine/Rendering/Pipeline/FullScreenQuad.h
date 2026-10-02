@@ -7,10 +7,17 @@
 class Material;
 struct RenderContext;
 
+/** @brief FullScreenQuad を表すクラスです。 */
 class FullScreenQuad
 {
 public:
+	/**
+	 * @brief FullScreenQuad を構築します。
+	 */
 	FullScreenQuad(ID3D11Device* device);
+	/**
+	 * @brief FullScreenQuad を破棄します。
+	 */
 	virtual ~FullScreenQuad() = default;
 
 private:
@@ -22,5 +29,8 @@ public:
 		uint32_t startSlot, uint32_t numViews, ID3D11PixelShader* replaced_pixel_shader = nullptr);
 
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void Render(RenderContext* rtx, Material* material);
 };

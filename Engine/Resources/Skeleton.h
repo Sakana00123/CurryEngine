@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 
+/** @brief Bone を表す構造体です。 */
 struct Bone
 {
 	std::string name; // ボーンの名前
@@ -11,6 +12,7 @@ struct Bone
 	DirectX::XMFLOAT4X4 offsetMatrix{}; // オフセット行列（ボーンの初期姿勢を表す行列）
 };
 
+/** @brief Skeleton を表すクラスです。 */
 class Skeleton
 {
 	public:

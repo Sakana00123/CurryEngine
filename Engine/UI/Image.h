@@ -28,6 +28,9 @@ public:
 	 * @details 頂点バッファの初期化、ダミー/実テクスチャのセット、各種シェーダ/マテリアル設定を行います。
 	 */
 	Image();
+	/**
+	 * @brief Image を破棄します。
+	 */
 	~Image() override = default;
 
 	/**
@@ -69,9 +72,15 @@ public:
 #endif // USE_IMGUI
 
 	// シリアライズ
+	/**
+	 * @brief Serialize の処理を行います。
+	 */
 	json Serialize() const override;
 
 	// デシリアライズ
+	/**
+	 * @brief Deserialize の処理を行います。
+	 */
 	void Deserialize(const json& j) override;
 
 	/* 色をセットします。 */

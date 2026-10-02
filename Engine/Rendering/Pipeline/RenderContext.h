@@ -11,11 +11,18 @@ struct DirectX::XMFLOAT3;
 class RenderState;
 class FullScreenQuad;
 
+/** @brief RenderContext を表す構造体です。 */
 struct RenderContext
 {
 	// コンストラクタ
+	/**
+	 * @brief RenderContext を構築します。
+	 */
 	RenderContext(ID3D11DeviceContext* context, FullScreenQuad* fullScreenQuad, std::unordered_map<std::string, void*> sharedResources);
 	// デストラクタ
+	/**
+	 * @brief RenderContext を破棄します。
+	 */
 	~RenderContext() = default;
 
 	// 描画に必要なコンテキスト情報をここに追加
@@ -38,28 +45,53 @@ struct RenderContext
 	bool acceptRendering{ true }; // 描画を許可するかどうかのフラグ。カメラがないなど描画できない状況でfalseになる
 
 	// 共有リソースの設定
+	/**
+	 * @brief SharedResource を設定します。
+	 */
 	void SetSharedResource(const std::string& key, void* resource);
 
 	// 共有リソースの取得
+	/**
+	 * @brief GetSharedResource に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	void* GetSharedResource(const std::string& key) const;
 
 	// レンダーターゲットの設定
+	/**
+	 * @brief RenderTarget を設定します。
+	 */
 	void SetRenderTarget(const RenderTexture& target);
 
 	// デフォルトのレンダーターゲットに切り替える
+	/**
+	 * @brief DefaultRenderTarget を設定します。
+	 */
 	void SetDefaultRenderTarget();
 
 	// 現在のレンダーターゲットをクリア
+	/**
+	 * @brief 保持している内容を消去します。
+	 */
 	void ClearCurrentRenderTarget(const Color& color) const;
 
 	// フルスクリーン描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawFullScreenQuad(ID3D11ShaderResourceView** shaderResourceViews, uint32_t startSlot, uint32_t numViews, ID3D11PixelShader* replacedPixelShader = nullptr);
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawFullScreenQuad(Material* material);
 
 	// フルスクリーンクアッドの参照
 	FullScreenQuad* fullScreenQuad;
 private:
 	// シェーダーリソースビューをすべて解除
+	/**
+	 * @brief UnbindSRVs の処理を行います。
+	 */
 	void UnbindSRVs() const;
 
 	// 現在のデバイスコンテキスト

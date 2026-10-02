@@ -8,6 +8,7 @@ namespace CurryEngine
 {
 	namespace EditorSupport
 	{
+		/** @brief EditorRaycastResult を表す構造体です。 */
 		struct EditorRaycastResult
 		{
 			bool hit;           //!< レイが何かに当たったか

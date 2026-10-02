@@ -33,9 +33,15 @@ public:
 
 
 	// シリアライズ
+	/**
+	 * @brief Serialize の処理を行います。
+	 */
 	json Serialize() const override;
 
 	// デシリアライズ
+	/**
+	 * @brief Deserialize の処理を行います。
+	 */
 	void Deserialize(const json& j) override;
 
 private:
@@ -44,13 +50,25 @@ private:
 	//Transform* lookAtTransform = nullptr; // 注視ターゲットのTransform
 
 	C_PROPERTY(ObjectReference("Transform"))
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId targetTransformId = ObjectId::Invalid(); // 追従ターゲットのTransformのオブジェクトID
 	C_PROPERTY(ObjectReference("Transform"))
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId lookAtTransformId = ObjectId::Invalid(); // 注視ターゲットのTransformのオブジェクトID
 
 	//C_PROPERTY(ObjectReference("GameObject"))
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	//ObjectId targetObjectId = ObjectId::Invalid(); // 追従ターゲットのオブジェクトID
 	//C_PROPERTY(ObjectReference("GameObject"))
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	//ObjectId lookAtObjectId = ObjectId::Invalid(); // 注視ターゲットのオブジェクトID
 
 	C_PROPERTY()

@@ -13,6 +13,9 @@ namespace CurryEngine
 		class TextureImporter : public IImporter
 		{
 		public:
+			/**
+			 * @brief TextureImporter を破棄します。
+			 */
 			virtual ~TextureImporter() = default;
 			/**
 			 * @brief テクスチャファイルを読み込み、`Texture` アセットデータに変換する関数。
@@ -28,6 +31,10 @@ namespace CurryEngine
 
 		private:
 			
+			/**
+			 * @brief LoadTextureFromFile に対応する値を取得します。
+			 * @return 処理結果を返します。
+			 */
 			bool LoadTextureFromFile(const AssetMeta& meta, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& textureView, Microsoft::WRL::ComPtr<ID3D11Resource>& textureResource);
 
 		};

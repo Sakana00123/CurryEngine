@@ -18,6 +18,9 @@ struct SceneViewConfig : public IEditorConfig
 	SnapParameters rotationSnap; //!< ギズモの回転スナップ設定
 	SnapParameters scaleSnap; //!< ギズモのスケールスナップ設定
 
+	/**
+	 * @brief SceneViewConfig を構築します。
+	 */
 	SceneViewConfig() = default;
 
 	/** @brief デフォルト設定にリセットします。*/

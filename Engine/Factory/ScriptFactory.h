@@ -21,4 +21,8 @@ private:
 };
 
 // グローバルなスクリプトファクトリインスタンス
+/**
+ * @brief GetScriptFactory に対応する値を取得します。
+ * @return 処理結果を返します。
+ */
 ScriptFactory& GetScriptFactory();

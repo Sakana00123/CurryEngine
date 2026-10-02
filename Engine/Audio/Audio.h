@@ -39,6 +39,9 @@ public:
 	class AudioBuffer
 	{
 	public:
+		/**
+		 * @brief AudioBuffer を構築します。
+		 */
 		AudioBuffer() = default;
 		~AudioBuffer() {
 			delete[] buffer.pAudioData;

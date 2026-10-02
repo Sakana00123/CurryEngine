@@ -21,6 +21,7 @@
 #include "Engine/Resources/ModelAsset.h"
 #include <Engine\Resources\AnimationClip.h>
 
+/** @brief GltfModelRenderer を表すクラスです。 */
 class GltfModelRenderer : public Renderer
 {
 	C_REFLECT(GltfModelRenderer)
@@ -49,6 +50,9 @@ class GltfModelRenderer : public Renderer
 
 public:
     //Math::BoundingBox boundingBox;
+    /**
+     * @brief CalculateAABB の処理を行います。
+     */
     Math::BoundingBox CalculateAABB() const override;
 public:
     void SetPreRenderFunction(const std::function<void(RenderContext*)>& func) {
@@ -73,8 +77,17 @@ public:
     }
 
     // ピクセルシェーダーの差し替え
+    /**
+     * @brief ReplacePixelShader の処理を行います。
+     */
     void ReplacePixelShader(ID3D11Device* device, const char* filePath);
+    /**
+     * @brief ReplaceVertexShader の処理を行います。
+     */
     void ReplaceVertexShader(ID3D11Device* device, const char* filePath);
+    /**
+     * @brief ReplaceCSMVertexShader の処理を行います。
+     */
     void ReplaceCSMVertexShader(ID3D11Device* device, const char* filePath);
 
     // アニメーション再生
@@ -177,37 +190,82 @@ public:
 
 
 	// アニメーションのポーズを適用
+    /**
+     * @brief ApplyPose の処理を行います。
+     */
     void ApplyPose(const std::vector<NodePose>& poses);
 
 	// アニメーションのバインドポーズを取得
+    /**
+     * @brief GetBindPose に対応する値を取得します。
+     * @return 処理結果を返します。
+     */
     std::vector<NodePose> GetBindPose() const;
 
 	// ノードの総数を取得
+    /**
+     * @brief GetNodeCount に対応する値を取得します。
+     * @return 処理結果を返します。
+     */
     size_t GetNodeCount() const;
 
 public:
+    /**
+     * @brief GltfModelRenderer を構築します。
+     */
     GltfModelRenderer();
+    /**
+     * @brief GltfModelRenderer を破棄します。
+     */
     virtual ~GltfModelRenderer() = default;
 
 	// モデルの読み込み
+	/**
+	 * @brief LoadModel に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	void LoadModel(ID3D11Device* device, const std::string& filePath, bool staticBatching);
 
+    /**
+     * @brief ModelAsset を設定します。
+     */
     void SetModelAsset(std::shared_ptr<ModelAsset> asset);
 
+    /**
+     * @brief 初期化します。
+     */
     void Initialize() override;
+    /**
+     * @brief 状態を更新します。
+     */
     void Update(float deltaTime) override;
+    /**
+     * @brief 描画処理を行います。
+     */
     void Render(RenderContext* rtx) override;
 
+    /**
+     * @brief CastShadow の処理を行います。
+     */
     void CastShadow(RenderContext* rtx);
 #ifdef USE_IMGUI
+    /**
+     * @brief 描画処理を行います。
+     */
     void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
 	// シリアライズ
+	/**
+	 * @brief Serialize の処理を行います。
+	 */
 	json Serialize() const override;
 
 	// デシリアライズ
+	/**
+	 * @brief Deserialize の処理を行います。
+	 */
 	void Deserialize(const json& jsonData) override;
 
 
@@ -223,6 +281,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShaderCsm;
     Microsoft::WRL::ComPtr<ID3D11GeometryShader> geometryShaderCsm;
 
+    /** @brief PrimitiveConstants を表す構造体です。 */
     struct PrimitiveConstants {
         DirectX::XMFLOAT4X4 world;
         int material{ -1 };
@@ -234,16 +293,23 @@ private:
 
 
     static const size_t PRIMITIVE_MAX_JOINTS = 512;
+    /** @brief PrimitiveJointConstants を表す構造体です。 */
     struct PrimitiveJointConstants {
         DirectX::XMFLOAT4X4 matrices[PRIMITIVE_MAX_JOINTS];
     };
     Microsoft::WRL::ComPtr<ID3D11Buffer> primitiveJointCbuffer;
 
+    /**
+     * @brief 新しい要素を生成します。
+     */
     void CreateAndUploadResources(ID3D11Device* device);
 
 	friend class RhythmAnimationController;
 	friend class Animator;
 	using Node = ModelAsset::Node;
+    /**
+     * @brief Animate の処理を行います。
+     */
     void Animate(size_t animationIndex, float time, std::vector<Node>& animatedNodes);
 
 public:

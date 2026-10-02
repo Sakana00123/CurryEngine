@@ -4,10 +4,17 @@ class Scene;
 
 namespace CurryEngine
 {
+	/** @brief SceneViewWindow を表すクラスです。 */
 	class SceneViewWindow
 	{
 	public:
+		/**
+		 * @brief SceneViewWindow を構築します。
+		 */
 		SceneViewWindow() = default;
+		/**
+		 * @brief SceneViewWindow を破棄します。
+		 */
 		virtual ~SceneViewWindow() = default;
 
 		// シングルトンインスタンスへのアクセス(ただし、将来的には複数インスタンスをサポートする可能性があるため、シングルトンパターンは一時的な措置として使用しています。)

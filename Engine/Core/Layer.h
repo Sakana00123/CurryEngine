@@ -27,6 +27,7 @@ namespace LayerMasks {
 
 
 // レイヤー管理クラス
+/** @brief LayerManager を表すクラスです。 */
 class LayerManager {
 public:
     static LayerManager& Get() {
@@ -35,30 +36,57 @@ public:
     }
 
     // レイヤー名登録
+    /**
+     * @brief LayerName を設定します。
+     */
     void SetLayerName(Layer layer, const std::string& name);
 
 	// レイヤーIDから名前を取得
+    /**
+     * @brief GetLayerByName に対応する値を取得します。
+     * @return 処理結果を返します。
+     */
     Layer GetLayerByName(const std::string& name) const;
 
     // 衝突マトリクス設定（対称に自動設定）
+    /**
+     * @brief LayerCollision を設定します。
+     */
     void SetLayerCollision(Layer a, Layer b, bool enabled);
 
     // レイヤー同士が衝突するか
+	/**
+	 * @brief GetLayerCollision に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	bool GetLayerCollision(Layer a, Layer b) const;
 
     // PhysXに渡すフィルターマスク取得
+    /**
+     * @brief GetCollisionMask に対応する値を取得します。
+     * @return 処理結果を返します。
+     */
     LayerMask GetCollisionMask(Layer layer) const;
 
 	// レイヤー名の配列を取得
 	std::array<std::string, MAX_LAYERS> GetLayerNames() const { return m_layerNames; }
 
 	// シリアライズ
+    /**
+     * @brief Serialize の処理を行います。
+     */
     json Serialize() const;
 
 	// デシリアライズ
+    /**
+     * @brief Deserialize の処理を行います。
+     */
     void Deserialize(const json& j);
 
 	// レイヤー設定GUIの描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawLayerSettingsGUI();
 
 	// レイヤー設定GUIを開く
@@ -66,6 +94,9 @@ public:
 
 private:
 	// コンストラクタはシングルトンのためprivate
+    /**
+     * @brief LayerManager を構築します。
+     */
     LayerManager();
 
 	bool m_isOpen = false; // レイヤー設定GUIが開いているか

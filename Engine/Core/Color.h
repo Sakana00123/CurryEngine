@@ -5,6 +5,7 @@ using namespace DirectX;
 
 //カラー（XMFLOAT4と互換性あり）
 C_STRUCT()
+/** @brief Color を表す構造体です。 */
 struct Color
 {
 	float r;
@@ -12,10 +13,22 @@ struct Color
 	float b;
 	float a;
 
+	/**
+	 * @brief Color を構築します。
+	 */
 	Color(const Color&) = default;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Color& operator=(const Color&) = default;
 
+	/**
+	 * @brief Color を構築します。
+	 */
 	Color(Color&&) = default;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Color& operator=(Color&&) = default;
 
 	constexpr Color(float r = 1.f, float g = 1.f, float b = 1.f, float a = 1.f) noexcept : r(r), g(g), b(b), a(a) {}
@@ -25,7 +38,15 @@ struct Color
 
 	operator XMFLOAT4() const { return XMFLOAT4(r, g, b, a); }
 
+	/**
+	 * @brief 演算子処理を行います。
+	 * @return 処理結果を返します。
+	 */
 	float& operator[](size_t index);
+	/**
+	 * @brief 演算子処理を行います。
+	 * @return 処理結果を返します。
+	 */
 	float operator[](size_t index) const;
 	//Color operator=(const XMFLOAT4& color) { return { color.x,color.y,color.z,color.w }; }
 	Color& operator+=(const Color& c) { r += c.r, g += c.g, b += c.b, a += c.a; return *this; }
@@ -55,6 +76,9 @@ struct Color
 	static const Color White;
 	static const Color Black;
 
+	/**
+	 * @brief ConvertToPastelColors の処理を行います。
+	 */
 	static void ConvertToPastelColors(Color& color);
 	/**
 	 * @brief 16進数カラーコード（0xRRGGBB）をRGB（0〜1）に変換する

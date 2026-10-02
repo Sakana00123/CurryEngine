@@ -4,6 +4,7 @@
 
 namespace CurryEngine::Resources
 {
+	/** @brief AssetMetaSerializer を表すクラスです。 */
 	class AssetMetaSerializer
 	{
 	public:

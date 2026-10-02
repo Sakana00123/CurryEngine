@@ -9,17 +9,22 @@
 
 namespace fs = std::filesystem;
 
+/** @brief BuildCommand を表す構造体です。 */
 struct BuildCommand
 {
 	fs::path projectPath; // .csproj ファイルのパス
 	std::string additionalArgs = "-c Release --nologo -v q 2>&1"; // 追加のビルド引数（オプション）
 };
 
+/** @brief ScriptWatcher を表すクラスです。 */
 class ScriptWatcher
 {
 public:
 	using ReloadCallback = std::function<void()>;
 
+	/**
+	 * @brief ScriptWatcher を構築します。
+	 */
 	ScriptWatcher() = default;
 	~ScriptWatcher() { Stop(); }
 	
@@ -42,9 +47,21 @@ public:
 
 private:
 	// 監視ループとビルド処理
+	/**
+	 * @brief WatchLoop の処理を行います。
+	 */
 	void WatchLoop();
+	/**
+	 * @brief BuildLoop の処理を行います。
+	 */
 	void BuildLoop();
+	/**
+	 * @brief BuildProjects の処理を行います。
+	 */
 	bool BuildProjects();
+	/**
+	 * @brief BuildProject の処理を行います。
+	 */
 	bool BuildProject(const BuildCommand& config);
 
 private:

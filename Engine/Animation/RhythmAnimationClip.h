@@ -9,6 +9,7 @@
 
 #include "Engine/Resources/ModelAsset.h"
 
+/** @brief RhythmAnimationClip を表す構造体です。 */
 struct RhythmAnimationClip
 {
 	std::string name;       // クリップ名

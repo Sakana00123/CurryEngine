@@ -4,21 +4,44 @@
 class BoxCollider;
 class SphereCollider;
 
+/** @brief HitResult を表す構造体です。 */
 struct HitResult {
 	XMFLOAT3 hitPosition;
 	XMFLOAT3 hitNormal;
 };
 
+/** @brief ColliderUtils を表すクラスです。 */
 class ColliderUtils
 {
 public:
+	/**
+	 * @brief Intersect の処理を行います。
+	 */
 	static bool Intersect(const XMFLOAT3& point, BoxCollider* collider);
+	/**
+	 * @brief Intersect の処理を行います。
+	 */
 	static bool Intersect(const XMFLOAT3& point, SphereCollider* collider);
+	/**
+	 * @brief Intersect の処理を行います。
+	 */
 	static bool Intersect(BoxCollider* b0, BoxCollider* b1);
+	/**
+	 * @brief Intersect の処理を行います。
+	 */
 	static bool Intersect(BoxCollider* boxCollider, SphereCollider* sphereCollider);
+	/**
+	 * @brief Intersect の処理を行います。
+	 */
 	static bool Intersect(SphereCollider* s0, SphereCollider* s1);
 	//レイキャスト（上面のみ判定）
+	/**
+	 * @brief Raycast の処理を行います。
+	 */
 	static bool Raycast(BoxCollider* collider, HitResult& hitResult);
+	/**
+	 * @brief Raycast の処理を行います。
+	 */
 	static bool Raycast(BoxCollider* collider, float& distance);
 
 	/*

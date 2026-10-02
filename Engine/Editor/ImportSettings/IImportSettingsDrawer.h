@@ -14,6 +14,9 @@ namespace CurryEngine::Resources
 	class IImportSettingsDrawer
 	{
 	public:
+		/**
+		 * @brief IImportSettingsDrawer を破棄します。
+		 */
 		virtual ~IImportSettingsDrawer() = default;
 
 

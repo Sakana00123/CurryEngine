@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+/** @brief ProjectSettingsData を表す構造体です。 */
 struct ProjectSettingsData
 {
 	std::string projectName; // プロジェクト名
@@ -16,10 +17,18 @@ struct ProjectSettingsData
 
 };
 
+/** @brief ProjectSettings を表すクラスです。 */
 class ProjectSettings
 {
 public:
+	/**
+	 * @brief Load に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static bool Load(const std::string& exeDir);
+	/**
+	 * @brief Save の処理を行います。
+	 */
 	//static bool Save(const std::string& filePath);
 	static const ProjectSettingsData& Get() { return s_data; }
 	//static void Set(const ProjectSettingsData& data) { s_data = data; }

@@ -10,10 +10,19 @@ namespace CurryEngine::Resources
 	class ModelImportSettingsDrawer : public IImportSettingsDrawer
 	{
 	public:
+		/**
+		 * @brief ModelImportSettingsDrawer を破棄します。
+		 */
 		virtual ~ModelImportSettingsDrawer() = default;
 
+		/**
+		 * @brief 状態を初期値に戻します。
+		 */
 		void Reset() override;
 
+		/**
+		 * @brief 描画処理を行います。
+		 */
 		void Draw3DPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context) override;
 		/**
 		 * @brief プレビュー用のリソースを描画する関数。

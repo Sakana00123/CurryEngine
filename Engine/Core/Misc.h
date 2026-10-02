@@ -19,6 +19,7 @@ inline LPWSTR HrTrace(HRESULT hr)
 	return msg;
 }
 
+/** @brief Benchmark を表すクラスです。 */
 class Benchmark
 {
 	LARGE_INTEGER ticks_per_second;
@@ -32,10 +33,25 @@ public:
 		QueryPerformanceCounter(&start_ticks);
 		QueryPerformanceCounter(&current_ticks);
 	}
+	/**
+	 * @brief Benchmark を破棄します。
+	 */
 	~Benchmark() = default;
+	/**
+	 * @brief Benchmark を構築します。
+	 */
 	Benchmark(const Benchmark&) = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Benchmark& operator=(const Benchmark&) = delete;
+	/**
+	 * @brief Benchmark を構築します。
+	 */
 	Benchmark(Benchmark&&) noexcept = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Benchmark& operator=(Benchmark&&) noexcept = delete;
 
 	void Begin()

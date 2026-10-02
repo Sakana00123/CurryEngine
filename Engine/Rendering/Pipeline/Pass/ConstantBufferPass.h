@@ -2,16 +2,24 @@
 #include "RenderPass.h"
 #include "Engine/Rendering/Pipeline/LightData.h"
 
+/** @brief ConstantBufferPass を表すクラスです。 */
 class ConstantBufferPass : public RenderPass
 {
 public:
 	// ConstantBufferPassの初期化処理
+	/**
+	 * @brief 初期化します。
+	 */
 	void Initialize() override;
 
 	// ConstantBufferPassの実装
+	/**
+	 * @brief 処理を実行します。
+	 */
 	void Execute(RenderContext* rtx, Scene* scene) override;
 
 private:
+    /** @brief SceneConstants を表す構造体です。 */
     struct SceneConstants
     {
         DirectX::XMFLOAT4X4 view{};
@@ -31,6 +39,7 @@ private:
     };
 	SceneConstants sceneConstants;
 	
+    /** @brief ShadowConstants を表す構造体です。 */
     struct ShadowConstants
     {
         //CascadedShadowMaps

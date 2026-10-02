@@ -39,6 +39,10 @@ inline std::string GenerateGUID() {
  */
 int GenerateInstanceID();
 
+/**
+ * @brief GetCurrentInstanceID に対応する値を取得します。
+ * @return 処理結果を返します。
+ */
 int GetCurrentInstanceID();
 
 /**

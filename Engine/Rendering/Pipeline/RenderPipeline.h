@@ -59,6 +59,7 @@ private:
 // ---------------------------------- 各描画パイプラインの定義 ----------------------------------
 
 // シーンビューの描画パイプラインクラス
+/** @brief SceneRenderPipeline を表すクラスです。 */
 class SceneRenderPipeline : public RenderPipeline
 {
 public:
@@ -67,6 +68,7 @@ public:
 };
 
 // ゲームビューの描画パイプラインクラス
+/** @brief GameRenderPipeline を表すクラスです。 */
 class GameRenderPipeline : public RenderPipeline
 {
 public:
@@ -75,6 +77,7 @@ public:
 };
 
 // プレビュー表示の描画パイプラインクラス
+/** @brief PreviewRenderPipeline を表すクラスです。 */
 class PreviewRenderPipeline : public RenderPipeline
 {
 public:
@@ -83,6 +86,7 @@ public:
 };
 
 // エフェクトプレビュー表示の描画パイプラインクラス
+/** @brief EffectPreviewRenderPipeline を表すクラスです。 */
 class EffectPreviewRenderPipeline : public RenderPipeline
 {
 public:
@@ -91,6 +95,7 @@ public:
 };
 
 // アニメーションプレビュー表示の描画パイプラインクラス
+/** @brief AnimationPreviewRenderPipeline を表すクラスです。 */
 class AnimationPreviewRenderPipeline : public RenderPipeline
 {
 public:

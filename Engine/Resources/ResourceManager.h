@@ -6,16 +6,26 @@
 #include <filesystem>
 #include "Engine/Core/EnginePaths.h"
 
+/** @brief ResourceManager を表すクラスです。 */
 class ResourceManager
 {
 public:
 	// 初期化
+	/**
+	 * @brief 初期化します。
+	 */
 	static void Initialize();
 
 	// 終了処理
+	/**
+	 * @brief 終了処理を行います。
+	 */
 	static void Finalize();
 
 	// リソースの監視登録（ホットリロード用）
+	/**
+	 * @brief 指定された要素を登録します。
+	 */
 	static void Register(const std::string& filePath, std::shared_ptr<Resource> resource);
 
 	// 指定した型でリソースをロード
@@ -74,9 +84,17 @@ public:
 	}
 
 	// リソースのロード（すでにロードされている場合は既存のリソースを返す）
+	/**
+	 * @brief Load に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::shared_ptr<Resource> Load(const std::string& path);
 
 	// リソースの取得（ロードされていない場合は nullptr を返す）
+	/**
+	 * @brief Get に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::shared_ptr<Resource> Get(const std::string& path);
 
 	// 指定した型でリソースを取得（ロードされていない場合は nullptr を返す）
@@ -132,30 +150,60 @@ public:
 	}
 
 	// ロードされているシェーダーパスの一覧を取得
+	/**
+	 * @brief GetShaderPaths に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::vector<std::string> GetShaderPaths();
 
 	// リソースのリロード
+	/**
+	 * @brief Reload の処理を行います。
+	 */
 	static void Reload(const std::string& path);
 
 	// リソースのアンロード
+	/**
+	 * @brief Unload の処理を行います。
+	 */
 	static void Unload(const std::string& path);
 
 	// 全リソースのアンロード
+	/**
+	 * @brief UnloadAll の処理を行います。
+	 */
 	static void UnloadAll();
 
 	// ホットリロード用の更新処理
+	/**
+	 * @brief 状態を更新します。
+	 */
 	static void Update();
 
 	// ホットリロード用の更新処理
+	/**
+	 * @brief 状態を更新します。
+	 */
 	static void UpdateHotReload();
 
 	// シェーダーフォルダ内のすべてのシェーダーファイルを読み込み
+	/**
+	 * @brief LoadAllShaders に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static void LoadAllShaders();
 
 	// テクスチャフォルダ内のすべてのテクスチャファイルを読み込み
+	/**
+	 * @brief LoadAllTextures に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static void LoadAllTextures();
 
 	// シェーダー名のキャッシュを更新
+	/**
+	 * @brief 状態を更新します。
+	 */
 	static void UpdateShaderNames();
 private:
 	// ファイルの最終更新日時を管理（ホットリロード用）

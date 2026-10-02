@@ -6,9 +6,11 @@
 #include <wrl.h>
 using Microsoft::WRL::ComPtr;
 
+/** @brief Mesh を表すクラスです。 */
 class Mesh : public Resource
 {
 public:
+	/** @brief SubMesh を表す構造体です。 */
 	struct SubMesh {
 		uint32_t indexCount = 0;
 		uint32_t indexOffset = 0;
@@ -25,5 +27,9 @@ public:
 	Math::BoundingBox localBounds; // ローカル空間でのバウンディングボックス
 
 	// Resourceインターフェースの実装
+	/**
+	 * @brief LoadFromFile に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	bool LoadFromFile(const std::string& path) override;
 };

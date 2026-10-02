@@ -1,6 +1,7 @@
 #pragma once
 #include "Collider.h"
 
+/** @brief BoxCollider を表すクラスです。 */
 class BoxCollider : public Collider
 {
 	C_REFLECT(BoxCollider)

@@ -4,6 +4,7 @@
 namespace CurryEngine
 {
 	template<typename T>
+	/** @brief Range を表す構造体です。 */
 	struct Range
 	{
 		// 範囲の最小値と最大値

@@ -12,6 +12,7 @@ namespace CurryEngine
 {
 	namespace Resources
 	{
+		/** @brief AssetDatabase を表すクラスです。 */
 		class AssetDatabase
 		{
 		public:

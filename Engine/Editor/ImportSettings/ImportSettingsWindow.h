@@ -58,16 +58,43 @@ namespace CurryEngine::Resources
 		 */
 		static bool IsPreviewLoadCancelled() { return _isPreviewLoadCancelled; }
 	private:
+		/**
+		 * @brief OpenInternal の処理を行います。
+		 */
 		static void OpenInternal(const AssetId& id, bool isNewAsset);
+		/**
+		 * @brief 描画処理を行います。
+		 */
 		static void DrawPreview(const AssetId& id, RenderContext* context);
+		/**
+		 * @brief 描画処理を行います。
+		 */
 		static void DrawSettingsFields(const AssetId& id);
+		/**
+		 * @brief Apply イベントを処理します。
+		 */
 		static void OnApply(const AssetId& id);
 
+		/**
+		 * @brief RequestPreviewUpdate の処理を行います。
+		 */
 		static void RequestPreviewUpdate(const AssetId& id);
+		/**
+		 * @brief 状態を更新します。
+		 */
 		static void UpdatePreview(const AssetId& id);
 
+		/**
+		 * @brief ShowCloseConfirmDialog の処理を行います。
+		 */
 		static void ShowCloseConfirmDialog();
+		/**
+		 * @brief CloseConfirmDialog の処理を行います。
+		 */
 		static void CloseConfirmDialog();
+		/**
+		 * @brief CloseWindow の処理を行います。
+		 */
 		static void CloseWindow();
 
 

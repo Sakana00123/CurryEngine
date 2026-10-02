@@ -3,6 +3,7 @@
 #include "RaycastResult.h"
 
 //レイキャストの入力元の情報を格納するためのクラス
+/** @brief PointerEventData を表すクラスです。 */
 class PointerEventData : public BaseEventData
 {
 public:
@@ -21,33 +22,73 @@ public:
 	bool dragging = false;					// ドラッグ中かどうか
 
 	GameObject* pointerEnter = nullptr;		// 現在ホバーしているオブジェクト
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId pointerEnterId = ObjectId::Invalid(); // 現在ホバーしているオブジェクトのID
 	GameObject* pointerPress = nullptr;		// 押しているオブジェクト
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId pointerPressId = ObjectId::Invalid(); // 押しているオブジェクトのID
 	GameObject* lastPress = nullptr;		// 最後に押していたオブジェクト
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId lastPressId = ObjectId::Invalid(); // 最後に押していたオブジェクトのID
 	GameObject* pointerDrag = nullptr;		// ドラッグ対象のオブジェクト
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId pointerDragId = ObjectId::Invalid(); // ドラッグ対象のオブジェクトのID
 
 	RaycastResult pointerCurrentRaycast;	// 現在のレイキャスト結果
 	RaycastResult pointerPressRaycast;		// 押したときのレイキャスト結果
 
 	// ホバー状態のオブジェクトを設定
+	/**
+	 * @brief PointerEnter を設定します。
+	 */
 	void SetPointerEnter(GameObject* obj);
 	// 押しているオブジェクトを設定
+	/**
+	 * @brief PointerPress を設定します。
+	 */
 	void SetPointerPress(GameObject* obj);
 	// 最後に押していたオブジェクトを設定
+	/**
+	 * @brief LastPress を設定します。
+	 */
 	void SetLastPress(GameObject* obj);
 	// ドラッグ対象のオブジェクトを設定
+	/**
+	 * @brief PointerDrag を設定します。
+	 */
 	void SetPointerDrag(GameObject* obj);
 
 	// 現在ホバーしているオブジェクトを取得
+	/**
+	 * @brief GetPointerEnter に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	GameObject* GetPointerEnter() const;
 	// 押しているオブジェクトを取得
+	/**
+	 * @brief GetPointerPress に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	GameObject* GetPointerPress() const;
 	// 最後に押していたオブジェクトを取得
+	/**
+	 * @brief GetLastPress に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	GameObject* GetLastPress() const;
 	// ドラッグ対象のオブジェクトを取得
+	/**
+	 * @brief GetPointerDrag に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	GameObject* GetPointerDrag() const;
 
 public:

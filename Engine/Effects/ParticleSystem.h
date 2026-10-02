@@ -8,6 +8,7 @@
 
 #define NUMTHREADS_X 16
 
+/** @brief Particle を表す構造体です。 */
 struct Particle
 {
 	int state = 0;
@@ -29,10 +30,12 @@ struct Particle
 	int chip = 0;
 };
 
+/** @brief ParticleSystem を表す構造体です。 */
 struct ParticleSystem
 {
 	const int maxParticleCount;
 
+	/** @brief ParticleSystemConstants を表す構造体です。 */
 	struct ParticleSystemConstants
 	{
 		DirectX::XMFLOAT4 emissionPosition{};
@@ -70,16 +73,46 @@ struct ParticleSystem
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> particleInitializerCs;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
 
+	/**
+	 * @brief ParticleSystem を構築します。
+	 */
 	ParticleSystem(ID3D11Device* device, int particleCount);
+	/**
+	 * @brief ParticleSystem を構築します。
+	 */
 	ParticleSystem(const ParticleSystem&) = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	ParticleSystem& operator=(const ParticleSystem&) noexcept = delete;
+	/**
+	 * @brief ParticleSystem を構築します。
+	 */
 	ParticleSystem(ParticleSystem&&) noexcept = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	ParticleSystem& operator=(ParticleSystem&&) noexcept = delete;
+	/**
+	 * @brief ParticleSystem を破棄します。
+	 */
 	virtual ~ParticleSystem() = default;
 
+	/**
+	 * @brief Integrate の処理を行います。
+	 */
 	void Integrate(ID3D11DeviceContext* immediateContext, float deltaTime);
+	/**
+	 * @brief 初期化します。
+	 */
 	void Initialize(ID3D11DeviceContext* immediateContext, float deltaTime);
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void Render(ID3D11DeviceContext* immediateContext);
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawProperty();
 };

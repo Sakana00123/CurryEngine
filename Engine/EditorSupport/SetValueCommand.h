@@ -5,6 +5,7 @@
 namespace CurryEngine
 {
 	template<typename T>
+	/** @brief SetValueCommand を表すクラスです。 */
 	class SetValueCommand : public IEditorCommand
 	{
 	public:

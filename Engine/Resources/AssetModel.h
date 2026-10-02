@@ -29,7 +29,13 @@ namespace fs = std::filesystem;
 class AssetModel : public Resource
 {
 public:
+    /**
+     * @brief AssetModel を構築します。
+     */
     AssetModel() = default;
+    /**
+     * @brief AssetModel を破棄します。
+     */
     virtual ~AssetModel() = default;
 
     // -----------------------------------------------------------------------
@@ -46,6 +52,10 @@ public:
     /** @brief ホットリロード。*/
     bool Reload() override;
 
+	/**
+	 * @brief LoadFromMeta に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	bool LoadFromMeta(const CurryEngine::Resources::AssetMeta& meta);
 
     // -----------------------------------------------------------------------
@@ -308,11 +318,29 @@ private:
     void UploadMesh(ID3D11Device* device, MeshData& mesh);
 
     // --- ImportFromScene のサブルーティン ---
+    /**
+     * @brief ImportTextures の処理を行います。
+     */
     void ImportTextures(const aiScene* scene, const std::u8string& baseDir);
+    /**
+     * @brief ImportMaterials の処理を行います。
+     */
     void ImportMaterials(const aiScene* scene);
+    /**
+     * @brief ImportMeshes の処理を行います。
+     */
     void ImportMeshes(const aiScene* scene);
+    /**
+     * @brief ImportNodes の処理を行います。
+     */
     void ImportNodes(const aiScene* scene);
+    /**
+     * @brief ImportSkins の処理を行います。
+     */
     void ImportSkins(const aiScene* scene);
+    /**
+     * @brief ImportAnimations の処理を行います。
+     */
     void ImportAnimations(const aiScene* scene);
 
     // --- ノード名・テクスチャパス解決用キャッシュ（ロード中のみ有効） ---

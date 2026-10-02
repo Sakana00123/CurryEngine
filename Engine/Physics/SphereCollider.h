@@ -1,6 +1,7 @@
 #pragma once
 #include "Collider.h"
 
+/** @brief SphereCollider を表すクラスです。 */
 class SphereCollider : public Collider
 {
 	C_REFLECT(SphereCollider)

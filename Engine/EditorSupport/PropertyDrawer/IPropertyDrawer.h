@@ -11,6 +11,9 @@ namespace CurryEngine
 	class IPropertyDrawer
 	{
 	public:
+		/**
+		 * @brief IPropertyDrawer を破棄します。
+		 */
 		virtual ~IPropertyDrawer() = default;
 		/**
 		 * @brief プロパティを描画するための純粋仮想関数。派生クラスでこの関数をオーバーライドして、特定のプロパティタイプの描画処理を実装します。

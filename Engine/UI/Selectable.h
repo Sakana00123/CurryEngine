@@ -54,6 +54,9 @@ public:
 	/** @brief 表示に使用する画像コンポーネント。*/
 	//Image* image = nullptr;
 	C_PROPERTY(CurryEngine::PropertyAttributes::ObjectReference("Image"))
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId imageReference = ObjectId::Invalid(); // 画像コンポーネントの参照ID（シリアライズ用）
 	/** @brief 既定色。*/
 	C_PROPERTY()

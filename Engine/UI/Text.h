@@ -8,6 +8,7 @@
 #include "Image.h"
 #include "Engine/Utils/stdUtiles.h"
 
+/** @brief Text を表すクラスです。 */
 class Text : public Graphic
 {
     C_REFLECT(Text)
@@ -151,14 +152,29 @@ public:
     // 公開API
     // -----------------------------------------------------------------------
 public:
+    /**
+     * @brief Text を構築します。
+     */
     Text()          = default;
+    /**
+     * @brief Text を破棄します。
+     */
     ~Text() override = default;
 
     // --- テキスト ---
+    /**
+     * @brief Text を設定します。
+     */
     void                SetText(const std::wstring& newText);
     const std::wstring& GetText() const { return text; }
 
+	/**
+	 * @brief InsertText の処理を行います。
+	 */
 	void InsertText(size_t index, const std::wstring& newText);
+	/**
+	 * @brief EraseText の処理を行います。
+	 */
 	void EraseText(size_t index, size_t count);
 
     // --- フォントサイズ ---
@@ -186,20 +202,44 @@ public:
     bool GetBestFit() const      { return bestFit; }
 
     // --- 文字数上限 ---
+    /**
+     * @brief CharacterLimit を設定します。
+     */
     void SetCharacterLimit(int limit);
     int  GetCharacterLimit() const { return characterLimit; }
 
     // --- Graphic インタフェース ---
+    /**
+     * @brief 初期化します。
+     */
     void Initialize() override;
+    /**
+     * @brief Begin の処理を行います。
+     */
     void Begin(RenderContext* rtx) override;
+    /**
+     * @brief 描画処理を行います。
+     */
     void Draw(RenderContext* rtx) override;
+    /**
+     * @brief End の処理を行います。
+     */
     void End(RenderContext* rtx) override;
 #ifdef USE_IMGUI
+    /**
+     * @brief 描画処理を行います。
+     */
     void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
     // --- シリアライズ ---
+    /**
+     * @brief Serialize の処理を行います。
+     */
     json Serialize()  const override;
+    /**
+     * @brief Deserialize の処理を行います。
+     */
     void Deserialize(const json& j) override;
 
     // --- カーソル ---
@@ -210,10 +250,25 @@ public:
     size_t GetCursorIndexFromPoint(float screenX, float screenY);
 
     // --- レイアウト ---
+    /**
+     * @brief PerformLayout の処理を行います。
+     */
     void  PerformLayout(float maxWidth);
+    /**
+     * @brief ComputeLineWidth の処理を行います。
+     */
     float ComputeLineWidth(const std::wstring& line);
+    /**
+     * @brief ComputeLineHeight の処理を行います。
+     */
     float ComputeLineHeight();
+    /**
+     * @brief CalcAlignedX の処理を行います。
+     */
     float CalcAlignedX(float lineWidth);
+    /**
+     * @brief CalcAlignedY の処理を行います。
+     */
     float CalcAlignedY();
 
     /// @brief テキストを行ごとに分割（L"\n"のみ改行）
@@ -263,6 +318,7 @@ private:
     static const CharModifier kIdentityModifier;
 
     // --- フォントデータ ---
+    /** @brief FontData を表す構造体です。 */
     struct FontData
     {
         std::map<wchar_t, Character> characters;

@@ -3,6 +3,7 @@
 #include "Engine/UI/Slider.h"
 class Scene;
 
+/** @brief GameObjectFactory を表すクラスです。 */
 class GameObjectFactory
 {
 public:

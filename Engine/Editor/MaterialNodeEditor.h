@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <filesystem>
+/** @brief Node を表す構造体です。 */
 struct Node
 {
 	int id;
@@ -8,6 +9,7 @@ struct Node
 	Node(const int id, const float value) : id(id), value(value) {}
 };
 
+/** @brief Link を表す構造体です。 */
 struct Link
 {
 	int id;
@@ -16,6 +18,7 @@ struct Link
 	Link(const int id, const int startAttrId, const int endAttrId) : id(id), startAttrId(startAttrId), endAttrId(endAttrId) {}
 };
 
+/** @brief Pin を表す構造体です。 */
 struct Pin
 {
 	int id;
@@ -23,6 +26,7 @@ struct Pin
 	Pin(const int id, const int nodeId) : id(id), nodeId(nodeId) {}
 };
 
+/** @brief NodeEditorState を表す構造体です。 */
 struct NodeEditorState
 {
 	struct ImNodesEditorContext* context = nullptr;
@@ -33,10 +37,17 @@ struct NodeEditorState
 };
 
 
+/** @brief MaterialNodeEditor を表すクラスです。 */
 class MaterialNodeEditor
 {
 public:
+	/**
+	 * @brief MaterialNodeEditor を構築します。
+	 */
 	MaterialNodeEditor();
+	/**
+	 * @brief MaterialNodeEditor を破棄します。
+	 */
 	~MaterialNodeEditor();
 
 
@@ -57,12 +68,21 @@ public:
 
 private:
 
+	/**
+	 * @brief NodeEditorInitialize の処理を行います。
+	 */
 	static void NodeEditorInitialize();
 
+	/**
+	 * @brief NodeEditorShutdown の処理を行います。
+	 */
 	static void NodeEditorShutdown();
 
 #ifdef USE_IMGUI
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawNodeEditor(NodeEditorState& state);
 #endif // USE_IMGUI
 

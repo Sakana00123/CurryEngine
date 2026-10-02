@@ -7,6 +7,7 @@ using SerializeFunc = std::function<void(const void*, json&)>;
 using DeserializeFunc = std::function<void(void*, const json&)>;
 
 // 型のシリアライザ情報
+/** @brief TypeSerializerInfo を表す構造体です。 */
 struct TypeSerializerInfo
 {
 	SerializeFunc serialize;
@@ -14,6 +15,7 @@ struct TypeSerializerInfo
 };
 
 // 型シリアライザのレジストリ
+/** @brief TypeSerializerRegistry を表すクラスです。 */
 class TypeSerializerRegistry
 {
 public:
@@ -23,6 +25,10 @@ public:
 		const TypeSerializerInfo& info);
 
 	// 型に対応するシリアライザ情報を取得
+	/**
+	 * @brief Find に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static const TypeSerializerInfo* Find(const std::string& type);
 
 private:

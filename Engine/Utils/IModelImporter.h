@@ -14,6 +14,9 @@ namespace CurryEngine
 		class IModelImporter
 		{
 		public:
+			/**
+			 * @brief IModelImporter を破棄します。
+			 */
 			virtual ~IModelImporter() = default;
 
 			/**

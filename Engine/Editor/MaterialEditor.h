@@ -18,7 +18,13 @@ namespace CurryEngine::Editor
 	class MaterialEditor
 	{
 	public:
+		/**
+		 * @brief MaterialEditor を構築します。
+		 */
 		MaterialEditor(const CurryEngine::Resources::AssetId& materialId);
+		/**
+		 * @brief MaterialEditor を破棄します。
+		 */
 		~MaterialEditor() = default;
 
 #ifdef USE_IMGUI

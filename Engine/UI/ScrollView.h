@@ -1,6 +1,7 @@
 #pragma once
 #include "UIComponent.h"
 
+/** @brief ScrollView を表すクラスです。 */
 class ScrollView : public UIComponent
 {
 	C_REFLECT(ScrollView)

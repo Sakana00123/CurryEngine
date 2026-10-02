@@ -22,8 +22,10 @@ namespace CurryEngine::Resources
 {
 	struct FbxImportSettings;
 
+	/** @brief Scene を表す構造体です。 */
 	struct Scene
 	{
+		/** @brief Node を表す構造体です。 */
 		struct Node
 		{
 			uint64_t id{ 0 };
@@ -60,6 +62,7 @@ namespace CurryEngine::Resources
 		}
 	};
 
+	/** @brief BoneInfluence を表す構造体です。 */
 	struct BoneInfluence
 	{
 		uint32_t boneIndex;
@@ -67,13 +70,16 @@ namespace CurryEngine::Resources
 	};
 	using BoneInfluencesPerControlPoint = std::vector<BoneInfluence>;
 
+	/** @brief Animation を表す構造体です。 */
 	struct Animation
 	{
 		std::string name;
 		float samplingRate{ 0 };
 
+		/** @brief KeyFrame を表す構造体です。 */
 		struct KeyFrame
 		{
+			/** @brief Node を表す構造体です。 */
 			struct Node
 			{
 				// 'globalTransform' is used to convert from local space of node to global space of scene.
@@ -108,11 +114,14 @@ namespace CurryEngine::Resources
 		}
 	};
 
+	/** @brief SkinnedMesh を表すクラスです。 */
 	class SkinnedMesh : public Resource
 	{
 	public:
+		/** @brief Skeleton を表す構造体です。 */
 		struct Skeleton
 		{
+			/** @brief Bone を表す構造体です。 */
 			struct Bone
 			{
 				uint64_t id{ 0 };
@@ -156,6 +165,7 @@ namespace CurryEngine::Resources
 		std::vector<Animation> animationClips;
 
 		static const int MAX_BONE_INFLUENCES{ 4 };
+		/** @brief Vertex を表す構造体です。 */
 		struct Vertex
 		{
 			DirectX::XMFLOAT3 position;
@@ -172,12 +182,14 @@ namespace CurryEngine::Resources
 			}
 		};
 		static const int MAX_BONES{ 256 };
+		/** @brief Constants を表す構造体です。 */
 		struct Constants
 		{
 			DirectX::XMFLOAT4X4 world;
 			DirectX::XMFLOAT4 material_color;
 			DirectX::XMFLOAT4X4 bone_transforms[MAX_BONES]{ { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 } };
 		};
+		/** @brief Mesh を表す構造体です。 */
 		struct Mesh
 		{
 			uint64_t id{ 0 };
@@ -188,6 +200,7 @@ namespace CurryEngine::Resources
 			std::vector<Vertex> vertices;
 			std::vector<uint32_t> indices;
 
+			/** @brief Subset を表す構造体です。 */
 			struct Subset
 			{
 				uint64_t materialId{ 0 };
@@ -230,6 +243,7 @@ namespace CurryEngine::Resources
 		};
 		std::vector<Mesh> meshes;
 
+		/** @brief Material を表す構造体です。 */
 		struct Material
 		{
 			uint64_t id{ 0 };
@@ -254,21 +268,45 @@ namespace CurryEngine::Resources
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer;
 	public:
+		/**
+		 * @brief SkinnedMesh を構築します。
+		 */
 		SkinnedMesh() = default;
+		/**
+		 * @brief SkinnedMesh を破棄します。
+		 */
 		virtual ~SkinnedMesh() = default;
 
+		/**
+		 * @brief LoadFromFile に対応する値を取得します。
+		 * @return 処理結果を返します。
+		 */
 		bool LoadFromFile(const std::string& path) override;
 		
+		/**
+		 * @brief LoadFromFBX に対応する値を取得します。
+		 * @return 処理結果を返します。
+		 */
 		bool LoadFromFBX(ID3D11Device* device, const char* fbx_filename, const char* artifactStem, FbxImportSettings* settings);
 
+		/**
+		 * @brief LoadFromAssetId に対応する値を取得します。
+		 * @return 処理結果を返します。
+		 */
 		bool LoadFromAssetId(ID3D11Device* device, const AssetId& assetId);
 
 		//アニメーション追加読み込み
+		/**
+		 * @brief AppendAnimations の処理を行います。
+		 */
 		bool AppendAnimations(const char* animationFilename, float samplingRate);
 
 		void BlendAnimations(const Animation::KeyFrame* keyframes[2], float factor,
 			Animation::KeyFrame& keyframe);
 
+		/**
+		 * @brief 状態を更新します。
+		 */
 		void UpdateAnimation(Animation::KeyFrame& keyframe);
 
 		void Render(ID3D11DeviceContext* immediate_context,
@@ -276,15 +314,27 @@ namespace CurryEngine::Resources
 			const Animation::KeyFrame* keyframe);
 
 	protected:
+		/**
+		 * @brief FetchMeshes の処理を行います。
+		 */
 		void FetchMeshes(FbxScene* fbxScene, std::vector<Mesh>& meshes);
 
+		/**
+		 * @brief FetchMaterials の処理を行います。
+		 */
 		void FetchMaterials(FbxScene* fbxScene, std::unordered_map<uint64_t, Material>& materials);
 
+		/**
+		 * @brief FetchSkeleton の処理を行います。
+		 */
 		void FetchSkeleton(FbxMesh* fbxMesh, Skeleton& bindPose);
 
 		void FetchAnimations(FbxScene* fbxScene, std::vector<Animation>& animationClips,
 			float samplingRate /*If this value is 0, the animation data will be sampled at the default frame rate.*/);
 
+		/**
+		 * @brief 新しい要素を生成します。
+		 */
 		void CreateComObjects(ID3D11Device* device, const char* fbxFilename);
 
 		Scene scene_view;

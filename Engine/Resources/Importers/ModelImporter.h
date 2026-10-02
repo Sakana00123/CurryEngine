@@ -12,6 +12,9 @@ namespace CurryEngine
 		class ModelImporter : public IImporter
 		{
 		public:
+			/**
+			 * @brief ModelImporter を破棄します。
+			 */
 			virtual ~ModelImporter() = default;
 			/**
 			 * @brief モデルファイルを読み込み、`Model` アセットデータに変換する関数。

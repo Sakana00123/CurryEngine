@@ -6,6 +6,7 @@ class Collider;
 
 // 衝突イベントの情報を格納する構造体
 
+/** @brief ContactPoint を表す構造体です。 */
 struct ContactPoint
 {
 	Vector3 point; // 接触点の位置
@@ -16,6 +17,7 @@ struct ContactPoint
 };
 
 
+/** @brief CollisionInfo を表す構造体です。 */
 struct CollisionInfo
 {
 	GameObject* self; // 自身のGameObject
@@ -28,6 +30,7 @@ struct CollisionInfo
 };
 
 // トリガーイベントの情報を格納する構造体
+/** @brief TriggerInfo を表す構造体です。 */
 struct TriggerInfo
 {
 	GameObject* self; // 自身のGameObject
@@ -37,10 +40,14 @@ struct TriggerInfo
 };
 
 // 衝突イベントのコールバックを処理するインターフェースクラス
+/** @brief ICollisionEventCallback を表すクラスです。 */
 class ICollisionEventCallback
 {
 	C_REFLECT(ICollisionEventCallback)
 public:
+	/**
+	 * @brief ICollisionEventCallback を破棄します。
+	 */
 	virtual ~ICollisionEventCallback() = default;
 
 	/**
@@ -61,10 +68,14 @@ public:
 };
 
 // トリガーイベントのコールバックを処理するインターフェースクラス
+/** @brief ITriggerEventCallback を表すクラスです。 */
 class ITriggerEventCallback
 {
 	C_REFLECT(ITriggerEventCallback)
 public:
+	/**
+	 * @brief ITriggerEventCallback を破棄します。
+	 */
 	virtual ~ITriggerEventCallback() = default;
 
 	/**

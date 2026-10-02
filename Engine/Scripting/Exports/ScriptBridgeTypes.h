@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Physics/Physics.h"
 
+/** @brief CollisionInfoDto を表す構造体です。 */
 struct CollisionInfoDto
 {
 	uint64_t selfId; // 自身のGameObjectのID
@@ -12,6 +13,7 @@ struct CollisionInfoDto
 	float impulseZ; // 衝突を解決するために互いのコライダに加えられた合計の衝撃量（ベクトル）のZ成分
 	uint32_t contactCount; // 接触点の数
 	// 接触点の情報を格納する配列。最大数は MAX_CONTACTS_PER_PAIR で定義されている。
+	/** @brief ContactPointDto を表す構造体です。 */
 	struct ContactPointDto
 	{
 		float pointX; // 接触点の位置のX成分
@@ -28,6 +30,7 @@ struct CollisionInfoDto
 	} contacts[MAX_CONTACTS_PER_PAIR];
 };
 
+/** @brief TriggerInfoDto を表す構造体です。 */
 struct TriggerInfoDto
 {
 	uint64_t selfId; // 自身のGameObjectのID
@@ -37,12 +40,14 @@ struct TriggerInfoDto
 };
 
 // スクリプトクラスのプロパティの説明
+/** @brief ScriptPropertyDesc を表す構造体です。 */
 struct ScriptPropertyDesc
 {
 	const char* name;
 	const char* type;
 };
 
+/** @brief ScriptClassDesc を表す構造体です。 */
 struct ScriptClassDesc
 {
 	const char* name;

@@ -11,7 +11,13 @@
 class EditorSelection
 {
 public:
+	/**
+	 * @brief EditorSelection を構築します。
+	 */
 	EditorSelection() = default;
+	/**
+	 * @brief EditorSelection を破棄します。
+	 */
 	~EditorSelection() = default;
 
 	/**
@@ -75,6 +81,10 @@ public:
 	 * @return 選択されている場合は `true`、そうでない場合は `false`
 	 */
 	bool IsSelected(const std::shared_ptr<GameObject>& object) const;
+	/**
+	 * @brief IsSelected の条件を満たすか判定します。
+	 * @return 処理結果を返します。
+	 */
 	bool IsSelected(const GameObject* object) const;
 
 	/**

@@ -6,6 +6,7 @@
 #include "PointerEventData.h"
 #include "AxisEventData.h"
 
+/** @brief InputModule を表すクラスです。 */
 class InputModule : public BaseInputModule
 {
 	C_REFLECT(InputModule)
@@ -85,6 +86,9 @@ public:
     }
 
 #ifdef USE_IMGUI
+    /**
+     * @brief 描画処理を行います。
+     */
     void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 };

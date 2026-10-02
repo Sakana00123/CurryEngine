@@ -2,6 +2,7 @@
 #include <DirectXMath.h>
 
 //ポイントライト
+/** @brief PointLight を表す構造体です。 */
 struct PointLight
 {
     UINT enable{ false };
@@ -11,6 +12,7 @@ struct PointLight
     float dummy[3]{};
 };
 //スポットライト
+/** @brief SpotLight を表す構造体です。 */
 struct SpotLight
 {
     UINT enable{ false };
@@ -23,6 +25,7 @@ struct SpotLight
     float dummy;
 };
 // ディレクショナルライト
+/** @brief DirectionalLight を表す構造体です。 */
 struct DirectionalLight
 {
 	UINT enable{ true };
@@ -32,6 +35,7 @@ struct DirectionalLight
 };
 
 // ライト定数バッファ用構造体
+/** @brief LightConstants を表す構造体です。 */
 struct LightConstants
 {
     DirectX::XMFLOAT4 ambientColor;

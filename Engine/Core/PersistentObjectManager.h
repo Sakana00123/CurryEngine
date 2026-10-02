@@ -3,6 +3,7 @@
 #include <vector>
 #include "GameObject.h"
 
+/** @brief PersistentObjectManager を表すクラスです。 */
 class PersistentObjectManager {
 public:
     static void Register(const std::shared_ptr<GameObject>& obj) {

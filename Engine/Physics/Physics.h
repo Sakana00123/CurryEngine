@@ -11,6 +11,7 @@
 
 //#define BINARY_PHYSICS_DATA // 物理データをバイナリ形式で保存するかどうかのフラグ。デバッグ用に有効にすることができます。
 
+/** @brief PhysicMaterialCombineMode を表す列挙型です。 */
 enum class PhysicMaterialCombineMode
 {
 	Average,    // 平均値を使用して衝突反応を計算
@@ -42,12 +43,14 @@ class Rigidbody;
 class Collider;
 
 // アクターのデータを管理する構造体
+/** @brief ActorData を表す構造体です。 */
 struct ActorData
 {
 	physx::PxRigidActor* actor; // アクターへのポインタ
 	Transform* transform; // アクターのトランスフォームへのポインタ
 };
 
+/** @brief RaycastHit を表す構造体です。 */
 struct RaycastHit
 {
 	Vector3 point; // 衝突点の位置
@@ -57,6 +60,7 @@ struct RaycastHit
 };
 
 // 物理マテリアルの特性を定義する構造体
+/** @brief PhysicsMaterialData を表す構造体です。 */
 struct PhysicsMaterialData
 {
 	std::string name; // マテリアルの名前
@@ -68,6 +72,7 @@ struct PhysicsMaterialData
 };
 
 // 物理マテリアルを管理する構造体
+/** @brief PhysicsMaterial を表す構造体です。 */
 struct PhysicsMaterial
 {
 	MaterialHandle handle; // マテリアルのハンドル
@@ -75,6 +80,7 @@ struct PhysicsMaterial
 	physx::PxMaterial* pxMaterial; // 物理エンジンのマテリアルへのポインタ
 };
 
+/** @brief ColliderData を表す構造体です。 */
 struct ColliderData
 {
 	//ActorHandle actorHandle; // コライダが属するアクターのハンドル
@@ -86,18 +92,21 @@ struct ColliderData
 };
 
 // コライダーの形状を定義する構造体
+/** @brief BoxColliderData を表す構造体です。 */
 struct BoxColliderData : public ColliderData
 {
 	Vector3 halfExtents; // ボックスの半分のサイズ（幅/2, 高さ/2, 奥行き/2）
 	Vector3 center; // ボックスの中心位置（ローカル座標）
 };
 
+/** @brief SphereColliderData を表す構造体です。 */
 struct SphereColliderData : public ColliderData
 {
 	float radius; // 球の半径
 	Vector3 center; // 球の中心位置（ローカル座標）
 };
 
+/** @brief CapsuleColliderData を表す構造体です。 */
 struct CapsuleColliderData : public ColliderData
 {
 	float radius; // カプセルの半径
@@ -105,12 +114,14 @@ struct CapsuleColliderData : public ColliderData
 	Vector3 center; // カプセルの中心位置（ローカル座標）
 };
 
+/** @brief MeshColliderData を表す構造体です。 */
 struct MeshColliderData : public ColliderData
 {
 	std::vector<Vector3> vertices; // メッシュの頂点データ
 	std::vector<int> indices; // メッシュのインデックスデータ
 };
 
+/** @brief HeightFieldColliderData を表す構造体です。 */
 struct HeightFieldColliderData : public ColliderData
 {
 	std::vector<float> heightData; // 高さフィールドの高さデータ
@@ -120,6 +131,7 @@ struct HeightFieldColliderData : public ColliderData
 	float colScale; // 列方向のスケール
 };
 
+/** @brief CharacterControllerData を表す構造体です。 */
 struct CharacterControllerData : public ColliderData
 {
 	float radius; // キャラクターコントローラーの半径
@@ -129,21 +141,37 @@ struct CharacterControllerData : public ColliderData
 
 
 // 物理エンジンのイベントコールバックを処理するクラス
+/** @brief SimulationEventCallback を表すクラスです。 */
 class SimulationEventCallback : public physx::PxSimulationEventCallback
 {
 public:
 	// トリガーの継続イベントのペアをクリアする関数
+	/**
+	 * @brief 保持している内容を消去します。
+	 */
 	void ClearTriggerStayPairs();
 
 	// 特定の形状に関連するトリガーの継続イベントのペアをクリアする関数
+	/**
+	 * @brief 保持している内容を消去します。
+	 */
 	void ClearTriggerStayPairsForShape(physx::PxShape* shape);
 
 	// 物理エンジンのイベントを処理する関数
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update();
 
 	// 衝突イベントの呼び出し関数
+	/**
+	 * @brief CallCollisionEvents の処理を行います。
+	 */
 	void CallCollisionEvents();
 	// トリガーイベントの呼び出し関数
+	/**
+	 * @brief CallTriggerEvents の処理を行います。
+	 */
 	void CallTriggerEvents();
 
 protected:
@@ -151,7 +179,13 @@ protected:
 	void onConstraintBreak(physx::PxConstraintInfo* constraints, physx::PxU32 count) override{}
 	void onWake(physx::PxActor** actors, physx::PxU32 count) override{}
 	void onSleep(physx::PxActor** actors, physx::PxU32 count) override{}
+	/**
+	 * @brief onContact の処理を行います。
+	 */
 	void onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs) override;
+	/**
+	 * @brief onTrigger の処理を行います。
+	 */
 	void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count) override;
 	void onAdvance(const physx::PxRigidBody* const* bodyBuffer, const physx::PxTransform* poseBuffer, const physx::PxU32 count) override{}
 
@@ -168,6 +202,7 @@ private:
 };
 
 // クエリフィルタコールバックを処理するクラス
+/** @brief FilterShader を表すクラスです。 */
 class FilterShader : public physx::PxQueryFilterCallback
 {
 public:
@@ -178,15 +213,28 @@ public:
 		physx::PxPairFlags& pairFlags, const void* constantBlock, physx::PxU32 constantBlockSize);
 
 	// PxQueryFilterCallback の純粋仮想関数をオーバーライド
+	/**
+	 * @brief preFilter の処理を行います。
+	 */
 	physx::PxQueryHitType::Enum preFilter(const physx::PxFilterData& filterData, const physx::PxShape* shape, const physx::PxRigidActor* actor, physx::PxHitFlags& queryFlags) override;
+	/**
+	 * @brief postFilter の処理を行います。
+	 */
 	physx::PxQueryHitType::Enum postFilter(const physx::PxFilterData& filterData, const physx::PxQueryHit& hit, const physx::PxShape* shape, const physx::PxRigidActor* actor) override;
 };
 
 // 物理エンジンを管理するクラス
+/** @brief Physics を表すクラスです。 */
 class Physics
 {
 public:
+	/**
+	 * @brief Physics を構築します。
+	 */
 	Physics();
+	/**
+	 * @brief Physics を破棄します。
+	 */
 	~Physics();
 
 	/**
@@ -869,39 +917,92 @@ public:
 	 */
 	static bool IsShapeEnabled(const ShapeHandle& shapeHandle);
 	
+	/**
+	 * @brief HasActor の条件を満たすか判定します。
+	 * @return 処理結果を返します。
+	 */
 	static bool HasActor(Transform* transform); // Transform* に対応する ActorHandle が存在するかを確認する関数
 
+	/**
+	 * @brief HasShape の条件を満たすか判定します。
+	 * @return 処理結果を返します。
+	 */
 	static bool HasShape(ShapeHandle shapeHandle); // ShapeHandle に対応する PxShape* が存在するかを確認する関数
 
 
+	/**
+	 * @brief GetActorHandle に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static ActorHandle GetActorHandle(Transform* transform); // Transform* に対応する ActorHandle を取得する関数(存在しない場合は-1を返す)
 
+	/**
+	 * @brief 新しい要素を生成します。
+	 */
 	static ActorHandle CreateActorHandle(); // ActorHandle を新規作成する関数
 
+	/**
+	 * @brief GetTransform に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static Transform* GetTransform(ActorHandle actorHandle); // ActorHandle に対応する Transform* を取得する関数(存在しない場合はnullptrを返す)
 
+	/**
+	 * @brief GetActor に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static physx::PxRigidActor* GetActor(ActorHandle actorHandle); // ActorHandle に対応する PxRigidActor* を取得する関数(存在しない場合はnullptrを返す)
 
+	/**
+	 * @brief GetShape に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static physx::PxShape* GetShape(ShapeHandle shapeHandle); // ShapeHandle に対応する PxShape* を取得する関数(存在しない場合はnullptrを返す)
 
+	/**
+	 * @brief GetShapeHandle に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static ShapeHandle GetShapeHandle(physx::PxShape* shape); // PxShape* に対応する ShapeHandle を取得する関数(存在しない場合は-1を返す)
 
+	/**
+	 * @brief AddShape の処理を行います。
+	 */
 	//static ShapeHandle AddShape(ActorHandle actorHandle, physx::PxShape* shape); // ActorHandle に対応する PxRigidActor* に PxShape* を追加し、対応する ShapeHandle を返す関数(追加に失敗した場合は-1を返す)
 
+	/**
+	 * @brief 新しい要素を生成します。
+	 */
 	static ShapeHandle CreateShapeHandle(); // ShapeHandle を新規作成する関数
 
+	/**
+	 * @brief 指定された要素を登録します。
+	 */
 	static void RegisterShape(ShapeHandle shapeHandle, physx::PxShape* shape); // ShapeHandle と PxShape* を対応付けて登録する関数
 
+	/**
+	 * @brief 指定された要素を削除します。
+	 */
 	static void RemoveActor(ActorHandle actorHandle); // Transform* と ActorHandle に対応する PxRigidActor* を削除する関数
 
+	/**
+	 * @brief 指定された要素を削除します。
+	 */
 	static void RemoveShape(ShapeHandle shapeHandle); // ActorHandle と ShapeHandle に対応する PxShape* を削除する関数
 
+	/**
+	 * @brief 保持している内容を消去します。
+	 */
 	//static void ClearShapes(ActorHandle actorHandle); // ActorHandle に対応する PxRigidActor* からすべての形状を削除する関数
 
 	static physx::PxScene* GetScene() { return pxScene; }
 
 	static physx::PxPhysics* GetPhysics() { return pxPhysics; }
 
+	/**
+	 * @brief GetMaterial に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static physx::PxMaterial* GetMaterial(MaterialHandle handle);
 
 	static physx::PxControllerManager* GetControllerManager() { return pxControllerManager; }

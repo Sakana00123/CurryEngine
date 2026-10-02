@@ -45,18 +45,30 @@ public:
 
 	/** @brief 情報ログを追加します。*/
 	static void Log(const std::string& message, const std::string& file = "", int line = -1);
+	/**
+	 * @brief Log の処理を行います。
+	 */
 	static void Log(const std::u8string& message, const std::string& file = "", int line = -1);
 
 	/** @brief 警告ログを追加します。*/
 	static void LogWarning(const std::string& message, const std::string& file = "", int line = -1);
+	/**
+	 * @brief LogWarning の処理を行います。
+	 */
 	static void LogWarning(const std::u8string& message, const std::string& file = "", int line = -1);
 	
 	/** @brief エラーログを追加します。*/
 	static void LogError(const std::string& message, const std::string& file = "", int line = -1);
+	/**
+	 * @brief LogError の処理を行います。
+	 */
 	static void LogError(const std::u8string& message, const std::string& file = "", int line = -1);
 
 	/** @brief カスタムログを追加します。*/
 	static void CustomLog(LogLevel level, const std::string& message, const std::string& file, int line);
+	/**
+	 * @brief CustomLog の処理を行います。
+	 */
 	static void CustomLog(LogLevel level, const std::u8string& message, const std::string& file, int line);
 
 	/** @brief ログをすべてクリアします。*/

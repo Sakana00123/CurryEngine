@@ -8,6 +8,7 @@
 #undef ENABLE_ANIMATOR_PARAMETER_BINDING
 
 #ifdef ENABLE_ANIMATOR_PARAMETER_BINDING
+/** @brief AnimatorParameterBinding を表す構造体です。 */
 struct AnimatorParameterBinding
 {
 	ObjectId sourceComponentId; // ObjectReference属性で選択（targetModelRendererIdと同じパターン）
@@ -15,8 +16,10 @@ struct AnimatorParameterBinding
 };
 #endif // ENABLE_ANIMATOR_PARAMETER_BINDING
 
+/** @brief AnimatorParameter を表す構造体です。 */
 struct AnimatorParameter
 {
+	/** @brief Type を表す列挙型です。 */
 	enum class Type
 	{
 		Float,
@@ -33,8 +36,10 @@ struct AnimatorParameter
 
 };
 
+/** @brief AnimatorCondition を表す構造体です。 */
 struct AnimatorCondition
 {
+	/** @brief Comparison を表す列挙型です。 */
 	enum class Comparison
 	{
 		Less,
@@ -49,6 +54,7 @@ struct AnimatorCondition
 	float value;
 };
 
+/** @brief AnimatorTransition を表す構造体です。 */
 struct AnimatorTransition
 {
 	int fromStateIndex = -1;
@@ -59,6 +65,7 @@ struct AnimatorTransition
 	float exitTime = 1.0f; // 正規化時間(0.0f〜1.0f)での遷移開始タイミング
 };
 
+/** @brief BlendTreeType を表す列挙型です。 */
 enum class BlendTreeType
 {
 	None,                // 通常の単一クリップステート
@@ -66,6 +73,7 @@ enum class BlendTreeType
 	FreeformCartesian2D, // 2軸を自由配置でブレンド（前後+左右ストレイフなど）
 };
 
+/** @brief BlendTreeEntry を表す構造体です。 */
 struct BlendTreeEntry
 {
 	CurryEngine::Resources::AssetId clipId;
@@ -73,6 +81,7 @@ struct BlendTreeEntry
 	Vector2 position;       // FreeformCartesian2D用
 };
 
+/** @brief AnimatorState を表す構造体です。 */
 struct AnimatorState
 {
 	std::string name;
@@ -93,6 +102,7 @@ struct AnimatorState
 	bool IsBlendTree() const { return blendType != BlendTreeType::None; }
 };
 
+/** @brief AnimatorController を表すクラスです。 */
 class AnimatorController : public Resource
 {
 public:
@@ -106,24 +116,42 @@ public:
 	std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> animationClips; // アニメーションクリップのリスト
 	std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<CurryEngine::Resources::AnimationTimeline>> animationTimelines; // AnimationTimelineのリスト
 
+	/**
+	 * @brief LoadFromFile に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	bool LoadFromFile(const std::string& path) override;
 
+	/**
+	 * @brief SaveToFile の処理を行います。
+	 */
 	bool SaveToFile(const std::filesystem::path& path) const;
 
 	// アニメーションパラメータの型を取得する
+	/**
+	 * @brief GetParameterType に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	AnimatorParameter::Type GetParameterType(const std::string& name) const;
 
 	// アニメーションステートのインデックスを名前から取得する
+	/**
+	 * @brief GetStateIndexByName に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	int GetStateIndexByName(const std::string& name) const;
 };
 
+/** @brief RuntimeAnimatorController を表す構造体です。 */
 struct RuntimeAnimatorController
 {
+	/** @brief BlendedClipWeight を表す構造体です。 */
 	struct BlendedClipWeight
 	{
 		CurryEngine::Resources::AssetId clipId;
 		float weight = 1.0f; // クリップの重み（0.0f〜1.0f）
 	};
+	/** @brief PlayingState を表す構造体です。 */
 	struct PlayingState
 	{
 		float time = 0.0f;
@@ -148,39 +176,90 @@ struct RuntimeAnimatorController
 	void Initialize(const AnimatorController& controller, std::vector<NodePose> initialPose = {});
 
 	// アニメーションパラメータの初期値を同期する
+	/**
+	 * @brief SyncParameters の処理を行います。
+	 */
 	void SyncParameters(const AnimatorController& controller);
 
 	// アニメーションの再生を開始する
+	/**
+	 * @brief Play の処理を行います。
+	 */
 	void Play(const AnimatorController& controller, int stateIndex, float blendDuration = 0.0f);
 
+	/**
+	 * @brief Float を設定します。
+	 */
 	void SetFloat(const std::string& name, float value);
+	/**
+	 * @brief Int を設定します。
+	 */
 	void SetInt(const std::string& name, int value);
+	/**
+	 * @brief Bool を設定します。
+	 */
 	void SetBool(const std::string& name, bool value);
+	/**
+	 * @brief Trigger を設定します。
+	 */
 	void SetTrigger(const std::string& name);
 
 	// 現在のノードポーズを取得する
+	/**
+	 * @brief GetPose に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	const std::vector<NodePose>& GetPose() const;
 
 	// 初期ポーズ（BindPose）を取得する
+	/**
+	 * @brief GetBindPose に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	//const std::vector<NodePose>& GetBindPose() const;
 
 	// 条件をすべて満たしているかを判定する
+	/**
+	 * @brief AllConditionsMet の処理を行います。
+	 */
 	bool AllConditionsMet(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions) const;
 
 	// ブレンドツリーの重みを計算する
+	/**
+	 * @brief ComputeBlendWeights の処理を行います。
+	 */
 	std::vector<BlendedClipWeight> ComputeBlendWeights(const AnimatorController& controller, const PlayingState& state) const;
 
 	// アニメーションパラメータの値を取得する
+	/**
+	 * @brief GetParameterValue に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	float GetParameterValue(const AnimatorController& controller, int parameterIndex) const;
 
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update(float deltaTime, const AnimatorController& controller, const XMFLOAT4X4& worldTransform);
 
+	/**
+	 * @brief BeginTransition の処理を行います。
+	 */
 	void BeginTransition(const AnimatorTransition& transition, const AnimatorController& controller);
+	/**
+	 * @brief ConsumeTrigger の処理を行います。
+	 */
 	void ConsumeTrigger(const AnimatorController& controller, const std::vector<AnimatorCondition>& conditions);
 	// 蓄積したルートモーション差分を取得してリセットする
+	/**
+	 * @brief ConsumeRootMotion の処理を行います。
+	 */
 	void ConsumeRootMotion(const AnimatorController& controller, XMFLOAT3& outDeltaPosition, XMFLOAT4& outDeltaRotation);
 
 	// 再生中のアニメーションの平均再生時間を計算する
+	/**
+	 * @brief ResolveAverageDuration の処理を行います。
+	 */
 	float ResolveAverageDuration(const AnimatorController& controller, const std::vector<BlendedClipWeight>& weights) const;
 	// 再生中のアニメーションの平均ループフラグを計算する
 	void CompositePose(const AnimatorController& controller, const std::vector<BlendedClipWeight>& frontWeights, float frontTime, float frontScale,
@@ -195,9 +274,15 @@ struct RuntimeAnimatorController
 	std::vector<CurryEngine::Resources::FiredAnimationEvent> firedEvents; // このフレームで発火したイベント（Consume想定）
 
 	// 発火イベントを取得してクリアする（ConsumeRootMotionと同じパターン）
+	/**
+	 * @brief ConsumeFiredEvents の処理を行います。
+	 */
 	std::vector<CurryEngine::Resources::FiredAnimationEvent> ConsumeFiredEvents();
 
 private:
 	// 指定ステートの正規化時間の進みからイベント発火を判定する
+	/**
+	 * @brief DispatchStateEvents の処理を行います。
+	 */
 	void DispatchStateEvents(const AnimatorController& controller, PlayingState& state, float normalizedTime);
 };

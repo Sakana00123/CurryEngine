@@ -89,10 +89,22 @@ public:
 	static void Destroy(GameObject* obj);
 
 	// Prefab のインスタンス化(ファイルパス版)
+	/**
+	 * @brief Instantiate の処理を行います。
+	 */
 	static GameObject* Instantiate(const std::string& prefabPath, Transform* parent = nullptr, const Vector3& position = Vector3::Zero, const Quaternion& rotation = Quaternion::Identity);
+	/**
+	 * @brief Instantiate の処理を行います。
+	 */
 	static GameObject* Instantiate(const std::string& prefabPath, const Vector3& position = Vector3::Zero, const Quaternion& rotation = Quaternion::Identity);
 	// Prefab のインスタンス化(オブジェクト版)
+	/**
+	 * @brief Instantiate の処理を行います。
+	 */
 	static GameObject* Instantiate(GameObject* prefab, Transform* parent = nullptr, const Vector3& position = Vector3::Zero, const Quaternion& rotation = Quaternion::Identity);
+	/**
+	 * @brief Instantiate の処理を行います。
+	 */
 	static GameObject* Instantiate(GameObject* prefab, const Vector3& position = Vector3::Zero, const Quaternion& rotation = Quaternion::Identity);
 
 protected:

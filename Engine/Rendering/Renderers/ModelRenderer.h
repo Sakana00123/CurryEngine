@@ -25,7 +25,13 @@ struct RenderContext;
 class ModelRenderer
 {
 public:
+    /**
+     * @brief ModelRenderer を構築します。
+     */
     ModelRenderer() = default;
+    /**
+     * @brief ModelRenderer を破棄します。
+     */
     ~ModelRenderer() = default;
 
     /**
@@ -34,7 +40,13 @@ public:
      */
     void SetModelAsset(std::shared_ptr<AssetModel> asset);
 
+    /**
+     * @brief 状態を更新します。
+     */
     void Update(float elapsedTime);
+    /**
+     * @brief 描画処理を行います。
+     */
     void Draw(RenderContext* rtx, const XMMATRIX& world = XMMatrixIdentity());
 
     // --- アニメーション制御（将来 Animator コンポーネントに移管予定） ---
@@ -80,6 +92,7 @@ private:
      * @brief スキニング用ジョイント行列の定数バッファ（VS スロット 6）。
      */
     static constexpr size_t MAX_JOINTS = 512;
+    /** @brief PrimitiveJointConstants を表す構造体です。 */
     struct PrimitiveJointConstants
     {
         DirectX::XMFLOAT4X4 matrices[MAX_JOINTS];
@@ -87,8 +100,17 @@ private:
     Microsoft::WRL::ComPtr<ID3D11Buffer> m_jointCB;
 
     // --- 初期化 ---
+    /**
+     * @brief 新しい要素を生成します。
+     */
     void CreateShaders(ID3D11Device* device);
+    /**
+     * @brief 新しい要素を生成します。
+     */
     void CreateConstantBuffers(ID3D11Device* device);
+    /**
+     * @brief EnsureDefaultMaterial の処理を行います。
+     */
     void EnsureDefaultMaterial(ID3D11Device* device);
 
     // --- 描画サブルーティン ---

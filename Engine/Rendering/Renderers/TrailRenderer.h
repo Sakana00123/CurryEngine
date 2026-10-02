@@ -2,25 +2,48 @@
 #include "Renderer.h"
 
 C_ENUM()
+/** @brief TrailRenderMode を表す列挙型です。 */
 enum class TrailRenderMode
 {
 	Billboard, // 常にカメラに面するビルボード
 	Stretched, // 移動方向に沿って伸びるストレッチ
 };
 
+/** @brief TrailRenderer を表すクラスです。 */
 class TrailRenderer : public Renderer
 {
 	C_REFLECT(TrailRenderer)
 public:
+	/**
+	 * @brief TrailRenderer を構築します。
+	 */
 	TrailRenderer() = default;
+	/**
+	 * @brief TrailRenderer を破棄します。
+	 */
 	virtual ~TrailRenderer() = default;
 
+	/**
+	 * @brief 初期化します。
+	 */
 	void Initialize() override;
 
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update(float deltaTime) override;
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void Render(RenderContext* context) override;
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	//virtual void RenderShadowMap(RenderContext* context) override;
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	//virtual void RenderDepth(RenderContext* context) override;
 
 private:
@@ -59,6 +82,7 @@ private:
 	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("Enum"), CurryEngine::PropertyAttributes::Enum("TrailRenderMode"))
 	int renderMode = 0; // トレイルの描画モード
 
+	/** @brief TrailSegment を表す構造体です。 */
 	struct TrailSegment
 	{
 		Vector3 position; // セグメントの位置

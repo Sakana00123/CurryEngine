@@ -6,6 +6,7 @@
 //#include "Engine/Core/Reflection/TypeSerializerRegistry.h"
 
 C_ENUM()
+/** @brief ForceMode を表す列挙型です。 */
 enum class ForceMode
 {
 	Force,          // 継続的な力（質量に影響される）
@@ -16,6 +17,7 @@ enum class ForceMode
 C_REGISTER_TYPE(ForceMode)
 
 C_ENUM()
+/** @brief RigidbodyInterpolation を表す列挙型です。 */
 enum class RigidbodyInterpolation
 {
 	None,       // 補間なし
@@ -25,6 +27,7 @@ enum class RigidbodyInterpolation
 C_REGISTER_TYPE(RigidbodyInterpolation)
 
 C_ENUM()
+/** @brief RigidbodyCollisionDetectionMode を表す列挙型です。 */
 enum class RigidbodyCollisionDetectionMode
 {
 	Discrete,   // 離散的な衝突検出（高速だが高速移動オブジェクトのすり抜けが発生する可能性あり）
@@ -35,6 +38,7 @@ enum class RigidbodyCollisionDetectionMode
 C_REGISTER_TYPE(RigidbodyCollisionDetectionMode)
 
 C_ENUM()
+/** @brief RigidbodySleepMode を表す列挙型です。 */
 enum class RigidbodySleepMode
 {
 	NeverSleep, // 常にアクティブ
@@ -45,6 +49,7 @@ enum class RigidbodySleepMode
 C_REGISTER_TYPE(RigidbodySleepMode)
 
 C_ENUM()
+/** @brief RigidbodyConstraints を表す列挙型です。 */
 enum class RigidbodyConstraints
 {
 	None = 0,
@@ -61,6 +66,7 @@ enum class RigidbodyConstraints
 C_REGISTER_TYPE(RigidbodyConstraints)
 
 
+/** @brief Rigidbody を表すクラスです。 */
 class Rigidbody : public Component
 {
 	C_REFLECT(Rigidbody)
@@ -343,26 +349,62 @@ public:
 	float GetSleepThreshold() const;
 
 public:
+	/**
+	 * @brief Rigidbody を構築します。
+	 */
 	Rigidbody() = default;
+	/**
+	 * @brief Rigidbody を破棄します。
+	 */
 	virtual ~Rigidbody() override = default;
 
+	/**
+	 * @brief Awake の処理を行います。
+	 */
 	void Awake() override;
 
+	/**
+	 * @brief 指定された要素を登録します。
+	 */
 	void Register();
+	/**
+	 * @brief PostColliderRegister の処理を行います。
+	 */
 	void PostColliderRegister();
 
+	/**
+	 * @brief Destroy イベントを処理します。
+	 */
 	void OnDestroy() override;
 
+	/**
+	 * @brief 終了処理を行います。
+	 */
 	void Finalize() override;
 
+	/**
+	 * @brief Enable イベントを処理します。
+	 */
 	void OnEnable() override;
 
+	/**
+	 * @brief Disable イベントを処理します。
+	 */
 	void OnDisable() override;
 
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update(float deltaTime) override;
 
+	/**
+	 * @brief FixedUpdate の処理を行います。
+	 */
 	void FixedUpdate(float fixedDeltaTime) override;
 
+	/**
+	 * @brief LateUpdate の処理を行います。
+	 */
 	void LateUpdate(float deltaTime) override;
 
 	void OnTriggerEnter(CollisionInfo info) {
@@ -370,6 +412,9 @@ public:
 	}
 
 #ifdef USE_IMGUI
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 

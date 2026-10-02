@@ -14,19 +14,30 @@ struct RaycastResult;
 // イベントIDの型定義
 using EventId = uint32_t;
 
+/** @brief EventSystem を表すクラスです。 */
 class EventSystem
 {
 	static EventSystem current;
 	static std::vector<EventSystem> eventSystems;
 	
 	GameObject* currentSelectedGameObject = nullptr;
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId currentSelectedGameObjectId = ObjectId::Invalid();
 	std::weak_ptr<InputModule> activeModule;
 	std::vector<std::weak_ptr<GraphicRaycaster>> raycasters;
 	std::vector<std::weak_ptr<GraphicRaycaster>> erases;
 public:
 
+	/**
+	 * @brief SelectedGameObject を設定します。
+	 */
 	void SetSelectedGameObject(GameObject* obj);
+	/**
+	 * @brief GetSelectedGameObject に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	GameObject* GetSelectedGameObject();
 
 	void Reset() {
@@ -38,8 +49,14 @@ public:
 
 	static EventSystem* GetCurrent() { return &current; }
 
+	/**
+	 * @brief 状態を更新します。
+	 */
 	static void Update(float elapsedTime);
 
+	/**
+	 * @brief RaycastAll の処理を行います。
+	 */
 	static RaycastResult RaycastAll();
 
 	static void RegisterGraphicRaycaster(std::shared_ptr<GraphicRaycaster> raycaster)
@@ -74,7 +91,13 @@ public:
 	using Handler = std::function<void()>;
 
 	// イベント登録、発行
+	/**
+	 * @brief 指定された要素を登録します。
+	 */
 	static EventId Register(Handler handler);
+	/**
+	 * @brief Invoke の処理を行います。
+	 */
 	static void Invoke(EventId id);
 
 private:

@@ -22,10 +22,22 @@ struct Vector3
 
 #if 1
 	float x, y, z;
+	/**
+	 * @brief Vector3 を構築します。
+	 */
 	Vector3(const Vector3&) = default;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Vector3& operator=(const Vector3&) = default;
 
+	/**
+	 * @brief Vector3 を構築します。
+	 */
 	Vector3(Vector3&&) = default;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Vector3& operator=(Vector3&&) = default;
 
 	constexpr Vector3(float x = 0.f, float y = 0.f, float z = 0.f) noexcept : x(x), y(y), z(z) {}
@@ -35,7 +47,15 @@ struct Vector3
 
 	operator XMFLOAT3() const { return XMFLOAT3(x, y, z); }
 
+	/**
+	 * @brief 演算子処理を行います。
+	 * @return 処理結果を返します。
+	 */
 	float& operator[](size_t index);
+	/**
+	 * @brief 演算子処理を行います。
+	 * @return 処理結果を返します。
+	 */
 	float operator[](size_t index) const;
 	Vector3& operator+=(const Vector3& a) { x += a.x, y += a.y, z += a.z; return *this; }
 	Vector3& operator-=(const Vector3& a) { x -= a.x, y -= a.y, z -= a.z; return *this; }

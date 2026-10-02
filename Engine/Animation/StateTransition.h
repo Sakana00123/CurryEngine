@@ -1,6 +1,7 @@
 #pragma once
 
 // ステート遷移条件の定義
+/** @brief ConditionType を表す列挙型です。 */
 enum class ConditionType : uint8_t
 {
 	None,       // 条件なし
@@ -11,6 +12,7 @@ enum class ConditionType : uint8_t
 };
 
 // ステート遷移条件
+/** @brief StateTransitionCondition を表す構造体です。 */
 struct StateTransitionCondition
 {
 	ConditionType type = ConditionType::None;
@@ -20,6 +22,7 @@ struct StateTransitionCondition
 	int intValue = 0;
 	float floatValue = 0.0f;
 	// 比較演算子（Int, Float用）
+	/** @brief ComparisonOperator を表す列挙型です。 */
 	enum class ComparisonOperator : uint8_t
 	{
 		Equal,
@@ -33,6 +36,7 @@ struct StateTransitionCondition
 };
 
 // ステート遷移の定義
+/** @brief StateTransition を表す構造体です。 */
 struct StateTransition
 {
 	std::string fromState; // 遷移元ステート名

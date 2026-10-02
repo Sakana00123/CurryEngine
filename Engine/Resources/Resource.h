@@ -4,15 +4,30 @@
 #include <atomic>
 #include "AssetId.h"
 
+/** @brief Resource を表すクラスです。 */
 class Resource {
 public:
+	/**
+	 * @brief Resource を構築します。
+	 */
 	Resource() = default;
+    /**
+     * @brief Resource を破棄します。
+     */
     virtual ~Resource() = default;
 
     // ファイルからロード
+    /**
+     * @brief LoadFromFile に対応する値を取得します。
+     * @return 処理結果を返します。
+     */
     virtual bool LoadFromFile(const std::string& path) = 0;
 
 	// アセットIDからロード
+    /**
+     * @brief Load に対応する値を取得します。
+     * @return 処理結果を返します。
+     */
     virtual bool Load(const CurryEngine::Resources::AssetId& assetId);
 
     // リロード用（ホットリロード対応）

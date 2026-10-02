@@ -15,9 +15,16 @@ namespace CurryEngine
 	{
 	public:
 		// TODO: 将来的に複数インスタンスが必要になったらシングルトンをやめる
+		/**
+		 * @brief Get に対応する値を取得します。
+		 * @return 処理結果を返します。
+		 */
 		static PropertyDrawerRegistry& Get();
 		// コンストラクタでドロワーの登録を行う
 		// TODO: あとで自動登録機能を実装する予定なので、現状は手動でドロワーを登録するためのコードをコンストラクタに書いています。
+		/**
+		 * @brief PropertyDrawerRegistry を構築します。
+		 */
 		PropertyDrawerRegistry();
 
 		/**
@@ -29,6 +36,10 @@ namespace CurryEngine
 		void Register(const std::string& typeName, std::unique_ptr<IPropertyDrawer> drawer);
 
 		// ドロワーの取得。見つからない場合は nullptr を返す
+		/**
+		 * @brief Find に対応する値を取得します。
+		 * @return 処理結果を返します。
+		 */
 		IPropertyDrawer* Find(const std::string& typeName) const;
 	private:
 		std::unordered_map<std::string, std::unique_ptr<IPropertyDrawer>> m_drawers;

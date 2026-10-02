@@ -8,6 +8,7 @@
 
 namespace CurryEngine::Resources
 {
+    /** @brief AnimationEventType を表す列挙型です。 */
     enum class AnimationEventType
     {
         Custom,
@@ -15,12 +16,14 @@ namespace CurryEngine::Resources
 		ParticleEffect,
 	};
 
+    /** @brief SoundEffectEventParam を表す構造体です。 */
     struct SoundEffectEventParam
     {
         std::string soundAssetId; // サウンドのアセットID
 		float volume = 1.0f; // 音量 (0.0f ~ 1.0f)
 	};
 
+    /** @brief ParticleEffectEventParam を表す構造体です。 */
     struct ParticleEffectEventParam
     {
 		std::string particleAssetId; // パーティクルのアセットID
@@ -28,6 +31,7 @@ namespace CurryEngine::Resources
 		Vector3 offset = Vector3::Zero; // パーティクルの再生位置のオフセット
 	};
 
+    /** @brief AnimationEventKey を表す構造体です。 */
     struct AnimationEventKey
     {
         float time = 0.0f;
@@ -36,6 +40,7 @@ namespace CurryEngine::Resources
 		std::any paramValue; // 引数の値
     };
 
+    /** @brief AnimationEventTrack を表す構造体です。 */
     struct AnimationEventTrack
     {
         std::string name;
@@ -45,21 +50,33 @@ namespace CurryEngine::Resources
 
     // 将来のカーブトラック追加時、共通の基底 or variant で
     // TrackType を持たせて統一的に扱えるようにする想定
+    /** @brief TrackType を表す列挙型です。 */
     enum class TrackType
     {
         Event,
         FloatCurve,  // 将来: 速度カーブなど
     };
 
+    /** @brief AnimationTimeline を表すクラスです。 */
     class AnimationTimeline : public Resource
     {
     public:
+        /**
+         * @brief AnimationTimeline を構築します。
+         */
         AnimationTimeline() = default;
 
 		// Resource interface
+		/**
+		 * @brief LoadFromFile に対応する値を取得します。
+		 * @return 処理結果を返します。
+		 */
 		bool LoadFromFile(const std::string& path) override;
 
         // 保存
+		/**
+		 * @brief SaveToFile の処理を行います。
+		 */
 		bool SaveToFile(const std::filesystem::path& path) const;
 
 
@@ -72,7 +89,13 @@ namespace CurryEngine::Resources
         std::vector<AnimationEventTrack>& GetEventTracks() { return m_eventTracks; }
         const std::vector<AnimationEventTrack>& GetEventTracks() const { return m_eventTracks; }
 
+        /**
+         * @brief AddEventTrack の処理を行います。
+         */
         AnimationEventTrack& AddEventTrack(const std::string& name);
+        /**
+         * @brief 指定された要素を削除します。
+         */
         void RemoveEventTrack(size_t index);
 
     private:
@@ -83,6 +106,7 @@ namespace CurryEngine::Resources
 
 
 
+    /** @brief FiredAnimationEvent を表す構造体です。 */
     struct FiredAnimationEvent
     {
 		AnimationEventType type;

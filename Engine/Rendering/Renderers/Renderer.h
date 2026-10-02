@@ -5,11 +5,18 @@
 
 #define USE_MATERIAL
 
+/** @brief Renderer を表すクラスです。 */
 class Renderer : public Component
 {
 	C_REFLECT(Renderer)
 public:
+	/**
+	 * @brief Renderer を構築します。
+	 */
 	Renderer() = default;
+	/**
+	 * @brief Renderer を破棄します。
+	 */
 	virtual ~Renderer() override = default;
 	
 	// 描画順序を設定
@@ -27,14 +34,23 @@ public:
 
 #ifdef USE_IMGUI
 	// デバッグ GUI の描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 
 
 	// シリアライズ
+	/**
+	 * @brief Serialize の処理を行います。
+	 */
 	json Serialize() const override;
 
 	// デシリアライズ
+	/**
+	 * @brief Deserialize の処理を行います。
+	 */
 	void Deserialize(const json& j) override;
 
 public:

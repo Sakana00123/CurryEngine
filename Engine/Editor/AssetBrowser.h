@@ -14,6 +14,7 @@ namespace fs = std::filesystem;
 #include "Engine/Editor/MaterialEditor.h"
 
 // fs::pathをキーにしたunordered_mapやunordered_setで必要なハッシュ関数
+/** @brief FsPathHash を表す構造体です。 */
 struct FsPathHash
 {
 	std::size_t operator()(const fs::path& path) const
@@ -41,6 +42,7 @@ struct FsPathHash
 class AssetBrowser
 {
 public:
+	/** @brief GuiSettings を表す構造体です。 */
 	struct GuiSettings
 	{
 		bool acceptDropToFolderTree = false;
@@ -49,24 +51,45 @@ public:
 	};
 public:
 	// アセットブラウザの初期化（アイコンの読み込みなど）
+	/**
+	 * @brief 初期化します。
+	 */
 	static void Initialize();
 
 	// ドロップターゲットの初期化（Windowsのドラッグ＆ドロップAPIを使用する場合）
+	/**
+	 * @brief 初期化します。
+	 */
 	static void InitializeDropTarget(HWND hwnd);
 
 	// アセットブラウザの終了処理（リソースの解放など）
+	/**
+	 * @brief 終了処理を行います。
+	 */
 	static void FinalizeDropTarget(HWND hwnd);
 
 	// ドロップされたファイルの処理（Windowsのドラッグ＆ドロップAPIを使用する場合）
+	/**
+	 * @brief DropFiles イベントを処理します。
+	 */
 	static void OnDropFiles(HWND hwnd, HDROP hDrop);
 
+	/**
+	 * @brief DetectAssetTypeFromFile の処理を行います。
+	 */
 	static AssetType DetectAssetTypeFromFile(const fs::path& path);
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawGUI();
 
 	static void Show() { isOpen = true; }
 
 	// キャッシュをクリア（例：アセットの追加・削除・移動後などに呼び出す）
+	/**
+	 * @brief Refresh の処理を行います。
+	 */
 	static void Refresh();
 
 	// 外部からのドラッグがアセットグリッド上にあるかどうか
@@ -77,72 +100,144 @@ public:
 public:
 
 	// アセットのリネームを開始
+	/**
+	 * @brief StartRename の処理を行います。
+	 */
 	static void StartRename(const fs::path& assetPath);
 
 	// アセットの削除を開始
+	/**
+	 * @brief StartDelete の処理を行います。
+	 */
 	static void StartDelete(const fs::path& assetPath);
 
 	// スクリプト作成モーダルを表示
+	/**
+	 * @brief ShowScriptCreationModal の処理を行います。
+	 */
 	static void ShowScriptCreationModal(const fs::path& initDir);
 
 	// 指定したディレクトリにC#スクリプトを作成
+	/**
+	 * @brief 新しい要素を生成します。
+	 */
 	static void CreateCSharpScript(const fs::path& directory, const std::string& scriptName);
 
 	// HLSLシェーダー作成モーダルを表示
+	/**
+	 * @brief ShowHlslShaderCreationModal の処理を行います。
+	 */
 	static void ShowHlslShaderCreationModal(const fs::path& initDir);
 
 	// 指定したディレクトリにHLSLシェーダーを作成
+	/**
+	 * @brief 新しい要素を生成します。
+	 */
 	static void CreateHlslShader(const fs::path& directory, const std::string& shaderName, const std::string& extension);
 	
 
 	// 新規シーン作成モーダルを表示
+	/**
+	 * @brief ShowNewSceneCreationModal の処理を行います。
+	 */
 	static void ShowNewSceneCreationModal(const fs::path& initDir);
 
 	// 新規シーンを作成
+	/**
+	 * @brief 新しい要素を生成します。
+	 */
 	static void CreateNewScene(const fs::path& templateScenePath, const fs::path& newScenePath);
 
 	// アセットをダブルクリックしたときの処理
+	/**
+	 * @brief OpenAsset の処理を行います。
+	 */
 	static void OpenAsset(const fs::path& assetPath);
 
 	// Assetsフォルダ内を検索してkeywordにマッチするファイルをresultsに追加する（キャッシュを利用）
+	/**
+	 * @brief SearchAssets の処理を行います。
+	 */
 	static inline void SearchAssets(const fs::path& root, const std::u8string& keyword, std::vector<fs::directory_entry>& results);
 
 private:
 
 	// アセットの削除後の処理
+	/**
+	 * @brief AssetDeleted イベントを処理します。
+	 */
 	static void OnAssetDeleted(const fs::path& assetPath);
 
 #ifdef USE_IMGUI
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawFolderTree(const fs::path& root, fs::path& selectedFolder);
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawAssetGrid(const fs::path& folderPath, const char* filter = "");
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawUnityPath(const fs::path& path);
 
 	// スクリプト作成モーダルの描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawScriptCreationModal();
 
 	// HLSLシェーダー作成モーダルの描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawHlslShaderCreationModal();
 
 	// 新規シーン作成モーダルの描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawNewSceneCreationModal();
 
 	// 削除確認モーダルの描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawDeleteConfirmModal();
 
 
 	// アセットを右クリックしたときのコンテキストメニューの処理
+	/**
+	 * @brief ShowContextMenu の処理を行います。
+	 */
 	static void ShowContextMenu(const fs::path& assetPath);
 
 	//ドロップ先のターゲットの処理（戻り値：アセットドラッグ中に直前に描画されたGUIをホバー中か）
+	/**
+	 * @brief HandleDropTargetForFolder の処理を行います。
+	 */
 	static bool HandleDropTargetForFolder(const fs::path& targetFolderPath);
 #endif // USE_IMGUI
 
+	/**
+	 * @brief MakeUniqueFilePath の処理を行います。
+	 */
 	static fs::path MakeUniqueFilePath(const fs::path& dir, const fs::path& stem, const std::string& extension = ".cs");
+	/**
+	 * @brief ToUnityStylePath の処理を行います。
+	 */
 	static fs::path ToUnityStylePath(const fs::path& path);
+	/**
+	 * @brief MoveAssetToFolder の処理を行います。
+	 */
 	static bool MoveAssetToFolder(const fs::path& srcPath, const fs::path& dstFolderPath);
+	/**
+	 * @brief MoveFolderToFolder の処理を行います。
+	 */
 	static bool MoveFolderToFolder(const fs::path& source, const fs::path& destinationParent);
 private:
 	static inline bool isOpen = true;

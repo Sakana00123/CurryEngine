@@ -11,6 +11,7 @@
 #include <functional>
 #include "Engine/Resources/Shader.h"
 
+/** @brief HlslEditor を表すクラスです。 */
 class HlslEditor
 {
 	static inline bool isOpen = false;
@@ -57,6 +58,9 @@ public:
 		LoadShaderSource(filePath);
 	}
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawGUI();
 
 	static void Reset()

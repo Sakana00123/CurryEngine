@@ -1,10 +1,12 @@
 #pragma once
 #include "Engine/UI/UIComponent.h"
 
+/** @brief CanvasScaler を表すクラスです。 */
 class CanvasScaler : public UIComponent
 {
 	C_REFLECT(CanvasScaler)
 public:
+    /** @brief ScaleMode を表す列挙型です。 */
     enum class ScaleMode {
         ConstantPixelSize,      // scaleFactor固定
         ScaleWithScreenSize,    // 解像度比でスケール
@@ -35,7 +37,13 @@ public:
 	// 設計解像度を取得します。
 	Vector2 GetReferenceResolution() const { return { referenceWidth, referenceHeight }; }
 
+	/**
+	 * @brief Start の処理を行います。
+	 */
 	void Start() override;
+    /**
+     * @brief 状態を更新します。
+     */
     void Update(float deltaTime) override;
 
 private:

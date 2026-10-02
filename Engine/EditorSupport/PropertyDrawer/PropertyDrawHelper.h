@@ -99,6 +99,7 @@ namespace CurryEngine
 
 
 		// --- コマンド発行ユーティリティ ---
+		/** @brief SetValueCommandDesc を表す構造体です。 */
 		struct SetValueCommandDesc
 		{
 			PropertyInfo prop; // 変更するプロパティのメタ情報

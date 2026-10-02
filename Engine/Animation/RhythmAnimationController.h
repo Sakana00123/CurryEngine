@@ -3,6 +3,7 @@
 #include "Engine/Rendering/Renderers/GltfModelRenderer.h"
 #include "Engine/Animation/RhythmStateMachine.h"
 
+/** @brief RhythmAnimationController を表すクラスです。 */
 class RhythmAnimationController : public Component
 {
 	C_REFLECT(RhythmAnimationController)
@@ -33,8 +34,14 @@ public:
 public:
 
 	// 開始処理
+	/**
+	 * @brief Start の処理を行います。
+	 */
 	void Start() override;
 
 	// 更新処理
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update(float deltaTime) override;
 };

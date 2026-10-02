@@ -73,12 +73,19 @@ HRESULT LoadTextureFromMemory(ID3D11Device* device, const void* data, size_t siz
 class GpuResource
 {
 public:
+	/**
+	 * @brief GpuResource を破棄します。
+	 */
 	virtual ~GpuResource() = default;
 	// GPUリソースの解放
+	/**
+	 * @brief Release の処理を行います。
+	 */
 	//virtual void Release() = 0;
 };
 
 // テクスチャのセマンティクス（用途）を表す列挙型
+/** @brief TextureSemantic を表す列挙型です。 */
 enum class TextureSemantic
 {
 	Default,    // 通常のカラー、メイン画像
@@ -93,6 +100,7 @@ enum class TextureSemantic
 };
 
 // テクスチャの次元を表す列挙型
+/** @brief TextureDimension を表す列挙型です。 */
 enum class TextureDimension
 {
 	Unknown,
@@ -127,7 +135,13 @@ enum class TextureDimension
 class Texture : public GpuResource
 {
 public:
+	/**
+	 * @brief Texture を構築します。
+	 */
 	Texture() = default;
+	/**
+	 * @brief Texture を破棄します。
+	 */
 	virtual ~Texture() = default;
 	
 	/**
@@ -158,7 +172,13 @@ public:
 class Texture2D : public Texture
 {
 public:
+	/**
+	 * @brief Texture2D を構築します。
+	 */
 	Texture2D() = default;
+	/**
+	 * @brief Texture2D を破棄します。
+	 */
 	virtual ~Texture2D() = default;
 	/** @brief 2D テクスチャ記述子を取得します。*/
 	virtual const D3D11_TEXTURE2D_DESC& GetDesc() const = 0;
@@ -185,6 +205,9 @@ public:
 		: m_Srv(std::move(other.m_Srv)), m_Desc(other.m_Desc) {
 	}
 
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	RawTexture2D& operator=(const RawTexture2D&) = delete;
 	/** @brief デストラクタ。SRV は ComPtr で管理されているため、自動的に解放されます。*/
 	virtual ~RawTexture2D() = default;
@@ -221,6 +244,10 @@ public:
 	/** @brief ワイド文字パス版の読み込み。*/
 	bool Load(ID3D11Device* device, const std::wstring& filePath);
 
+	/**
+	 * @brief Load に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	bool Load(ID3D11Device* device, const std::filesystem::path& filePath);
 
 	/** @brief SRV と記述子を設定します。*/

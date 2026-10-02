@@ -5,28 +5,38 @@
 #include <Engine\Rendering\Pipeline\RenderContext.h>
 
 
+/** @brief ValueKeyframe を表す構造体です。 */
 struct ValueKeyframe
 {
 	float time = 0.0f;
 	float value = 0.0f;
 };
 
+/** @brief ValueTrack を表す構造体です。 */
 struct ValueTrack
 {
 	std::string name;
 	std::vector<ValueKeyframe> keys;
 
 	// キーフレームを時間でソート
+	/**
+	 * @brief Sort の処理を行います。
+	 */
 	void Sort();
+	/**
+	 * @brief AddKeyframe の処理を行います。
+	 */
 	void AddKeyframe(float time, float value);
 };
 
+/** @brief DragState を表す構造体です。 */
 struct DragState
 {
 	bool dragging = false;
 	float grabOffsetTime = 0.0f; // 掴んだ位置とキーフレームの時間の差
 };
 
+/** @brief SelectedKey を表す構造体です。 */
 struct SelectedKey
 {
 	ValueTrack* track = nullptr;
@@ -35,6 +45,7 @@ struct SelectedKey
 	bool IsValid() const { return track != nullptr && keyIndex >= 0; }
 };
 
+/** @brief SnapMode を表す列挙型です。 */
 enum class SnapMode
 {
 	None,
@@ -42,6 +53,7 @@ enum class SnapMode
 	Beat
 };
 
+/** @brief SnapSettings を表す構造体です。 */
 struct SnapSettings
 {
 	SnapMode mode = SnapMode::None;
@@ -52,6 +64,7 @@ struct SnapSettings
 };
 
 // タイムラインビューの設定(未使用)
+/** @brief TimelineView を表す構造体です。 */
 struct TimelineView
 {
 	float pixelsPerSecond = 100.0f;
@@ -63,6 +76,7 @@ struct TimelineView
 	ImVec2 size;   // タイムラインの描画サイズ
 };
 
+/** @brief AnimationEditor を表すクラスです。 */
 class AnimationEditor
 {
 public:
@@ -80,6 +94,9 @@ public:
 
 	/** @brief 編集中のアニメーションクリップを設定。*/
 	static void SetAnimationClip(std::shared_ptr<AnimationClip> clip);
+	/**
+	 * @brief OpenAsset の処理を行います。
+	 */
 	static void OpenAsset(const std::filesystem::path& path);
 
 #ifdef USE_IMGUI
@@ -101,6 +118,9 @@ private:
 	/** @brief タイムラインを描画。*/
 	static void DrawTimeline();
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	static void DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPerSecond, float trackY);
 
 	/** @brief キーフレームを描画。*/

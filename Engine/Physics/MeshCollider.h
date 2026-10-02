@@ -1,6 +1,7 @@
 #pragma once
 #include "Collider.h"
 
+/** @brief MeshCollider を表すクラスです。 */
 class MeshCollider : public Collider
 {
 	C_REFLECT(MeshCollider)
@@ -25,9 +26,16 @@ public:
 	C_PROPERTY(CurryEngine::PropertyAttributes::Getter("IsConvex"), CurryEngine::PropertyAttributes::Setter("SetConvex"))
 	bool convex = false; // 凸メッシュかどうかのフラグ
 
+	/**
+	 * @brief IsConvex の条件を満たすか判定します。
+	 * @return 処理結果を返します。
+	 */
 	C_FUNCTION()
 	bool IsConvex() const;
 
+	/**
+	 * @brief Convex を設定します。
+	 */
 	C_FUNCTION()
 	void SetConvex(bool isConvex);
 

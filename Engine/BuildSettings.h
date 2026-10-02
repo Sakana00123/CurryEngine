@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+/** @brief CopyItem を表す構造体です。 */
 struct CopyItem
 {
 	std::string src;						//!< コピー元のファイルパス
@@ -21,6 +22,13 @@ struct BuildSettings
 	std::string zipToolPath = "C:/Program Files/7-Zip/7z.exe";		//!< 圧縮ツールのファイルパス（例: 7-Zip）
 	std::vector<CopyItem> copyItems;	//!< ビルド時にコピーするファイル/フォルダのリスト
 
+	/**
+	 * @brief Load に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	void Load(const std::string& path = "./BuildSetting/build_settings.json");
+	/**
+	 * @brief Save の処理を行います。
+	 */
 	void Save(const std::string& path = "./BuildSetting/build_settings.json") const;
 };

@@ -3,9 +3,13 @@
 #include "Engine/Scenes/Scene.h"
 #include "Engine/Rendering/Material.h"
 
+/** @brief RenderPass を表すクラスです。 */
 class RenderPass
 {
 public:
+	/**
+	 * @brief RenderPass を破棄します。
+	 */
 	virtual ~RenderPass() = default;
 
 	// レンダリングパスの初期化処理（必要に応じてオーバーライド）
@@ -15,6 +19,9 @@ public:
 	virtual void Finalize() {}
 
 	// 各レンダリングパスで実装されるべき純粋仮想関数
+	/**
+	 * @brief 処理を実行します。
+	 */
 	virtual void Execute(RenderContext* rtx, Scene* scene) = 0;
 
 	// レンダリングパスのプロパティ描画処理（必要に応じてオーバーライド）
@@ -26,6 +33,9 @@ public:
 	//virtual std::vector<std::string> GetOutputs() const { return {}; }
 
 	// レンダーターゲットのリサイズイベントを処理するための関数
+	/**
+	 * @brief SizeChanged イベントを処理します。
+	 */
 	void OnSizeChanged(ID3D11Device* device, uint32_t width, uint32_t height);
 
 	// デバッグ用のパス名を設定するための関数
@@ -37,6 +47,9 @@ public:
 protected:
 
 	// レンダーターゲットのリサイズが必要な場合に、リストに追加するための関数
+	/**
+	 * @brief 指定された要素を登録します。
+	 */
 	void RegisterResizableRenderTexture(RenderTexture* rt);
 
 private:

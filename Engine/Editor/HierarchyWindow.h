@@ -13,6 +13,9 @@ namespace CurryEngine
 	class HierarchyWindow
 	{
 	public:
+		/**
+		 * @brief HierarchyWindow を構築します。
+		 */
 		HierarchyWindow() = default;
 		// シングルトンインスタンスへのアクセス(ただし、将来的には複数インスタンスをサポートする可能性があるため、シングルトンパターンは一時的な措置として使用しています。)
 		static HierarchyWindow& Get() {
@@ -23,6 +26,7 @@ namespace CurryEngine
 		/** @brief ヒエラルキーウィンドウを描画する関数。シーン内のオブジェクトの階層構造を表示・操作します。*/
 		void Draw(ObjectManager* objectManager);
 	private:
+		/** @brief PendingDrop を表す構造体です。 */
 		struct PendingDrop {
 			GameObject* target;       // ドロップ先
 			bool reorder;             // true=並び替え / false=親子関係

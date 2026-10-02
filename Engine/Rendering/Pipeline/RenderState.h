@@ -96,6 +96,9 @@ public:
 	 * @param device D3D11 デバイス。
 	 */
 	RenderState(ID3D11Device* device);
+	/**
+	 * @brief RenderState を破棄します。
+	 */
 	~RenderState() = default;
 
 	/**

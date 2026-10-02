@@ -2,6 +2,7 @@
 #include "RhythmAnimationClip.h"
 
 // リズムアニメーションステートの定義
+/** @brief RhythmAnimState を表す構造体です。 */
 struct RhythmAnimState
 {
 	std::string name; // ステート名

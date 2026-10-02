@@ -12,7 +12,13 @@ namespace CurryEngine::Resources
 	class AssetMaterial : public Resource
 	{
 	public:
+		/**
+		 * @brief AssetMaterial を構築します。
+		 */
 		AssetMaterial() = default;
+		/**
+		 * @brief AssetMaterial を破棄します。
+		 */
 		virtual ~AssetMaterial() = default;
 		/**
 		 * @brief ファイルからマテリアルアセットをロードします。

@@ -4,6 +4,7 @@
 class RectTransform;
 class Transform;
 
+/** @brief RectTransformUtils を表すクラスです。 */
 class RectTransformUtils
 {
 public:

@@ -20,7 +20,13 @@ class SceneManager;
 class ObjectManager
 {
 public:
+	/**
+	 * @brief ObjectManager を構築します。
+	 */
 	ObjectManager(Scene* scene);
+	/**
+	 * @brief ObjectManager を破棄します。
+	 */
 	~ObjectManager();
 
 	/** @brief フレームの開始処理を呼び出します。*/
@@ -42,18 +48,55 @@ public:
 	/** @brief 2D 描画処理を呼び出します。*/
 	void Draw(RenderContext* rtx);
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawGuizmo(RenderContext* rtx);
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawHierarchy();
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawProperty();
 
+	/**
+	 * @brief Find に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static GameObject* Find(const std::string& name);
+	/**
+	 * @brief Find に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static GameObject* Find(const ObjectId& id);
+	/**
+	 * @brief Find_Ptr に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::shared_ptr<GameObject> Find_Ptr(const std::string& name);
+	/**
+	 * @brief Find_Ptr に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::shared_ptr<GameObject> Find_Ptr(const ObjectId& id);
 
+	/**
+	 * @brief FindComponent に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::shared_ptr<Component> FindComponent(const ObjectId& id);
 
+	/**
+	 * @brief FindInObjects に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	GameObject* FindInObjects(const std::string& name);
+	/**
+	 * @brief FindInObjects に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	GameObject* FindInObjects(const ObjectId& id);
 	
 	/** @brief 指定した名前のオブジェクトを破棄予約します。*/

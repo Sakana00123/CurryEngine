@@ -13,6 +13,7 @@ using namespace nlohmann;
 
 namespace CurryEngine
 {
+	/** @brief エンジン固有型の JSON 変換関数を提供します。 */
 	template<typename T>
 	void from_json(const nlohmann::json & j, Range<T>&r) {
 		if (j.is_array() && j.size() == 2) {
@@ -53,6 +54,7 @@ namespace CurryEngine
 {
 	namespace Resources
 	{
+		/** @brief リソース型の JSON 変換関数を提供します。 */
 		template<typename T>
 		void from_json(const json& j, std::vector<T>& vec) {
 			if (j.is_array()) {
@@ -74,6 +76,7 @@ namespace CurryEngine
 	}
 }
 
+/** @brief JSON からオブジェクト ID を復元します。 */
 inline void from_json(const json& j, ObjectId& id) {
 	if (j.is_string()) {
 		id = ObjectId::FromString(j.get<std::string>());
@@ -85,6 +88,7 @@ inline void from_json(const json& j, ObjectId& id) {
 		id = ObjectId::Invalid();
 	}
 }
+/** @brief オブジェクト ID を JSON へ変換します。 */
 inline void to_json(json& j, const ObjectId& id) {
 	if (id.IsValid()) {
 		j = id.ToString();

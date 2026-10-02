@@ -23,6 +23,7 @@ namespace ComponentAttributes
  */
 class ComponentFactory {
 public:
+    /** @brief Entry を表す構造体です。 */
     struct Entry {
         std::string category;
         std::function<std::shared_ptr<Component>()> createFunc;
@@ -58,5 +59,8 @@ public:
     static std::unordered_map<std::string, Entry>& GetAll();
 
 private:
+	/**
+	 * @brief Registry の処理を行います。
+	 */
 	static std::unordered_map<std::string, Entry>& Registry();
 };

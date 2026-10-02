@@ -5,6 +5,7 @@
 
 namespace CurryEngine
 {
+	/** @brief CompoundCommand を表すクラスです。 */
 	class CompoundCommand : public IEditorCommand
 	{
 	public:
@@ -13,6 +14,9 @@ namespace CurryEngine
 		/// </summary>
 		/// <param name="description">コマンドの説明。Undo/Redoスタックで表示される。</param>
 		CompoundCommand(const std::string& description = "Compound Command") : m_description(description) {}
+		/**
+		 * @brief CompoundCommand を破棄します。
+		 */
 		~CompoundCommand() override = default;
 
 		/**
@@ -27,10 +31,20 @@ namespace CurryEngine
 		 */
 		bool IsEmpty() const;
 
+		/**
+		 * @brief 処理を実行します。
+		 */
 		void Execute() override;
 		
+		/**
+		 * @brief Undo の処理を行います。
+		 */
 		void Undo() override;
 
+		/**
+		 * @brief GetDescription に対応する値を取得します。
+		 * @return 処理結果を返します。
+		 */
 		std::string GetDescription() const override;
 
 	private:

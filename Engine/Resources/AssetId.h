@@ -72,6 +72,7 @@ namespace CurryEngine
 namespace std
 {
 	template<>
+	/** @brief hash を表す構造体です。 */
 	struct hash<CurryEngine::Resources::AssetId>
 	{
 		std::size_t operator()(const CurryEngine::Resources::AssetId& assetId) const noexcept

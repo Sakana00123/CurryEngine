@@ -2,6 +2,7 @@
 #include "Engine/Core/Component.h"
 #include "Engine/Core/Transform.h"
 
+/** @brief BeatScaler2DComponent を表すクラスです。 */
 class BeatScaler2DComponent : public Component
 {
 	C_REFLECT(BeatScaler2DComponent)

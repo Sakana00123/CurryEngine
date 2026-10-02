@@ -14,6 +14,9 @@
 template<typename T>
 struct Reference
 {
+	/**
+	 * @brief Invalid の処理を行います。
+	 */
 	ObjectId id = ObjectId::Invalid();
 
 	// 参照先のオブジェクトが有効かどうかをチェックする
@@ -90,6 +93,7 @@ template<typename T>
 struct reference_inner_type {};
 
 template<typename T>
+/** @brief reference_inner_type を表す構造体です。 */
 struct reference_inner_type<Reference<T>> {
 	using type = T;
 };

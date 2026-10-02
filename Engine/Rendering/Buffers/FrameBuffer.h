@@ -4,10 +4,17 @@
 #include <wrl.h>
 #include <cstdint>
 
+/** @brief FrameBuffer を表すクラスです。 */
 class FrameBuffer
 {
 public:
+    /**
+     * @brief FrameBuffer を構築します。
+     */
     FrameBuffer(ID3D11Device* device, uint32_t width, uint32_t height, bool withDepthStencil = true);
+    /**
+     * @brief FrameBuffer を破棄します。
+     */
     virtual ~FrameBuffer() = default;
 
     Microsoft::WRL::ComPtr<ID3D11RenderTargetView> render_target_view;
@@ -17,7 +24,13 @@ public:
 
     void Clear(ID3D11DeviceContext* immediate_context,
         float r = 0, float g = 0, float b = 0, float a = 1, float depth = 1);
+    /**
+     * @brief Activate の処理を行います。
+     */
     void Activate(ID3D11DeviceContext* immediate_context);
+    /**
+     * @brief Deactivate の処理を行います。
+     */
     void Deactivate(ID3D11DeviceContext* immediate_context);
 
 private:

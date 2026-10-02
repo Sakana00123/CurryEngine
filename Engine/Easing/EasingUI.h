@@ -1,6 +1,7 @@
 #pragma once
 #include "EasingComponent.h"
 
+/** @brief EasingAnchoredPosition を表すクラスです。 */
 class EasingAnchoredPosition : public EasingComponent
 {
 	XMFLOAT2 from;
@@ -8,10 +9,19 @@ class EasingAnchoredPosition : public EasingComponent
 	EasingHandler handler;
 	bool useUnscaledTime = true;
 public:
+	/**
+	 * @brief 初期化します。
+	 */
 	void Initialize() override;
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update(float deltaTime) override;
 
 #ifdef USE_IMGUI
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawProperty(const PropertyDrawContext& context) override;
 #endif // USE_IMGUI
 

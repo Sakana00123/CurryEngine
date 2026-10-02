@@ -1,6 +1,7 @@
 #pragma once
 #include <filesystem>
 
+/** @brief エンジンが使用する標準パスを定義します。 */
 namespace EnginePaths
 {
     // アセット関連

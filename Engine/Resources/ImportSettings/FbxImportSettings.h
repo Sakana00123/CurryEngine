@@ -5,6 +5,7 @@ namespace CurryEngine
 {
 	namespace Resources
 	{
+		/** @brief FbxImportScaleMode を表す列挙型です。 */
 		enum class FbxImportScaleMode
 		{
 			None, // スケーリングなし

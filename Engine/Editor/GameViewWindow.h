@@ -4,10 +4,17 @@ class Scene;
 
 namespace CurryEngine
 {
+	/** @brief GameViewWindow を表すクラスです。 */
 	class GameViewWindow
 	{
 	public:
+		/**
+		 * @brief GameViewWindow を構築します。
+		 */
 		GameViewWindow() = default;
+		/**
+		 * @brief GameViewWindow を破棄します。
+		 */
 		virtual ~GameViewWindow() = default;
 		// シングルトンインスタンスへのアクセス(ただし、将来的には複数インスタンスをサポートする可能性があるため、シングルトンパターンは一時的な措置として使用しています。)
 		static GameViewWindow& Get() {

@@ -10,6 +10,9 @@ namespace CurryEngine
 	class IntDrawer : public IPropertyDrawer
 	{
 	public:
+		/**
+		 * @brief 描画処理を行います。
+		 */
 		void Draw(const PropertyInfo& prop, const PropertyDrawContext& context) override;
 	private:
 		DrawerState<int> m_state;

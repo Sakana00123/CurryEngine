@@ -2,6 +2,7 @@
 #include "Engine/Core/Reflection/Meta.h"
 
 C_ENUM()
+/** @brief AssetType を表す列挙型です。 */
 enum class AssetType
 {
 	Unknown,

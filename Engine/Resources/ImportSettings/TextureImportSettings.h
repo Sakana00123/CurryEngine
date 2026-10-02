@@ -3,6 +3,7 @@
 
 namespace CurryEngine::Resources
 {
+	/** @brief TextureImporterType を表す列挙型です。 */
 	enum class TextureImporterType
 	{
 		Default, // デフォルトのテクスチャインポーター。一般的なテクスチャのインポートに使用される設定を提供します。

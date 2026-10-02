@@ -58,6 +58,9 @@ public:
 	/** @brief トランスフォーム変更時のコールバック。*/
 	void OnTransformChanged() override;
 
+	/**
+	 * @brief Awake の処理を行います。
+	 */
 	void Awake() override;
 
 	/** @brief 開始処理。シーン開始時に一度だけ呼び出されます。*/

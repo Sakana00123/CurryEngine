@@ -16,6 +16,7 @@
 
 #include <ImGradientHDR.h>
 
+/** @brief ComputeParticleSystem を表すクラスです。 */
 class ComputeParticleSystem
 {
 public:
@@ -27,6 +28,7 @@ public:
 	static constexpr UINT NumParticleThread = 1024;
 
 	//パーティクル生成用構造体
+	/** @brief EmitParticleData を表す構造体です。 */
 	struct EmitParticleData
 	{
 		DirectX::XMFLOAT4 parameter{ 0,1,-1,-1 };	//x : 描画モード, y : 生存時間, z : 生成遅延時間（CPU側）/ 生存時間記録用（GPU側）, w : グラデーションテクスチャインデックス(0〜MaxGradientSlots-1, -1のときグラデーションなし)
@@ -59,6 +61,7 @@ public:
 
 	//パーティクル構造体
 	//アプリケーション側では使用しないが、形式として必要なのでここで宣言しておく
+	/** @brief ParticleData を表す構造体です。 */
 	struct ParticleData
 	{
 		DirectX::XMFLOAT4 parameter{ 0,1,-1,-1 };	//x : 描画モード, y : 生存時間, z : 生成遅延時間（CPU側）/ 生存時間記録用（GPU側）, w : グラデーションテクスチャインデックス(0〜MaxGradientSlots-1, -1のときグラデーションなし)
@@ -95,6 +98,7 @@ public:
 	};
 
 	//パーティクルヘッダー構造体
+	/** @brief ParticleHeader を表す構造体です。 */
 	struct ParticleHeader
 	{
 		UINT alive;			//生存フラグ
@@ -104,6 +108,7 @@ public:
 	};
 
 	//汎用情報定義
+	/** @brief CommonConstants を表す構造体です。 */
 	struct CommonConstants
 	{
 		//float deltaTime;					//デルタタイム
@@ -115,6 +120,7 @@ public:
 	};
 
 	//バイトニックソート情報定義
+	/** @brief BitonicSortConstants を表す構造体です。 */
 	struct BitonicSortConstants
 	{
 		UINT increment;
@@ -126,16 +132,40 @@ public:
 
 public:
 	ComputeParticleSystem(ID3D11Device* device, UINT particlesCount, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView,
+		/**
+		 * @brief XMUINT2 の処理を行います。
+		 */
 		DirectX::XMUINT2 splitCount = DirectX::XMUINT2(1, 1));
+	/**
+	 * @brief ComputeParticleSystem を破棄します。
+	 */
 	~ComputeParticleSystem();
 
+	/**
+	 * @brief Emit の処理を行います。
+	 */
 	void Emit(const EmitParticleData& data);
+	/**
+	 * @brief PixelEmitBegin の処理を行います。
+	 */
 	void PixelEmitBegin(ID3D11DeviceContext* immediateContext, float deltaTime);
+	/**
+	 * @brief PixelEmitEnd の処理を行います。
+	 */
 	void PixelEmitEnd(ID3D11DeviceContext* immediateContext);
 
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update(ID3D11DeviceContext* immediateContext, float deltaTime);
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void Render(ID3D11DeviceContext* immediateContext);
 
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawGUI();
 
 private:
@@ -172,10 +202,20 @@ private:
 	//	08バイト目：パーティクル破棄数
 	//	12バイト目：パーティクル生成用DispatchIndirect情報
 	static constexpr UINT NumCurrentParticleOffset = 0;
+	/**
+	 * @brief sizeof の処理を行います。
+	 */
 	static constexpr UINT NumPreviousParticleOffset = NumCurrentParticleOffset + sizeof(UINT);
+	/**
+	 * @brief sizeof の処理を行います。
+	 */
 	static constexpr UINT NumDeadParticleOffset = NumPreviousParticleOffset + sizeof(UINT);
+	/**
+	 * @brief sizeof の処理を行います。
+	 */
 	static constexpr UINT EmitDispatchIndirectOffset = NumDeadParticleOffset + sizeof(UINT);
 	//DrawInstanced用DrawIndirect用構造体
+	/** @brief DrawIndirect を表す構造体です。 */
 	struct DrawIndirect
 	{
 		UINT vertexCountPerInstance;
@@ -188,11 +228,26 @@ private:
 	//	40バイト目：DrawIndirect情報
 	//	40バイト目：ピクセルパーティクル生成数カウンター
 	//	44バイト目：DrawIndirect情報
+	/**
+	 * @brief sizeof の処理を行います。
+	 */
 	static constexpr UINT UpdateDispatchIndirectOffset = EmitDispatchIndirectOffset + sizeof(DispatchIndirect);
+	/**
+	 * @brief sizeof の処理を行います。
+	 */
 	static constexpr UINT NumEmitParticleIndexOffset = UpdateDispatchIndirectOffset + sizeof(DispatchIndirect);
+	/**
+	 * @brief sizeof の処理を行います。
+	 */
 	static constexpr UINT NumEmitPixelParticleIndirectOffset = NumEmitParticleIndexOffset + sizeof(UINT);
+	/**
+	 * @brief sizeof の処理を行います。
+	 */
 	static constexpr UINT DrawIndirectOffset = NumEmitPixelParticleIndirectOffset + sizeof(UINT);
 
+	/**
+	 * @brief sizeof の処理を行います。
+	 */
 	static constexpr UINT DrawIndirectSize = DrawIndirectOffset + sizeof(DrawIndirect);
 
 	//DrawIndirectを用いるため、RWStructuredBufferを用いるものに変更
@@ -226,6 +281,9 @@ public:
 
 	// 指定スロットにグラデーションをベイクして書き込む
 	// slot : エミッタのインデックスに対応（parameter.wに渡す値と一致させる）
+	/**
+	 * @brief Gradient を設定します。
+	 */
 	void SetGradient(UINT slot, const ImGradientHDRState& state);
 
 private:
@@ -237,6 +295,9 @@ private:
 	static constexpr UINT GradientResolution = 128;
 
 	// Texture1DArray 初期化
+	/**
+	 * @brief InitGradientTexture の処理を行います。
+	 */
 	void InitGradientTexture(ID3D11Device* device);
 	
 

@@ -30,6 +30,7 @@ public:
 		DirectX::XMFLOAT2 texcoord{};
 	};
 #ifndef USE_MATERIAL
+	/** @brief Constants を表す構造体です。 */
 	struct Constants
 	{
 		DirectX::XMFLOAT4X4 world;
@@ -53,6 +54,9 @@ public:
 	
 	/** @brief コンストラクタ。*/
 	PrimitiveRenderer();
+	/**
+	 * @brief PrimitiveRenderer を破棄します。
+	 */
 	virtual ~PrimitiveRenderer() = default;
 
 	/*
@@ -96,9 +100,15 @@ public:
 	Math::BoundingBox CalculateAABB() const override;
 	
 	// シリアライズ
+	/**
+	 * @brief Serialize の処理を行います。
+	 */
 	json Serialize() const override;
 
 	// デシリアライズ
+	/**
+	 * @brief Deserialize の処理を行います。
+	 */
 	void Deserialize(const json& j) override;
 
 protected:

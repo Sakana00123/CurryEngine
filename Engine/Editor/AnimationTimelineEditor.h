@@ -11,14 +11,21 @@
 
 namespace CurryEngine::Editor
 {
+    /** @brief AnimationTimelineEditor を表すクラスです。 */
     class AnimationTimelineEditor
     {
     public:
 		AnimationTimelineEditor() { ResetStateFlags(); }
 
         void SetTarget(std::shared_ptr<Resources::AnimationTimeline> timeline) { m_timeline = timeline; m_selectedKey.reset(); }
+        /**
+         * @brief 描画処理を行います。
+         */
         void Draw(std::weak_ptr<RuntimeAnimatorController> runtimeController, RenderContext* context); // ImGuiウィンドウ内から呼ぶ
 
+		/**
+		 * @brief 描画処理を行います。
+		 */
 		void RenderPreview(RenderContext* context); // プレビュー用の描画処理
 
 		// プレビューウィンドウがフォーカスされているかどうかを取得
@@ -26,12 +33,33 @@ namespace CurryEngine::Editor
     private:
         struct KeySelection { size_t trackIndex; size_t keyIndex; bool isDragging = false; bool acceptDrag = false; };
 
+        /**
+         * @brief 描画処理を行います。
+         */
         void DrawToolbar(std::weak_ptr<RuntimeAnimatorController> runtimeController);
+        /**
+         * @brief 描画処理を行います。
+         */
         void DrawTrackList();
+        /**
+         * @brief 描画処理を行います。
+         */
         void DrawTimelineArea(std::weak_ptr<RuntimeAnimatorController> runtimeController);
+        /**
+         * @brief 描画処理を行います。
+         */
         void DrawRuler(ImDrawList* dl, ImVec2 origin, float width);
+        /**
+         * @brief 描画処理を行います。
+         */
         void DrawTrackRow(ImDrawList* dl, ImVec2 rowOrigin, float width, size_t trackIndex);
+        /**
+         * @brief TimeToX の処理を行います。
+         */
         float TimeToX(float time, float originX, float width) const;
+        /**
+         * @brief XToTime の処理を行います。
+         */
         float XToTime(float x, float originX, float width) const;
 
         std::shared_ptr<Resources::AnimationTimeline> m_timeline = nullptr;
@@ -42,6 +70,7 @@ namespace CurryEngine::Editor
         //ObjectId selectedAnimatorId;
 
 		uint64_t m_states = 0; // ビットフラグで状態を管理するための変数
+        /** @brief StateFlags を表す列挙型です。 */
         enum class StateFlags : uint64_t
         {
 			IsPlaying,

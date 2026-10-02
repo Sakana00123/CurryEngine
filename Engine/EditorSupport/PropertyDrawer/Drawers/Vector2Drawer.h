@@ -11,6 +11,9 @@ namespace CurryEngine
 	class Vector2Drawer : public IPropertyDrawer
 	{
 	public:
+		/**
+		 * @brief 描画処理を行います。
+		 */
 		void Draw(const PropertyInfo& prop, const PropertyDrawContext& context) override;
 	private:
 		DrawerState<Vector2> m_state;

@@ -19,6 +19,10 @@ class Mask : public UIComponent
 	C_REFLECT(Mask)
 public:
 	// Graphic があればそのサイズを、なければRectTransformのサイズを使用してマスク矩形を計算します。
+	/**
+	 * @brief GetScissorRect に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	D3D11_RECT GetScissorRect() const;
 
 	///**

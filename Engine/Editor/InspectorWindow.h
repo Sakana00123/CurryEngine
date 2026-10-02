@@ -11,6 +11,9 @@ namespace CurryEngine
 	class InspectorWindow
 	{
 	public:
+		/**
+		 * @brief InspectorWindow を構築します。
+		 */
 		InspectorWindow() = default;
 
 		// シングルトンインスタンスへのアクセス(ただし、将来的には複数インスタンスをサポートする可能性があるため、シングルトンパターンは一時的な措置として使用しています。)

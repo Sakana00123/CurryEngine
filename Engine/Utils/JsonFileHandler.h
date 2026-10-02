@@ -6,6 +6,7 @@
 
 using json = nlohmann::json;
 
+/** @brief JsonIOFormat を表す列挙型です。 */
 enum class JsonIOFormat
 {
 	Text,
@@ -13,6 +14,7 @@ enum class JsonIOFormat
 	Auto // ファイルの拡張子に基づいて自動的にフォーマットを判断する（例: .binならBinary、それ以外はText）
 };
 
+/** @brief JsonIOError を表す列挙型です。 */
 enum class JsonIOError
 {
 	None,
@@ -22,6 +24,7 @@ enum class JsonIOError
 	UnknownError
 };
 
+/** @brief FileAttribute を表す列挙型です。 */
 enum class FileAttribute
 {
 	ReadOnly = FILE_ATTRIBUTE_READONLY,
@@ -31,6 +34,7 @@ enum class FileAttribute
 	Normal = FILE_ATTRIBUTE_NORMAL
 };
 
+/** @brief JsonFileHandler を表すクラスです。 */
 class JsonFileHandler
 {
 public:

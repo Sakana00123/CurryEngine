@@ -1,10 +1,17 @@
 #pragma once
 #include "AnimatorControllerEditorWindow.h"
 
+/** @brief AnimatorControllerEditor を表すクラスです。 */
 class AnimatorControllerEditor
 {
 public:
+	/**
+	 * @brief AnimatorControllerEditor を構築します。
+	 */
 	AnimatorControllerEditor();
+	/**
+	 * @brief AnimatorControllerEditor を破棄します。
+	 */
 	~AnimatorControllerEditor();
 
 

@@ -10,14 +10,33 @@
 // https://learnopengl.com/Guest-Articles/2021/CSM
 // https://learn.microsoft.com/en-us/windows/win32/dxtecharts/cascaded-shadow-maps
 // https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-10-parallel-split-shadow-maps-programmable-gpus
+/** @brief CascadedShadowMaps を表すクラスです。 */
 class CascadedShadowMaps
 {
 public:
+	/**
+	 * @brief CascadedShadowMaps を構築します。
+	 */
 	CascadedShadowMaps(ID3D11Device* device, UINT width, UINT height, UINT cascadeCount = 4);
+	/**
+	 * @brief CascadedShadowMaps を破棄します。
+	 */
 	virtual ~CascadedShadowMaps() = default;
+	/**
+	 * @brief CascadedShadowMaps を構築します。
+	 */
 	CascadedShadowMaps(const CascadedShadowMaps&) = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	CascadedShadowMaps& operator=(const CascadedShadowMaps&) = delete;
+	/**
+	 * @brief CascadedShadowMaps を構築します。
+	 */
 	CascadedShadowMaps(CascadedShadowMaps&&) noexcept = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	CascadedShadowMaps& operator=(CascadedShadowMaps&&) noexcept = delete;
 
 private:
@@ -31,6 +50,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView;
 	std::shared_ptr<RawTexture2D> depthTexture;
 
+	/** @brief Constants を表す構造体です。 */
 	struct Constants
 	{
 		DirectX::XMFLOAT4X4 cascadedMatrices[4];
@@ -41,6 +61,9 @@ private:
 public:
 
 	// Resize the depth map and related views
+	/**
+	 * @brief Resize の処理を行います。
+	 */
 	void Resize(ID3D11Device* device, UINT width, UINT height);
 
 
@@ -51,6 +74,9 @@ public:
 		float criticalDepthValue/*If this value is 0, the camera's far panel distance is used.*/,
 		UINT slot);
 
+	/**
+	 * @brief Deactivate の処理を行います。
+	 */
 	//void Deactivate(ID3D11DeviceContext* immediateContext);
 	void Clear(ID3D11DeviceContext* immediateContext)
 	{

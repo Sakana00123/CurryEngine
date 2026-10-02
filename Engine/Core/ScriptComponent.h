@@ -2,10 +2,14 @@
 #include "Component.h"
 #include "Engine/Physics/CollisionEvent.h"
 
+/** @brief ScriptComponent を表すクラスです。 */
 class ScriptComponent : public Component, public ICollisionEventCallback, public ITriggerEventCallback
 {
 	C_REFLECT(ScriptComponent)
 public:
+	/**
+	 * @brief ScriptComponent を構築します。
+	 */
 	ScriptComponent() = default;
 	virtual ~ScriptComponent() override { OnScriptUnload(); }
 
@@ -62,12 +66,24 @@ public:
 
 public:
 
+	/**
+	 * @brief ScriptUnload イベントを処理します。
+	 */
 	void OnScriptUnload();
 
+	/**
+	 * @brief PreScriptReload イベントを処理します。
+	 */
 	void OnPreScriptReload();
 
+	/**
+	 * @brief PostScriptReload イベントを処理します。
+	 */
 	void OnPostScriptReload();
 
+	/**
+	 * @brief ScriptReload イベントを処理します。
+	 */
 	void OnScriptReload();
 
 	const std::string& GetScriptName() const { return scriptName; }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 
+/** @brief TimelineEvent を表す構造体です。 */
 struct TimelineEvent
 {
 	int startFrame;
@@ -12,10 +13,17 @@ struct TimelineEvent
 	unsigned int color; // RGBA format
 };
 
+/** @brief Timeline を表すクラスです。 */
 class Timeline : public ImSequencer::SequenceInterface
 {
 public:
+	/**
+	 * @brief Timeline を構築します。
+	 */
 	Timeline() = default;
+	/**
+	 * @brief Timeline を破棄します。
+	 */
 	~Timeline() = default;
 	// Inherited via SequenceInterface
 	int GetFrameMin() const override { return frameMin; }
@@ -88,6 +96,9 @@ public:
 	void Clear() { events.clear(); }
 
 	// GUI rendering function
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawGUI();
 
 private:

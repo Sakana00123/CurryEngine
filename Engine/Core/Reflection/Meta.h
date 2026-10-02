@@ -52,6 +52,7 @@ namespace CurryEngine
 		struct ReadOnly {};
 
 		// プロパティを特定のクラス内で非表示にする
+		/** @brief HideInClass を表す構造体です。 */
 		struct HideInClass
 		{
 			const char* className; // 非表示にするクラス名
@@ -59,6 +60,7 @@ namespace CurryEngine
 		};
 
 		// プロパティにツールチップを表示する
+		/** @brief Tooltip を表す構造体です。 */
 		struct Tooltip
 		{
 			const char* text;
@@ -66,6 +68,7 @@ namespace CurryEngine
 		};
 
 		// プロパティの値を指定した範囲内に制限する
+		/** @brief Range を表す構造体です。 */
 		struct Range
 		{
 			float _min;
@@ -74,6 +77,7 @@ namespace CurryEngine
 		};
 		
 		// プロパティの編集速度を指定する（例: ImGui の DragInt/DragFloat で使用）
+		/** @brief Speed を表す構造体です。 */
 		struct Speed
 		{
 			float value;
@@ -81,6 +85,7 @@ namespace CurryEngine
 		};
 
 		// プロパティが参照するオブジェクトの型を指定する（例: Component/GameObject など）。エディタでオブジェクト参照のドロップ操作をサポートするために使用します。
+		/** @brief ObjectReference を表す構造体です。 */
 		struct ObjectReference
 		{
 			const char* targetType; // 参照先の型名 (例: "Component", "GameObject")
@@ -88,6 +93,7 @@ namespace CurryEngine
 		};
 
 		// プロパティの表示フォーマットを指定する（例: "%.3f" など）。エディタでの数値表示に使用します。
+		/** @brief Format を表す構造体です。 */
 		struct Format
 		{
 			const char* formatString; // 表示フォーマット (例: "%.3f" など)
@@ -95,6 +101,7 @@ namespace CurryEngine
 		};
 
 		// ゲッターメソッドを指定する属性。C# のプロパティのように、フィールドではなくゲッターメソッドで値を取得する場合に使用します。
+		/** @brief Getter を表す構造体です。 */
 		struct Getter
 		{
 			const char* functionName; // ゲッターメソッドの名前 (例: "GetHealth")
@@ -102,6 +109,7 @@ namespace CurryEngine
 		};
 
 		// セッターメソッドを指定する属性。C# のプロパティのように、フィールドではなくセッターメソッドで値を設定する場合に使用します。
+		/** @brief Setter を表す構造体です。 */
 		struct Setter
 		{
 			const char* functionName; // セッターメソッドの名前 (例: "SetHealth")
@@ -109,6 +117,7 @@ namespace CurryEngine
 		};
 
 		// 値変更時に呼び出すメソッドを指定する属性。プロパティの値が変更されたときに、指定したメソッドを呼び出すために使用します。
+		/** @brief OnPropertyChanged を表す構造体です。 */
 		struct OnPropertyChanged
 		{
 			const char* functionName; // 値変更時に呼び出すメソッドの名前 (例: "OnHealthChanged")
@@ -116,6 +125,7 @@ namespace CurryEngine
 		};
 
 		// カスタムドロワーを指定する属性。エディタでプロパティの描画に使用するカスタムドロワーを指定します。
+		/** @brief CustomDrawer を表す構造体です。 */
 		struct CustomDrawer
 		{
 			const char* drawerType; // カスタムドロワーの種類を識別する文字列 (例: "Quaternion_Euler" など)。エディタでプロパティの描画に使用するカスタムドロワーを指定します。
@@ -123,6 +133,7 @@ namespace CurryEngine
 		};
 
 		// ダイアログのフィルタを指定する属性。エディタでファイルダイアログを表示するときに使用します。
+		/** @brief DialogFilter を表す構造体です。 */
 		struct DialogFilter
 		{
 			const char* filterString; // ダイアログのフィルタ文字列 (例: "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0")
@@ -130,6 +141,7 @@ namespace CurryEngine
 		};
 
 		// 列挙型として扱うプロパティに付ける属性。エディタで列挙型のドロップダウンを表示するために使用します。
+		/** @brief Enum を表す構造体です。 */
 		struct Enum
 		{
 			const char* enumType; // 列挙型の型名 (例: "Color", "BlendMode" など)。エディタで列挙型のドロップダウンを表示するために使用します。
@@ -144,6 +156,7 @@ namespace CurryEngine
 		//};
 
 		// アセットの拡張子を指定する属性。エディタでアセットの種類を判別するために使用します。
+		/** @brief AssetTypeExtension を表す構造体です。 */
 		struct AssetTypeExtension
 		{
 			const char* extension; // アセットの拡張子 (例: ".png", ".fbx" など)
@@ -168,6 +181,7 @@ namespace CurryEngine
 // ---- メタ情報構造体 ----
 
 // 属性情報
+/** @brief AttributeInfo を表す構造体です。 */
 struct AttributeInfo
 {
 	std::string name;					// 属性名 (例: "HideInInspector", "Range", "Tooltip")
@@ -175,6 +189,7 @@ struct AttributeInfo
 };
 
 // プロパティのメタ情報
+/** @brief PropertyInfo を表す構造体です。 */
 struct PropertyInfo
 {
 	std::string type;
@@ -200,6 +215,7 @@ struct PropertyInfo
 };
 
 // メソッドのパラメータ情報
+/** @brief ParameterInfo を表す構造体です。 */
 struct ParameterInfo
 {
 	std::string type;
@@ -207,6 +223,7 @@ struct ParameterInfo
 };
 
 // メソッドのメタ情報
+/** @brief MethodInfo を表す構造体です。 */
 struct MethodInfo
 {
 	std::string returnType;
@@ -246,6 +263,7 @@ struct MethodInfo
 };
 
 // クラスのメタ情報
+/** @brief ClassMeta を表す構造体です。 */
 struct ClassMeta
 {
 	std::string name;
@@ -255,16 +273,29 @@ struct ClassMeta
 	bool isScript = false; // スクリプトクラスかどうか (エディタでスクリプトクラスを特別扱いするために使用)
 
 	// 基底クラスを再帰的に検索してプロパティを取得する関数
+	/**
+	 * @brief FindProperty に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	const PropertyInfo* FindProperty(const std::string& propName) const;
 
 	// 基底クラスを再帰的に検索してメソッドを取得する関数
+	/**
+	 * @brief FindMethod に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	const MethodInfo* FindMethod(const std::string& methodName) const;
 
 	// 指定した基底クラスから派生しているかどうかを判定する関数
+	/**
+	 * @brief IsDerivedFrom の条件を満たすか判定します。
+	 * @return 処理結果を返します。
+	 */
 	bool IsDerivedFrom(const std::string& baseName) const;
 };
 
 // 列挙型の値のメタ情報
+/** @brief EnumValueInfo を表す構造体です。 */
 struct EnumValueInfo
 {
 	std::string name;
@@ -273,6 +304,7 @@ struct EnumValueInfo
 };
 
 // 列挙型のメタ情報
+/** @brief EnumInfo を表す構造体です。 */
 struct EnumInfo
 {
 	std::string name;
@@ -282,6 +314,7 @@ struct EnumInfo
 };
 
 // 構造体のメタ情報
+/** @brief StructInfo を表す構造体です。 */
 struct StructInfo
 {
 	std::string name;
@@ -289,26 +322,63 @@ struct StructInfo
 };
 
 // ---- リフレクション登録システム ----
+/** @brief ReflectionRegistry を表すクラスです。 */
 class ReflectionRegistry
 {
 public:
 	// クラス登録
+	/**
+	 * @brief 指定された要素を登録します。
+	 */
 	static void Register(const ClassMeta& meta);
 	// 列挙型登録
+	/**
+	 * @brief 指定された要素を登録します。
+	 */
 	static void RegisterEnum(const EnumInfo& meta);
 	// 構造体登録
+	/**
+	 * @brief 指定された要素を登録します。
+	 */
 	static void RegisterStruct(const StructInfo& meta);
 	// クラス検索
+	/**
+	 * @brief FindClass に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static const ClassMeta* FindClass(const std::string& name);
 	// 列挙型検索
+	/**
+	 * @brief FindEnum に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static const EnumInfo* FindEnum(const std::string& name);
 	// 構造体検索
+	/**
+	 * @brief FindStruct に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static const StructInfo* FindStruct(const std::string& name);
 	// 全スクリプトのメタ情報をクリア
+	/**
+	 * @brief 指定された要素の登録を解除します。
+	 */
 	static void UnregisterScriptClasses();
 
+	/**
+	 * @brief GetClassRegistry に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::unordered_map<std::string, ClassMeta>& GetClassRegistry();
+	/**
+	 * @brief GetEnumRegistry に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::unordered_map<std::string, EnumInfo>& GetEnumRegistry();
+	/**
+	 * @brief GetStructRegistry に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static std::unordered_map<std::string, StructInfo>& GetStructRegistry();
 };
 

@@ -68,6 +68,9 @@ protected:
 private:
 #ifdef USE_IMGUI
 	bool enableScaleLink = false; // スケールのリンクを有効にするか。true の場合、エディタ上で編集するとき、X/Y/Z すべてのスケールを同時に変更します。
+	/**
+	 * @brief Vector3 の処理を行います。
+	 */
 	Vector3 lastValidScale = Vector3(1, 1, 1);// 最後に保存された有効なスケールの値(0を含まない)。スケールのリンクが有効な場合、これを基準にスケールを変更します。
 #endif // _DEBUG
 public:
@@ -88,6 +91,9 @@ public:
 		worldRotation(0, 0, 0, 1),
 		worldScale(1, 1, 1)
 	{}
+	/**
+	 * @brief Transform を破棄します。
+	 */
 	virtual ~Transform() override = default;
 
 	/** @brief 終了処理として呼び出されます。*/

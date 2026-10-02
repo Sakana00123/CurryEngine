@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+/** @brief Ease を表す列挙型です。 */
 enum class Ease : uint8_t
 {
 	Linear,
@@ -36,6 +37,7 @@ enum class Ease : uint8_t
 	InOutBack
 };
 
+/** @brief UpdateType を表す列挙型です。 */
 enum class UpdateType : uint8_t
 {
 	Update,
@@ -43,28 +45,60 @@ enum class UpdateType : uint8_t
 	LateUpdate
 };
 
+/** @brief LoopType を表す列挙型です。 */
 enum class LoopType : uint8_t
 {
 	Restart,
 	Yoyo
 };
 
+/** @brief ITween を表すクラスです。 */
 class ITween
 {
 public:
+	/**
+	 * @brief ITween を破棄します。
+	 */
 	virtual ~ITween() = default;
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void Update(float deltaTime);
 	bool IsComplete() const { return m_completed; }
+	/**
+	 * @brief Kill の処理を行います。
+	 */
 	void Kill();
 
+	/**
+	 * @brief Update を設定します。
+	 */
 	ITween& SetUpdate(UpdateType type);
+	/**
+	 * @brief Start イベントを処理します。
+	 */
 	ITween& OnStart(std::function<void()> func);
+	/**
+	 * @brief Update イベントを処理します。
+	 */
 	ITween& OnUpdate(std::function<void()> func);
+	/**
+	 * @brief Complete イベントを処理します。
+	 */
 	ITween& OnComplete(std::function<void()> func);
+	/**
+	 * @brief Loop を設定します。
+	 */
 	ITween& SetLoop(int loop, LoopType type);
+	/**
+	 * @brief Delay を設定します。
+	 */
 	ITween& SetDelay(float delay);
 protected:
 
+	/**
+	 * @brief UpdateInternal イベントを処理します。
+	 */
 	virtual void OnUpdateInternal(float deltaTime) = 0;
 
 	float m_delay = 0.0f; // 遅延時間
@@ -85,10 +119,17 @@ protected:
 };
 
 template<typename T>
+/** @brief Tween を表すクラスです。 */
 class Tween : public ITween
 {
 public:
+	/**
+	 * @brief Tween を構築します。
+	 */
 	Tween(T* target, T from, T to, float duration);
+	/**
+	 * @brief Tween を破棄します。
+	 */
 	~Tween() override = default;
 
 	Tween<T>& SetEase(Ease ease)
@@ -98,6 +139,9 @@ public:
 	}
 
 protected:
+	/**
+	 * @brief UpdateInternal イベントを処理します。
+	 */
 	void OnUpdateInternal(float deltaTime) override;
 
 private:
@@ -107,13 +151,29 @@ private:
 	Ease m_ease; // イージングタイプ
 };
 
+/** @brief Sequence を表すクラスです。 */
 class Sequence : public ITween
 {
 public:
+	/**
+	 * @brief Sequence を構築します。
+	 */
 	Sequence();
+	/**
+	 * @brief Sequence を破棄します。
+	 */
 	~Sequence() override = default;
+	/**
+	 * @brief Append の処理を行います。
+	 */
 	Sequence& Append(std::shared_ptr<ITween> tween);
+	/**
+	 * @brief Join の処理を行います。
+	 */
 	Sequence& Join(std::shared_ptr<ITween> tween);
+	/**
+	 * @brief Prepend の処理を行います。
+	 */
 	Sequence& Prepend(std::shared_ptr<ITween> tween);
 private:
 	std::vector<std::shared_ptr<ITween>> tweens;
@@ -124,6 +184,7 @@ private:
 };
 
 
+/** @brief TweenHandle を表す構造体です。 */
 struct TweenHandle
 {
 	std::shared_ptr<ITween> tween;

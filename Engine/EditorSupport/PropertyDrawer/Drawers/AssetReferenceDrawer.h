@@ -11,6 +11,9 @@ namespace CurryEngine
 	class AssetReferenceDrawer : public IPropertyDrawer
 	{
 	public:
+		/**
+		 * @brief 描画処理を行います。
+		 */
 		void Draw(const PropertyInfo& prop, const PropertyDrawContext& context) override;
 	private:
 		DrawerState<std::string> m_state;

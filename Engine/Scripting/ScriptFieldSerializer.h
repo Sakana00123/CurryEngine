@@ -7,6 +7,11 @@ namespace CurryEngine
 {
 	namespace ScriptFieldSerializer
 	{
+		/**
+		 * @brief スクリプトフィールド値を JSON 文字列へ変換します。
+		 * @param value 変換するフィールド値。
+		 * @return JSON 形式の文字列。未対応型の場合は型名を含む文字列。
+		 */
 		inline std::string ToJson(const std::any& value)
 		{
 			if (value.type() == typeid(int))
@@ -54,6 +59,13 @@ namespace CurryEngine
 			return "\"[Unsupported:" + std::string(value.type().name()) + "]\"";
 		}
 
+		/**
+		 * @brief JSON 値を指定されたスクリプト型へ変換します。
+		 * @param typeStr 変換先の型名。
+		 * @param j 変換元の JSON 値。
+		 * @return 変換結果を保持する値。
+		 * @throws std::runtime_error 未対応の型名が指定された場合。
+		 */
 		inline std::any FromJson(const std::string& typeStr, const nlohmann::json& j)
 		{
 			if (typeStr == "int" || typeStr == "Int32")

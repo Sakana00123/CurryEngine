@@ -125,6 +125,7 @@ struct ShaderReflectionData
 	std::vector<SamplerInfo> samplerInfos; 			  // サンプラバインド情報一覧
 };
 
+/** @brief Material を表すクラスです。 */
 class Material; // 前方宣言
 
 /**
@@ -135,7 +136,13 @@ class Material; // 前方宣言
 class Shader : public Resource
 {
 public:
+	/**
+	 * @brief Shader を構築します。
+	 */
 	Shader(ShaderType type);
+	/**
+	 * @brief Shader を破棄します。
+	 */
 	virtual ~Shader() override = default;
 
 	/** @brief パスからシェーダを読み込みます（実装依存、複数ステージ対応）。*/
@@ -233,10 +240,17 @@ protected:
 	ShaderReflectionData m_ReflectionData;
 };
 
+/** @brief PixelShader を表すクラスです。 */
 class PixelShader : public Shader
 {
 public:
+	/**
+	 * @brief PixelShader を構築します。
+	 */
 	PixelShader();
+	/**
+	 * @brief PixelShader を破棄します。
+	 */
 	~PixelShader() override = default;
 
 	/** @brief ピクセルシェーダを取得。*/
@@ -253,10 +267,17 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PixelShader;
 };
 
+/** @brief VertexShader を表すクラスです。 */
 class VertexShader : public Shader
 {
 public:
+	/**
+	 * @brief VertexShader を構築します。
+	 */
 	VertexShader();
+	/**
+	 * @brief VertexShader を破棄します。
+	 */
 	~VertexShader() override = default;
 
 	/** @brief 頂点シェーダを取得。*/
@@ -276,10 +297,17 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_InputLayout;
 };
 
+/** @brief ComputeShader を表すクラスです。 */
 class ComputeShader : public Shader
 {
 public:
+	/**
+	 * @brief ComputeShader を構築します。
+	 */
 	ComputeShader();
+	/**
+	 * @brief ComputeShader を破棄します。
+	 */
 	~ComputeShader() override = default;
 
 	/** @brief コンピュートシェーダを取得。*/
@@ -296,10 +324,17 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> m_ComputeShader;
 };
 
+/** @brief GeometryShader を表すクラスです。 */
 class GeometryShader : public Shader
 {
 public:
+	/**
+	 * @brief GeometryShader を構築します。
+	 */
 	GeometryShader();
+	/**
+	 * @brief GeometryShader を破棄します。
+	 */
 	~GeometryShader() override = default;
 
 	/** @brief ジオメトリシェーダを取得。*/
@@ -316,10 +351,17 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_GeometryShader;
 };
 
+/** @brief HullShader を表すクラスです。 */
 class HullShader : public Shader
 {
 public:
+	/**
+	 * @brief HullShader を構築します。
+	 */
 	HullShader();
+	/**
+	 * @brief HullShader を破棄します。
+	 */
 	~HullShader() override = default;
 
 	/** @brief ハルシェーダを取得。*/
@@ -336,10 +378,17 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11HullShader> m_HullShader;
 };
 
+/** @brief DomainShader を表すクラスです。 */
 class DomainShader : public Shader
 {
 public:
+	/**
+	 * @brief DomainShader を構築します。
+	 */
 	DomainShader();
+	/**
+	 * @brief DomainShader を破棄します。
+	 */
 	~DomainShader() override = default;
 
 	/** @brief ドメインシェーダを取得。*/

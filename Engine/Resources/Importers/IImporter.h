@@ -13,6 +13,9 @@ namespace CurryEngine
 		class IImporter
 		{
 		public:
+			/**
+			 * @brief IImporter を破棄します。
+			 */
 			virtual ~IImporter() = default;
 			/**
 			 * @brief アセットファイルを読み込み、アセットデータに変換する純粋仮想関数。

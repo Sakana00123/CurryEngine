@@ -2,6 +2,7 @@
 #include "Engine/Core/Component.h"
 #include <functional>
 
+/** @brief Event を表すクラスです。 */
 class Event : public Component
 {
 	bool oneShot;

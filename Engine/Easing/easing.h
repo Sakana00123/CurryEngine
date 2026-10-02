@@ -2,6 +2,7 @@
 #include <cmath>
 #include <limits>
 #include <algorithm>
+/** @brief EaseData を表す構造体です。 */
 struct EaseData
 {
     float timer;
@@ -12,6 +13,7 @@ struct EaseData
 };
 
 // イージング関数
+/** @brief Easing を表す構造体です。 */
 struct Easing
 {
 private:

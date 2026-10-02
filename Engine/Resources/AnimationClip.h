@@ -9,6 +9,7 @@
 #include <cereal\types\unordered_map.hpp>
 #include <cereal\types\vector.hpp>
 
+/** @brief NodePose を表す構造体です。 */
 struct NodePose
 {
 	DirectX::XMFLOAT3 translation;
@@ -20,12 +21,14 @@ struct NodePose
 
 
 
+/** @brief AnimationClip を表すクラスです。 */
 class AnimationClip : public Resource
 {
 public:
 	std::string name;
 	float duration = 0.0f;
 
+	/** @brief Channel を表す構造体です。 */
 	struct Channel {
 		int sampler = -1; // required
 		int targetNode = -1; // required (index of the node to target)
@@ -42,6 +45,7 @@ public:
 	};
 	std::vector<Channel> channels;
 
+	/** @brief Sampler を表す構造体です。 */
 	struct Sampler {
 		int input = -1;
 		int output = -1;
@@ -63,11 +67,21 @@ public:
 	std::unordered_map<int/*sampler.output*/, std::vector<DirectX::XMFLOAT3>> translations;
 
 
+	/**
+	 * @brief LoadFromFile に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	bool LoadFromFile(const std::string& path) override;
 
+	/**
+	 * @brief SaveToFile の処理を行います。
+	 */
 	bool SaveToFile(const std::filesystem::path& path) const;
 
 	// アニメーションをサンプリングして、指定された時間における各ノードのポーズを取得する
+	/**
+	 * @brief Sample の処理を行います。
+	 */
 	void Sample(float time, std::vector<NodePose>& out, float weight = 1.0f) const;
 
 	// 2時刻間のルートノードの移動/回転差分を取得する
@@ -75,6 +89,10 @@ public:
 		DirectX::XMFLOAT3& outDeltaTranslation, DirectX::XMFLOAT4& outDeltaRotation, int rootNodeIndex) const;
 
 	// 指定時刻のルートノードの移動/回転差分を取得する（前フレームとの差分ではなく、0秒時点からの差分）
+	/**
+	 * @brief GetRootMotionDelta に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	void GetRootMotionDelta(float time, DirectX::XMFLOAT3& outDeltaTranslation, DirectX::XMFLOAT4& outDeltaRotation, int rootNodeIndex) const;
 private:
 	// 指定ノードのローカルT/Rを直接サンプリングする内部ヘルパー（Sample()と共通化）

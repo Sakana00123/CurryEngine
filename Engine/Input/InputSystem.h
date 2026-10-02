@@ -46,6 +46,9 @@ public:
 	 * @param deviceType デバイス種別
 	 */
 	InputKey(int vKey, InputDevice deviceType) : vKey(vKey), pressTime(0), oldPressTime(0), deviceType(deviceType) {}
+	/**
+	 * @brief InputKey を破棄します。
+	 */
 	virtual ~InputKey() = default;
 
 	/**
@@ -96,8 +99,17 @@ public:
 	 * @param vKey バーチャルキーコード（VK_XXX）
 	 */
 	Keybord(int vKey) : InputKey(vKey, InputDevice::Keybord) {}
+	/**
+	 * @brief Keybord を破棄します。
+	 */
 	~Keybord() override = default;
+	/**
+	 * @brief Keybord を構築します。
+	 */
 	Keybord(Keybord&) = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Keybord& operator=(Keybord&) = delete;
 };
 
@@ -112,8 +124,17 @@ public:
 	 * @param vKey ボタンの仮想キー（VK_LBUTTON/VK_RBUTTON など）
 	 */
 	Mouse(int vKey) : InputKey(vKey, InputDevice::Mouse) {}
+	/**
+	 * @brief Mouse を破棄します。
+	 */
 	~Mouse() override = default;
+	/**
+	 * @brief Mouse を構築します。
+	 */
 	Mouse(Mouse&) = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Mouse& operator=(Mouse&) = delete;
 };
 
@@ -146,8 +167,17 @@ public:
 	 * @param type 判定する入力の種類（ボタン/トリガー）
 	 */
 	GamePad(int vKey, KeyType type = KeyType::Key) : InputKey(vKey, InputDevice::GamePad), keyType(type) {}
+	/**
+	 * @brief GamePad を破棄します。
+	 */
 	~GamePad() override = default;
+	/**
+	 * @brief GamePad を構築します。
+	 */
 	GamePad(GamePad&) = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	GamePad& operator=(GamePad&) = delete;
 
 	/**
@@ -193,6 +223,9 @@ private:
 	static inline std::vector<std::unique_ptr<InputKey>> navigationKeys[DIRECTION_KEY_NUM];
 #endif // 0
 private:
+	/**
+	 * @brief InputSystem を構築します。
+	 */
 	InputSystem();
 	~InputSystem() {}
 

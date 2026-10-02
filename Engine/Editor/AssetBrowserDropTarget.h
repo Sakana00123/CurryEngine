@@ -7,6 +7,7 @@
 namespace fs = std::filesystem;
 
 // ドロップターゲットに必要なコールバック関数をまとめた構造体
+/** @brief DropTargetCallbacks を表す構造体です。 */
 struct DropTargetCallbacks
 {
 	std::function<bool(const POINTL&)> isOverGrid; // ドロップ中のカーソルがアセットグリッド上にあるか
@@ -17,6 +18,7 @@ struct DropTargetCallbacks
 };
 
 // ドロップターゲットクラス
+/** @brief AssetBrowserDropTarget を表すクラスです。 */
 class AssetBrowserDropTarget : public IDropTarget
 {
 public:

@@ -17,10 +17,17 @@
 #include "RenderState.h"
 #include "RenderContext.h"
 
+/** @brief Graphics を表すクラスです。 */
 class Graphics
 {
 public:
+	/**
+	 * @brief 初期化します。
+	 */
 	static void Initialize(HWND hwnd, bool fullScreenMode);
+	/**
+	 * @brief 終了処理を行います。
+	 */
 	static void Finalize();
 
 	static ID3D11Device* GetDevice() { return device.Get(); }
@@ -34,19 +41,41 @@ public:
 	// デフォルトの深度ステンシルビューを取得
 	static ID3D11DepthStencilView* GetDefaultDepthStencilView() { return m_defaultDSV.Get(); }
 	// デフォルトのビューポートを取得
+	/**
+	 * @brief GetDefaultViewport に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	static D3D11_VIEWPORT GetDefaultViewport();
 
 	static void GetScreenSize(float& x, float& y) { x = static_cast<float>(m_screenSize.cx), y = static_cast<float>(m_screenSize.cy); }
 
+	/**
+	 * @brief 保持している内容を消去します。
+	 */
 	static void Clear(float r, float g, float b, float a);
 
+	/**
+	 * @brief Present の処理を行います。
+	 */
 	static void Present(bool vsync = false);
 
+	/**
+	 * @brief BindDDSTexture の処理を行います。
+	 */
 	static void BindDDSTexture();
 
+	/**
+	 * @brief StylizeWindow の処理を行います。
+	 */
 	static void StylizeWindow(BOOL fullscreen);
+	/**
+	 * @brief SizeChanged イベントを処理します。
+	 */
 	static void OnSizeChanged(UINT64 width, UINT64 height);
 
+	/**
+	 * @brief 新しい要素を生成します。
+	 */
 	static void CreateSwapChain(IDXGIFactory6* dxgi_factory6);
 
 	static HWND GetHwnd() { return m_hwnd; }

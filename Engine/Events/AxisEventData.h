@@ -3,6 +3,7 @@
 #include "BaseEventData.h"
 struct RaycastResult;
 
+/** @brief MoveDirection を表す列挙型です。 */
 enum MoveDirection {
 	Up,
 	Left,
@@ -11,6 +12,7 @@ enum MoveDirection {
 	None
 };
 
+/** @brief AxisEventData を表すクラスです。 */
 class AxisEventData : public BaseEventData
 {
 public:

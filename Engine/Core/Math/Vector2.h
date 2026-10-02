@@ -10,10 +10,22 @@ using namespace DirectX;
 struct Vector2
 {
 	float x, y;
+	/**
+	 * @brief Vector2 を構築します。
+	 */
 	Vector2(const Vector2&) = default;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Vector2& operator=(const Vector2&) = default;
 
+	/**
+	 * @brief Vector2 を構築します。
+	 */
 	Vector2(Vector2&&) = default;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Vector2& operator=(Vector2&&) = default;
 
 	constexpr Vector2(float x = 0.f, float y = 0.f) noexcept : x(x), y(y) {}
@@ -23,7 +35,15 @@ struct Vector2
 
 	operator XMFLOAT2() const { return XMFLOAT2(x, y); }
 
+	/**
+	 * @brief 演算子処理を行います。
+	 * @return 処理結果を返します。
+	 */
 	float& operator[](size_t index);
+	/**
+	 * @brief 演算子処理を行います。
+	 * @return 処理結果を返します。
+	 */
 	float operator[](size_t index) const;
 	Vector2& operator+=(const Vector2& a) { x += a.x, y += a.y; return *this; }
 	Vector2& operator-=(const Vector2& a) { x -= a.x, y -= a.y; return *this; }

@@ -8,15 +8,28 @@ namespace IdRange {
 }
 
 
+/** @brief ObjectId を表すクラスです。 */
 class ObjectId
 {
 public:
 	// デフォルトコンストラクタは無効なIDを生成する。内部のID値は0で、これは有効なIDとはみなされない。
 	ObjectId() : m_value(0) {}
 	explicit ObjectId(uint64_t v) : m_value(v) {}
+	/**
+	 * @brief ObjectId を構築します。
+	 */
 	ObjectId(const ObjectId& other) = default;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	ObjectId& operator=(const ObjectId& other) = default;
+	/**
+	 * @brief ObjectId を構築します。
+	 */
 	ObjectId(ObjectId&& other) noexcept = default;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	ObjectId& operator=(ObjectId&& other) noexcept = default;
 
 
@@ -74,6 +87,7 @@ private:
 
 namespace std {
 	template <>
+	/** @brief hash を表す構造体です。 */
 	struct hash<ObjectId>
 	{
 		size_t operator()(const ObjectId& id) const noexcept

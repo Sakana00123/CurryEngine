@@ -11,16 +11,31 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
+/** @brief ModelAsset を表すクラスです。 */
 class ModelAsset : public Resource
 {
 public:
+	/**
+	 * @brief ModelAsset を構築します。
+	 */
 	ModelAsset() = default;
+	/**
+	 * @brief ModelAsset を破棄します。
+	 */
 	virtual ~ModelAsset() = default;
 	// ファイルからロード
+	/**
+	 * @brief LoadFromFile に対応する値を取得します。
+	 * @return 処理結果を返します。
+	 */
 	bool LoadFromFile(const std::string& path) override;
+	/**
+	 * @brief Reload の処理を行います。
+	 */
 	bool Reload() override;
 
 
+    /** @brief Scene を表す構造体です。 */
     struct Scene {
         std::string name;
         std::vector<int> nodes; //Array of 'root' nodes
@@ -34,6 +49,7 @@ public:
         }
     };
 
+    /** @brief Node を表す構造体です。 */
     struct Node {
         std::string name;
         int skin = -1; // index of skin refereanced by this node
@@ -63,6 +79,7 @@ public:
         }
     };
 
+    /** @brief IndexBufferView を表す構造体です。 */
     struct IndexBufferView {
         int buffer = -1;
         UINT sizeInBytes = 0;
@@ -76,6 +93,7 @@ public:
             );
         }
     };
+    /** @brief VertexBufferView を表す構造体です。 */
     struct VertexBufferView {
         int buffer = -1;
         UINT sizeInBytes = 0;
@@ -90,7 +108,9 @@ public:
             );
         }
     };
+    /** @brief Mesh を表す構造体です。 */
     struct Mesh {
+        /** @brief Vertex を表す構造体です。 */
         struct Vertex {
             DirectX::XMFLOAT3 position = { 0,0,0 };
             DirectX::XMFLOAT3 normal = { 0,0,1 };
@@ -114,6 +134,7 @@ public:
 
         std::string name;
 
+        /** @brief Primitive を表す構造体です。 */
         struct Primitive {
             int material;
 
@@ -152,7 +173,9 @@ public:
         }
     };
 
+    /** @brief BatchMesh を表す構造体です。 */
     struct BatchMesh {
+        /** @brief Vertex を表す構造体です。 */
         struct Vertex {
             DirectX::XMFLOAT3 position = { 0,0,0 };
             DirectX::XMFLOAT3 normal = { 0,0,1 };
@@ -198,6 +221,7 @@ public:
     };
 
 
+    /** @brief TextureInfo を表す構造体です。 */
     struct TextureInfo {
         int index = -1; // required.
         int texcoord = 0; // The set index of texture's TEXCOORD attribute used for texture coordinate mapping.
@@ -211,6 +235,7 @@ public:
         }
     };
 
+    /** @brief NormalTextureInfo を表す構造体です。 */
     struct NormalTextureInfo {
         int index = -1; // required.
         int texcoord = 0; // The set index of texture's TEXCOORD attribute used for texture coordinate mapping.
@@ -225,6 +250,7 @@ public:
             );
         }
     };
+    /** @brief OcclusionTextureInfo を表す構造体です。 */
     struct OcclusionTextureInfo {
         int index = -1; // required.
         int texcoord = 0; // The set index of texture's TEXCOORD attribute used for texture coordinate mapping.
@@ -239,6 +265,7 @@ public:
             );
         }
     };
+    /** @brief PbrMetallicRoughness を表す構造体です。 */
     struct PbrMetallicRoughness {
         float baseColorFactor[4] = { 1,1,1,1 }; // len = 4. default [1,1,1,1]
         TextureInfo baseColorTexture;
@@ -257,8 +284,10 @@ public:
             );
         }
     };
+    /** @brief Material を表す構造体です。 */
     struct Material {
         std::string name;
+        /** @brief CBuffer を表す構造体です。 */
         struct CBuffer {
             float emissiveFactor[3] = { 0,0,0 }; //length 3. default
             int alphaMode = 0; // "OPAQUE" : 0, "MASK" : 1, "BLEND" : 2
@@ -296,6 +325,7 @@ public:
         }
     };
 
+    /** @brief Texture を表す構造体です。 */
     struct Texture {
         std::string name;
         int source = -1;
@@ -308,6 +338,7 @@ public:
             );
         }
     };
+    /** @brief Image を表す構造体です。 */
     struct Image {
         std::string name;
         int width = -1;
@@ -339,6 +370,7 @@ public:
         }
     };
 
+    /** @brief Skin を表す構造体です。 */
     struct Skin {
         std::vector<DirectX::XMFLOAT4X4> inverseBindMatrices;
         std::vector<int> joints;
@@ -352,10 +384,12 @@ public:
         }
     };
 
+    /** @brief Animation を表す構造体です。 */
     struct Animation {
         std::string name;
         float duration = 0.0f;
 
+        /** @brief Channel を表す構造体です。 */
         struct Channel {
             int sampler = -1; // required
             int targetNode = -1; // required (index of the node to target)
@@ -372,6 +406,7 @@ public:
         };
         std::vector<Channel> channels;
 
+        /** @brief Sampler を表す構造体です。 */
         struct Sampler {
             int input = -1;
             int output = -1;
@@ -424,13 +459,20 @@ public:
     std::vector<Skin> skins;
     std::vector<Animation> animations;
 
+	/**
+	 * @brief CumulateTransforms の処理を行います。
+	 */
 	void CumulateTransforms(std::vector<Node>& nodes);
+	/**
+	 * @brief 新しい要素を生成します。
+	 */
 	void CreateAndUploadResources(ID3D11Device* device);
 
 
 };
 
 
+/** @brief ModelInstance を表す構造体です。 */
 struct ModelInstance
 {
     std::vector<ModelAsset::Node> nodes;

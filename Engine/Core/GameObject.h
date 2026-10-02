@@ -17,6 +17,7 @@ class Scene;
 // ゲームオブジェクトのシリアライズバージョン管理用列挙型
 namespace CurryEngine
 {
+    /** @brief GameObjectSerializeVersion を表す列挙型です。 */
     enum class GameObjectSerializeVersion
     {
 		Legacy = 0,

@@ -162,22 +162,40 @@ public:
 
 private:
 	// シェーダセレクタの描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawShaderSelector(ID3D11Device* device, size_t type);
 
 	// 定数バッファ変数の描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawCBufferVariables(size_t type);
 
 	// テクスチャスロットの描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawTextureSlots(size_t type);
 	
 	// サンプラースロットの描画
+	/**
+	 * @brief 描画処理を行います。
+	 */
 	void DrawSamplerSlots(size_t type);
 	
 	struct ShaderBinding;
 	// 定数バッファの設定を更新
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void UpdateCBufferBindings(ID3D11Device* device, ShaderBinding& binding, const ShaderReflectionData& reflection);
 
 	// テクスチャとサンプラーの設定を更新
+	/**
+	 * @brief 状態を更新します。
+	 */
 	void UpdateTextureAndSamplerBindings(ID3D11Device* device, ShaderBinding& binding, const ShaderReflectionData& reflection);
 
 private:

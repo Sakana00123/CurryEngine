@@ -5,6 +5,7 @@
 
 namespace CurryEngine
 {
+	/** @brief OrderManager を表すクラスです。 */
 	class OrderManager
 	{
 	public:

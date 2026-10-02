@@ -1,5 +1,6 @@
 #pragma once
 
+/** @brief BeatResult を表す列挙型です。 */
 enum BeatResult : uint8_t
 {
 	Perfect,
@@ -8,6 +9,7 @@ enum BeatResult : uint8_t
 };
 
 
+/** @brief BeatManager を表すクラスです。 */
 class BeatManager
 {
 public:

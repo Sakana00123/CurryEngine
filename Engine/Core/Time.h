@@ -16,9 +16,21 @@ public:
 	Time();
 	/** @brief デストラクタ。*/
 	~Time() = default;
+	/**
+	 * @brief Time を構築します。
+	 */
 	Time(const Time&) = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Time& operator=(const Time&) = delete;
+	/**
+	 * @brief Time を構築します。
+	 */
 	Time(Time&&) noexcept = delete;
+	/**
+	 * @brief 演算子処理を行います。
+	 */
 	Time& operator=(Time&&) noexcept = delete;
 
 	/**

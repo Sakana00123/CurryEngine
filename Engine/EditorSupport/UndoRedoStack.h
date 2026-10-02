@@ -5,6 +5,7 @@
 
 namespace CurryEngine
 {
+	/** @brief UndoRedoStack を表すクラスです。 */
 	class UndoRedoStack
 	{
 	public:

@@ -6,6 +6,7 @@
 #include "Engine/Core/Color.h"
 struct RenderContext;
 
+/** @brief DebugRenderer を表すクラスです。 */
 class DebugRenderer
 {
 public:
@@ -104,12 +105,14 @@ private:
 	//static const uint32_t VertexCapacity = 3 * 1024; // 描画する頂点の最大数
 	static const uint32_t VertexCapacity = 3 * 32768; // 描画する頂点の最大数
 
+	/** @brief Vertex を表す構造体です。 */
 	struct Vertex
 	{
 		Vector3 position; // 頂点の位置
 		Color color;      // 頂点の色
 	};
 
+	/** @brief ConstantBufferData を表す構造体です。 */
 	struct ConstantBufferData
 	{
 		DirectX::XMFLOAT4X4 viewProjection; // ビュー射影行列
