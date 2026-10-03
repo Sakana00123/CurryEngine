@@ -106,7 +106,7 @@ public class PlayerController : Behaviour
                         velocity.y = jumpForce;
                         rb.SetVelocity(velocity);
                     }
-                    //animator.SetTrigger("JumpTrigger");
+                    animator.SetTrigger("JumpTrigger");
                     animator.SetBool("Jumping", true);
                     animator.CrossFadeInFixedTime("JumpStart", 0.1f);
                     jumpCount++;

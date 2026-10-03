@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            -3.05146861076355,
-            0.6354295015335083,
-            3.252122163772583
+            -0.4231005311012268,
+            -0.5750640034675598,
+            2.405442476272583
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.08612965047359467,
-            -0.18994881212711334,
-            0.01672862283885479,
-            0.9778656959533691
+            0.256202757358551,
+            -0.0140238581225276,
+            0.0037156990729272366,
+            0.9665141701698303
         ],
         "speed": 3.0
     },
@@ -140,7 +140,7 @@
                 },
                 {
                     "animationEnable": true,
-                    "blendEnable": true,
+                    "blendEnable": false,
                     "enableShadow": true,
                     "enabledSelf": true,
                     "filePath": ".\\TestAssets\\Jammo\\Jammo.glb",
@@ -187,14 +187,14 @@
                     "height": 0.49799999594688416,
                     "id": "9158306600258995034",
                     "isTrigger": false,
-                    "material": 0,
+                    "material": 10,
                     "name": "CapsuleCollider",
                     "priority": 2000,
                     "radius": 0.34639912843704224,
                     "type": "CapsuleCollider"
                 },
                 {
-                    "constraints": 0,
+                    "constraints": 56,
                     "enabledSelf": true,
                     "id": "13870428637931813779",
                     "isKinematic": false,
@@ -205,11 +205,35 @@
                     "type": "Rigidbody",
                     "useCCD": false,
                     "useGravity": true
+                },
+                {
+                    "controllerAssetId": "c93c3548c2318dc1ec87bc4ee70c1ab7",
+                    "enabledSelf": true,
+                    "id": "11406850994295778553",
+                    "name": "Animator",
+                    "priority": 4000,
+                    "targetModelRendererId": "18196973319220338015",
+                    "type": "Animator"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "acceleration": 5,
+                        "attackCollider": "Component(objectId: 9158306600258995034, ownerId: 4984317925886415417)",
+                        "attackColliderObject": "GameObject(objectId: 4984317925886415417)",
+                        "jumpForce": 12.5,
+                        "speed": 0
+                    },
+                    "id": "10502313803227114740",
+                    "name": "ScriptComponent",
+                    "priority": 5000,
+                    "scriptName": "PlayerController",
+                    "type": "ScriptComponent"
                 }
             ],
             "id": "4984317925886415417",
             "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
+            "layer": 4,
             "name": "Jammo",
             "parent": "0",
             "parentId": "0",
@@ -217,7 +241,7 @@
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "coordinateSystem": 0,
@@ -758,7 +782,7 @@
             "isDefaultOpenOnHierarchy": true,
             "layer": 0,
             "name": "CameraFocusTarget",
-            "parent": "837495356795042458",
+            "parent": "4984317925886415417",
             "parentId": "0",
             "priority": 6000,
             "version": 1
@@ -1126,7 +1150,7 @@
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "coordinateSystem": 0,
@@ -1267,7 +1291,7 @@
                 }
             ],
             "id": "837495356795042458",
-            "isDefaultOpenOnHierarchy": true,
+            "isDefaultOpenOnHierarchy": false,
             "layer": 4,
             "name": "Player",
             "parent": "0",

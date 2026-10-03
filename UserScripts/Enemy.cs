@@ -72,7 +72,7 @@ public class Enemy : Behaviour
                 return;
             }
         }
-        else
+        else if (playerObject.IsActive())
         {
             // プレイヤーの方向を向く
             Vector3 directionToPlayer = playerObject.transform.position - transform.position;
