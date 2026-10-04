@@ -194,8 +194,8 @@
             "blendType": 0,
             "clipId": "273534e5812f38a619406b07d014ee56",
             "editorPosition": [
-                -397.3334045410156,
-                363.99993896484375
+                -407.3333740234375,
+                361.7777099609375
             ],
             "loop": false,
             "name": "Landing",
@@ -295,7 +295,7 @@
         {
             "blendDuration": 0.25,
             "conditions": [],
-            "exitTime": 1.0,
+            "exitTime": 0.578000009059906,
             "fromStateIndex": 0,
             "hasExitTime": true,
             "toStateIndex": 4
@@ -344,20 +344,6 @@
         },
         {
             "blendDuration": 0.25,
-            "conditions": [
-                {
-                    "comparison": 4,
-                    "parameterIndex": 7,
-                    "value": 0.0
-                }
-            ],
-            "exitTime": 0.0,
-            "fromStateIndex": -1,
-            "hasExitTime": false,
-            "toStateIndex": 5
-        },
-        {
-            "blendDuration": 0.25,
             "conditions": [],
             "exitTime": 1.0,
             "fromStateIndex": 7,
@@ -367,7 +353,7 @@
         {
             "blendDuration": 0.25,
             "conditions": [],
-            "exitTime": 0.6000000238418579,
+            "exitTime": 0.5199999809265137,
             "fromStateIndex": 5,
             "hasExitTime": true,
             "toStateIndex": 11

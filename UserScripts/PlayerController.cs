@@ -66,7 +66,7 @@ public class PlayerController : Behaviour
                 // 接地判定のためのレイキャスト
                 Vector3 origin = transform.position + Vector3.up * 0.1f; // 少し上からレイを飛ばす
                 Vector3 directionDown = Vector3.down;
-                float maxDistance = 0.15f; // 接地判定の距離
+                float maxDistance = 0.25f; // 接地判定の距離
                 LayerMask layerMask = LayerMask.NameToLayer("Default"); // 接地判定を行うレイヤーを指定
                 if (Physics.Raycast(origin, directionDown, out RaycastHit hitInfo, maxDistance, layerMask))
                 {
@@ -108,7 +108,8 @@ public class PlayerController : Behaviour
                     }
                     animator.SetTrigger("JumpTrigger");
                     animator.SetBool("Jumping", true);
-                    animator.CrossFadeInFixedTime("JumpStart", 0.1f);
+                    //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
+                    animator.CrossFadeInFixedTime("Jump", 0.1f);
                     jumpCount++;
                 }
             }
