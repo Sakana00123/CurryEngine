@@ -1,0 +1,206 @@
+{
+    "ActionKeys": {
+        "Alt": [
+            {
+                "device": 0,
+                "vKey": 18
+            }
+        ],
+        "Attack": [
+            {
+                "device": 0,
+                "vKey": 102
+            },
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 8192
+            },
+            {
+                "device": 0,
+                "vKey": 70
+            }
+        ],
+        "Backspace": [
+            {
+                "device": 0,
+                "vKey": 8
+            }
+        ],
+        "Delete": [
+            {
+                "device": 0,
+                "vKey": 46
+            }
+        ],
+        "Down": [
+            {
+                "device": 0,
+                "vKey": 40
+            },
+            {
+                "device": 0,
+                "vKey": 83
+            }
+        ],
+        "Enter": [
+            {
+                "device": 0,
+                "vKey": 13
+            }
+        ],
+        "GamePad_A": [
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 4096
+            }
+        ],
+        "GamePad_B": [
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 8192
+            }
+        ],
+        "GamePad_LB": [
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 256
+            }
+        ],
+        "GamePad_LS": [
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 64
+            }
+        ],
+        "GamePad_LT": [
+            {
+                "device": 2,
+                "type": 1,
+                "vKey": 0
+            }
+        ],
+        "GamePad_RB": [
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 512
+            }
+        ],
+        "GamePad_RS": [
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 128
+            }
+        ],
+        "GamePad_RT": [
+            {
+                "device": 2,
+                "type": 2,
+                "vKey": 0
+            }
+        ],
+        "GamePad_X": [
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 16384
+            }
+        ],
+        "GamePad_Y": [
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 32768
+            }
+        ],
+        "Left": [
+            {
+                "device": 0,
+                "vKey": 37
+            },
+            {
+                "device": 0,
+                "vKey": 65
+            }
+        ],
+        "Pause": [
+            {
+                "device": 0,
+                "vKey": 8
+            }
+        ],
+        "Right": [
+            {
+                "device": 0,
+                "vKey": 39
+            },
+            {
+                "device": 0,
+                "vKey": 68
+            }
+        ],
+        "Shift": [
+            {
+                "device": 0,
+                "vKey": 16
+            }
+        ],
+        "Space": [
+            {
+                "device": 0,
+                "vKey": 32
+            }
+        ],
+        "Up": [
+            {
+                "device": 0,
+                "vKey": 38
+            },
+            {
+                "device": 0,
+                "vKey": 87
+            }
+        ],
+        "attack": [
+            {
+                "device": 1,
+                "vKey": 2
+            }
+        ],
+        "ok": [
+            {
+                "device": 1,
+                "vKey": 1
+            },
+            {
+                "device": 0,
+                "vKey": 13
+            }
+        ],
+        "test": [
+            {
+                "device": 0,
+                "vKey": 112
+            },
+            {
+                "device": 1,
+                "vKey": 2
+            },
+            {
+                "device": 2,
+                "type": 0,
+                "vKey": 16
+            },
+            {
+                "device": 1,
+                "vKey": 1
+            }
+        ]
+    }
+}

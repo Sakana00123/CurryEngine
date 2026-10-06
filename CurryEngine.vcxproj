@@ -153,6 +153,7 @@ popd</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Engine\Animation\Animator.cpp" />
+    <ClCompile Include="Engine\Editor\InputSettingsWindow.cpp" />
     <ClCompile Include="Engine\Resources\AnimatorControllerBuilder.cpp" />
     <ClCompile Include="Engine\Resources\AnimatorController.cpp" />
     <ClCompile Include="Engine\Animation\RhythmAnimationController.cpp" />
@@ -666,6 +667,7 @@ popd</Command>
     <ClInclude Include="Archive\sprite_batch.h" />
     <ClInclude Include="Archive\static_mesh.h" />
     <ClInclude Include="Engine\Animation\Animator.h" />
+    <ClInclude Include="Engine\Editor\InputSettingsWindow.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\RenderDebug.h" />
     <ClInclude Include="Engine\Resources\AnimatorControllerBuilder.h" />
     <ClInclude Include="Engine\Resources\AnimatorController.h" />

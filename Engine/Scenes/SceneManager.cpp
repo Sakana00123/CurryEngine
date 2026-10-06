@@ -21,6 +21,7 @@
 #include "Engine/Physics/Physics.h"
 #include "Engine/Rendering/Camera/CameraSystem.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
+#include "Engine/Editor/InputSettingsWindow.h"
 
 void SceneManager::Initialize()
 {
@@ -308,6 +309,7 @@ void SceneManager::DrawGUI(RenderContext* sceneRtx, RenderContext* gameRtx)
 	// -------------------- 他ウィンドウ --------------------
 
 	BuildSettingsWindow::Get().DrawGUI();
+	CurryEngine::Editor::InputSettingsWindow::Draw();
 
 
 	if (currentScene != nullptr) {

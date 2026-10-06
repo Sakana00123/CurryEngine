@@ -3,6 +3,7 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include "Engine/Scenes/Scene.h"
 #include "Engine/Scenes/SceneManager.h"
+#include "Engine/Core/EnginePaths.h"
 #ifdef USE_IMGUI
 #include <imgui.h>
 #endif // USE_IMGUI
@@ -230,12 +231,70 @@ void InputSystem::Initialize()
 
 	inputKeys["Backspace"].emplace_back(std::make_unique<Keybord>(VK_BACK));
 
+
+	// ファイルに保存されているキー設定を読み込む
+	LoadInputSettings();
 }
 
 //終了化
 void InputSystem::Finalize()
 {
+	SaveInputSettings();
+}
 
+void InputSystem::LoadInputSettings()
+{
+	// ファイルに保存されているキー設定を読み込む
+	std::filesystem::path inputSettingsPath = std::filesystem::path(EnginePaths::InputSettingsFile);
+	json inputSettingsJson;
+	if (JsonFileHandler::LoadJsonFromFile(inputSettingsJson, inputSettingsPath.string(), JsonIOFormat::Auto))
+	{
+		if (inputSettingsJson.contains("ActionKeys") && inputSettingsJson["ActionKeys"].is_object())
+		{
+			for (const auto& [action, keysJson] : inputSettingsJson["ActionKeys"].items())
+			{
+				if (keysJson.is_array())
+				{
+					for (const auto& keyJson : keysJson)
+					{
+						int vKey = keyJson.value("vKey", 0);
+						int deviceInt = keyJson.value("device", 0);
+						int typeInt = keyJson.value("type", 0);
+						InputDevice device = static_cast<InputDevice>(deviceInt);
+						KeyType type = static_cast<KeyType>(typeInt);
+						RegisterActionKey(action, vKey, device, type);
+					}
+				}
+			}
+			
+		}
+	}
+}
+
+void InputSystem::SaveInputSettings()
+{
+	// JSONにシリアライズ
+	json inputSettingsJson;
+	inputSettingsJson["ActionKeys"] = json::object();
+	for (const auto& [action, keys] : inputKeys)
+	{
+		json keysJson = json::array();
+		for (const auto& key : keys)
+		{
+			json keyJson;
+			keyJson["vKey"] = key->GetVKey();
+			keyJson["device"] = static_cast<int>(key->GetDeviceType());
+			if (auto gamepadKey = dynamic_cast<GamePad*>(key.get()))
+			{
+				keyJson["type"] = static_cast<int>(gamepadKey->GetKeyType());
+			}
+			keysJson.push_back(keyJson);
+		}
+		inputSettingsJson["ActionKeys"][action] = keysJson;
+	}
+	// ファイルに保存
+	std::filesystem::path inputSettingsPath = std::filesystem::path(EnginePaths::InputSettingsFile);
+	JsonFileHandler::SaveJsonToFile(inputSettingsJson, inputSettingsPath.string(), JsonIOFormat::Auto);
 }
 
 // 更新処理
@@ -474,6 +533,10 @@ bool InputSystem::GetInputState(const std::string& action, InputStateMask state,
 void InputSystem::RegisterKey(const std::string& action, std::unique_ptr<InputKey> key)
 {
 	int vKey = key->GetVKey();
+	if (vKey == 0) {
+		LOG_ERROR(std::format("Invalid vKey for action '{}'", action));
+		return;
+	}
 	// 既に同じ vKey のキーが登録されていないかチェック
 	if (!vKeyMap.contains(vKey)) {
 		vKeyMap[vKey] = key.get(); // vKey と InputKey* をマッピングに登録
@@ -481,6 +544,42 @@ void InputSystem::RegisterKey(const std::string& action, std::unique_ptr<InputKe
 		rawKeys.push_back(std::move(keyCopy)); // 登録されたキーを rawKeys に保持
 	}
 	inputKeys[action].emplace_back(std::move(key));
+}
+
+void InputSystem::RegisterActionKey(const std::string& action, int vKey, InputDevice device, KeyType type)
+{
+	std::unique_ptr<InputKey> key;
+	switch (device)
+	{
+	case InputDevice::Keybord:
+		key = std::make_unique<Keybord>(vKey);
+		break;
+	case InputDevice::Mouse:
+		key = std::make_unique<Mouse>(vKey);
+		break;
+	case InputDevice::GamePad:
+		key = std::make_unique<GamePad>(vKey, type);
+		break;
+	default:
+		return; // 無効なデバイス種別は登録しない
+	}
+	if (!key)
+	{
+		LOG_ERROR(std::format("Failed to create InputKey for action '{}', vKey: {}, device: {}", action, vKey, static_cast<int>(device)));
+		return;
+	}
+	bool alreadyRegistered = false;
+	// 既に同じ vKey のキーが登録されていないかチェック
+	for (const auto& existingKey : inputKeys[action]) {
+		if (existingKey->GetVKey() == vKey && existingKey->GetDeviceType() == device) {
+			alreadyRegistered = true;
+			break;
+		}
+	}
+	if (!alreadyRegistered)
+	{
+		inputKeys[action].emplace_back(std::move(key));
+	}
 }
 
 bool InputSystem::GetKeyTrigger(int vKey)

@@ -96,7 +96,7 @@ public class PlayerController : Behaviour
             animator.SetFloat("PrevInputX", prevInput.x);
             animator.SetFloat("PrevInputY", prevInput.y);
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetActionDown("Attack"))
             {
                 animator.SetTrigger("AttackTrigger");
             }

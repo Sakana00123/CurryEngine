@@ -32,6 +32,7 @@
 #include "BuildSettingsWindow.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
 #include "Engine/EditorConfig/SceneViewconfig.h"
+#include "Engine/Editor/InputSettingsWindow.h"
 
 float EditorGUI::DrawMainMenu()
 {
@@ -590,6 +591,10 @@ void EditorGUI::DrawWindowMenu()
 	if (ImGui::MenuItem("ImGui Theme"))
 	{
 		ImGuiTheme::Show();
+	}
+	if (ImGui::MenuItem("Input Settings"))
+	{
+		CurryEngine::Editor::InputSettingsWindow::Show();
 	}
 	ImGui::EndMenu();
 #endif // USE_IMGUI

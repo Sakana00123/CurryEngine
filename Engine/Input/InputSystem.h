@@ -185,6 +185,12 @@ public:
 	 * @param elapsedTime 経過時間（秒）
 	 */
 	void Update(float elapsedTime) override;
+
+	/**
+	 * @brief 入力の種類を取得します。
+	 * @return 入力の種類（ボタン/トリガー）
+	 */
+	KeyType GetKeyType() const { return keyType; }
 };
 
 /**
@@ -241,6 +247,18 @@ public:
 	static void Finalize();
 
 	/**
+	 * @brief 入力設定をロードします。
+	 * @details `EnginePaths::InputSettingsFile` から JSON を読み込み、アクションとキーの紐付けを復元します。
+	 */
+	static void LoadInputSettings();
+
+	/**
+	 * @brief 入力設定を保存します。
+	 * @details 現在のアクションとキーの紐付けを JSON にシリアライズし、`EnginePaths::InputSettingsFile` に書き込みます。
+	 */
+	static void SaveInputSettings();
+
+	/**
 	 * @brief 毎フレームの更新処理。
 	 * @param elapsedTime 経過時間（秒）
 	 */
@@ -277,6 +295,21 @@ public:
 	 * @param key 登録する入力キー（Keybord/Mouse/GamePad のいずれか）
 	 */
 	static void RegisterKey(const std::string& action, std::unique_ptr<InputKey> key);
+
+	/**
+	 * @brief アクションに対する入力キーを登録します。
+	 * @param action アクション名（任意の文字列）
+	 * @param vKey バーチャルキーコード
+	 * @param device デバイス種別（キーボード/マウス/ゲームパッド）
+	 * @param type ゲームパッドの場合の入力タイプ（ボタン/トリガー）
+	 */
+	static void RegisterActionKey(const std::string& action, int vKey, InputDevice device, KeyType type = KeyType::Key);
+
+	/**
+	 * @brief アクションに登録されている入力キーの集合を取得します。
+	 * @return アクション名→入力キー集合のマップ
+	 */
+	static std::map<std::string, std::vector<std::unique_ptr<InputKey>>>& GetInputKeys() { return inputKeys; }
 
 	/**
 	 * @brief 仮想キーコードに対する入力状態を取得します（主にスクリプト用）。
