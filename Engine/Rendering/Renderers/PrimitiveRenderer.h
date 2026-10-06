@@ -47,7 +47,20 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
+
 #endif
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> shadowVertexShader;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> shadowInputLayout;
+	Microsoft::WRL::ComPtr<ID3D11GeometryShader> shadowGeometryShader;
+
+	struct ShadowConstants
+	{
+		DirectX::XMFLOAT4X4 world;
+	};
+	Microsoft::WRL::ComPtr<ID3D11Buffer> shadowConstantBuffer;
+
+	//std::shared_ptr<Material> shadowMaterial;
+
 public:
 	/** @brief 図形の種類。*/
 	enum class Shape { Cube, Cylinder, Sphere };
@@ -84,6 +97,12 @@ public:
 	 * @param rtx 描画コンテキスト。
 	 */
 	void Render(RenderContext* rtx) override;
+
+	/**
+	 * @brief シャドウマップ描画処理。
+	 * @param rtx 描画コンテキスト。
+	 */
+	void CastShadow(RenderContext* rtx) override;
 
 #ifdef USE_IMGUI
 	/**

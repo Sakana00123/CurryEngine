@@ -27,6 +27,10 @@ public class PlayerController : Behaviour
         Vector3 cameraRight = Camera.main != null ? Camera.main.transform.right : transform.right;
         Vector3 direction = cameraForward * input.y + cameraRight * input.x;
         direction.y = 0f; // 水平方向のみに制限
+        if (Camera.main == null)
+        {
+            Debug.LogWarning("PlayerController: Main camera not found. Using default forward direction.");
+        }
 
         // 移動処理
         if (animator != null)

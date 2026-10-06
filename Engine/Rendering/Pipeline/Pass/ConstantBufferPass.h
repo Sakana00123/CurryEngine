@@ -51,5 +51,5 @@ private:
     };
     ShadowConstants shadowConstants{};
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffers[3];//0:SceneConstants, 1:ConstantTest, 2:LightConstants
+	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffers[3];//0:SceneConstants, 1:ShadowConstants, 2:LightConstants
 };

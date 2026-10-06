@@ -54,7 +54,21 @@ void RenderPipeline::Execute(RenderContext* rtx, Scene* scene)
 	// 描画パイプラインの実行処理
 	for (const auto& pass : m_renderPasses)
 	{
+		// 描画パスのデバッグマーカーを開始
+		const char* passName = pass->GetRenderPassName();
+		std::wstring passNameW = std::wstring(passName, passName + strlen(passName));
+		// パス名から"class "の部分を削除し、よりわかり易い名前にする
+		passNameW = L"RenderPass: " + passNameW.substr(6); // "class "の長さは6文字
+
+		// デバッグマーカーのユーティリティを取得
+		auto markerUtil = Graphics::GetMarkerUtil();
+		markerUtil->BeginEvent(passNameW.c_str());
+
+		// 描画パスの実行
 		pass->Execute(rtx, scene);
+
+		// 描画パスのデバッグマーカーを終了
+		markerUtil->EndEvent();
 	}
 }
 

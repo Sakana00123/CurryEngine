@@ -58,6 +58,13 @@ void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
                     renderer->CastShadow(rtx);
                 }
             }
+            else if (Renderer* renderer = object->GetComponent<Renderer>())
+            {
+                if (renderer->IsEnabled())
+                {
+                    renderer->CastShadow(rtx);
+                }
+			}
         }
     }
     //cascadedShadowMaps->Deactivate(immediateContext);
@@ -68,4 +75,24 @@ void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
 	// シャドウマップのシェーダーリソースビューをRenderContextに共有リソースとして設定
 	rtx->SetSharedResource("ShadowMapPass_DepthTexture", cascadedShadowMaps->GetDepthTexture());
 
+}
+
+void ShadowMapPass::DrawProperty()
+{
+#ifdef USE_IMGUI
+	ImGui::SeparatorText("ShadowMapPass");
+
+	ImGui::SliderFloat("Critical Depth Value", &criticalDepthValue, 0.0f, 10000.0f, "%.1f");
+    
+	ImGui::Separator();
+
+	// Cascaded Shadow Maps
+	ImGui::Text("Cascade Count: %d", cascadedShadowMaps->cascadeCount);
+	ImGui::DragFloat("Split Scheme Weight", &cascadedShadowMaps->splitSchemeWeight, 0.01f, 0.0f, 1.0f, "%.2f");
+	ImGui::Checkbox("Fit to Cascade", &cascadedShadowMaps->fitToCascade);
+	ImGui::DragFloat("Z Mult", &cascadedShadowMaps->zMult, 0.01f, 0.0f, 10.0f, "%.2f");
+
+
+
+#endif // USE_IMGUI
 }

@@ -16,6 +16,7 @@
 #include "FullScreenQuad.h"
 #include "RenderState.h"
 #include "RenderContext.h"
+#include "RenderDebug.h"
 
 /** @brief Graphics を表すクラスです。 */
 class Graphics
@@ -116,6 +117,9 @@ public:
 	static tracy::D3D11Ctx* GetTracyD3D11Ctx() { return m_tracyD3D11Ctx; }
 #endif // TRACY_ENABLE
 
+	// RenderDebug::MarkerUtilを取得
+	static RenderDebug::MarkerUtil* GetMarkerUtil() { return m_markerUtil.get(); }
+
 private:
 	static inline HWND m_hwnd;
 
@@ -147,6 +151,8 @@ private:
 #ifdef TRACY_ENABLE
 	static inline tracy::D3D11Ctx* m_tracyD3D11Ctx{ nullptr };
 #endif // TRACY_ENABLE
+
+	static inline std::unique_ptr<RenderDebug::MarkerUtil> m_markerUtil{ nullptr };
 
 public:
 	//フルスクリーンクアッド

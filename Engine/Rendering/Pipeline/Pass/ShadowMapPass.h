@@ -7,16 +7,13 @@ class ShadowMapPass : public RenderPass
 {
 public:
 	// ShadowMapPassの初期化処理
-	/**
-	 * @brief 初期化します。
-	 */
 	void Initialize() override;
 
-	// ShadowMapPassの実装
-	/**
-	 * @brief 処理を実行します。
-	 */
+	// ShadowMapPassの実
 	void Execute(RenderContext* rtx, Scene* scene) override;
+
+	// ShadowMapPassのプロパティ描画処理
+	void DrawProperty() override;
 
 private:
 	// シャドウマップ用のリソース（例: 深度ステンシルビュー、シェーダーなど）をここに追加

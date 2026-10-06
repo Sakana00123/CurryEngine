@@ -666,6 +666,7 @@ popd</Command>
     <ClInclude Include="Archive\sprite_batch.h" />
     <ClInclude Include="Archive\static_mesh.h" />
     <ClInclude Include="Engine\Animation\Animator.h" />
+    <ClInclude Include="Engine\Rendering\Pipeline\RenderDebug.h" />
     <ClInclude Include="Engine\Resources\AnimatorControllerBuilder.h" />
     <ClInclude Include="Engine\Resources\AnimatorController.h" />
     <ClInclude Include="Engine\Animation\RhythmAnimationController.h" />
@@ -1025,6 +1026,16 @@ popd</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\fullscreen_quad_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\geometric_primitive_csm_gs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\geometric_primitive_csm_vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>

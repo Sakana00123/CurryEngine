@@ -32,6 +32,13 @@ public:
 	 */
 	virtual Math::BoundingBox CalculateAABB() const { return boundingBox; }
 
+	/**
+	 * @brief 描画処理を行います。
+	 * @param rtx 描画に必要なコンテキスト情報。
+	 * @details 継承先でオーバーライドして描画処理を実装すること
+	 */
+	virtual void CastShadow(RenderContext* rtx) {};
+
 #ifdef USE_IMGUI
 	// デバッグ GUI の描画
 	/**

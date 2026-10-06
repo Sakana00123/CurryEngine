@@ -13,6 +13,7 @@ PrimitiveRenderer::PrimitiveRenderer()
 #ifndef USE_MATERIAL
 	HRESULT hr{ S_OK };
 
+	// 頂点フォーマットを定義
 	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
@@ -21,9 +22,12 @@ PrimitiveRenderer::PrimitiveRenderer()
 		  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
+	// シェーダを作成
 	CreateVertexShaderFromCSO(device, "./Data/Shaders/geometric_primitive_vs.cso", vertexShader.GetAddressOf(),
 		inputLayout.GetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
 	CreatePixelShaderFromCSO(device, "./Data/Shaders/geometric_primitive_ps.cso", pixelShader.GetAddressOf());
+
+	
 
 	D3D11_BUFFER_DESC buffer_desc{};
 	buffer_desc.ByteWidth = sizeof(Constants);
@@ -45,6 +49,39 @@ PrimitiveRenderer::PrimitiveRenderer()
 
 	// デフォルトの白色マテリアルを設定
 	material->SetValue("materialColor", Color::White);
+
+
+	//// シャドウマップ用のマテリアルを作成
+	//shadowMaterial = std::make_shared<Material>();
+	//// シャドウマップ用のシェーダを読み込み、マテリアルに設定
+	//std::shared_ptr<Shader> shadowVS = ResourceManager::GetShader<VertexShader>("geometric_primitive_csm_vs");
+	//std::shared_ptr<Shader> shadowGS = ResourceManager::GetShader<GeometryShader>("geometric_primitive_csm_gs");
+	//shadowMaterial->SetShader(device, shadowVS);
+	//shadowMaterial->SetShader(device, shadowGS);
+
+	// シャドウマップ用のシェーダーを作成
+	HRESULT hr{ S_OK };
+
+	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+		  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+		  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
+	std::string vsPath = std::string(EnginePaths::ShadersDataDir) + "geometric_primitive_csm_vs.cso";
+	CreateVertexShaderFromCSO(device, vsPath.c_str(), shadowVertexShader.GetAddressOf(),
+		shadowInputLayout.GetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
+	std::string gsPath = std::string(EnginePaths::ShadersDataDir) + "geometric_primitive_csm_gs.cso";
+	CreateGeometryShaderFromCSO(device, gsPath.c_str(), shadowGeometryShader.GetAddressOf());
+
+	D3D11_BUFFER_DESC buffer_desc{};
+	buffer_desc.ByteWidth = sizeof(ShadowConstants);
+	buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+	buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	hr = device->CreateBuffer(&buffer_desc, nullptr, shadowConstantBuffer.GetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
 #endif // !USE_MATERIAL
 }
@@ -351,6 +388,11 @@ void PrimitiveRenderer::Render(RenderContext* rtx)
 		return;
 	}
 
+	// デバッグ用のマーカーを開始
+	auto markerUtils = Graphics::GetMarkerUtil();
+	std::wstring markerName = L"PrimitiveRenderer::Render - " + std::wstring(gameObject->name.begin(), gameObject->name.end());
+	markerUtils->BeginEvent(markerName.c_str());
+
 	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
 
 	// 頂点バッファ、インデックスバッファのセット
@@ -385,6 +427,54 @@ void PrimitiveRenderer::Render(RenderContext* rtx)
 	D3D11_BUFFER_DESC buffer_desc{};
 	indexBuffer->GetDesc(&buffer_desc);
 	immediateContext->DrawIndexed(buffer_desc.ByteWidth / sizeof(uint32_t), 0, 0);
+
+	// デバッグ用のマーカーを終了
+	markerUtils->EndEvent();
+}
+
+void PrimitiveRenderer::CastShadow(RenderContext* rtx)
+{
+	// バッファがない場合は描画しない
+	if (!vertexBuffer || !indexBuffer)
+	{
+		return;
+	}
+
+	// デバッグ用のマーカーを設定
+	auto markerUtils = Graphics::GetMarkerUtil();
+	std::wstring markerName = L"PrimitiveRenderer::CastShadow - " + std::wstring(gameObject->name.begin(), gameObject->name.end());
+	markerUtils->BeginEvent(markerName.c_str());
+
+	ID3D11DeviceContext* immediateContext = rtx->immediateContext;
+	// 頂点バッファ、インデックスバッファのセット
+	uint32_t stride{ sizeof(Vertex) };
+	uint32_t offset{ 0 };
+	immediateContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+	immediateContext->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 影の描画用シェーダーのセット
+	immediateContext->IASetInputLayout(shadowInputLayout.Get());
+	immediateContext->VSSetShader(shadowVertexShader.Get(), nullptr, 0);
+	immediateContext->GSSetShader(shadowGeometryShader.Get(), nullptr, 0);
+	immediateContext->PSSetShader(nullptr, nullptr, 0);
+
+	//shadowMaterial->SetValue("world", gameObject->transform->GetWorld());
+	//shadowMaterial->Apply(rtx);
+
+	// 影の描画用定数バッファの更新
+	ShadowConstants shadowData{};
+	shadowData.world = gameObject->transform->GetWorld();
+	immediateContext->UpdateSubresource(shadowConstantBuffer.Get(), 0, 0, &shadowData, 0, 0);
+	immediateContext->VSSetConstantBuffers(0, 1, shadowConstantBuffer.GetAddressOf());
+
+	// 描画
+	D3D11_BUFFER_DESC buffer_desc{};
+	indexBuffer->GetDesc(&buffer_desc);
+	immediateContext->DrawIndexed(buffer_desc.ByteWidth / sizeof(uint32_t), 0, 0);
+
+	// デバッグ用のマーカーを終了
+	markerUtils->EndEvent();
 }
 
 #ifdef USE_IMGUI

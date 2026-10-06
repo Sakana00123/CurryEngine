@@ -247,7 +247,7 @@ public:
     /**
      * @brief CastShadow の処理を行います。
      */
-    void CastShadow(RenderContext* rtx);
+	void CastShadow(RenderContext* rtx) override;
 #ifdef USE_IMGUI
     /**
      * @brief 描画処理を行います。

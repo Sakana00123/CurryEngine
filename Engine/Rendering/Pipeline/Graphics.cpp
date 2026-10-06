@@ -74,6 +74,10 @@ void Graphics::Initialize(HWND hwnd, bool fullScreenMode)
 	m_tracyD3D11Ctx = TracyD3D11Context(device.Get(), immediate_context.Get());
 #endif // TRACY_ENABLE
 
+	// RenderDebug::MarkerUtilを初期化
+	m_markerUtil = std::make_unique<RenderDebug::MarkerUtil>();
+	m_markerUtil->Initialize(immediate_context.Get());
+
 	// スワップチェーン作成
 	CreateSwapChain(dxgi_factory6.Get());
 
@@ -99,7 +103,12 @@ void Graphics::Finalize()
 {
 	BOOL fullscreen{};
 
+	// RenderDebug::MarkerUtilをリセット
+	m_markerUtil->Shutdown();
+	m_markerUtil.reset();
+
 #ifdef TRACY_ENABLE
+	// TracyのD3D11コンテキストを破棄
 	if (m_tracyD3D11Ctx)
 	{
 		TracyD3D11Destroy(m_tracyD3D11Ctx);
