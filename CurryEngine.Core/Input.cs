@@ -63,18 +63,27 @@ namespace CurryEngine
         PageDown = 0x22,
     }
 
+    /// <summary>
+    /// ゲームパッドのボタンを表す列挙型です。各値は、ゲームパッドの特定のボタンに対応しています。
+    /// </summary>
     public enum GamepadButton
     {
-        A = 0,
-        B = 1,
-        X = 2,
-        Y = 3,
-        LeftBumper = 4,
-        RightBumper = 5,
-        Back = 6,
-        Start = 7,
-        LeftStick = 8,
-        RightStick = 9
+        A,
+        B,
+        X,
+        Y,
+        LB,
+        RB,
+        DPadUp,
+        DPadDown,
+        DPadLeft,
+        DPadRight,
+        LS,
+        RS,
+        LT,
+        RT,
+        Start,
+        Back,
     }
 
     /// <summary>
@@ -111,6 +120,13 @@ namespace CurryEngine
         public static bool GetKey(KeyCode code) => Provider?.GetKey(code) ?? false;
 
         /// <summary>
+        /// 指定したゲームパッドのボタンが現在押されているかどうかを返します。Providerがnullの場合はfalseを返します。
+        /// </summary>
+        /// <param name="button"> 取得したいゲームパッドのボタンを指定します。GamepadButton列挙型の値を使用します。</param>
+        /// <returns> trueの場合、指定したゲームパッドのボタンが押されていることを示します。falseの場合、指定したゲームパッドのボタンが押されていないことを示します。</returns>
+        public static bool GetKey(GamepadButton button) => Provider?.GetKey(button) ?? false;
+
+        /// <summary>
         /// 指定したキーが前のフレームで押されていて、現在は離されているかどうかを返します。Providerがnullの場合はfalseを返します。
         /// </summary>
         /// <param name="code"> 取得したいキーコードを指定します。KeyCode列挙型の値を使用します。</param>
@@ -118,11 +134,25 @@ namespace CurryEngine
         public static bool GetKeyUp(KeyCode code) => Provider?.GetKeyUp(code) ?? false;
 
         /// <summary>
+        /// 指定したゲームパッドのボタンが前のフレームで押されていて、現在は離されているかどうかを返します。Providerがnullの場合はfalseを返します。
+        /// </summary>
+        /// <param name="button"> 取得したいゲームパッドのボタンを指定します。GamepadButton列挙型の値を使用します。</param>
+        /// <returns> trueの場合、指定したゲームパッドのボタンが離されていることを示します。falseの場合、指定したゲームパッドのボタンが押されていることを示します。</returns>
+        public static bool GetKeyUp(GamepadButton button) => Provider?.GetKeyUp(button) ?? false;
+
+        /// <summary>
         /// 指定したキーが前のフレームで離されていて、現在は押されているかどうかを返します。Providerがnullの場合はfalseを返します。
         /// </summary>
         /// <param name="code"> 取得したいキーコードを指定します。KeyCode列挙型の値を使用します。</param>
         /// <returns> trueの場合、指定したキーが押されていることを示します。falseの場合、指定したキーが押されていないことを示します。</returns>
         public static bool GetKeyDown(KeyCode code) => Provider?.GetKeyDown(code) ?? false;
+
+        /// <summary>
+        /// 指定したゲームパッドのボタンが前のフレームで離されていて、現在は押されているかどうかを返します。Providerがnullの場合はfalseを返します。
+        /// </summary>
+        /// <param name="button"> 取得したいゲームパッドのボタンを指定します。GamepadButton列挙型の値を使用します。</param>
+        /// <returns> trueの場合、指定したゲームパッドのボタンが押されていることを示します。falseの場合、指定したゲームパッドのボタンが押されていないことを示します。</returns>
+        public static bool GetKeyDown(GamepadButton button) => Provider?.GetKeyDown(button) ?? false;
 
         /// <summary>
         /// 指定したアクションキーが現在押されているかどうかを返します。Providerがnullの場合はfalseを返します。

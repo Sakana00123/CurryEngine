@@ -100,7 +100,7 @@ public class PlayerController : Behaviour
             {
                 animator.SetTrigger("AttackTrigger");
             }
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(GamepadButton.A))
             {
                 if (jumpCount < 2)
                 {

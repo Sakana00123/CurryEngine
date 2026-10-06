@@ -164,6 +164,36 @@ void InputSystem::Initialize()
 	registerVKey(VK_RBUTTON);
 	registerVKey(VK_MBUTTON);
 
+	// ゲームパッドボタン
+	auto registerGamePadButton = [&](std::string actionName, int button, KeyType type = KeyType::Key) {
+		if (!vKeyMap.contains(button)) {
+			auto key = std::make_unique<GamePad>(button, type);
+			//vKeyMap[button] = key.get();
+			//// アクションには紐付けず、専用リストで管理
+			//rawKeys.push_back(std::move(key));
+			// アクションに紐付ける
+			inputKeys[actionName].emplace_back(std::move(key));
+		}
+		};
+	// ゲームパッドのボタン登録
+	registerGamePadButton("GamePad_A", XINPUT_GAMEPAD_A);
+	registerGamePadButton("GamePad_B", XINPUT_GAMEPAD_B);
+	registerGamePadButton("GamePad_X", XINPUT_GAMEPAD_X);
+	registerGamePadButton("GamePad_Y", XINPUT_GAMEPAD_Y);
+	registerGamePadButton("GamePad_LB", XINPUT_GAMEPAD_LEFT_SHOULDER);
+	registerGamePadButton("GamePad_RB", XINPUT_GAMEPAD_RIGHT_SHOULDER);
+	registerGamePadButton("GamePad_DU", XINPUT_GAMEPAD_DPAD_UP);
+	registerGamePadButton("GamePad_DD", XINPUT_GAMEPAD_DPAD_DOWN);
+	registerGamePadButton("GamePad_DL", XINPUT_GAMEPAD_DPAD_LEFT);
+	registerGamePadButton("GamePad_DR", XINPUT_GAMEPAD_DPAD_RIGHT);
+	registerGamePadButton("GamePad_LS", XINPUT_GAMEPAD_LEFT_THUMB);
+	registerGamePadButton("GamePad_RS", XINPUT_GAMEPAD_RIGHT_THUMB);
+	// トリガー
+	registerGamePadButton("GamePad_LT", 0, KeyType::LeftTrigger);
+	registerGamePadButton("GamePad_RT", 0, KeyType::RightTrigger);
+	// スタート/バックボタン
+	registerGamePadButton("GamePad_START", XINPUT_GAMEPAD_START);
+	registerGamePadButton("GamePad_BACK", XINPUT_GAMEPAD_BACK);
 
 	//アクションとキーの登録
 	inputKeys["attack"].emplace_back(std::make_unique<Mouse>(VK_RBUTTON));
@@ -447,7 +477,8 @@ void InputSystem::RegisterKey(const std::string& action, std::unique_ptr<InputKe
 	// 既に同じ vKey のキーが登録されていないかチェック
 	if (!vKeyMap.contains(vKey)) {
 		vKeyMap[vKey] = key.get(); // vKey と InputKey* をマッピングに登録
-		rawKeys.push_back(std::move(key)); // 登録されたキーを rawKeys に保持
+		std::unique_ptr<InputKey> keyCopy = std::make_unique<InputKey>(*key); // InputKey のコピーを作成
+		rawKeys.push_back(std::move(keyCopy)); // 登録されたキーを rawKeys に保持
 	}
 	inputKeys[action].emplace_back(std::move(key));
 }

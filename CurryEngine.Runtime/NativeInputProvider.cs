@@ -6,10 +6,46 @@ namespace CurryEngine.Runtime
 {
     internal class NativeInputProvider : IInputProvider
     {
+        internal int KeyCodeToInt(KeyCode code)
+        {
+            return (int)code;
+        }
+        internal string GamepadButtonToString(GamepadButton button)
+        {
+            switch (button)
+            {
+                case GamepadButton.A: return "GamePad_A";
+                case GamepadButton.B: return "GamePad_B";
+                case GamepadButton.X: return "GamePad_X";
+                case GamepadButton.Y: return "GamePad_Y";
+                case GamepadButton.LB: return "GamePad_LB";
+                case GamepadButton.RB: return "GamePad_RB";
+                case GamepadButton.DPadUp: return "GamePad_DU";
+                case GamepadButton.DPadDown: return "GamePad_DD";
+                case GamepadButton.DPadLeft: return "GamePad_DL";
+                case GamepadButton.DPadRight: return "GamePad_DR";
+                case GamepadButton.LS: return "GamePad_LS";
+                case GamepadButton.RS: return "GamePad_RS";
+                case GamepadButton.LT: return "GamePad_LT";
+                case GamepadButton.RT: return "GamePad_RT";
+                case GamepadButton.Start: return "GamePad_START";
+                case GamepadButton.Back: return "GamePad_BACK";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(button), button, null);
+            }
+        }
+
+
+
         public bool GetKey(KeyCode code)
         {
             // NativeMethods (P/Invoke) 経由で C++ 側のキー状態を問い合わせる
             return NativeMethods.Input_GetKey((int)code);
+        }
+        public bool GetKey(GamepadButton button)
+        {
+            // NativeMethods (P/Invoke) 経由で C++ 側のキー状態を問い合わせる
+            return NativeMethods.Input_GetAction(GamepadButtonToString(button));
         }
 
         public bool GetKeyDown(KeyCode code)
@@ -17,11 +53,21 @@ namespace CurryEngine.Runtime
             // NativeMethods (P/Invoke) 経由で C++ 側のキー状態を問い合わせる
             return NativeMethods.Input_GetKeyDown((int)code);
         }
+        public bool GetKeyDown(GamepadButton button)
+        {
+            // NativeMethods (P/Invoke) 経由で C++ 側のキー状態を問い合わせる
+            return NativeMethods.Input_GetActionDown(GamepadButtonToString(button));
+        }
 
         public bool GetKeyUp(KeyCode key)
         {
             // NativeMethods (P/Invoke) 経由で C++ 側のキー状態を問い合わせる
             return NativeMethods.Input_GetKeyUp((int)key);
+        }
+        public bool GetKeyUp(GamepadButton button)
+        {
+            // NativeMethods (P/Invoke) 経由で C++ 側のキー状態を問い合わせる
+            return NativeMethods.Input_GetActionUp(GamepadButtonToString(button));
         }
 
         public bool GetActionDown(string actionName)

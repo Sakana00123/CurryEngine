@@ -87,7 +87,7 @@
                     "minDistance": 2.0,
                     "name": "ThirdPersonCameraController",
                     "priority": 2000,
-                    "rotationSpeed": 10.0,
+                    "rotationSpeed": 100.0,
                     "targetDistance": 25.0,
                     "targetTransformId": "7930224090107038306",
                     "type": "ThirdPersonCameraController",

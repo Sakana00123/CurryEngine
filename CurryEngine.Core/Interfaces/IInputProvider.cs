@@ -12,6 +12,7 @@ namespace CurryEngine.Interfaces
         /// <param name="key"> 取得するキーコード</param>
         /// <returns> 指定されたキーが押された場合は true、そうでない場合は false を返します。</returns>
         public bool GetKeyDown(KeyCode key);
+        public bool GetKeyDown(GamepadButton button);
 
         /// <summary>
         /// 指定されたキーが離されたかどうかを取得します。
@@ -19,6 +20,7 @@ namespace CurryEngine.Interfaces
         /// <param name="key"> 取得するキーコード</param>
         /// <returns> 指定されたキーが離された場合は true、そうでない場合は false を返します。</returns>
         public bool GetKeyUp(KeyCode key);
+        public bool GetKeyUp(GamepadButton button);
 
         /// <summary>
         /// 指定されたキーが押されているかどうかを取得します。
@@ -26,6 +28,7 @@ namespace CurryEngine.Interfaces
         /// <param name="key"> 取得するキーコード</param>
         /// <returns> 指定されたキーが押されている場合は true、そうでない場合は false を返します。</returns>
         public bool GetKey(KeyCode key);
+        public bool GetKey(GamepadButton button);
 
         /// <summary>
         /// 指定されたアクションが押されたかどうかを取得します。
