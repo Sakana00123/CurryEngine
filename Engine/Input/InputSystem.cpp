@@ -167,14 +167,7 @@ void InputSystem::Initialize()
 
 	// ゲームパッドボタン
 	auto registerGamePadButton = [&](std::string actionName, int button, KeyType type = KeyType::Key) {
-		if (!vKeyMap.contains(button)) {
-			auto key = std::make_unique<GamePad>(button, type);
-			//vKeyMap[button] = key.get();
-			//// アクションには紐付けず、専用リストで管理
-			//rawKeys.push_back(std::move(key));
-			// アクションに紐付ける
-			inputKeys[actionName].emplace_back(std::move(key));
-		}
+		RegisterActionKey(actionName, button, InputDevice::GamePad, type);
 		};
 	// ゲームパッドのボタン登録
 	registerGamePadButton("GamePad_A", XINPUT_GAMEPAD_A);
@@ -251,10 +244,13 @@ void InputSystem::LoadInputSettings()
 	{
 		if (inputSettingsJson.contains("ActionKeys") && inputSettingsJson["ActionKeys"].is_object())
 		{
+			// 保存された設定は、削除されたアクションやキー割り当てを含め、デフォルト設定を上書きします。
+			inputKeys.clear();
 			for (const auto& [action, keysJson] : inputSettingsJson["ActionKeys"].items())
 			{
 				if (keysJson.is_array())
 				{
+					inputKeys.try_emplace(action); // バインディングのないアクションを保持する。
 					for (const auto& keyJson : keysJson)
 					{
 						int vKey = keyJson.value("vKey", 0);
@@ -572,6 +568,9 @@ void InputSystem::RegisterActionKey(const std::string& action, int vKey, InputDe
 	// 既に同じ vKey のキーが登録されていないかチェック
 	for (const auto& existingKey : inputKeys[action]) {
 		if (existingKey->GetVKey() == vKey && existingKey->GetDeviceType() == device) {
+			if (const auto* gamepad = dynamic_cast<const GamePad*>(existingKey.get());
+				gamepad && gamepad->GetKeyType() != type)
+				continue;
 			alreadyRegistered = true;
 			break;
 		}

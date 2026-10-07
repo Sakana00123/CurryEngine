@@ -8,10 +8,6 @@
         ],
         "Attack": [
             {
-                "device": 0,
-                "vKey": 102
-            },
-            {
                 "device": 2,
                 "type": 0,
                 "vKey": 8192
@@ -189,8 +185,8 @@
                 "vKey": 112
             },
             {
-                "device": 1,
-                "vKey": 2
+                "device": 0,
+                "vKey": 56
             },
             {
                 "device": 2,
