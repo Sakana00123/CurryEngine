@@ -12,7 +12,11 @@
 static std::shared_ptr<Component> FindComponentById(uint64_t componentId)
 {
 	Scene* currentScene = SceneManager::GetLoadingSceneOrCurrentScene();
-	if (!currentScene) return nullptr; // シーンが存在しない場合は nullptr を返す
+	if (!currentScene)
+	{
+		LOG_WARNING("FindComponentById: No current scene available.");
+		return nullptr; // 現在のシーンが存在しない場合は nullptr を返す
+	}
 	auto& cache = currentScene->objectManager->GetComponentCacheMap();
 	auto it = cache.find(ObjectId::FromValue(componentId));
 	if (it != cache.end())
@@ -62,8 +66,13 @@ ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
 		{
 			return owner->GetId().Value(); // 所有者の ID を返す
 		}
+		else
+		{
+			LOG_WARNING(std::format("Component_GetOwner: Component with ID {} has no owner.", objectId));
+			return 0; // 所有者が存在しない場合は 0 を返す
+		}
 	}
-	LOG_WARNING(std::format("Component_GetOwner: Component with ID {} not found or has no owner.", objectId));
+	LOG_WARNING(std::format("Component_GetOwner: Component with ID {} not found.", objectId));
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
 }
 
