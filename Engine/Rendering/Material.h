@@ -76,7 +76,7 @@ public:
 	}
 
 	/**
-	 * @brief 任意の値を名前で設定します（定数バッファへ反映）。
+	 * @brief 任意の値を名前で設定します（定数バッファへ反映）。HLSL側のbool型は4バイトのため、BOOL型を使用してください。
 	 * @tparam T 値の型。
 	 * @param name 値の識別名。
 	 * @param value 設定する値。

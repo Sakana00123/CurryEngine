@@ -16,7 +16,7 @@ void ShadowApplyPass::Initialize()
 	std::vector<std::string> notBindCBufferNames = { "SCENE_CONSTANT_BUFFER", "LIGHT_CONSTANT_BUFFER", /*"PARAMETRIC_CONSTANT_BUFFER", */"CASCADED_CONSTANTS"};
 	m_cascadedShadowMaterial->SetNotBindCBuffer(notBindCBufferNames);
 	// 初期値設定
-	m_cascadedShadowMaterial->SetValue("colorizeCascadedLayer", false);
+	m_cascadedShadowMaterial->SetValue<BOOL>("colorizeCascadedLayer", false);
 	m_cascadedShadowMaterial->SetValue("shadowDepthBias", 0.000021f);
 
 	m_shadowRenderTexture.Create(device, 1920, 1080);

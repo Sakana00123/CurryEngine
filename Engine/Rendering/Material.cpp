@@ -412,7 +412,17 @@ void Material::DrawCBufferVariables(size_t shaderType)
 					{
 					case D3D_SVT_FLOAT: edited = ImGui::DragFloat(label.c_str(), (float*)buffer.data(), 0.00001f, 0, 0, floatFormat); break;
 					case D3D_SVT_INT: edited = ImGui::DragInt(label.c_str(), (int*)buffer.data(), 1, INT_MIN, INT_MAX); break;
-					case D3D_SVT_BOOL: edited = ImGui::Checkbox(label.c_str(), (bool*)buffer.data()); break;
+					case D3D_SVT_BOOL:
+					{
+						// bool型はHLSLでは4バイトのため、int型として扱う
+						BOOL boolValue = *(BOOL*)buffer.data();
+						bool checked = boolValue;
+						if (ImGui::Checkbox(label.c_str(), &checked))
+						{
+							*(int*)buffer.data() = checked ? 1 : 0;
+							edited = true;
+						}
+					}
 					}
 					break;
 				}
@@ -925,8 +935,8 @@ bool Material::Deserialize(const json& j)
 				}
 				else if (varValue.is_boolean())
 				{
-					bool boolData = varValue.get<bool>();
-					SetValue(varName, &boolData, sizeof(bool));
+					BOOL boolData = varValue.get<bool>();
+					SetValue(varName, &boolData, sizeof(BOOL));
 				}
 			}
 		}
