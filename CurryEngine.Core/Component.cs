@@ -149,5 +149,5 @@ public abstract class Component : Object
 #endif
 
     public override string ToString()
-        => $"{GetType().Name}(entity={ownerId})";
+        => $"{GetType().Name}(objectId={objectId})";
 }
