@@ -17,7 +17,7 @@ void ShadowApplyPass::Initialize()
 	m_cascadedShadowMaterial->SetNotBindCBuffer(notBindCBufferNames);
 	// 初期値設定
 	m_cascadedShadowMaterial->SetValue<BOOL>("colorizeCascadedLayer", false);
-	m_cascadedShadowMaterial->SetValue("shadowDepthBias", 0.000021f);
+	m_cascadedShadowMaterial->SetValue("shadowDepthBias", 0.00005f);
 
 	m_shadowRenderTexture.Create(device, 1920, 1080);
 	RegisterResizableRenderTexture(&m_shadowRenderTexture); // リサイズが必要なレンダーターゲットとして登録(※これを呼び出さないと、ウィンドウサイズ変更時にリサイズされないので注意)

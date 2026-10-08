@@ -473,7 +473,7 @@ void PrimitiveRenderer::CastShadow(RenderContext* rtx)
 	indexBuffer->GetDesc(&buffer_desc);
 	UINT indexCount = buffer_desc.ByteWidth / sizeof(uint32_t);
 	UINT instanceCount = 4; // カスケードシャドウマップの分割数
-	immediateContext->DrawIndexedInstanced((indexCount / instanceCount), instanceCount, 0, 0, 0);
+	immediateContext->DrawIndexedInstanced(indexCount, instanceCount, 0, 0, 0);
 
 	// デバッグ用のマーカーを終了
 	markerUtils->EndEvent();

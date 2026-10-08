@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CurryEngine.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69fce975df02a390fc47a754e7d213ca195a5e09")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c80edfa3b482b0295e19b4c01040cc8432e4e8a2")]
 [assembly: System.Reflection.AssemblyProductAttribute("CurryEngine.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CurryEngine.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
