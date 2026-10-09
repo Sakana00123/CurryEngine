@@ -209,6 +209,30 @@ EffectHandle EffectManager::LoadEffectDataWithDialog()
 	}
 }
 
+EffectHandle EffectManager::LoadAllEffectDataFromDirectory(const std::string& directoryPath)
+{
+	EffectHandle lastHandle = -1;
+	if (std::filesystem::exists(directoryPath) && std::filesystem::is_directory(directoryPath))
+	{
+		for (const auto& entry : std::filesystem::directory_iterator(directoryPath))
+		{
+			if (entry.is_regular_file())
+			{
+				std::filesystem::path filePath = entry.path();
+				if (filePath.extension() == ".json" || filePath.extension() == ".effect")
+				{
+					EffectHandle handle = LoadEffectData(filePath.string());
+					if (handle != -1)
+					{
+						lastHandle = handle; // 最後にロードしたハンドルを更新
+					}
+				}
+			}
+		}
+	}
+	return lastHandle; // 最後にロードしたハンドルを返す。失敗した場合は -1 を返す。
+}
+
 void EffectManager::SaveEffectData(EffectHandle handle, const std::string& filePath)
 {
 	// エフェクトデータ保存

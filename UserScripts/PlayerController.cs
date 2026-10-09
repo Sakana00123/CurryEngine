@@ -7,11 +7,13 @@ public class PlayerController : Behaviour
     public float speed = 0.0f;
     public float acceleration = 5.0f;
     public float jumpForce = 5.0f;
+    public float maxHoveringTime = 2.0f;
     public Collider? attackCollider;
     public GameObject? attackColliderObject;
     Vector2 prevInput = Vector2.zero;
     int jumpCount = 0;
     int attackCount = 0;
+    float hoveringTime = 0.0f;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -102,6 +104,23 @@ public class PlayerController : Behaviour
             }
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(GamepadButton.A))
             {
+                //switch (jumpCount)
+                //{
+                //    case 0:
+                //        animator.SetTrigger("JumpTrigger");
+                //        animator.SetBool("Jumping", true);
+                //        //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
+                //        animator.CrossFadeInFixedTime("Jump", 0.1f);
+                //        jumpCount++;
+                //        break;
+                //    case 1:
+                //        animator.SetTrigger("DoubleJumpTrigger");
+                //        animator.SetBool("Jumping", true);
+                //        //animator.CrossFadeInFixedTime("DoubleJumpStart", 0.1f);
+                //        animator.CrossFadeInFixedTime("DoubleJump", 0.1f);
+                //        jumpCount++;
+                //        break;
+                //}
                 if (jumpCount < 2)
                 {
                     if (TryGetComponent<Rigidbody>(out Rigidbody rb))

@@ -2,6 +2,7 @@
 #define NOMINMAX
 #include "EffectEditor.h"
 #include <filesystem>
+#include <algorithm>
 #ifdef USE_IMGUI
 #include <imgui.h>
 #include <ImGradientHDR.h>
@@ -12,6 +13,23 @@
 #include "Engine/EditorSupport/ImGuiHelpers.h"
 #include <Engine\Rendering\Camera\EditorCamera.h>
 #include <Engine\Scenes\SceneManager.h>
+
+#ifdef USE_IMGUI
+namespace
+{
+	// 次のボタンが収まらない場合は、そのまま次の行に配置する。
+	void SameLineIfButtonFits(const char* label)
+	{
+		const auto& style = ImGui::GetStyle();
+		const float nextWidth = ImGui::CalcTextSize(label).x + style.FramePadding.x * 2.0f;
+		const float right = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+		if (ImGui::GetItemRectMax().x + style.ItemSpacing.x + nextWidth <= right)
+		{
+			ImGui::SameLine();
+		}
+	}
+}
+#endif
 
 // エフェクト専用の拡張子が決まったため、以前使用していたjsonファイルの拡張子を変更して新しい拡張子に変更して保存するためのフォルダ選択ダイアログを表示する関数
 static void ShowFileExtensionChangeDialog()
@@ -118,7 +136,10 @@ bool EffectEditor::IsPreviewFocused()
 
 void EffectEditor::Initialize()
 {
-	// 初期化処理が必要ならここに追加
+	std::filesystem::path effectDirectory = std::filesystem::current_path() / "Assets" / "Effects";
+
+	// ディレクトリ内のすべてのエフェクトデータをロード
+	EffectManager::LoadAllEffectDataFromDirectory(effectDirectory.string());
 }
 
 void EffectEditor::DrawGUI(RenderContext* context)
@@ -131,7 +152,12 @@ void EffectEditor::DrawGUI(RenderContext* context)
 	}
 	else
 	{
-		ImGui::Begin("Effect Editor", &isOpen);
+		isPreviewFocused = false;
+		if (!ImGui::Begin("Effect Editor", &isOpen))
+		{
+			ImGui::End();
+			return;
+		}
 
 		// ロード・セーブ・適用・クリアボタン
 		{
@@ -143,56 +169,68 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					currentEffectHandle = handle;
 				}
 			}
-			ImGui::SameLine();
+			SameLineIfButtonFits("Save");
 			if (ImGui::Button("Save")) { EffectManager::SaveEffectDataWithDialog(currentEffectHandle); }
-			ImGui::SameLine(0, 30.0f);
+			SameLineIfButtonFits("Clear");
 			// クリアボタン
 			if (ImGui::Button("Clear")) { EffectManager::ClearAll(); }
 
 			// コンバートボタン
-			ImGui::SameLine(0, 30.0f);
+			SameLineIfButtonFits("Convert JSON to .effect");
 			if (ImGui::Button("Convert JSON to .effect"))
 			{
 				ShowFileExtensionChangeDialog();
 			}
+
+			// すべてのエフェクトをロードするボタン
+			SameLineIfButtonFits("Load All Effects");
+			if (ImGui::Button("Load All Effects")) 
+			{
+				std::filesystem::path effectDirectory = std::filesystem::current_path() / "Assets" / "Effects";
+				// ディレクトリを選択するダイアログを表示
+				char selectedDirectory[1024] = {};
+				if (Dialog::SelectDirectoryName(selectedDirectory, sizeof(selectedDirectory), "Select Directory to Load All Effects") == DialogResult::OK)
+				{
+					effectDirectory = selectedDirectory;
+				}
+
+				// ディレクトリ内のすべてのエフェクトデータをロード
+				if (EffectHandle lastHandle = EffectManager::LoadAllEffectDataFromDirectory(effectDirectory.string()); lastHandle > -1)
+				{
+					currentEffectHandle = lastHandle; // 最後にロードしたエフェクトを選択
+				}
+			}
+
 		}
 
-		//ImGui::BeginTable("EffectEditorTable", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable);
-		//ImGui::TableSetupColumn("EffectPreviewWindow", ImGuiTableColumnFlags_WidthStretch);
-		//ImGui::TableSetupColumn("Effect Data List", ImGuiTableColumnFlags_WidthFixed, 200.0f);
-
-		//// 左側のカラム
-		//ImGui::TableNextRow();
-		//ImGui::TableSetColumnIndex(0);
-		
-		// エフェクトプレビューウィンドウ
-		if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
+		// スクロール位置に依存しない高さを使い、プレビューが編集領域を圧迫しないようにする。
+		const float availableHeight = std::max(1.0f,
+			ImGui::GetWindowHeight() - ImGui::GetCursorPosY() - ImGui::GetStyle().WindowPadding.y);
+		if (ImGui::CollapsingHeader("Preview", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			static constexpr float aspectRatio = 9.0f / 16.0f; // 16:9のアスペクト比
-			static constexpr float windowWidth = 400.0f; // ウィンドウの幅を固定
-			static constexpr float windowHeight = windowWidth * aspectRatio; // 高さをアスペクト比に基づいて計算
-			ImVec2 windowSize(windowWidth, windowHeight);
-			ImGui::Image(previewImage->GetSRV(), windowSize);
-
-			// プレビューウィンドウがフォーカスされているかどうかをチェック
-			isPreviewFocused = ImGui::IsItemHovered();
+			if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
+			{
+				constexpr float aspectRatio = 16.0f / 9.0f;
+				const float previewHeight = std::max(1.0f, std::min({
+					225.0f, availableHeight * 0.25f, ImGui::GetContentRegionAvail().x / aspectRatio }));
+				ImGui::Image(previewImage->GetSRV(), ImVec2(previewHeight * aspectRatio, previewHeight));
+				isPreviewFocused = ImGui::IsItemHovered();
+			}
 		}
 
-		// 右側のカラム
-		//ImGui::TableSetColumnIndex(1);
-
-		// エフェクトデータリスト
-		if (ImGui::CollapsingHeader("Effect Data List", ImGuiTreeNodeFlags_Leaf))
+		// 一覧の高さを最大3行に制限し、件数が増えても編集領域を確保する。
+		if (ImGui::CollapsingHeader("Effect Data List", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::Dummy(ImVec2(0.0f, 3.0f)); // 少しスペースを空ける
+			const float listRows = static_cast<float>(std::clamp<size_t>(EffectManager::effectData.size(), 1, 3));
+			const float listHeight = ImGui::GetTextLineHeightWithSpacing() * listRows
+				+ ImGui::GetStyle().WindowPadding.y * 2.0f;
+			ImGui::BeginChild("EffectDataList", ImVec2(0, listHeight), ImGuiChildFlags_Borders);
 
 			//for (size_t emitterIndex = 0; emitterIndex < EffectManager::effectData.size(); ++emitterIndex)
 			for (auto& [emitterIndex, effect] : EffectManager::effectData)
 			{
 				// 一意のIDをプッシュ
 				ImGui::PushID(static_cast<int>(emitterIndex));
-
-				ImGui::Dummy(ImVec2(0.0f, 2.0f)); // 少しスペースを空ける
 
 				// クリック状態フラグ
 				bool isClicked = false;
@@ -203,8 +241,6 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
 				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 
-				ImGui::Dummy(ImVec2(2.0f, 0.0f)); // 少しスペースを空ける
-				ImGui::SameLine();
 				isClicked |= ImGui::Selectable(effect.name.c_str(), currentEffectHandle == emitterIndex);
 				ImGui::PopStyleColor(4);
 
@@ -246,17 +282,11 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				ImGui::PopID();
 			}
 
-			// ドラッグアンドドロップでエフェクトデータを追加するためのドロップターゲット(あくまで応急処置)
+			ImGui::EndChild();
+
+			// 一覧自体をドロップターゲットにし、ドラッグ中もレイアウトを変えない。
 			if (ImGui::GetDragDropPayload() && std::strcmp(ImGui::GetDragDropPayload()->DataType, "ASSET_PATH") == 0)
 			{
-				float scrollY = ImGui::GetScrollY();
-				ImVec2 offset(0, scrollY); // スクロールオフセットを考慮
-				ImGui::SetCursorPos(ImGui::GetCursorPos() + offset); // ドロップターゲットの位置を調整
-				ImVec2 contentRegion = ImGui::GetContentRegionAvail(); // 利用可能な幅を取得
-				ImVec2 size = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
-
-				ImGui::InvisibleButton("##drop_target", size); // 利用可能な領域全体をドロップターゲットにする
-
 				// ドロップされたときの処理
 				if (ImGui::BeginDragDropTarget()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_PATH")) {
@@ -281,8 +311,6 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				}
 			}
 
-			ImGui::Dummy(ImVec2(0.0f, 5.0f)); // 少しスペースを空ける
-
 			// 新しいエフェクトデータ追加ボタン
 			if (ImGui::Button("Add New Effect Data"))
 			{
@@ -290,7 +318,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				// 追加したエフェクトデータの名前を設定
 				EffectManager::effectData[currentEffectHandle].name = "Effect " + std::to_string(currentEffectHandle);
 			}
-			ImGui::SameLine();
+			SameLineIfButtonFits("Clear All Effect Data");
 			// 全エフェクトデータクリアボタン
 			if (ImGui::Button("Clear All Effect Data"))
 			{
@@ -299,18 +327,14 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			}
 		}
 
-		ImGui::Dummy(ImVec2(0.0f, 5.0f)); // 少しスペースを空ける
-
 		ImGui::Separator();
-		ImGui::Dummy(ImVec2(0.0f, 5.0f)); // 少しスペースを空ける
 
 		// エミッタエディタ
 		{
 			// 現在のエフェクトハンドルが有効かチェック
-			if (currentEffectHandle < 0 || currentEffectHandle >= EffectManager::effectData.size())
+			if (EffectManager::effectData.find(currentEffectHandle) == EffectManager::effectData.end())
 			{
 				ImGui::Text("No Emitter Data Selected.");
-				//ImGui::EndTable();
 				ImGui::End();
 				return;
 			}
@@ -323,7 +347,9 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			{
 				strncpy_s(effectNameBuffer, EffectManager::effectData.at(currentEffectHandle).name.c_str(), sizeof(effectNameBuffer));
 			}
-			ImGui::InputText("Effect Name", effectNameBuffer, sizeof(effectNameBuffer));
+			ImGui::TextUnformatted("Effect Name");
+			ImGui::SetNextItemWidth(-1.0f);
+			ImGui::InputText("##Effect Name", effectNameBuffer, sizeof(effectNameBuffer));
 			if (ImGui::IsItemDeactivatedAfterEdit())
 			{
 				EffectManager::effectData.at(currentEffectHandle).name = effectNameBuffer;
@@ -333,14 +359,35 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			{
 				EffectManager::Play(currentEffectHandle);
 			}
-			ImGui::SameLine();
+			SameLineIfButtonFits("Stop");
 			// エフェクト停止ボタン
 			if (ImGui::Button("Stop"))
 			{
 				EffectManager::Stop(currentEffectHandle);
 			}
 
-			ImGui::BeginChild("EmitterDataList", ImVec2(0, -35.0f));
+			SameLineIfButtonFits("Add Emitter");
+			if (ImGui::Button("Add Emitter"))
+			{
+				auto& data = emitterDataList.emplace_back();
+				data.name = "Emitter" + std::to_string(emitterDataList.size() - 1);
+			}
+			SameLineIfButtonFits("Clear Emitters");
+			if (ImGui::Button("Clear Emitters"))
+			{
+				emitterDataList.clear();
+			}
+
+			// 残りの領域を編集に使う。小さいウィンドウでは親をスクロールできるよう最低8行を確保する。
+			const float editorHeight = std::max(ImGui::GetFrameHeightWithSpacing() * 8.0f,
+				ImGui::GetWindowHeight() - ImGui::GetCursorPosY() - ImGui::GetStyle().WindowPadding.y);
+			// 深い階層の固定幅プロパティも横スクロールで操作できるようにする。
+			const float editorWidth = std::max({ 480.0f, ImGui::GetFontSize() * 37.0f,
+				ImGui::GetContentRegionAvail().x - ImGui::GetStyle().WindowPadding.x * 2.0f
+					- ImGui::GetStyle().ScrollbarSize });
+			ImGui::SetNextWindowContentSize(ImVec2(editorWidth, 0));
+			ImGui::BeginChild("EmitterDataList", ImVec2(0, editorHeight), ImGuiChildFlags_Borders,
+				ImGuiWindowFlags_HorizontalScrollbar);
 
 			// 各エミッタデータ表示
 			for (size_t i = 0; i < emitterDataList.size(); ++i)
@@ -360,7 +407,9 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					{
 						strncpy_s(nameBuffer, emitterData.name.c_str(), sizeof(nameBuffer));
 					}
-					ImGui::InputText("Name", nameBuffer, sizeof(nameBuffer));
+					ImGui::TextUnformatted("Name");
+					ImGui::SetNextItemWidth(-1.0f);
+					ImGui::InputText("##Name", nameBuffer, sizeof(nameBuffer));
 					if (ImGui::IsItemDeactivatedAfterEdit())
 					{
 						emitterData.name = nameBuffer;
@@ -374,6 +423,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 
 					// テクスチャパスのバッファ
 					char texturePathBuffer[256]{};
+					ImGui::TextUnformatted("Texture Path");
 					// テクスチャパスの参照ボタン
 					if (ImGui::Button("Browse"))
 					{
@@ -391,12 +441,15 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					{
 						strncpy_s(texturePathBuffer, emitterData.visualData.texturePath.c_str(), sizeof(texturePathBuffer));
 					}
-					ImGui::InputText("Texture Path", texturePathBuffer, sizeof(texturePathBuffer));
+					ImGui::SetNextItemWidth(-1.0f);
+					ImGui::InputText("##Texture Path", texturePathBuffer, sizeof(texturePathBuffer));
 					if (ImGui::IsItemDeactivatedAfterEdit())
 					{
 						emitterData.visualData.texturePath = texturePathBuffer;
 					}
-					ImGui::DragInt2("Texture Split", reinterpret_cast<int*>(&emitterData.visualData.textureSplitCount.x), 1, 1, 100);
+					ImGui::TextUnformatted("Texture Split");
+					ImGui::SetNextItemWidth(-1.0f);
+					ImGui::DragInt2("##Texture Split", reinterpret_cast<int*>(&emitterData.visualData.textureSplitCount.x), 1, 1, 100);
 
 					// ビジュアル設定
 					{
@@ -613,20 +666,8 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				ImGui::Separator();
 			}
 			ImGui::EndChild();
-			if (ImGui::Button("+", ImVec2(25, 25)))
-			{
-				auto& data = emitterDataList.emplace_back();
-				data.name = "Emitter" + std::to_string(emitterDataList.size() - 1);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Clear Emitters"))
-			{
-				emitterDataList.clear();
-			}
 
 		}
-
-		//ImGui::EndTable();
 
 		ImGui::End();
 	}

@@ -23,107 +23,97 @@ public:
 	~EffectManager() = default;
 public:
 
-	// エフェクトデータクリア
 	/**
-	 * @brief 保持している内容を消去します。
+	 * @brief エフェクトデータをすべて消去します。
 	 */
 	static void ClearAll();
 
-	// 新しいエフェクトデータ追加用のハンドル取得
 	/**
-	 * @brief 新しい要素を生成します。
+	 * @brief 新しいエフェクトデータ追加用のハンドルを作成します。
 	 */
 	static EffectHandle CreateEffectData();
 
-	// エフェクトデータ読み込み
 	/**
-	 * @brief LoadEffectData に対応する値を取得します。
-	 * @return 処理結果を返します。
+	 * @brief エフェクトデータを指定ファイルから読み込みます。
+	 * @return ロードしたエフェクトデータのハンドルを返します。失敗した場合は -1 を返します。
 	 */
 	static EffectHandle LoadEffectData(const std::string& filePath);
 
-	// エフェクトデータ読み込み（ダイアログ表示）
 	/**
-	 * @brief LoadEffectDataWithDialog に対応する値を取得します。
-	 * @return 処理結果を返します。
+	 * @brief エフェクトデータをダイアログから読み込みます。
+	 * @return ロードしたエフェクトデータのハンドルを返します。失敗した場合は -1 を返します。
 	 */
 	static EffectHandle LoadEffectDataWithDialog();
 
-	// エフェクトデータ保存
 	/**
-	 * @brief SaveEffectData の処理を行います。
+	 * @brief エフェクトデータを指定ディレクトリから一括で読み込みます。
+	 * @return 最後にロードしたエフェクトデータのハンドルを返します。失敗した場合は -1 を返します。
+	 */
+	static EffectHandle LoadAllEffectDataFromDirectory(const std::string& directoryPath);
+
+	/**
+	 * @brief エフェクトデータを指定ファイルに保存します。
 	 */
 	static void SaveEffectData(EffectHandle handle, const std::string& filePath);
 
-	// エフェクトデータ保存（ダイアログ表示）
 	/**
-	 * @brief SaveEffectDataWithDialog の処理を行います。
+	 * @brief エフェクトデータをダイアログから保存します。
 	 */
 	static void SaveEffectDataWithDialog(EffectHandle handle);
 
 	// エフェクト再生 (return: 再生インスタンスID)
 	static int Play(EffectHandle handle, const Vector3& position = {}, const Vector3& rotationEulerDegree = {});
 
-	// エフェクト停止
 	/**
-	 * @brief Stop の処理を行います。
+	 * @brief エフェクト停止（ハンドル指定）の処理を行います。
 	 */
 	static void Stop(EffectHandle handle);
 
-	// エフェクト停止（インスタンスID指定）
 	/**
-	 * @brief StopImmediate の処理を行います。
+	 * @brief エフェクト停止（再生インスタンスID指定）の処理を行います。
 	 */
 	static void StopImmediate(int instanceID);
 
-	// エフェクト再生中か
 	/**
-	 * @brief IsPlaying の条件を満たすか判定します。
-	 * @return 処理結果を返します。
+	 * @brief エフェクトが再生中かどうかを判定します。
+	 * @return 再生中の場合は true を返します。再生中でない場合は false を返します。
 	 */
 	static bool IsPlaying(EffectHandle handle);
 
-	// 全エフェクト停止
 	/**
-	 * @brief StopAll の処理を行います。
+	 * @brief エフェクトをすべて停止します。
 	 */
 	static void StopAll();
 
-	// エフェクトデータコピー
 	/**
-	 * @brief CopyEffectData の処理を行います。
+	 * @brief エフェクトデータをコピーします。
 	 */
 	static EffectHandle CopyEffectData(EffectHandle srcHandle);
 
-	// エフェクトデータ取得
 	struct EffectData;
 	/**
-	 * @brief GetEffectData に対応する値を取得します。
-	 * @return 処理結果を返します。
+	 * @brief エフェクトデータを取得します。
+	 * @return 取得したエフェクトデータを返します。
 	 */
 	static EffectData& GetEffectData(EffectHandle handle);
 
 public:
 
-	//初期化
 	/**
 	 * @brief 初期化します。
 	 */
 	static void Initialize();
 
-	//更新
 	/**
 	 * @brief 状態を更新します。
 	 */
 	static void Update(float deltaTime);
 
-	//描画
 	/**
 	 * @brief 描画処理を行います。
 	 */
 	static void Render(RenderContext* rtx);
 
-	//エディタGUI描画
 	/**
 	 * @brief 描画処理を行います。
 	 */
@@ -137,57 +127,49 @@ private:
 	static void ClearEffectData(); // エフェクトデータクリア
 
 	/**
-	 * @brief ReInitializeParticleSystem の処理を行います。
+	 * @brief パーティクルシステムを再初期化します。
 	 */
-	static void ReInitializeParticleSystem(); // パーティクルシステム再初期化
+	static void ReInitializeParticleSystem();
 
-	// エミット処理
 	struct EmitterPlayState;
 	/**
-	 * @brief EmitOnce の処理を行います。
+	 * @brief 一度だけエミットする処理を行います。
 	 */
 	static void EmitOnce(const EmitterPlayState& state);
 
-	// 形状エミッタ設定適用
 	struct EmitterShapeData;
 	/**
-	 * @brief ApplyShapeEmitterSettings の処理を行います。
+	 * @brief 形状エミッタ設定を適用する処理を行います。
 	 */
 	static void ApplyShapeEmitterSettings(const EmitterShapeData& settings, ComputeParticleSystem::EmitParticleData& emitData, int index, int emitCount);
 
 	
-	// ランダム値取得
 	/**
-	 * @brief Random の処理を行います。
+	 * @brief ランダムな値を取得します。
 	 */
 	static float Random(float min, float max);
 
-	// ランダムなボックス内位置取得
 	/**
-	 * @brief RandomBoxPosition の処理を行います。
+	 * @brief ランダムなボックス内の位置を取得します。
 	 */
 	static Vector3 RandomBoxPosition(const Vector3& size);
 
-	// ランダム方向ベクトル取得
 	/**
-	 * @brief RandomDirection の処理を行います。
+	 * @brief ランダムな方向ベクトルを取得します。
 	 */
 	static Vector3 RandomDirection();
 
-	// ランダム上半球方向ベクトル取得
 	/**
-	 * @brief RandomHemisphereDirection の処理を行います。
+	 * @brief ランダムな半球方向ベクトルを取得します。
 	 */
 	static Vector3 RandomHemisphereDirection(const Vector3& normal);
 
-	// 指定角度内のランダム方向ベクトル取得
 	/**
-	 * @brief RandomConeDirection の処理を行います。
+	 * @brief ランダムな円錐方向ベクトルを取得します。
 	 */
 	static Vector3 RandomConeDirection(const Vector3& dir, float coneAngle);
 public:
 	// 描画モード
-	/** @brief RenderingMode を表す列挙型です。 */
 	enum class RenderingMode : uint8_t
 	{
 		Billboard = 0,		// ビルボード
@@ -196,7 +178,6 @@ public:
 		ScreenSpace,		// スクリーンスペース
 	};
 	// 形状定義
-	/** @brief ShapeType を表す列挙型です。 */
 	enum class ShapeType : uint8_t
 	{
 		Point = 0,			// 点
@@ -205,7 +186,6 @@ public:
 		Cylinder,			// 円柱
 	};
 	// 方向生成モード
-	/** @brief DirectionMode を表す列挙型です。 */
 	enum class DirectionMode : uint8_t
 	{
 		Default = 0,   // EmitterMotionData::velocity に従う
@@ -216,7 +196,6 @@ public:
 		Normal,        // 形状法線方向
 	};
 	// エミット設定構造体
-	/** @brief EmitterEmitData を表す構造体です。 */
 	struct EmitterEmitData
 	{
 		int maxParticles{ 1000 };						// 最大パーティクル数
@@ -232,7 +211,6 @@ public:
 		float duration{ 1.0f };							// エミット持続時間（ループする場合は1サイクルの時間）TODO: durationはループする場合の1サイクルの時間にするか、ループフラグと分けてエミット持続時間を別途設けるか要検討
 	};
 	// 形状エミッタ設定構造体
-	/** @brief EmitterShapeData を表す構造体です。 */
 	struct EmitterShapeData
 	{
 		ShapeType shape = ShapeType::Point;						// 形状タイプ
@@ -246,7 +224,6 @@ public:
 		float height = 1.0f;									// Cylinderで使用
 	};
 	// 動作設定構造体
-	/** @brief EmitterMotionData を表す構造体です。 */
 	struct EmitterMotionData
 	{
 		CurryEngine::Range<Vector3> velocity;					// 初速
@@ -255,7 +232,6 @@ public:
 		bool useGravity{ false };					// 重力使用フラグ
 	};
 	// ビジュアル設定構造体
-	/** @brief EmitterVisualData を表す構造体です。 */
 	struct EmitterVisualData
 	{
 		RenderingMode renderingMode = RenderingMode::Billboard; // 描画モード
@@ -287,7 +263,6 @@ public:
 		}
 	};
 	// エミッタデータ構造体
-	/** @brief ParticleEmitterData を表す構造体です。 */
 	struct ParticleEmitterData
 	{
 		std::string name;				// エミッタ名
@@ -299,7 +274,6 @@ public:
 		EmitterVisualData visualData;	// ビジュアル設定
 	};
 	// エフェクトデータ構造体
-	/** @brief EffectData を表す構造体です。 */
 	struct EffectData
 	{
 		std::string name; // エフェクト名
@@ -326,7 +300,7 @@ private:
 
 private:
 
-	/** @brief EmitterPlayState を表す構造体です。 */
+	// 再生中エミッタの状態を保持する構造体
 	struct EmitterPlayState
 	{
 		EffectHandle handle;			// エフェクトハンドル
