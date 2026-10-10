@@ -57,32 +57,32 @@ public:
 	 */
 	void OnDestroy() override;
 
-	// エフェクトデータ読み込み
 	/**
-	 * @brief Load に対応する値を取得します。
-	 * @return 処理結果を返します。
+	 * @brief エフェクトデータを指定ファイルから読み込みます。
 	 */
 	C_FUNCTION()
 	void Load(const std::string& filePath);
 
-	// エフェクト再生
 	/**
-	 * @brief Play の処理を行います。
+	 * @brief エフェクトデータを再読み込みします。
+	 */
+	C_FUNCTION()
+	void ReloadAsset();
+
+	/**
+	 * @brief エフェクトを再生します。
 	 */
 	C_FUNCTION()
 	void Play();
 
-	// エフェクト停止
 	/**
-	 * @brief Stop の処理を行います。
+	 * @brief エフェクトを停止します。
 	 */
 	C_FUNCTION()
 	void Stop();
 
-	// 再生中かを返す
 	/**
-	 * @brief IsPlaying の条件を満たすか判定します。
-	 * @return 処理結果を返します。
+	 * @brief 再生中かを返します。
 	 */
 	C_FUNCTION()
 	bool IsPlaying() const;
@@ -129,6 +129,9 @@ public:
 private:
 	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"), CurryEngine::PropertyAttributes::DialogFilter("Particle Effect Files(*.effect)|*.effect|All Files(*.*)|*.*|"), CurryEngine::PropertyAttributes::Setter("Load"))
 	std::string filePath; // エフェクトファイルパス
+	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("AssetId"), CurryEngine::PropertyAttributes::AssetTypeExtension(".effect"), CurryEngine::PropertyAttributes::OnPropertyChanged("ReloadAsset"))
+	CurryEngine::Resources::AssetId assetId; // エフェクトアセットID
+
 	C_PROPERTY()
 	bool playOnAwake = false;			// 自動再生フラグ
 private:

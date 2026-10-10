@@ -11,6 +11,7 @@ public class PlayerController : Behaviour
     public float hoveringForce = 5.0f;
     public Collider? attackCollider;
     public GameObject? attackColliderObject;
+    public EffekseerEffectComponent? jumpEffect;
     Vector2 prevInput = Vector2.zero;
     int jumpCount = 0;
     int attackCount = 0;
@@ -120,6 +121,7 @@ public class PlayerController : Behaviour
                             //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
                             animator.CrossFadeInFixedTime("Jump", 0.1f);
                             jumpCount++;
+                            jumpEffect?.PlayEffect();
                             break;
                         }
                     case 1:
@@ -136,6 +138,7 @@ public class PlayerController : Behaviour
                             //animator.CrossFadeInFixedTime("DoubleJump", 0.1f);
                             animator.CrossFadeInFixedTime("Jump", 0.1f);
                             jumpCount++;
+                            jumpEffect?.PlayEffect();
                             break;
                         }
                 }

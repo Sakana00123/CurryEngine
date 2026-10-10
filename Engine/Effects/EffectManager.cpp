@@ -4,6 +4,7 @@
 #include "Engine/Utils/JsonFileHandler.h"
 #include "Engine/Editor/Dialog.h"
 #include "Engine/Utils/JsonUtils.h"
+#include "EffekseerEffectManager.h"
 
 void EffectManager::ClearAll()
 {
@@ -510,6 +511,9 @@ void EffectManager::Initialize()
 	//パーティクルシステム初期化
 	particleSystems.clear();
 	playingEmitters.clear();
+
+	// Effekseerエフェクトマネージャ初期化
+	EffekseerEffectManager::Initialize();
 }
 
 void EffectManager::Update(float deltaTime)
@@ -589,6 +593,9 @@ void EffectManager::Update(float deltaTime)
 			}
 		}
 	}
+
+	// Effekseerエフェクトマネージャ更新
+	EffekseerEffectManager::Update(deltaTime);
 }
 
 void EffectManager::Render(RenderContext* rtx)
@@ -609,6 +616,9 @@ void EffectManager::Render(RenderContext* rtx)
 			}
 		}
 	}
+
+	// Effekseerエフェクトマネージャ描画
+	EffekseerEffectManager::Render(rtx->view, rtx->projection);
 }
 
 void EffectManager::ReInitializeParticleSystem()

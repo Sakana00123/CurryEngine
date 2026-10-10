@@ -4,6 +4,7 @@
 #include <EffekseerRendererDX11.h>
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include <queue>
+#include <Engine\Core\Math\Quaternion.h>
 class EffectManager
 {
 public:

@@ -29,6 +29,7 @@ namespace CurryEngine
 			if (typeStr == "AnimatorController") return AssetType::AnimatorController;
 			if (typeStr == "AnimationTimeline") return AssetType::AnimationTimeline;
 			if (typeStr == "Effect") return AssetType::Effect;
+			if (typeStr == "EffekseerEffect") return AssetType::EffekseerEffect;
 			return AssetType::Unknown;
 		}
 
@@ -48,6 +49,7 @@ namespace CurryEngine
 			case AssetType::AnimatorController: return "AnimatorController";
 			case AssetType::AnimationTimeline: return "AnimationTimeline";
 			case AssetType::Effect: return "Effect";
+			case AssetType::EffekseerEffect: return "EffekseerEffect";
 			default: return "Unknown";
 			}
 		}

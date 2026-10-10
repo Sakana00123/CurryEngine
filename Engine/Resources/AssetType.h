@@ -18,4 +18,5 @@ enum class AssetType
 	AnimatorController,
 	AnimationTimeline,
 	Effect,
+	EffekseerEffect,
 };

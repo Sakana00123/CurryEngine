@@ -58,7 +58,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;USE_IMGUI;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\Effekseer170e\include\Effekseer;.\External\Effekseer170e\include\EffekseerRendererDX11;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -67,8 +67,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\External\FBX SDK\2020.3.9\lib\x64\$(Configuration);.\External\DirectXTex\Bin\Desktop_2022\x64\Debug;.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\assimp\lib\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;DirectXTex.lib;nethost.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;assimp.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\FBX SDK\2020.3.9\lib\x64\$(Configuration);.\External\DirectXTex\Bin\Desktop_2022\x64\Debug;.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\Effekseer170e\lib\vs2022\MD\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\assimp\lib\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;DirectXTex.lib;nethost.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;assimp.lib;Effekseer.lib;EffekseerRendererDX11.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -95,7 +95,7 @@ popd</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\Effekseer170e\include\Effekseer;.\External\Effekseer170e\include\EffekseerRendererDX11;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -106,8 +106,8 @@ popd</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\External\FBX SDK\2020.3.9\lib\x64\$(Configuration);.\External\DirectXTex\Bin\Desktop_2022\x64\Debug;.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\assimp\lib\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;DirectXTex.lib;nethost.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;assimp.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\FBX SDK\2020.3.9\lib\x64\$(Configuration);.\External\DirectXTex\Bin\Desktop_2022\x64\Debug;.\External\DirectXTK-main\Bin\Desktop_2019\x64\$(Configuration);.\External\Effekseer170e\lib\vs2022\MD\x64\$(Configuration);.\External\PhysX\bin\win.x86_64.vc143.md\$(Configuration);.\External\assimp\lib\$(Configuration);.\External\DotNetHost\9.0.10\runtimes\win-x64\native;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;XAudio2.lib;DirectXTK.lib;DirectXTex.lib;nethost.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;assimp.lib;Effekseer.lib;EffekseerRendererDX11.lib;PhysX_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_static_64.lib;PhysXCooking_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;PVDRuntime_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -154,6 +154,8 @@ popd</Command>
     </ClCompile>
     <ClCompile Include="Engine\Animation\Animator.cpp" />
     <ClCompile Include="Engine\Editor\InputSettingsWindow.cpp" />
+    <ClCompile Include="Engine\Effects\EffekseerEffectComponent.cpp" />
+    <ClCompile Include="Engine\Effects\EffekseerEffectManager.cpp" />
     <ClCompile Include="Engine\Resources\AnimatorControllerBuilder.cpp" />
     <ClCompile Include="Engine\Resources\AnimatorController.cpp" />
     <ClCompile Include="Engine\Animation\RhythmAnimationController.cpp" />
@@ -668,6 +670,8 @@ popd</Command>
     <ClInclude Include="Archive\static_mesh.h" />
     <ClInclude Include="Engine\Animation\Animator.h" />
     <ClInclude Include="Engine\Editor\InputSettingsWindow.h" />
+    <ClInclude Include="Engine\Effects\EffekseerEffectComponent.h" />
+    <ClInclude Include="Engine\Effects\EffekseerEffectManager.h" />
     <ClInclude Include="Engine\Rendering\Pipeline\RenderDebug.h" />
     <ClInclude Include="Engine\Resources\AnimatorControllerBuilder.h" />
     <ClInclude Include="Engine\Resources\AnimatorController.h" />

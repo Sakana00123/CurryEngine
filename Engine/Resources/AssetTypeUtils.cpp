@@ -37,6 +37,7 @@ namespace CurryEngine
 				{ ".controller", AssetType::AnimatorController },
 				{ ".animtimeline", AssetType::AnimationTimeline },
 				{ ".effect", AssetType::Effect },
+				{ ".efk", AssetType::EffekseerEffect },
 			};
 			auto it = extensionToTypeMap.find(ext);
 			if (it != extensionToTypeMap.end())

@@ -3,6 +3,7 @@
 #include "Engine/Core/GameObject.h"
 #include "Engine/Core/Transform.h"
 #include "Engine/Editor/Dialog.h"
+#include <Engine\Resources\AssetDatabase.h>
 
 REGISTER_COMPONENT(ParticleComponent, "Effects");
 
@@ -23,6 +24,20 @@ void ParticleComponent::Load(const std::string& filePath)
 {
 	this->filePath = filePath;
 	effectHandle = EffectManager::LoadEffectData(filePath);
+}
+
+void ParticleComponent::ReloadAsset()
+{
+	// アセットIDからファイルパスを取得
+	auto* meta = CurryEngine::Resources::AssetDatabase::Find(assetId);
+	if (meta)
+	{
+		Load(meta->path.string());
+	}
+	else
+	{
+		LOG_ERROR(u8"[ParticleComponent] アセットIDからファイルパスを取得できませんでした。AssetId: " + std::u8string(assetId.ToString().begin(), assetId.ToString().end()));
+	}
 }
 
 void ParticleComponent::Play()
