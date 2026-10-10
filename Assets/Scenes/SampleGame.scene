@@ -112,6 +112,56 @@
                 {
                     "coordinateSystem": 0,
                     "enabledSelf": true,
+                    "id": "7302929539978902615",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        100.0,
+                        100.0,
+                        100.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "effectAssetId": "10aeaf378230853c95ce0f7fa331a222",
+                    "enabledSelf": true,
+                    "id": "16143980965371795426",
+                    "name": "EffekseerEffectComponent",
+                    "priority": 1000,
+                    "type": "EffekseerEffectComponent"
+                }
+            ],
+            "id": "9887235595685037119",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Laser",
+            "parent": "4984317925886415417",
+            "parentId": "0",
+            "priority": 1000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
                     "id": "11087633663748699362",
                     "m_eulerAngles": [
                         0.0,
@@ -155,7 +205,7 @@
             "name": "Foot",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 1000,
+            "priority": 2000,
             "version": 1
         },
         {
@@ -272,7 +322,7 @@
             "name": "Cube",
             "parent": "0",
             "parentId": "0",
-            "priority": 2000,
+            "priority": 3000,
             "version": 1
         },
         {
@@ -389,7 +439,7 @@
             "name": "Cube (1)",
             "parent": "0",
             "parentId": "0",
-            "priority": 3000,
+            "priority": 4000,
             "version": 1
         },
         {
@@ -511,7 +561,7 @@
             "name": "Cube (2)",
             "parent": "0",
             "parentId": "0",
-            "priority": 4000,
+            "priority": 5000,
             "version": 1
         },
         {
@@ -630,8 +680,8 @@
                         "attackCollider": "Component(objectId: 9158306600258995034, ownerId: 4984317925886415417)",
                         "attackColliderObject": "GameObject(objectId: 4984317925886415417)",
                         "hoveringForce": 5,
-                        "jumpEffect": "Component(objectId: 7030999874821422193, ownerId: 4984317925886415417)",
-                        "jumpForce": 12.5,
+                        "jumpEffect": "Component(objectId: 16143980965371795426, ownerId: 9887235595685037119)",
+                        "jumpForce": 100,
                         "maxHoveringTime": 1,
                         "speed": 0
                     },
@@ -640,14 +690,6 @@
                     "priority": 5000,
                     "scriptName": "PlayerController",
                     "type": "ScriptComponent"
-                },
-                {
-                    "effectAssetId": "10aeaf378230853c95ce0f7fa331a222",
-                    "enabledSelf": true,
-                    "id": "7030999874821422193",
-                    "name": "EffekseerEffectComponent",
-                    "priority": 6000,
-                    "type": "EffekseerEffectComponent"
                 }
             ],
             "id": "4984317925886415417",
@@ -656,7 +698,7 @@
             "name": "Jammo",
             "parent": "0",
             "parentId": "0",
-            "priority": 5000,
+            "priority": 6000,
             "version": 1
         },
         {
@@ -765,7 +807,7 @@
             "name": "AttackCollider",
             "parent": "837495356795042458",
             "parentId": "0",
-            "priority": 6000,
+            "priority": 7000,
             "version": 1
         },
         {
@@ -897,7 +939,7 @@
             "name": "Mixamo",
             "parent": "0",
             "parentId": "0",
-            "priority": 7000,
+            "priority": 8000,
             "version": 1
         },
         {
@@ -1047,7 +1089,7 @@
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
-            "priority": 8000,
+            "priority": 9000,
             "version": 1
         },
         {
@@ -1161,7 +1203,7 @@
             "name": "can",
             "parent": "0",
             "parentId": "0",
-            "priority": 9000,
+            "priority": 10000,
             "version": 1
         },
         {
@@ -1203,7 +1245,7 @@
             "name": "CameraFocusTarget",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 10000,
+            "priority": 11000,
             "version": 1
         },
         {
@@ -1322,7 +1364,7 @@
             "name": "PlayerHPBar",
             "parent": "7087144494191658523",
             "parentId": "0",
-            "priority": 11000,
+            "priority": 12000,
             "version": 1
         },
         {
@@ -1436,7 +1478,7 @@
             "name": "box",
             "parent": "0",
             "parentId": "0",
-            "priority": 12000,
+            "priority": 13000,
             "version": 1
         },
         {
@@ -1516,7 +1558,7 @@
             "name": "Canvas",
             "parent": "0",
             "parentId": "0",
-            "priority": 13000,
+            "priority": 14000,
             "version": 1
         },
         {
@@ -1565,7 +1607,7 @@
             "name": "EventSystem",
             "parent": "0",
             "parentId": "0",
-            "priority": 14000,
+            "priority": 15000,
             "version": 1
         },
         {
@@ -1718,7 +1760,7 @@
             "name": "Player",
             "parent": "0",
             "parentId": "0",
-            "priority": 15000,
+            "priority": 16000,
             "version": 1
         },
         {
@@ -1773,7 +1815,7 @@
             "name": "Directional Light",
             "parent": "0",
             "parentId": "0",
-            "priority": 16000,
+            "priority": 17000,
             "version": 1
         },
         {
@@ -1874,7 +1916,7 @@
             "name": "Ground",
             "parent": "0",
             "parentId": "0",
-            "priority": 17000,
+            "priority": 18000,
             "version": 1
         },
         {
@@ -1996,7 +2038,7 @@
             "name": "PlayerBall",
             "parent": "0",
             "parentId": "0",
-            "priority": 18000,
+            "priority": 19000,
             "version": 1
         },
         {
@@ -2051,7 +2093,7 @@
             "name": "EnemySpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 19000,
+            "priority": 20000,
             "version": 1
         },
         {
@@ -2106,7 +2148,7 @@
             "name": "ObjectSpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 20000,
+            "priority": 21000,
             "version": 1
         }
     ]

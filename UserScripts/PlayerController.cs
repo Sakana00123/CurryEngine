@@ -104,17 +104,17 @@ public class PlayerController : Behaviour
             {
                 animator.SetTrigger("AttackTrigger");
             }
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(GamepadButton.A))
+            switch (jumpCount)
             {
-                switch (jumpCount)
-                {
-                    case 0:
+                case 0:
+                    {
+                        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(GamepadButton.A))
                         {
                             if (TryGetComponent<Rigidbody>(out Rigidbody rb))
                             {
                                 Vector3 velocity = rb.GetVelocity();
                                 velocity.y = jumpForce;
-                                rb.SetVelocity(velocity);
+                                rb.AddForce(velocity, ForceMode.Impulse);
                             }
                             animator.SetTrigger("JumpTrigger");
                             animator.SetBool("Jumping", true);
@@ -122,58 +122,45 @@ public class PlayerController : Behaviour
                             animator.CrossFadeInFixedTime("Jump", 0.1f);
                             jumpCount++;
                             jumpEffect?.PlayEffect();
-                            break;
                         }
-                    case 1:
-                        {
-                            if (TryGetComponent<Rigidbody>(out Rigidbody rb))
-                            {
-                                Vector3 velocity = rb.GetVelocity();
-                                velocity.y = jumpForce;
-                                rb.SetVelocity(velocity);
-                            }
-                            animator.SetTrigger("JumpTrigger");
-                            animator.SetBool("Jumping", true);
-                            //animator.CrossFadeInFixedTime("DoubleJumpStart", 0.1f);
-                            //animator.CrossFadeInFixedTime("DoubleJump", 0.1f);
-                            animator.CrossFadeInFixedTime("Jump", 0.1f);
-                            jumpCount++;
-                            jumpEffect?.PlayEffect();
-                            break;
-                        }
-                }
-                //if (jumpCount < 2)
-                //{
-                //    if (TryGetComponent<Rigidbody>(out Rigidbody rb))
-                //    {
-                //        Vector3 velocity = rb.GetVelocity();
-                //        velocity.y = jumpForce;
-                //        rb.SetVelocity(velocity);
-                //    }
-                //    animator.SetTrigger("JumpTrigger");
-                //    animator.SetBool("Jumping", true);
-                //    //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
-                //    animator.CrossFadeInFixedTime("Jump", 0.1f);
-                //    jumpCount++;
-                //}
-            }
-            if (jumpCount > 1)
-            {
-                if (Input.GetKey(KeyCode.Space) || Input.GetKey(GamepadButton.A))
-                {
-                    hoveringTime += Time.DeltaTime;
-                    if (hoveringTime < maxHoveringTime)
-                    {
-                        // 少し上昇する
-                        if (TryGetComponent<Rigidbody>(out Rigidbody rb))
-                        {
-                            Vector3 velocity = rb.GetVelocity();
-                            velocity.y = hoveringForce;
-                            rb.SetVelocity(velocity);
-                        }
+                        break;
                     }
-                }
+                case 1:
+                    {
+                        if (Input.GetKey(KeyCode.Space) || Input.GetKey(GamepadButton.A))
+                        {
+                            hoveringTime += Time.DeltaTime;
+                            if (hoveringTime < maxHoveringTime)
+                            {
+                                // 少し上昇する
+                                if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+                                {
+                                    Vector3 velocity = rb.GetVelocity();
+                                    velocity.y = hoveringForce;
+                                    rb.SetVelocity(velocity);
+                                }
+                            }
+                        }
+                        break;
+                    }
             }
+            //if (jumpCount > 1)
+            //{
+            //    if (Input.GetKey(KeyCode.Space) || Input.GetKey(GamepadButton.A))
+            //    {
+            //        hoveringTime += Time.DeltaTime;
+            //        if (hoveringTime < maxHoveringTime)
+            //        {
+            //            // 少し上昇する
+            //            if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+            //            {
+            //                Vector3 velocity = rb.GetVelocity();
+            //                velocity.y = hoveringForce;
+            //                rb.SetVelocity(velocity);
+            //            }
+            //        }
+            //    }
+            //}
         }
         if (input != Vector2.zero)
         { 
