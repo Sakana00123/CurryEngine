@@ -327,7 +327,8 @@ void EffectManager::SaveEffectData(EffectHandle handle, const std::string& fileP
 		j["emitterDataList"].push_back(emitterJson);
 	}
 	// ファイルに保存
-	JsonFileHandler::SaveJsonToFile(j, filePath);
+	JsonIOFormat format = std::filesystem::path(filePath).extension() == ".effect" ? JsonIOFormat::Binary : JsonIOFormat::Auto;
+	JsonFileHandler::SaveJsonToFile(j, filePath, format);
 }
 
 void EffectManager::SaveEffectDataWithDialog(EffectHandle handle)

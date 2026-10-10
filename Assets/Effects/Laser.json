@@ -1,0 +1,210 @@
+{
+    "emitterDataList": [
+        {
+            "acceleration": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "blendState": 1,
+            "directionAxis": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "directionMode": 0,
+            "duration": 1.0,
+            "emitCount": [
+                10,
+                10
+            ],
+            "emitInterval": [
+                0.0,
+                0.0
+            ],
+            "enableFadeIn": false,
+            "enableFadeOut": false,
+            "endColor": [
+                [
+                    0.9010144472122192,
+                    0.9801321625709534,
+                    0.9928825497627258,
+                    1.0
+                ],
+                [
+                    0.7200517058372498,
+                    0.8954433798789978,
+                    0.982206404209137,
+                    1.0
+                ]
+            ],
+            "endRotationEuler": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "endSize": [
+                [
+                    0.20000000298023224,
+                    5.0
+                ],
+                [
+                    0.4000000059604645,
+                    5.0
+                ]
+            ],
+            "endSpeed": [
+                1.0,
+                1.0
+            ],
+            "fadeInTime": [
+                0.0,
+                0.0
+            ],
+            "fadeOutTime": [
+                0.0,
+                0.0
+            ],
+            "gradientAlphas": [
+                {
+                    "alpha": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "alpha": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "gradientColors": [
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "intensity": 1.0,
+                    "position": 0.0
+                },
+                {
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "intensity": 1.0,
+                    "position": 1.0
+                }
+            ],
+            "height": 1.0,
+            "initialDelay": [
+                0.0,
+                0.0
+            ],
+            "isEnabled": true,
+            "lifeTime": [
+                1.0,
+                1.0
+            ],
+            "loop": true,
+            "maxParticles": 1000,
+            "name": "line",
+            "positionOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "radius": 1.0,
+            "renderingMode": 0,
+            "rotationEasingTime": [
+                0.0,
+                0.0
+            ],
+            "rotationEasingType": 0,
+            "rotationEuler": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "shapeType": 0,
+            "sizeEasingTime": [
+                0.0,
+                0.0
+            ],
+            "sizeEasingType": 0,
+            "speed": [
+                1.0,
+                1.0
+            ],
+            "speedEasingTime": [
+                0.0,
+                0.0
+            ],
+            "speedEasingType": 0,
+            "startColor": [
+                [
+                    0.8434163331985474,
+                    1.0,
+                    0.9782677292823792,
+                    1.0
+                ],
+                [
+                    0.8528767228126526,
+                    0.980825662612915,
+                    0.982206404209137,
+                    1.0
+                ]
+            ],
+            "startSize": [
+                [
+                    0.20000000298023224,
+                    5.0
+                ],
+                [
+                    0.4000000059604645,
+                    5.0
+                ]
+            ],
+            "texturePath": ".\\Assets\\Texture\\Effect\\aura_02.png",
+            "textureSplitCount": [
+                1,
+                1
+            ],
+            "useGradient": false,
+            "useGravity": false,
+            "velocity": [
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        }
+    ],
+    "name": "Lasar"
+}

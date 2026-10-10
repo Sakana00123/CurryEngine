@@ -127,7 +127,7 @@ public:
 	void Deserialize(const json& j) override;
 
 private:
-	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"), CurryEngine::PropertyAttributes::DialogFilter("Particle Effect Files|*.json|All Files|*.*|"), CurryEngine::PropertyAttributes::Setter("Load"))
+	C_PROPERTY(CurryEngine::PropertyAttributes::CustomDrawer("String_AssetReference"), CurryEngine::PropertyAttributes::DialogFilter("Particle Effect Files(*.effect)|*.effect|All Files(*.*)|*.*|"), CurryEngine::PropertyAttributes::Setter("Load"))
 	std::string filePath; // エフェクトファイルパス
 	C_PROPERTY()
 	bool playOnAwake = false;			// 自動再生フラグ

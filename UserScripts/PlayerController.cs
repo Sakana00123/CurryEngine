@@ -8,6 +8,7 @@ public class PlayerController : Behaviour
     public float acceleration = 5.0f;
     public float jumpForce = 5.0f;
     public float maxHoveringTime = 2.0f;
+    public float hoveringForce = 5.0f;
     public Collider? attackCollider;
     public GameObject? attackColliderObject;
     Vector2 prevInput = Vector2.zero;
@@ -104,36 +105,70 @@ public class PlayerController : Behaviour
             }
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(GamepadButton.A))
             {
-                //switch (jumpCount)
-                //{
-                //    case 0:
-                //        animator.SetTrigger("JumpTrigger");
-                //        animator.SetBool("Jumping", true);
-                //        //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
-                //        animator.CrossFadeInFixedTime("Jump", 0.1f);
-                //        jumpCount++;
-                //        break;
-                //    case 1:
-                //        animator.SetTrigger("DoubleJumpTrigger");
-                //        animator.SetBool("Jumping", true);
-                //        //animator.CrossFadeInFixedTime("DoubleJumpStart", 0.1f);
-                //        animator.CrossFadeInFixedTime("DoubleJump", 0.1f);
-                //        jumpCount++;
-                //        break;
-                //}
-                if (jumpCount < 2)
+                switch (jumpCount)
                 {
-                    if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+                    case 0:
+                        {
+                            if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+                            {
+                                Vector3 velocity = rb.GetVelocity();
+                                velocity.y = jumpForce;
+                                rb.SetVelocity(velocity);
+                            }
+                            animator.SetTrigger("JumpTrigger");
+                            animator.SetBool("Jumping", true);
+                            //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
+                            animator.CrossFadeInFixedTime("Jump", 0.1f);
+                            jumpCount++;
+                            break;
+                        }
+                    case 1:
+                        {
+                            if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+                            {
+                                Vector3 velocity = rb.GetVelocity();
+                                velocity.y = jumpForce;
+                                rb.SetVelocity(velocity);
+                            }
+                            animator.SetTrigger("JumpTrigger");
+                            animator.SetBool("Jumping", true);
+                            //animator.CrossFadeInFixedTime("DoubleJumpStart", 0.1f);
+                            //animator.CrossFadeInFixedTime("DoubleJump", 0.1f);
+                            animator.CrossFadeInFixedTime("Jump", 0.1f);
+                            jumpCount++;
+                            break;
+                        }
+                }
+                //if (jumpCount < 2)
+                //{
+                //    if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+                //    {
+                //        Vector3 velocity = rb.GetVelocity();
+                //        velocity.y = jumpForce;
+                //        rb.SetVelocity(velocity);
+                //    }
+                //    animator.SetTrigger("JumpTrigger");
+                //    animator.SetBool("Jumping", true);
+                //    //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
+                //    animator.CrossFadeInFixedTime("Jump", 0.1f);
+                //    jumpCount++;
+                //}
+            }
+            if (jumpCount > 1)
+            {
+                if (Input.GetKey(KeyCode.Space) || Input.GetKey(GamepadButton.A))
+                {
+                    hoveringTime += Time.DeltaTime;
+                    if (hoveringTime < maxHoveringTime)
                     {
-                        Vector3 velocity = rb.GetVelocity();
-                        velocity.y = jumpForce;
-                        rb.SetVelocity(velocity);
+                        // 少し上昇する
+                        if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+                        {
+                            Vector3 velocity = rb.GetVelocity();
+                            velocity.y = hoveringForce;
+                            rb.SetVelocity(velocity);
+                        }
                     }
-                    animator.SetTrigger("JumpTrigger");
-                    animator.SetBool("Jumping", true);
-                    //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
-                    animator.CrossFadeInFixedTime("Jump", 0.1f);
-                    jumpCount++;
                 }
             }
         }
@@ -146,6 +181,7 @@ public class PlayerController : Behaviour
     void OnGround()
     {
         jumpCount = 0;
+        hoveringTime = 0.0f;
         if (animator != null)
         {
             animator.SetBool("Jumping", false);

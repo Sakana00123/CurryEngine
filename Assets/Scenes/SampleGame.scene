@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            2.1146087646484375,
-            1.8187007904052734,
-            0.9939473271369934
+            -0.37227335572242737,
+            -0.29029545187950134,
+            1.4944666624069214
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.1423264592885971,
-            0.2516602873802185,
-            -0.03744656220078468,
-            0.9565605521202087
+            0.20131367444992065,
+            0.08009299635887146,
+            -0.016520461067557335,
+            0.9761070609092712
         ],
         "speed": 3.0
     },
@@ -102,6 +102,57 @@
             "layer": 0,
             "name": "MainCamera",
             "parent": "0",
+            "parentId": "0",
+            "priority": 0,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "11087633663748699362",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "enabledSelf": true,
+                    "filePath": ".\\TestAssets\\Effects\\Laser.effect",
+                    "id": "15435139569112979141",
+                    "name": "ParticleComponent",
+                    "playOnAwake": false,
+                    "priority": 1000,
+                    "type": "ParticleComponent"
+                }
+            ],
+            "id": "7253891744042578915",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Foot",
+            "parent": "4984317925886415417",
             "parentId": "0",
             "priority": 0,
             "version": 1
@@ -577,7 +628,9 @@
                         "acceleration": 5,
                         "attackCollider": "Component(objectId: 9158306600258995034, ownerId: 4984317925886415417)",
                         "attackColliderObject": "GameObject(objectId: 4984317925886415417)",
+                        "hoveringForce": 5,
                         "jumpForce": 12.5,
+                        "maxHoveringTime": 1,
                         "speed": 0
                     },
                     "id": "10502313803227114740",
@@ -1589,7 +1642,9 @@
                         "acceleration": 4.8,
                         "attackCollider": "Component(objectId: 6691945147698394091, ownerId: 7141469550880191553)",
                         "attackColliderObject": "GameObject(objectId: 7141469550880191553)",
+                        "hoveringForce": 5,
                         "jumpForce": 12.5,
+                        "maxHoveringTime": 2,
                         "speed": 0
                     },
                     "id": "12604352157080046631",

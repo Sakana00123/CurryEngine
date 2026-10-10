@@ -53,6 +53,32 @@ namespace
 		}
 		return result;
 	}
+
+	// オブジェクトを複製し、複製したオブジェクトを選択状態にする
+	inline void DuplicateGameObject(ObjectManager* objectManager, EditorSelection* selection, std::vector<std::shared_ptr<GameObject>>& objects, bool selectDuplicated = true)
+	{
+		if (!objectManager || !selection || objects.empty()) return;
+		auto selectAll = selection->GetSelectedAll();
+		selection->Clear();
+		for (auto& pObj : selectAll)
+		{
+			if (GameObject* newObject = objectManager->Duplicate(pObj.get()))
+			{
+				// 複製したオブジェクトが、ヒエラルキー上で複製元のオブジェクトの直後に配置されるようにする
+				// 複製したオブジェクトの優先度を、複製元のオブジェクトの優先度よりも1大きくする
+				int newPriority = pObj->GetPriority() + 1;
+				newObject->SetPriority(newPriority);
+
+				if (selectDuplicated)
+				{
+					// 複製したオブジェクトを選択状態にする
+					selection->Select(objectManager->Find_Ptr(newObject->GetId()), true);
+					// 複製したオブジェクトをInspectorに表示する
+					objectManager->SelectInspectorNode(newObject);
+				}
+			}
+		}
+	}
 }
 
 
@@ -517,17 +543,7 @@ namespace CurryEngine
 						// 複製ボタン
 						if (ImGui::MenuItem("Duplicate", "Ctrl+D", false))
 						{
-							auto selectAll = selection->GetSelectedAll();
-							selection->Clear();
-							for (auto& pObj : selectAll)
-							{
-								if (GameObject* newObject = objectManager->Duplicate(pObj.get()))
-								{
-									selection->Select(objectManager->Find_Ptr(newObject->GetId()), true);
-									// 複製したオブジェクトをInspectorに表示する
-									objectManager->SelectInspectorNode(newObject);
-								}
-							}
+							DuplicateGameObject(objectManager, selection, objects, true);
 						}
 						//// 優先度変更ボタン
 						//if (ImGui::MenuItem("Increase Priority", "Alt+Up", false))
@@ -609,20 +625,7 @@ namespace CurryEngine
 					// 複製のショートカットキー
 					if (ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_D, ImGuiInputFlags_RouteFocused))
 					{
-						auto selectAll = selection->GetSelectedAll();
-						selection->Clear();
-						for (auto& pObj : selectAll)
-						{
-							if (pObj)
-							{
-								if (GameObject* newObject = objectManager->Duplicate(pObj.get()))
-								{
-									selection->Select(objectManager->Find_Ptr(newObject->GetId()), true);
-									// 複製したオブジェクトをInspectorに表示する
-									objectManager->SelectInspectorNode(newObject);
-								}
-							}
-						}
+						DuplicateGameObject(objectManager, selection, objects, true);
 					}
 				}
 			}

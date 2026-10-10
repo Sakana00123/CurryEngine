@@ -536,10 +536,20 @@ void EditorGUI::DrawGameObjectMenu()
 	if (createdObj)
 	{
 		// UIオブジェクトの場合は、選択中のオブジェクトがCanvasの子であればその子にする。そうでなければ、選択中のオブジェクトがCanvasを持っていればそのCanvasの子にする。どちらも当てはまらない場合はルートに配置される。
-		if (createdObj->GetComponent<RectTransform>() && hasCanvas)
+		if (createdObj->GetComponent<RectTransform>())
 		{
+			if (hasCanvas)
+			{
+				createdObj->SetParent(selectedObj);
+			}
+		}
+		else
+		{
+			// UIオブジェクトでない場合は、選択中のオブジェクトがあればその子にする
 			createdObj->SetParent(selectedObj);
 		}
+		// 選択状態にする
+		selection->Select(ObjectManager::Find_Ptr(createdObj->GetId()));
 
 		// HierarchyとInspectorを更新
 		createdObj->RefreshActiveInHierarchy();
