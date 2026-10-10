@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            -0.37227335572242737,
-            -0.29029545187950134,
-            1.4944666624069214
+            10.226760864257813,
+            5.967113971710205,
+            1.4063432216644287
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.20131367444992065,
-            0.08009299635887146,
-            -0.016520461067557335,
-            0.9761070609092712
+            0.2209341824054718,
+            -0.077481210231781,
+            0.01760857179760933,
+            0.9720466136932373
         ],
         "speed": 3.0
     },
@@ -269,7 +269,7 @@
                         },
                         "textures": {
                             "0": {
-                                "texture0": ""
+                                "texture0": ".\\TestAssets\\kenney_prototype-textures\\PNG\\Orange\\texture_02.png"
                             }
                         }
                     },
@@ -386,7 +386,7 @@
                         },
                         "textures": {
                             "0": {
-                                "texture0": ""
+                                "texture0": ".\\TestAssets\\kenney_prototype-textures\\PNG\\Orange\\texture_02.png"
                             }
                         }
                     },
@@ -503,7 +503,7 @@
                         },
                         "textures": {
                             "0": {
-                                "texture0": ""
+                                "texture0": ".\\TestAssets\\kenney_prototype-textures\\PNG\\Orange\\texture_02.png"
                             }
                         }
                     },

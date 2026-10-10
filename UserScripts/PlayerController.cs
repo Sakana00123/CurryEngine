@@ -144,23 +144,6 @@ public class PlayerController : Behaviour
                         break;
                     }
             }
-            //if (jumpCount > 1)
-            //{
-            //    if (Input.GetKey(KeyCode.Space) || Input.GetKey(GamepadButton.A))
-            //    {
-            //        hoveringTime += Time.DeltaTime;
-            //        if (hoveringTime < maxHoveringTime)
-            //        {
-            //            // 少し上昇する
-            //            if (TryGetComponent<Rigidbody>(out Rigidbody rb))
-            //            {
-            //                Vector3 velocity = rb.GetVelocity();
-            //                velocity.y = hoveringForce;
-            //                rb.SetVelocity(velocity);
-            //            }
-            //        }
-            //    }
-            //}
         }
         if (input != Vector2.zero)
         { 

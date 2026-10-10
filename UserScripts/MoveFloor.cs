@@ -16,9 +16,13 @@ public class MoveFloor : Behaviour
     // Update is called once per frame
     public override void Update()
     {
-        // サイン波を使って、startPositionとendPositionの間を往復する動きを作る
         time += Time.DeltaTime;
-        float t = (CurryEngine.Math.Mathf.Sin(time * speed) + 1.0f) / 2.0f; // Normalize to [0, 1]
+        // サイン波を使って、startPositionとendPositionの間を往復する動きを作る
+        float t = (CurryEngine.Math.Mathf.Sin(time * speed) + 1.0f) / 2.0f;
+
+        // 等速で往復する動きを作る
+        //float t = CurryEngine.Math.Mathf.PingPong(time * speed, 1.0f);
+
         transform.position = Vector3.Lerp(startPosition, endPosition, t);
     }
 }
