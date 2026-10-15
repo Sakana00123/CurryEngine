@@ -15,7 +15,7 @@ using namespace std;
 
 void LoadShaderFile(const char* filePath, std::vector<BYTE>& data)
 {
-	std::ifstream file(filePath, std::ios::binary | std::ios::ate);
+	std::ifstream file(EnginePaths::ResolveResource(filePath), std::ios::binary | std::ios::ate);
 	if (!file.is_open())
 	{
 		std::string errorMsg = "Failed to open shader file: " + std::string(filePath) + "\n";
@@ -105,7 +105,7 @@ bool Shader::LoadFromFile(const std::string& path)
 	if (fsPath.extension() == ".cso") 
 	{
 		// CSOファイルの読み込み
-		D3DReadFileToBlob(fsPath.wstring().c_str(), blob.ReleaseAndGetAddressOf());
+		if (FAILED(D3DReadFileToBlob(EnginePaths::ResolveResource(fsPath).c_str(), blob.ReleaseAndGetAddressOf()))) return false;
 		/*m_CsoPath = path;
 		LoadShaderFile(path.c_str(), m_CSOData);*/
 	}
@@ -115,7 +115,8 @@ bool Shader::LoadFromFile(const std::string& path)
 		if (CompileShader(_path, "main", GetShaderTarget(_path), blob.ReleaseAndGetAddressOf()))
 		{
 			// CSOファイルの保存
-			auto outPath = std::filesystem::path(EnginePaths::ShadersDataDir) / (fsPath.stem().string() + ".cso");
+			auto outPath = EnginePaths::ShaderCache() / (fsPath.stem().string() + ".cso");
+            std::filesystem::create_directories(outPath.parent_path());
 			D3DWriteBlobToFile(blob.Get(), outPath.wstring().c_str(), TRUE);
 		}
 		else
@@ -181,7 +182,7 @@ bool Shader::Reload(/*ID3D11Device* device*/)
 		if (fsPath.extension() == ".cso")
 		{
 			// CSOファイルのパスをHLSLファイルに変換
-			fsPath = std::filesystem::path("./Shader") / fsPath.filename().replace_extension(".hlsl");
+			fsPath = EnginePaths::ShaderSourceFor(fsPath);
 		}
 #endif // _DEBUG
 		result = LoadFromFile(fsPath.string());
@@ -243,7 +244,7 @@ bool Shader::CompileShader(const std::string& filePath, const std::string& entry
 	// HLSLファイルのコンパイル
 	ID3DBlob* errorBlob = nullptr;
 	HRESULT hr = D3DCompileFromFile(
-		std::wstring(filePath.begin(), filePath.end()).c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		EnginePaths::ResolveResource(std::filesystem::path(filePath)).c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		entryPoint.c_str(), shaderTarget.c_str(), compileFlags, 0, outBlob, &errorBlob
 	);
 

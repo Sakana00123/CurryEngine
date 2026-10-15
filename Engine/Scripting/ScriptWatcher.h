@@ -13,7 +13,7 @@ namespace fs = std::filesystem;
 struct BuildCommand
 {
 	fs::path projectPath; // .csproj ファイルのパス
-	std::string additionalArgs = "-c Release --nologo -v q 2>&1"; // 追加のビルド引数（オプション）
+	std::wstring configuration = L"Release";
 };
 
 /** @brief ScriptWatcher を表すクラスです。 */
@@ -35,7 +35,7 @@ public:
 	 * @param onReloaded スクリプトがリロードされたときに呼び出されるコールバック関数。
 	 */
 	bool Start(
-		const std::string& watchDir,
+		const fs::path& watchDir,
 		const std::vector<BuildCommand>& buildCommands,
 		ReloadCallback onReloaded);
 
@@ -65,7 +65,7 @@ private:
 	bool BuildProject(const BuildCommand& config);
 
 private:
-	std::string m_watchDir;
+	fs::path m_watchDir;
 	std::vector<BuildCommand> m_buildCommands;
 	ReloadCallback m_onReloaded;
 

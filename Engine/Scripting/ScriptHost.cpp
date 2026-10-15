@@ -64,7 +64,7 @@ bool ScriptHost::InitRuntime(const std::wstring& runtimeConfigPath)
 	return rc == 0 && m_loadFunc != nullptr;
 }
 
-bool ScriptHost::Initialize()
+bool ScriptHost::Initialize(const std::string& scriptAssemblyPath)
 {
 	if (!LoadHostFxr())
 		return false;
@@ -171,8 +171,7 @@ bool ScriptHost::Initialize()
 
 
 	// 初期化関数を呼び出し
-	m_initFunc();
-	return true;
+	return m_initFunc(scriptAssemblyPath.c_str()) != 0;
 }
 
 void ScriptHost::Update()

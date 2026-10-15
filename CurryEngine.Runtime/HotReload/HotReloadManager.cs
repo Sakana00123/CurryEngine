@@ -7,7 +7,6 @@ namespace CurryEngine.Runtime.HotReload;
 public sealed class HotReloadManager : IDisposable
 {
     private ScriptLoadContext? m_current;
-    private string? m_currentTempPath;
     private readonly string m_dllPath;
 
     public HotReloadManager(string dllPath) { m_dllPath = dllPath; }
@@ -18,29 +17,27 @@ public sealed class HotReloadManager : IDisposable
     /// <returns>ロードされたアセンブリ</returns>
     public Assembly Load()
     {
-        // 古いコンテキストをアンロード
+        // Read the original output into memory so it can be rebuilt without locking it.
+        // Dependency resolution remains relative to the project's output directory.
+        var next = new ScriptLoadContext(m_dllPath);
+        Assembly asm;
+        try
+        {
+            using var dll = new MemoryStream(File.ReadAllBytes(m_dllPath));
+            var pdbPath = Path.ChangeExtension(m_dllPath, ".pdb");
+            using var pdb = File.Exists(pdbPath) ? new MemoryStream(File.ReadAllBytes(pdbPath)) : null;
+            asm = next.LoadFromStream(dll, pdb);
+            _ = asm.GetTypes(); // Validate before discarding the last successful assembly.
+        }
+        catch
+        {
+            next.Unload();
+            throw;
+        }
+        try { ScriptRegistry.Refresh(asm); }
+        catch { next.Unload(); throw; }
         Dispose();
-
-        // DLLを一時ファイルにコピー（ロック回避のため）
-        string tempDir = Path.Combine(EngineRuntime.GetExecutableDirectory()!, "Temp");
-        Directory.CreateDirectory(tempDir);
-        string tempFileName = Path.GetFileNameWithoutExtension(m_dllPath) + "_" + Guid.NewGuid().ToString("N") + ".dll";
-        m_currentTempPath = Path.Combine(tempDir, tempFileName);
-        File.Copy(m_dllPath, m_currentTempPath, true);
-
-        // 新しいコンテキストを作成
-        m_current = new ScriptLoadContext(m_currentTempPath);
-
-        // ファイルをバイト配列として読み込む（ロック回避のため）
-        //byte[] dllBytes = File.ReadAllBytes(m_dllPath);
-        //using var stream = new MemoryStream(dllBytes);
-        //var asm = m_current.LoadFromStream(stream);
-
-        var asm = m_current.LoadFromAssemblyPath(m_currentTempPath);
-        //var asm = context.LoadFromAssemblyPath(m_dllPath);
-
-        // ScriptRegistry を更新
-        ScriptRegistry.Refresh(asm);
+        m_current = next;
 
         return asm;
     }
@@ -84,18 +81,11 @@ public sealed class HotReloadManager : IDisposable
     }
 
     /// <summary>
-    /// 古いコンテキストをアンロードして、保持している一時ファイルを削除する。
+    /// 古いコンテキストのアンロードを要求する。
     /// </summary>
     public void Dispose()
     {
         m_current?.Unload();
         m_current = null;
-
-        // 一時ファイルを削除
-        if (m_currentTempPath != null && File.Exists(m_currentTempPath))
-        {
-            try { File.Delete(m_currentTempPath); }
-            catch { /* 失敗しても無視 */ }
-        }
     }
 }

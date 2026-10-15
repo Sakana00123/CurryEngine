@@ -13,6 +13,7 @@ public static class ScriptRegistry
     // 型名 → Behaviourコンストラクタ のキャッシュ
     private static readonly Dictionary<string, Func<object>> s_factories = new();
     private static readonly Dictionary<string, Type> s_types = new();
+    private static readonly HashSet<string> s_scriptNames = new();
 
     // ---- 登録 ----
 
@@ -116,12 +117,20 @@ public static class ScriptRegistry
     {
         // 新アセンブリ由来の型名を収集
         var newTypes = newAssembly.GetTypes()
-            .Where(t => !t.IsAbstract && InheritsFromBehaviour(t))
-            .Select(t => t.Name);
+            .Where(t => !t.IsAbstract && InheritsFromBehaviour(t)).ToArray();
+        foreach (var type in newTypes)
+            if (type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+                binder: null, types: Type.EmptyTypes, modifiers: null) == null)
+                throw new InvalidOperationException($"{type.Name} has no parameterless constructor");
 
-        // 旧エントリのうち新アセンブリで再定義されたものだけ削除
-        foreach (var name in newTypes)
+        // Remove deleted as well as replaced user types, without removing engine types.
+        foreach (var name in s_scriptNames)
+        {
             s_factories.Remove(name);
+            s_types.Remove(name);
+        }
+        s_scriptNames.Clear();
+        foreach (var type in newTypes) s_scriptNames.Add(type.Name);
 
         // C++側のキャッシュもクリア
         BehaviourMethodCache.Clear();

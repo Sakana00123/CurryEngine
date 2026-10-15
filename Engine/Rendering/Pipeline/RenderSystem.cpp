@@ -320,6 +320,9 @@ void RenderSystem::Render()
     }
     //ImGui::Text("Video memory usage %d MB", VideoMemoryUsage());
 
+    // ImGui描画のために、デフォルトのレンダーターゲットに戻す
+    sceneContext.SetDefaultRenderTarget();
+
     // ImGui描画
     {
 		ZoneScopedN("RenderSystem::ImGui::Render");

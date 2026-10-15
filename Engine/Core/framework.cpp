@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Engine/Core/Startup.h"
 #include "framework.h"
 #include "Engine/Input/InputSystem.h"
 #include "Engine/Physics/Physics.h"
@@ -24,7 +25,7 @@
 #include "Engine/Editor/History.h"
 #include "Engine/Editor/ImGuiTheme.h"
 
-#include "Generated/ReflectionGenerated.h"
+#include "ReflectionGenerated.h"
 #include "Engine/Rendering/Camera/CameraSystem.h"
 #include "Engine/Rendering/Camera/CameraComponent.h"
 #include "Engine/Rendering/Camera/EditorCamera.h"
@@ -53,23 +54,32 @@ Framework::Framework(HWND hwnd)
 
 	// 各種システム初期化
 
+    CurryEngine::RecordStartupStage("Initializing graphics");
     Graphics::Initialize(hwnd, FULLSCREEN);
+    CurryEngine::RecordStartupStage("Initializing input");
     InputSystem::Initialize();
     //EffectManager::Initialize();
 
+    CurryEngine::RecordStartupStage("Initializing shared resources");
     ResourceManager::Initialize();
 
+	CurryEngine::RecordStartupStage("Initializing debug renderer");
 	DebugRenderer::Initialize();
 
+	CurryEngine::RecordStartupStage("Initializing physics");
 	Physics::Initialize();
 
+    CurryEngine::RecordStartupStage("Initializing script host");
     ScriptSystem::Initialize();
 
+    CurryEngine::RecordStartupStage("Initializing asset browser");
     AssetBrowser::Initialize();
+    CurryEngine::RecordStartupStage("Initializing asset drop target");
     AssetBrowser::InitializeDropTarget(hwnd);
 
 
 #ifdef _DEBUG
+    CurryEngine::RecordStartupStage("Loading editor settings");
     EditorConfigManager::Initialize();
 #endif // _DEBUG
 }
@@ -80,23 +90,28 @@ bool Framework::Initialize()
     auto device = Graphics::GetDevice();
 
 	// レンダリングシステム
+	CurryEngine::RecordStartupStage("Initializing render pipelines");
 	renderSystem = new RenderSystem;
 	renderSystem->Initialize(&time);
 
     //Audio
+    CurryEngine::RecordStartupStage("Initializing audio");
     Audio::Initialize();
 
+    CurryEngine::RecordStartupStage("Loading scene settings");
     SceneManager::Initialize();
     //SceneManager::SetLoadingScene("EmptyScene");
     //SceneManager::ChangeScene("SampleScene");
 
     // エフェクトマネージャー初期化
+    CurryEngine::RecordStartupStage("Initializing effects");
     EffectManager::Initialize();
 
     //エフェクトエディタ初期化
     EffectEditor::Initialize();
 
 	// 最初のシーンをロード(EditorConfigManagerの初期化後に呼び出す必要がある)
+	CurryEngine::RecordStartupStage("Loading first scene");
 	SceneManager::LoadFirstScene();
 
     return true;
@@ -112,15 +127,16 @@ int Framework::Run()
     }
 
 #ifdef USE_IMGUI
+    CurryEngine::RecordStartupStage("Initializing editor UI and fonts");
     IMGUI_CHECKVERSION();
     ImGuiContext* imguiContext = ImGui::CreateContext();
     //ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", 14.0f, nullptr, glyphRangesJapanese);
 	// 日本語フォントの追加
     auto japanese = ImGui::GetIO().Fonts->GetGlyphRangesJapanese();
-    ImGui::GetIO().Fonts->AddFontFromFileTTF(".\\Data\\Fonts\\NotoSansJP-Medium.ttf", 18.0f, nullptr, japanese);
+    ImGui::GetIO().Fonts->AddFontFromFileTTF(EnginePaths::Utf8(EnginePaths::ResolveResource("Data/Fonts/NotoSansJP-Medium.ttf")).c_str(), 18.0f, nullptr, japanese);
 	// 中国語フォントの追加
 	auto chinese = ImGui::GetIO().Fonts->GetGlyphRangesChineseFull();
-	ImGui::GetIO().Fonts->AddFontFromFileTTF(".\\Data\\Fonts\\NotoSansSC-Medium.ttf", 18.0f, nullptr, chinese);
+	ImGui::GetIO().Fonts->AddFontFromFileTTF(EnginePaths::Utf8(EnginePaths::ResolveResource("Data/Fonts/NotoSansSC-Medium.ttf")).c_str(), 18.0f, nullptr, chinese);
 
 
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -138,6 +154,8 @@ int Framework::Run()
     time.Reset();
 
     //メインループ
+    bool startupReported = false;
+    CurryEngine::RecordStartupStage("Starting first frame");
     while (WM_QUIT != msg.message)
     {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -169,6 +187,10 @@ int Framework::Run()
 
 #endif      
             EndFrame();
+            if (!startupReported) {
+                CurryEngine::NotifyProjectReady(EnginePaths::StartupContext);
+                startupReported = true;
+            }
 
             FrameMark;
         }
@@ -409,7 +431,8 @@ bool Framework::Uninitialize(HWND hwnd)
     ScriptSystem::Shutdown();
 
     // エフェクトマネージャー終了
-    EffectManager::ClearAll();
+    EffectManager::Finalize();
+
 
     //Audio解放
     Audio::ClearAll();

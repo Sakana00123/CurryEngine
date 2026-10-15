@@ -516,6 +516,14 @@ void EffectManager::Initialize()
 	EffekseerEffectManager::Initialize();
 }
 
+void EffectManager::Finalize()
+{
+	// 全エフェクト停止
+	ClearAll();
+	// Effekseerエフェクトマネージャ解放
+	EffekseerEffectManager::Finalize();
+}
+
 void EffectManager::Update(float deltaTime)
 {
 	// 再生中のエミッタを更新

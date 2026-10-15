@@ -6,10 +6,12 @@ using namespace std;
 #include <DirectXTex.h>
 
 #include "Engine/Rendering/Pipeline/Graphics.h"
+#include "Engine/Core/EnginePaths.h"
 
-HRESULT LoadTextureFromFile(ID3D11Device* device, const std::filesystem::path& path,
+HRESULT LoadTextureFromFile(ID3D11Device* device, const std::filesystem::path& inputPath,
 	ID3D11ShaderResourceView** shader_resource_view, D3D11_TEXTURE2D_DESC* texture2d_desc)
 {
+	const auto path = EnginePaths::ResolveResource(inputPath);
 	HRESULT hr{ S_OK };
 	ComPtr<ID3D11Resource> resource;
 
@@ -78,6 +80,8 @@ HRESULT LoadTextureFromFile(ID3D11Device* device, const std::filesystem::path& p
 HRESULT LoadTextureFromFile(ID3D11Device* device, const wchar_t* filename,
 	ID3D11ShaderResourceView** shader_resource_view, D3D11_TEXTURE2D_DESC* texture2d_desc)
 {
+    const auto resolvedPath = EnginePaths::ResolveResource(std::filesystem::path(filename));
+    filename = resolvedPath.c_str();
 	HRESULT hr{ S_OK };
 	ComPtr<ID3D11Resource> resource;
 

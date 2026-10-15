@@ -398,7 +398,7 @@ void EditorGUI::DrawSceneMenu()
 #ifdef USE_IMGUI
 	//シーン変更ボタン
 
-	std::filesystem::directory_iterator directory("./Assets/Scenes");
+	std::filesystem::directory_iterator directory(EnginePaths::ResolveResource("./Assets/Scenes"));
 
 	// シーン名のリストから特定のシーンを除外するためのセット
 	static const std::vector<std::string> ignoredScenes = { 
@@ -613,7 +613,7 @@ void EditorGUI::DrawWindowMenu()
 void EditorGUI::CreateNewScene()
 {
 	// 新規シーン作成のためのモーダルを表示
-	AssetBrowser::ShowNewSceneCreationModal("./Assets/Scenes");
+	AssetBrowser::ShowNewSceneCreationModal(EnginePaths::ResolveResource("./Assets/Scenes"));
 }
 
 void EditorGUI::OpenScene()
@@ -635,7 +635,7 @@ void EditorGUI::SaveScene()
 	// シーン保存
 	Scene* scene = SceneManager::GetCurrentScene();
 	if (scene) {
-		std::filesystem::path sceneFilePath = "./Assets/Scenes/" + scene->name + ".scene";
+		std::filesystem::path sceneFilePath = EnginePaths::ResolveResource("./Assets/Scenes/" + scene->name + ".scene");
 		// シーンをJSON化
 		json j;
 		scene->Serialize(j);

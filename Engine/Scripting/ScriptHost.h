@@ -25,7 +25,7 @@ using ManagedGetMethodsFunc = void* (__stdcall*)(void* gcHandle);
 using ManagedRegisterAllScriptMetaFunc = void(__stdcall*)(RegisterScriptClassFunc callback);
 //using ManagedGetComponentFunc = void* (__stdcall*)(void* gcHandle, const char* typeName);
 using VoidFunc = void(__stdcall*)();
-using ReloadScriptsFunc = void(__stdcall*)(const char* assemblyPath);
+using ReloadScriptsFunc = int(__stdcall*)(const char* assemblyPath);
 using GetScriptMetaFunc = void*(__stdcall*)(const char* scriptName);
 
 /** @brief ScriptCallbacks を表す構造体です。 */
@@ -99,7 +99,7 @@ public:
 	/**
 	 * @brief 初期化します。
 	 */
-	bool Initialize();
+	bool Initialize(const std::string& scriptAssemblyPath);
 	/**
 	 * @brief 状態を更新します。
 	 */
@@ -142,7 +142,7 @@ private:
 	bool InitRuntime(const std::wstring& runtimeConfigPath);
 
 private:
-	VoidFunc m_initFunc = nullptr;
+	int (__stdcall* m_initFunc)(const char*) = nullptr;
 	VoidFunc m_updateFunc = nullptr;
 	VoidFunc m_shutdownFunc = nullptr;
 	ScriptCallbacks m_callbacks;

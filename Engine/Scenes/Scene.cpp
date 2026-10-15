@@ -14,6 +14,7 @@
 #include <Engine\Editor\EffectEditor.h>
 #include "Engine/Editor/AnimationTimelineEditor.h"
 #include "Engine/Editor/AnimatorControllerEditor.h"
+#include "Engine/Core/EnginePaths.h"
 
 Scene::Scene() : canTransition(false)
 {
@@ -45,9 +46,9 @@ void Scene::Initialize()
 	else if (SceneManager::state == SceneManager::State::EditToPlay)
 	{
 		// シーンファイルパスの構築
-		const std::string filePath = "./Assets/Scenes/" + stem + SceneManager::runtimeSuffix + ".scene";
+		std::string filePath = "./Assets/Scenes/" + stem + SceneManager::runtimeSuffix + ".scene";
 		// 通常のシーンデータ読み込み
-		JsonFileHandler::LoadJsonFromFile(j, filePath);
+		JsonFileHandler::LoadJsonFromFile(j, EnginePaths::ResolveResource(filePath).string());
 	}
 	else
 #else
@@ -63,7 +64,7 @@ void Scene::Initialize()
 		// シーンファイルパスの構築
 		const std::string filePath = "./Assets/Scenes/" + stem + ".scene";
 		// 通常のシーンデータ読み込み
-		JsonFileHandler::LoadJsonFromFile(j, filePath);
+		JsonFileHandler::LoadJsonFromFile(j, EnginePaths::ResolveResource(filePath).string());
 	}
 
 	// デシリアライズ

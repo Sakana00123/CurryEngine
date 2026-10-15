@@ -10,6 +10,7 @@
 #include "Engine/Scenes/SceneManager.h"
 #include "Engine/Physics/Collider.h"
 #include "Engine/ProjectSettings.h"
+#include "Engine/Core/EnginePaths.h"
 
 #include "Engine/Scripting/Exports/ScriptBridgeTypes.h"
 #include "ScriptFieldSerializer.h"
@@ -98,6 +99,7 @@ extern "C" void __stdcall OnScriptClassRegistered(const ScriptClassDesc* desc)
 
 void ScriptSystem::Initialize()
 {
+    s_reloadPending = false;
 	// exe のディレクトリを取得
 	char exePath[MAX_PATH];
 	GetModuleFileNameA(NULL, exePath, MAX_PATH);
@@ -108,12 +110,12 @@ void ScriptSystem::Initialize()
 	exeDir = exeDir.substr(0, exeDir.rfind("\\"));
 	
 	// プロジェクト設定の読み込み
-	ProjectSettings::Load(exeDir);
+	if (!ProjectSettings::Load(exeDir)) { LOG_ERROR("Cannot read script project settings."); return; }
 	ProjectSettingsData settings = ProjectSettings::Get();
 
 	// スクリプトホストの初期化
 	s_scriptHost = new ScriptHost();
-	if (!s_scriptHost->Initialize()) {
+	if (!s_scriptHost->Initialize(EnginePaths::Utf8(settings.scriptOutputPath))) {
 		LOG_ERROR("[ScriptSystem] Failed to initialize the script host.");
 		delete s_scriptHost;
 		s_scriptHost = nullptr;
@@ -124,21 +126,15 @@ void ScriptSystem::Initialize()
 	// スクリプトウォッチャーの初期化
 	s_scriptWatcher = new ScriptWatcher();
 
-	// TODO: あとでここを修正する
-	//std::vector<BuildCommand> commands = {
-	//	/*{".\\CurryEngine.API\\CurryEngine.API.csproj", "-c Debug --nologo -v q 2>&1" },
-	//	{ ".\\CurryEngine.Runtime\\CurryEngine.Runtime.csproj", "-c Debug --nologo -v q 2>&1" },*/
-	//	{ settings.scriptProjectPath, "-c Release --nologo -v q 2>&1" }
-	//};
-	std::vector<BuildCommand> commands = {
-		{ settings.scriptProjectPath, "-c Release --nologo -v q 2>&1" } //-o \"" + settings.scriptOutputPath + "\" 
-	};
+    std::vector<BuildCommand> commands = {
+        { settings.scriptProjectPath, EnginePaths::IsExternalProject() ? L"Debug" : L"Release" }
+    };
 
 	s_scriptWatcher->Start(
 		settings.scriptWatchDirectory,
 		commands,
 		[]() {
-			ScriptSystem::Reload(); // ビルド成功時にスクリプトをリロードするコールバック
+			s_reloadPending.store(true); // Apply on the main thread after the scene update.
 		}
 	);
 	s_scriptWatcher->RequestBuild(); // 起動時に一度ビルドを要求して最新のスクリプトを読み込む  
@@ -151,6 +147,7 @@ void ScriptSystem::Initialize()
 void ScriptSystem::Update()
 {
 	if (!s_scriptHost) return;
+	if (!SceneManager::IsTransition() && s_reloadPending.exchange(false)) Reload();
 	s_scriptHost->Update();
 }
 
@@ -198,11 +195,10 @@ void ScriptSystem::Reload()
 		}
 	}
 
-	// C#スクリプトのメタ情報をクリア
-	ReflectionRegistry::UnregisterScriptClasses();
-
 	// Assembly-CSharp.dll をリロード
-	s_scriptHost->GetCallbacks().ReloadScripts("");
+	if (!s_scriptHost->GetCallbacks().ReloadScripts(EnginePaths::Utf8(ProjectSettings::Get().scriptOutputPath).c_str()))
+        return;
+	ReflectionRegistry::UnregisterScriptClasses();
 
 	// C#側に今すぐ全クラスの登録を要求して、スクリプトクラスのメタデータを更新する
 	//s_scriptHost->GetCallbacks().RegisterAllScriptMeta(&OnScriptClassRegistered);

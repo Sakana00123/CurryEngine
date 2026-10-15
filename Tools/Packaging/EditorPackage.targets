@@ -1,0 +1,16 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Packaging builds keep generated code and shader output outside the development tree. -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(GeneratedRoot);$(GeneratedRoot)\Interop;$(GeneratedRoot)\Reflection;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <FxCompile>
+      <ObjectFileOutput>$(OutDir)Shaders\%(Filename).cso</ObjectFileOutput>
+      <AssemblerOutput>AssemblyCode</AssemblerOutput>
+      <AssemblerOutputFile>$(OutDir)Shaders\%(Filename).cod</AssemblerOutputFile>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <Target Name="PreparePackageShaders" BeforeTargets="FxCompile">
+    <MakeDir Directories="$(OutDir)Shaders" />
+  </Target>
+</Project>

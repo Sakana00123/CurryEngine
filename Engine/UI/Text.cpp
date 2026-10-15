@@ -152,6 +152,7 @@ void Text::SetupBuffer(size_t vertexCapacity)
 void Text::Initialize()
 {
     // Deserialize から呼ばれる Setup で初期化済み
+	fontFilePath = EnginePaths::ResolveResource("./Assets/Fonts/madoufmg.fnt").string();
 }
 
 // =============================================================================

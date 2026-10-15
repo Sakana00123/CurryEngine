@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AssetBrowser.h"
+#include "LegacyModelCache.h"
 #include "AnimationEditor.h"
 #include <string>
 #include <vector>
@@ -41,7 +42,7 @@ void AssetBrowser::Initialize()
 
 	CurryEngine::Resources::ImporterRegistry::Initialize();
 	CurryEngine::Resources::ImportSettingsDrawerRegistry::Initialize();
-	CurryEngine::Resources::AssetDatabase::Initialize("./TestAssets");
+	CurryEngine::Resources::AssetDatabase::Initialize(EnginePaths::IsExternalProject() ? "./Assets" : "./TestAssets");
 }
 
 void AssetBrowser::InitializeDropTarget(HWND hwnd)
@@ -377,17 +378,17 @@ void AssetBrowser::Refresh()
 
 #ifdef _DEBUG
 	// ./Assets/Models以下のすべてのcereal/batchCerealファイルを削除（古いキャッシュが残っていると問題になるため）
-	for (const auto& entry : fs::recursive_directory_iterator("./Assets/Models"))
+	try
 	{
-		if (entry.is_regular_file())
+		for (const auto& removed : CurryEngine::RemoveLegacyModelCaches(s_AssetPath / "Models"))
 		{
-			std::string ext = entry.path().extension().string();
-			if (ext == ".cereal" || ext == ".batchCereal")
-			{
-				fs::remove(entry.path());
-				LOG_INFO(u8"Deleted old cache file: " + entry.path().u8string());
-			}
+			LOG_INFO(u8"Deleted old cache file: " + removed.u8string());
 		}
+	}
+	catch (const fs::filesystem_error& error)
+	{
+		// Cache cleanup is best-effort, including when files disappear during a refresh.
+		LOG_WARNING(std::string("Could not clean legacy model caches: ") + error.what());
 	}
 #endif // _DEBUG
 
@@ -636,10 +637,11 @@ void AssetBrowser::OpenAsset(const fs::path& assetPath)
 	else if (type == AssetType::Script)
 	{
 		// スクリプトファイルならVisual Studioで開く
-		std::wstring slnPath = std::filesystem::path(EnginePaths::SolutionFile).wstring(); // ソリューションファイルのパス
+		std::wstring slnPath = (EnginePaths::IsExternalProject() ? EnginePaths::ProjectSolution() : std::filesystem::path(EnginePaths::SolutionFile)).wstring(); // ソリューションファイルのパス
 		std::wstring filePath = absolutePath.wstring();
 		//OpenFileInVisualStudio(slnPath, filePath); // ソリューションファイルパスがハードコードされているため、Visual Studioが正しく開けない可能性がある
-		OpenFileWithDefaultApplication(absolutePath.wstring()); // とりあえず関連付けされたアプリで開く（Visual Studioが関連付けされていればそちらで開く）
+		if (EnginePaths::IsExternalProject()) OpenFileInVisualStudio(slnPath, filePath);
+        else OpenFileWithDefaultApplication(absolutePath.wstring());
 	}
 	else if (type == AssetType::Material)
 	{
@@ -1537,7 +1539,7 @@ void AssetBrowser::DrawNewSceneCreationModal()
 		ImGui::BeginDisabled(!isValid);
 		if (ImGui::Button(reinterpret_cast<const char*>(u8"作成"), buttonSize) || (confirm && isValid))
 		{
-			CreateNewScene(templateScenePaths[selectedTemplate], newScenePath);
+			CreateNewScene(EnginePaths::ResolveResource(templateScenePaths[selectedTemplate]), newScenePath);
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndDisabled();

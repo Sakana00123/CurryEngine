@@ -105,6 +105,11 @@ public:
 	static void Initialize();
 
 	/**
+	 * @brief 終了処理を行います。
+	 */
+	static void Finalize();
+
+	/**
 	 * @brief 状態を更新します。
 	 */
 	static void Update(float deltaTime);

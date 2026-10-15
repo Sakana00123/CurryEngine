@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <filesystem>
 
 /** @brief ProjectSettingsData を表す構造体です。 */
 struct ProjectSettingsData
@@ -11,9 +12,9 @@ struct ProjectSettingsData
 	std::string description; // プロジェクトの説明
 
 	// その他のプロジェクト設定項目をここに追加可能
-	std::string scriptProjectPath; // .csprojのパス
-	std::string scriptOutputPath; // 出力されるDLLのパス
-	std::string scriptWatchDirectory; // スクリプトの監視ディレクトリ
+	std::filesystem::path scriptProjectPath; // .csprojのパス
+	std::filesystem::path scriptOutputPath; // 出力されるDLLのパス
+	std::filesystem::path scriptWatchDirectory; // スクリプトの監視ディレクトリ
 
 };
 

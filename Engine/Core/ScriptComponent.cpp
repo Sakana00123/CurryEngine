@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Engine/Core/EnginePaths.h"
 #include "ScriptComponent.h"
 
 #include "Engine/Scripting/ScriptSystem.h"
@@ -144,7 +145,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
     {
 		// ファイル名に一致するスクリプトアセットを検索
 		std::vector<fs::directory_entry> results;
-		fs::path rootDir = "./UserScripts";
+		fs::path rootDir = EnginePaths::IsExternalProject() ? "./Assets" : "./UserScripts";
         if (fs::exists(rootDir) && fs::is_directory(rootDir))
         {
             for (const auto& entry : fs::recursive_directory_iterator(rootDir))
@@ -684,7 +685,7 @@ void ScriptComponent::OnPostScriptReload()
 void ScriptComponent::OnScriptReload()
 {
 	// スクリプトのリロード処理
-	if (!m_gcHandle) return; // GCHandle が有効でない場合は何もしない
+	if (!m_gcHandle) { Initialize(); return; } // Initial build may finish after the scene was loaded.
 
 	// 既存のスクリプトインスタンスをホットスワップで更新する
     uint64_t ownerId = GetOwner()->GetId().Value();

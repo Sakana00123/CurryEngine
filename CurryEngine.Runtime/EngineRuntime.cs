@@ -17,46 +17,19 @@ public static class EngineRuntime
     private static HotReloadManager? s_hotReloadManager;
     internal static HotReloadManager? HotReload => s_hotReloadManager;
 
-    internal static string? GetExecutableDirectory()
-    {
-        var exePath = Environment.ProcessPath;
-        var exeDir = Path.GetDirectoryName(exePath);
-        if (exeDir == Environment.CurrentDirectory)
-        {
-            // カレントディレクトリと同じ場合は、x64/$(Configuration) を返すようにする。
-            var config = Environment.GetEnvironmentVariable("CONFIGURATION") ?? "Debug";
-            exeDir = Path.Combine(exeDir, "x64", config);
-            Debug.Log($"GetExecutableDirectory: カレントディレクトリと同じため、x64/{config} を返す: {exeDir}");
-        }
-        Debug.Log($"GetExecutableDirectory: {exeDir}");
-        return exeDir;
-    }
-
-    internal static string? GetUserScriptsPath()
-    {
-        var solutionDir = Environment.GetEnvironmentVariable("SOLUTION_DIR");
-        if (string.IsNullOrEmpty(solutionDir))
-        {
-            Debug.LogError("SOLUTION_DIR 環境変数が設定されていません。");
-            return null;
-        }
-        // Assembly-CSharp.dll のパスを組み立てる。($(SolutionDir)Library\ScriptAssemblies\Assembly-CSharp.dll)
-        var userScriptsPath = Path.Combine(solutionDir, "Library", "ScriptAssemblies", "Assembly-CSharp.dll");
-        //var userScriptsPath = Path.Combine(solutionDir, "UserScripts", "x64", "Debug", "Assembly-CSharp.dll");
-        if (!File.Exists(userScriptsPath))
-        {
-            Debug.LogError($"Assembly-CSharp.dll が見つかりません: {userScriptsPath}");
-            return null;
-        }
-        return userScriptsPath;
-    }
+    private static string? s_scriptAssemblyPath;
+    internal static string? GetExecutableDirectory() => Path.GetDirectoryName(Environment.ProcessPath);
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
-    public static void EngineInitialize()
+    public static unsafe int EngineInitialize(byte* scriptAssemblyPathUtf8)
     {
         try
         {
             // エンジンの初期化処理をここに書く。
+            var scriptPath = Marshal.PtrToStringUTF8((nint)scriptAssemblyPathUtf8);
+            if (string.IsNullOrWhiteSpace(scriptPath) || !Path.IsPathFullyQualified(scriptPath))
+                throw new ArgumentException("An absolute script assembly path is required.");
+            s_scriptAssemblyPath = Path.GetFullPath(scriptPath);
             EngineBootstrap.Initialize();
 
             // GC のレイテンシモードを SustainedLowLatency に設定する。これにより、GC が長時間の停止を避けるようになる。
@@ -142,7 +115,7 @@ public static class EngineRuntime
 
             // UserScripts.dll をロードして ScriptRegistry に登録する。
             var exeDir = GetExecutableDirectory() ?? string.Empty;
-            var userScriptsPath = /*GetUserScriptsPath() ?? */Path.Combine(exeDir, "Assembly-CSharp.dll");
+            var userScriptsPath = s_scriptAssemblyPath;
             //Debug.Log($"Assembly-CSharp.dll のパス: {userScriptsPath}");
 
             // EngineRuntime と同じ ALC を使ってロードする。通常は EngineRuntime と UserScripts は同じ ALC にロードされるはずだが、これで確実になる。
@@ -163,12 +136,12 @@ public static class EngineRuntime
             }
             else
             {
-                Debug.LogError($"Assembly-CSharp.dll が見つかりません: {userScriptsPath}");
+                Debug.Log($"Waiting for the initial script build: {userScriptsPath}");
             }
         }
-        catch (ReflectionTypeLoadException ex)
+        catch (Exception ex)
         {
-            foreach (var e in ex.LoaderExceptions)
+            foreach (var e in (ex as ReflectionTypeLoadException)?.LoaderExceptions ?? [])
             {
                 File.AppendAllText(
                     "LoaderExceptions.txt",
@@ -183,11 +156,13 @@ public static class EngineRuntime
             {
                 Debug.LogError($"内部例外: {ex.InnerException.Message}");
             }
+            return 0;
         }
+        return 1;
     }
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
-    public static unsafe void ReloadScripts(byte* dllPathUtf8)
+    public static unsafe int ReloadScripts(byte* dllPathUtf8)
     {
         try
         {
@@ -196,8 +171,11 @@ public static class EngineRuntime
             {
                 // パスが無効な場合はデフォルトのパスを使用する。
                 var exeDir = GetExecutableDirectory() ?? string.Empty;
-                dllPath = /*GetUserScriptsPath() ?? */Path.Combine(exeDir, "Assembly-CSharp.dll");
+                dllPath = s_scriptAssemblyPath;
             }
+            if (string.IsNullOrWhiteSpace(dllPath) ||
+                !string.Equals(Path.GetFullPath(dllPath), s_scriptAssemblyPath, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("Cannot reload scripts from a different project.");
             // HotReloadManager がまだ作られていない場合は作る。通常は EngineInitialize で作られているはず。
             if (s_hotReloadManager == null)
             {
@@ -212,6 +190,7 @@ public static class EngineRuntime
             Debug.Log("ReloadScripts 完了");
             foreach (var typeName in ScriptRegistry.RegisteredNames)
                 Debug.Log($"登録されたスクリプト: {typeName}");
+            return 1;
         }
         catch (Exception ex)
         {
@@ -220,6 +199,7 @@ public static class EngineRuntime
             {
                 Debug.LogError($"内部例外: {ex.InnerException.Message}");
             }
+            return 0;
         }
     }
 

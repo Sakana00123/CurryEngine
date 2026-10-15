@@ -301,13 +301,20 @@ void Material::DrawShaderSelector(ID3D11Device* device, size_t type)
 
 	if (path != std::filesystem::path())
 	{
+        const auto sourcePath = EnginePaths::ShaderSourceFor(path);
+        const bool sharedSource = EnginePaths::IsExternalProject() &&
+            sourcePath.lexically_normal().generic_u8string().starts_with(u8"EngineResources/");
+        ImGui::BeginDisabled(sharedSource);
 		if (ImGui::Button("Edit"))
 		{
-			std::filesystem::path shaderPath = "./Shader" / (path.filename().replace_extension(".hlsl")); // 元のシェーダーファイルのパスを取得
+			std::filesystem::path shaderPath = EnginePaths::ResolveResource(sourcePath);
 
 			// シェーダーファイルを既定のアプリケーションで開く
 			OpenFileWithDefaultApplication(shaderPath.wstring());
 		}
+        ImGui::EndDisabled();
+        if (sharedSource && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+            ImGui::SetTooltip("Built-in shader. Copy its source to Assets to edit it for this project.");
 
 		ImGui::SameLine();
 	}

@@ -10,16 +10,12 @@
 Skymap::Skymap(ID3D11Device* device)
 {
 	// デフォルトのスカイマップテクスチャを読み込み
-	texture = ResourceManager::GetOrLoad<AssetTexture>("./Assets/environments/skybox.dds");
-	const auto& texture2dDesc = texture->GetDesc();
-	if (texture2dDesc.MiscFlags & D3D11_RESOURCE_MISC_TEXTURECUBE)
-	{
-		isTextureCube = true;
-	}
-	else
-	{
-		isTextureCube = false;
-	}
+    // An empty project does not carry the development game's sky texture.
+    isTextureCube = false;
+	std::filesystem::path defaultSkyboxPath = EnginePaths::ResolveResource("./Assets/environments/skybox.dds");
+    if (std::filesystem::exists(defaultSkyboxPath) && std::filesystem::is_regular_file(defaultSkyboxPath))
+        texture = ResourceManager::GetOrLoad<AssetTexture>(defaultSkyboxPath.string());
+    if (texture) isTextureCube = (texture->GetDesc().MiscFlags & D3D11_RESOURCE_MISC_TEXTURECUBE) != 0;
 	
 	std::string dir = EnginePaths::ShadersDataDir;
 	CreateVertexShaderFromCSO(device,(dir + "skymap_vs.cso").c_str(), skymap_vs.GetAddressOf(), NULL, NULL, 0);
@@ -29,6 +25,7 @@ Skymap::Skymap(ID3D11Device* device)
 
 void Skymap::Draw(ID3D11DeviceContext* immediateContext)
 {
+    if (!texture) return;
 	immediateContext->IASetVertexBuffers(0, 0, NULL, NULL, NULL);
 	immediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	immediateContext->IASetInputLayout(NULL);
@@ -91,7 +88,7 @@ void Skymap::DrawProperty()
 json Skymap::Serialize() const
 {
 	json j;
-	std::string filePath = texture->GetPath();
+	std::string filePath = texture ? texture->GetPath() : "";
 	if (!filePath.empty())
 	{
 		j["filePath"] = filePath;
@@ -101,7 +98,11 @@ json Skymap::Serialize() const
 
 void Skymap::Deserialize(const json& j)
 {
-	std::string filePath = j.value("filePath", "./Assets/environments/skybox.dds");
+	std::string filePath = j.value("filePath", EnginePaths::ResolveResource("./Assets/environments/skybox.dds").string());
 	// テクスチャを再読み込み
-	texture = ResourceManager::GetOrLoad<AssetTexture>(filePath);
+    texture.reset();
+    isTextureCube = false;
+    if (!filePath.empty() && std::filesystem::exists(filePath) && std::filesystem::is_regular_file(filePath))
+        texture = ResourceManager::GetOrLoad<AssetTexture>(filePath);
+    if (texture) isTextureCube = (texture->GetDesc().MiscFlags & D3D11_RESOURCE_MISC_TEXTURECUBE) != 0;
 }

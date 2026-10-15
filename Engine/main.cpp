@@ -1,7 +1,10 @@
 #include "pch.h"
 #include <time.h>
+#include <exception>
 
 #include "Engine/Core/Framework.h"
+#include "Engine/Core/EnginePaths.h"
+#include "Engine/Core/Startup.h"
 
 LRESULT CALLBACK window_procedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -11,6 +14,12 @@ LRESULT CALLBACK window_procedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpa
 
 int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_  HINSTANCE prev_instance, _In_ LPSTR cmd_line, _In_ int cmd_show)
 {
+	if (const auto exitCode = CurryEngine::PrepareStartup(EnginePaths::StartupContext))
+		return *exitCode;
+	EnginePaths::ConfigureResourcePaths();
+	CurryEngine::BeginStartupDiagnostics(EnginePaths::StartupContext);
+	CurryEngine::RecordStartupStage("Creating window");
+
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 #if defined(DEBUG) | defined(_DEBUG)
@@ -39,7 +48,25 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_  HINSTANCE prev_instance, _
 	ShowWindow(hwnd, cmd_show);
 
 	// フレームワークの実行
-	Framework framework(hwnd);
-	SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&framework));
-	return framework.Run();
+	try
+	{
+		Framework framework(hwnd);
+		SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&framework));
+		const auto result = framework.Run();
+		SetWindowLongPtrW(hwnd, GWLP_USERDATA, 0);
+		return result;
+	}
+	catch (const std::exception& error)
+	{
+		SetWindowLongPtrW(hwnd, GWLP_USERDATA, 0);
+		CurryEngine::ReportRuntimeFailure(error.what());
+	}
+	catch (...)
+	{
+		SetWindowLongPtrW(hwnd, GWLP_USERDATA, 0);
+		CurryEngine::ReportRuntimeFailure("Unknown native exception.");
+	}
+	// Partial startup may have live watcher threads and uninitialized subsystems.
+	// Do not run normal shutdown (which saves project state) or static thread destructors.
+	ExitProcess(1);
 }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -9,6 +9,20 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Engine\Core\ProjectContext.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Engine\Automation\ProjectCreator.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClInclude Include="Engine\Automation\ProjectCreator.h" />
+    <ClCompile Include="Engine\Core\Startup.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClInclude Include="Engine\Core\ProjectContext.h" />
+    <ClInclude Include="Engine\Core\Startup.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0DDBE550-8551-4506-9A5A-4DD100C00C48}</ProjectGuid>
@@ -58,7 +72,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;USE_IMGUI;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\Effekseer170e\include\Effekseer;.\External\Effekseer170e\include\EffekseerRendererDX11;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\Effekseer170e\include\Effekseer;.\External\Effekseer170e\include\EffekseerRendererDX11;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -95,7 +109,7 @@ popd</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;PX_PHYSX_STATIC_LIB;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\Effekseer170e\include\Effekseer;.\External\Effekseer170e\include\EffekseerRendererDX11;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\FBX SDK\2020.3.9\include;.\External\stb;.\External\DirectXTex;.\External\DirectXTK-main\Inc;.\External\cereal-master\include;.\External\Effekseer170e\include\Effekseer;.\External\Effekseer170e\include\EffekseerRendererDX11;.\External\imgui-docking;.\External\PhysX\include;.\External\assimp\include;.\External\tracy-0.13.1\public;.\External\tinygltf-release;.\;$(ProjectDir)\External\DotNetHost\9.0.10\runtimes\win-x64\native;$(ProjectDir)\ScriptRuntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -193,7 +207,9 @@ popd</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Engine\Automation\SolutionGenerator.cpp" />
+    <ClCompile Include="Engine\Automation\SolutionGenerator.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Engine\BuildSettings.cpp" />
     <ClCompile Include="Engine\Core\Math\Quaternion.cpp" />
     <ClCompile Include="Engine\EditorConfig\EditorConfigManager.cpp" />

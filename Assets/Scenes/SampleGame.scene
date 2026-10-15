@@ -302,6 +302,7 @@
                 {
                     "enabledSelf": true,
                     "fields": {
+                        "rotateClockwise": false,
                         "rotationAxis": {
                             "x": 0,
                             "y": 0,
@@ -419,6 +420,7 @@
                 {
                     "enabledSelf": true,
                     "fields": {
+                        "rotateClockwise": true,
                         "rotationAxis": {
                             "x": 0,
                             "y": 0,
@@ -693,7 +695,7 @@
                 }
             ],
             "id": "4984317925886415417",
-            "isDefaultOpenOnHierarchy": true,
+            "isDefaultOpenOnHierarchy": false,
             "layer": 4,
             "name": "Jammo",
             "parent": "0",

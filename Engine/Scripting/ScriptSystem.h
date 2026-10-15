@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include <string>
 #include "Engine/Physics/CollisionEvent.h"
 
@@ -140,6 +141,7 @@ public:
 private:
 	// スクリプトホストのインスタンスへのポインタ
 	static inline ScriptHost* s_scriptHost = nullptr;
+	static inline std::atomic_bool s_reloadPending{false};
 
 	static inline ScriptWatcher* s_scriptWatcher = nullptr; // スクリプトファイルの監視とリロードを担当するインスタンス
 

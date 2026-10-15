@@ -12,7 +12,7 @@ static std::string AdjustShaderPath(const std::string& path) {
 	// csoファイルだったら、hlslに変換して検索 
 	auto fsPath = std::filesystem::path(path);
 	if (fsPath.extension() == ".cso") {
-		std::filesystem::path hlslPath = EnginePaths::ShaderSourceDir / fsPath.filename().replace_extension(".hlsl");
+		std::filesystem::path hlslPath = EnginePaths::ShaderSourceFor(fsPath);
 		findPath = hlslPath.string();
 	}
 #else
@@ -50,18 +50,18 @@ void ResourceManager::Register(const std::string& filePath, std::shared_ptr<Reso
 {
 	resource->AddRef();
 	_resources[filePath] = resource;
-	_files[filePath] = std::filesystem::last_write_time(filePath);// 最終更新日時を保存
+	_files[filePath] = std::filesystem::last_write_time(EnginePaths::ResolveResource(filePath));// 最終更新日時を保存
 	std::filesystem::path fsPath(filePath);
 #ifdef _DEBUG
 	if (fsPath.extension() == ".cso") {
 		// csoファイルだったら、hlslに変換して登録
-		std::filesystem::path hlslPath = EnginePaths::ShaderSourceDir / fsPath.filename().replace_extension(".hlsl");
+		std::filesystem::path hlslPath = EnginePaths::ShaderSourceFor(fsPath);
 
 		// hlslファイルも監視対象に追加
-		if (std::filesystem::exists(hlslPath))
+		if (std::filesystem::exists(EnginePaths::ResolveResource(hlslPath)))
 		{
 			_resources[hlslPath.string()] = resource;
-			_files[hlslPath.string()] = std::filesystem::last_write_time(hlslPath);
+			_files[hlslPath.string()] = std::filesystem::last_write_time(EnginePaths::ResolveResource(hlslPath));
 		}
 	}
 #endif // _DEBUG
@@ -87,8 +87,8 @@ std::shared_ptr<Resource> ResourceManager::Load(const std::string& path)
 
 	if (isShader) {
 #ifdef _DEBUG
-		std::filesystem::path hlslPath = EnginePaths::ShaderSourceDir / fsPath.filename();
-		if (!std::filesystem::exists(hlslPath)) {
+		std::filesystem::path hlslPath = EnginePaths::ShaderSourceFor(fsPath);
+		if (!std::filesystem::exists(EnginePaths::ResolveResource(hlslPath))) {
 			LOG_ERROR("Shader file not found: " + hlslPath.string());
 			return nullptr;
 		}
@@ -194,26 +194,26 @@ void ResourceManager::UpdateHotReload()
 	for (auto& [path, resource] : _resources)
 	{
 		// ファイルの存在チェック
-		if (!std::filesystem::exists(path)) continue;
+		if (!std::filesystem::exists(EnginePaths::ResolveResource(path))) continue;
 
 		// 最終更新日時の取得
 		auto& lastTime = _files[path];
 
 		// 例えば、ファイルのタイムスタンプをチェックして変更があればリロード
-		auto now = std::filesystem::last_write_time(path);
+		auto now = std::filesystem::last_write_time(EnginePaths::ResolveResource(path));
 
 #ifdef _DEBUG
 		// 追加: csoファイルの場合は対応するhlslファイルの更新もチェック
 		std::filesystem::path fsPath(path);
 		if (fsPath.extension() == ".cso") {
 			// csoファイルだったら、hlslに変換して登録
-			std::filesystem::path hlslPath = EnginePaths::ShaderSourceDir / fsPath.filename().replace_extension(".hlsl");
+			std::filesystem::path hlslPath = EnginePaths::ShaderSourceFor(fsPath);
 			
 			// hlslファイルも監視対象に追加
-			if (std::filesystem::exists(hlslPath))
+			if (std::filesystem::exists(EnginePaths::ResolveResource(hlslPath)))
 			{
 				lastTime = _files[hlslPath.string()];
-				now = std::filesystem::last_write_time(hlslPath);
+				now = std::filesystem::last_write_time(EnginePaths::ResolveResource(hlslPath));
 			}
 		}
 #endif // _DEBUG
@@ -234,7 +234,7 @@ void ResourceManager::UpdateHotReload()
 void ResourceManager::LoadAllShaders()
 {
 	namespace fs = std::filesystem;
-	const std::string shaderDir = EnginePaths::ShadersDataDir; // シェーダーファイルの配置先ディレクトリ
+	const auto shaderDir = EnginePaths::ResolveResource(EnginePaths::ShadersDataDir); // シェーダーファイルの配置先ディレクトリ
 	if (fs::exists(shaderDir) && fs::is_directory(shaderDir)) {
 		for (const auto& entry : fs::recursive_directory_iterator(shaderDir)) {
 			if (entry.is_regular_file()) {
@@ -242,7 +242,7 @@ void ResourceManager::LoadAllShaders()
 				// シェーダーファイルの拡張子をチェック（.cso）
 				if (path.extension() == ".cso") 
 				{
-					std::string pathStr = path.string();
+					std::string pathStr = (std::filesystem::path(EnginePaths::ShadersDataDir) / fs::relative(path, shaderDir)).string();
 
 					// ファイル名からシェーダーターゲットを推定
 					std::string stem = path.stem().string(); // ファイル名（拡張子なし）
@@ -289,7 +289,7 @@ void ResourceManager::LoadAllTextures()
 {
 	// テクスチャフォルダ内のすべてのテクスチャファイルを読み込み
 	namespace fs = std::filesystem;
-	const std::string textureDir = EnginePaths::ImagesDataDir; // テクスチャファイルの配置先ディレクトリ
+	const auto textureDir = EnginePaths::ResolveResource(EnginePaths::ImagesDataDir); // テクスチャファイルの配置先ディレクトリ
 	if (fs::exists(textureDir) && fs::is_directory(textureDir)) {
 		for (const auto& entry : fs::recursive_directory_iterator(textureDir)) {
 			if (entry.is_regular_file()) {
@@ -298,7 +298,7 @@ void ResourceManager::LoadAllTextures()
 				std::string ext = path.extension().string();
 				std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower); // 小文字に変換
 				if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".dds") {
-					std::string pathStr = path.string();
+					std::string pathStr = (std::filesystem::path(EnginePaths::ImagesDataDir) / fs::relative(path, textureDir)).string();
 					auto texture = Load<AssetTexture>(pathStr);
 					if (texture) {
 						LOG_INFO("Loaded texture: " + path.string());
@@ -325,10 +325,9 @@ void ResourceManager::UpdateShaderNames()
 			if (fsPath.extension() == ".hlsl")
 			{
 				// 指定のシェーダーディレクトリ内の対応するファイルを探す
-				std::filesystem::path fileName = fsPath.filename();
-				fsPath = std::filesystem::path(EnginePaths::ShaderSourceDir) / fileName;
+				fsPath = EnginePaths::ShaderSourceFor(fsPath);
 				// 存在するならそれを登録
-				if (std::filesystem::exists(fsPath))
+				if (std::filesystem::exists(EnginePaths::ResolveResource(fsPath)))
 				{
 					shaderPaths.push_back(fsPath.string());
 					continue; // すでに追加したので次へ

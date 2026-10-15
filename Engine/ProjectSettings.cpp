@@ -1,13 +1,25 @@
 #include "pch.h"
 #include "ProjectSettings.h"
 #include "Engine/Utils/JsonFileHandler.h"
+#include "Engine/Core/EnginePaths.h"
 
 
 bool ProjectSettings::Load(const std::string& exeDir)
 {
+	s_data = {};
+    if (EnginePaths::IsExternalProject())
+    {
+        s_data.projectName = EnginePaths::StartupContext.projectName;
+        s_data.scriptProjectPath = EnginePaths::ScriptProject();
+        s_data.scriptOutputPath = EnginePaths::ScriptAssembly();
+        s_data.scriptWatchDirectory = EnginePaths::ProjectRoot() / "Assets";
+        return true;
+    }
 	json data;
 	std::string filePath = exeDir + "\\projectSettings.json";
-	if (!JsonFileHandler::LoadJsonFromFile(data, filePath, JsonIOFormat::Text))
+	std::ifstream settingsFile(filePath);
+    if (!std::filesystem::exists(filePath)) data = json::object();
+	else if (!settingsFile || (data = json::parse(settingsFile, nullptr, false)).is_discarded() || !data.is_object())
 	{
 		return false;
 	}
@@ -26,7 +38,7 @@ bool ProjectSettings::Load(const std::string& exeDir)
 
 	// ソリューションのディレクトリを基準にした絶対パス
 	std::filesystem::path defaultScriptProjectPath = solutionDir / "UserScripts/Assembly-CSharp.csproj";
-	std::filesystem::path defaultScriptOutputPath = solutionDir / "x64/Debug/Assembly-CSharp.dll";
+	std::filesystem::path defaultScriptOutputPath = std::filesystem::path(exeDir) / "Assembly-CSharp.dll";
 	//std::filesystem::path defaultScriptOutputPath = solutionDir / "Library/ScriptAssemblies/Assembly-CSharp.dll";
 	std::filesystem::path defaultScriptWatchDirectory = solutionDir / "UserScripts/";
 	// JSONからパスを取得。絶対パスで指定されていない場合は、exe のディレクトリを基準にした絶対パスを使用する。

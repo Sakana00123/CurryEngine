@@ -1,3 +1,6 @@
+制作用エンジンのZIPは `pwsh -File ./Tools/Packaging/Build-EditorPackage.ps1 -Version 0.1.0-dev.1` で生成できます。
+手順・必要環境・検証範囲は [制作用エンジンの自動パッケージ作成](docs/EditorPackaging.md) を参照してください。
+
 💡 CurryEngine デバッグ時の注意点
 動的スクリプト（ホットリロード）のブレークポイントを有効にするため、以下の設定を行ってください。
 1. Visual Studio の [ツール] ＞ [オプション] ＞ [デバッグ] ＞ [全般] を開く。

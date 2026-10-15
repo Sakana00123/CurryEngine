@@ -1,7 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <GeneratedRoot Condition="'$(GeneratedRoot)' == ''">$(MSBuildProjectDirectory)\..\Generated</GeneratedRoot>
 	<AssemblyName>CurryEngine.API</AssemblyName>
 	<RootNamespace>CurryEngine</RootNamespace>
 	<Nullable>enable</Nullable>
@@ -10,7 +11,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Wrappers\*.g.cs">
+    <Compile Include="$(GeneratedRoot)\CSharp\Wrappers\*.g.cs">
       <Link>Wrappers\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
   </ItemGroup>
@@ -24,7 +25,7 @@
     <InternalsVisibleTo Include="CurryEngine.Core" />
   </ItemGroup>
 	
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SkipEngineCopy)' != 'true'">
 	<Copy SourceFiles="$(OutDir)CurryEngine.API.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
 	<Copy SourceFiles="$(OutDir)CurryEngine.API.pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
   </Target>

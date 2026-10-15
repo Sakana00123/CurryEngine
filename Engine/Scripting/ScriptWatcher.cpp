@@ -7,7 +7,7 @@
 
 
 bool ScriptWatcher::Start(
-	const std::string& watchDir,
+	const fs::path& watchDir,
 	const std::vector<BuildCommand>& buildCommands,
 	ReloadCallback onReloaded)
 {
@@ -116,7 +116,16 @@ void ScriptWatcher::WatchLoop()
 		}
 
 		// 変更があったかを待機（タイムアウトは 500ms）
-		DWORD waitResult = WaitForSingleObject(overlapped.hEvent, 500);
+		DWORD waitResult;
+        do { waitResult = WaitForSingleObject(overlapped.hEvent, 100); }
+        while (waitResult == WAIT_TIMEOUT && m_running);
+        if (!m_running || waitResult != WAIT_OBJECT_0) {
+            CancelIoEx(hDir, &overlapped);
+            GetOverlappedResult(hDir, &overlapped, &bytesReturned, TRUE);
+            break;
+        }
+        if (!GetOverlappedResult(hDir, &overlapped, &bytesReturned, FALSE)) break;
+        if (bytesReturned == 0) { ResetEvent(overlapped.hEvent); RequestBuild(); continue; }
 
 		if (waitResult == WAIT_OBJECT_0) {
 			ResetEvent(overlapped.hEvent);
@@ -171,7 +180,7 @@ void ScriptWatcher::BuildLoop()
 
 		// ビルド成功時はスクリプトをリロード
 		LOG_INFO(u8"[ScriptWatcher] ビルド成功。スクリプトをリロードします。");
-		m_onReloaded();
+		if (m_running) m_onReloaded();
 	}
 }
 
@@ -188,37 +197,39 @@ bool ScriptWatcher::BuildProjects()
 
 bool ScriptWatcher::BuildProject(const BuildCommand& command)
 {
-	LOG_INFO(u8"[ScriptWatcher] Building project: " + command.projectPath.u8string());
-	std::wstring args = std::wstring(command.additionalArgs.begin(), command.additionalArgs.end());
-	std::wstring cmd = L"dotnet build \"" + command.projectPath.wstring()
-		+ L"\" " + args;
-
-	FILE* pipe = _wpopen(cmd.c_str(), L"r");
-	if (!pipe) {
-		LOG_ERROR(u8"[ScriptWatcher] ビルドプロセスの起動に失敗");
-		return false;
-	}
-
-	char line[512];
-	bool hasError = false;
-	while (fgets(line, sizeof(line), pipe)) {
-		std::string s = line;
-		if (!s.empty() && s.back() == '\n') s.pop_back();
-		// ビルド出力を解析してエラーや警告をログに出す
-		if (s.find("error") != std::string::npos ||
-			s.find("Error") != std::string::npos) {
-			LOG_ERROR("[Build] " + s);
-			hasError = true;
-		}
-		else if (s.find("warning") != std::string::npos ||
-			s.find("Warning") != std::string::npos) {
-			LOG_WARNING("[Build] " + s);
-		}
-		else if (!s.empty()) {
-			LOG_INFO("[Build] " + s);
-		}
-	}
-
-	int exitCode = _pclose(pipe);
-	return exitCode == 0 && !hasError;
+    // Invoke dotnet directly: project paths containing %, &, etc. must not pass through cmd.exe.
+    wchar_t dotnet[MAX_PATH];
+    const auto count = SearchPathW(nullptr, L"dotnet.exe", nullptr, MAX_PATH, dotnet, nullptr);
+    if (!count || count >= MAX_PATH) { LOG_ERROR("dotnet SDK was not found."); return false; }
+    if (command.configuration != L"Debug" && command.configuration != L"Release") return false;
+    std::wstring cmd = L"\"" + std::wstring(dotnet) + L"\" build \"" + command.projectPath.wstring() +
+        L"\" -c " + command.configuration + L" --nologo -v minimal";
+    SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES), nullptr, TRUE};
+    HANDLE readPipe = nullptr, writePipe = nullptr;
+    if (!CreatePipe(&readPipe, &writePipe, &security, 0)) return false;
+    SetHandleInformation(readPipe, HANDLE_FLAG_INHERIT, 0);
+    STARTUPINFOW startup{};
+    startup.cb = sizeof(startup);
+    startup.dwFlags = STARTF_USESTDHANDLES;
+    startup.hStdOutput = writePipe;
+    startup.hStdError = writePipe;
+    startup.hStdInput = nullptr;
+    PROCESS_INFORMATION process{};
+    const auto workingDirectory = command.projectPath.parent_path().wstring();
+    const BOOL started = CreateProcessW(dotnet, cmd.data(), nullptr, nullptr, TRUE,
+        CREATE_NO_WINDOW, nullptr, workingDirectory.c_str(), &startup, &process);
+    CloseHandle(writePipe);
+    if (!started) { CloseHandle(readPipe); LOG_ERROR("Failed to start dotnet build."); return false; }
+    char buffer[4096];
+    DWORD bytes = 0;
+    while (ReadFile(readPipe, buffer, sizeof(buffer), &bytes, nullptr) && bytes)
+        LOG_INFO(std::string(buffer, bytes));
+    CloseHandle(readPipe);
+    WaitForSingleObject(process.hProcess, INFINITE);
+    DWORD code = 1;
+    GetExitCodeProcess(process.hProcess, &code);
+    CloseHandle(process.hThread);
+    CloseHandle(process.hProcess);
+    // Exit code is authoritative; localized messages such as "0 errors" are not failures.
+    return code == 0;
 }

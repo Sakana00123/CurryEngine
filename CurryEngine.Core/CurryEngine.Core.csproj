@@ -1,7 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <GeneratedRoot Condition="'$(GeneratedRoot)' == ''">$(MSBuildProjectDirectory)\..\Generated</GeneratedRoot>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -17,16 +18,16 @@
 	  <InternalsVisibleTo Include="CurryEngine.API" />
 
 	  <!--Enums の自動生成コードを参照-->
-	  <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Enums\*.g.cs">
+	  <Compile Include="$(GeneratedRoot)\CSharp\Enums\*.g.cs">
 		  <Link>Enums\%(RecursiveDir)%(Filename)%(Extension)</Link>
 	  </Compile>
 	  <!--Structs の自動生成コードを参照-->
-	  <Compile Include="$(MSBuildProjectDirectory)\..\Generated\CSharp\Structs\*.g.cs">
+	  <Compile Include="$(GeneratedRoot)\CSharp\Structs\*.g.cs">
 		  <Link>Structs\%(RecursiveDir)%(Filename)%(Extension)</Link>
 	  </Compile>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SkipEngineCopy)' != 'true'">
 	<Copy SourceFiles="$(OutDir)CurryEngine.Core.dll" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
 	<Copy SourceFiles="$(OutDir)CurryEngine.Core.pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\x64\$(Configuration)\" />
   </Target>

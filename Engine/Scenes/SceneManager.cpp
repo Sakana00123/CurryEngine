@@ -430,7 +430,8 @@ void SceneManager::EnterPlay()
 	currentScene->Serialize(previousData.sceneJson);
 
 	// シーンをランタイム用ファイルとして保存する。
-	JsonFileHandler::SaveJsonToFile(previousData.sceneJson, "./Assets/Scenes/" + currentScene->name + runtimeSuffix + ".scene", JsonIOFormat::Text, FileAttribute::Hidden);
+	std::string filePath = "./Assets/Scenes/" + currentScene->name + runtimeSuffix + ".scene";
+	JsonFileHandler::SaveJsonToFile(previousData.sceneJson, EnginePaths::ResolveResource(filePath).string(), JsonIOFormat::Text, FileAttribute::Hidden);
 
 	// シーンを読み込み直す。(ランタイム用シーンとして)
 	ChangeScene(currentScene->name);
@@ -536,7 +537,7 @@ void SceneManager::CleanRuntimeFiles()
 {
 	ZoneScopedN("SceneManager::CleanRuntimeFiles");
 	// ランタイム用シーンファイルを削除する。
-	for (auto& entry : fs::directory_iterator("./Assets/Scenes/")) {
+	for (auto& entry : fs::directory_iterator(EnginePaths::ResolveResource("./Assets/Scenes/"))) {
 		std::string stem = entry.path().stem().string();
 		if (stem.size() < runtimeSuffix.size()) continue; // 接尾辞より短いファイル名はスキップ
 		if (stem.substr(stem.size() - runtimeSuffix.size(), std::string::npos) == runtimeSuffix) {
