@@ -47,6 +47,23 @@ try {
     $legacy = & $probe
     if ($LASTEXITCODE -ne 0 -or $legacy -ne 'LEGACY_STARTUP') { throw 'Legacy startup changed.' }
 
+    $null = New-Item -ItemType Directory -Path (Join-Path $buildDir 'Templates')
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'Templates/Empty') -Destination (Join-Path $buildDir 'Templates/Empty') -Recurse
+    foreach ($name in 'Core', 'Runtime', 'API') {
+        [IO.File]::WriteAllBytes((Join-Path $buildDir "CurryEngine.$name.dll"), [byte[]]@())
+    }
+    $createdDir = Join-Path (Split-Path $buildDir -Parent) ((Split-Path $buildDir -Leaf) + '-created')
+    & $probe --create-project $createdDir --name '新規作品' > $resultFile 2> $errorFile
+    if ($LASTEXITCODE -ne 0) { throw 'Project creation integration failed.' }
+    $created = Get-Content -Raw -LiteralPath $resultFile | ConvertFrom-Json
+    if (-not $created.created -or -not (Test-Path -LiteralPath $created.projectFile -PathType Leaf)) { throw 'Project creation returned an invalid path.' }
+    $templateIni = Join-Path $repoRoot 'Templates/Empty/imgui.ini'
+    $createdIni = Join-Path $createdDir 'imgui.ini'
+    if (-not (Test-Path -LiteralPath $createdIni -PathType Leaf) -or
+        (Get-FileHash -LiteralPath $createdIni -Algorithm SHA256).Hash -cne (Get-FileHash -LiteralPath $templateIni -Algorithm SHA256).Hash) {
+        throw 'Project creation did not copy template imgui.ini.'
+    }
+
     # Capture rejection through Process, avoiding PowerShell treating stderr as a terminating error.
     $start = [Diagnostics.ProcessStartInfo]::new()
     $start.FileName = $probe
@@ -61,7 +78,7 @@ try {
     $process.WaitForExit()
     if ($process.ExitCode -ne 1 -or $outputText -ne '' -or ($errorText | ConvertFrom-Json).valid) { throw 'Invalid-project startup was not rejected.' }
     $process.Dispose()
-    Write-Output 'Startup integration passed (Unicode/quoted paths, JSON output, legacy startup, invalid project).'
+    Write-Output 'Startup integration passed (Unicode/quoted paths, JSON output, project creation, legacy startup, invalid project).'
     Write-Output "Test outputs: $buildDir"
 }
 finally { Pop-Location }

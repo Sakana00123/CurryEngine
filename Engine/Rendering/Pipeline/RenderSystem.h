@@ -22,6 +22,10 @@ public:
 	 */
 	void DrawEditorGUI();
 
+	/** 閉じた描画システム・履歴ウィンドウを再表示します。 */
+	static void ShowRenderSystemWindow();
+	static void ShowHistoryWindow();
+
 	// ウィンドウサイズの変更イベント処理。ウィンドウサイズの変更などで描画ターゲットのサイズが変わったときに呼び出されます。登録された描画パスのリサイズが必要なレンダーターゲットをすべてリサイズします。
 	/**
 	 * @brief SizeChanged イベントを処理します。
@@ -34,6 +38,9 @@ public:
 	void Finalize();
 
 private:
+	static inline bool showRenderSystemWindow = true;
+	static inline bool showHistoryWindow = true;
+
 	Time* time{};
 
 	// TODO: これ以上増えるようなら、配列やマップで管理するように変更する

@@ -150,7 +150,6 @@ function Copy-PortableDependencies([string]$Destination, [string]$VisualStudio) 
         Copy-PackageFile $file.FullName "$Destination/$($file.Name)"
         Copy-PackageFile $file.FullName "$local/$($file.Name)"
     }
-    Copy-PackageFile "$PSScriptRoot/StartEditor.bat" "$Destination/StartEditor.bat"
 }
 
 function Test-NativePackageDependencies {
@@ -175,17 +174,22 @@ function Test-NativePackageDependencies {
 }
 
 function Test-EditorPackageCommands {
-    param([string]$EngineDirectory, [string]$TestDirectory, [string]$Version)
+    param([string]$PackageDirectory, [string]$TestDirectory, [string]$Version)
     $null = [IO.Directory]::CreateDirectory($TestDirectory)
+    $EngineDirectory = Join-Path $PackageDirectory 'Engine'
     $before = Get-PackageHashes $EngineDirectory | ConvertTo-Json -Compress
-    $projectRoot = Join-Path $TestDirectory '新規作品 & space'
+    $projectRoot = Join-Path $PackageDirectory 'CurryEngineProject'
     $exe = Join-Path $EngineDirectory 'CurryEngine.exe'
     $created = Invoke-PackageTool $exe @('--create-project', $projectRoot, '--name', '新規作品 & space') $TestDirectory "$TestDirectory/create.log" 120 | ConvertFrom-Json
     if (-not $created.created -or [IO.Path]::GetFullPath($created.projectFile) -ne "$projectRoot/Project.curryproject".Replace('/', '\')) {
         throw 'Unexpected --create-project response.'
     }
-    foreach ($relative in 'Project.sln', 'Assembly-CSharp.csproj', 'Assets/Scenes/Main.scene', 'Assets/Scripts/HelloCurry.cs', 'ProjectSettings/settings.json') {
+    foreach ($relative in 'Project.sln', 'Assembly-CSharp.csproj', 'imgui.ini', 'Assets/Scenes/Main.scene', 'Assets/Scripts/HelloCurry.cs', 'ProjectSettings/settings.json') {
         if (-not (Test-Path -LiteralPath "$projectRoot/$relative" -PathType Leaf)) { throw "Creation missed: $relative" }
+    }
+    if ((Get-FileHash -LiteralPath "$projectRoot/imgui.ini" -Algorithm SHA256).Hash -cne
+        (Get-FileHash -LiteralPath "$EngineDirectory/Templates/Empty/imgui.ini" -Algorithm SHA256).Hash) {
+        throw 'Template imgui.ini changed during project creation.'
     }
     $valid = Invoke-PackageTool $exe @('--validate-project', $created.projectFile) $TestDirectory "$TestDirectory/validate.log" 120 | ConvertFrom-Json
     if (-not $valid.valid -or $valid.engineVersion -cne $Version) { throw 'Project validation/version mismatch.' }
@@ -209,16 +213,16 @@ function Test-EditorPackageCommands {
 }
 
 function Publish-EditorPackage {
-    param([string]$EngineDirectory, [string]$OutputDirectory, [string]$Version, [string]$StagingDirectory)
+    param([string]$PackageDirectory, [string]$OutputDirectory, [string]$Version, [string]$StagingDirectory)
     Assert-PackageVersion $Version
     $name = "CurryEngine-$Version-win-x64"
     $target = Join-Path $OutputDirectory $name
     $zipTarget = "$target.zip"
     if ((Test-Path -LiteralPath $target) -or (Test-Path -LiteralPath $zipTarget)) { throw "Version output already exists: $target" }
-    $hashes = Get-PackageHashes $EngineDirectory
-    Write-PackageJson "$EngineDirectory/package-files.json" $hashes
+    $hashes = Get-PackageHashes $PackageDirectory
+    Write-PackageJson "$PackageDirectory/package-files.json" $hashes
     $zip = Join-Path $StagingDirectory 'package.zip'
-    [IO.Compression.ZipFile]::CreateFromDirectory($EngineDirectory, $zip, [IO.Compression.CompressionLevel]::Optimal, $false)
+    [IO.Compression.ZipFile]::CreateFromDirectory($PackageDirectory, $zip, [IO.Compression.CompressionLevel]::Optimal, $false)
     $extracted = Join-Path $StagingDirectory 'Extracted Engine 日本語 & space'
     [IO.Compression.ZipFile]::ExtractToDirectory($zip, $extracted)
     foreach ($entry in $hashes.GetEnumerator()) {
@@ -228,14 +232,14 @@ function Publish-EditorPackage {
     Test-EditorPackageCommands $extracted (Join-Path $StagingDirectory 'Smoke') $Version
     # Sources and destinations are resolved descendants of the selected output root; never overwrite/delete a release.
     $outputRoot = [IO.Path]::GetFullPath($OutputDirectory).TrimEnd('\') + '\'
-    foreach ($path in @($EngineDirectory, $StagingDirectory, $target, $zipTarget)) {
+    foreach ($path in @($PackageDirectory, $StagingDirectory, $target, $zipTarget)) {
         if (-not [IO.Path]::GetFullPath($path).StartsWith($outputRoot, [StringComparison]::OrdinalIgnoreCase)) {
             throw "Publish path is outside output root: $path"
         }
     }
-    [IO.Directory]::Move($EngineDirectory, $target)
+    [IO.Directory]::Move($PackageDirectory, $target)
     [IO.File]::Move($zip, $zipTarget)
     $zipHash = (Get-FileHash -LiteralPath $zipTarget -Algorithm SHA256).Hash.ToLowerInvariant()
     [IO.File]::WriteAllText("$zipTarget.sha256", "$zipHash  $name.zip`n")
-    return [pscustomobject]@{ EngineDirectory = $target; Zip = $zipTarget; Sha256 = $zipHash }
+    return [pscustomobject]@{ PackageDirectory = $target; Zip = $zipTarget; Sha256 = $zipHash }
 }

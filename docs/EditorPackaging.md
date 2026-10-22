@@ -14,11 +14,11 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./Tools/Packaging/Build-
 
 1. ZIP全体を書き込み可能なフォルダへ展開します。
 2. `StartEditor.bat` をダブルクリックします。
-3. エンジンフォルダの隣に `CurryEngineProject` を作成し、エディターで開きます。次回は同じプロジェクトを開きます。
+3. `StartEditor.bat` と同じフォルダ内に `CurryEngineProject` を作成し、エディターで開きます。次回は同じプロジェクトを開きます。エンジン本体は `Engine/` に入っています。
 
 別の場所を使う場合は `StartEditor.bat "D:\MyProject"` のようにプロジェクトフォルダを指定します。既存プロジェクトはこのエンジンのバージョンと一致する必要があります。エンジンとプロジェクトのフォルダは互いの中に配置できません。
 
-CurryHubがある場合は **Engine Versions → Add** から `CurryEngine.exe` を登録することもできます。Hubは必須ではありません。C#ファイルの編集にはWindows標準のメモ帳なども使えます。保存後のコンパイルには同梱SDKを使用します。Visual Studioでのデバッグや完成ゲームのビルドは、このポータブルパッケージの対象外です。
+CurryHubがある場合は **Engine Versions → Add** から `Engine/CurryEngine.exe` を登録することもできます。Hubは必須ではありません。C#ファイルの編集にはWindows標準のメモ帳なども使えます。保存後のコンパイルには同梱SDKを使用します。Visual Studioでのデバッグや完成ゲームのビルドは、このポータブルパッケージの対象外です。
 
 ## 構成
 

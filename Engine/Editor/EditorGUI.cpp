@@ -28,6 +28,7 @@
 #include "Engine/Resources/Texture.h"
 #include "Engine/EditorSupport/EditorSelection.h"
 #include "Engine/Rendering/Pipeline/Graphics.h"
+#include "Engine/Rendering/Pipeline/RenderSystem.h"
 
 #include "BuildSettingsWindow.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
@@ -611,6 +612,14 @@ void EditorGUI::DrawWindowMenu()
 	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"コンソール")))
 	{
 		Console::Show();
+	}
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"描画システム")))
+	{
+		RenderSystem::ShowRenderSystemWindow();
+	}
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"履歴")))
+	{
+		RenderSystem::ShowHistoryWindow();
 	}
 	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"シーンパラメーター")))
 	{

@@ -28,7 +28,7 @@ $managed = Join-Path $root 'managed'
 foreach ($path in 'x64/Release/assimp.dll', 'External/DotNetHost/9.0.10/runtimes/win-x64/native/nethost.dll',
     'Data/Fonts/NotoSansJP-Medium.ttf', 'Data/Fonts/NotoSansSC-Medium.ttf', 'Data/Icon/editorIcons.png', 'Data/Default/button.png',
     'Shader/geometric_primitive_vs.hlsl', 'Shader/geometric_primitive_ps.hlsl', 'Shader/common.hlsli',
-    'Templates/Empty/Assets/Scenes/Main.scene', 'Templates/Empty/Assets/Scripts/HelloCurry.cs',
+    'Templates/Empty/imgui.ini', 'Templates/Empty/Assets/Scenes/Main.scene', 'Templates/Empty/Assets/Scripts/HelloCurry.cs',
     'Templates/Empty/ProjectSettings/settings.json', 'Templates/Empty/ProjectSettings/EditorConfig.json',
     'Templates/Empty/ProjectSettings/Physics.json', 'Templates/Empty/ProjectSettings/Input.json',
     'Assets/Scenes/UserGame.scene', 'UserScripts/Secret.cs', 'Data/Icon/unwanted.log', 'Shader/unwanted.obj',
@@ -44,7 +44,7 @@ $payload = Join-Path $root 'payload'
 Copy-EditorPayload $fixtureRepo $native $managed $payload
 foreach ($path in 'CurryEngine.exe', 'CurryEngine.Runtime.runtimeconfig.json', 'Resources/Shader/common.hlsli',
     'Resources/Assets/Shaders/geometric_primitive_vs.cso', 'Resources/Data/Shaders/geometric_primitive_ps.cso',
-    'Templates/Empty/Assets/Scenes/Main.scene', 'Templates/Empty/additional.log',
+    'Templates/Empty/imgui.ini', 'Templates/Empty/Assets/Scenes/Main.scene', 'Templates/Empty/additional.log',
     'Templates/Other/Assets/Nested/example.txt', 'Templates/Other/empty.txt',
     'Templates/Other/EmptyDirectory', 'Templates/README.txt') { Check (Test-Path -LiteralPath "$payload/$path") "Missing payload: $path" }
 Check ((Get-PackageHashes "$fixtureRepo/Templates" | ConvertTo-Json -Compress) -ceq

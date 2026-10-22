@@ -26,7 +26,8 @@ $null = Get-Command dotnet -ErrorAction Stop
 $runId = [Guid]::NewGuid().ToString('N')
 $build = Join-Path $repoRoot "Library/Packaging/$runId"
 $stage = Join-Path $OutputDirectory ".curry-package-$runId"
-$engine = Join-Path $stage 'Engine'
+$package = Join-Path $stage 'Package'
+$engine = Join-Path $package 'Engine'
 $null = [IO.Directory]::CreateDirectory($build)
 $null = [IO.Directory]::CreateDirectory($stage)
 $native = Join-Path $build 'native'
@@ -69,12 +70,13 @@ try {
         nativeDependencies = $dependencies
     })
     [IO.File]::WriteAllText("$engine/version.txt", "$Version`n", [Text.UTF8Encoding]::new($false))
-    Copy-PackageFile "$PSScriptRoot/PackageREADME.txt" "$engine/README.txt"
+    Copy-PackageFile "$PSScriptRoot/StartEditor.bat" "$package/StartEditor.bat"
+    Copy-PackageFile "$PSScriptRoot/PackageREADME.txt" "$package/README.txt"
 
     Write-Host '[5/6] Creating ZIP, checking its contents and testing the extracted engine...'
-    $result = Publish-EditorPackage $engine $OutputDirectory $Version $stage
+    $result = Publish-EditorPackage $package $OutputDirectory $Version $stage
     Write-Host '[6/6] Package completed.'
-    Write-Host "Engine: $($result.EngineDirectory)/CurryEngine.exe"
+    Write-Host "Engine: $($result.PackageDirectory)/Engine/CurryEngine.exe"
     Write-Host "ZIP: $($result.Zip)"
     Write-Host "SHA256: $($result.Sha256)"
     Write-Host 'Validation: create project, validate project, generate solution, build C# scripts; shared engine unchanged.'

@@ -1,20 +1,23 @@
-CurryEngine portable editor (Windows x64)
+CurryEngine ポータブルエディター（Windows x64）
 
-Extract the entire ZIP into a writable folder, then double-click StartEditor.bat.
-It creates/opens CurryEngineProject next to the engine folder.
-To choose a project folder: StartEditor.bat "D:\MyProject"
-The engine and project folders must be separate (neither inside the other).
-Alternatively, register CurryEngine.exe in CurryHub's Engine Versions > Add.
+【起動方法】
+ZIPを丸ごと書き込み可能なフォルダに展開し、StartEditor.batをダブルクリックしてください。
+batと同じフォルダ内にCurryEngineProjectを作成して開きます。次回からは同じプロジェクトを開きます。
+別の場所に作る場合：StartEditor.bat "D:\MyProject"
+エンジン本体はEngineフォルダにあります。エンジンとプロジェクトのフォルダは互いの中に配置できません。
+CurryHubを使う場合は、Engine Versions → AddからEngine\CurryEngine.exeを登録できます。
 
-Requirements: Windows 10/11 x64, Direct3D 11.1 compatible GPU and driver.
-The .NET 9 SDK/runtime and redistributable C++ runtime are included.
-No PowerShell 7, Visual Studio or separate .NET installation is required for
-normal editor use. Keep DotNet and the other payload folders intact.
-Edit C# files with a text editor such as Notepad; saving triggers compilation.
-Building standalone games and Visual Studio debugging require development tools.
+【動作環境】
+Windows 10/11 x64、Direct3D 11.1対応のGPUとドライバーが必要です。
+.NET 9 SDK・ランタイムと再配布用C++ランタイムは同梱されています。
+通常の起動・編集・再生にPowerShell 7、Visual Studio、別途インストールした.NETは不要です。
+Engine\DotNetなど、同梱フォルダの内容はそのまま残してください。
+C#ファイルはメモ帳などで編集でき、保存すると再コンパイルされます。
+完成ゲームのビルドやVisual Studioでのデバッグには開発ツールが必要です。
 
-engine.json/version.txt identify this engine version. package-files.json records
-payload SHA256 hashes. The accompanying .zip.sha256 verifies the ZIP.
-The packaging command checks extracted project commands and bundled-SDK builds.
-Rendering, editing and play must also be verified on a clean Windows machine.
-Startup diagnostics are in the project's Logs/startup.log.
+【バージョン・検証・ログ】
+Engine\engine.jsonとEngine\version.txtにエンジンのバージョンを記録しています。
+package-files.jsonには配布ファイルのSHA256、ZIPと一緒に配布される.zip.sha256にはZIPのSHA256を記録しています。
+梱包時には展開後のプロジェクト作成と同梱SDKによるC#ビルドを確認しています。
+描画・編集・再生は、配布前に開発ツール未導入のWindows PCでも確認してください。
+起動時の診断ログはプロジェクト内のLogs\startup.logに保存されます。

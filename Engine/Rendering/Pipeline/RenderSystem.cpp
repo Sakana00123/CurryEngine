@@ -296,7 +296,6 @@ void RenderSystem::Render()
         }
 
         // デバッグ用: Undo/Redoの内容表示
-		static bool showHistoryWindow = true;
 		if (showHistoryWindow)
         {
 			ImGui::Begin(reinterpret_cast<const char*>(u8"履歴###History"), &showHistoryWindow);
@@ -339,7 +338,6 @@ void RenderSystem::Render()
 void RenderSystem::DrawEditorGUI()
 {
 #ifdef USE_IMGUI
-	static bool showRenderSystemWindow = true;
 	if (showRenderSystemWindow)
     {
         ImGui::Begin(reinterpret_cast<const char*>(u8"描画システム###Render System"), &showRenderSystemWindow);
@@ -357,6 +355,16 @@ void RenderSystem::DrawEditorGUI()
     }
 
 #endif // USE_IMGUI
+}
+
+void RenderSystem::ShowRenderSystemWindow()
+{
+	showRenderSystemWindow = true;
+}
+
+void RenderSystem::ShowHistoryWindow()
+{
+	showHistoryWindow = true;
 }
 
 void RenderSystem::OnSizeChanged(ID3D11Device* device, uint32_t width, uint32_t height)

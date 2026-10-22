@@ -275,6 +275,8 @@ void Console::OpenInVisualStudio(const std::string& file, int line)
 void Console::DrawGUI()
 {
 #ifdef USE_IMGUI
+	if (!isOpen) return;
+
 	std::lock_guard<std::mutex> lock(s_logMutex);
 	ZoneScopedN("Console::DrawGUI");
 	ImGui::Begin(reinterpret_cast<const char*>(u8"コンソール###Console"), &isOpen);

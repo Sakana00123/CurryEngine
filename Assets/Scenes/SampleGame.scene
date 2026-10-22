@@ -87,7 +87,7 @@
                     "minDistance": 2.0,
                     "name": "ThirdPersonCameraController",
                     "priority": 2000,
-                    "rotationSpeed": 100.0,
+                    "rotationSpeed": 10.0,
                     "targetDistance": 25.0,
                     "targetTransformId": "7930224090107038306",
                     "type": "ThirdPersonCameraController",
@@ -139,7 +139,7 @@
                     "type": "Transform"
                 },
                 {
-                    "effectAssetId": "10aeaf378230853c95ce0f7fa331a222",
+                    "effectAssetId": "abbf543d1e7ad0d3a1e81e02b22940af",
                     "enabledSelf": true,
                     "id": "16143980965371795426",
                     "name": "EffekseerEffectComponent",
@@ -682,7 +682,6 @@
                         "attackCollider": "Component(objectId: 9158306600258995034, ownerId: 4984317925886415417)",
                         "attackColliderObject": "GameObject(objectId: 4984317925886415417)",
                         "hoveringForce": 5,
-                        "jumpEffect": "Component(objectId: 16143980965371795426, ownerId: 9887235595685037119)",
                         "jumpForce": 100,
                         "maxHoveringTime": 1,
                         "speed": 0
@@ -695,7 +694,7 @@
                 }
             ],
             "id": "4984317925886415417",
-            "isDefaultOpenOnHierarchy": false,
+            "isDefaultOpenOnHierarchy": true,
             "layer": 4,
             "name": "Jammo",
             "parent": "0",
@@ -1697,7 +1696,6 @@
                         "attackCollider": "Component(objectId: 6691945147698394091, ownerId: 7141469550880191553)",
                         "attackColliderObject": "GameObject(objectId: 7141469550880191553)",
                         "hoveringForce": 5,
-                        "jumpEffect": null,
                         "jumpForce": 12.5,
                         "maxHoveringTime": 2,
                         "speed": 0

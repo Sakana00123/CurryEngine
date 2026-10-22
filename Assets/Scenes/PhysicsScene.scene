@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            -0.8317147493362427,
-            1.496679425239563,
-            -0.06144590675830841
+            -1.6035743951797485,
+            1.5847316980361938,
+            -2.040400981903076
         ],
         "rotateSpeed": 30.0,
         "rotation": [
-            0.09816091507673264,
-            0.7093464732170105,
-            -0.10081622749567032,
-            0.6906721591949463
+            0.2122483104467392,
+            0.4446806013584137,
+            -0.10933083295822144,
+            0.8632825016975403
         ],
         "speed": 3.0
     },
@@ -192,6 +192,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -259,85 +264,6 @@
                 {
                     "coordinateSystem": 0,
                     "enabledSelf": true,
-                    "id": "18189258674735854431",
-                    "m_eulerAngles": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "name": "Transform",
-                    "position": [
-                        0.0,
-                        0.032237835228443146,
-                        0.0
-                    ],
-                    "priority": 0,
-                    "rotation": [
-                        -0.0,
-                        0.0,
-                        -0.0,
-                        1.0
-                    ],
-                    "scale": [
-                        0.009999999776482582,
-                        0.009999999776482582,
-                        0.009999999776482582
-                    ],
-                    "type": "Transform"
-                },
-                {
-                    "animationEnable": true,
-                    "blendEnable": true,
-                    "enableShadow": true,
-                    "enabledSelf": true,
-                    "filePath": "./Assets/Models\\character.gltf",
-                    "id": "16255195627923664152",
-                    "material": {
-                        "blendState": 5,
-                        "depthStencilState": 4,
-                        "rasterizerState": 6,
-                        "shaders": {
-                            "0": "./Assets/Shaders/gltf_model_ps.cso"
-                        },
-                        "textures": {
-                            "0": {
-                                "materialTextures[0]": ""
-                            },
-                            "1": {
-                                "materialTextures[1]": ""
-                            },
-                            "2": {
-                                "materialTextures[2]": ""
-                            },
-                            "3": {
-                                "materialTextures[3]": ""
-                            },
-                            "4": {
-                                "materialTextures[4]": ""
-                            }
-                        }
-                    },
-                    "name": "GltfModelRenderer",
-                    "priority": 1000,
-                    "staticBatching": false,
-                    "type": "GltfModelRenderer"
-                }
-            ],
-            "id": "17337535235848481961",
-            "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
-            "name": "character",
-            "parent": "0",
-            "parentId": "0",
-            "priority": 3000,
-            "version": 1
-        },
-        {
-            "activeSelf": true,
-            "components": [
-                {
-                    "coordinateSystem": 0,
-                    "enabledSelf": true,
                     "id": "17556159141857036097",
                     "m_eulerAngles": [
                         0.0,
@@ -390,6 +316,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -499,6 +430,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -608,6 +544,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -717,6 +658,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -826,6 +772,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -935,6 +886,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -1044,6 +1000,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -1153,6 +1114,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
@@ -1262,6 +1228,11 @@
                         "shaders": {
                             "0": "./Assets/Shaders/geometric_primitive_ps.cso",
                             "1": "./Assets/Shaders/geometric_primitive_vs.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "texture0": ""
+                            }
                         }
                     },
                     "name": "PrimitiveRenderer",
