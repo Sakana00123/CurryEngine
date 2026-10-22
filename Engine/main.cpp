@@ -44,8 +44,8 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_  HINSTANCE prev_instance, _
 
 	RECT rc{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-	HWND hwnd = CreateWindowExW(0, APPLICATION_NAME, L"", WS_OVERLAPPEDWINDOW/* ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME*/ | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, instance, NULL);
-	ShowWindow(hwnd, cmd_show);
+	HWND hwnd = CreateWindowExW(0, APPLICATION_NAME, L"", WS_OVERLAPPEDWINDOW/* ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME*/, CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, instance, NULL);
+	ShowWindow(hwnd, FULLSCREEN ? cmd_show : SW_SHOWMAXIMIZED);
 
 	// フレームワークの実行
 	try

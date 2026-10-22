@@ -348,6 +348,46 @@ float EditorGUI::DrawSceneViewToolbar()
 			ImGui::EndPopup();
 		}
 
+		// ギズモのスナップ設定ボタンの右にスペースを追加
+		ImGui::SameLine();
+		ImGui::Dummy(ImVec2(10.0f, 0.0f)); // 10ピクセルのスペース
+		ImGui::SameLine();
+		// シーンビューのカメラの設定ボタン
+		if (ImGui::Button("Camera Settings"))
+		{
+			ImGui::OpenPopup("CameraSettingsPopup");
+		}
+		if (ImGui::BeginPopup("CameraSettingsPopup"))
+		{
+			Scene* scene = SceneManager::GetCurrentScene();
+			if (scene)
+			{
+				if (EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW))
+				{
+					ImGui::Text("Camera Settings");
+					ImGui::SameLine();
+					// リセットボタンを右上に配置
+					ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x - 60.0f); // 右端に配置
+					if (ImGui::Button("Reset"))
+					{
+						editorCamera->SetSpeed(3.0f);
+						editorCamera->SetRotateSpeed(3.0f);
+					}
+					ImGui::Separator();
+					float moveSpeed = editorCamera->GetSpeed();
+					if (ImGui::DragFloat("Move Speed", &moveSpeed, 0.1f, 0.1f, 100.0f))
+					{
+						editorCamera->SetSpeed(moveSpeed);
+					}
+					float sensitivity = editorCamera->GetRotateSpeed();
+					if (ImGui::DragFloat("Sensitivity", &sensitivity, 0.01f, 0.01f, 100.0f))
+					{
+						editorCamera->SetRotateSpeed(sensitivity); // 回転速度を感度に基づいて設定
+					}
+				}
+			}
+			ImGui::EndPopup();
+		}
 		
 	}
 	ImGui::EndChild();

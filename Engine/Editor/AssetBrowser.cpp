@@ -685,16 +685,26 @@ void AssetBrowser::SearchAssets(const fs::path& root, const std::u8string& keywo
 		}
 	}
 
+	std::vector<fs::directory_entry> entries;
+	for (const auto& entry : filesystem::directory_iterator(root))
+	{
+		if (entry.path().extension() == ".meta")
+			continue; // .metaファイルは除外
+
+		entries.push_back(entry);
+	}
+
+	//キーワードが空ならすべて返す
 	if (keyword.empty())
 	{
-		for (const auto& entry : filesystem::directory_iterator(root))
+		for (const auto& entry : entries)
 		{
 			results.push_back(entry);
 		}
 	}
-	else
+	else //キーワードでフィルタリング
 	{
-		for (const auto& entry : filesystem::recursive_directory_iterator(root))
+		for (const auto& entry : entries)
 		{
 			std::u8string lowerName = entry.path().u8string();
 			std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
