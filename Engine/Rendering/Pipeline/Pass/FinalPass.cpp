@@ -26,7 +26,7 @@ void FinalPass::Execute(RenderContext* rtx, Scene* scene)
 	auto renderTarget = static_cast<RenderTexture*>(rtx->GetSharedResource("PostProcessPass_RenderTexture"));
 
 
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
 	// 最終描画(Releaseビルド用の全画面描画コード。Debugビルドでは、ImGuiで表示するため、全画面描画は行わない)
 	// シャドウマップを合成したレンダーターゲットをシェーダーリソースビューとして使用して最終描画
 	ID3D11ShaderResourceView* shaderResourceViews[] = {

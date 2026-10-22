@@ -71,7 +71,7 @@ Math::BoundingBox GltfModelRenderer::CalculateAABB() const
 void GltfModelRenderer::ReplacePixelShader(ID3D11Device* device, const char* filePath)
 {
     CreatePixelShaderFromCSO(device, filePath, pixelShader.ReleaseAndGetAddressOf());
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
     material->SetShader(device, ResourceManager::Load<PixelShader>(filePath));
 #endif // _DEBUG
 }
@@ -88,7 +88,7 @@ void GltfModelRenderer::ReplaceVertexShader(ID3D11Device* device, const char* fi
     {"WEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
     CreateVertexShaderFromCSO(device, filePath, vertexShader.ReleaseAndGetAddressOf(), inputLayout.ReleaseAndGetAddressOf(), inputElementDesc, _countof(inputElementDesc));
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
     //material->SetShader(device, ResourceManager::Load<PixelShader>(filePath));
 #endif // _DEBUG
 }

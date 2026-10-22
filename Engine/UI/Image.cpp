@@ -101,7 +101,7 @@ void Image::Initialize()
 	const auto& texture2d = material.GetTexture<Texture2D>("color_map");
 	const D3D11_TEXTURE2D_DESC& texture2dDesc = !texture2d.expired() ? texture2d.lock()->GetDesc() : D3D11_TEXTURE2D_DESC{};
 	sx = 0, sy = 0, sw = static_cast<float>(texture2dDesc.Width > 0 ? texture2dDesc.Width : 100), sh = static_cast<float>(texture2dDesc.Height > 0 ? texture2dDesc.Height : 100);
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	//if (SceneManager::state == SceneManager::State::Editing)
 	//{
 	//	rect->size.x = sw, rect->size.y = sh;

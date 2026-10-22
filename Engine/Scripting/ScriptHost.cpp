@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ScriptHost.h"
+#include "Engine/Core/EnginePaths.h"
 #include <Windows.h>
 #include <stdexcept>
 #include <cassert>
@@ -14,8 +15,12 @@ bool ScriptHost::LoadHostFxr()
 	char_t path[MAX_PATH];
 	size_t pathSize = MAX_PATH;
 
-	// .NETインストール済み場所からhostfxr.dllを自動検索
-	int rc = get_hostfxr_path(path, &pathSize, nullptr);
+    // Portable distributions resolve their own host before consulting the machine.
+    const auto bundledRoot = EnginePaths::EngineRoot() / L"DotNet";
+    const auto root = bundledRoot.wstring();
+    get_hostfxr_parameters parameters{sizeof(get_hostfxr_parameters), nullptr, root.c_str()};
+    const bool bundled = std::filesystem::is_directory(bundledRoot);
+	int rc = get_hostfxr_path(path, &pathSize, bundled ? &parameters : nullptr);
 	if (rc != 0)
 	{
 		std::wstring message = L"get_hostfxr_path failed with error code: " + std::to_wstring(rc);
@@ -46,7 +51,11 @@ bool ScriptHost::LoadHostFxr()
 bool ScriptHost::InitRuntime(const std::wstring& runtimeConfigPath)
 {
 	// .NETランタイムを初期化
-    int rc = s_initFunc(runtimeConfigPath.c_str(), nullptr, &m_hostContext);
+    const auto bundledRoot = EnginePaths::EngineRoot() / L"DotNet";
+    const auto root = bundledRoot.wstring();
+    hostfxr_initialize_parameters parameters{sizeof(hostfxr_initialize_parameters), nullptr, root.c_str()};
+    int rc = s_initFunc(runtimeConfigPath.c_str(),
+        std::filesystem::is_directory(bundledRoot) ? &parameters : nullptr, &m_hostContext);
 	if (rc != 0 || !m_hostContext)
 	{
 		std::wstring message = L"Failed to initialize .NET runtime. Error code: " + std::to_wstring(rc);

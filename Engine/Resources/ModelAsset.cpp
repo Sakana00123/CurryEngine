@@ -81,7 +81,7 @@ void ModelAsset::CreateAndUploadResources(ID3D11Device* device)
                 hr = device->CreateBuffer(&bufferDesc, &subResourceData, buffers.emplace_back().GetAddressOf());
                 _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
                 //batchMesh.cachedIndices.clear();
 #endif // !_DEBUG
             }
@@ -101,7 +101,7 @@ void ModelAsset::CreateAndUploadResources(ID3D11Device* device)
                 hr = device->CreateBuffer(&bufferDesc, &subResourceData, buffers.emplace_back().GetAddressOf());
                 _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
                 //batchMesh.cachedVertices.clear();
 #endif // !_DEBUG
 
@@ -129,7 +129,7 @@ void ModelAsset::CreateAndUploadResources(ID3D11Device* device)
                     hr = device->CreateBuffer(&bufferDesc, &subResourceData, buffers.emplace_back().GetAddressOf());
                     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
                     //primitive.cachedIndices.clear();
 #endif // !_DEBUG
                 }
@@ -149,7 +149,7 @@ void ModelAsset::CreateAndUploadResources(ID3D11Device* device)
                     hr = device->CreateBuffer(&bufferDesc, &subResourceData, buffers.emplace_back().GetAddressOf());
                     _ASSERT_EXPR(SUCCEEDED(hr), HrTrace(hr));
 
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
                     //primitive.cachedVertices.clear();
 #endif // !_DEBUG
                 }

@@ -122,7 +122,7 @@ void ScriptSystem::Initialize()
 		return;
 	}
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// スクリプトウォッチャーの初期化
 	s_scriptWatcher = new ScriptWatcher();
 
@@ -153,7 +153,7 @@ void ScriptSystem::Update()
 
 void ScriptSystem::Shutdown()
 {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// スクリプトウォッチャーの終了処理
 	if (s_scriptWatcher) {
 		s_scriptWatcher->Stop();

@@ -168,7 +168,7 @@ namespace CurryEngine
             {
                 if (request.mode == StartupMode::OpenProject)
                 {
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
                     throw std::runtime_error("Opening an external project requires an editor build.");
 #endif
                     for (const auto* directory : {"Assets", "Assets/Scenes", "ProjectSettings"})
@@ -187,6 +187,16 @@ namespace CurryEngine
                 for (const auto* directory : {"Library/ShaderCache", "Library/ScriptAssemblies", "Temp", "Logs"})
                     std::filesystem::create_directories(resolved.projectRoot / directory);
                 std::filesystem::current_path(resolved.projectRoot);
+            }
+            if (std::filesystem::is_directory(resolved.engineRoot / "DotNet"))
+            {
+                // Limit SDK first-run state to this project; no profile PATH or certificate changes.
+                const auto cliHome = resolved.projectRoot / "Library/DotNetHome";
+                std::filesystem::create_directories(cliHome);
+                SetEnvironmentVariableW(L"DOTNET_CLI_HOME", cliHome.c_str());
+                SetEnvironmentVariableW(L"DOTNET_CLI_TELEMETRY_OPTOUT", L"1");
+                SetEnvironmentVariableW(L"DOTNET_GENERATE_ASPNET_CERTIFICATE", L"false");
+                SetEnvironmentVariableW(L"DOTNET_ADD_GLOBAL_TOOLS_TO_PATH", L"false");
             }
             context = std::move(resolved);
             return std::nullopt;

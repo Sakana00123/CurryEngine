@@ -76,7 +76,7 @@ void RenderSystem::Render()
 		if (scene && scene->IsStarted())
         {
             //新カメラシステム
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
             {
 				ZoneScopedN("RenderSystem::Render");
                 // エディタビュー用の描画処理

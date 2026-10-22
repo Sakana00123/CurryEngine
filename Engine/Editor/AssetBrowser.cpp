@@ -376,7 +376,7 @@ void AssetBrowser::Refresh()
 	// キャッシュをクリア
 	cacheSearchResults.clear();
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// ./Assets/Models以下のすべてのcereal/batchCerealファイルを削除（古いキャッシュが残っていると問題になるため）
 	try
 	{

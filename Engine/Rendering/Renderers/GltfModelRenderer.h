@@ -44,7 +44,7 @@ class GltfModelRenderer : public Renderer
     std::function<void(RenderContext*)> postRenderFunc;
 
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
     bool editorStaticBatchingFlag = false;
 #endif // _DEBUG
 

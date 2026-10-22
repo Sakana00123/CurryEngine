@@ -36,7 +36,7 @@ public:
 		std::shared_ptr<Resource> resource = std::make_shared<T>();
 
 		std::filesystem::path filePath(path);
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
 		// リリースビルドではCSOファイルのみ読み込む
 		if (filePath.extension() == ".hlsl")
 		{
@@ -66,7 +66,7 @@ public:
 		std::shared_ptr<Resource> resource = std::make_shared<T>();
 
 		std::filesystem::path filePath(path);
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
 		// リリースビルドではCSOファイルのみ読み込む
 		if (filePath.extension() == ".hlsl")
 		{
@@ -106,7 +106,7 @@ public:
 	// シェーダーのロード
 	template<typename T>
 	static std::shared_ptr<T> LoadShader(const std::string& name) {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		std::filesystem::path filePath = std::filesystem::path(EnginePaths::ShaderSourceDir) / (name + ".hlsl");
 #else
 		std::filesystem::path filePath = std::filesystem::path(EnginePaths::ShadersDataDir) / (name + ".cso");
@@ -117,7 +117,7 @@ public:
 	// シェーダーのロード（すでにロードされている場合は既存のリソースを返す）
 	template<typename T>
 	static std::shared_ptr<T> GetOrLoadShader(const std::string& name) {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		std::filesystem::path filePath = std::filesystem::path(EnginePaths::ShaderSourceDir) / (name + ".hlsl");
 #else
 		std::filesystem::path filePath = std::filesystem::path(EnginePaths::ShadersDataDir) / (name + ".cso");
@@ -128,7 +128,7 @@ public:
 	// シェーダーの取得（ロードされていない場合は nullptr を返す）
 	template<typename T>
 	static std::shared_ptr<T> GetShader(const std::string& name) {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		std::filesystem::path filePath = std::filesystem::path(EnginePaths::ShaderSourceDir) / (name + ".hlsl");
 #else
 		std::filesystem::path filePath = std::filesystem::path(EnginePaths::ShadersDataDir) / (name + ".cso");

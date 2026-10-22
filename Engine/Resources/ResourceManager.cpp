@@ -8,7 +8,7 @@
 // デバッグビルドとリリースビルドでシェーダーファイルの検索方法を切り替える
 static std::string AdjustShaderPath(const std::string& path) {
 	std::string findPath = path;
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// csoファイルだったら、hlslに変換して検索 
 	auto fsPath = std::filesystem::path(path);
 	if (fsPath.extension() == ".cso") {
@@ -33,7 +33,7 @@ void ResourceManager::Initialize()
 	_resources.clear();
 	shaderPaths.clear();
 
-//#ifdef _DEBUG
+//#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// 初期化時にすべてのシェーダーファイルを読み込み
 	LoadAllShaders();
 //#endif // _DEBUG
@@ -52,7 +52,7 @@ void ResourceManager::Register(const std::string& filePath, std::shared_ptr<Reso
 	_resources[filePath] = resource;
 	_files[filePath] = std::filesystem::last_write_time(EnginePaths::ResolveResource(filePath));// 最終更新日時を保存
 	std::filesystem::path fsPath(filePath);
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	if (fsPath.extension() == ".cso") {
 		// csoファイルだったら、hlslに変換して登録
 		std::filesystem::path hlslPath = EnginePaths::ShaderSourceFor(fsPath);
@@ -79,14 +79,14 @@ std::shared_ptr<Resource> ResourceManager::Load(const std::string& path)
 	std::shared_ptr<Resource> resource;
 	std::filesystem::path fsPath(findPath);
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	bool isShader = (fsPath.extension() == ".hlsl" || fsPath.extension() == ".cso");
 #else 
 	bool isShader = (fsPath.extension() == ".cso");
 #endif // _DEBUG
 
 	if (isShader) {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		std::filesystem::path hlslPath = EnginePaths::ShaderSourceFor(fsPath);
 		if (!std::filesystem::exists(EnginePaths::ResolveResource(hlslPath))) {
 			LOG_ERROR("Shader file not found: " + hlslPath.string());
@@ -175,7 +175,7 @@ void ResourceManager::UnloadAll()
 
 void ResourceManager::Update()
 {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	//static float timeAccumulator = 0.0f; // 時間の累積
 	//static constexpr float hotReloadInterval = 1.0f; // ホットリロードの間隔（秒）
 	//timeAccumulator += Time::UnscaledDeltaTime();
@@ -189,7 +189,7 @@ void ResourceManager::Update()
 
 void ResourceManager::UpdateHotReload()
 {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// ホットリロードの実装例（ファイルの変更を監視してリロードするなど）
 	for (auto& [path, resource] : _resources)
 	{
@@ -202,7 +202,7 @@ void ResourceManager::UpdateHotReload()
 		// 例えば、ファイルのタイムスタンプをチェックして変更があればリロード
 		auto now = std::filesystem::last_write_time(EnginePaths::ResolveResource(path));
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		// 追加: csoファイルの場合は対応するhlslファイルの更新もチェック
 		std::filesystem::path fsPath(path);
 		if (fsPath.extension() == ".cso") {
@@ -313,7 +313,7 @@ void ResourceManager::LoadAllTextures()
 
 void ResourceManager::UpdateShaderNames()
 {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// 既存のキャッシュをクリア
 	shaderPaths.clear();
 	// シェーダーリソースを走査して名前を更新

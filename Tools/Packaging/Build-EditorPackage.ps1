@@ -1,4 +1,4 @@
-#requires -Version 7.0
+﻿#requires -Version 5.1
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)][string]$Version,
@@ -39,14 +39,16 @@ try {
     $null = Invoke-PackageTool $msbuild @('Tools/MetaParser/MetaParser.vcxproj', '/t:Build', '/p:Configuration=Release', '/p:Platform=x64',
         "/p:OutDir=$build/parser/bin/", "/p:IntDir=$build/parser/obj/", '/nologo', '/v:minimal') $repoRoot "$build/parser-build.log"
     # The parser currently accepts narrow paths. Relative ASCII build paths avoid the output parent's encoding.
-    $relativeGenerated = [IO.Path]::GetRelativePath($repoRoot, $generated)
+    $relativeGenerated = Get-PackageRelativePath $repoRoot $generated
     $null = Invoke-PackageTool "$build/parser/bin/MetaParser.exe" @($relativeGenerated, 'Engine') $repoRoot "$build/generate.log"
     if (-not (Test-Path -LiteralPath "$generated/ReflectionGenerated.h")) { throw 'Reflection code generation failed.' }
 
-    Write-Host '[2/6] Building the native editor and shaders (Debug x64)...'
-    $null = Invoke-PackageTool $msbuild @('CurryEngine.vcxproj', '/t:Build', '/p:Configuration=Debug', '/p:Platform=x64',
+    Write-Host '[2/6] Building the portable editor and shaders (Release x64)...'
+    $null = Invoke-PackageTool $msbuild @('External/DirectXTex/DirectXTex_Desktop_2022.vcxproj', '/t:Build', '/p:Configuration=Release', '/p:Platform=x64',
+        "/p:OutDir=$build/directxtex/", "/p:IntDir=$build/directxtex-obj/", '/nologo', '/v:minimal') $repoRoot "$build/directxtex-build.log"
+    $null = Invoke-PackageTool $msbuild @('CurryEngine.vcxproj', '/t:Build', '/p:Configuration=Release', '/p:Platform=x64',
         '/p:PreBuildEventUseInBuild=false', '/p:PostBuildEventUseInBuild=false', '/p:BuildProjectReferences=false',
-        "/p:CL_MPCount=$BuildWorkers", "/p:SolutionDir=$repoRoot/", "/p:GeneratedRoot=$generated",
+        "/p:CL_MPCount=$BuildWorkers", "/p:SolutionDir=$repoRoot/", "/p:GeneratedRoot=$generated", "/p:PackageDirectXTex=$build/directxtex",
         "/p:ForceImportBeforeCppTargets=$PSScriptRoot/EditorPackage.targets", "/p:IntDir=$build/native-obj/", "/p:OutDir=$native/",
         '/nologo', '/v:minimal') $repoRoot "$build/native-build.log"
 
@@ -56,13 +58,13 @@ try {
 
     Write-Host '[4/6] Collecting editor resources, templates and dependencies...'
     Copy-EditorPayload $repoRoot $native $managed $engine
+    Copy-PortableDependencies $engine $vs
     $dependencies = Test-NativePackageDependencies $engine $dumpbin $build
     Write-PackageJson "$engine/engine.json" ([ordered]@{
         formatVersion = 1; version = $Version; editor = $true; projectCommandsVersion = 1
-        platform = 'win-x64'; configuration = 'Debug'; packageKind = 'development-editor'
+        platform = 'win-x64'; configuration = 'Release'; packageKind = 'portable-editor'
         requirements = @{
-            dotnetSdk = '9.0'; visualStudio = '2022'; visualStudioCppDebugRuntime = $true
-            note = 'Current editor uses the Visual Studio C++ Debug runtime; install the C++ development workload on the target PC.'
+            os = 'Windows 10/11 x64'; graphics = 'Direct3D 11.1'; dotnetSdk = 'bundled'; visualStudioCppDebugRuntime = $false
         }
         nativeDependencies = $dependencies
     })

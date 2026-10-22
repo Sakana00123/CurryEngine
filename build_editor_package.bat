@@ -2,15 +2,8 @@
 setlocal DisableDelayedExpansion
 
 rem Usage: build_editor_package.bat [version]
-set "packageVersion=0.1.0-dev.1"
+set "packageVersion=0.1.0-portable.1"
 if not "%~1"=="" set "packageVersion=%~1"
-
-where pwsh.exe >nul 2>&1
-if errorlevel 1 (
-    echo [ERROR] PowerShell 7 ^(pwsh.exe^) was not found. Install it and add it to PATH.
-    set "packageExitCode=1"
-    goto :finish
-)
 
 pushd "%~dp0"
 if errorlevel 1 (
@@ -19,7 +12,7 @@ if errorlevel 1 (
     goto :finish
 )
 
-pwsh.exe -NoLogo -NoProfile -File ".\Tools\Packaging\Build-EditorPackage.ps1" -Version "%packageVersion%"
+"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoLogo -NoProfile -ExecutionPolicy Bypass -File ".\Tools\Packaging\Build-EditorPackage.ps1" -Version "%packageVersion%"
 set "packageExitCode=%ERRORLEVEL%"
 popd
 

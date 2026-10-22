@@ -20,7 +20,7 @@ void DebugRenderPass::Finalize()
 void DebugRenderPass::Execute(RenderContext* rtx, Scene* scene)
 {
 	// DebugRenderPassの実行処理を実装
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 // グリッドの描画
 	TracyD3D11Zone(Graphics::GetTracyD3D11Ctx(), "DebugRenderPass::Execute");
 	auto immediateContext = rtx->immediateContext;

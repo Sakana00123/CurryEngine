@@ -2,8 +2,12 @@
   <!-- Packaging builds keep generated code and shader output outside the development tree. -->
   <ItemDefinitionGroup>
     <ClCompile>
+      <PreprocessorDefinitions>CURRY_EDITOR;USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(GeneratedRoot);$(GeneratedRoot)\Interop;$(GeneratedRoot)\Reflection;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(PackageDirectXTex);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
     <FxCompile>
       <ObjectFileOutput>$(OutDir)Shaders\%(Filename).cso</ObjectFileOutput>
       <AssemblerOutput>AssemblyCode</AssemblerOutput>

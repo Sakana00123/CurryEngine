@@ -581,7 +581,7 @@ void Physics::Initialize()
 	{
 		json serializedData;
 		// ここで serializedData にデシリアライズされたデータを読み込む処理を実装
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		JsonFileHandler::LoadJsonFromFile(serializedData, "./ProjectSettings/Physics.json");
 #else
 		JsonFileHandler::LoadJsonFromFile(serializedData, "./Settings/Physics.bin");
@@ -595,7 +595,7 @@ void Physics::Initialize()
 void Physics::Terminate()
 {
 	ZoneScopedN("Physics::Terminate()");
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// データのシリアライズ
 	SaveSettings();
 #endif // _DEBUG
@@ -644,7 +644,7 @@ void Physics::SaveSettings()
 	{
 		json serializedData = Serialize();
 		// ここで serializedData をファイルなどに保存する処理を実装
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		JsonFileHandler::SaveJsonToFile(serializedData, "./ProjectSettings/Physics.json");
 		JsonFileHandler::SaveJsonToFile(serializedData, "./Settings/Physics.bin");
 #endif // _DEBUG

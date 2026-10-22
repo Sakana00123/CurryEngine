@@ -88,7 +88,7 @@ HRESULT CreateComputeShaderFromCSO(ID3D11Device* device, const char* cso_name, I
 bool Shader::LoadFromFile(const std::string& path)
 {
 	std::filesystem::path fsPath(path);
-#ifndef _DEBUG
+#if !defined(_DEBUG) && !defined(CURRY_EDITOR)
 	// リリースビルドではCSOファイルのみ読み込む
 	if (fsPath.extension() != ".cso") 
 	{
@@ -178,7 +178,7 @@ bool Shader::Reload(/*ID3D11Device* device*/)
 	if (!_path.empty())
 	{
 		std::filesystem::path fsPath(_path);
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		if (fsPath.extension() == ".cso")
 		{
 			// CSOファイルのパスをHLSLファイルに変換
@@ -237,7 +237,7 @@ void Shader::SetNullShader(ID3D11DeviceContext* immediateContext)
 bool Shader::CompileShader(const std::string& filePath, const std::string& entryPoint, const std::string& shaderTarget, ID3DBlob** outBlob)
 {
 	UINT compileFlags = D3DCOMPILE_ENABLE_STRICTNESS;
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	compileFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif // DEBUG
 

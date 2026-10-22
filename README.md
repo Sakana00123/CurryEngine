@@ -1,4 +1,4 @@
-制作用エンジンのZIPは `pwsh -File ./Tools/Packaging/Build-EditorPackage.ps1 -Version 0.1.0-dev.1` で生成できます。
+制作用エンジンのZIPは `build_editor_package.bat 0.1.0-portable.1`（Windows標準PowerShell 5.1対応） で生成できます。
 手順・必要環境・検証範囲は [制作用エンジンの自動パッケージ作成](docs/EditorPackaging.md) を参照してください。
 
 💡 CurryEngine デバッグ時の注意点

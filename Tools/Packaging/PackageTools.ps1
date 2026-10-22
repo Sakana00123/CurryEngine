@@ -1,6 +1,23 @@
-#requires -Version 7.0
+﻿#requires -Version 5.1
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+# SDK files can exceed MAX_PATH after staging and ZIP extraction. These switches
+# affect this .NET Framework process only; no Windows policy/registry changes.
+[AppContext]::SetSwitch('Switch.System.IO.UseLegacyPathHandling', $false)
+[AppContext]::SetSwitch('Switch.System.IO.BlockLongPaths', $false)
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+# .NET Framework (Windows PowerShell 5.1) has neither ArgumentList nor GetRelativePath.
+function ConvertTo-PackageArgument([AllowEmptyString()][string]$Value) {
+    '"' + ([regex]::Replace([regex]::Replace($Value, '(\\*)"', '$1$1\"'), '(\\+)$', '$1$1')) + '"'
+}
+
+function Get-PackageRelativePath([string]$Directory, [string]$Path) {
+    $base = [Uri]([IO.Path]::GetFullPath($Directory).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar)
+    $relative = $base.MakeRelativeUri([Uri][IO.Path]::GetFullPath($Path))
+    if ($relative.IsAbsoluteUri) { throw "Path is on another volume: $Path" }
+    [Uri]::UnescapeDataString($relative.ToString()).Replace('/', [IO.Path]::DirectorySeparatorChar)
+}
 
 function Assert-PackageVersion([string]$Version) {
     if ($Version.Length -gt 80 -or $Version -cnotmatch '^\d+\.\d+\.\d+(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$') {
@@ -10,7 +27,7 @@ function Assert-PackageVersion([string]$Version) {
 
 function Invoke-PackageTool {
     param([string]$Executable, [string[]]$Arguments, [string]$WorkingDirectory,
-          [string]$LogPath, [int]$TimeoutSeconds = 1800)
+          [string]$LogPath, [int]$TimeoutSeconds = 1800, [hashtable]$Environment = @{})
     $info = [Diagnostics.ProcessStartInfo]::new()
     $info.FileName = $Executable
     $info.WorkingDirectory = $WorkingDirectory
@@ -20,14 +37,18 @@ function Invoke-PackageTool {
     $info.RedirectStandardError = $true
     $info.StandardOutputEncoding = [Text.Encoding]::UTF8
     $info.StandardErrorEncoding = [Text.Encoding]::UTF8
-    foreach ($argument in $Arguments) { $info.ArgumentList.Add($argument) }
+    foreach ($key in $Environment.Keys) { $info.EnvironmentVariables[$key] = $Environment[$key] }
+    $info.Arguments = ($Arguments | ForEach-Object { ConvertTo-PackageArgument $_ }) -join ' '
     $process = [Diagnostics.Process]::Start($info)
     try {
         $stdout = $process.StandardOutput.ReadToEndAsync()
         $stderr = $process.StandardError.ReadToEndAsync()
         $timedOut = -not $process.WaitForExit($TimeoutSeconds * 1000)
         if ($timedOut) {
-            $process.Kill($true)
+            # taskkill is included in Windows and terminates descendants on .NET Framework too.
+            try { & "$env:SystemRoot/System32/taskkill.exe" /PID $process.Id /T /F 2>&1 | Out-Null }
+            catch { Write-Warning "Could not terminate process tree: $_" }
+            if (-not $process.HasExited) { $process.Kill() }
             $process.WaitForExit()
         }
         $output = $stdout.GetAwaiter().GetResult()
@@ -56,7 +77,7 @@ function Copy-PackageFile([string]$Source, [string]$Destination) {
 function Get-PackageHashes([string]$Directory) {
     $hashes = [ordered]@{}
     foreach ($file in Get-ChildItem -LiteralPath $Directory -File -Recurse | Sort-Object FullName) {
-        $relative = [IO.Path]::GetRelativePath($Directory, $file.FullName).Replace('\', '/')
+        $relative = (Get-PackageRelativePath $Directory $file.FullName).Replace('\', '/')
         $hashes[$relative] = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
     }
     return $hashes
@@ -77,7 +98,7 @@ function Copy-EditorPayload {
     foreach ($name in 'deps', 'runtimeconfig') {
         Copy-PackageFile "$ManagedDirectory/bin/CurryEngine.Runtime/release/CurryEngine.Runtime.$name.json" "$Destination/CurryEngine.Runtime.$name.json"
     }
-    Copy-PackageFile "$RepoRoot/x64/Debug/assimp.dll" "$Destination/assimp.dll"
+    Copy-PackageFile "$RepoRoot/x64/Release/assimp.dll" "$Destination/assimp.dll"
     Copy-PackageFile "$RepoRoot/External/DotNetHost/9.0.10/runtimes/win-x64/native/nethost.dll" "$Destination/nethost.dll"
     foreach ($font in 'NotoSansJP-Medium.ttf', 'NotoSansSC-Medium.ttf') {
         Copy-PackageFile "$RepoRoot/Data/Fonts/$font" "$Destination/Resources/Data/Fonts/$font"
@@ -107,16 +128,43 @@ function Copy-EditorPayload {
     Copy-Item -LiteralPath "$RepoRoot/Templates" -Destination "$Destination/Templates" -Recurse -Force -ErrorAction Stop
 }
 
+function Copy-PortableDependencies([string]$Destination, [string]$VisualStudio) {
+    $dotnetRoot = Split-Path (Get-Command dotnet -ErrorAction Stop).Source -Parent
+    $sdk = Get-ChildItem "$dotnetRoot/sdk" -Directory | Where-Object Name -Match '^9\.0\.\d+$' | Sort-Object { [version]$_.Name } -Descending | Select-Object -First 1
+    if (-not $sdk) { throw '.NET 9 SDK is required on the packaging PC.' }
+    $runtimeVersion = (Get-Content "$($sdk.FullName)/dotnet.runtimeconfig.json" -Raw | ConvertFrom-Json).runtimeOptions.framework.version
+    $local = Join-Path $Destination 'DotNet'
+    foreach ($name in 'dotnet.exe', 'LICENSE.txt', 'ThirdPartyNotices.txt') { Copy-PackageFile "$dotnetRoot/$name" "$local/$name" }
+    # Copy the SDK and matching runtime/reference packs, never machine-installed workloads.
+    foreach ($relative in @("sdk/$($sdk.Name)", "host/fxr/$runtimeVersion", "shared/Microsoft.NETCore.App/$runtimeVersion",
+        "packs/Microsoft.NETCore.App.Ref/$runtimeVersion", "packs/Microsoft.AspNetCore.App.Ref/$runtimeVersion",
+        "packs/Microsoft.WindowsDesktop.App.Ref/$runtimeVersion")) {
+        if (-not (Test-Path -LiteralPath "$dotnetRoot/$relative" -PathType Container)) { throw "Missing portable .NET component: $relative" }
+        $parent = Split-Path "$local/$relative" -Parent
+        $null = [IO.Directory]::CreateDirectory($parent)
+        Copy-Item -LiteralPath "$dotnetRoot/$relative" -Destination $parent -Recurse
+    }
+    $crt = Get-ChildItem "$VisualStudio/VC/Redist/MSVC/*/x64/Microsoft.VC143.CRT" -Directory | Sort-Object FullName -Descending | Select-Object -First 1
+    if (-not $crt) { throw 'Redistributable x64 Visual C++ runtime was not found.' }
+    foreach ($file in Get-ChildItem -LiteralPath $crt.FullName -Filter '*.dll') {
+        Copy-PackageFile $file.FullName "$Destination/$($file.Name)"
+        Copy-PackageFile $file.FullName "$local/$($file.Name)"
+    }
+    Copy-PackageFile "$PSScriptRoot/StartEditor.bat" "$Destination/StartEditor.bat"
+}
+
 function Test-NativePackageDependencies {
     param([string]$Directory, [string]$Dumpbin, [string]$LogDirectory)
     $dependencies = [ordered]@{}
-    foreach ($binary in 'CurryEngine.exe', 'assimp.dll', 'nethost.dll') {
+    foreach ($file in Get-ChildItem -LiteralPath $Directory -File | Where-Object Extension -In '.exe', '.dll' | Where-Object Name -NotLike 'CurryEngine.*.dll') {
+        $binary = $file.Name
         $dump = Invoke-PackageTool $Dumpbin @('/dependents', "$Directory/$binary") $Directory "$LogDirectory/$binary.dependencies.log" 60
         $names = @([regex]::Matches($dump, '(?im)^\s+([a-z0-9_.-]+\.dll)\s*$') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
         if ($names.Count -eq 0) { throw "No dependency information for $binary" }
         foreach ($name in $names) {
+            if ($name -match '^(MSVCP\d.*D|VCRUNTIME\d.*D|VCOMP\d.*D|ucrtbased)\.dll$') { throw "Non-redistributable Debug dependency: $binary -> $name" }
             if (Test-Path -LiteralPath "$Directory/$name" -PathType Leaf) { continue }
-            if ($name -match '^(MSVCP\d.*D|VCRUNTIME\d.*D|VCOMP\d.*D|ucrtbased)\.dll$') { continue }
+            if ($name -match '^(MSVCP|VCRUNTIME|VCOMP|CONCRT|MSVCR)\d') { throw "Missing app-local runtime: $binary -> $name" }
             if ($name -match '^(api-ms-|ext-ms-)' -or
                 (Test-Path -LiteralPath "$env:SystemRoot/System32/$name" -PathType Leaf)) { continue }
             throw "Unpackaged native dependency: $binary -> $name"
@@ -145,7 +193,17 @@ function Test-EditorPackageCommands {
     if (-not $generated.generated) { throw 'Solution generation failed.' }
     # Pin the same stable SDK selection when the chosen output directory is outside the repository.
     Write-PackageJson "$projectRoot/global.json" @{ sdk = @{ version = '9.0.100'; rollForward = 'latestFeature'; allowPrerelease = $false } }
-    $null = Invoke-PackageTool 'dotnet' @('build', "$projectRoot/Project.sln", '-c', 'Release', '--nologo') $projectRoot "$TestDirectory/scripts-build.log" 300
+    # No installed SDK on PATH, no global package cache and no package feed are used.
+    [IO.File]::WriteAllText("$projectRoot/NuGet.Config", '<configuration><packageSources><clear /></packageSources></configuration>')
+    $environment = @{
+        PATH = "$env:SystemRoot/System32;$env:SystemRoot"
+        DOTNET_ROOT = "$EngineDirectory/DotNet"; DOTNET_ROOT_X64 = "$EngineDirectory/DotNet"
+        DOTNET_MULTILEVEL_LOOKUP = '0'; DOTNET_CLI_TELEMETRY_OPTOUT = '1'
+        DOTNET_GENERATE_ASPNET_CERTIFICATE = 'false'; DOTNET_ADD_GLOBAL_TOOLS_TO_PATH = 'false'
+        DOTNET_CLI_HOME = "$projectRoot/Library/DotNetHome"; NUGET_PACKAGES = "$projectRoot/Library/NuGetPackages"
+        MSBuildEnableWorkloadResolver = 'false'
+    }
+    $null = Invoke-PackageTool "$EngineDirectory/DotNet/dotnet.exe" @('build', "$projectRoot/Project.sln", '-c', 'Release', '--nologo', '-p:NuGetAudit=false') $projectRoot "$TestDirectory/scripts-build.log" 300 $environment
     if (-not (Test-Path -LiteralPath "$projectRoot/Library/ScriptAssemblies/Assembly-CSharp.dll")) { throw 'Script assembly was not produced.' }
     if (($before) -cne (Get-PackageHashes $EngineDirectory | ConvertTo-Json -Compress)) { throw 'Smoke test changed shared engine files.' }
 }

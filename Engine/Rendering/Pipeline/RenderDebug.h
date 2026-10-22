@@ -100,7 +100,7 @@ namespace RenderDebug
 	};
 }
 
-#if defined(_DEBUG) || defined(DEVELOPMENT)
+#if defined(_DEBUG) || defined(CURRY_EDITOR) || defined(DEVELOPMENT)
 #define DX_START_EVENT(utilPtr, name) (utilPtr)->BeginEvent(name)
 #define DX_END_EVENT(utilPtr)         (utilPtr)->EndEvent()
 #define DX_SET_MARKER(utilPtr, name)  (utilPtr)->SetMarker(name)

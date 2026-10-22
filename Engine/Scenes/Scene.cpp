@@ -36,7 +36,7 @@ void Scene::Initialize()
 	// シーンデータの読み込み
 	std::string stem = this->name;
 	json j;
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// シーンデータの読み込み
 	if (SceneManager::state == SceneManager::State::PlayToEdit)
 	{

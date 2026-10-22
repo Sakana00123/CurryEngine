@@ -1,83 +1,44 @@
-# 制作用エンジンの自動パッケージ作成
+# 提出用のポータブルエディターZIP
 
-CurryEngine直下の `build_editor_package.bat` をダブルクリックすると、バージョン `0.1.0-dev.1` で作成します。終了時は結果を確認できるようキー入力を待ちます。PowerShell 7（`pwsh.exe`）がPATHに必要です。
-
-バージョンを指定する場合は、CurryEngine直下で次を実行します。
+`build_editor_package.bat` をダブルクリックして作成します。Windows標準のPowerShell 5.1を使用し、PowerShell 7の追加インストールは不要です。作成側にはVisual Studio 2022 C++ツール（v143 / Windows SDK）と.NET 9 SDKが必要です。
 
 ```powershell
-.\build_editor_package.bat 0.1.0-dev.2
+.\build_editor_package.bat 0.1.0-portable.1
+# 出力先・並列数を指定する場合
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./Tools/Packaging/Build-EditorPackage.ps1 -Version 0.1.0-portable.1 -OutputDirectory D:/EnginePackages -BuildWorkers 2
 ```
 
-PowerShellスクリプトを直接実行することもできます。実行場所はCurryEngineルートです。
+同じバージョンの出力は上書きしません。既定の出力先は `BuildOutput/Engines/CurryEngine-<version>-win-x64.zip` です。隣に展開済みフォルダとZIPのSHA256ファイルを保存します。
+
+## 提出先での使い方
+
+1. ZIP全体を書き込み可能なフォルダへ展開します。
+2. `StartEditor.bat` をダブルクリックします。
+3. エンジンフォルダの隣に `CurryEngineProject` を作成し、エディターで開きます。次回は同じプロジェクトを開きます。
+
+別の場所を使う場合は `StartEditor.bat "D:\MyProject"` のようにプロジェクトフォルダを指定します。既存プロジェクトはこのエンジンのバージョンと一致する必要があります。エンジンとプロジェクトのフォルダは互いの中に配置できません。
+
+CurryHubがある場合は **Engine Versions → Add** から `CurryEngine.exe` を登録することもできます。Hubは必須ではありません。C#ファイルの編集にはWindows標準のメモ帳なども使えます。保存後のコンパイルには同梱SDKを使用します。Visual Studioでのデバッグや完成ゲームのビルドは、このポータブルパッケージの対象外です。
+
+## 構成
+
+- ネイティブ側はReleaseでビルドし、`CURRY_EDITOR` と `USE_IMGUI` で編集・再生機能を有効化します。従来のDebug開発構成と完成ゲーム用Release構成も維持します。
+- DirectXTexもReleaseでビルドします。assimpは `x64/Release/assimp.dll` を使います。
+- Visual StudioのRedistフォルダから再配布用x64 C++ランタイムを同梱します。Debugランタイム依存を検出した場合はZIP作成を失敗させます。
+- `DotNet/` に作成PCの安定版.NET 9 SDKと、それに一致するhostfxr・ランタイム・参照パック、ライセンス文書をコピーします。エディターはこのSDKとランタイムを優先します。同梱フォルダが壊れている場合、インストール済み.NETへ黙って切り替えません。
+- テンプレート・フォント・画像・今回生成したシェーダーを収集します。利用者の作品データ、UserScripts、開発用PDBは含めません。
+- `engine.json` と `version.txt` にバージョンを、`package-files.json` にペイロードのSHA256を記録します。
+
+対象はWindows 10/11 x64、Direct3D 11.1に対応するGPUとドライバーです。32ビットWindowsやすべてのハードウェアでの動作を保証するものではありません。通常の起動・編集・再生ではPowerShell 7、Visual Studio、.NETの別途インストールを必要としない構成です。
+
+## 検証とログ
 
 ```powershell
-pwsh -File ./Tools/Packaging/Build-EditorPackage.ps1 -Version 0.1.0-dev.1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./Tests/Run-EditorPackageTests.ps1
 ```
 
-バージョンを変更して繰り返し実行できます。同じ出力先に同じバージョンのフォルダ・ZIP・チェックサムがある場合は、上書きせず終了します。
+梱包テストは入力検証、既存ファイル保護、日本語・空白・引用符を含む引数、タイムアウト、ZIPの圧縮・展開を検証します。パッケージ作成処理では展開したエンジンで新規プロジェクト作成・検証・ソリューション生成・同梱SDKでのC#ビルドを実行し、共有エンジンの内容が変わらないことも確認します。
 
-```powershell
-pwsh -File ./Tools/Packaging/Build-EditorPackage.ps1 -Version 0.1.0-dev.2 -OutputDirectory 'D:/EnginePackages' -BuildWorkers 4
-```
+ビルドログは `Library/Packaging/<実行ID>`、梱包・展開検証は出力先の `.curry-package-<実行ID>` に残します。起動ログはプロジェクトの `Logs/startup.log` です。
 
-## 自動化する処理
-
-1. MetaParserをビルドし、その時点のEngineソースからC++／C#の連携コードを新規生成。
-2. Debug x64エディターとシェーダー、ReleaseのCore／Runtime／APIをビルド。
-3. exe、マネージドDLL、RuntimeのJSON、assimp／nethost、共有シェーダー・画像・フォント、Templatesフォルダ全体を収集。Templates内のファイルとサブフォルダは個別指定せず、そのままコピーします。
-4. ネイティブの依存DLLを調べ、パッケージ・OS・明示したDebugランタイム以外の不足依存を検出。
-5. 指定したバージョンから `engine.json` と `version.txt` を生成し、ファイル一覧とSHA256を `package-files.json` に記録。
-6. ZIPを作成して別の日本語・空白を含む場所へ展開し、内容のハッシュを照合。
-7. 展開したエンジンで新規プロジェクト作成、検証、ソリューション生成、サンプルC#のビルドを実行。共有エンジンが変更されていないことも照合。
-8. 検証が成功した場合に完成品を出力。
-
-```text
-BuildOutput/Engines/
-  CurryEngine-0.1.0-dev.1-win-x64/
-    CurryEngine.exe
-    engine.json
-    version.txt
-    package-files.json
-    README.txt
-    CurryEngine.Core.dll
-    CurryEngine.Runtime.dll
-    CurryEngine.API.dll
-    CurryEngine.Runtime.deps.json
-    CurryEngine.Runtime.runtimeconfig.json
-    assimp.dll
-    nethost.dll
-    Resources/
-    Templates/Empty/
-  CurryEngine-0.1.0-dev.1-win-x64.zip
-  CurryEngine-0.1.0-dev.1-win-x64.zip.sha256
-```
-
-作品データ、UserScripts、Assembly-CSharp.dll、開発用PDBは含めません。シェーダーは今回のビルド結果から収集し、開発フォルダの古いCSOを混ぜません。従来の `build.bat`／`pack.bat` は完成ゲーム用として残しています。
-
-## 必要な環境と現時点の制約
-
-作成側にはPowerShell 7、Visual Studio 2022のC++ツール（v143、Windows SDK）、.NET 9 SDK、通常のCurryEngineビルドに必要な外部ライブラリが必要です。assimpのDebug DLLは現在の開発構成と同じ `x64/Debug/assimp.dll`、nethostは `External/DotNetHost/9.0.10/runtimes/win-x64/native/nethost.dll` を使用します。不足時は処理を失敗させます。
-
-**現在のパッケージは開発環境向けのDebugエディターです。** エディター機能が `_DEBUG` に依存しており、Releaseは完成ゲーム用です。manifestには `packageKind: development-editor`、`configuration: Debug` と必要環境を記録します。利用側にもVisual StudioのC++ Debugランタイムを含む開発環境と.NET 9 SDKが必要です。DebugランタイムDLLはZIPへ同梱しません。
-
-ZIPを展開後、CurryHubの **Engine Versions → Add** から `CurryEngine.exe` を登録して使用します。HubによるZIPの自動取り込みは別機能です。
-
-パッケージ作成時の検証は描画やエディター内の再生、開発ツール未導入PCでの動作を含みません。Debugランタイムに依存しない配布用Editor構成と、未導入環境のセットアップは今後の作業です。
-
-## ログと失敗時の扱い
-
-ビルド・コード生成は `Library/Packaging/<実行ID>`、梱包・展開検証は出力先の `.curry-package-<実行ID>` に保存します。普段の `Generated` やエンジンexe/DLLは上書きしません。失敗した作業ファイルも原因調査のために残します。完成品の再利用や古いバイナリへのフォールバックは行いません。
-
-エディター起動時には、プロジェクト内の `Logs/startup.log` に初期化の進行を追記します。メイン処理で捕捉したC++例外はログとエラー画面に表示します。強制終了や別スレッドの異常など、すべての障害を捕捉するものではありません。
-
-Emptyテンプレートには `Assets/Models` がありません。モデルキャッシュの削除はこのフォルダが存在する場合だけ行い、削除中のファイル操作エラーでも起動を続けます。この修正と起動ログはソースコードの変更なので、既存の配布用exeには反映されません。利用するには配布用エンジンの再生成が必要です。
-
-## 梱包処理のテスト
-
-```powershell
-pwsh -File ./Tests/Run-EditorPackageTests.ps1
-```
-
-バージョンの検証、収集対象、欠損ファイル、古いシェーダーや作品データの除外、既存ZIPの保護、子プロセスの日本語引数・大量出力・失敗・タイムアウトを検証します。実際のエンジンとの統合検証はパッケージ作成コマンドに組み込まれています。
-
-実装時の確認状況: 梱包処理の34項目のテストとPowerShell構文確認は通過しています。MetaParserのビルド・生成とシェーダーコンパイルまで確認しました。エディター全体のビルドは途中で停止しており、完成ZIPの生成と展開後の実エンジン統合検証は未完了です。
+作成コマンドの成功だけでは、開発ツール未導入PCでの描画・編集・再生の確認にはなりません。提出前にクリーンなWindows PCでもZIPを展開し、初回起動、シーン保存、C#変更後の再コンパイル、再生・停止を確認してください。

@@ -30,7 +30,7 @@ void SceneManager::Initialize()
 
 	// デシリアライズ
 	json settingsJson;
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	std::string settingsPath = "./ProjectSettings/settings.json";
 #else
 	std::string settingsPath = "./Settings/settings.bin";
@@ -59,7 +59,7 @@ void SceneManager::EndFrame()
 void SceneManager::Finalize()
 {
 	// シーンマネージャの状態をシリアライズして保存
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	SaveSettings();
 #endif // _DEBUG
 
@@ -110,7 +110,7 @@ void SceneManager::LoadFirstScene()
 	std::string sceneToLoad = state == State::Editing ? EditorConfigManager::GetLastOpenedScene() : firstSceneName;
 	if (!sceneToLoad.empty())
 	{
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		ChangeScene(sceneToLoad);
 #else
 		LoadScene(sceneToLoad);
@@ -523,7 +523,7 @@ void SceneManager::Deserialize(const json& j)
 
 	}
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	// エディタで、最初に開くシーンを読み込む。
 	//editorFirstSceneName = j.value("firstScene", "");
 	//SetEditorFirstScene(editorFirstSceneName);

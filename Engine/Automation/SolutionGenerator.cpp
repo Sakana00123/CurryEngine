@@ -78,6 +78,8 @@ void SolutionGenerator::Generate(const CurryEngine::ProjectContext& context)
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <DebugType>portable</DebugType>
+    <NuGetAudit>false</NuGetAudit>
+    <RestoreIgnoreFailedSources>true</RestoreIgnoreFailedSources>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets/**/*.cs" Exclude="Assets/**/bin/**;Assets/**/obj/**" />

@@ -26,7 +26,7 @@ public:
 		PlayToEdit, // プレイからエディットへ移行中
 	};
 	/** @brief シーンの状態。*/
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	static inline State state = State::Editing;
 #else
 	static inline State state = State::Playing;

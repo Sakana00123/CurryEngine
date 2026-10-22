@@ -293,7 +293,7 @@ popd</Command>
     <ClCompile Include="Engine\Resources\AssetMetaSerializer.cpp" />
     <ClCompile Include="Engine\Utils\GltfImporter.cpp" />
     <ClCompile Include="External\imgui-docking\crude_json.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="External\imgui-docking\ImGradientHDR.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -481,13 +481,13 @@ popd</Command>
     <ClCompile Include="Engine\UI\Toggle.cpp" />
     <ClCompile Include="Engine\Utils\UniqueIdGenerator.cpp" />
     <ClCompile Include="External\imgui-docking\imgui_canvas.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="External\imgui-docking\imgui_node_editor.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="External\imgui-docking\imgui_node_editor_api.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="External\imgui-docking\implot.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

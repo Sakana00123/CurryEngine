@@ -532,7 +532,7 @@ void EffectManager::Update(float deltaTime)
 		if (!emitterState.isPlaying)
 			continue;
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 		const auto& emitData = emitterState.emitterData.emitData;
 #else
 		const auto& emitterData = effectData[emitterState.handle].emitters[emitterState.emitterIndex];
@@ -638,7 +638,7 @@ void EffectManager::ReInitializeParticleSystem()
 void EffectManager::EmitOnce(const EmitterPlayState& state)
 {
 	// エフェクトを一度だけエミット
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	const auto& emitterData = state.emitterData;
 #else
 	const auto& emitterData = effectData[state.handle].emitters[state.emitterIndex];

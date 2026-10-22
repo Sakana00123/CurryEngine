@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ScriptWatcher.h"
+#include "Engine/Core/EnginePaths.h"
 #include "Engine/Editor/Console.h"
 #include "Engine/Scripting/ScriptSystem.h"
 #include <Windows.h>
@@ -198,9 +199,14 @@ bool ScriptWatcher::BuildProjects()
 bool ScriptWatcher::BuildProject(const BuildCommand& command)
 {
     // Invoke dotnet directly: project paths containing %, &, etc. must not pass through cmd.exe.
-    wchar_t dotnet[MAX_PATH];
-    const auto count = SearchPathW(nullptr, L"dotnet.exe", nullptr, MAX_PATH, dotnet, nullptr);
-    if (!count || count >= MAX_PATH) { LOG_ERROR("dotnet SDK was not found."); return false; }
+    auto dotnetPath = EnginePaths::EngineRoot() / L"DotNet/dotnet.exe";
+    if (!std::filesystem::is_directory(EnginePaths::EngineRoot() / L"DotNet")) {
+        wchar_t installed[MAX_PATH];
+        const auto count = SearchPathW(nullptr, L"dotnet.exe", nullptr, MAX_PATH, installed, nullptr);
+        if (!count || count >= MAX_PATH) { LOG_ERROR("dotnet SDK was not found."); return false; }
+        dotnetPath = installed;
+    }
+    const auto dotnet = dotnetPath.wstring();
     if (command.configuration != L"Debug" && command.configuration != L"Release") return false;
     std::wstring cmd = L"\"" + std::wstring(dotnet) + L"\" build \"" + command.projectPath.wstring() +
         L"\" -c " + command.configuration + L" --nologo -v minimal";
@@ -216,7 +222,7 @@ bool ScriptWatcher::BuildProject(const BuildCommand& command)
     startup.hStdInput = nullptr;
     PROCESS_INFORMATION process{};
     const auto workingDirectory = command.projectPath.parent_path().wstring();
-    const BOOL started = CreateProcessW(dotnet, cmd.data(), nullptr, nullptr, TRUE,
+    const BOOL started = CreateProcessW(dotnet.c_str(), cmd.data(), nullptr, nullptr, TRUE,
         CREATE_NO_WINDOW, nullptr, workingDirectory.c_str(), &startup, &process);
     CloseHandle(writePipe);
     if (!started) { CloseHandle(readPipe); LOG_ERROR("Failed to start dotnet build."); return false; }

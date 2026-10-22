@@ -22,9 +22,7 @@
 #endif // USE_IMGUI
 
 // Tracy
-#ifdef TRACY_ENABLE
 #include <tracy/Tracy.hpp>
-#endif // TRACY_ENABLE
 
 // 他にほぼ全体で使うヘッダーがあればここに追加
 #include "Engine/Common/EngineCommon.h"

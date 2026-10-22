@@ -78,7 +78,7 @@ Framework::Framework(HWND hwnd)
     AssetBrowser::InitializeDropTarget(hwnd);
 
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
     CurryEngine::RecordStartupStage("Loading editor settings");
     EditorConfigManager::Initialize();
 #endif // _DEBUG
@@ -219,7 +219,7 @@ void Framework::CalculateFrameStatus()
         float fps = static_cast<float>(frames);
         std::wostringstream outs;
         outs.precision(6);
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
         outs << APPLICATION_NAME << L" : FPS : " << fps << L" / " << L"Frame Time : " << 1000.0f / fps << L" (ms)";
 #else
         outs << APPLICATION_NAME;
@@ -334,7 +334,7 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
 		ZoneScopedN("InputSystem::Update");
         InputSystem::Update(Time::UnscaledDeltaTime());
     }
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	//else if (!AssetBrowser::IsExternalDragActive()) // フォーカスがない場合は、SleepしてCPU使用率を下げる(Debug時のみ)
  //   {
  //       Sleep(100);
@@ -350,7 +350,7 @@ void Framework::Update(float deltaTime/*Elapsed seconds from last frame*/)
     }
 
     // ウィンドウ切替
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
     if (InputSystem::GetInputState("Alt") && InputSystem::GetInputState("Enter", InputStateMask::Trigger))
     {
         Graphics::StylizeWindow(!Graphics::GetFullScreenMode());
@@ -454,7 +454,7 @@ bool Framework::Uninitialize(HWND hwnd)
     Console::Shutdown();
 
 	// EditorConfigManager終了
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(CURRY_EDITOR)
 	EditorConfigManager::Shutdown();
 #endif // _DEBUG
 
