@@ -141,7 +141,7 @@ void ScriptComponent::DrawProperty(const PropertyDrawContext& context)
 {
 	// スクリプトの編集ボタン
 	// TODO: スクリプトアセットの管理方法が決まったら、ファイル名からスクリプトアセットを検索して開くようにする。現状はUserScriptsフォルダを再帰的に検索して最初に見つかったものを開く。
-    if (ImGui::Button("Edit Script"))
+    if (ImGui::Button(reinterpret_cast<const char*>(u8"スクリプトを編集")))
     {
 		// ファイル名に一致するスクリプトアセットを検索
 		std::vector<fs::directory_entry> results;

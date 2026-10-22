@@ -299,17 +299,17 @@ void RenderSystem::Render()
 		static bool showHistoryWindow = true;
 		if (showHistoryWindow)
         {
-			ImGui::Begin("History", &showHistoryWindow);
+			ImGui::Begin(reinterpret_cast<const char*>(u8"履歴###History"), &showHistoryWindow);
             {
                 std::vector<std::string> undoDescriptions, redoDescriptions;
                 CurryEngine::History::GetUndoRedoDescriptions(undoDescriptions, redoDescriptions);
-                ImGui::Text("Undo Stack:");
+                ImGui::Text(reinterpret_cast<const char*>(u8"取り消し履歴:"));
                 for (const auto& action : undoDescriptions)
                 {
                     ImGui::BulletText("%s", action.c_str());
                 }
                 ImGui::Separator();
-                ImGui::Text("Redo Stack:");
+                ImGui::Text(reinterpret_cast<const char*>(u8"やり直し履歴:"));
                 for (const auto& action : redoDescriptions)
                 {
                     ImGui::BulletText("%s", action.c_str());
@@ -318,7 +318,7 @@ void RenderSystem::Render()
             ImGui::End();
         }
     }
-    //ImGui::Text("Video memory usage %d MB", VideoMemoryUsage());
+    //ImGui::Text(reinterpret_cast<const char*>(u8"ビデオメモリ使用量: %d MB"), VideoMemoryUsage());
 
     // ImGui描画のために、デフォルトのレンダーターゲットに戻す
     sceneContext.SetDefaultRenderTarget();
@@ -342,13 +342,13 @@ void RenderSystem::DrawEditorGUI()
 	static bool showRenderSystemWindow = true;
 	if (showRenderSystemWindow)
     {
-        ImGui::Begin("Render System", &showRenderSystemWindow);
+        ImGui::Begin(reinterpret_cast<const char*>(u8"描画システム###Render System"), &showRenderSystemWindow);
         {
-            if (ImGui::CollapsingHeader("Scene View Pipeline"))
+            if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"シーンビューの描画パイプライン")))
             {
                 sceneRenderPipeline->DrawProperty();
             }
-            if (ImGui::CollapsingHeader("Game View Pipeline"))
+            if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"ゲームビューの描画パイプライン")))
             {
                 gameRenderPipeline->DrawProperty();
             }

@@ -14,6 +14,8 @@
 
 namespace
 {
+	const char* const kImportSettingsPopup = reinterpret_cast<const char*>(u8"インポート設定###Import Settings");
+	const char* const kUnsavedChangesPopup = reinterpret_cast<const char*>(u8"未保存の変更###Unsaved Changes");
 	static std::unordered_map<ImGuiID, float> g_map;
 	float& GetAnim(ImGuiID id)
 	{
@@ -167,16 +169,16 @@ namespace CurryEngine::Resources
 		if (!meta) { _isOpen = false; return; }
 
 		// ポップアップがまだ開いていない場合は開く
-		if (_isOpen && !ImGui::IsPopupOpen("Import Settings"))
+		if (_isOpen && !ImGui::IsPopupOpen(kImportSettingsPopup))
 		{
-			ImGui::OpenPopup("Import Settings");
+			ImGui::OpenPopup(kImportSettingsPopup);
 		}
 
 		ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f)); // ポップアップの位置を画面中央に設定
 
 		// ポップアップが開いているときだけ描画する
-		if (ImGui::BeginPopupModal("Import Settings", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		if (ImGui::BeginPopupModal(kImportSettingsPopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			// 上段: ファイル名とアセット種別
 			ImGui::TextUnformatted(reinterpret_cast<const char*>(std::filesystem::path(meta->path).filename().u8string().c_str()));
@@ -187,8 +189,8 @@ namespace CurryEngine::Resources
 			// 中段: 左にプレビュー、右に設定フィールド（BeginTableで2カラム）
 			if (ImGui::BeginTable("ImportSettingsLayout", 2, ImGuiTableFlags_Resizable))
 			{
-				ImGui::TableSetupColumn("Preview", ImGuiTableColumnFlags_WidthFixed, 200.0f);
-				ImGui::TableSetupColumn("Settings");
+				ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"プレビュー"), ImGuiTableColumnFlags_WidthFixed, 200.0f);
+				ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"設定"));
 				ImGui::TableNextRow();
 
 				ImGui::TableSetColumnIndex(0);
@@ -204,7 +206,7 @@ namespace CurryEngine::Resources
 
 			// 下段: Applyボタン（_isDirtyのときだけハイライト）
 			ImGui::BeginDisabled(!_isDirty);
-			if (ImGui::Button("Apply"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"適用")))
 			{
 				OnApply(_targetId);
 			}
@@ -213,7 +215,7 @@ namespace CurryEngine::Resources
 			ImGui::SameLine();
 
 			// Revertボタン（.metaの現在値に戻す）
-			if (ImGui::Button("Revert"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"元に戻す")))
 			{
 				_editingSettings = meta->importSettings;
 				_isDirty = false;
@@ -223,7 +225,7 @@ namespace CurryEngine::Resources
 			ImGui::SameLine();
 
 			// Resetボタン（デフォルト設定に戻す）
-			if (ImGui::Button("Reset To Default"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"初期設定に戻す")))
 			{
 				if (IImportSettingsDrawer* drawer = ImportSettingsDrawerRegistry::Find(meta->type))
 				{
@@ -234,7 +236,7 @@ namespace CurryEngine::Resources
 			}
 
 			// 閉じるボタン
-			if (ImGui::Button("Close"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"閉じる")))
 			{
 				if (_isDirty)
 				{
@@ -248,14 +250,14 @@ namespace CurryEngine::Resources
 			}
 
 			// 確認ダイアログ（ネストされたPopupModal）
-			if (_showCloseConfirm && !ImGui::IsPopupOpen("Unsaved Changes"))
+			if (_showCloseConfirm && !ImGui::IsPopupOpen(kUnsavedChangesPopup))
 			{
-				ImGui::OpenPopup("Unsaved Changes");
+				ImGui::OpenPopup(kUnsavedChangesPopup);
 			}
 
 			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-			if (ImGui::BeginPopupModal("Unsaved Changes", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			if (ImGui::BeginPopupModal(kUnsavedChangesPopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
 			{
 				ImGui::TextUnformatted(U8("設定が変更されています。"));
 				ImGui::TextUnformatted(U8("変更を保存せずに閉じますか？"));
@@ -324,7 +326,7 @@ namespace CurryEngine::Resources
 	bool ImportSettingsWindow::IsOpen()
 	{
 #ifdef USE_IMGUI
-		return ImGui::IsPopupOpen("Import Settings");
+		return ImGui::IsPopupOpen(kImportSettingsPopup);
 #endif // USE_IMGUI
 		return _isOpen;
 	}
@@ -372,12 +374,12 @@ namespace CurryEngine::Resources
 			}
 			else
 			{
-				ImGui::TextDisabled("No preview drawer for this asset type.");
+				ImGui::TextDisabled(reinterpret_cast<const char*>(u8"この種類のアセットにはプレビューがありません。"));
 			}
 		}
 		else
 		{
-			ImGui::TextDisabled("Preview not available.");
+			ImGui::TextDisabled(reinterpret_cast<const char*>(u8"プレビューは利用できません。"));
 		}
 
 #endif // USE_IMGUI
@@ -400,7 +402,7 @@ namespace CurryEngine::Resources
 		}
 		else
 		{
-			ImGui::TextDisabled("No settings drawer for this asset type.");
+			ImGui::TextDisabled(reinterpret_cast<const char*>(u8"この種類のアセットには設定項目がありません。"));
 		}
 #endif // USE_IMGUI
 	}

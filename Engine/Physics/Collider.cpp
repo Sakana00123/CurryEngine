@@ -226,19 +226,19 @@ void Collider::DrawProperty(const PropertyDrawContext& context)
 {
 	Component::DrawProperty(context);
 
-	//ImGui::Text("ShapeHandle: %d", m_shapeHandle);
-	//ImGui::Text("MaterialHandle: %d", m_materialHandle);
+	//ImGui::Text(reinterpret_cast<const char*>(u8"形状のハンドル: %d"), m_shapeHandle);
+	//ImGui::Text(reinterpret_cast<const char*>(u8"マテリアルのハンドル: %d"), m_materialHandle);
 
 	//bool propertyChanged = false;
 	//IMGUI_PROPERTY_BOOL("IsTrigger", isTrigger, propertyChanged);
 
-	////if (ImGui::Checkbox("IsTrigger", &isTrigger))
+	////if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"トリガー"), &isTrigger))
 	//if (propertyChanged)
 	//{
 	//	SetTrigger(isTrigger);
 	//}
 
-	////ImGui::Checkbox("autoFit", &autoFit);
+	////ImGui::Checkbox(reinterpret_cast<const char*>(u8"自動調整"), &autoFit);
 	//propertyChanged = false;
 	//IMGUI_PROPERTY_BOOL("Auto Fit To Mesh", autoFit, propertyChanged);
 	//// 接触オフセットの編集

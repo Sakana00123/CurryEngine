@@ -206,7 +206,7 @@ void AssetBrowser::DrawGUI()
 	if (isOpen)
 	{
 		ZoneScopedN("AssetBrowser::DrawGUI");
-		ImGui::Begin("Asset Browser", &isOpen);
+		ImGui::Begin(reinterpret_cast<const char*>(u8"アセットブラウザー###Asset Browser"), &isOpen);
 		ImGuiWindow* window = ImGui::GetCurrentWindow();
 #if 1
 		// currentDirectoryが空の場合はAssetsフォルダを表示する
@@ -224,8 +224,8 @@ void AssetBrowser::DrawGUI()
 		if (ImGui::BeginTable("ProjectView", 2, ImGuiTableFlags_Resizable))
 		{
 			ZoneScopedN("ProjectView");
-			ImGui::TableSetupColumn("Folders", ImGuiTableColumnFlags_WidthFixed, 200.0f);
-			ImGui::TableSetupColumn("Assets");
+			ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"フォルダー"), ImGuiTableColumnFlags_WidthFixed, 200.0f);
+			ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"アセット"));
 			ImGui::TableNextRow();
 
 			//左側：フォルダ階層
@@ -305,8 +305,8 @@ void AssetBrowser::DrawGUI()
 
 		ImGui::Columns(1);
 
-		ImGui::SliderFloat("ThumbnailSize", &thumbnailSize, 32, 256);
-		ImGui::SliderFloat("Padding", &padding, 0, 32);
+		ImGui::SliderFloat(reinterpret_cast<const char*>(u8"サムネイルの大きさ"), &thumbnailSize, 32, 256);
+		ImGui::SliderFloat(reinterpret_cast<const char*>(u8"余白"), &padding, 0, 32);
 
 #endif // 0
 
@@ -779,7 +779,7 @@ void AssetBrowser::DrawAssetGrid(const std::filesystem::path& folderPath, const 
 
 
 	// サムネイルサイズスライダー
-	ImGui::TextDisabled("Size");
+	ImGui::TextDisabled(reinterpret_cast<const char*>(u8"サイズ"));
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(120.f);
 	ImGui::SliderFloat("##ThumbnailSize", &thumbnailSize, 32.0f, 128.0f, "%.0f");
@@ -1195,14 +1195,15 @@ void AssetBrowser::DrawUnityPath(const fs::path& path) {
 
 void AssetBrowser::DrawScriptCreationModal()
 {
+	const char* popupName = reinterpret_cast<const char*>(u8"新しいスクリプトを作成###Create New Script");
 	// モーダルが開くフラグが立ったらOpenPopupを呼び出す
 	if (showScriptCreationModal)
 	{
-		ImGui::OpenPopup("Create New Script");
+		ImGui::OpenPopup(popupName);
 		strncpy_s(scriptNameBuffer, NewScriptName, IM_ARRAYSIZE(scriptNameBuffer)); // バッファに初期値をセット
 		showScriptCreationModal = false; // フラグをリセット
 	}
-	else if (!ImGui::IsPopupOpen("Create New Script"))
+	else if (!ImGui::IsPopupOpen(popupName))
 	{
 		return; // モーダルが開いていない場合は何もしない
 	}
@@ -1212,7 +1213,7 @@ void AssetBrowser::DrawScriptCreationModal()
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(360, 130), ImGuiCond_Appearing);
 
-	if (ImGui::BeginPopupModal("Create New Script", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
+	if (ImGui::BeginPopupModal(popupName, nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
 	{
 		// スクリプト名入力フィールド
 		ImGui::Text(reinterpret_cast<const char*>(u8"名前:"));
@@ -1286,14 +1287,15 @@ void AssetBrowser::DrawScriptCreationModal()
 // 新規HLSLシェーダー作成モーダルの内容
 void AssetBrowser::DrawHlslShaderCreationModal()
 {
+	const char* popupName = reinterpret_cast<const char*>(u8"新しいシェーダーを作成###Create New Shader");
 	// モーダルが開くフラグが立ったらOpenPopupを呼び出す
 	if (showHlslShaderCreationModal)
 	{
-		ImGui::OpenPopup("Create New Shader");
+		ImGui::OpenPopup(popupName);
 		strncpy_s(hlslShaderNameBuffer, NewHlslShaderName, IM_ARRAYSIZE(hlslShaderNameBuffer)); // バッファに初期値をセット
 		showHlslShaderCreationModal = false; // フラグをリセット
 	}
-	else if (!ImGui::IsPopupOpen("Create New Shader"))
+	else if (!ImGui::IsPopupOpen(popupName))
 	{
 		return; // モーダルが開いていない場合は何もしない
 	}
@@ -1301,7 +1303,7 @@ void AssetBrowser::DrawHlslShaderCreationModal()
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_Always); // サイズは内容に合わせて自動調整
-	if (ImGui::BeginPopupModal("Create New Shader", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
+	if (ImGui::BeginPopupModal(popupName, nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
 	{
 		// シェーダーテンプレートの選択
 		static int selectedTemplate = 0;
@@ -1416,13 +1418,14 @@ void AssetBrowser::DrawHlslShaderCreationModal()
 // 新規シーン作成モーダルの内容
 void AssetBrowser::DrawNewSceneCreationModal()
 {
+	const char* popupName = reinterpret_cast<const char*>(u8"新しいシーンを作成###Create New Scene");
 	if (showNewSceneCreationModal)
 	{
-		ImGui::OpenPopup("Create New Scene");
+		ImGui::OpenPopup(popupName);
 		strncpy_s(sceneNameBuffer, NewSceneName, IM_ARRAYSIZE(sceneNameBuffer)); // バッファに初期値をセット
 		showNewSceneCreationModal = false; // フラグをリセット
 	}
-	else if (!ImGui::IsPopupOpen("Create New Scene"))
+	else if (!ImGui::IsPopupOpen(popupName))
 	{
 		return; // モーダルが開いていない場合は何もしない
 	}
@@ -1432,7 +1435,7 @@ void AssetBrowser::DrawNewSceneCreationModal()
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_Always); // サイズは内容に合わせて自動調整
 
-	if (ImGui::BeginPopupModal("Create New Scene", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
+	if (ImGui::BeginPopupModal(popupName, nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
 	{
 		// シーンテンプレートの選択
 		static int selectedTemplate = 0;
@@ -1567,12 +1570,13 @@ void AssetBrowser::DrawNewSceneCreationModal()
 // 削除確認モーダルの内容
 void AssetBrowser::DrawDeleteConfirmModal()
 {
+	const char* popupName = reinterpret_cast<const char*>(u8"削除の確認###Delete Confirmation");
 	if (showDeleteConfirmModal)
 	{
-		ImGui::OpenPopup("Delete Confirmation");
+		ImGui::OpenPopup(popupName);
 		showDeleteConfirmModal = false; // フラグをリセット
 	}
-	else if (!ImGui::IsPopupOpen("Delete Confirmation"))
+	else if (!ImGui::IsPopupOpen(popupName))
 	{
 		return; // モーダルが開いていない場合は何もしない
 	}
@@ -1582,7 +1586,7 @@ void AssetBrowser::DrawDeleteConfirmModal()
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(420, 0), ImGuiCond_Appearing); // サイズは内容に合わせて自動調整
 
-	if (ImGui::BeginPopupModal("Delete Confirmation", nullptr,
+	if (ImGui::BeginPopupModal(popupName, nullptr,
 		ImGuiWindowFlags_NoDocking |
 		ImGuiWindowFlags_NoSavedSettings |
 		ImGuiWindowFlags_AlwaysAutoResize))
@@ -1715,25 +1719,25 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 			auto meta = CurryEngine::Resources::AssetDatabase::FindByPath(assetPath); // アセットのパスからアセットデータを取得する処理
 			if (meta && CurryEngine::Resources::ImporterRegistry::Find(meta->type, assetPath.extension()))
 			{
-				if (ImGui::MenuItem("Open Import Settings"))
+				if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"インポート設定を開く")))
 				{
 					CurryEngine::Resources::ImportSettingsWindow::Open(meta->id); // インポート設定ウィンドウを開く処理
 				}
 			}
 
-			if (ImGui::MenuItem("Open"))
+			if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"開く")))
 			{
 				OpenAsset(assetPath); // アセットを開く処理
 			}
-			//if (ImGui::MenuItem("Show in Explorer"))
+			//if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"エクスプローラーで表示")))
 			//{
 			//	ShowInExplorer(assetPath); // エクスプローラーで表示する処理
 			//}
-			if (ImGui::MenuItem("Rename"))
+			if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"名前を変更")))
 			{
 				StartRename(assetPath); // リネーム処理
 			}
-			if (ImGui::MenuItem("Delete"))
+			if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"削除")))
 			{
 				StartDelete(assetPath); // 削除処理
 			}
@@ -1742,24 +1746,24 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 		}
 
 		// -- 常に表示されるメニュー項目（フォルダの作成、シーンの作成、スクリプトの作成など） ----------------------
-		if (ImGui::MenuItem("Create Folder"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"フォルダーを作成")))
 		{
 			fs::create_directory(folderPath / "New Folder");
 			Refresh();
 		}
-		if (ImGui::MenuItem("Create Scene"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"シーンを作成")))
 		{
 			ShowNewSceneCreationModal(folderPath);
 		}
-		if (ImGui::MenuItem("Create C# Script"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"C#スクリプトを作成")))
 		{
 			ShowScriptCreationModal(folderPath);
 		}
-		if (ImGui::MenuItem("Create HLSL Shader"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"HLSLシェーダーを作成")))
 		{
 			ShowHlslShaderCreationModal(folderPath);
 		}
-		if (ImGui::MenuItem("Create Material"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"マテリアルを作成")))
 		{
 			// 新しいマテリアルを作成する処理
 			fs::path newMaterialPath = MakeUniqueFilePath(folderPath, "New Material", ".mat");
@@ -1768,7 +1772,7 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 			ofs.close();
 			Refresh();
 		}
-		if (ImGui::MenuItem("Create Animation"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"アニメーションを作成")))
 		{
 			fs::path newAnimationPath = MakeUniqueFilePath(folderPath, "New Animation", ".anim");
 			AnimationClip clip;
@@ -1779,7 +1783,7 @@ void AssetBrowser::ShowContextMenu(const fs::path& assetPath)
 				//OpenAsset(newAnimationPath);
 			}
 		}
-		if (ImGui::MenuItem("Create Animator Controller"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"アニメーターコントローラーを作成")))
 		{
 			AssetType type = DetectAssetTypeFromFile(assetPath); // アセットタイプを検出する処理
 			fs::path newAnimatorPath;

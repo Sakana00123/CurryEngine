@@ -155,7 +155,7 @@ void MaterialNodeEditor::NodeEditorShutdown()
 
 void MaterialNodeEditor::DrawNodeEditor(NodeEditorState& state)
 {
-	ImGui::Begin("Animator Controller Editor", &s_isOpen);
+	ImGui::Begin(reinterpret_cast<const char*>(u8"アニメーターコントローラー (旧エディター)###Legacy Animator Controller Editor"), &s_isOpen);
 
 	ImNodes::EditorContextSet(state.context);
 
@@ -179,7 +179,7 @@ void MaterialNodeEditor::DrawNodeEditor(NodeEditorState& state)
 		}
 		if (ImGui::BeginPopup("AddNodePopup"))
 		{
-			if (ImGui::MenuItem("Add State"))
+			if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"ステートを追加")))
 			{
 				// 新しい状態を追加
 				const int newStateIndex = static_cast<int>(controller->states.size());
@@ -192,14 +192,14 @@ void MaterialNodeEditor::DrawNodeEditor(NodeEditorState& state)
 		// AnyState疑似ノード
 		ImNodes::BeginNode(kAnyStateNodeId);
 		ImNodes::BeginNodeTitleBar();
-		ImGui::TextUnformatted("Any State");
+		ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"任意のステート"));
 		ImNodes::EndNodeTitleBar();
 
 		ImNodes::BeginOutputAttribute(kAnyStateOutputPinId);
 
 		const float nodeWidth = 125.0f;
 		ImGui::SetNextItemWidth(nodeWidth);
-		ImGui::Text("Output");
+		ImGui::Text(reinterpret_cast<const char*>(u8"出力"));
 
 		ImNodes::EndOutputAttribute();
 		ImNodes::EndNode();
@@ -210,11 +210,11 @@ void MaterialNodeEditor::DrawNodeEditor(NodeEditorState& state)
 			ImNodes::BeginNode(NodeIdFromStateIndex(i));
 			ImNodes::BeginNodeTitleBar(); ImGui::TextUnformatted(state.name.c_str()); ImNodes::EndNodeTitleBar();
 			ImNodes::BeginInputAttribute(InputPinId(i));
-			ImGui::Text("Input");
+			ImGui::Text(reinterpret_cast<const char*>(u8"入力"));
 			ImNodes::EndInputAttribute();
 
 			ImNodes::BeginOutputAttribute(OutputPinId(i));
-			ImGui::Text("Output");
+			ImGui::Text(reinterpret_cast<const char*>(u8"出力"));
 			ImNodes::EndOutputAttribute();
 			ImNodes::EndNode();
 		}
@@ -247,7 +247,7 @@ void MaterialNodeEditor::DrawNodeEditor(NodeEditorState& state)
 	}
 	else
 	{
-		ImGui::Text("No AnimatorController loaded.");
+		ImGui::Text(reinterpret_cast<const char*>(u8"アニメーターコントローラーが読み込まれていません。"));
 	}
 
 	ImGui::End();

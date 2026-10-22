@@ -122,7 +122,7 @@ void Button::OnClick()
 void Button::DrawProperty(const PropertyDrawContext& context)
 {
     Selectable::DrawProperty(context);
-    ImGui::Checkbox("pressing", &isPressed);
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"押下中"), &isPressed);
 #if 1
 
     ImGui::NewLine();
@@ -221,7 +221,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 				// 関数のコンボボックス
 				if (ImGui::BeginCombo("##func", info.funcName.empty() ? "No Function" : info.funcName.c_str()))
 				{
-					if (ImGui::Selectable("No Function", info.funcName.empty()))
+					if (ImGui::Selectable(reinterpret_cast<const char*>(u8"関数なし"), info.funcName.empty()))
 					{
 						info.funcName.clear();
 						info.value.first.clear();
@@ -310,7 +310,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
 						}
                         else
                         {
-                            ImGui::Text("Unsupported type");
+                            ImGui::Text(reinterpret_cast<const char*>(u8"未対応の種類"));
 						}
 					}
 				}
@@ -319,7 +319,7 @@ void Button::DrawProperty(const PropertyDrawContext& context)
             }
 
             if (eventInfo.empty()) {
-                ImGui::Text("List is Empty");
+                ImGui::Text(reinterpret_cast<const char*>(u8"リストは空です"));
             }
         }
         ImGui::EndChild();

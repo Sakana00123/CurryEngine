@@ -153,7 +153,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 	else
 	{
 		isPreviewFocused = false;
-		if (!ImGui::Begin("Effect Editor", &isOpen))
+		if (!ImGui::Begin(reinterpret_cast<const char*>(u8"エフェクトエディター###Effect Editor"), &isOpen))
 		{
 			ImGui::End();
 			return;
@@ -162,7 +162,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 		// ロード・セーブ・適用・クリアボタン
 		{
 			// ロード・セーブボタン
-			if (ImGui::Button("Load"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"読み込む")))
 			{ 
 				if (EffectHandle handle = EffectManager::LoadEffectDataWithDialog(); handle > -1)
 				{
@@ -170,21 +170,21 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				}
 			}
 			SameLineIfButtonFits("Save");
-			if (ImGui::Button("Save")) { EffectManager::SaveEffectDataWithDialog(currentEffectHandle); }
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"保存"))) { EffectManager::SaveEffectDataWithDialog(currentEffectHandle); }
 			SameLineIfButtonFits("Clear");
 			// クリアボタン
-			if (ImGui::Button("Clear")) { EffectManager::ClearAll(); }
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"クリア"))) { EffectManager::ClearAll(); }
 
 			// コンバートボタン
 			SameLineIfButtonFits("Convert JSON to .effect");
-			if (ImGui::Button("Convert JSON to .effect"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"JSONを.effectに変換")))
 			{
 				ShowFileExtensionChangeDialog();
 			}
 
 			// すべてのエフェクトをロードするボタン
 			SameLineIfButtonFits("Load All Effects");
-			if (ImGui::Button("Load All Effects")) 
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"全エフェクトを読み込む")))
 			{
 				std::filesystem::path effectDirectory = std::filesystem::current_path() / "Assets" / "Effects";
 				// ディレクトリを選択するダイアログを表示
@@ -206,7 +206,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 		// スクロール位置に依存しない高さを使い、プレビューが編集領域を圧迫しないようにする。
 		const float availableHeight = std::max(1.0f,
 			ImGui::GetWindowHeight() - ImGui::GetCursorPosY() - ImGui::GetStyle().WindowPadding.y);
-		if (ImGui::CollapsingHeader("Preview", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"プレビュー"), ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
 			{
@@ -219,7 +219,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 		}
 
 		// 一覧の高さを最大3行に制限し、件数が増えても編集領域を確保する。
-		if (ImGui::CollapsingHeader("Effect Data List", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"エフェクトデータ一覧"), ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			const float listRows = static_cast<float>(std::clamp<size_t>(EffectManager::effectData.size(), 1, 3));
 			const float listHeight = ImGui::GetTextLineHeightWithSpacing() * listRows
@@ -258,7 +258,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				if (ImGui::BeginPopup("EffectDataContextMenu"))
 				{
 #if 0
-					if (ImGui::MenuItem("Delete"))
+					if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"削除")))
 					{
 						EffectManager::effectData.erase(EffectManager::effectData.begin() + emitterIndex);
 						// 現在のエフェクトハンドルが削除された場合、無効にする
@@ -271,7 +271,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						break; // ループを抜けて再描画
 					}
 #endif // 0
-					if (ImGui::MenuItem("Copy"))
+					if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"コピー")))
 					{
 						// エフェクトデータをコピー（複製）
 						EffectManager::CopyEffectData(static_cast<EffectHandle>(emitterIndex));
@@ -312,7 +312,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			}
 
 			// 新しいエフェクトデータ追加ボタン
-			if (ImGui::Button("Add New Effect Data"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"エフェクトデータを追加")))
 			{
 				currentEffectHandle = EffectManager::CreateEffectData();
 				// 追加したエフェクトデータの名前を設定
@@ -320,7 +320,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			}
 			SameLineIfButtonFits("Clear All Effect Data");
 			// 全エフェクトデータクリアボタン
-			if (ImGui::Button("Clear All Effect Data"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"全エフェクトデータを消去")))
 			{
 				EffectManager::ClearEffectData();
 				currentEffectHandle = -1;
@@ -334,7 +334,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			// 現在のエフェクトハンドルが有効かチェック
 			if (EffectManager::effectData.find(currentEffectHandle) == EffectManager::effectData.end())
 			{
-				ImGui::Text("No Emitter Data Selected.");
+				ImGui::Text(reinterpret_cast<const char*>(u8"エミッターデータが選択されていません。"));
 				ImGui::End();
 				return;
 			}
@@ -347,7 +347,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 			{
 				strncpy_s(effectNameBuffer, EffectManager::effectData.at(currentEffectHandle).name.c_str(), sizeof(effectNameBuffer));
 			}
-			ImGui::TextUnformatted("Effect Name");
+			ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"エフェクト名"));
 			ImGui::SetNextItemWidth(-1.0f);
 			ImGui::InputText("##Effect Name", effectNameBuffer, sizeof(effectNameBuffer));
 			if (ImGui::IsItemDeactivatedAfterEdit())
@@ -355,25 +355,25 @@ void EffectEditor::DrawGUI(RenderContext* context)
 				EffectManager::effectData.at(currentEffectHandle).name = effectNameBuffer;
 			}
 			// エフェクト再生ボタン
-			if (ImGui::Button("Play"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"再生")))
 			{
 				EffectManager::Play(currentEffectHandle);
 			}
 			SameLineIfButtonFits("Stop");
 			// エフェクト停止ボタン
-			if (ImGui::Button("Stop"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"停止")))
 			{
 				EffectManager::Stop(currentEffectHandle);
 			}
 
 			SameLineIfButtonFits("Add Emitter");
-			if (ImGui::Button("Add Emitter"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"エミッターを追加")))
 			{
 				auto& data = emitterDataList.emplace_back();
 				data.name = "Emitter" + std::to_string(emitterDataList.size() - 1);
 			}
 			SameLineIfButtonFits("Clear Emitters");
-			if (ImGui::Button("Clear Emitters"))
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"エミッターを消去")))
 			{
 				emitterDataList.clear();
 			}
@@ -407,7 +407,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					{
 						strncpy_s(nameBuffer, emitterData.name.c_str(), sizeof(nameBuffer));
 					}
-					ImGui::TextUnformatted("Name");
+					ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"名前"));
 					ImGui::SetNextItemWidth(-1.0f);
 					ImGui::InputText("##Name", nameBuffer, sizeof(nameBuffer));
 					if (ImGui::IsItemDeactivatedAfterEdit())
@@ -423,9 +423,9 @@ void EffectEditor::DrawGUI(RenderContext* context)
 
 					// テクスチャパスのバッファ
 					char texturePathBuffer[256]{};
-					ImGui::TextUnformatted("Texture Path");
+					ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"テクスチャのパス"));
 					// テクスチャパスの参照ボタン
-					if (ImGui::Button("Browse"))
+					if (ImGui::Button(reinterpret_cast<const char*>(u8"参照")))
 					{
 						// ファイルダイアログを開く
 						const char* filter = "Image Files\0*.png;*.jpg;*.jpeg;*.bmp;*.tga\0All Files\0*.*\0";
@@ -447,7 +447,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					{
 						emitterData.visualData.texturePath = texturePathBuffer;
 					}
-					ImGui::TextUnformatted("Texture Split");
+					ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"テクスチャの分割"));
 					ImGui::SetNextItemWidth(-1.0f);
 					ImGui::DragInt2("##Texture Split", reinterpret_cast<int*>(&emitterData.visualData.textureSplitCount.x), 1, 1, 100);
 
@@ -455,7 +455,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					{
 						const char* renderingModeItems[] = { "Billboard", "StretchedBillboard", "FixedRotation", "ScreenSpace" };
 						int renderingModeIndex = static_cast<int>(emitterData.visualData.renderingMode);
-						/*if (ImGui::Combo("Rendering Mode", &renderingModeIndex, renderingModeItems, IM_ARRAYSIZE(renderingModeItems)))
+						/*if (ImGui::Combo(reinterpret_cast<const char*>(u8"描画モード"), &renderingModeIndex, renderingModeItems, IM_ARRAYSIZE(renderingModeItems)))
 						{
 							emitterData.visualData.renderingMode = static_cast<EffectManager::RenderingMode>(renderingModeIndex);
 						}*/
@@ -467,7 +467,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 
 						const char* blendStateItems[] = { "Opaque", "Transparency", "Additive", "Subtraction", "Multiply" };
 						int blendStateIndex = static_cast<int>(emitterData.visualData.blendState);
-						/*if (ImGui::Combo("Blend State", &blendStateIndex, blendStateItems, IM_ARRAYSIZE(blendStateItems)))
+						/*if (ImGui::Combo(reinterpret_cast<const char*>(u8"ブレンド状態"), &blendStateIndex, blendStateItems, IM_ARRAYSIZE(blendStateItems)))
 						{
 							emitterData.visualData.blendState = static_cast<BlendState>(blendStateIndex);
 						}*/
@@ -482,7 +482,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					emitterData.emitData.maxParticles = (std::max)(1, emitterData.emitData.maxParticles);
 
 					// エミット設定
-					if (ImGui::TreeNode("Emit Settings"))
+					if (ImGui::TreeNode(reinterpret_cast<const char*>(u8"放出設定")))
 					{
 						DrawRangeInt("Emit Count", emitterData.emitData.emitCount, 1, 1, emitterData.emitData.maxParticles);
 						DrawRangeFloat("Initial Delay", emitterData.emitData.initialDelay, 0.1f, 0.0f, 100.0f);
@@ -490,7 +490,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						DrawVector3("Position", emitterData.emitData.positionOffset, 0.1f);
 
 						// TODO: イージング系のパラメータのUI修正するときはここいじる
-						if (ImGui::TreeNodeEx("Rotation", ImGuiTreeNodeFlags_DefaultOpen))
+						if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"回転"), ImGuiTreeNodeFlags_DefaultOpen))
 						{
 
 							DrawRangeVector3("Start Rotation", emitterData.emitData.rotationEuler, 1.0f);
@@ -505,15 +505,15 @@ void EffectEditor::DrawGUI(RenderContext* context)
 							ImGui::TreePop();
 						}
 						
-						//ImGui::Checkbox("Loop", &emitterData.emitData.loop);
+						//ImGui::Checkbox(reinterpret_cast<const char*>(u8"ループ"), &emitterData.emitData.loop);
 						ImGui::TreePop();
 					}
 					// 形状エミッタ設定
-					if (ImGui::TreeNode("Shape Emitter Settings"))
+					if (ImGui::TreeNode(reinterpret_cast<const char*>(u8"形状エミッター設定")))
 					{
 						const char* shapeTypeItems[] = { "Point", "Ring", "Sphere", "Cylinder" };
 						int shapeTypeIndex = static_cast<int>(emitterData.shapeData.shape);
-						/*if (ImGui::Combo("Shape Type", &shapeTypeIndex, shapeTypeItems, IM_ARRAYSIZE(shapeTypeItems)))
+						/*if (ImGui::Combo(reinterpret_cast<const char*>(u8"形状の種類"), &shapeTypeIndex, shapeTypeItems, IM_ARRAYSIZE(shapeTypeItems)))
 						{
 							emitterData.shapeData.shape = static_cast<EffectManager::ShapeType>(shapeTypeIndex);
 						}*/
@@ -525,7 +525,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 
 						const char* directionModeItems[] = { "Default", "Random", "Axis", "Outward", "Inward", "Normal" };
 						int directionModeIndex = static_cast<int>(emitterData.shapeData.directionMode);
-						/*if (ImGui::Combo("Direction Mode", &directionModeIndex, directionModeItems, IM_ARRAYSIZE(directionModeItems)))
+						/*if (ImGui::Combo(reinterpret_cast<const char*>(u8"方向モード"), &directionModeIndex, directionModeItems, IM_ARRAYSIZE(directionModeItems)))
 						{
 							emitterData.shapeData.directionMode = static_cast<EffectManager::DirectionMode>(directionModeIndex);
 						}*/
@@ -564,7 +564,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 						if (parameterFlags & Speed)
 						{
 							// TODO: イージング系のパラメータのUI修正するときはここいじる
-							if (ImGui::TreeNodeEx("Speed", ImGuiTreeNodeFlags_DefaultOpen))
+							if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"速度"), ImGuiTreeNodeFlags_DefaultOpen))
 							{
 								DrawRangeFloat("Start Speed", emitterData.shapeData.speed, 0.1f, 0.0f, 100.0f);
 								DrawRangeFloat("End Speed", emitterData.shapeData.endSpeed, 0.1f, 0.0f, 100.0f);
@@ -596,7 +596,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					}
 
 					// 動作設定
-					if (ImGui::TreeNode("Motion Settings"))
+					if (ImGui::TreeNode(reinterpret_cast<const char*>(u8"動作設定")))
 					{
 						DrawRangeVector3("Velocity", emitterData.motionData.velocity, 0.1f);
 						DrawRangeVector3("Acceleration", emitterData.motionData.acceleration, 0.1f);
@@ -606,10 +606,10 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					}
 
 					// ビジュアル設定
-					if (ImGui::TreeNode("Visual Settings"))
+					if (ImGui::TreeNode(reinterpret_cast<const char*>(u8"表示設定")))
 					{
 						// TODO: イージング系のパラメータのUI修正するときはここいじる
-						if (ImGui::TreeNodeEx("Size", ImGuiTreeNodeFlags_DefaultOpen))
+						if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"サイズ"), ImGuiTreeNodeFlags_DefaultOpen))
 						{
 							DrawRangeVector2("Start Size", emitterData.visualData.startSize, 0.1f);
 							DrawRangeVector2("End Size", emitterData.visualData.endSize, 0.1f);
@@ -653,7 +653,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 					}
 
 					// エミッタ削除ボタン
-					if (ImGui::Button("Remove"))
+					if (ImGui::Button(reinterpret_cast<const char*>(u8"削除")))
 					{
 						emitterDataList.erase(emitterDataList.begin() + i);
 						ImGui::TreePop();
@@ -887,9 +887,9 @@ bool EffectEditor::DrawRangeVector2(const char* label, CurryEngine::Range<Vector
 		IMGUI_PROPERTY_BEGIN();
 		ImGui::PushItemWidth(140);
 		// Minベクトル編集
-		//ImGui::Text("Min");
+		//ImGui::Text(reinterpret_cast<const char*>(u8"最小"));
 		//ImGui::SameLine();
-		IMGUI_PROPERTY("Min");
+		IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"最小"));
 		changed |= ImGui::DragFloat2("##Min", reinterpret_cast<float*>(&range.min), speed, min, max, "%.3f");
 		if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 		{
@@ -898,9 +898,9 @@ bool EffectEditor::DrawRangeVector2(const char* label, CurryEngine::Range<Vector
 		}
 		edited |= ImGui::IsItemDeactivatedAfterEdit();
 		// Maxベクトル編集
-		//ImGui::Text("Max");
+		//ImGui::Text(reinterpret_cast<const char*>(u8"最大"));
 		//ImGui::SameLine();
-		IMGUI_PROPERTY("Max");
+		IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"最大"));
 		changed |= ImGui::DragFloat2("##Max", reinterpret_cast<float*>(&range.max), speed, min, max, "%.3f");
 		if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 		{
@@ -974,9 +974,9 @@ bool EffectEditor::DrawRangeVector3(const char* label, CurryEngine::Range<Vector
 		IMGUI_PROPERTY_BEGIN();
 		ImGui::PushItemWidth(210);
 		// Minベクトル編集
-		//ImGui::Text("Min");
+		//ImGui::Text(reinterpret_cast<const char*>(u8"最小"));
 		//ImGui::SameLine();
-		IMGUI_PROPERTY("Min");
+		IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"最小"));
 		changed |= ImGui::DragFloat3("##Min", reinterpret_cast<float*>(&range.min), speed, min, max, "%.3f");
 		if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 		{
@@ -985,9 +985,9 @@ bool EffectEditor::DrawRangeVector3(const char* label, CurryEngine::Range<Vector
 		}
 		edited |= ImGui::IsItemDeactivatedAfterEdit();
 		// Maxベクトル編集
-		//ImGui::Text("Max");
+		//ImGui::Text(reinterpret_cast<const char*>(u8"最大"));
 		//ImGui::SameLine();
-		IMGUI_PROPERTY("Max");
+		IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"最大"));
 		changed |= ImGui::DragFloat3("##Max", reinterpret_cast<float*>(&range.max), speed, min, max, "%.3f");
 		if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 		{
@@ -1059,9 +1059,9 @@ bool EffectEditor::DrawRangeColor(const char* label, CurryEngine::Range<Color>& 
 		IMGUI_PROPERTY_BEGIN();
 		ImGui::PushItemWidth(200);
 		// Minカラー編集
-		//ImGui::Text("Min");
+		//ImGui::Text(reinterpret_cast<const char*>(u8"最小"));
 		//ImGui::SameLine();
-		IMGUI_PROPERTY("Min");
+		IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"最小"));
 		changed |= ImGui::ColorEdit4("##Min", &range.min.r);
 		if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 		{
@@ -1070,9 +1070,9 @@ bool EffectEditor::DrawRangeColor(const char* label, CurryEngine::Range<Color>& 
 		}
 		edited |= ImGui::IsItemDeactivatedAfterEdit();
 		// Maxカラー編集
-		//ImGui::Text("Max");
+		//ImGui::Text(reinterpret_cast<const char*>(u8"最大"));
 		//ImGui::SameLine();
-		IMGUI_PROPERTY("Max");
+		IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"最大"));
 		changed |= ImGui::ColorEdit4("##Max", &range.max.r);
 		if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 		{
@@ -1354,7 +1354,7 @@ bool EffectEditor::DrawGradient(uint32_t gradientId, ImGradientHDRState* state, 
 
 	if (ImGui::IsItemHovered())
 	{
-		ImGui::SetTooltip("Gradient Editor");
+		ImGui::SetTooltip(reinterpret_cast<const char*>(u8"グラデーションエディター"));
 	}
 
 	if (tempState->selectedMarkerType == ImGradientHDRMarkerType::Color)
@@ -1367,7 +1367,7 @@ bool EffectEditor::DrawGradient(uint32_t gradientId, ImGradientHDRState* state, 
 				IMGUI_PROPERTY_BEGIN();
 				bool changed = false;
 				static std::array<float, 3> prevColor = { 1,1,1 };
-				IMGUI_PROPERTY("Color");
+				IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"色"));
 				changed |= ImGui::ColorEdit3("##Color", selectedColorMarker->Color.data(), ImGuiColorEditFlags_Float);
 				if (ImGui::IsItemActivated()) /* 編集開始時に前回の値を保存 */
 				{
@@ -1407,7 +1407,7 @@ bool EffectEditor::DrawGradient(uint32_t gradientId, ImGradientHDRState* state, 
 
 	if (tempState->selectedMarkerType != ImGradientHDRMarkerType::Unknown)
 	{
-		if (ImGui::Button("Delete"))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"削除")))
 		{
 			if (tempState->selectedMarkerType == ImGradientHDRMarkerType::Color)
 			{

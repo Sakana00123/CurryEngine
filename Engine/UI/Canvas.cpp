@@ -82,6 +82,6 @@ std::vector<Graphic*> Canvas::GetGraphics() const {
 void Canvas::DrawProperty(const PropertyDrawContext& context)
 {
 	Component::DrawProperty(context); // 自動生成されたプロパティ描画を呼び出す
-	ImGui::Text("GraphicsCount:%d", static_cast<int>(GetGraphics().size()));
+	ImGui::Text(reinterpret_cast<const char*>(u8"描画要素数: %d"), static_cast<int>(GetGraphics().size()));
 }
 #endif // USE_IMGUI

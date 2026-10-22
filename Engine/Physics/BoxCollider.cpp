@@ -65,8 +65,8 @@ void BoxCollider::SyncWithPhysics()
 //	bool isChanged = false;
 //
 //
-//	//isChanged |= ImGui::DragFloat3("Center", &center.x);
-//	//isChanged |= ImGui::DragFloat3("Size", &size.x);
+//	//isChanged |= ImGui::DragFloat3(reinterpret_cast<const char*>(u8"中心"), &center.x);
+//	//isChanged |= ImGui::DragFloat3(reinterpret_cast<const char*>(u8"サイズ"), &size.x);
 //	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
 //	IMGUI_PROPERTY_VECTOR3("Size", size, isChanged);
 //

@@ -31,6 +31,6 @@ DirectionalLight DirectionalLightComponent::GetDirectionalLight() const
 #ifdef USE_IMGUI
 void DirectionalLightComponent::DrawProperty(const PropertyDrawContext& context)
 {
-	ImGui::ColorEdit4("Color", &color.r);
+	ImGui::ColorEdit4(reinterpret_cast<const char*>(u8"色"), &color.r);
 }
 #endif // USE_IMGUI

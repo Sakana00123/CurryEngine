@@ -26,19 +26,19 @@ namespace CurryEngine
 		auto attr = prop.GetAttribute("AssetTypeExtension");
 		if (!attr) 
 		{
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Error: AssetType attribute is missing.");
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), reinterpret_cast<const char*>(u8"エラー: AssetType属性がありません。"));
 			return;
 		}
 		std::string assetTypeStr = attr->args.empty() ? "" : attr->args[0];
 		if (assetTypeStr.empty())
 		{
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Error: AssetTypeExtension attribute has no argument.");
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), reinterpret_cast<const char*>(u8"エラー: AssetTypeExtension属性に引数がありません。"));
 			return;
 		}
 		AssetType assetType = Resources::AssetTypeUtils::DetectFromExtension(assetTypeStr);
 
 		// アセット選択ボタン
-		if (ImGui::Button("Select Asset"))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"アセットを選択")))
 		{
 			// ダイアログを開いてアセットを選択する処理
 			ImGuiWindowFlags popupFlags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDocking;

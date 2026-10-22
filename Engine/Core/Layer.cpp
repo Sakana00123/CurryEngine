@@ -97,12 +97,12 @@ void LayerManager::DrawLayerSettingsGUI()
 #ifdef USE_IMGUI
 	if (m_isOpen)
     {
-        ImGui::Begin("Layer Settings", &m_isOpen);
+        ImGui::Begin(reinterpret_cast<const char*>(u8"レイヤー設定###Layer Settings"), &m_isOpen);
 
 
 
 #if 1
-		if (ImGui::CollapsingHeader("Edit Layer Names", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"レイヤー名を編集"), ImGuiTreeNodeFlags_DefaultOpen))
         {
             // レイヤー名の編集
             for (int i = 0; i < MAX_LAYERS; ++i)
@@ -129,12 +129,12 @@ void LayerManager::DrawLayerSettingsGUI()
 
         const int numUsed = static_cast<int>(usedLayers.size());
 
-		if (ImGui::CollapsingHeader("Collision Matrix", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"衝突マトリックス"), ImGuiTreeNodeFlags_DefaultOpen))
         {
             // -------------------------------------------------------------------
             // ツールバー: Rename Layer
             // -------------------------------------------------------------------
-            if (ImGui::Button("Rename Layer"))
+            if (ImGui::Button(reinterpret_cast<const char*>(u8"レイヤー名を変更")))
             {
                 if (m_selectedLayer >= 0)
                 {
@@ -147,7 +147,7 @@ void LayerManager::DrawLayerSettingsGUI()
             // Rename ポップアップ
             if (ImGui::BeginPopupModal("##RenamePopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
             {
-                ImGui::Text("New name:");
+                ImGui::Text(reinterpret_cast<const char*>(u8"新しい名前:"));
                 ImGui::SetNextItemWidth(200.0f);
                 ImGui::InputText("##RenameInput", m_renameBuffer, sizeof(m_renameBuffer));
                 if (ImGui::Button("OK", ImVec2(80, 0)))
@@ -157,7 +157,7 @@ void LayerManager::DrawLayerSettingsGUI()
                     ImGui::CloseCurrentPopup();
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Cancel", ImVec2(80, 0)))
+                if (ImGui::Button(reinterpret_cast<const char*>(u8"キャンセル"), ImVec2(80, 0)))
                     ImGui::CloseCurrentPopup();
                 ImGui::EndPopup();
             }
@@ -439,7 +439,7 @@ void LayerManager::DrawLayerSettingsGUI()
             // -------------------------------------------------------------------
             ImGui::Separator();
 
-            if (ImGui::Button("Reset"))
+            if (ImGui::Button(reinterpret_cast<const char*>(u8"リセット")))
             {
                 // 全レイヤーのコリジョンをデフォルト（Everything）に戻す
                 for (int i = 0; i < MAX_LAYERS; ++i)

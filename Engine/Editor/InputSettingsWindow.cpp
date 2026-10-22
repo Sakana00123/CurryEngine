@@ -164,7 +164,7 @@ namespace CurryEngine::Editor
 		{
 			static const char* devices[] = { "Keyboard", "Mouse", "Gamepad" };
 			ImGui::PushItemWidth(-1.0f);
-			ImGui::TextUnformatted("Device");
+			ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"デバイス"));
 			if (ImGui::Combo("##Device", &editor.device, devices, IM_ARRAYSIZE(devices)))
 			{
 				editor.key = editor.device == 0 ? VK_SPACE : editor.device == 1 ? VK_LBUTTON : XINPUT_GAMEPAD_A;
@@ -173,7 +173,7 @@ namespace CurryEngine::Editor
 			}
 			if (editor.device == static_cast<int>(InputDevice::Keybord))
 			{
-				ImGui::TextUnformatted("Key: ");
+				ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"キー: "));
 				ImGui::SameLine();
 				ImGui::TextWrapped("%s", GetKeyboardKeyName(editor.key).c_str());
 				if (editor.capture && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)
@@ -184,7 +184,7 @@ namespace CurryEngine::Editor
 				}
 				if (ImGui::Button(editor.capture ? "Cancel capture" : "Capture Key"))
 					editor.capture = !editor.capture;
-				if (editor.capture) ImGui::TextWrapped("Press a keyboard key...");
+				if (editor.capture) ImGui::TextWrapped(reinterpret_cast<const char*>(u8"キーボードのキーを押してください..."));
 			}
 			else
 			{
@@ -200,7 +200,7 @@ namespace CurryEngine::Editor
 				if (!mouse)
 				{
 					static const char* types[] = { "Button", "Left Trigger", "Right Trigger" };
-					ImGui::TextUnformatted("Input Type");
+					ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"入力の種類"));
 					if (ImGui::Combo("##Type", &editor.type, types, IM_ARRAYSIZE(types)))
 						editor.key = editor.type == 0 ? XINPUT_GAMEPAD_A : 0;
 				}
@@ -212,7 +212,7 @@ namespace CurryEngine::Editor
 					std::string preview = "Button " + std::to_string(editor.key);
 					for (int i = 0; i < count; ++i)
 						if (keys[i] == editor.key) preview = names[i];
-					ImGui::TextUnformatted("Button");
+					ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"ボタン"));
 					if (ImGui::BeginCombo("##Button", preview.c_str()))
 					{
 						for (int i = 0; i < count; ++i)
@@ -275,7 +275,7 @@ namespace CurryEngine::Editor
 		if (!isOpen) return;
 #ifdef USE_IMGUI
 		ImGui::SetNextWindowSize(ImVec2(760.0f, 520.0f), ImGuiCond_FirstUseEver);
-		if (ImGui::Begin("Input Settings", &isOpen))
+		if (ImGui::Begin(reinterpret_cast<const char*>(u8"入力設定###Input Settings"), &isOpen))
 		{
 			static std::string selectedAction;
 			static int selectedBinding = -1;
@@ -296,8 +296,8 @@ namespace CurryEngine::Editor
 
 			if (ImGui::BeginTable("InputSettingsLayout", 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_BordersInnerV))
 			{
-				ImGui::TableSetupColumn("Actions", ImGuiTableColumnFlags_WidthStretch, 1.0f);
-				ImGui::TableSetupColumn("Properties", ImGuiTableColumnFlags_WidthStretch, 1.0f);
+				ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"アクション"), ImGuiTableColumnFlags_WidthStretch, 1.0f);
+				ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"プロパティ"), ImGuiTableColumnFlags_WidthStretch, 1.0f);
 				ImGui::TableNextRow();
 				ImGui::TableSetColumnIndex(0);
 				ImGui::BeginChild("ActionsPane", ImVec2(0.0f, 0.0f));
@@ -315,13 +315,13 @@ namespace CurryEngine::Editor
 					| ImGuiTableFlags_ScrollY | ImGuiTableFlags_SizingStretchProp,
 					ImGui::GetContentRegionAvail()))
 				{
-					ImGui::TableSetupColumn("Action", ImGuiTableColumnFlags_WidthStretch);
-					ImGui::TableSetupColumn("Add", ImGuiTableColumnFlags_WidthFixed, rowHeight);
+					ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"アクション"), ImGuiTableColumnFlags_WidthStretch);
+					ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"追加"), ImGuiTableColumnFlags_WidthFixed, rowHeight);
 					ImGui::TableSetupScrollFreeze(0, 1);
 					ImGui::TableNextRow(ImGuiTableRowFlags_Headers, rowHeight);
 					ImGui::TableSetColumnIndex(0);
 					ImGui::AlignTextToFramePadding();
-					ImGui::TextUnformatted("Actions");
+					ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"アクション"));
 					ImGui::TableSetColumnIndex(1);
 					if (ImGui::Button("+##AddAction", ImVec2(rowHeight, rowHeight)))
 					{
@@ -329,7 +329,7 @@ namespace CurryEngine::Editor
 						newActionName[0] = '\0';
 						openAddPopup = true;
 					}
-					if (ImGui::IsItemHovered()) ImGui::SetTooltip("Add action");
+					if (ImGui::IsItemHovered()) ImGui::SetTooltip(reinterpret_cast<const char*>(u8"アクションを追加"));
 
 					for (const auto& [action, keys] : InputSystem::GetInputKeys())
 					{
@@ -360,7 +360,7 @@ namespace CurryEngine::Editor
 						}
 						if (ImGui::BeginPopupContextItem("ActionMenu"))
 						{
-							if (ImGui::MenuItem("Delete Action"))
+							if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"アクションを削除")))
 							{
 								deleteRequested = true;
 								deleteAction = action;
@@ -375,7 +375,7 @@ namespace CurryEngine::Editor
 							expandAction = action;
 							openAddPopup = true;
 						}
-						if (ImGui::IsItemHovered()) ImGui::SetTooltip("Add binding to %s", action.c_str());
+						if (ImGui::IsItemHovered()) ImGui::SetTooltip(reinterpret_cast<const char*>(u8"%s に割り当てを追加"), action.c_str());
 						if (expanded)
 						{
 							for (size_t index = 0; index < keys.size(); ++index)
@@ -402,7 +402,7 @@ namespace CurryEngine::Editor
 								const bool bindingHovered = ImGui::IsItemHovered();
 								if (ImGui::BeginPopupContextItem("BindingMenu"))
 								{
-									if (ImGui::MenuItem("Delete Binding"))
+									if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"割り当てを削除")))
 									{
 										deleteRequested = true;
 										deleteAction = action;
@@ -452,7 +452,7 @@ namespace CurryEngine::Editor
 
 				ImGui::TableSetColumnIndex(1);
 				ImGui::BeginChild("PropertiesPane", ImVec2(0.0f, 0.0f));
-				ImGui::TextUnformatted("Properties");
+				ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"プロパティ"));
 				ImGui::Separator();
 				auto selected = actions.find(selectedAction);
 				if (selected == actions.end())
@@ -462,7 +462,7 @@ namespace CurryEngine::Editor
 					editingAction.clear();
 					editingBinding = -1;
 					editedBinding.capture = false;
-					ImGui::TextWrapped("Select an action or a binding to edit its properties.");
+					ImGui::TextWrapped(reinterpret_cast<const char*>(u8"アクションまたは割り当てを選択するとプロパティを編集できます。"));
 				}
 				else
 				{
@@ -478,16 +478,16 @@ namespace CurryEngine::Editor
 					}
 					if (selectedBinding < 0)
 					{
-						if (ImGui::CollapsingHeader("Action", ImGuiTreeNodeFlags_DefaultOpen))
+						if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"アクション"), ImGuiTreeNodeFlags_DefaultOpen))
 						{
-							ImGui::TextUnformatted("Name");
+							ImGui::TextUnformatted(reinterpret_cast<const char*>(u8"名前"));
 							ImGui::SetNextItemWidth(-1.0f);
 							ImGui::InputText("##ActionName", editedName.data(), editedName.size());
 							const std::string name = editedName.data();
 							const bool invalidName = IsActionNameEmpty(name) || (name != selectedAction && actions.contains(name));
-							if (invalidName) ImGui::TextWrapped("Enter a non-empty, unique action name.");
+							if (invalidName) ImGui::TextWrapped(reinterpret_cast<const char*>(u8"空でなく、重複しないアクション名を入力してください。"));
 							ImGui::BeginDisabled(invalidName || name == selectedAction);
-							if (ImGui::Button("Apply"))
+							if (ImGui::Button(reinterpret_cast<const char*>(u8"適用")))
 							{
 								auto node = actions.extract(selected);
 								node.key() = name;
@@ -498,17 +498,17 @@ namespace CurryEngine::Editor
 							}
 							ImGui::EndDisabled();
 							ImGui::SameLine();
-							if (ImGui::Button("Revert")) editingAction.clear();
+							if (ImGui::Button(reinterpret_cast<const char*>(u8"元に戻す"))) editingAction.clear();
 						}
 					}
-					else if (ImGui::CollapsingHeader("Binding", ImGuiTreeNodeFlags_DefaultOpen))
+					else if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"割り当て"), ImGuiTreeNodeFlags_DefaultOpen))
 					{
-						ImGui::TextWrapped("Action: %s", selectedAction.c_str());
+						ImGui::TextWrapped(reinterpret_cast<const char*>(u8"アクション: %s"), selectedAction.c_str());
 						DrawBindingEditor(editedBinding);
 						const char* error = GetBindingError(editedBinding, selectedAction, selectedBinding);
 						if (error) ImGui::TextWrapped("%s", error);
 						ImGui::BeginDisabled(error != nullptr || editedBinding.Matches(*selected->second[selectedBinding]));
-						if (ImGui::Button("Apply"))
+						if (ImGui::Button(reinterpret_cast<const char*>(u8"適用")))
 						{
 							selected->second[selectedBinding] = editedBinding.CreateKey();
 							editedBinding.capture = false;
@@ -516,7 +516,7 @@ namespace CurryEngine::Editor
 						}
 						ImGui::EndDisabled();
 						ImGui::SameLine();
-						if (ImGui::Button("Revert")) editedBinding.Load(*selected->second[selectedBinding]);
+						if (ImGui::Button(reinterpret_cast<const char*>(u8"元に戻す"))) editedBinding.Load(*selected->second[selectedBinding]);
 					}
 				}
 				ImGui::EndChild();
@@ -532,18 +532,18 @@ namespace CurryEngine::Editor
 				if (ImGui::BeginPopup("AddActionPopup"))
 				{
 					if (bindingAction.empty())
-						ImGui::InputText("Action Name", newActionName, IM_ARRAYSIZE(newActionName));
+						ImGui::InputText(reinterpret_cast<const char*>(u8"アクション名"), newActionName, IM_ARRAYSIZE(newActionName));
 					else
-						ImGui::Text("Action: %s", bindingAction.c_str());
+						ImGui::Text(reinterpret_cast<const char*>(u8"アクション: %s"), bindingAction.c_str());
 					DrawBindingEditor(newBinding);
 					const std::string actionName = bindingAction.empty() ? newActionName : bindingAction;
 					const bool invalidName = IsActionNameEmpty(actionName)
 						|| (bindingAction.empty() && actions.contains(actionName));
 					const char* error = GetBindingError(newBinding, actionName);
-					if (invalidName) ImGui::TextWrapped("Enter a non-empty, unique action name.");
+					if (invalidName) ImGui::TextWrapped(reinterpret_cast<const char*>(u8"空でなく、重複しないアクション名を入力してください。"));
 					if (error) ImGui::TextWrapped("%s", error);
 					ImGui::BeginDisabled(invalidName || error != nullptr);
-					if (ImGui::Button("Add"))
+					if (ImGui::Button(reinterpret_cast<const char*>(u8"追加")))
 					{
 						InputSystem::RegisterActionKey(actionName, newBinding.key,
 							static_cast<InputDevice>(newBinding.device), static_cast<KeyType>(newBinding.type));
@@ -555,7 +555,7 @@ namespace CurryEngine::Editor
 					}
 					ImGui::EndDisabled();
 					ImGui::SameLine();
-					if (ImGui::Button("Cancel")) ImGui::CloseCurrentPopup();
+					if (ImGui::Button(reinterpret_cast<const char*>(u8"キャンセル"))) ImGui::CloseCurrentPopup();
 					ImGui::EndPopup();
 				}
 			}

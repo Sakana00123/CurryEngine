@@ -308,10 +308,10 @@ bool StandaloneAudioSource::IsPlaying()
 void StandaloneAudioSource::DrawGUI()
 {
 #ifdef USE_IMGUI
-	if (ImGui::Button("Play")) {
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"再生"))) {
 		Play();
 	}
-	if (ImGui::Button("Stop")) {
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"停止"))) {
 		Stop();
 	}
 
@@ -319,20 +319,20 @@ void StandaloneAudioSource::DrawGUI()
 	if (sourceVoice)
 	{
 		sourceVoice->GetVolume(&volume);
-		if (ImGui::SliderFloat("Volume", &volume, 0, 1)) {
+		if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"音量"), &volume, 0, 1)) {
 			sourceVoice->SetVolume(volume);
 		}
 	}
 
 	ImGui::Separator();
 
-	if (ImGui::SliderFloat("MasterVolume", &masterVolume, 0, 1)) {
+	if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"マスター音量"), &masterVolume, 0, 1)) {
 		Audio::SetMasterVolume(masterVolume);
 	}
-	if (ImGui::SliderFloat("BgmVolume", &bgmVolume, 0, 1)) {
+	if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"BGM音量"), &bgmVolume, 0, 1)) {
 		Audio::SetBgmVolume(bgmVolume);
 	}
-	if (ImGui::SliderFloat("SeVolume", &seVolume, 0, 1)) {
+	if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"効果音音量"), &seVolume, 0, 1)) {
 		Audio::SetSeVolume(seVolume);
 	}
 #endif // USE_IMGUI

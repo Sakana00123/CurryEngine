@@ -483,18 +483,18 @@ void PrimitiveRenderer::CastShadow(RenderContext* rtx)
 void PrimitiveRenderer::DrawProperty(const PropertyDrawContext& context)
 {
 
-	if (ImGui::BeginCombo("Shape", 
+	if (ImGui::BeginCombo(reinterpret_cast<const char*>(u8"形状"),
 		shape == Shape::Cube ? "Cube" : shape == Shape::Cylinder ? "Cylinder" : "Sphere"))
 	{
-		if (ImGui::Selectable("Cube", shape == Shape::Cube))
+		if (ImGui::Selectable(reinterpret_cast<const char*>(u8"立方体"), shape == Shape::Cube))
 		{
 			SetShape(Shape::Cube);
 		}
-		if (ImGui::Selectable("Cylinder", shape == Shape::Cylinder))
+		if (ImGui::Selectable(reinterpret_cast<const char*>(u8"円柱"), shape == Shape::Cylinder))
 		{
 			SetShape(Shape::Cylinder);
 		}
-		if (ImGui::Selectable("Sphere", shape == Shape::Sphere))
+		if (ImGui::Selectable(reinterpret_cast<const char*>(u8"球"), shape == Shape::Sphere))
 		{
 			SetShape(Shape::Sphere);
 		}
@@ -502,7 +502,7 @@ void PrimitiveRenderer::DrawProperty(const PropertyDrawContext& context)
 	}
 
 #ifndef USE_MATERIAL
-	ImGui::ColorEdit4("Color", &color.r);
+	ImGui::ColorEdit4(reinterpret_cast<const char*>(u8"色"), &color.r);
 #else
 	Renderer::DrawProperty(context);
 #endif // !USE_MATERIAL

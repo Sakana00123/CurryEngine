@@ -56,7 +56,7 @@ void PostProcessPass::DrawProperty()
 {
 #ifdef USE_IMGUI
 	// ポストプロセスパスのプロパティ描画処理
-	ImGui::Text("PostProcessPass Properties");
+	ImGui::Text(reinterpret_cast<const char*>(u8"ポストプロセスのプロパティ"));
 	// ここにImGuiを使ったプロパティ描画コードを追加します。 
 	
 	ImGui::Image(m_postProcessTexture.GetColorBuffer(), ImVec2(256, 144)); // ポストプロセス後のテクスチャを表示

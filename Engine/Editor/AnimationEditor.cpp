@@ -165,11 +165,11 @@ void AnimationEditor::HandleZoom(TimelineView& view)
 void AnimationEditor::DrawGUI(RenderContext* context)
 {
 	// GUI 描画ロジックをここに実装
-	ImGui::Begin("Animation Editor", &isOpen);
+	ImGui::Begin(reinterpret_cast<const char*>(u8"アニメーションエディター###Animation Editor"), &isOpen);
 
 	//static bool isOpenAnimationEventWindow = false;
 	//static CurryEngine::Editor::AnimationTimelineEditor animationTimelineEditor;
-	//if (ImGui::Button("Create New AnimationEvent"))
+	//if (ImGui::Button(reinterpret_cast<const char*>(u8"アニメーションイベントを作成")))
 	//{
 	//	isOpenAnimationEventWindow = true;
 	//	
@@ -195,7 +195,7 @@ void AnimationEditor::DrawGUI(RenderContext* context)
 
 	//	animationTimelineEditor.SetTarget(newAnimationTimeline);
 	//}
-	//if (ImGui::Button("Open AnimationEvent Editor"))
+	//if (ImGui::Button(reinterpret_cast<const char*>(u8"アニメーションイベントエディターを開く")))
 	//{
 	//	isOpenAnimationEventWindow = true;
 	//	auto clipMeta = CurryEngine::Resources::AssetDatabase::GetOrImport(assetPath);
@@ -279,7 +279,7 @@ void AnimationEditor::DrawGUI(RenderContext* context)
 
 void AnimationEditor::DrawToolbar()
 {
-	if (ImGui::Button("Save##Animation") && animationClip)
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"保存##Animation")) && animationClip)
 	{
 		if (assetPath.empty() || !animationClip->SaveToFile(assetPath))
 		{
@@ -312,21 +312,21 @@ void AnimationEditor::DrawToolbar()
 		}
 	}
 
-	if (ImGui::Button("Play"))
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"再生")))
 	{
 		// 再生ボタンが押されたときの処理
 		isPlaying = true;
 	}
 	ImGui::SameLine();
 
-	if (ImGui::Button("Pause"))
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"一時停止")))
 	{
 		// 一時停止ボタンが押されたときの処理
 		isPlaying = false;
 	}
 
 	ImGui::SameLine();
-	if (ImGui::Button("Stop"))
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"停止")))
 	{
 		// 停止ボタンが押されたときの処理
 		currentTime = 0.0f; // 時間をリセット
@@ -335,7 +335,7 @@ void AnimationEditor::DrawToolbar()
 
 	ImGui::SameLine();
 	// ループ切替
-	ImGui::Checkbox("Loop", &isLooping);
+	ImGui::Checkbox(reinterpret_cast<const char*>(u8"ループ"), &isLooping);
 
 	ImGui::SameLine();
 
@@ -343,7 +343,7 @@ void AnimationEditor::DrawToolbar()
 	ImGui::SetNextItemWidth(100.0f);
 	const char* snapModeNames[] = { "None", "Frame", "Beat" };
 	int currentSnapMode = static_cast<int>(snapSettings.mode);
-	if (ImGui::Combo("Snap Mode", &currentSnapMode, snapModeNames, IM_ARRAYSIZE(snapModeNames)))
+	if (ImGui::Combo(reinterpret_cast<const char*>(u8"スナップモード"), &currentSnapMode, snapModeNames, IM_ARRAYSIZE(snapModeNames)))
 	{
 		snapSettings.mode = static_cast<SnapMode>(currentSnapMode);
 	}
@@ -392,14 +392,14 @@ void AnimationEditor::DrawToolbar()
 	// 時間スライダー
 	ImGui::SetNextItemWidth(100.0f);
 	ImGui::SliderFloat(
-		"Time",
+		reinterpret_cast<const char*>(u8"時間"),
 		&currentTime, // 現在の時間を指すポインタを指定
 		0.0f,
 		length
 	);
 
 	ImGui::SameLine();
-	ImGui::Text("%.2f / %.2f sec",
+	ImGui::Text(reinterpret_cast<const char*>(u8"%.2f / %.2f 秒"),
 		currentTime,
 		length
 	);
@@ -550,7 +550,7 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 		if (hovered && !dragState.dragging)
 		{
 			// ホバー時のツールチップ表示
-			ImGui::SetTooltip("Time: %.2f\nValue: %.2f", key.time, key.value);
+			ImGui::SetTooltip(reinterpret_cast<const char*>(u8"時間: %.2f\n値: %.2f"), key.time, key.value);
 		}
 
 		// クリックで選択
@@ -661,11 +661,11 @@ void AnimationEditor::DrawKeys(ValueTrack* track, ImVec2 origin, float pixelsPer
 	//	{
 	//		if (selectedKey.IsValid())
 	//		{
-	//			if (ImGui::MenuItem("Delete", "Del"))
+	//			if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"削除"), "Del"))
 	//			{
 	//				DeleteSelectedKey();
 	//			}
-	//			if (ImGui::MenuItem("Unselect"))
+	//			if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"選択解除")))
 	//			{
 	//				UnselectKey();
 	//			}
@@ -714,13 +714,13 @@ void AnimationEditor::DrawInspector()
 	if (selectedKey.IsValid())
 	{
 		auto& key = selectedKey.track->keys[selectedKey.keyIndex];
-		ImGui::Text("Selected Keyframe:");
-		ImGui::DragFloat("Time", &key.time, 0.01f, 0.0f, length);
-		ImGui::DragFloat("Value", &key.value, 0.1f);
+		ImGui::Text(reinterpret_cast<const char*>(u8"選択中のキーフレーム:"));
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"時間"), &key.time, 0.01f, 0.0f, length);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"値"), &key.value, 0.1f);
 	}
 	else
 	{
-		ImGui::Text("No selection");
+		ImGui::Text(reinterpret_cast<const char*>(u8"選択なし"));
 	}
 	ImGui::PopID();
 }

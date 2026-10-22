@@ -659,13 +659,13 @@ void Text::DrawProperty(const PropertyDrawContext& context)
 
     std::vector<char> buf(bufSize, '\0');
     strncpy_s(buf.data(), bufSize, str.c_str(), _TRUNCATE);
-    if (ImGui::InputTextMultiline("Text", buf.data(), bufSize))
+    if (ImGui::InputTextMultiline(reinterpret_cast<const char*>(u8"テキスト"), buf.data(), bufSize))
     {
         SetText(StringToWstring(std::string(buf.data())));
     }
 
-    ImGui::Text("FontName: %ls", faceName.c_str());
-    ImGui::Text("lineHeight: %d", lineHeight);
+    ImGui::Text(reinterpret_cast<const char*>(u8"フォント名: %ls"), faceName.c_str());
+    ImGui::Text(reinterpret_cast<const char*>(u8"行の高さ: %d"), lineHeight);
 
     IMGUI_PROPERTY_BEGIN();
     bool edited = false;
@@ -675,7 +675,7 @@ void Text::DrawProperty(const PropertyDrawContext& context)
     ImGui::PushID("globalFlag");
 	ImGui::SameLine();
 	static bool globalFlag = false;
-	ImGui::Checkbox("ChangeAll", &globalFlag);
+	ImGui::Checkbox(reinterpret_cast<const char*>(u8"すべて変更"), &globalFlag);
 	ImGui::PopID();
     if (edited) 
     {
@@ -757,7 +757,7 @@ void Text::DrawProperty(const PropertyDrawContext& context)
 
 	ImGui::Separator();
 
-	ImGui::Text("Character Modifiers:");
+	ImGui::Text(reinterpret_cast<const char*>(u8"キャラクターの変更項目:"));
 
     // Modifierのテスト
 
@@ -765,14 +765,14 @@ void Text::DrawProperty(const PropertyDrawContext& context)
 	static bool scaleEnable = false;
 	static bool rotationEnable = false;
 	static bool colorMulEnable = false;
-    ImGui::Checkbox("Position Offset", &posOffsetEnable);
-    ImGui::Checkbox("Scale", &scaleEnable);
-    ImGui::Checkbox("Rotation", &rotationEnable);
-    ImGui::Checkbox("Color Multiply", &colorMulEnable);
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"位置オフセット"), &posOffsetEnable);
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"拡大率"), &scaleEnable);
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"回転"), &rotationEnable);
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"色を乗算"), &colorMulEnable);
 
     // すべてのテキストをウェーブさせる
 	static float waveTime = 0.0f;
-    if (ImGui::Button("Apply Wave Modifier"))
+    if (ImGui::Button(reinterpret_cast<const char*>(u8"波形変更を適用")))
     {
 		waveTime = 0.0f; // Reset wave time when button is pressed
 	}

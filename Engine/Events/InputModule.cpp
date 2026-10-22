@@ -172,22 +172,22 @@ void InputModule::Process(float deltaTime)
 void InputModule::DrawProperty(const PropertyDrawContext& context)
 {
 
-    ImGui::DragFloat("DragThreshold", &dragThreshold, 1.0f, 0.f, 1000.f);
+    ImGui::DragFloat(reinterpret_cast<const char*>(u8"ドラッグしきい値"), &dragThreshold, 1.0f, 0.f, 1000.f);
 
     ImGui::Separator();
 
-    ImGui::DragFloat2("ScreenPos", &pointerEventData->position.x);
-    ImGui::DragFloat2("LastScreenPos", &pointerEventData->lastPosition.x);
-    ImGui::DragFloat2("PressPos", &pointerEventData->pressPosition.x);
-    ImGui::DragFloat2("Delta", &pointerEventData->delta.x);
-    ImGui::Text("PointerEnter:%s", pointerEventData->GetPointerEnter() ? pointerEventData->GetPointerEnter()->name.c_str() : "None");
-    ImGui::Text("PointerPress:%s", pointerEventData->GetPointerPress() ? pointerEventData->GetPointerPress()->name.c_str() : "None");
-    ImGui::Text("LastPress:%s", pointerEventData->GetLastPress() ? pointerEventData->GetLastPress()->name.c_str() : "None");
-    ImGui::Text("PointerDrag:%s", pointerEventData->GetPointerDrag() ? pointerEventData->GetPointerDrag()->name.c_str() : "None");
+    ImGui::DragFloat2(reinterpret_cast<const char*>(u8"画面位置"), &pointerEventData->position.x);
+    ImGui::DragFloat2(reinterpret_cast<const char*>(u8"前回の画面位置"), &pointerEventData->lastPosition.x);
+    ImGui::DragFloat2(reinterpret_cast<const char*>(u8"押下位置"), &pointerEventData->pressPosition.x);
+    ImGui::DragFloat2(reinterpret_cast<const char*>(u8"差分"), &pointerEventData->delta.x);
+    ImGui::Text(reinterpret_cast<const char*>(u8"ポインターの進入: %s"), pointerEventData->GetPointerEnter() ? pointerEventData->GetPointerEnter()->name.c_str() : "None");
+    ImGui::Text(reinterpret_cast<const char*>(u8"ポインターの押下: %s"), pointerEventData->GetPointerPress() ? pointerEventData->GetPointerPress()->name.c_str() : "None");
+    ImGui::Text(reinterpret_cast<const char*>(u8"最後の押下: %s"), pointerEventData->GetLastPress() ? pointerEventData->GetLastPress()->name.c_str() : "None");
+    ImGui::Text(reinterpret_cast<const char*>(u8"ポインターのドラッグ: %s"), pointerEventData->GetPointerDrag() ? pointerEventData->GetPointerDrag()->name.c_str() : "None");
     bool dragging = pointerEventData->dragging;
-    ImGui::Checkbox("Dragging", &dragging);
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"ドラッグ中"), &dragging);
     ImGui::Separator();
-    ImGui::Text("HitObject:%s", pointerEventData->pointerCurrentRaycast.IsValid() ? pointerEventData->pointerCurrentRaycast.GetHitGraphic()->GetOwner()->GetName().c_str() : "None");
-    ImGui::Text("CurrentSelectedGameObject:%s", eventSystem->GetSelectedGameObject() ? eventSystem->GetSelectedGameObject()->GetName().c_str() : "None");
+    ImGui::Text(reinterpret_cast<const char*>(u8"衝突対象: %s"), pointerEventData->pointerCurrentRaycast.IsValid() ? pointerEventData->pointerCurrentRaycast.GetHitGraphic()->GetOwner()->GetName().c_str() : "None");
+    ImGui::Text(reinterpret_cast<const char*>(u8"現在選択中のオブジェクト: %s"), eventSystem->GetSelectedGameObject() ? eventSystem->GetSelectedGameObject()->GetName().c_str() : "None");
 }
 #endif // USE_IMGUI

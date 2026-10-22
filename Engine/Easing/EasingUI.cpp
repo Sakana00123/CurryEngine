@@ -31,7 +31,7 @@ void EasingAnchoredPosition::Update(float deltaTime)
 #ifdef USE_IMGUI
 void EasingAnchoredPosition::DrawProperty(const PropertyDrawContext& context)
 {
-	ImGui::Checkbox("useUnscaledTime", &useUnscaledTime);
+	ImGui::Checkbox(reinterpret_cast<const char*>(u8"非スケール時間を使用"), &useUnscaledTime);
 
 	const char* typeNames[] = { "InQuad", "OutQuad", "InOutQuad", "InCubic", "OutCubic", "InOutCubic", "InQuart", "OutQuart", "InOutQuart", "InQuint", "OutQuint", "InOutQuint", "InSine", "OutSine",
 		"InOutSine", "InExp", "OutExp", "InOutExp", "InCirc", "OutCirc", "InOutCirc", "InBounce", "OutBounce", "InOutBounce", "InBack", "OutBack", "InOutBack", "Linear", "None" };
@@ -40,29 +40,29 @@ void EasingAnchoredPosition::DrawProperty(const PropertyDrawContext& context)
 	{
 		item.easeData.startValue = 0.0f;
 		item.easeData.endValue = 1.0f;
-		ImGui::Combo("function", &typeIndex, typeNames, IM_ARRAYSIZE(typeNames));
+		ImGui::Combo(reinterpret_cast<const char*>(u8"関数"), &typeIndex, typeNames, IM_ARRAYSIZE(typeNames));
 		EasingHandler::ToEasingFunction(static_cast<EaseType>(typeIndex), item.function, item.backFunction);
 
 		if (typeIndex != IM_ARRAYSIZE(typeNames) - 1)
 		{
-			if (ImGui::Button("SetCurrentValue##from")) {
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"現在値を設定##from"))) {
 				from = GetOwner()->GetComponent<RectTransform>()->GetAnchoredPosition();
 			}
 			ImGui::SameLine();
-			ImGui::DragFloat2("From", &from.x, 0.1f);
+			ImGui::DragFloat2(reinterpret_cast<const char*>(u8"開始"), &from.x, 0.1f);
 			
-			if (ImGui::Button("SetCurrentValue##to")) {
+			if (ImGui::Button(reinterpret_cast<const char*>(u8"現在値を設定##to"))) {
 				to = GetOwner()->GetComponent<RectTransform>()->GetAnchoredPosition();
 			}
 			ImGui::SameLine();
-			ImGui::DragFloat2("To", &to.x, 0.1f);
+			ImGui::DragFloat2(reinterpret_cast<const char*>(u8"終了"), &to.x, 0.1f);
 
 			if (item.backFunction)
 			{
-				ImGui::DragFloat("Back", &item.easeData.backValue, 0.1f);
+				ImGui::DragFloat(reinterpret_cast<const char*>(u8"後方"), &item.easeData.backValue, 0.1f);
 			}
 		}
-		ImGui::DragFloat("Duration", &item.easeData.totalTime, 0.1f);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"継続時間"), &item.easeData.totalTime, 0.1f);
 
 
 		static float values[128];
@@ -84,7 +84,7 @@ void EasingAnchoredPosition::DrawProperty(const PropertyDrawContext& context)
 		}
 	}
 
-	if (ImGui::Button("Play"))
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"再生")))
 	{
 		handler.Clear();
 		handler.AddEasing(item);

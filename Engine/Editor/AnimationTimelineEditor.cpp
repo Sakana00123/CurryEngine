@@ -26,7 +26,7 @@ namespace CurryEngine::Editor
 	void AnimationTimelineEditor::Draw(std::weak_ptr<RuntimeAnimatorController> runtimeController, RenderContext* context)
     {
 		ZoneScopedN("AnimationTimelineEditor::Draw");
-        if (!m_timeline) { ImGui::TextDisabled("No Select"); return; }
+        if (!m_timeline) { ImGui::TextDisabled(reinterpret_cast<const char*>(u8"未選択")); return; }
 		bool mousePressed = ImGui::IsMouseDown(ImGuiMouseButton_Left);
 		// マウス押下状態をビットフラグに設定
 		SetStateFlag(StateFlags::MousePressed, mousePressed);
@@ -93,13 +93,13 @@ namespace CurryEngine::Editor
 
 
 		// トラック追加ボタンと再生・停止ボタン
-        if (ImGui::Button("+ Track"))
+        if (ImGui::Button(reinterpret_cast<const char*>(u8"+ トラック")))
         {
             m_timeline->AddEventTrack("New Track");
         }
         ImGui::SameLine();
         // 再生ボタン
-        if (ImGui::Button(isPlaying ? "Pause" : "Play"))
+        if (ImGui::Button(isPlaying ? reinterpret_cast<const char*>(u8"一時停止") : reinterpret_cast<const char*>(u8"再生")))
         {
 			isPlaying = !isPlaying;
         }
@@ -123,14 +123,14 @@ namespace CurryEngine::Editor
 		}
         ImGui::SameLine();
 		// 停止して最初の位置に戻すボタン
-        if (ImGui::Button("Stop"))
+        if (ImGui::Button(reinterpret_cast<const char*>(u8"停止")))
         {
             isPlaying = false;
             currentTime = 0.0f;
         }
         ImGui::SameLine();
 		// ループ切替
-		ImGui::Text("Loop");
+		ImGui::Text(reinterpret_cast<const char*>(u8"ループ"));
 		ImGui::SameLine();
         if (ImGui::Checkbox("##Loop", &isLooping))
         {
@@ -138,7 +138,7 @@ namespace CurryEngine::Editor
 		}
         ImGui::SameLine();
 		// イベント発火切替
-        ImGui::Text("Event Fire");
+        ImGui::Text(reinterpret_cast<const char*>(u8"イベントを発火"));
 		ImGui::SameLine();
         if (ImGui::Checkbox("##Fire Event", &isFireEventEnabled))
         {
@@ -146,11 +146,11 @@ namespace CurryEngine::Editor
 		}
         ImGui::SameLine();
         ImGui::PushItemWidth(100);
-        ImGui::DragFloat("Zoom", &m_pixelsPerSecond, 1.0f, 20.0f, 1000.0f);
+        ImGui::DragFloat(reinterpret_cast<const char*>(u8"ズーム"), &m_pixelsPerSecond, 1.0f, 20.0f, 1000.0f);
         ImGui::PopItemWidth();
 		ImGui::SameLine();
         // ファイルの保存
-        if (ImGui::Button("Save##TimelineEditor"))
+        if (ImGui::Button(reinterpret_cast<const char*>(u8"保存##TimelineEditor")))
         {
 			m_timeline->SaveToFile(m_timeline->GetPath());
         }
@@ -185,7 +185,7 @@ namespace CurryEngine::Editor
         }
         /*else
         {
-            ImGui::Text("Target: None");
+            ImGui::Text(reinterpret_cast<const char*>(u8"対象: なし"));
 		}
 		ImGui::SameLine();
         if (ImGui::Button("...##SelectTarget"))
@@ -392,14 +392,14 @@ namespace CurryEngine::Editor
 				// イベントタイプの選択
                 const char* eventTypes[] = { "Custom", "SoundEffect", "ParticleEffect" };
                 int currentTypeIndex = static_cast<int>(tracks[i].type);
-				ImGui::Text("Event Type");
+				ImGui::Text(reinterpret_cast<const char*>(u8"イベントの種類"));
 				ImGui::SameLine();
                 if (ImGui::Combo(("##Event Type" + std::to_string(i)).c_str(), &currentTypeIndex, eventTypes, IM_ARRAYSIZE(eventTypes)))
                 {
                     tracks[i].type = static_cast<CurryEngine::Resources::AnimationEventType>(currentTypeIndex);
 				}
 				// トラック削除
-                if (ImGui::Button("Delete Track"))
+                if (ImGui::Button(reinterpret_cast<const char*>(u8"トラックを削除")))
                 {
                     tracks.erase(tracks.begin() + i);
                     ImGui::CloseCurrentPopup();
@@ -459,7 +459,7 @@ namespace CurryEngine::Editor
                 {
 					// カスタムイベントの場合、関数名の検索と選択
                     static std::string searchFunctionClass = "";
-                    ImGui::Text("Search Function Class");
+                    ImGui::Text(reinterpret_cast<const char*>(u8"関数のクラスを検索"));
                     ImGui::SameLine();
                     ImGui::PushItemWidth(200);
                     char searchBuf[128];
@@ -467,7 +467,7 @@ namespace CurryEngine::Editor
                     if (ImGui::InputText("##SearchFunctionClass", searchBuf, sizeof(searchBuf))) searchFunctionClass = searchBuf;
                     ImGui::PopItemWidth();
                     ImGui::SameLine();
-                    if (ImGui::Button("Search"))
+                    if (ImGui::Button(reinterpret_cast<const char*>(u8"検索")))
                     {
                         // 検索処理を実装する
                         if (auto* classMeta = ReflectionRegistry::FindClass(searchFunctionClass))
@@ -485,7 +485,7 @@ namespace CurryEngine::Editor
                     {
                         if (auto* classMeta = ReflectionRegistry::FindClass(searchFunctionClass))
                         {
-                            ImGui::Text("%d Functions in class: %s", classMeta->methods.size(), searchFunctionClass.c_str());
+                            ImGui::Text(reinterpret_cast<const char*>(u8"関数 %d 件 (クラス: %s)"), classMeta->methods.size(), searchFunctionClass.c_str());
                             int methodIndex = 0;
                             for (const auto& method : classMeta->methods)
                             {
@@ -498,7 +498,7 @@ namespace CurryEngine::Editor
                                 ImGui::PopID();
                             }
                         }
-                        if (ImGui::Button("Close"))
+                        if (ImGui::Button(reinterpret_cast<const char*>(u8"閉じる")))
                         {
                             ImGui::CloseCurrentPopup();
                         }
@@ -506,7 +506,7 @@ namespace CurryEngine::Editor
                     }
                     if (ImGui::BeginPopup("FunctionNotFoundPopup"))
                     {
-                        ImGui::Text("Class not found: %s", searchFunctionClass.c_str());
+                        ImGui::Text(reinterpret_cast<const char*>(u8"クラスが見つかりません: %s"), searchFunctionClass.c_str());
 
                         // 似ているクラス名の候補を表示する
                         std::vector<std::string> similarClasses;
@@ -520,7 +520,7 @@ namespace CurryEngine::Editor
                         if (!similarClasses.empty())
                         {
                             // 似ているクラス名の候補を表示
-                            ImGui::Text("%d similar classes found:", similarClasses.size());
+                            ImGui::Text(reinterpret_cast<const char*>(u8"類似するクラスが %d 件見つかりました:"), similarClasses.size());
                             for (const auto& similarClass : similarClasses)
                             {
                                 ImGui::PushID(similarClass.c_str());
@@ -534,12 +534,12 @@ namespace CurryEngine::Editor
                         }
                         else
                         {
-                            ImGui::Text("No similar classes found.");
+                            ImGui::Text(reinterpret_cast<const char*>(u8"類似するクラスはありません。"));
                         }
 
 
                         // 閉じるボタン
-                        if (ImGui::Button("Close"))
+                        if (ImGui::Button(reinterpret_cast<const char*>(u8"閉じる")))
                         {
                             ImGui::CloseCurrentPopup();
                         }
@@ -549,9 +549,9 @@ namespace CurryEngine::Editor
                     // イベント名とパラメータの編集
                     char nameBuf[128];
                     strncpy_s(nameBuf, key.eventName.c_str(), sizeof(nameBuf));
-                    if (ImGui::InputText("Event Name", nameBuf, sizeof(nameBuf))) key.eventName = nameBuf;
+                    if (ImGui::InputText(reinterpret_cast<const char*>(u8"イベント名"), nameBuf, sizeof(nameBuf))) key.eventName = nameBuf;
 					// 型に応じたパラメータの編集
-                    ImGui::Text("Type");
+                    ImGui::Text(reinterpret_cast<const char*>(u8"種類"));
 					ImGui::SameLine();
 					const char* paramTypes[] = { "None", "String", "Int", "Float", "Bool"};
 					static const std::string paramTypeNames[] = { "", "string", "int", "float", "bool" };
@@ -599,24 +599,24 @@ namespace CurryEngine::Editor
                     if (paramType == "int")
                     {
                         int intParam = std::any_cast<int>(key.paramValue);
-                        if (ImGui::InputInt("Int Param", &intParam)) key.paramValue = intParam;
+                        if (ImGui::InputInt(reinterpret_cast<const char*>(u8"整数パラメーター"), &intParam)) key.paramValue = intParam;
                     }
                     else if (paramType == "float")
                     {
                         float floatParam = std::any_cast<float>(key.paramValue);
-                        if (ImGui::InputFloat("Float Param", &floatParam)) key.paramValue = floatParam;
+                        if (ImGui::InputFloat(reinterpret_cast<const char*>(u8"小数パラメーター"), &floatParam)) key.paramValue = floatParam;
                     }
                     else if (paramType == "bool")
                     {
                         bool boolParam = std::any_cast<bool>(key.paramValue);
-                        if (ImGui::Checkbox("Bool Param", &boolParam)) key.paramValue = boolParam;
+                        if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"真偽値パラメーター"), &boolParam)) key.paramValue = boolParam;
                     }
 					else if (paramType == "string")
                     {
                         char paramBuf[128];
                         std::string stringParam = std::any_cast<std::string>(key.paramValue);
                         strncpy_s(paramBuf, stringParam.c_str(), sizeof(paramBuf));
-                        if (ImGui::InputText("String Param", paramBuf, sizeof(paramBuf))) key.paramValue = paramBuf;
+                        if (ImGui::InputText(reinterpret_cast<const char*>(u8"文字列パラメーター"), paramBuf, sizeof(paramBuf))) key.paramValue = paramBuf;
                     }
                     break;
                 }
@@ -651,7 +651,7 @@ namespace CurryEngine::Editor
                     
                     // コンボボックスの表示
 					std::string soundName = assetIdToNameMap.count(assetId) ? assetIdToNameMap[assetId] : "None";
-					ImGui::Text("Sound: %s", soundName.c_str());
+					ImGui::Text(reinterpret_cast<const char*>(u8"サウンド: %s"), soundName.c_str());
 					ImGui::SameLine();
                     if (ImGui::Button("...##Select Sound"))
                     {
@@ -698,7 +698,7 @@ namespace CurryEngine::Editor
                         ImGui::EndPopup();
 					}
 					// サウンドの再生音量の編集
-					ImGui::Text("Volume");
+					ImGui::Text(reinterpret_cast<const char*>(u8"音量"));
 					ImGui::SameLine();
 					if (ImGui::DragFloat("##SoundVolume", &soundParam.volume, 0.01f, 0.0f, 1.0f))
                     {
@@ -738,7 +738,7 @@ namespace CurryEngine::Editor
                     
 					// コンボボックスの表示
 					std::string particleName = assetIdToNameMap.count(assetId) ? assetIdToNameMap[assetId] : "None";
-					ImGui::Text("Particle: %s", particleName.c_str());
+					ImGui::Text(reinterpret_cast<const char*>(u8"パーティクル: %s"), particleName.c_str());
 					ImGui::SameLine();
                     if (ImGui::Button("...##Select Particle"))
                     {
@@ -807,7 +807,7 @@ namespace CurryEngine::Editor
                         updateNodeNames();
 					}
 
-					ImGui::Text("Target Node: %s", particleParam.targetNodeId >= 0 && particleParam.targetNodeId < nodeNames.size() ? nodeNames[particleParam.targetNodeId].c_str() : "None");
+					ImGui::Text(reinterpret_cast<const char*>(u8"対象ノード: %s"), particleParam.targetNodeId >= 0 && particleParam.targetNodeId < nodeNames.size() ? nodeNames[particleParam.targetNodeId].c_str() : "None");
 					ImGui::SameLine();
                     if (ImGui::Button("...##Select Target Node"))
                     {
@@ -836,7 +836,7 @@ namespace CurryEngine::Editor
 
 
 					// パーティクルの再生位置の編集
-					ImGui::Text("Position");
+					ImGui::Text(reinterpret_cast<const char*>(u8"位置"));
 					ImGui::SameLine();
                     if (ImGui::DragFloat3("##ParticlePosition", &particleParam.offset.x, 0.1f))
                     {

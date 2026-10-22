@@ -60,8 +60,8 @@ void SphereCollider::SyncWithPhysics()
 //	IMGUI_PROPERTY_BEGIN();
 //	Collider::DrawProperty(context);
 //	bool isChanged = false;
-//	//isChanged |= ImGui::DragFloat3("Center", &center.x);
-//	//isChanged |= ImGui::DragFloat("Radius", &radius, 0.1f, 0.0f, FLT_MAX);
+//	//isChanged |= ImGui::DragFloat3(reinterpret_cast<const char*>(u8"中心"), &center.x);
+//	//isChanged |= ImGui::DragFloat(reinterpret_cast<const char*>(u8"半径"), &radius, 0.1f, 0.0f, FLT_MAX);
 //	IMGUI_PROPERTY_VECTOR3("Center", center, isChanged);
 //	IMGUI_PROPERTY_FLOAT("Radius", radius, isChanged, 0.1f, 0.0f, FLT_MAX);
 //

@@ -91,7 +91,7 @@ namespace CurryEngine
 		auto selection = objectManager->GetEditorSelection();
 		auto& objects = objectManager->GetAllMutable();
 		auto selectNode = selection->GetPrimarySelected().get();
-		if (ImGui::Begin("Hierarchy", nullptr, ImGuiWindowFlags_None))
+		if (ImGui::Begin(reinterpret_cast<const char*>(u8"階層###Hierarchy"), nullptr, ImGuiWindowFlags_None))
 		{
 			auto* window = ImGui::GetCurrentWindow();
 			bool isNotDestroyObject = false;
@@ -458,7 +458,7 @@ namespace CurryEngine
 #if 0
 			//DontDestroyOnLoadで保持されているオブジェクト
 			if (!PersistentObjectManager::GetObjects().empty()) {
-				if (ImGui::TreeNodeEx("Don't Destroy Objects", ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick)) {
+				if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"破棄しないオブジェクト"), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick)) {
 					for (auto& object : PersistentObjectManager::GetObjects()) {
 						//開かれている場合、子階層にも同じ処理をする
 						if (!object || object->parent) continue;
@@ -523,7 +523,7 @@ namespace CurryEngine
 					if (!selection->IsEmpty())
 					{
 						// 削除ボタン
-						if (ImGui::MenuItem("Delete", "Del", false))
+						if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"削除"), "Del", false))
 						{
 							auto selectAll = selection->GetSelectedAll();
 							for (int i = static_cast<int>(selectAll.size()) - 1; i >= 0; --i)
@@ -536,12 +536,12 @@ namespace CurryEngine
 							selection->Clear();
 						}
 						// 複製ボタン
-						if (ImGui::MenuItem("Duplicate", "Ctrl+D", false))
+						if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"複製"), "Ctrl+D", false))
 						{
 							DuplicateGameObject(objectManager, selection, objects, true);
 						}
 						//// 優先度変更ボタン
-						//if (ImGui::MenuItem("Increase Priority", "Alt+Up", false))
+						//if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"優先度を上げる"), "Alt+Up", false))
 						//{
 						//	for (auto& pObj : selection->GetSelectedAll())
 						//	{
@@ -550,7 +550,7 @@ namespace CurryEngine
 						//		pObj->priority++;
 						//	}
 						//}
-						//if (ImGui::MenuItem("Decrease Priority", "Alt+Down", false))
+						//if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"優先度を下げる"), "Alt+Down", false))
 						//{
 						//	for (auto& pObj : selection->GetSelectedAll())
 						//	{
@@ -559,7 +559,7 @@ namespace CurryEngine
 						//}
 						// プレハブ化ボタン
 						// TODO: プレハブ化を右クリックメニューからではなく、ドラッグアンドドロップでできるようにする。（複数選択のときの挙動が難しいため。）
-						if (ImGui::MenuItem("Create Prefab", "", false))
+						if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"プレハブを作成"), "", false))
 						{
 							if (selectNode)
 							{

@@ -82,33 +82,33 @@ void RectTransform::Update(float elapsedTime)
 void RectTransform::DrawProperty(const PropertyDrawContext& context)
 {
 	if (isOpen) {
-		isOpen = !(ImGui::Button("Cancel") || DrawAnchorPreset());
+		isOpen = !(ImGui::Button(reinterpret_cast<const char*>(u8"キャンセル")) || DrawAnchorPreset());
 	}
 	else {
-		isOpen = ImGui::Button("AnchorPreset");
+		isOpen = ImGui::Button(reinterpret_cast<const char*>(u8"アンカープリセット"));
 	}
 
 	/*if (anchorMin.x != anchorMax.x || anchorMin.y != anchorMax.y) {
 		float left = GetLeft();
-		if (ImGui::DragFloat("Left", &left)) {
+		if (ImGui::DragFloat(reinterpret_cast<const char*>(u8"左"), &left)) {
 			SetLeft(left);
 		}
 		float right = GetRight();
-		if (ImGui::DragFloat("Right", &right)) {
+		if (ImGui::DragFloat(reinterpret_cast<const char*>(u8"右"), &right)) {
 			SetRight(right);
 		}
 		float up = GetTop();
-		if (ImGui::DragFloat("Up", &up)) {
+		if (ImGui::DragFloat(reinterpret_cast<const char*>(u8"上"), &up)) {
 			SetTop(up);
 		}
 		float down = GetBottom();
-		if (ImGui::DragFloat("Down", &down)) {
+		if (ImGui::DragFloat(reinterpret_cast<const char*>(u8"下"), &down)) {
 			SetBottom(down);
 		}
 	}
 	else {
-		ImGui::DragFloat2("Pos", &anchoredPosition.x);
-		ImGui::DragFloat2("Size", &size.x);
+		ImGui::DragFloat2(reinterpret_cast<const char*>(u8"位置"), &anchoredPosition.x);
+		ImGui::DragFloat2(reinterpret_cast<const char*>(u8"サイズ"), &size.x);
 	}*/
 
 	// デフォルトのプロパティ描画を呼び出す（必要に応じて順序を調整）
@@ -116,14 +116,14 @@ void RectTransform::DrawProperty(const PropertyDrawContext& context)
 
 
 	ImGui::BeginDisabled();
-	ImGui::DragFloat2("WorldPos", &worldPos.x);
-	ImGui::DragFloat2("WorldSize", &worldSize.x);
+	ImGui::DragFloat2(reinterpret_cast<const char*>(u8"ワールド位置"), &worldPos.x);
+	ImGui::DragFloat2(reinterpret_cast<const char*>(u8"ワールドサイズ"), &worldSize.x);
 	ImGui::EndDisabled();
 
-	if (ImGui::TreeNodeEx("Anchor", ImGuiTreeNodeFlags_DefaultOpen)) {
+	if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"アンカー"), ImGuiTreeNodeFlags_DefaultOpen)) {
 		Vector2 min = anchorMin;
 		Vector2 max = anchorMax;
-		if (ImGui::DragFloat2("Min", &min.x, 0.1f, 0.0f, 1.0f) || ImGui::DragFloat2("Max", &max.x, 0.1f, 0.0f, 1.0f)) {
+		if (ImGui::DragFloat2(reinterpret_cast<const char*>(u8"最小"), &min.x, 0.1f, 0.0f, 1.0f) || ImGui::DragFloat2(reinterpret_cast<const char*>(u8"最大"), &max.x, 0.1f, 0.0f, 1.0f)) {
 			RectTransformUtils::SetAnchorAndPivotWithoutAffectingPosition(
 				this, min, max, pivot
 			);
@@ -131,19 +131,19 @@ void RectTransform::DrawProperty(const PropertyDrawContext& context)
 		ImGui::TreePop();
 	}
 	//Vector2 newPivot = pivot;
-	//if (ImGui::DragFloat2("Pivot", &newPivot.x, 0.1f)) {
+	//if (ImGui::DragFloat2(reinterpret_cast<const char*>(u8"基点"), &newPivot.x, 0.1f)) {
 	//	SetPivot(newPivot);
 	//}
-	//ImGui::DragFloat("Angle", &angle);
+	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"角度"), &angle);
 
 	//ImGui::BeginDisabled();
 	//float worldAngle = GetWorldAngle();
-	//ImGui::DragFloat("WorldAngle", &worldAngle);
+	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"ワールド角度"), &worldAngle);
 	//ImGui::EndDisabled();
 
 	//// Sorting Order は Canvas の Sorting Order + localSortingOrder で決まるため、localSortingOrder のみを編集可能にする
 	//
-	//ImGui::DragInt("SortingOrder", &localSortingOrder);
+	//ImGui::DragInt(reinterpret_cast<const char*>(u8"描画順"), &localSortingOrder);
 
 }
 #endif // USE_IMGUI

@@ -46,27 +46,27 @@ float EditorGUI::DrawMainMenu()
 		mainMenuBarHeight = ImGui::GetWindowHeight();
 #if 1
 		// ------------- ファイルメニュー ---------------
-		if (ImGui::BeginMenu("File"))
+		if (ImGui::BeginMenu(reinterpret_cast<const char*>(u8"ファイル")))
 		{
 			DrawFileMenu();
 			ImGui::EndMenu();
 		}
 #endif
 		// ------------- シーンメニュー ---------------
-		if (ImGui::BeginMenu("Scene"))
+		if (ImGui::BeginMenu(reinterpret_cast<const char*>(u8"シーン")))
 		{
 			DrawSceneMenu();
 			ImGui::EndMenu();
 		}
 
 		// -------------- 生成メニュー ---------------
-		if (ImGui::BeginMenu("GameObject"))
+		if (ImGui::BeginMenu(reinterpret_cast<const char*>(u8"ゲームオブジェクト")))
 		{
 			DrawGameObjectMenu();
 			ImGui::EndMenu();
 		}
 		// ------------ ウィンドウ -----------
-		if (ImGui::BeginMenu("Window"))
+		if (ImGui::BeginMenu(reinterpret_cast<const char*>(u8"ウィンドウ")))
 		{
 			DrawWindowMenu();
 		}
@@ -163,7 +163,7 @@ float EditorGUI::DrawToolbar(float offsetY)
 	float reloadButtonX = 10.0f;
 	ImGui::SetCursorPosX(reloadButtonX);
 	ImGui::SetCursorPosY(startY);
-	if (ImGui::Button("Build Scripts"))
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"スクリプトをビルド")))
 	{
 		// リロード処理
 		ScriptSystem::RequestScriptBuildAndReload();
@@ -171,7 +171,7 @@ float EditorGUI::DrawToolbar(float offsetY)
 
 	// 右端にリロードボタンを配置
 	ImGui::SameLine();
-	if (ImGui::Button("HotReload"))
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"ホットリロード")))
 	{
 		// リロード処理
 		ResourceManager::UpdateHotReload();
@@ -231,7 +231,7 @@ float EditorGUI::DrawSceneViewToolbar()
 		}
 		ImGui::SetNextWindowSize(ImVec2(350, 0));
 		if (ImGui::BeginPopup("SnapSettingsPopup")) {
-			ImGui::Text("Snap Settings");
+			ImGui::Text(reinterpret_cast<const char*>(u8"スナップ設定"));
 
 			// ポップアップの右上に詳細設定ボタンを配置
 			{
@@ -245,7 +245,7 @@ float EditorGUI::DrawSceneViewToolbar()
 				if (ImGui::BeginPopup("SnapSettingsDetailPopup"))
 				{
 					// 詳細設定の内容をここに描画
-					if (ImGui::MenuItem("Reset"))
+					if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"リセット")))
 					{
 						config->ResetToDefault();
 					}
@@ -258,10 +258,10 @@ float EditorGUI::DrawSceneViewToolbar()
 
 			// 移動スナップ設定
 			{
-				ImGui::Checkbox("Enable Translation Snap", &config->translationSnap.enabled);
+				ImGui::Checkbox(reinterpret_cast<const char*>(u8"位置のスナップを有効化"), &config->translationSnap.enabled);
 				ImGui::BeginDisabled(!config->translationSnap.enabled);
 				IMGUI_PROPERTY_BEGIN();
-				IMGUI_PROPERTY("Translation");
+				IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"位置"));
 
 				if (ImGui::ImageButton("##linkTranslationSnap", iconTex->GetSRV(), ImVec2(16, 16),
 					config->translationSnap.snapAllAxes ? linkIconUV0 : unLinkIconUV0,
@@ -287,10 +287,10 @@ float EditorGUI::DrawSceneViewToolbar()
 
 			// 回転スナップ設定
 			{
-				ImGui::Checkbox("Enable Rotation Snap", &config->rotationSnap.enabled);
+				ImGui::Checkbox(reinterpret_cast<const char*>(u8"回転のスナップを有効化"), &config->rotationSnap.enabled);
 				ImGui::BeginDisabled(!config->rotationSnap.enabled);
 				IMGUI_PROPERTY_BEGIN();
-				IMGUI_PROPERTY("Rotation");
+				IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"回転"));
 				if (ImGui::ImageButton("##linkRotationSnap", iconTex->GetSRV(), ImVec2(16, 16),
 					config->rotationSnap.snapAllAxes ? linkIconUV0 :
 					unLinkIconUV0,
@@ -317,10 +317,10 @@ float EditorGUI::DrawSceneViewToolbar()
 
 			// スケールスナップ設定
 			{
-				ImGui::Checkbox("Enable Scale Snap", &config->scaleSnap.enabled);
+				ImGui::Checkbox(reinterpret_cast<const char*>(u8"拡大縮小のスナップを有効化"), &config->scaleSnap.enabled);
 				ImGui::BeginDisabled(!config->scaleSnap.enabled);
 				IMGUI_PROPERTY_BEGIN();
-				IMGUI_PROPERTY("Scale");
+				IMGUI_PROPERTY(reinterpret_cast<const char*>(u8"拡大縮小"));
 				if (ImGui::ImageButton("##linkScaleSnap", iconTex->GetSRV(), ImVec2(16, 16),
 					config->scaleSnap.snapAllAxes ? linkIconUV0 :
 					unLinkIconUV0,
@@ -353,7 +353,7 @@ float EditorGUI::DrawSceneViewToolbar()
 		ImGui::Dummy(ImVec2(10.0f, 0.0f)); // 10ピクセルのスペース
 		ImGui::SameLine();
 		// シーンビューのカメラの設定ボタン
-		if (ImGui::Button("Camera Settings"))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"カメラ設定")))
 		{
 			ImGui::OpenPopup("CameraSettingsPopup");
 		}
@@ -364,23 +364,21 @@ float EditorGUI::DrawSceneViewToolbar()
 			{
 				if (EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW))
 				{
-					ImGui::Text("Camera Settings");
-					ImGui::SameLine();
-					// リセットボタンを右上に配置
-					ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x - 60.0f); // 右端に配置
-					if (ImGui::Button("Reset"))
+					ImGui::Text(reinterpret_cast<const char*>(u8"カメラ設定"));
+					ImGui::SameLine(0.0f, ImGui::GetStyle().ItemSpacing.x);
+					if (ImGui::Button(reinterpret_cast<const char*>(u8"リセット")))
 					{
 						editorCamera->SetSpeed(3.0f);
 						editorCamera->SetRotateSpeed(3.0f);
 					}
 					ImGui::Separator();
 					float moveSpeed = editorCamera->GetSpeed();
-					if (ImGui::DragFloat("Move Speed", &moveSpeed, 0.1f, 0.1f, 100.0f))
+					if (ImGui::DragFloat(reinterpret_cast<const char*>(u8"移動速度"), &moveSpeed, 0.1f, 0.1f, 100.0f))
 					{
 						editorCamera->SetSpeed(moveSpeed);
 					}
 					float sensitivity = editorCamera->GetRotateSpeed();
-					if (ImGui::DragFloat("Sensitivity", &sensitivity, 0.01f, 0.01f, 100.0f))
+					if (ImGui::DragFloat(reinterpret_cast<const char*>(u8"感度"), &sensitivity, 0.01f, 0.01f, 100.0f))
 					{
 						editorCamera->SetRotateSpeed(sensitivity); // 回転速度を感度に基づいて設定
 					}
@@ -401,29 +399,29 @@ void EditorGUI::DrawFileMenu()
 #ifdef USE_IMGUI
 	// ------------- ファイルメニュー ---------------
 	// 新規シーン
-	if (ImGui::MenuItem("New Scene", "Ctrl+N")) {
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"新しいシーン"), "Ctrl+N")) {
 		// 新規シーン作成
 		CreateNewScene();
 	}
 	// シーンの読み込み・保存
-	if (ImGui::MenuItem("Open Scene", "Ctrl+O")) {
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"シーンを開く"), "Ctrl+O")) {
 		// シーン読み込み
 		OpenScene();
 	}
-	if (ImGui::MenuItem("Save", "Ctrl+S")) {
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"保存"), "Ctrl+S")) {
 		// シーン保存
 		SaveScene();
 	}
-	if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"名前を付けて保存..."), "Ctrl+Shift+S")) {
 		// シーン保存
 		SaveSceneAs();
 	}
 	ImGui::Separator();
-	if (ImGui::MenuItem("Build Settings")) {
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"ビルド設定"))) {
 		BuildSettingsWindow::Get().Show();
 	}
 	ImGui::Separator();
-	if (ImGui::MenuItem("Exit")) {
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"終了"))) {
 		// アプリケーション終了
 		PostQuitMessage(0);
 	}
@@ -472,7 +470,7 @@ void EditorGUI::DrawGameObjectMenu()
 	if (!scene)	return;
 	GameObject* createdObj = nullptr;
 
-	if (ImGui::MenuItem("CreateEmpty")) {
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"空のオブジェクト"))) {
 		createdObj = GameObjectFactory::Create(scene, "GameObject");
 	}
 	auto selection = scene->GetObjectManager()->GetEditorSelection();
@@ -493,49 +491,49 @@ void EditorGUI::DrawGameObjectMenu()
 
 
 	if (ImGui::BeginMenu("UI")) {
-		if (ImGui::MenuItem("Empty2D")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"空の2Dオブジェクト"))) {
 			createdObj = GameObjectFactory::CreateUIObject(scene, "GameObject2D", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		}
-		if (ImGui::MenuItem("Button")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"ボタン"))) {
 			createdObj = GameObjectFactory::CreateButton(scene, "Button", selectedCanvas ? selectedCanvas->GetOwner() : nullptr,
 				L"./Data/Default/button.png");
 			// ボタンの子にテキストを作成
 			GameObjectFactory::CreateText(scene, "Text", createdObj);
 		}
-		if (ImGui::MenuItem("Text")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"テキスト"))) {
 			createdObj = GameObjectFactory::CreateText(scene, "Text", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		}
-		if (ImGui::MenuItem("Image")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"画像"))) {
 			createdObj = GameObjectFactory::CreateImage(scene, "Image", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		}
-		if (ImGui::MenuItem("InputField")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"入力欄"))) {
 			createdObj = GameObjectFactory::CreateInputField(scene, "InputField", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		}
-		//if (ImGui::MenuItem("Slider")) {
+		//if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"スライダー"))) {
 		//	createdObj = GameObjectFactory::CreateSlider(scene, "Slider", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		//}
-		if (ImGui::MenuItem("ScrollView")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"スクロールビュー"))) {
 			createdObj = GameObjectFactory::CreateScrollView(scene, "ScrollView", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		}
-		if (ImGui::MenuItem("Toggle")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"トグル"))) {
 			createdObj = GameObjectFactory::CreateToggle(scene, "Toggle", selectedCanvas ? selectedCanvas->GetOwner() : nullptr);
 		}
-		if (ImGui::MenuItem("Canvas")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"キャンバス"))) {
 			createdObj = GameObjectFactory::CreateCanvas(scene, "Canvas");
 		}
 		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("3D")) {
-		if (ImGui::MenuItem("Cube")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"立方体"))) {
 			createdObj = GameObjectFactory::CreateCube(scene, "Cube");
 		}
-		if (ImGui::MenuItem("Sphere")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"球"))) {
 			createdObj = GameObjectFactory::CreateSphere(scene, "Sphere");
 		}
-		if (ImGui::MenuItem("Cylinder")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"円柱"))) {
 			createdObj = GameObjectFactory::CreateCylinder(scene, "Cylinder");
 		}
-		if (ImGui::MenuItem("GltfModel")) {
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"glTFモデル"))) {
 			static const char* filter = "Model Files(*.gltf;*.glb;*.cereal\0*.gltf;*.glb;*.cereal\0All Files(*.*)\0*.*;\0\0)";
 
 			char filePath[256] = { 0 };
@@ -548,25 +546,25 @@ void EditorGUI::DrawGameObjectMenu()
 		}
 		ImGui::EndMenu();
 	}
-	if (ImGui::BeginMenu("Camera"))
+	if (ImGui::BeginMenu(reinterpret_cast<const char*>(u8"カメラ")))
 	{
-		if (ImGui::MenuItem("Camera"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"カメラ")))
 		{
 			createdObj = GameObjectFactory::CreateCamera(scene, "Camera");
 		}
 		ImGui::EndMenu();
 	}
-	if (ImGui::BeginMenu("Light"))
+	if (ImGui::BeginMenu(reinterpret_cast<const char*>(u8"ライト")))
 	{
-		if (ImGui::MenuItem("Directional Light"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"平行光源")))
 		{
 			createdObj = GameObjectFactory::CreateDirectionalLight(scene, "Directional Light");
 		}
-		if (ImGui::MenuItem("Point Light"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"点光源")))
 		{
 			createdObj = GameObjectFactory::CreatePointLight(scene, "Point Light");
 		}
-		if (ImGui::MenuItem("Spot Light"))
+		if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"スポットライト")))
 		{
 			createdObj = GameObjectFactory::CreateSpotLight(scene, "Spot Light");
 		}
@@ -602,23 +600,23 @@ void EditorGUI::DrawWindowMenu()
 {
 	ZoneScopedN("EditorGUI::DrawWindowMenu");
 #ifdef USE_IMGUI
-	if (ImGui::MenuItem("AssetBrowser"))
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"アセットブラウザー")))
 	{
 		AssetBrowser::Show();
 	}
-	//if (ImGui::MenuItem("HLSL Editor"))
+	//if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"HLSLエディター")))
 	//{
 	//	HlslEditor::Show();
 	//}
-	if (ImGui::MenuItem("Console"))
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"コンソール")))
 	{
 		Console::Show();
 	}
-	if (ImGui::MenuItem("SceneParametersEditor"))
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"シーンパラメーター")))
 	{
 		SceneParametersEditor::Show();
 	}
-	if (ImGui::MenuItem("Profiler"))
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"プロファイラー")))
 	{
 		// tracy-profilerを起動する
 		std::filesystem::path tracyPath = EnginePaths::TracyProfilerExe;
@@ -630,19 +628,19 @@ void EditorGUI::DrawWindowMenu()
 			LOG_ERROR("Tracy profiler executable not found: " + tracyPath.string());
 		}
 	}
-	if (ImGui::MenuItem("Effect Editor"))
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"エフェクトエディター")))
 	{
 		EffectEditor::Show();
 	}
-	if (ImGui::MenuItem("Animation Editor"))
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"アニメーションエディター")))
 	{
 		AnimationEditor::Open();
 	}
-	if (ImGui::MenuItem("ImGui Theme"))
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"ImGuiテーマ")))
 	{
 		ImGuiTheme::Show();
 	}
-	if (ImGui::MenuItem("Input Settings"))
+	if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"入力設定")))
 	{
 		CurryEngine::Editor::InputSettingsWindow::Show();
 	}

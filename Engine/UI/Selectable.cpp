@@ -126,7 +126,7 @@ void Selectable::DrawProperty(const PropertyDrawContext& context)
 {
 #if 0
 	bool isInteractable = IsInteractable();
-	if (ImGui::Checkbox("interactable", &isInteractable)) {
+	if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"操作可能"), &isInteractable)) {
 		SetInteractable(isInteractable);
 	}
 
@@ -136,7 +136,7 @@ void Selectable::DrawProperty(const PropertyDrawContext& context)
 		ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
 
-		if (ImGui::TreeNodeEx("Navigation", ImGuiTreeNodeFlags_DefaultOpen)) {
+		if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"ナビゲーション"), ImGuiTreeNodeFlags_DefaultOpen)) {
 
 			const char* directions[] = { "Up", "Down", "Left", "Right" };
 			Selectable* navigations[] = { navigation.up, navigation.down, navigation.left, navigation.right };
@@ -173,11 +173,11 @@ void Selectable::DrawProperty(const PropertyDrawContext& context)
 		ImGui::PopStyleColor(3);
 	}
 
-	ImGui::ColorEdit4("DefaultColor", &defaultColor.r);
-	ImGui::ColorEdit4("SelectedColor", &selectedColor.r);
-	ImGui::ColorEdit4("HoveringColor", &hoveringColor.r);
-	ImGui::ColorEdit4("PressingColor", &pressingColor.r);
-	ImGui::ColorEdit4("DisabledColor", &disabledColor.r);
+	ImGui::ColorEdit4(reinterpret_cast<const char*>(u8"通常の色"), &defaultColor.r);
+	ImGui::ColorEdit4(reinterpret_cast<const char*>(u8"選択時の色"), &selectedColor.r);
+	ImGui::ColorEdit4(reinterpret_cast<const char*>(u8"ホバー時の色"), &hoveringColor.r);
+	ImGui::ColorEdit4(reinterpret_cast<const char*>(u8"押下時の色"), &pressingColor.r);
+	ImGui::ColorEdit4(reinterpret_cast<const char*>(u8"無効時の色"), &disabledColor.r);
 #else
 
 	bool isInteractable = IsInteractable(); // 現在のインタラクティブ状態を取得

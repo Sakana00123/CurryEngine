@@ -62,13 +62,13 @@ void TransitionPass::DrawProperty()
 {
 #ifdef USE_IMGUI
 	// ポストプロセスパスのプロパティ描画処理
-	ImGui::Text("TransitionPass Properties");
+	ImGui::Text(reinterpret_cast<const char*>(u8"遷移パスのプロパティ"));
 	// ここにImGuiを使ったプロパティ描画コードを追加します。 
 
 	ImGui::Image(m_renderTexture.GetColorBuffer(), ImVec2(256, 144)); // 描画結果を表示
 
-	ImGui::SliderFloat("Transition Progress", &transitionProgress, 0.0f, 1.0f); // 遷移の進行度を調整するスライダー
-	ImGui::Checkbox("Fade In", &reinterpret_cast<bool&>(isFadeIn)); // フェードイン/アウトを切り替えるチェックボックス
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"遷移の進捗"), &transitionProgress, 0.0f, 1.0f); // 遷移の進行度を調整するスライダー
+	ImGui::Checkbox(reinterpret_cast<const char*>(u8"フェードイン"), &reinterpret_cast<bool&>(isFadeIn)); // フェードイン/アウトを切り替えるチェックボックス
 
 
 #endif // USE_IMGUI

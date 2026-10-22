@@ -48,20 +48,20 @@ void SkyBoxPass::DrawProperty()
 {
 	// ImGui を使用してプロパティを描画
 #ifdef USE_IMGUI
-	if (ImGui::CollapsingHeader("SkyBoxPass"), ImGuiTreeNodeFlags_DefaultOpen)
+	if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"スカイボックスパス")), ImGuiTreeNodeFlags_DefaultOpen)
 	{
-		ImGui::Text("Skymap:");
+		ImGui::Text(reinterpret_cast<const char*>(u8"スカイマップ:"));
 		if (skymap)
 		{
-			ImGui::Text("Loaded");
+			ImGui::Text(reinterpret_cast<const char*>(u8"読み込み済み"));
 		}
 		else
 		{
-			ImGui::Text("Not Loaded");
+			ImGui::Text(reinterpret_cast<const char*>(u8"未読み込み"));
 		}
 		ImGui::Separator();
 		// ゲーム背景テクスチャのプロパティ
-		ImGui::Text("Game Background Material:");
+		ImGui::Text(reinterpret_cast<const char*>(u8"ゲーム背景のマテリアル:"));
 		if (backgroundMaterial)
 		{
 			backgroundMaterial->DrawProperty();

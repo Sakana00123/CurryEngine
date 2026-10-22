@@ -456,8 +456,8 @@ void ComputeParticleSystem::Render(ID3D11DeviceContext* immediateContext)
 void ComputeParticleSystem::DrawGUI()
 {
 #ifdef USE_IMGUI
-	ImGui::Text("EmitParticles:%d", numEmitParticles);
-	ImGui::Text("NumParticles:%d", numParticles);
+	ImGui::Text(reinterpret_cast<const char*>(u8"放出パーティクル数: %d"), numEmitParticles);
+	ImGui::Text(reinterpret_cast<const char*>(u8"パーティクル数: %d"), numParticles);
 #endif // USE_IMGUI
 }
 

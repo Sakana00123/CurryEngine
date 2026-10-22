@@ -203,7 +203,7 @@ void Component::DrawProperty(const PropertyDrawContext& context)
 
 #if 0
 		// テスト用で関数呼び出しのImGui::Buttonを追加
-		if (ImGui::CollapsingHeader("Test Functions"))
+		if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"テスト用関数")))
 		{
 			for (const auto& meta : classMetas)
 			{

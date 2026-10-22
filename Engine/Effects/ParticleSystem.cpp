@@ -125,27 +125,27 @@ void ParticleSystem::Render(ID3D11DeviceContext* immediateContext)
 void ParticleSystem::DrawProperty()
 {
 #ifdef USE_IMGUI
-	ImGui::Checkbox("respawn", &particleSystemData.respawn);
-	ImGui::SliderFloat("gravity", &particleSystemData.gravity, -1.0f, +1.0f, "%.4f");
-	ImGui::SliderFloat("lifespan min", &particleSystemData.lifespan.x, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("lifespan max", &particleSystemData.lifespan.y, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("spawn_delay min", &particleSystemData.spawnDelay.x, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("spawn_delay max", &particleSystemData.spawnDelay.y, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("fade in duration", &particleSystemData.fadeDuration.x, +0.0f, 10.0f, "%.4f");
-	ImGui::SliderFloat("fade out duration", &particleSystemData.fadeDuration.y, +0.0f, 10.0f, "%.4f");
-	ImGui::SliderFloat("emission_position.x", &particleSystemData.emissionPosition.x, -10.0f, +10.0f);
-	ImGui::SliderFloat("emission_position.y", &particleSystemData.emissionPosition.y, -10.0f, +10.0f);
-	ImGui::SliderFloat("emission_position.z", &particleSystemData.emissionPosition.z, -10.0f, +10.0f);
-	ImGui::SliderFloat("emission_offset min", &particleSystemData.emissionOffset.x, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("emission_offset max", &particleSystemData.emissionOffset.y, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("emission_size spawn", &particleSystemData.emissionSize.x, +0.0f, +1.0f, "%.4f");
-	ImGui::SliderFloat("emission_size despawn", &particleSystemData.emissionSize.y, +0.0f, +1.0f, "%.4f");
-	ImGui::SliderFloat("emission_speed min", &particleSystemData.emissionSpeed.x, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("emission_speed max", &particleSystemData.emissionSpeed.y, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("emission_angular_speed min", &particleSystemData.emissionAngularSpeed.x, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("emission_angular_speed max", &particleSystemData.emissionAngularSpeed.y, +0.0f, +10.0f, "%.4f");
-	ImGui::SliderFloat("emission_cone_angle min", &particleSystemData.emissionConeAngle.x, +0.0f, +3.141592653f, "%.4f");
-	ImGui::SliderFloat("emission_cone_angle max", &particleSystemData.emissionConeAngle.y, +0.0f, +3.141592653f, "%.4f");
-	ImGui::SliderFloat("noise_scale", &particleSystemData.noiseScale, +0.0f, +1.0f, "%.4f");
+	ImGui::Checkbox(reinterpret_cast<const char*>(u8"再生成"), &particleSystemData.respawn);
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"重力"), &particleSystemData.gravity, -1.0f, +1.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"寿命 (最小)"), &particleSystemData.lifespan.x, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"寿命 (最大)"), &particleSystemData.lifespan.y, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"生成間隔 (最小)"), &particleSystemData.spawnDelay.x, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"生成間隔 (最大)"), &particleSystemData.spawnDelay.y, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"フェードイン時間"), &particleSystemData.fadeDuration.x, +0.0f, 10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"フェードアウト時間"), &particleSystemData.fadeDuration.y, +0.0f, 10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出位置 X"), &particleSystemData.emissionPosition.x, -10.0f, +10.0f);
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出位置 Y"), &particleSystemData.emissionPosition.y, -10.0f, +10.0f);
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出位置 Z"), &particleSystemData.emissionPosition.z, -10.0f, +10.0f);
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出オフセット (最小)"), &particleSystemData.emissionOffset.x, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出オフセット (最大)"), &particleSystemData.emissionOffset.y, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"生成時の大きさ"), &particleSystemData.emissionSize.x, +0.0f, +1.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"消滅時の大きさ"), &particleSystemData.emissionSize.y, +0.0f, +1.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出速度 (最小)"), &particleSystemData.emissionSpeed.x, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出速度 (最大)"), &particleSystemData.emissionSpeed.y, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出時の角速度 (最小)"), &particleSystemData.emissionAngularSpeed.x, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出時の角速度 (最大)"), &particleSystemData.emissionAngularSpeed.y, +0.0f, +10.0f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出角度 (最小)"), &particleSystemData.emissionConeAngle.x, +0.0f, +3.141592653f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"放出角度 (最大)"), &particleSystemData.emissionConeAngle.y, +0.0f, +3.141592653f, "%.4f");
+	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"ノイズの大きさ"), &particleSystemData.noiseScale, +0.0f, +1.0f, "%.4f");
 #endif // USE_IMGUI
 }

@@ -35,7 +35,7 @@ void Slider::DrawProperty(const PropertyDrawContext& context)
 	Selectable::DrawProperty(context);
 
 	static const char* items[] = { "LeftToRight", "RightToLeft", "TopToBottom", "BottomToTop" };
-	if (ImGui::BeginCombo("Direction", items[static_cast<int>(direction)])) {
+	if (ImGui::BeginCombo(reinterpret_cast<const char*>(u8"方向"), items[static_cast<int>(direction)])) {
 		for (int i = 0; i < IM_ARRAYSIZE(items); i++) {
 			bool isSelected = (static_cast<int>(direction) == i);
 			if (ImGui::Selectable(items[i], isSelected)) {
@@ -51,11 +51,11 @@ void Slider::DrawProperty(const PropertyDrawContext& context)
 		ImGui::EndCombo();
 	}
 
-	ImGui::DragFloat("min", &minValue);
-	ImGui::DragFloat("max", &maxValue);
-	ImGui::DragFloat("Value", &this->value);
-	ImGui::DragFloat("NormalizedValue", &this->normalizedValue);
-	ImGui::Checkbox("WholeNumbers", &wholeNumbers);
+	ImGui::DragFloat(reinterpret_cast<const char*>(u8"最小"), &minValue);
+	ImGui::DragFloat(reinterpret_cast<const char*>(u8"最大"), &maxValue);
+	ImGui::DragFloat(reinterpret_cast<const char*>(u8"値"), &this->value);
+	ImGui::DragFloat(reinterpret_cast<const char*>(u8"正規化した値"), &this->normalizedValue);
+	ImGui::Checkbox(reinterpret_cast<const char*>(u8"整数のみ"), &wholeNumbers);
 }
 #endif // USE_IMGUI
 

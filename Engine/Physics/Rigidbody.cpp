@@ -358,14 +358,14 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 	Component::DrawProperty(context); // 基底クラスのプロパティ描画も呼び出す
 
 	IMGUI_PROPERTY_BEGIN();
-	//ImGui::Text("Actor Handle: %d", m_actorHandle);
+	//ImGui::Text(reinterpret_cast<const char*>(u8"アクターのハンドル: %d"), m_actorHandle);
 	// 物理エンジンのプロパティを編集するGUI要素をここに追加します。
 
 #if 0
 	// 質量を編集するための入力フィールド
 	bool isMassChanged = false;
 	IMGUI_PROPERTY_FLOAT("mass", mass, isMassChanged, 0.1f, 0.0001f, FLT_MAX, "%.4f");
-	//if (ImGui::InputFloat("mass", &mass, 0.1f))
+	//if (ImGui::InputFloat(reinterpret_cast<const char*>(u8"質量"), &mass, 0.1f))
 	if (isMassChanged)
 	{
 		// 質量が変更されたときの処理をここに追加します。
@@ -375,7 +375,7 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 	// 重力の使用設定を編集するためのチェックボックス
 	bool isUseGravityChanged = false;
 	IMGUI_PROPERTY_BOOL("useGravity", useGravity, isUseGravityChanged);
-	//if (ImGui::Checkbox("useGravity", &useGravity))
+	//if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"重力を使用"), &useGravity))
 	if (isUseGravityChanged)
 	{
 		// 重力の使用設定が変更されたときの処理をここに追加します。
@@ -385,7 +385,7 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 	// キネマティック設定を編集するためのチェックボックス
 	bool isKinematicChanged = false;
 	IMGUI_PROPERTY_BOOL("isKinematic", isKinematic, isKinematicChanged);
-	//if (ImGui::Checkbox("isKinematic", &isKinematic))
+	//if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"キネマティック"), &isKinematic))
 	if (isKinematicChanged)
 	{
 		// キネマティック設定が変更されたときの処理をここに追加します。
@@ -395,7 +395,7 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 	// CCDの使用設定を編集するためのチェックボックス
 	bool isUseCCDChanged = false;
 	IMGUI_PROPERTY_BOOL("useCCD", useCCD, isUseCCDChanged);
-	//if (ImGui::Checkbox("useCCD", &useCCD))
+	//if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"連続衝突判定を使用"), &useCCD))
 	if (isUseCCDChanged)
 	{
 		// CCDの使用設定が変更されたときの処理をここに追加します。
@@ -404,7 +404,7 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 
 	bool isSleepThresholdChanged = false;
 	IMGUI_PROPERTY_FLOAT("sleepThreshold", sleepThreshold, isSleepThresholdChanged, 0.001f, 0.0f, FLT_MAX, "%.6f");
-	//if (ImGui::InputFloat("sleepThreshold", &sleepThreshold, 0.001f))
+	//if (ImGui::InputFloat(reinterpret_cast<const char*>(u8"スリープしきい値"), &sleepThreshold, 0.001f))
 	if (isSleepThresholdChanged)
 	{
 		// スリープ閾値が変更されたときの処理をここに追加します。
@@ -420,7 +420,7 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 	if (ImGui::TreeNodeEx("##Constraints", ImGuiTreeNodeFlags_None))
 	{
 		// すべての制約を一括で設定するためのチェックボックス
-		isConstraintsChanged |= ImGui::CheckboxFlags("Freeze All", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezeAll));
+		isConstraintsChanged |= ImGui::CheckboxFlags(reinterpret_cast<const char*>(u8"すべて固定"), (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezeAll));
 		
 		// PositionとRotationの制約を分けて表示するためのツリー構造
 		{
@@ -428,7 +428,7 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 			isConstraintsChanged |= ImGui::CheckboxFlags("##Freeze Position", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezePosition));
 			ImGui::SameLine();
 			// Positionでの制約
-			if (ImGui::TreeNodeEx("Freeze Position", ImGuiTreeNodeFlags_None))
+			if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"位置を固定"), ImGuiTreeNodeFlags_None))
 			{
 				isConstraintsChanged |= ImGui::CheckboxFlags("X", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezePositionX));
 				ImGui::SameLine();
@@ -442,7 +442,7 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 			isConstraintsChanged |= ImGui::CheckboxFlags("##Freeze Rotation", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezeRotation));
 			ImGui::SameLine();
 			// Rotationでの制約
-			if (ImGui::TreeNodeEx("Freeze Rotation", ImGuiTreeNodeFlags_None))
+			if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"回転を固定"), ImGuiTreeNodeFlags_None))
 			{
 				isConstraintsChanged |= ImGui::CheckboxFlags("X", (unsigned int*)&newConstraints, static_cast<unsigned int>(RigidbodyConstraints::FreezeRotationX));
 				ImGui::SameLine();
@@ -473,9 +473,9 @@ void Rigidbody::DrawProperty(const PropertyDrawContext& context)
 		// テスト用の力を加えるボタン
 		static Vector3 forceToAdd(0, 0, 10);
 
-		ImGui::InputFloat3("Force to Add", &forceToAdd.x);
+		ImGui::InputFloat3(reinterpret_cast<const char*>(u8"加える力"), &forceToAdd.x);
 
-		if (ImGui::Button("Add Force"))
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"力を追加")))
 		{
 			AddForce(forceToAdd, ForceMode::Impulse);
 		}

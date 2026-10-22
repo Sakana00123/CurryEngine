@@ -61,7 +61,7 @@ void PfxCrtPass::DrawProperty()
 {
 #ifdef USE_IMGUI
 	// ポストプロセスパスのプロパティ描画処理
-	ImGui::Text("PfxCrtProperties");
+	ImGui::Text(reinterpret_cast<const char*>(u8"CRT効果のプロパティ"));
 	// ここにImGuiを使ったプロパティ描画コードを追加します。
 
 	ImGui::Image(m_pfxCrtTexture.GetColorBuffer(), ImVec2(256, 144)); // ポストプロセス後のテクスチャを表示

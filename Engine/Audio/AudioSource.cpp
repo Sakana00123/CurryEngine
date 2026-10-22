@@ -464,7 +464,7 @@ const AudioAnalyzer::Result& AudioSource::GetAudioAnalyzerBasicResult() const
 void AudioSource::DrawProperty(const PropertyDrawContext& context)
 {
 	// ファイル選択ダイアログ
-	if (ImGui::Button("Source")) {
+	if (ImGui::Button(reinterpret_cast<const char*>(u8"音源"))) {
 		static const char* filter = "Audio Files(*.wav*)\0*.wav*;\0All Files(*.*)\0*.*;\0\0)";
 
 		char filePath[256] = { 0 };
@@ -503,10 +503,10 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 		// 3D音源関連の設定
 		{
 			// 3D音源として扱うか
-			ImGui::Checkbox("3D Audio", &use3DAudio);
+			ImGui::Checkbox(reinterpret_cast<const char*>(u8"3Dオーディオ"), &use3DAudio);
 
 			// パン設定
-			if (ImGui::SliderFloat("Pan", &m_Pan, -1.0f, 1.0f))
+			if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"パン"), &m_Pan, -1.0f, 1.0f))
 			{
 				SetPan(m_Pan);
 			}
@@ -517,34 +517,34 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 		// ループ設定
 		static float loopBegin = 0.0f;
 		static float loopLength = 0.0f;
-		if (ImGui::InputFloat("Loop Begin", &loopBegin)) {
+		if (ImGui::InputFloat(reinterpret_cast<const char*>(u8"ループ開始"), &loopBegin)) {
 			loopBegin = max(0.0f, loopBegin);
 			SetLoopOption(loopBegin, loopLength);
 		}
-		if (ImGui::InputFloat("Loop Length", &loopLength)) {
+		if (ImGui::InputFloat(reinterpret_cast<const char*>(u8"ループ長"), &loopLength)) {
 			loopLength = max(0.0f, loopLength);
 			SetLoopOption(loopBegin, loopLength);
 		}
 #endif // 0
 
 		// 再生時の自動再生
-		ImGui::Checkbox("PlayOnStart", &playOnStart);
+		ImGui::Checkbox(reinterpret_cast<const char*>(u8"開始時に再生"), &playOnStart);
 
 		// ループ有無
-		ImGui::Checkbox("Loop", &loop);
+		ImGui::Checkbox(reinterpret_cast<const char*>(u8"ループ"), &loop);
 
 
 		// 再生・停止ボタン
-		if (ImGui::Button("Play")) {
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"再生"))) {
 			Play();
 		}
-		if (ImGui::Button("Stop")) {
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"停止"))) {
 			Stop();
 		}
 
 		// 音量スライダー
 		volume = GetVolume();
-		if (ImGui::SliderFloat("Volume", &volume, 0, 1)) {
+		if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"音量"), &volume, 0, 1)) {
 			SetVolume(volume);
 		}
 	}
@@ -553,13 +553,13 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 
 	// マスター音量、BGM音量、SE音量
 	{
-		if (ImGui::SliderFloat("MasterVolume", &masterVolume, 0, 1)) {
+		if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"マスター音量"), &masterVolume, 0, 1)) {
 			Audio::SetMasterVolume(masterVolume);
 		}
-		if (ImGui::SliderFloat("BgmVolume", &bgmVolume, 0, 1)) {
+		if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"BGM音量"), &bgmVolume, 0, 1)) {
 			Audio::SetBgmVolume(bgmVolume);
 		}
-		if (ImGui::SliderFloat("SeVolume", &seVolume, 0, 1)) {
+		if (ImGui::SliderFloat(reinterpret_cast<const char*>(u8"効果音音量"), &seVolume, 0, 1)) {
 			Audio::SetSeVolume(seVolume);
 		}
 	}
@@ -569,36 +569,36 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 	{
 		const AudioAnalyzer::Result& result = m_AudioAnalyzer->GetResult();
 		ImGui::Text("RMS: %.4f", result.rms);
-		ImGui::Text("Peak: %.4f", result.peak);
+		ImGui::Text(reinterpret_cast<const char*>(u8"ピーク: %.4f"), result.peak);
 		// スペクトルデータの簡易表示
-		ImGui::PlotLines("Spectrum", result.spectrum.data(), static_cast<int>(result.spectrum.size()), 0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
+		ImGui::PlotLines(reinterpret_cast<const char*>(u8"スペクトル"), result.spectrum.data(), static_cast<int>(result.spectrum.size()), 0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
 		
 		// 周波数帯域ごとのレベル表示
 		const AudioAnalyzerResult& analyzerResult = m_AudioAnalyzer->GetAnalyzerResult();
-		ImGui::Text("Low Peak: %.4f", analyzerResult.lowPeak);
-		ImGui::Text("Mid Peak: %.4f", analyzerResult.midPeak);
-		ImGui::Text("High Peak: %.4f", analyzerResult.highPeak);
+		ImGui::Text(reinterpret_cast<const char*>(u8"低音ピーク: %.4f"), analyzerResult.lowPeak);
+		ImGui::Text(reinterpret_cast<const char*>(u8"中音ピーク: %.4f"), analyzerResult.midPeak);
+		ImGui::Text(reinterpret_cast<const char*>(u8"高音ピーク: %.4f"), analyzerResult.highPeak);
 
 		// 低周波数帯域のレベル表示
-		ImGui::PlotLines("Low Bands", 
+		ImGui::PlotLines(reinterpret_cast<const char*>(u8"低音域"),
 			reinterpret_cast<const float*>(analyzerResult.lowBands.data()), 
 			static_cast<int>(analyzerResult.lowBands.size()), 
 			0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
 
 		// 中周波数帯域のレベル表示
-		ImGui::PlotLines("Mid Bands",
+		ImGui::PlotLines(reinterpret_cast<const char*>(u8"中音域"),
 			reinterpret_cast<const float*>(analyzerResult.midBands.data()),
 			static_cast<int>(analyzerResult.midBands.size()),
 			0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
 
 		// 高周波数帯域のレベル表示
-		ImGui::PlotLines("High Bands",
+		ImGui::PlotLines(reinterpret_cast<const char*>(u8"高音域"),
 			reinterpret_cast<const float*>(analyzerResult.highBands.data()),
 			static_cast<int>(analyzerResult.highBands.size()),
 			0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));
 
 		// 全体のRMS値
-		ImGui::Text("Overall RMS: %.4f", analyzerResult.overallRMS);
+		ImGui::Text(reinterpret_cast<const char*>(u8"全体RMS: %.4f"), analyzerResult.overallRMS);
 	}
 
 

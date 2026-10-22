@@ -231,13 +231,13 @@ void Image::Draw(RenderContext* rtx)
 void Image::DrawProperty(const PropertyDrawContext& context)
 {
 	
-	ImGui::ColorEdit4("Color", &color.r);
+	ImGui::ColorEdit4(reinterpret_cast<const char*>(u8"色"), &color.r);
 
 	ImGui::DragFloat2("UV", &uv.x, 0.1f);
 
 	ImGui::Separator();
 
-	ImGui::Checkbox("EnableMask", &enableMask);
+	ImGui::Checkbox(reinterpret_cast<const char*>(u8"マスクを有効化"), &enableMask);
 
 	// Base
 	Graphic::DrawProperty(context);

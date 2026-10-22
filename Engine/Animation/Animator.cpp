@@ -165,7 +165,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
     Component::DrawProperty(context); // 基底クラスの描画を呼び出す
     if (context.targets.size() != 1)
     {
-        ImGui::Text("Multiple selection is not supported for Animator.");
+        ImGui::Text(reinterpret_cast<const char*>(u8"アニメーターは複数選択に対応していません。"));
         return;
 	}
 
@@ -179,13 +179,13 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 #if 0
 		for (const auto& [clipId, clip] : controller->animationClips)
 		{
-			ImGui::Text("Clip: %s", clip->name.c_str());
+			ImGui::Text(reinterpret_cast<const char*>(u8"クリップ: %s"), clip->name.c_str());
 		}
 #endif // 0
 		for (int i = 0; i < controller->states.size(); ++i)
 		{
 			const auto& state = controller->states[i];
-			if (ImGui::Button(("Play State: " + state.name).c_str()))
+			if (ImGui::Button((std::string(reinterpret_cast<const char*>(u8"ステートを再生: ")) + state.name).c_str()))
 			{
 				if (runtimeController)
 				{
@@ -230,7 +230,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 					clipName = it->second->name;
 				}
 			}
-			ImGui::Text("Clip: %s", clipName.c_str());
+			ImGui::Text(reinterpret_cast<const char*>(u8"クリップ: %s"), clipName.c_str());
 			ImGui::SameLine();
 			// アニメーションクリップを選択するためのコンボボックスを表示
 			static std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> clipMap;
@@ -282,7 +282,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			}
 		}
 
-		ImGui::SeparatorText("Parameters");
+		ImGui::SeparatorText(reinterpret_cast<const char*>(u8"パラメーター"));
 		for (int i = 0; i < controller->parameters.size(); ++i)
 		{
 			ImGui::PushID(i);
@@ -373,7 +373,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 						bindingText = "(" + comp->GetOwner()->GetName() + ")" + comp->GetTypeName() + "." + parameter.binding->propertyName;
 					}
 				}
-				ImGui::Text("Binding: %s", bindingText.c_str());
+				ImGui::Text(reinterpret_cast<const char*>(u8"バインド先: %s"), bindingText.c_str());
 
 				ImGui::SameLine();
 				// バインディング設定
@@ -460,7 +460,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			}
 		}
 
-		ImGui::SeparatorText("Transitions");
+		ImGui::SeparatorText(reinterpret_cast<const char*>(u8"遷移"));
 		for (int i = 0; i < controller->transitions.size(); ++i)
 		{
 			const auto& transition = controller->transitions[i];
@@ -468,7 +468,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			ImGui::PushID(i);
 
 			// 遷移元のステートを選択するためのコンボボックスを表示
-			ImGui::Text("From State:");
+			ImGui::Text(reinterpret_cast<const char*>(u8"遷移元ステート:"));
 			ImGui::SameLine();
 			std::string fromStateName = (transition.fromStateIndex >= 0 && transition.fromStateIndex < controller->states.size()) ? controller->states[transition.fromStateIndex].name : "None";
 			if (ImGui::BeginCombo(("##FromState" + std::to_string(i)).c_str(), fromStateName.c_str()))
@@ -487,7 +487,7 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			}
 
 			// 遷移先のステートを選択するためのコンボボックスを表示
-			ImGui::Text("To State:");
+			ImGui::Text(reinterpret_cast<const char*>(u8"遷移先ステート:"));
 			ImGui::SameLine();
 			std::string toStateName = (transition.toStateIndex >= 0 && transition.toStateIndex < controller->states.size()) ? controller->states[transition.toStateIndex].name : "None";
 			if (ImGui::BeginCombo(("##ToState" + std::to_string(i)).c_str(), toStateName.c_str()))
@@ -511,12 +511,12 @@ void Animator::DrawProperty(const PropertyDrawContext& context)
 			ImGui::Separator();
 
 			// 遷移条件の設定
-			ImGui::Text("Conditions:");
+			ImGui::Text(reinterpret_cast<const char*>(u8"条件:"));
 			for (int j = 0; j < transition.conditions.size(); ++j)
 			{
 				const auto& condition = transition.conditions[j];
 				ImGui::PushID(j);
-				ImGui::Text("Parameter:");
+				ImGui::Text(reinterpret_cast<const char*>(u8"パラメーター:"));
 				ImGui::SameLine();
 				std::string parameterName = "None";
 				if (condition.parameterIndex >= 0 && condition.parameterIndex < parameters.size())
