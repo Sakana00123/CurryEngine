@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AssetBrowser.h"
-#include "LegacyModelCache.h"
 #include "AnimationEditor.h"
 #include <string>
 #include <vector>
@@ -375,23 +374,6 @@ void AssetBrowser::Refresh()
 
 	// キャッシュをクリア
 	cacheSearchResults.clear();
-
-#if defined(_DEBUG) || defined(CURRY_EDITOR)
-	// ./Assets/Models以下のすべてのcereal/batchCerealファイルを削除（古いキャッシュが残っていると問題になるため）
-	try
-	{
-		for (const auto& removed : CurryEngine::RemoveLegacyModelCaches(s_AssetPath / "Models"))
-		{
-			LOG_INFO(u8"Deleted old cache file: " + removed.u8string());
-		}
-	}
-	catch (const fs::filesystem_error& error)
-	{
-		// Cache cleanup is best-effort, including when files disappear during a refresh.
-		LOG_WARNING(std::string("Could not clean legacy model caches: ") + error.what());
-	}
-#endif // _DEBUG
-
 }
 
 void AssetBrowser::StartRename(const fs::path& assetPath)
