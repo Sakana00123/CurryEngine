@@ -8,14 +8,14 @@ namespace CurryEngine::Resources
     void TextureImportSettingsDrawer::DrawPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context)
     {
         auto thumbnail = std::dynamic_pointer_cast<AssetTexture>(previewResource);
-        if (!thumbnail) { ImGui::TextDisabled(reinterpret_cast<const char*>(u8"プレビューはありません。")); return; }
+        if (!thumbnail) { ImGui::TextDisabled("No preview available."); return; }
 
         const D3D11_TEXTURE2D_DESC& desc = thumbnail->GetDesc();
         ImGui::Image(thumbnail->GetSRV(), ImVec2(180, 180));
         ImGui::Separator();
         ImGui::Text("%u x %u", desc.Width, desc.Height);
-        ImGui::Text(reinterpret_cast<const char*>(u8"ミップ数: %u"), desc.MipLevels);
-        ImGui::Text(reinterpret_cast<const char*>(u8"形式: %s"), DxgiFormatToString(desc.Format));
+        ImGui::Text("Mips: %u", desc.MipLevels);
+        ImGui::Text("Format: %s", DxgiFormatToString(desc.Format));
     }
 
     bool TextureImportSettingsDrawer::DrawSettingsFields(nlohmann::json& editingSettings, bool& isDirty)
@@ -31,20 +31,20 @@ namespace CurryEngine::Resources
 		int currentTextureTypeIndex = static_cast<int>(settings.textureType);
 
 		// インポーターの種類を選択するコンボボックスを描画
-        if (ImGui::Combo(reinterpret_cast<const char*>(u8"テクスチャの種類"), &currentTextureTypeIndex, textureTypeOptions, IM_ARRAYSIZE(textureTypeOptions)))
+        if (ImGui::Combo("Texture Type", &currentTextureTypeIndex, textureTypeOptions, IM_ARRAYSIZE(textureTypeOptions)))
         {
             settings.textureType = static_cast<TextureImporterType>(currentTextureTypeIndex);
 			changed = true;
         }
 
-        changed |= ImGui::Checkbox(reinterpret_cast<const char*>(u8"ミップマップを生成"), &settings.generateMipmaps);
+        changed |= ImGui::Checkbox("Generate Mipmaps", &settings.generateMipmaps);
 
         const char* compressionOptions[] = { "None", "BC1", "BC3", "BC7" };
         int currentIndex = 0;
         for (int i = 0; i < IM_ARRAYSIZE(compressionOptions); ++i)
             if (settings.compression == compressionOptions[i]) { currentIndex = i; break; }
 
-        if (ImGui::Combo(reinterpret_cast<const char*>(u8"圧縮"), &currentIndex, compressionOptions, IM_ARRAYSIZE(compressionOptions)))
+        if (ImGui::Combo("Compression", &currentIndex, compressionOptions, IM_ARRAYSIZE(compressionOptions)))
         {
             settings.compression = compressionOptions[currentIndex];
             changed = true;

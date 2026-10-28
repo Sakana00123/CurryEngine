@@ -32,9 +32,9 @@ PointLight PointLightComponent::GetPointLightData() const
 void PointLightComponent::DrawProperty(const PropertyDrawContext& context)
 {
 
-	ImGui::ColorEdit3(reinterpret_cast<const char*>(u8"色"), &color.r);
-	ImGui::DragFloat(reinterpret_cast<const char*>(u8"強度"), &intensity, 0.1f, 0.0f, 10.0f);
-	ImGui::DragFloat(reinterpret_cast<const char*>(u8"範囲"), &range, 0.1f, 0.0f, 100.0f);
+	ImGui::ColorEdit3("Color", &color.r);
+	ImGui::DragFloat("Intensity", &intensity, 0.1f, 0.0f, 10.0f);
+	ImGui::DragFloat("Range", &range, 0.1f, 0.0f, 100.0f);
 
 }
 #endif // USE_IMGUI

@@ -30,7 +30,7 @@ void EasingComponent::Update(float deltaTime)
 void EasingComponent::DrawProperty(const PropertyDrawContext& context)
 {
 
-	ImGui::Checkbox(reinterpret_cast<const char*>(u8"非スケール時間を使用"), &useUnscaledTime);
+	ImGui::Checkbox("useUnscaledTime", &useUnscaledTime);
 
 	static int valueType = 0;
 	const char* valueTypes[] = { "positionX", "positionY","positionZ", "scaleX","scaleY","scaleZ", "rotationX", "rotationY", "rotationZ" };
@@ -38,7 +38,7 @@ void EasingComponent::DrawProperty(const PropertyDrawContext& context)
 	const char* typeNames[] = { "InQuad", "OutQuad", "InOutQuad", "InCubic", "OutCubic", "InOutCubic", "InQuart", "OutQuart", "InOutQuart", "InQuint", "OutQuint", "InOutQuint", "InSine", "OutSine",
 		"InOutSine", "InExp", "OutExp", "InOutExp", "InCirc", "OutCirc", "InOutCirc", "InBounce", "OutBounce", "InOutBounce", "InBack", "OutBack", "InOutBack", "Linear", "None" };
 
-	ImGui::Combo(reinterpret_cast<const char*>(u8"値の種類"), &valueType, valueTypes, IM_ARRAYSIZE(valueTypes));
+	ImGui::Combo("valueType", &valueType, valueTypes, IM_ARRAYSIZE(valueTypes));
 
 	for (int i = 0; i < easeItems.size(); i++)
 	{
@@ -46,19 +46,19 @@ void EasingComponent::DrawProperty(const PropertyDrawContext& context)
 
 		if (ImGui::TreeNodeEx(("ease" + std::to_string(i)).c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::Combo(reinterpret_cast<const char*>(u8"関数"), &easeItems[i].first, typeNames, IM_ARRAYSIZE(typeNames));
+			ImGui::Combo("function", &easeItems[i].first, typeNames, IM_ARRAYSIZE(typeNames));
 			EasingHandler::ToEasingFunction(static_cast<EaseType>(easeItems[i].first), easeItems[i].second.function, easeItems[i].second.backFunction);
 
 			if (easeItems[i].first != IM_ARRAYSIZE(typeNames) - 1)
 			{
-				ImGui::DragFloat(reinterpret_cast<const char*>(u8"開始"), &easeItems[i].second.easeData.startValue, 0.1f);
-				ImGui::DragFloat(reinterpret_cast<const char*>(u8"終了"), &easeItems[i].second.easeData.endValue, 0.1f);
+				ImGui::DragFloat("start", &easeItems[i].second.easeData.startValue, 0.1f);
+				ImGui::DragFloat("end", &easeItems[i].second.easeData.endValue, 0.1f);
 				if (easeItems[i].second.backFunction)
 				{
-					ImGui::DragFloat(reinterpret_cast<const char*>(u8"後方"), &easeItems[i].second.easeData.backValue, 0.1f);
+					ImGui::DragFloat("back", &easeItems[i].second.easeData.backValue, 0.1f);
 				}
 			}
-			ImGui::DragFloat(reinterpret_cast<const char*>(u8"時間"), &easeItems[i].second.easeData.totalTime, 0.1f);
+			ImGui::DragFloat("time", &easeItems[i].second.easeData.totalTime, 0.1f);
 			ImGui::TreePop();
 		}
 
@@ -76,7 +76,7 @@ void EasingComponent::DrawProperty(const PropertyDrawContext& context)
 		easeItems.resize(easeItems.size() - 1);
 	}
 
-	if (ImGui::Button(reinterpret_cast<const char*>(u8"開始")) && easeItems.size() > 0)
+	if (ImGui::Button("Start") && easeItems.size() > 0)
 	{
 		EasingHandler handler;
 		for (auto& easeItem : easeItems)

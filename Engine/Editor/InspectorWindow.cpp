@@ -46,7 +46,7 @@ inline static void DrawLayerComboBox(const EditorSelection* selection)
 	}
 
 	//レイヤーのドロップダウン
-	ImGui::Text(reinterpret_cast<const char*>(u8"レイヤー"));
+	ImGui::Text("Layer");
 	ImGui::SameLine();
 	const char* preview = mixedLayer ? "---" : layers[currentLayer].c_str();
 	if (ImGui::BeginCombo("##Layer", preview))
@@ -66,7 +66,7 @@ inline static void DrawLayerComboBox(const EditorSelection* selection)
 		}
 		//レイヤーの管理画面に遷移する選択肢
 		ImGui::Separator();
-		if (ImGui::Selectable(reinterpret_cast<const char*>(u8"レイヤーを追加...")))
+		if (ImGui::Selectable("Add Layer..."))
 		{
 			//レイヤー管理画面に遷移
 			LayerManager::Get().OpenLayerSettingsGUI();
@@ -78,7 +78,7 @@ inline static void DrawLayerComboBox(const EditorSelection* selection)
 inline static void DrawInspectorLockCheckbox(ObjectManager* objectManager)
 {
 	bool lock = objectManager->IsInspectorLocked();
-	if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"ロック"), &lock))
+	if (ImGui::Checkbox("Lock", &lock))
 	{
 		objectManager->LockInspector(lock);
 	}
@@ -150,7 +150,7 @@ inline static void DrawNameInput(const EditorSelection* selection)
 		strncpy_s(buffer, mixedNames ? "---" : primaryName.c_str(), bufferSize);
 		buffer[bufferSize - 1] = '\0';
 	}
-	ImGui::Text(reinterpret_cast<const char*>(u8"名前"));
+	ImGui::Text("Name");
 	ImGui::SameLine();
 	ImGui::PushItemWidth(210);
 	ImGui::InputText("##GameObjectName", buffer, sizeof(buffer), ImGuiInputTextFlags_AutoSelectAll);
@@ -171,7 +171,7 @@ inline static void DrawNameInput(const EditorSelection* selection)
 //        strncpy_s(buffer, inspectorNode->GetTag().c_str(), bufferSize);
 //        buffer[bufferSize - 1] = '\0';
 //    }
-//    ImGui::Text(reinterpret_cast<const char*>(u8"タグ"));
+//    ImGui::Text("Tag");
 //    ImGui::SameLine();
 //    ImGui::PushItemWidth(210);
 //    ImGui::InputText("##GameObjectTag", buffer, sizeof(buffer), ImGuiInputTextFlags_AutoSelectAll);
@@ -184,7 +184,7 @@ inline static void DrawNameInput(const EditorSelection* selection)
 
 inline static void DrawAddComponentButton(GameObject* inspectorNode, std::function<void(std::function<void(GameObject*)>)> applyToSelectedObjects)
 {
-    if (ImGui::Button(reinterpret_cast<const char*>(u8"コンポーネントを追加"))) {
+    if (ImGui::Button("Add Component")) {
         ImGui::OpenPopup("AddComponentPopup");
     }
 
@@ -274,7 +274,7 @@ inline static void DrawAddComponentButton(GameObject* inspectorNode, std::functi
         }
 
         // スクリプトコンポーネントも表示
-        if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"スクリプト"), ImGuiTreeNodeFlags_DefaultOpen))
+        if (ImGui::TreeNodeEx("Scripts", ImGuiTreeNodeFlags_DefaultOpen))
         {
             for (const auto& scriptName : ScriptSystem::GetRegisteredScriptNames())
             {
@@ -463,7 +463,7 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
 
             // 右クリックメニュー
             if (ImGui::BeginPopupContextItem("component_context_menu", ImGuiPopupFlags_MouseButtonRight)) {
-                if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"削除"))) {
+                if (ImGui::MenuItem("Remove")) {
                     applyToSelectedObjects([primaryComp](GameObject* obj)
                         {
                             if (auto comp = obj->GetComponentByTypeName(primaryComp->GetTypeName())) {
@@ -517,7 +517,7 @@ inline static void DrawInspectorProperties(EditorSelection* selection)
     if (!hasSameTypeAll)
     {
 		ImGui::Spacing();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), reinterpret_cast<const char*>(u8"選択したオブジェクトで共通しないプロパティは表示されません。"));
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Some properties are not shown because they are not shared by all selected objects.");
 		ImGui::Spacing();
 	}
 
@@ -542,7 +542,7 @@ namespace CurryEngine
 
 	void InspectorWindow::Draw(ObjectManager* objectManager)
 	{
-		if (ImGui::Begin(reinterpret_cast<const char*>(u8"インスペクター###Inspector")))
+		if (ImGui::Begin("Inspector"))
 		{
 			if (EditorSelection* selection = objectManager->GetEditorSelection())
 			{

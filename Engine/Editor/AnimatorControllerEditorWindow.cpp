@@ -138,7 +138,7 @@ namespace CurryEngine::Editor
     void AnimatorControllerEditorWindow::DrawControllerWindowContents(std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
 		ZoneScopedN("AnimatorControllerEditorWindow::DrawControllerWindowContents");
-        if (ImGui::Button(reinterpret_cast<const char*>(u8"保存")))
+        if (ImGui::Button("Save"))
         {
             controller->SaveToFile(controller->GetPath());
         }
@@ -151,7 +151,7 @@ namespace CurryEngine::Editor
             lastModelAsset.first = controller->modelAssetId;
             lastModelAsset.second = CurryEngine::Resources::AssetDatabase::Find(controller->modelAssetId);
 		}
-		ImGui::Text(reinterpret_cast<const char*>(u8"モデル: %s"), lastModelAsset.second ? lastModelAsset.second->path.filename().string().c_str() : "None");
+		ImGui::Text("Model: %s", lastModelAsset.second ? lastModelAsset.second->path.filename().string().c_str() : "None");
 		ImGui::SameLine();
 		static std::vector<CurryEngine::Resources::AssetMeta> modelAssets;
         if (ImGui::Button("...##SetModelRef"))
@@ -370,7 +370,7 @@ namespace CurryEngine::Editor
 
         if (ImGui::BeginPopupContextItem("anyStateContext"))
         {
-            if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"遷移を作成")))
+            if (ImGui::MenuItem("Make Transition"))
             {
                 mode = InteractionMode::CreatingTransition;
                 transitionSourceIndex = -1;
@@ -447,17 +447,17 @@ namespace CurryEngine::Editor
         // 右クリックでコンテキストメニュー
         if (ImGui::BeginPopupContextItem("nodeContext"))
         {
-            if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"遷移を作成")))
+            if (ImGui::MenuItem("Make Transition"))
             {
                 mode = InteractionMode::CreatingTransition;
                 transitionSourceIndex = stateIndex;
             }
-            if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"既定のステートに設定")))
+            if (ImGui::MenuItem("Set As Default State"))
             {
                 controller->defaultStateIndex = stateIndex;
             }
             ImGui::Separator();
-            if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"ステートを削除")))
+            if (ImGui::MenuItem("Delete State"))
             {
                 DeleteState(stateIndex, controller);
             }
@@ -630,13 +630,13 @@ namespace CurryEngine::Editor
         {
             if (mode == InteractionMode::CreatingTransition)
             {
-                if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"遷移をキャンセル")))
+                if (ImGui::MenuItem("Cancel Transition"))
                 {
                     mode = InteractionMode::None;
                     transitionSourceIndex = -2;
                 }
             }
-            else if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"ステートを作成")))
+            else if (ImGui::MenuItem("Create State"))
             {
                 Vector2 worldPos = ScreenToWorld(pendingContextMenuScreenPos, canvasOrigin);
                 controller->states.push_back(AnimatorState{ "NewState", CurryEngine::Resources::AssetId(), CurryEngine::Resources::AssetId(), 1.0f, worldPos });
@@ -698,7 +698,7 @@ namespace CurryEngine::Editor
         if (controller)
         {
             ImGui::SetNextWindowSize(ImVec2(1100, 650), ImGuiCond_FirstUseEver);
-            if (ImGui::Begin(reinterpret_cast<const char*>(u8"アニメーターコントローラー###Animator Controller Editor"), isOpen))
+            if (ImGui::Begin("Animator Controller Editor", isOpen))
             {
                 DrawControllerWindowContents(controller, runtimeController);
             }
@@ -708,7 +708,7 @@ namespace CurryEngine::Editor
 		// --- タイムラインエディタ ---
         if (isTimelineEditorOpen)
         {
-            if (ImGui::Begin(reinterpret_cast<const char*>(u8"アニメーションタイムライン###Animation Timeline"), &isTimelineEditorOpen))
+            if (ImGui::Begin("Animation Timeline", &isTimelineEditorOpen))
             {
                 timelineEditor.Draw(runtimeController, context);
             }
@@ -721,7 +721,7 @@ namespace CurryEngine::Editor
     {
         if (ImGui::BeginTabBar("InspectorTabs"))
         {
-            if (ImGui::BeginTabItem(reinterpret_cast<const char*>(u8"選択")))
+            if (ImGui::BeginTabItem("Selection"))
             {
                 if (selectedStateIndex >= 0 && selectedStateIndex < (int)controller->states.size())
                 {
@@ -733,14 +733,14 @@ namespace CurryEngine::Editor
                 }
                 else
                 {
-                    ImGui::TextDisabled(reinterpret_cast<const char*>(u8"ノードまたは遷移を選択してください。"));
+                    ImGui::TextDisabled("ノードまたは遷移を選択してください。");
                     ImGui::Spacing();
-                    ImGui::TextWrapped(reinterpret_cast<const char*>(u8"右クリックで State の作成、ノード上右クリックから Make Transition で遷移を作成できます。"));
+                    ImGui::TextWrapped("右クリックで State の作成、ノード上右クリックから Make Transition で遷移を作成できます。");
                 }
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem(reinterpret_cast<const char*>(u8"パラメーター")))
+            if (ImGui::BeginTabItem("Parameters"))
             {
                 DrawParametersTab(controller, runtimeController);
                 ImGui::EndTabItem();
@@ -752,18 +752,18 @@ namespace CurryEngine::Editor
     void AnimatorControllerEditorWindow::DrawStateInspector(int stateIndex, std::shared_ptr<AnimatorController>& controller, std::weak_ptr<RuntimeAnimatorController> runtimeController)
     {
         AnimatorState& state = controller->states[stateIndex];
-        ImGui::SeparatorText(reinterpret_cast<const char*>(u8"ステート"));
+        ImGui::SeparatorText("State");
 
         char nameBuffer[128];
         strncpy_s(nameBuffer, state.name.c_str(), sizeof(nameBuffer));
-        if (ImGui::InputText(reinterpret_cast<const char*>(u8"名前"), nameBuffer, sizeof(nameBuffer)))
+        if (ImGui::InputText("Name", nameBuffer, sizeof(nameBuffer)))
         {
             state.name = nameBuffer;
         }
 
         const char* blendTypeNames[] = { "Single Clip", "Blend Tree (1D)", "Blend Tree (2D Freeform)" };
         int blendTypeIndex = static_cast<int>(state.blendType);
-        if (ImGui::BeginCombo(reinterpret_cast<const char*>(u8"動作の種類"), blendTypeNames[blendTypeIndex]))
+        if (ImGui::BeginCombo("Motion Type", blendTypeNames[blendTypeIndex]))
         {
             for (int i = 0; i < IM_ARRAYSIZE(blendTypeNames); ++i)
             {
@@ -786,9 +786,9 @@ namespace CurryEngine::Editor
         DrawTimelineSection(state, controller);
 
         ImGui::Spacing();
-        ImGui::InputFloat(reinterpret_cast<const char*>(u8"速度"), &state.speed);
-        ImGui::Checkbox(reinterpret_cast<const char*>(u8"ループ"), &state.loop);
-		ImGui::Checkbox(reinterpret_cast<const char*>(u8"ルートモーション"), &state.rootMotion);
+        ImGui::InputFloat("Speed", &state.speed);
+        ImGui::Checkbox("Loop", &state.loop);
+		ImGui::Checkbox("RootMotion", &state.rootMotion);
         if (state.rootMotion)
         {
 			// RootMotionのルートノードを設定するUI
@@ -824,7 +824,7 @@ namespace CurryEngine::Editor
 			ImGui::PushID("RootMotionNodePicker");
             std::string currentRootNodeName = (state.rootNodeIndex >= 0 && state.rootNodeIndex < (int)rootMotionNodeNames.size())
 				? rootMotionNodeNames[state.rootNodeIndex] : "None";
-            ImGui::Text(reinterpret_cast<const char*>(u8"ルートモーションノード: %s"), currentRootNodeName.c_str());
+            ImGui::Text("RootMotionNode: %s", currentRootNodeName.c_str());
 			ImGui::SameLine();
             if (ImGui::Button("..."))
             {
@@ -855,13 +855,13 @@ namespace CurryEngine::Editor
 
         ImGui::Spacing();
         bool isDefault = (stateIndex == controller->defaultStateIndex);
-        if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"既定のステート"), &isDefault) && isDefault)
+        if (ImGui::Checkbox("Default State", &isDefault) && isDefault)
         {
             controller->defaultStateIndex = stateIndex;
         }
 
         ImGui::Spacing();
-        if (ImGui::Button(reinterpret_cast<const char*>(u8"ステートを削除"), ImVec2(-1, 0)))
+        if (ImGui::Button("Delete State", ImVec2(-1, 0)))
         {
             DeleteState(stateIndex, controller);
         }
@@ -869,7 +869,7 @@ namespace CurryEngine::Editor
 
     void AnimatorControllerEditorWindow::DrawSingleClipSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller)
     {
-        ImGui::Text(reinterpret_cast<const char*>(u8"クリップ: %s"), GetClipDisplayName(controller, state.clipId).c_str());
+        ImGui::Text("Clip: %s", GetClipDisplayName(controller, state.clipId).c_str());
         ImGui::SameLine();
         state.clipId = DrawClipPickerButton("SelectAnimationClipPopup", controller, state.clipId);
     }
@@ -903,7 +903,7 @@ namespace CurryEngine::Editor
         if (is2D) drawParamCombo("Blend Param Y", state.blendParamYIndex);
 
         ImGui::Spacing();
-		ImGui::InputFloat(reinterpret_cast<const char*>(u8"ブレンドの平滑時間"), &state.blendSmoothTime);
+		ImGui::InputFloat("Blend Smooth Time", &state.blendSmoothTime);
         state.blendSmoothTime = (std::max)(0.0f, state.blendSmoothTime);
         
         /*if (is2D)
@@ -913,7 +913,7 @@ namespace CurryEngine::Editor
         }*/
 
 		ImGui::Spacing();
-        ImGui::SeparatorText(reinterpret_cast<const char*>(u8"項目"));
+        ImGui::SeparatorText("Entries");
 
         // 1Dはしきい値順でないとComputeBlendWeights側の補間が破綻するため描画毎にソート
         if (state.blendType == BlendTreeType::Simple1D)
@@ -932,12 +932,12 @@ namespace CurryEngine::Editor
             ImGui::SameLine();
             entry.clipId = DrawClipPickerButton("SelectBlendEntryClipPopup", controller, entry.clipId);
             ImGui::SameLine();
-            if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"削除"))) removeIndex = i;
+            if (ImGui::SmallButton("Remove")) removeIndex = i;
 
             if (state.blendType == BlendTreeType::Simple1D)
-                ImGui::InputFloat(reinterpret_cast<const char*>(u8"しきい値"), &entry.threshold);
+                ImGui::InputFloat("Threshold", &entry.threshold);
             else
-                ImGui::InputFloat2(reinterpret_cast<const char*>(u8"位置 (X, Y)"), &entry.position.x);
+                ImGui::InputFloat2("Position (X, Y)", &entry.position.x);
 
             ImGui::Separator();
             ImGui::PopID();
@@ -952,7 +952,7 @@ namespace CurryEngine::Editor
             state.blendEntries.push_back(BlendTreeEntry{});
 
         if (state.blendEntries.size() < 2)
-            ImGui::TextColored(ImVec4(1.0f, 0.7f, 0.3f, 1.0f), reinterpret_cast<const char*>(u8"ブレンドには2つ以上のエントリーが必要です。"));
+            ImGui::TextColored(ImVec4(1.0f, 0.7f, 0.3f, 1.0f), "ブレンドには2つ以上のEntryが必要です。");
     }
 
     void AnimatorControllerEditorWindow::DrawBlendSpace2D(
@@ -961,7 +961,7 @@ namespace CurryEngine::Editor
         constexpr float CanvasSize = 260.0f;
         constexpr float PointRadius = 6.0f;
 
-        ImGui::Text(reinterpret_cast<const char*>(u8"ブレンド空間"));
+        ImGui::Text("Blend Space");
         ImGui::BeginChild("BlendSpaceCanvas", ImVec2(CanvasSize, CanvasSize), true, ImGuiWindowFlags_NoScrollbar);
 
         ImDrawList* drawList = ImGui::GetWindowDrawList();
@@ -1060,13 +1060,13 @@ namespace CurryEngine::Editor
         }
 
         ImGui::EndChild();
-        ImGui::TextDisabled(reinterpret_cast<const char*>(u8"表示範囲: 原点から±%.1f（自動調整）"), extent);
+        ImGui::TextDisabled("表示範囲: 原点から±%.1f（自動調整）", extent);
     }
 
     void AnimatorControllerEditorWindow::DrawTransitionInspector(int transitionIndex, std::shared_ptr<AnimatorController>& controller)
     {
         AnimatorTransition& transition = controller->transitions[transitionIndex];
-        ImGui::SeparatorText(reinterpret_cast<const char*>(u8"遷移"));
+        ImGui::SeparatorText("Transition");
 
         std::string fromName = (transition.fromStateIndex == -1) ? "Any State"
             : (transition.fromStateIndex >= 0 && transition.fromStateIndex < (int)controller->states.size())
@@ -1074,17 +1074,17 @@ namespace CurryEngine::Editor
         std::string toName = (transition.toStateIndex >= 0 && transition.toStateIndex < (int)controller->states.size())
             ? controller->states[transition.toStateIndex].name : "None";
 
-        ImGui::Text(reinterpret_cast<const char*>(u8"開始: %s"), fromName.c_str());
-        ImGui::Text(reinterpret_cast<const char*>(u8"終了: %s"), toName.c_str());
+        ImGui::Text("From: %s", fromName.c_str());
+        ImGui::Text("To:   %s", toName.c_str());
 
-        ImGui::InputFloat(reinterpret_cast<const char*>(u8"ブレンド時間"), &transition.blendDuration);
-        ImGui::Checkbox(reinterpret_cast<const char*>(u8"終了時間あり"), &transition.hasExitTime);
+        ImGui::InputFloat("Blend Duration", &transition.blendDuration);
+        ImGui::Checkbox("Has Exit Time", &transition.hasExitTime);
         if (transition.hasExitTime)
         {
-            ImGui::SliderFloat(reinterpret_cast<const char*>(u8"終了時間"), &transition.exitTime, 0.0f, 1.0f);
+            ImGui::SliderFloat("Exit Time", &transition.exitTime, 0.0f, 1.0f);
         }
 
-        ImGui::SeparatorText(reinterpret_cast<const char*>(u8"条件"));
+        ImGui::SeparatorText("Conditions");
         int removeIndex = -1;
         for (int j = 0; j < (int)transition.conditions.size(); ++j)
         {
@@ -1093,7 +1093,7 @@ namespace CurryEngine::Editor
 
             std::string parameterName = (condition.parameterIndex >= 0 && condition.parameterIndex < (int)controller->parameters.size())
                 ? controller->parameters[condition.parameterIndex].name : "None";
-            if (ImGui::BeginCombo(reinterpret_cast<const char*>(u8"パラメーター"), parameterName.c_str()))
+            if (ImGui::BeginCombo("Parameter", parameterName.c_str()))
             {
                 for (int k = 0; k < (int)controller->parameters.size(); ++k)
                 {
@@ -1114,7 +1114,7 @@ namespace CurryEngine::Editor
             {
                 const char* comparisonTypes[] = { "<", "<=", ">", ">=", "==", "!=" };
                 int currentComparisonIndex = static_cast<int>(condition.comparison);
-                if (ImGui::BeginCombo(reinterpret_cast<const char*>(u8"比較"), comparisonTypes[currentComparisonIndex]))
+                if (ImGui::BeginCombo("Comparison", comparisonTypes[currentComparisonIndex]))
                 {
                     for (int k = 0; k < IM_ARRAYSIZE(comparisonTypes); ++k)
                     {
@@ -1127,10 +1127,10 @@ namespace CurryEngine::Editor
                     }
                     ImGui::EndCombo();
                 }
-                ImGui::InputFloat(reinterpret_cast<const char*>(u8"値"), &condition.value);
+                ImGui::InputFloat("Value", &condition.value);
             }
 
-            if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"削除")))
+            if (ImGui::SmallButton("Remove"))
             {
                 removeIndex = j; // ループ中の直接eraseはイテレータ破壊を招くため、ループ後にまとめて処理
             }
@@ -1149,7 +1149,7 @@ namespace CurryEngine::Editor
         }
 
         ImGui::Spacing();
-        if (ImGui::Button(reinterpret_cast<const char*>(u8"遷移を削除"), ImVec2(-1, 0)))
+        if (ImGui::Button("Delete Transition", ImVec2(-1, 0)))
         {
             DeleteTransition(transitionIndex, controller);
         }
@@ -1164,14 +1164,14 @@ namespace CurryEngine::Editor
 
             char buffer[128];
             strncpy_s(buffer, parameter.name.c_str(), sizeof(buffer));
-            if (ImGui::InputText(reinterpret_cast<const char*>(u8"名前"), buffer, sizeof(buffer)))
+            if (ImGui::InputText("Name", buffer, sizeof(buffer)))
             {
                 parameter.name = buffer;
             }
 
             const char* parameterTypes[] = { "Float", "Int", "Bool", "Trigger" };
             int currentTypeIndex = static_cast<int>(parameter.type);
-            if (ImGui::BeginCombo(reinterpret_cast<const char*>(u8"種類"), parameterTypes[currentTypeIndex]))
+            if (ImGui::BeginCombo("Type", parameterTypes[currentTypeIndex]))
             {
                 for (int j = 0; j < IM_ARRAYSIZE(parameterTypes); ++j)
                 {
@@ -1198,24 +1198,24 @@ namespace CurryEngine::Editor
             {
             case AnimatorParameter::Type::Float:
             {
-                ImGui::InputFloat(reinterpret_cast<const char*>(u8"既定"), runtimeParam);
+                ImGui::InputFloat("Default", runtimeParam);
                 break;
             }
             case AnimatorParameter::Type::Int:
             {
-                ImGui::InputInt(reinterpret_cast<const char*>(u8"既定"), reinterpret_cast<int*>(runtimeParam));
+                ImGui::InputInt("Default", reinterpret_cast<int*>(runtimeParam));
                 break;
             }
             case AnimatorParameter::Type::Bool:
             {
-				ImGui::Checkbox(reinterpret_cast<const char*>(u8"既定"), reinterpret_cast<bool*>(runtimeParam));
+				ImGui::Checkbox("Default", reinterpret_cast<bool*>(runtimeParam));
                 break;
             }
             default:
                 break;
             }
 
-            if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"パラメーターを削除")))
+            if (ImGui::SmallButton("Remove Parameter"))
             {
                 controller->parameters.erase(controller->parameters.begin() + i);
                 ImGui::PopID();
@@ -1282,15 +1282,15 @@ namespace CurryEngine::Editor
 
     void AnimatorControllerEditorWindow::DrawTimelineSection(AnimatorState& state, std::shared_ptr<AnimatorController>& controller)
     {
-        ImGui::SeparatorText(reinterpret_cast<const char*>(u8"アニメーションイベント"));
-        ImGui::Text(reinterpret_cast<const char*>(u8"タイムライン: %s"), GetTimelineDisplayName(controller, state.timelineId).c_str());
+        ImGui::SeparatorText("Animation Events");
+        ImGui::Text("Timeline: %s", GetTimelineDisplayName(controller, state.timelineId).c_str());
         ImGui::SameLine();
         state.timelineId = DrawTimelinePickerButton("SelectTimelinePopup", controller, state);
 
         if (state.timelineId.IsValid())
         {
             ImGui::SameLine();
-            if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"編集...")))
+            if (ImGui::SmallButton("Edit..."))
             {
                 auto it = controller->animationTimelines.find(state.timelineId);
                 if (it != controller->animationTimelines.end() && it->second)
@@ -1321,7 +1321,7 @@ namespace CurryEngine::Editor
         }
         if (ImGui::BeginPopup(popupId))
         {
-            if (ImGui::Selectable(reinterpret_cast<const char*>(u8"なし"))) result = CurryEngine::Resources::AssetId();
+            if (ImGui::Selectable("None")) result = CurryEngine::Resources::AssetId();
             ImGui::Separator();
             for (const auto& [id, timeline] : timelineMap)
             {
@@ -1334,7 +1334,7 @@ namespace CurryEngine::Editor
                 }
             }
             ImGui::Separator();
-            if (ImGui::Selectable(reinterpret_cast<const char*>(u8"+ 新規作成...")))
+            if (ImGui::Selectable("+ Create New..."))
             {
                 // 新しいTimelineを作成して保存する
                 if (state.clipId != CurryEngine::Resources::AssetId())

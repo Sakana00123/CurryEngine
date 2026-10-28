@@ -33,10 +33,10 @@ SpotLight SpotLightComponent::GetSpotLightData() const
 #ifdef USE_IMGUI
 void SpotLightComponent::DrawProperty(const PropertyDrawContext& context)
 {
-	ImGui::ColorEdit3(reinterpret_cast<const char*>(u8"色"), &color.r);
-	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"強度"), &intensity, 0.0f, 10.0f);
-	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"範囲"), &range, 0.1f, 100.0f);
-	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"内側の円錐角"), &innerConeAngle, 0.0f, 90.0f);
-	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"外側の円錐角"), &outerConeAngle, 0.0f, 90.0f);
+	ImGui::ColorEdit3("Color", &color.r);
+	ImGui::SliderFloat("Intensity", &intensity, 0.0f, 10.0f);
+	ImGui::SliderFloat("Range", &range, 0.1f, 100.0f);
+	ImGui::SliderFloat("Inner Cone Angle", &innerConeAngle, 0.0f, 90.0f);
+	ImGui::SliderFloat("Outer Cone Angle", &outerConeAngle, 0.0f, 90.0f);
 }
 #endif // USE_IMGUI

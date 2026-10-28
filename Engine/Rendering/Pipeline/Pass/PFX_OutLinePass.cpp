@@ -62,7 +62,7 @@ void PFX_OutLinePass::DrawProperty()
 {
 #ifdef USE_IMGUI
 	// ポストプロセスパスのプロパティ描画処理
-	ImGui::Text(reinterpret_cast<const char*>(u8"アウトラインパスのプロパティ"));
+	ImGui::Text("PFX_OutLinePass Properties");
 	// ここにImGuiを使ったプロパティ描画コードを追加します。 
 
 	ImGui::Image(m_renderTexture.GetColorBuffer(), ImVec2(256, 144)); // 描画結果を表示

@@ -37,14 +37,14 @@ void HlslEditor::DrawGUI()
 #ifdef USE_IMGUI
 	if (isOpen)
 	{
-		ImGui::Begin(reinterpret_cast<const char*>(u8"HLSLエディター###HLSL Editor"), &isOpen);
+		ImGui::Begin("HLSL Editor", &isOpen);
 
 		if (m_FilePath)
 		{
-			ImGui::Text(reinterpret_cast<const char*>(u8"編集中: %s"), m_FilePath);
+			ImGui::Text("Editing: %s", m_FilePath);
 
 			const char* types[] = { "Pixel","Vertex","Geometry","Compute" };
-			ImGui::Combo(reinterpret_cast<const char*>(u8"シェーダーの種類"), reinterpret_cast<int*>(&m_Type), types, IM_ARRAYSIZE(types));
+			ImGui::Combo("ShaderType", reinterpret_cast<int*>(&m_Type), types, IM_ARRAYSIZE(types));
 
 			ImGui::Separator();
 
@@ -52,7 +52,7 @@ void HlslEditor::DrawGUI()
 
 			ID3D11Device* device = Graphics::GetDevice();
 
-			if (ImGui::Button(reinterpret_cast<const char*>(u8"コンパイルして適用")))
+			if (ImGui::Button("Compile & Apply"))
 			{
 				SaveShaderSource(m_FilePath);
 

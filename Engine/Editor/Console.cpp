@@ -279,10 +279,10 @@ void Console::DrawGUI()
 
 	std::lock_guard<std::mutex> lock(s_logMutex);
 	ZoneScopedN("Console::DrawGUI");
-	ImGui::Begin(reinterpret_cast<const char*>(u8"コンソール###Console"), &isOpen);
+	ImGui::Begin("Console", &isOpen);
 
 	// ---- クリアボタン ----
-	if (ImGui::Button(reinterpret_cast<const char*>(u8"クリア")))
+	if (ImGui::Button("Clear"))
 	{
 		ClearLog();
 	}
@@ -447,7 +447,7 @@ void Console::DrawGUI()
 				// ホバー時のツールチップ（フルパスを表示）
 				if (ImGui::IsItemHovered())
 				{
-					ImGui::SetTooltip(reinterpret_cast<const char*>(u8"ダブルクリックでVisual Studioで開く\n%s:%d"),
+					ImGui::SetTooltip("Double-click to open in Visual Studio\n%s:%d",
 						entry.file.c_str(), entry.line);
 				}
 			}

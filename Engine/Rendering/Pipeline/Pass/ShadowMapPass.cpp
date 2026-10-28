@@ -80,17 +80,17 @@ void ShadowMapPass::Execute(RenderContext* rtx, Scene* scene)
 void ShadowMapPass::DrawProperty()
 {
 #ifdef USE_IMGUI
-	ImGui::SeparatorText(reinterpret_cast<const char*>(u8"シャドウマップパス"));
+	ImGui::SeparatorText("ShadowMapPass");
 
-	ImGui::SliderFloat(reinterpret_cast<const char*>(u8"深度のしきい値"), &criticalDepthValue, 0.0f, 10000.0f, "%.1f");
+	ImGui::SliderFloat("Critical Depth Value", &criticalDepthValue, 0.0f, 10000.0f, "%.1f");
     
 	ImGui::Separator();
 
 	// Cascaded Shadow Maps
-	ImGui::Text(reinterpret_cast<const char*>(u8"カスケード数: %d"), cascadedShadowMaps->cascadeCount);
-	ImGui::DragFloat(reinterpret_cast<const char*>(u8"分割方式の重み"), &cascadedShadowMaps->splitSchemeWeight, 0.01f, 0.0f, 1.0f, "%.2f");
-	ImGui::Checkbox(reinterpret_cast<const char*>(u8"カスケードに合わせる"), &cascadedShadowMaps->fitToCascade);
-	ImGui::DragFloat(reinterpret_cast<const char*>(u8"Z倍率"), &cascadedShadowMaps->zMult, 0.01f, 0.0f, 10.0f, "%.2f");
+	ImGui::Text("Cascade Count: %d", cascadedShadowMaps->cascadeCount);
+	ImGui::DragFloat("Split Scheme Weight", &cascadedShadowMaps->splitSchemeWeight, 0.01f, 0.0f, 1.0f, "%.2f");
+	ImGui::Checkbox("Fit to Cascade", &cascadedShadowMaps->fitToCascade);
+	ImGui::DragFloat("Z Mult", &cascadedShadowMaps->zMult, 0.01f, 0.0f, 10.0f, "%.2f");
 
 
 

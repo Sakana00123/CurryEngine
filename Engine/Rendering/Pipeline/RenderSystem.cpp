@@ -298,17 +298,17 @@ void RenderSystem::Render()
         // デバッグ用: Undo/Redoの内容表示
 		if (showHistoryWindow)
         {
-			ImGui::Begin(reinterpret_cast<const char*>(u8"履歴###History"), &showHistoryWindow);
+			ImGui::Begin("History", &showHistoryWindow);
             {
                 std::vector<std::string> undoDescriptions, redoDescriptions;
                 CurryEngine::History::GetUndoRedoDescriptions(undoDescriptions, redoDescriptions);
-                ImGui::Text(reinterpret_cast<const char*>(u8"取り消し履歴:"));
+                ImGui::Text("Undo Stack:");
                 for (const auto& action : undoDescriptions)
                 {
                     ImGui::BulletText("%s", action.c_str());
                 }
                 ImGui::Separator();
-                ImGui::Text(reinterpret_cast<const char*>(u8"やり直し履歴:"));
+                ImGui::Text("Redo Stack:");
                 for (const auto& action : redoDescriptions)
                 {
                     ImGui::BulletText("%s", action.c_str());
@@ -317,7 +317,7 @@ void RenderSystem::Render()
             ImGui::End();
         }
     }
-    //ImGui::Text(reinterpret_cast<const char*>(u8"ビデオメモリ使用量: %d MB"), VideoMemoryUsage());
+    //ImGui::Text("Video memory usage %d MB", VideoMemoryUsage());
 
     // ImGui描画のために、デフォルトのレンダーターゲットに戻す
     sceneContext.SetDefaultRenderTarget();
@@ -340,13 +340,13 @@ void RenderSystem::DrawEditorGUI()
 #ifdef USE_IMGUI
 	if (showRenderSystemWindow)
     {
-        ImGui::Begin(reinterpret_cast<const char*>(u8"描画システム###Render System"), &showRenderSystemWindow);
+        ImGui::Begin("Render System", &showRenderSystemWindow);
         {
-            if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"シーンビューの描画パイプライン")))
+            if (ImGui::CollapsingHeader("Scene View Pipeline"))
             {
                 sceneRenderPipeline->DrawProperty();
             }
-            if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"ゲームビューの描画パイプライン")))
+            if (ImGui::CollapsingHeader("Game View Pipeline"))
             {
                 gameRenderPipeline->DrawProperty();
             }

@@ -53,7 +53,7 @@ void ImGuiTheme::DrawGUI()
 		// ドッキング無効化
 		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking;
 
-        ImGui::Begin(reinterpret_cast<const char*>(u8"ImGuiテーマ設定###ImGui Theme Settings"), &isOpen, windowFlags);
+        ImGui::Begin("ImGui Theme Settings", &isOpen, windowFlags);
         const char* themeNames[NumImGuiThemes] =
         {
             "Curry Theme",
@@ -65,7 +65,7 @@ void ImGuiTheme::DrawGUI()
             "Butter Chicken Curry Theme"
 		};
         static int currentThemeIndex = static_cast<int>(currentTheme);
-        if (ImGui::Combo(reinterpret_cast<const char*>(u8"テーマを選択"), &currentThemeIndex, themeNames, NumImGuiThemes))
+        if (ImGui::Combo("Select Theme", &currentThemeIndex, themeNames, NumImGuiThemes))
         {
             SetTheme(static_cast<ImGuiThemeType>(currentThemeIndex));
         }

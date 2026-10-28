@@ -82,7 +82,7 @@ void ShadowApplyPass::DrawProperty()
 {
 #ifdef USE_IMGUI
 	// シャドウマップ適用パスのプロパティ描画コードを記述する
-	ImGui::SeparatorText(reinterpret_cast<const char*>(u8"影適用パスのプロパティ"));
+	ImGui::SeparatorText("ShadowApplyPass Properties");
 
 	m_cascadedShadowMaterial->DrawProperty();
 

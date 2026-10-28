@@ -1323,13 +1323,13 @@ void Physics::DrawGUI()
 	// ここで物理エンジンに関連するGUIを描画する処理を実装
 
 	{
-		ImGui::Begin(reinterpret_cast<const char*>(u8"物理###Physics"));
+		ImGui::Begin("Physics");
 
 		static bool enableRaycasts = false;
-		ImGui::Checkbox(reinterpret_cast<const char*>(u8"テスト用レイキャストを有効化"), &enableRaycasts);
+		ImGui::Checkbox("Enable Test Raycasts", &enableRaycasts);
 		if (enableRaycasts)
 		{
-			ImGui::Text(reinterpret_cast<const char*>(u8"レイキャストが有効です。クリックすると実行します。"));
+			ImGui::Text("Raycasts are enabled. Click to perform raycasts.");
 			if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 			{
 				// マウスクリック時にレイキャストを行う処理
@@ -1364,11 +1364,11 @@ void Physics::DrawGUI()
 		ImGui::Separator();
 		{
 			Vector3 gravity = GetGravity();
-			if (ImGui::DragFloat3(reinterpret_cast<const char*>(u8"重力"), &gravity.x, 0.1f))
+			if (ImGui::DragFloat3("Gravity", &gravity.x, 0.1f))
 			{
 				SetGravity(gravity);
 			}
-			if (ImGui::Button(reinterpret_cast<const char*>(u8"重力をリセット")))
+			if (ImGui::Button("Reset Gravity"))
 			{
 				SetGravity({0.0f, -9.81f, 0.0f});
 			}
@@ -1377,14 +1377,14 @@ void Physics::DrawGUI()
 		ImGui::Separator();
 		{
 			float bounceThresholdVelocity = GetBounceThresholdVelocity();
-			if (ImGui::DragFloat(reinterpret_cast<const char*>(u8"反発しきい速度"), &bounceThresholdVelocity, 0.1f, 0.0f, 100.0f))
+			if (ImGui::DragFloat("Bounce Threshold Velocity", &bounceThresholdVelocity, 0.1f, 0.0f, 100.0f))
 			{
 				SetBounceThresholdVelocity(bounceThresholdVelocity);
 			}
 		}
 
 		// 物理マテリアルの一覧を表示
-		if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"マテリアル"), ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader("Materials", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			// 削除予定のマテリアルのハンドルを追跡するための変数
 			MaterialHandle materialToRemove = INVALID_MATERIAL_HANDLE;
@@ -1406,7 +1406,7 @@ void Physics::DrawGUI()
 					ImGui::BeginDisabled(!isEditable);
 
 					// マテリアルのプロパティを編集するGUIを描画
-					//ImGui::Text(reinterpret_cast<const char*>(u8"マテリアルのハンドル: %d"), handle);
+					//ImGui::Text("Material Handle: %d", handle);
 					
 					// 名前の編集
 					char nameBuffer[256];
@@ -1414,7 +1414,7 @@ void Physics::DrawGUI()
 					{
 						strncpy_s(nameBuffer, material.data.name.c_str(), sizeof(nameBuffer));
 					}
-					ImGui::InputText(reinterpret_cast<const char*>(u8"名前"), nameBuffer, sizeof(nameBuffer));
+					ImGui::InputText("Name", nameBuffer, sizeof(nameBuffer));
 					if (ImGui::IsItemDeactivatedAfterEdit())
 					{
 						material.data.name = nameBuffer; // 名前を更新
@@ -1426,11 +1426,11 @@ void Physics::DrawGUI()
 					ImGuiSliderFlags sliderFlags = 0; // ImGuiのバージョンによっては ImGuiSliderFlags_ReadOnly が存在しないため、フラグは使用しないことにする
 
 					bool propertyChanged = false; // プロパティが変更されたかどうかを追跡するフラグ
-					propertyChanged |= ImGui::DragFloat(reinterpret_cast<const char*>(u8"静摩擦係数"), &material.data.staticFriction, 0.01f, 0.0f, 10.0f, format, sliderFlags);
-					propertyChanged |= ImGui::DragFloat(reinterpret_cast<const char*>(u8"動摩擦係数"), &material.data.dynamicFriction, 0.01f, 0.0f, 10.0f, format, sliderFlags);
-					propertyChanged |= ImGui::DragFloat(reinterpret_cast<const char*>(u8"反発係数"), &material.data.bounciness, 0.01f, 0.0f, 1.0f, format, sliderFlags);
-					propertyChanged |= ImGui::Combo(reinterpret_cast<const char*>(u8"摩擦係数の結合方法"), (int*)&material.data.frictionCombineMode, "Average\0Minimum\0Multiply\0Maximum\0");
-					propertyChanged |= ImGui::Combo(reinterpret_cast<const char*>(u8"反発係数の結合方法"), (int*)&material.data.bounceCombineMode, "Average\0Minimum\0Multiply\0Maximum\0");
+					propertyChanged |= ImGui::DragFloat("Static Friction", &material.data.staticFriction, 0.01f, 0.0f, 10.0f, format, sliderFlags);
+					propertyChanged |= ImGui::DragFloat("Dynamic Friction", &material.data.dynamicFriction, 0.01f, 0.0f, 10.0f, format, sliderFlags);
+					propertyChanged |= ImGui::DragFloat("Bounciness", &material.data.bounciness, 0.01f, 0.0f, 1.0f, format, sliderFlags);
+					propertyChanged |= ImGui::Combo("Friction Combine Mode", (int*)&material.data.frictionCombineMode, "Average\0Minimum\0Multiply\0Maximum\0");
+					propertyChanged |= ImGui::Combo("Bounce Combine Mode", (int*)&material.data.bounceCombineMode, "Average\0Minimum\0Multiply\0Maximum\0");
 
 
 					if (propertyChanged)
@@ -1449,7 +1449,7 @@ void Physics::DrawGUI()
 					// マテリアルの削除ボタン
 					if (isDeletable)
 					{
-						if (ImGui::Button(reinterpret_cast<const char*>(u8"マテリアルを削除")))
+						if (ImGui::Button("Delete Material"))
 						{
 							// 削除予定のマテリアルのハンドルをリストに追加
 							materialToRemove = handle;
@@ -1470,7 +1470,7 @@ void Physics::DrawGUI()
 			}
 
 			// マテリアルの追加ボタン
-			if (ImGui::Button(reinterpret_cast<const char*>(u8"マテリアルを追加")))
+			if (ImGui::Button("Add Material"))
 			{
 				// マテリアルを追加する処理を実装
 				PhysicsMaterialData newMaterialData{
@@ -1488,7 +1488,7 @@ void Physics::DrawGUI()
 		ImGui::Separator(); // 区切り線
 
 		// レイヤー管理のGUIを表示するボタン
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"レイヤー設定を開く")))
+		if (ImGui::Button("Open Layer Settings"))
 		{
 			LayerManager::Get().OpenLayerSettingsGUI();
 		}

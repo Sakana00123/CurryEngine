@@ -44,10 +44,10 @@ void Skymap::Draw(ID3D11DeviceContext* immediateContext)
 void Skymap::DrawProperty()
 {
 #ifdef USE_IMGUI
-	if (ImGui::TreeNode(reinterpret_cast<const char*>(u8"スカイマップ")))
+	if (ImGui::TreeNode("Skymap"))
 	{
 		std::string texturePath = texture ? texture->GetPath() : "None";
-		ImGui::Text(reinterpret_cast<const char*>(u8"テクスチャ: %s"), texturePath.c_str());
+		ImGui::Text("Texture: %s", texturePath.c_str());
 		// 画像のプレビュー
 		if (texture && texture->GetSRV())
 		{
@@ -76,7 +76,7 @@ void Skymap::DrawProperty()
 		}
 		else
 		{
-			ImGui::Text(reinterpret_cast<const char*>(u8"テクスチャが読み込まれていません。"));
+			ImGui::Text("No texture loaded.");
 		}
 
 		ImGui::TreePop();

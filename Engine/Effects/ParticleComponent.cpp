@@ -132,7 +132,7 @@ void ParticleComponent::DrawProperty(const PropertyDrawContext& context)
 {
 	Component::DrawProperty(context);
 	//// ファイルパス表示
-	//ImGui::Text(reinterpret_cast<const char*>(u8"ファイルパス: %s"), filePath.c_str());
+	//ImGui::Text("File Path: %s", filePath.c_str());
 	//ImGui::SameLine();
 
 	//// ファイル選択ボタン
@@ -150,34 +150,34 @@ void ParticleComponent::DrawProperty(const PropertyDrawContext& context)
 	//}
 
 	//// Play On Awake チェックボックス
-	//if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"起動時に再生"), &playOnAwake))
+	//if (ImGui::Checkbox("Play On Awake", &playOnAwake))
 	//{
 
 	//}
 
 	if (context.isMultiSelect)
 	{
-		ImGui::Text(reinterpret_cast<const char*>(u8"複数のパーティクルコンポーネントを選択中"));
+		ImGui::Text("Multiple Particle Components Selected");
 		return;
 	}
 
 	if (effectHandle != -1)
 	{
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"エフェクトを再生")))
+		if (ImGui::Button("Play Effect"))
 		{
 			Play();
 		}
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"エフェクトを停止")))
+		if (ImGui::Button("Stop Effect"))
 		{
 			Stop();
 		}
 
-		ImGui::Text(reinterpret_cast<const char*>(u8"エフェクトのハンドル: %d"), effectHandle);
-		ImGui::Text(reinterpret_cast<const char*>(u8"再生中: %s"), IsPlaying() ? "True" : "False");
+		ImGui::Text("Effect Handle: %d", effectHandle);
+		ImGui::Text("Is Playing: %s", IsPlaying() ? "True" : "False");
 	}
 	else
 	{
-		ImGui::Text(reinterpret_cast<const char*>(u8"エフェクトが読み込まれていません。"));
+		ImGui::Text("No Effect Loaded");
 	}
 
 

@@ -205,8 +205,8 @@ void EditorCamera::ScreenPointToRay(const Vector2& screenPos, Vector3& outOrigin
 void EditorCamera::DrawProperty()
 {
 #ifdef USE_IMGUI
-	ImGui::DragFloat(reinterpret_cast<const char*>(u8"距離"), &distance, 1.0f, minDistance, maxDistance);
-	ImGui::DragFloat(reinterpret_cast<const char*>(u8"視野角"), &fieldOfView, 1.0f, 1.0f, 179.0f);
+	ImGui::DragFloat("distance", &distance, 1.0f, minDistance, maxDistance);
+	ImGui::DragFloat("fieldOfView", &fieldOfView, 1.0f, 1.0f, 179.0f);
 #endif // USE_IMGUI
 }
 

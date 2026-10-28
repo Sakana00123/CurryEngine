@@ -214,7 +214,7 @@ void Material::DrawProperty()
 	ImGui::PushID(this); // Material インスタンスごとに一意の ID を確保
 
 	//ImGuiでプロパティ編集
-	if (ImGui::TreeNodeEx(reinterpret_cast<const char*>(u8"マテリアル"), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
+	if (ImGui::TreeNodeEx("Material", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
 	{
 		int id = 0;
 
@@ -260,7 +260,7 @@ void Material::DrawProperty()
 
 		// レンダーステート
 		ImGui::Separator();
-		ImGui::Text(reinterpret_cast<const char*>(u8"描画状態"));
+		ImGui::Text("Render State");
 
 		// レンダーステートの名前リスト
 		const char* blendStateNames[] = { "Opaque",	"Transparency",	"Additive",	"Subtraction", "Multiply", "Skip" };
@@ -268,9 +268,9 @@ void Material::DrawProperty()
 		const char* rasterizerStateNames[] = { "SolidCullNone", "SolidCullFront", "SolidCullBack", "WireCullNone", "WireCullBack", "UseScissorRects", "Skip" };
 
 		// BlendState, DepthStencilState, RasterizerState のコンボボックスを表示
-		ImGui::Combo(reinterpret_cast<const char*>(u8"ブレンド状態"), (int*)&blendState, blendStateNames, static_cast<int>(BlendState::EnumCount));
-		ImGui::Combo(reinterpret_cast<const char*>(u8"深度ステンシル状態"), (int*)&depthStencilState, depthStencilStateNames, static_cast<int>(DepthStencilState::EnumCount));
-		ImGui::Combo(reinterpret_cast<const char*>(u8"ラスタライザー状態"), (int*)&rasterizerState, rasterizerStateNames, static_cast<int>(RasterizerState::EnumCount));
+		ImGui::Combo("Blend State", (int*)&blendState, blendStateNames, static_cast<int>(BlendState::EnumCount));
+		ImGui::Combo("DepthStencil State", (int*)&depthStencilState, depthStencilStateNames, static_cast<int>(DepthStencilState::EnumCount));
+		ImGui::Combo("Rasterizer State", (int*)&rasterizerState, rasterizerStateNames, static_cast<int>(RasterizerState::EnumCount));
 		
 		ImGui::TreePop();
 	}
@@ -305,7 +305,7 @@ void Material::DrawShaderSelector(ID3D11Device* device, size_t type)
         const bool sharedSource = EnginePaths::IsExternalProject() &&
             sourcePath.lexically_normal().generic_u8string().starts_with(u8"EngineResources/");
         ImGui::BeginDisabled(sharedSource);
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"編集")))
+		if (ImGui::Button("Edit"))
 		{
 			std::filesystem::path shaderPath = EnginePaths::ResolveResource(sourcePath);
 
@@ -314,7 +314,7 @@ void Material::DrawShaderSelector(ID3D11Device* device, size_t type)
 		}
         ImGui::EndDisabled();
         if (sharedSource && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-            ImGui::SetTooltip(reinterpret_cast<const char*>(u8"組み込みシェーダーです。編集するにはソースをAssetsにコピーしてください。"));
+            ImGui::SetTooltip("Built-in shader. Copy its source to Assets to edit it for this project.");
 
 		ImGui::SameLine();
 	}
@@ -534,7 +534,7 @@ void Material::DrawTextureSlots(size_t shaderType)
 					else
 					{
 						// 配列テクスチャのプレビュー表示のためだけにSRVを作成するのはコストが高いので、ここでは単純に「Array Texture」と表示するだけにする
-						ImGui::Text(reinterpret_cast<const char*>(u8"配列テクスチャ (要素数: %d)"), texture->GetDesc().ArraySize);
+						ImGui::Text("Array Texture (ArraySize: %d)", texture->GetDesc().ArraySize);
 						//ImGui::Image(texture->GetSRV(TextureSemantic::Default), ImVec2(64, 64)); // 配列テクスチャはそのまま表示すると出力ログにエラーが出るので一旦コメントアウト
 
 #if 0
@@ -577,10 +577,10 @@ void Material::DrawTextureSlots(size_t shaderType)
 			{
 				std::string path = assetTexture->GetPath();
 				if (path.empty()) path = "None";
-				ImGui::TextWrapped(reinterpret_cast<const char*>(u8"パス: %s"), path.c_str());
+				ImGui::TextWrapped("Path: %s", path.c_str());
 			}
 			//テクスチャの変更ボタン
-			if (ImGui::Button(reinterpret_cast<const char*>(u8"テクスチャを変更")))
+			if (ImGui::Button("Change Texture"))
 			{
 				//ファイルダイアログを開いてテクスチャを選択
 				const char* filter = "*.png;*.jpg;*.jpeg;*.bmp;*.tga;*.dds";
@@ -600,7 +600,7 @@ void Material::DrawTextureSlots(size_t shaderType)
 			if (texture)
 			{
 				ImGui::SameLine();
-				if (ImGui::Button(reinterpret_cast<const char*>(u8"テクスチャを消去")))
+				if (ImGui::Button("Clear Texture"))
 				{
 					//テクスチャをクリアしてダミーに戻す
 					std::shared_ptr<AssetTexture> dummyTex = std::make_shared<AssetTexture>();

@@ -18,8 +18,8 @@ namespace CurryEngine::Resources
 	void FbxImportSettingsDrawer::DrawPreview(const std::shared_ptr<Resource>& previewResource, RenderContext* context)
 	{
 		auto skinnedMesh = std::dynamic_pointer_cast<SkinnedMesh>(previewResource);
-		if (!skinnedMesh) { ImGui::TextDisabled(reinterpret_cast<const char*>(u8"プレビューはありません。")); return; }
-		ImGui::Text(reinterpret_cast<const char*>(u8"FBXプレビュー: %s"), skinnedMesh->GetPath().c_str());
+		if (!skinnedMesh) { ImGui::TextDisabled("No preview available."); return; }
+		ImGui::Text("FBX Preview: %s", skinnedMesh->GetPath().c_str());
 
 		// プレビュー描画
 		if (auto previewImage = static_cast<RenderTexture*>(context->GetSharedResource("PreRenderTexture")))
@@ -31,16 +31,16 @@ namespace CurryEngine::Resources
 		}
 
 		ImGui::Separator();
-		ImGui::Text(reinterpret_cast<const char*>(u8"メッシュ: %zu 個"), skinnedMesh->meshes.size());
-		ImGui::Text(reinterpret_cast<const char*>(u8"アニメーション: %zu 件"), skinnedMesh->animationClips.size());
-		ImGui::Text(reinterpret_cast<const char*>(u8"マテリアル: %zu 件"), skinnedMesh->materials.size());
+		ImGui::Text("Meshes: %zu", skinnedMesh->meshes.size());
+		ImGui::Text("Animations: %zu", skinnedMesh->animationClips.size());
+		ImGui::Text("Materials: %zu", skinnedMesh->materials.size());
 
 		int boneCount = 0;
 		for (const auto& mesh : skinnedMesh->meshes)
 		{
 			boneCount += static_cast<int>(mesh.bindPose.bones.size());
 		}
-		ImGui::Text(reinterpret_cast<const char*>(u8"ボーン: %d 本"), boneCount);
+		ImGui::Text("Bones: %d", boneCount);
 
 
 	}
@@ -48,34 +48,34 @@ namespace CurryEngine::Resources
 	{
 		FbxImportSettings importSettings = settings.get<FbxImportSettings>();
 		bool changed = false;
-		if (ImGui::CollapsingHeader(reinterpret_cast<const char*>(u8"FBXインポート設定")))
+		if (ImGui::CollapsingHeader("FBX Import Settings"))
 		{
-			/*if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"アニメーションを取り込む"), &importSettings.importAnimations))
+			/*if (ImGui::Checkbox("Import Animations", &importSettings.importAnimations))
 			{
 				isDirty = true;
 				changed = true;
 			}
-			if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"マテリアルを取り込む"), &importSettings.importMaterials))
+			if (ImGui::Checkbox("Import Materials", &importSettings.importMaterials))
 			{
 				isDirty = true;
 				changed = true;
 			}
-			if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"テクスチャを取り込む"), &importSettings.importTextures))
+			if (ImGui::Checkbox("Import Textures", &importSettings.importTextures))
 			{
 				isDirty = true;
 				changed = true;
 			}
-			if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"カメラを取り込む"), &importSettings.importCameras))
+			if (ImGui::Checkbox("Import Cameras", &importSettings.importCameras))
 			{
 				isDirty = true;
 				changed = true;
 			}
-			if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"ライトを取り込む"), &importSettings.importLights))
+			if (ImGui::Checkbox("Import Lights", &importSettings.importLights))
 			{
 				isDirty = true;
 				changed = true;
 			}
-			if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"UVを反転"), &importSettings.flipUVs))
+			if (ImGui::Checkbox("Flip UVs", &importSettings.flipUVs))
 			{
 				isDirty = true;
 				changed = true;

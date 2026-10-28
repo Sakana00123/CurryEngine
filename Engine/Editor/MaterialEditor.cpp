@@ -23,10 +23,10 @@ namespace CurryEngine::Editor
 		if (!m_material) return;
 		if (!m_isOpen) return;
 
-		ImGui::Begin(reinterpret_cast<const char*>(u8"マテリアルエディター###Material Editor"), &m_isOpen);
+		ImGui::Begin("Material Editor", &m_isOpen);
 
 		// プレビュー
-		/*ImGui::Text(reinterpret_cast<const char*>(u8"マテリアルプレビュー"));
+		/*ImGui::Text("Material Preview");
 		{
 			ImGui::Image((ImTextureID)context->GetSharedResource("MaterialPreviewSRV"), ImVec2(256, 256));
 		}*/
@@ -34,7 +34,7 @@ namespace CurryEngine::Editor
 		// マテリアルのプロパティを描画
 		m_material->GetMaterial().DrawProperty();
 
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"保存")))
+		if (ImGui::Button("Save"))
 		{
 			Save();
 		}

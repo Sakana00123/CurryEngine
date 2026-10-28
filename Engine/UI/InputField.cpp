@@ -54,10 +54,10 @@ void InputField::DrawProperty(const PropertyDrawContext& context)
 {
 	Selectable::DrawProperty(context);
 	if (Text* textComponent = GetTextComponent()) {
-		ImGui::Text(reinterpret_cast<const char*>(u8"テキスト: %ls"), textComponent->text.c_str());
+		ImGui::Text("Text:%ls", textComponent->text.c_str());
 	}
 	int limit = static_cast<int>(characterLimit);
-	if (ImGui::InputInt(reinterpret_cast<const char*>(u8"文字数制限"), &limit)) {
+	if (ImGui::InputInt("characterLimit", &limit)) {
 		characterLimit = static_cast<size_t>(std::clamp(limit, 0, 256));
 		if (Text* textComponent = GetTextComponent()) {
 			textComponent->SetCharacterLimit(characterLimit);
@@ -65,11 +65,11 @@ void InputField::DrawProperty(const PropertyDrawContext& context)
 	}
 
 	bool allowMultiLine = (inputFlags & static_cast<int>(InputFlag::MultiLine)) != 0;
-	if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"複数行"), &allowMultiLine)) {
+	if (ImGui::Checkbox("Multi Line", &allowMultiLine)) {
 		inputFlags ^= static_cast<int>(InputFlag::MultiLine);
 	}
 	bool commitOnEnter = (inputFlags & static_cast<int>(InputFlag::CommitOnEnter)) != 0;
-	if (ImGui::Checkbox(reinterpret_cast<const char*>(u8"Enterで確定"), &commitOnEnter)) {
+	if (ImGui::Checkbox("Commit On Enter", &commitOnEnter)) {
 		inputFlags ^= static_cast<int>(InputFlag::CommitOnEnter);
 	}
 

@@ -42,9 +42,9 @@ void BeatScaler2DComponent::Update(float deltaTime)
 #ifdef USE_IMGUI
 void BeatScaler2DComponent::DrawProperty(const PropertyDrawContext& context)
 {
-	ImGui::DragFloat(reinterpret_cast<const char*>(u8"拡大縮小の強度"), &scaleIntensity, 0.0f, 10.0f);
-	ImGui::DragFloat(reinterpret_cast<const char*>(u8"拡大縮小の速度"), &scaleSpeed, 0.1f, 200.0f);
-	ImGui::DragInt(reinterpret_cast<const char*>(u8"拡大縮小の頻度"), &scaleFrequency, 1, 1, 16);
+	ImGui::DragFloat("Scale Intensity", &scaleIntensity, 0.0f, 10.0f);
+	ImGui::DragFloat("Scale Speed", &scaleSpeed, 0.1f, 200.0f);
+	ImGui::DragInt("Scale Frequency", &scaleFrequency, 1, 1, 16);
 }
 #endif // USE_IMGUI
 

@@ -142,14 +142,14 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 	// followTarget
 	{
 		ImGui::PushID("followTarget");
-		ImGui::Text(reinterpret_cast<const char*>(u8"追従対象:"));
+		ImGui::Text("followTarget:");
 		ImGui::SameLine();
 
 		if (targetTransform) {
 			ImGui::Button((targetTransform->GetOwner()->name + "(Transform)").c_str());
 		}
 		else {
-			ImGui::Button(reinterpret_cast<const char*>(u8"なし (Transform)"));
+			ImGui::Button("None(Transform)");
 		}
 
 		// ドラッグアンドドロップでターゲット設定
@@ -176,14 +176,14 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 	// lookAtTarget
 	{
 		ImGui::PushID("lookAtTarget");
-		ImGui::Text(reinterpret_cast<const char*>(u8"注視対象:"));
+		ImGui::Text("lookAtTarget:");
 		ImGui::SameLine();
 		// ターゲット表示
 		if (lookAtTransform) {
 			ImGui::Button((lookAtTransform->GetOwner()->name + "(Transform)").c_str());
 		}
 		else {
-			ImGui::Button(reinterpret_cast<const char*>(u8"なし (Transform)"));
+			ImGui::Button("None(Transform)");
 		}
 
 		// ドラッグアンドドロップでターゲット設定
@@ -211,26 +211,26 @@ void ThirdPersonCameraController::DrawProperty(const PropertyDrawContext& contex
 	// TODO: いろんなヘルパーマクロがごちゃごちゃしてて混乱するので、ヘルパー名前空間にまとめるなどして整理する。
 	// その他プロパティ
 	Component::DrawProperty(context);
-	//ImGui::Checkbox(reinterpret_cast<const char*>(u8"軸入力を有効化"), &isEnableAxisInput);
-	//ImGui::Checkbox(reinterpret_cast<const char*>(u8"ズーム入力を有効化"), &isEnableZoomInput);
-	//ImGui::Checkbox(reinterpret_cast<const char*>(u8"X軸を反転"), &invertX);
-	//ImGui::Checkbox(reinterpret_cast<const char*>(u8"Y軸を反転"), &invertY);
-	//ImGui::Checkbox(reinterpret_cast<const char*>(u8"ズームを反転"), &invertZoom);
-	//ImGui::Checkbox(reinterpret_cast<const char*>(u8"移動を滑らかにする"), &useSmoothMovement);
-	//ImGui::Checkbox(reinterpret_cast<const char*>(u8"ズームを滑らかにする"), &useSmoothZoom);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"回転速度"), &rotationSpeed, 1.f, 1.f, 500.f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"ズーム量"), &zoomAmount, 0.1f, 0.1f, 10.f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"ズーム速度"), &zoomSpeed, 1.f, 1.f, 20.f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"距離"), &distance, 0.1f, minDistance, maxDistance);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"目標距離"), &targetDistance, 0.1f, minDistance, maxDistance);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"最小距離"), &minDistance, 0.1f, 0.1f, maxDistance - 0.1f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"最大距離"), &maxDistance, 0.1f, minDistance + 0.1f, 100.f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"追従速度"), &followSpeed, 0.1f, 1.f, 20.f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"注視速度"), &lookAtSpeed, 0.1f, 1.f, 20.f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"X軸最小角度"), &minAngleX, 1.f, -89.f, maxAngleX - 1.f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"X軸最大角度"), &maxAngleX, 1.f, minAngleX + 1.f, 89.f);
+	//ImGui::Checkbox("isEnableAxisInput", &isEnableAxisInput);
+	//ImGui::Checkbox("isEnableZoomInput", &isEnableZoomInput);
+	//ImGui::Checkbox("invertX", &invertX);
+	//ImGui::Checkbox("invertY", &invertY);
+	//ImGui::Checkbox("invertZoom", &invertZoom);
+	//ImGui::Checkbox("useSmoothMovement", &useSmoothMovement);
+	//ImGui::Checkbox("useSmoothZoom", &useSmoothZoom);
+	//ImGui::DragFloat("rotationSpeed", &rotationSpeed, 1.f, 1.f, 500.f);
+	//ImGui::DragFloat("zoomAmount", &zoomAmount, 0.1f, 0.1f, 10.f);
+	//ImGui::DragFloat("zoomSpeed", &zoomSpeed, 1.f, 1.f, 20.f);
+	//ImGui::DragFloat("distance", &distance, 0.1f, minDistance, maxDistance);
+	//ImGui::DragFloat("targetDistance", &targetDistance, 0.1f, minDistance, maxDistance);
+	//ImGui::DragFloat("minDistance", &minDistance, 0.1f, 0.1f, maxDistance - 0.1f);
+	//ImGui::DragFloat("maxDistance", &maxDistance, 0.1f, minDistance + 0.1f, 100.f);
+	//ImGui::DragFloat("followSpeed", &followSpeed, 0.1f, 1.f, 20.f);
+	//ImGui::DragFloat("lookAtSpeed", &lookAtSpeed, 0.1f, 1.f, 20.f);
+	//ImGui::DragFloat("minAngleX", &minAngleX, 1.f, -89.f, maxAngleX - 1.f);
+	//ImGui::DragFloat("maxAngleX", &maxAngleX, 1.f, minAngleX + 1.f, 89.f);
 
-	//if (ImGui::Button(reinterpret_cast<const char*>(u8"リセット")))
+	//if (ImGui::Button("Reset"))
 	//{
 	//	isEnableAxisInput = true;
 	//	isEnableZoomInput = true;

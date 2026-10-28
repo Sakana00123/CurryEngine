@@ -59,6 +59,6 @@ bool Graphic::Raycast(const Vector2& position)
 #ifdef USE_IMGUI
 void Graphic::DrawProperty(const PropertyDrawContext& context)
 {
-	ImGui::Checkbox(reinterpret_cast<const char*>(u8"レイキャスト対象"), &isRaycastTarget);
+	ImGui::Checkbox("Raycast Target", &isRaycastTarget);
 }
 #endif // USE_IMGUI

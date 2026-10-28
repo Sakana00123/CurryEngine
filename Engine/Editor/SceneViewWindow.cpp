@@ -21,7 +21,7 @@ namespace CurryEngine
 	{
 		ZoneScopedN("SceneViewWindow::Draw");
 		// シーンのレンダリングとオブジェクト選択の管理をここに実装します。
-		ImGui::Begin(reinterpret_cast<const char*>(u8"シーン###Scene"));
+		ImGui::Begin("Scene");
 
 		// シーンビューを表示する前に、上部にツールバーを配置
 		float sceneViewToolbarHeight = EditorGUI::DrawSceneViewToolbar();
@@ -86,7 +86,7 @@ namespace CurryEngine
 				}
 				auto navWindow = ImGui::GetCurrentContext()->NavWindow;
 				std::string windowName = navWindow ? navWindow->Name : "None";
-				isSceneWindowFocused = (ImGui::IsItemActivated() || ImGui::IsItemHovered()) && windowName == reinterpret_cast<const char*>(u8"シーン###Scene");
+				isSceneWindowFocused = (ImGui::IsItemActivated() || ImGui::IsItemHovered()) && windowName == "Scene";
 			}
 			else {
 				isSceneWindowFocused = false;

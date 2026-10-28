@@ -18,17 +18,17 @@ void SceneParametersEditor::DrawGUI()
 #ifdef USE_IMGUI
 	if (isOpen)
 	{
-		ImGui::Begin(reinterpret_cast<const char*>(u8"シーンパラメーター###SceneParametersEditor"), &isOpen);
+		ImGui::Begin("SceneParametersEditor", &isOpen);
 
 		ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
-		ImGui::Text(reinterpret_cast<const char*>(u8"経過時間: %f"), Time::DeltaTime());
-		ImGui::Text(reinterpret_cast<const char*>(u8"非スケール経過時間: %f"), Time::UnscaledDeltaTime());
-		ImGui::DragFloat(reinterpret_cast<const char*>(u8"時間倍率"), &Time::timeScale, 0.01f, 0.0f, 100.0f);
+		ImGui::Text("DeltaTime: %f", Time::DeltaTime());
+		ImGui::Text("UnScaledDeltaTime: %f", Time::UnscaledDeltaTime());
+		ImGui::DragFloat("timeScale", &Time::timeScale, 0.01f, 0.0f, 100.0f);
 
 		// シーン名表示
 		if (Scene* scene = SceneManager::GetCurrentScene())
 		{
-			ImGui::SeparatorText(reinterpret_cast<const char*>(u8"エディターカメラ"));
+			ImGui::SeparatorText("EditorCamera");
 			scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW)->DrawProperty();
 			ImGui::SeparatorText(scene->name.c_str());
 			// シーンパラメータ表示

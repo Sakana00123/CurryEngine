@@ -13,8 +13,8 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 // プロパティセクションの開始
 #define IMGUI_PROPERTY_BEGIN() \
 		ImGui::BeginTable("PropertyTable", 2, ImGuiTableFlags_SizingFixedFit); \
-		ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"名前"), ImGuiTableColumnFlags_WidthFixed, ImGuiPropertyNameWidth); \
-		ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"値"), ImGuiTableColumnFlags_WidthStretch); \
+		ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, ImGuiPropertyNameWidth); \
+		ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch); \
 		
 // プロパティセクションの終了
 #define IMGUI_PROPERTY_END() \

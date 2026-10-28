@@ -684,9 +684,9 @@ void GltfModelRenderer::DrawProperty(const PropertyDrawContext& context)
 	auto& animations = m_asset->animations;
 
 	// 静的バッチング用フラグチェックボックス
-	ImGui::Checkbox(reinterpret_cast<const char*>(u8"静的バッチ処理"), &editorStaticBatchingFlag);
+	ImGui::Checkbox("StaticBatching", &editorStaticBatchingFlag);
 	// 読み込むモデルのパス
-    ImGui::Text(reinterpret_cast<const char*>(u8"ファイルパス: %s"), filePath.c_str());
+    ImGui::Text("FilePath: %s", filePath.c_str());
 	// ファイル選択ボタン
     ImGui::SameLine();
     if (ImGui::Button("...")) {
@@ -710,13 +710,13 @@ void GltfModelRenderer::DrawProperty(const PropertyDrawContext& context)
 		}
     }
 
-    ImGui::Checkbox(reinterpret_cast<const char*>(u8"アニメーション有効"), &animationEnable);
-    ImGui::Checkbox(reinterpret_cast<const char*>(u8"ブレンドアニメーション有効"), &blendEnable);
+    ImGui::Checkbox("AnimationEnable", &animationEnable);
+    ImGui::Checkbox("BlendAnimationEnable", &blendEnable);
     if (blendEnable)
     {
-        ImGui::SliderFloat(reinterpret_cast<const char*>(u8"アニメーションのブレンド時間"), &animationBlendTime, 0.f, 20.f);
+        ImGui::SliderFloat("animationBlendTime", &animationBlendTime, 0.f, 20.f);
     }
-    ImGui::Checkbox(reinterpret_cast<const char*>(u8"ループ"), &loop);
+    ImGui::Checkbox("isLoop", &loop);
     int i = 0;
     for (Animation& animation : animations) {
         ImGui::Text(std::to_string(i).c_str());

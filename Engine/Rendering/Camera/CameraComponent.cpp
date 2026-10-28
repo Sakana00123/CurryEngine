@@ -15,9 +15,9 @@ void CameraComponent::Initialize()
 #ifdef USE_IMGUI
 void CameraComponent::DrawProperty(const PropertyDrawContext& context)
 {
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"視野角"), &fieldOfView, 1.0f, 1.0f, 120.0f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"近クリップ面"), &nearClip, 0.01f, 0.01f, 10.0f);
-	//ImGui::DragFloat(reinterpret_cast<const char*>(u8"遠クリップ面"), &farClip, 1.f, 100.0f, 10000.0f);
+	//ImGui::DragFloat("Field Of View", &fieldOfView, 1.0f, 1.0f, 120.0f);
+	//ImGui::DragFloat("Near Clip", &nearClip, 0.01f, 0.01f, 10.0f);
+	//ImGui::DragFloat("Far Clip", &farClip, 1.f, 100.0f, 10000.0f);
 
 	Component::DrawProperty(context);
 

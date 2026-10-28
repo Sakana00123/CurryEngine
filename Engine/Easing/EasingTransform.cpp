@@ -6,7 +6,7 @@ REGISTER_COMPONENT(EasingScale, "Easing")
 void EasingPosition::DrawProperty(const PropertyDrawContext& context)
 {
 
-	ImGui::Checkbox(reinterpret_cast<const char*>(u8"非スケール時間を使用"), &useUnscaledTime);
+	ImGui::Checkbox("useUnscaledTime", &useUnscaledTime);
 
 	const char* typeNames[] = { "InQuad", "OutQuad", "InOutQuad", "InCubic", "OutCubic", "InOutCubic", "InQuart", "OutQuart", "InOutQuart", "InQuint", "OutQuint", "InOutQuint", "InSine", "OutSine",
 		"InOutSine", "InExp", "OutExp", "InOutExp", "InCirc", "OutCirc", "InOutCirc", "InBounce", "OutBounce", "InOutBounce", "InBack", "OutBack", "InOutBack", "Linear", "None" };
@@ -21,22 +21,22 @@ void EasingPosition::DrawProperty(const PropertyDrawContext& context)
 
 		if (ImGui::TreeNodeEx(("ease" + std::to_string(i) + label).c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::Combo(reinterpret_cast<const char*>(u8"関数"), &easeItems[i].first, typeNames, IM_ARRAYSIZE(typeNames));
+			ImGui::Combo("function", &easeItems[i].first, typeNames, IM_ARRAYSIZE(typeNames));
 			EasingHandler::ToEasingFunction(static_cast<EaseType>(easeItems[i].first), easeItems[i].second.function, easeItems[i].second.backFunction);
 
 			if (easeItems[i].first != IM_ARRAYSIZE(typeNames) - 1)
 			{
-				ImGui::DragFloat3(reinterpret_cast<const char*>(u8"開始"), &easeItems[i].second.easeData.startValue, 0.1f);
-				ImGui::DragFloat3(reinterpret_cast<const char*>(u8"終了"), &easeItems[i].second.easeData.endValue, 0.1f);
+				ImGui::DragFloat3("start", &easeItems[i].second.easeData.startValue, 0.1f);
+				ImGui::DragFloat3("end", &easeItems[i].second.easeData.endValue, 0.1f);
 				if (easeItems[i].second.backFunction)
 				{
-					ImGui::DragFloat(reinterpret_cast<const char*>(u8"後方"), &easeItems[i].second.easeData.backValue, 0.1f);
+					ImGui::DragFloat("back", &easeItems[i].second.easeData.backValue, 0.1f);
 				}
 			}
-			ImGui::DragFloat(reinterpret_cast<const char*>(u8"時間"), &easeItems[i].second.easeData.totalTime, 0.1f);
+			ImGui::DragFloat("time", &easeItems[i].second.easeData.totalTime, 0.1f);
 
 
-			//ImGui::SliderFloat(reinterpret_cast<const char*>(u8"進捗"), )
+			//ImGui::SliderFloat("Progress", )
 
 
 			static float values[128];
@@ -54,7 +54,7 @@ void EasingPosition::DrawProperty(const PropertyDrawContext& context)
 			}
 			if (easeItems[i].second.function || easeItems[i].second.backFunction)
 			{
-				ImGui::PlotLines(reinterpret_cast<const char*>(u8"曲線"), values, 128, 0, NULL, 0.0f, 1.0f, ImVec2(0, 80));
+				ImGui::PlotLines("Curve", values, 128, 0, NULL, 0.0f, 1.0f, ImVec2(0, 80));
 			}
 
 
@@ -75,7 +75,7 @@ void EasingPosition::DrawProperty(const PropertyDrawContext& context)
 		easeItems.resize((easeItems.size() - 3 >= 0) ? (easeItems.size() - 3) : 0);
 	}
 
-	if (ImGui::Button(reinterpret_cast<const char*>(u8"開始")) && easeItems.size() > 0)
+	if (ImGui::Button("Start") && easeItems.size() > 0)
 	{
 		EasingHandler handler;
 		for (auto& easeItem : easeItems)
@@ -108,7 +108,7 @@ void EasingRotation::DrawProperty(const PropertyDrawContext& context)
 void EasingScale::DrawProperty(const PropertyDrawContext& context)
 {
 
-	ImGui::Checkbox(reinterpret_cast<const char*>(u8"非スケール時間を使用"), &useUnscaledTime);
+	ImGui::Checkbox("useUnscaledTime", &useUnscaledTime);
 
 	const char* typeNames[] = { "InQuad", "OutQuad", "InOutQuad", "InCubic", "OutCubic", "InOutCubic", "InQuart", "OutQuart", "InOutQuart", "InQuint", "OutQuint", "InOutQuint", "InSine", "OutSine",
 		"InOutSine", "InExp", "OutExp", "InOutExp", "InCirc", "OutCirc", "InOutCirc", "InBounce", "OutBounce", "InOutBounce", "InBack", "OutBack", "InOutBack", "Linear", "None" };
@@ -118,22 +118,22 @@ void EasingScale::DrawProperty(const PropertyDrawContext& context)
 		ImGui::PushID(i);
 		if (ImGui::TreeNodeEx(("ease" + std::to_string(i)).c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::Combo(reinterpret_cast<const char*>(u8"関数"), &easeItems[i].first, typeNames, IM_ARRAYSIZE(typeNames));
+			ImGui::Combo("function", &easeItems[i].first, typeNames, IM_ARRAYSIZE(typeNames));
 			EasingHandler::ToEasingFunction(static_cast<EaseType>(easeItems[i].first), easeItems[i].second.function, easeItems[i].second.backFunction);
 
 			if (easeItems[i].first != IM_ARRAYSIZE(typeNames) - 1)
 			{
-				ImGui::DragFloat(reinterpret_cast<const char*>(u8"開始"), &easeItems[i].second.easeData.startValue, 0.1f);
-				ImGui::DragFloat(reinterpret_cast<const char*>(u8"終了"), &easeItems[i].second.easeData.endValue, 0.1f);
+				ImGui::DragFloat("start", &easeItems[i].second.easeData.startValue, 0.1f);
+				ImGui::DragFloat("end", &easeItems[i].second.easeData.endValue, 0.1f);
 				if (easeItems[i].second.backFunction)
 				{
-					ImGui::DragFloat(reinterpret_cast<const char*>(u8"後方"), &easeItems[i].second.easeData.backValue, 0.1f);
+					ImGui::DragFloat("back", &easeItems[i].second.easeData.backValue, 0.1f);
 				}
 			}
-			ImGui::DragFloat(reinterpret_cast<const char*>(u8"時間"), &easeItems[i].second.easeData.totalTime, 0.1f);
+			ImGui::DragFloat("time", &easeItems[i].second.easeData.totalTime, 0.1f);
 
 
-			//ImGui::SliderFloat(reinterpret_cast<const char*>(u8"進捗"), )
+			//ImGui::SliderFloat("Progress", )
 
 
 			static float values[128];
@@ -153,7 +153,7 @@ void EasingScale::DrawProperty(const PropertyDrawContext& context)
 			{
 				float minValue = min(easeItems[i].second.easeData.startValue, easeItems[i].second.easeData.endValue);
 				float maxValue = max(easeItems[i].second.easeData.startValue, easeItems[i].second.easeData.endValue);
-				ImGui::PlotLines(reinterpret_cast<const char*>(u8"曲線"), values, 128, 0, NULL, minValue, maxValue, ImVec2(0, 80));
+				ImGui::PlotLines("Curve", values, 128, 0, NULL, minValue, maxValue, ImVec2(0, 80));
 			}
 
 
@@ -174,7 +174,7 @@ void EasingScale::DrawProperty(const PropertyDrawContext& context)
 		easeItems.resize(easeItems.size() - 1);
 	}
 
-	if (ImGui::Button(reinterpret_cast<const char*>(u8"開始")) && easeItems.size() > 0)
+	if (ImGui::Button("Start") && easeItems.size() > 0)
 	{
 		EasingHandler handler;
 		for (auto& easeItem : easeItems)

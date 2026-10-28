@@ -51,7 +51,7 @@ void BuildSettingsWindow::DrawGUI()
 	// ウィンドウを中央に表示
 	ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(1200, 500), ImGuiCond_FirstUseEver);
-	ImGui::Begin(reinterpret_cast<const char*>(u8"ビルド設定###Build Settings"), &m_showWindow, windowFlags);
+	ImGui::Begin("Build Settings", &m_showWindow, windowFlags);
 	{
 		DrawSettings();
 		ImGui::Separator();
@@ -67,7 +67,7 @@ void BuildSettingsWindow::DrawGUI()
 		}
 		if (m_isPackaging || m_packageProgress.finished)
 		{
-			ImGui::SeparatorText(reinterpret_cast<const char*>(u8"パッケージ化の進行状況"));
+			ImGui::SeparatorText("Package Progress");
 			ProcessProgress snap;
 			{ std::lock_guard lock(m_progressMutex); snap = m_packageProgress; }
 			DrawProgressPanel("##pack_log", snap, m_isPackaging);
@@ -114,7 +114,7 @@ void BuildSettingsWindow::DrawSettings()
 	IMGUI_PROPERTY_END();
 
 	// コピーアイテムのリストを描画
-	ImGui::SeparatorText(reinterpret_cast<const char*>(u8"項目をコピー"));
+	ImGui::SeparatorText("Copy Items");
 	for (size_t i = 0; i < m_settings.copyItems.size(); i++)
 	{
 		auto& item = m_settings.copyItems[i];
@@ -122,7 +122,7 @@ void BuildSettingsWindow::DrawSettings()
 		ImGui::PushID(static_cast<int>(i));
 		ImGui::Text("%s", label.c_str());
 		ImGui::SameLine();
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"削除")))
+		if (ImGui::Button("Remove"))
 		{
 			m_settings.copyItems.erase(m_settings.copyItems.begin() + i);
 			ImGui::PopID();
@@ -141,13 +141,13 @@ void BuildSettingsWindow::DrawSettings()
 		bool typeChanged = false;
 		const char* types[] = { "file", "folder", "glob" };
 		int currentTypeIndex = static_cast<int>(std::find(std::begin(types), std::end(types), item.type) - std::begin(types));
-		if (ImGui::Combo(reinterpret_cast<const char*>(u8"種類"), &currentTypeIndex, types, IM_ARRAYSIZE(types)))
+		if (ImGui::Combo("Type", &currentTypeIndex, types, IM_ARRAYSIZE(types)))
 		{
 			item.type = types[currentTypeIndex];
 		}
 		if (item.type == "folder")
 		{
-			ImGui::Text(reinterpret_cast<const char*>(u8"除外する拡張子 (フォルダー用)"));
+			ImGui::Text("Exclude Extensions (for folder type)");
 			for (size_t j = 0; j < item.exclude.size(); j++)
 			{
 				ImGui::PushID(static_cast<int>(j));
@@ -164,7 +164,7 @@ void BuildSettingsWindow::DrawSettings()
 				}
 				IMGUI_PROPERTY_END();
 				
-				if (ImGui::Button(reinterpret_cast<const char*>(u8"削除")))
+				if (ImGui::Button("Remove"))
 				{
 					item.exclude.erase(item.exclude.begin() + j);
 					ImGui::PopID();
@@ -172,7 +172,7 @@ void BuildSettingsWindow::DrawSettings()
 				}
 				ImGui::PopID();
 			}
-			if (ImGui::Button(reinterpret_cast<const char*>(u8"除外する拡張子を追加")))
+			if (ImGui::Button("Add Exclude Extension"))
 			{
 				item.exclude.push_back("");
 			}
@@ -284,17 +284,17 @@ void BuildSettingsWindow::DrawScenesInBuild(const char* label)
 				if (ImGui::BeginPopupContextItem(entry.name.c_str(), ImGuiPopupFlags_MouseButtonRight))
 				{
 					bool isFirstScene = (entry.name == SceneManager::firstSceneName);
-					if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"最初のシーンに設定"), NULL, isFirstScene, selectedCount == 1))
+					if (ImGui::MenuItem("Set First Scene", NULL, isFirstScene, selectedCount == 1))
 					{
 						setFirstSceneIndexThisFrame = index; // 今フレームで最初のシーンに設定するシーンのインデックスを保存
 					}
 					bool isLoadingScene = (entry.name == SceneManager::loadingSceneName);
-					if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"読み込みシーンに設定"), NULL, isLoadingScene, selectedCount == 1))
+					if (ImGui::MenuItem("Set Loading Scene", NULL, isLoadingScene, selectedCount == 1))
 					{
 						SceneManager::SetLoadingScene(entry.name); // 今フレームで最初のシーンに設定するシーンのインデックスを保存
 					}
 
-					if (ImGui::MenuItem(reinterpret_cast<const char*>(u8"削除"), "Delete"))
+					if (ImGui::MenuItem("Remove", "Delete"))
 					{
 						removeThisFrame = true; // 今フレームで削除するフラグを立てる
 						if (isLoadingScene)
@@ -421,7 +421,7 @@ void BuildSettingsWindow::DrawBuildButton()
 	if (m_isBuilding)
 	{
 		ImGui::BeginDisabled();
-		ImGui::Button(reinterpret_cast<const char*>(u8"ビルド中..."));
+		ImGui::Button("Building...");
 		ImGui::EndDisabled();
 	}
 	else
@@ -432,14 +432,14 @@ void BuildSettingsWindow::DrawBuildButton()
 		if (!canBuild)
 		{
 			ImGui::BeginDisabled();
-			ImGui::Button(reinterpret_cast<const char*>(u8"ビルド"));
+			ImGui::Button("Build");
 			ImGui::EndDisabled();
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), reinterpret_cast<const char*>(u8"アプリ名と出力先を設定し、ビルドに含めるシーンを1つ以上選択してください。"));
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Please set App Name, Output Directory, and select at least one scene to include in the build.");
 			return;
 		}
 
 
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"ビルド")))
+		if (ImGui::Button("Build"))
 		{
 			RunBuild();
 		}
@@ -448,7 +448,7 @@ void BuildSettingsWindow::DrawBuildButton()
 	if (m_isPackaging)
 	{
 		ImGui::BeginDisabled();
-		ImGui::Button(reinterpret_cast<const char*>(u8"パッケージ化中..."));
+		ImGui::Button("Packing...");
 		ImGui::EndDisabled();
 	}
 	else
@@ -459,14 +459,14 @@ void BuildSettingsWindow::DrawBuildButton()
 		if (!canBuild)
 		{
 			ImGui::BeginDisabled();
-			ImGui::Button(reinterpret_cast<const char*>(u8"パッケージ化"));
+			ImGui::Button("Pack");
 			ImGui::EndDisabled();
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), reinterpret_cast<const char*>(u8"アプリ名と出力先を設定し、ビルドに含めるシーンを1つ以上選択してください。"));
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Please set App Name, Output Directory, and select at least one scene to include in the build.");
 			return;
 		}
 
 
-		if (ImGui::Button(reinterpret_cast<const char*>(u8"パッケージ化")))
+		if (ImGui::Button("Pack"))
 		{
 			PackageBuildOutput();
 		}
@@ -480,14 +480,14 @@ void BuildSettingsWindow::DrawProgressPanel(const char* id, const ProcessProgres
 	{
 		const char* spinner = "|/-\\";
 		char sp = spinner[(int)(ImGui::GetTime() * 8.0f) % 4];
-		ImGui::TextColored({ 1.0f, 0.8f, 0.2f, 1.0f }, reinterpret_cast<const char*>(u8"[%c] ビルド中..."), sp);
+		ImGui::TextColored({ 1.0f, 0.8f, 0.2f, 1.0f }, "[%c] Building...", sp);
 	}
 	else
 	{
 		if (prog.succeeded)
-			ImGui::TextColored({ 0.2f, 1.0f, 0.4f, 1.0f }, reinterpret_cast<const char*>(u8"[✓] ビルド成功"));
+			ImGui::TextColored({ 0.2f, 1.0f, 0.4f, 1.0f }, "[\xe2\x9c\x93] Build Succeeded");
 		else
-			ImGui::TextColored({ 1.0f, 0.3f, 0.3f, 1.0f }, reinterpret_cast<const char*>(u8"[✗] ビルド失敗"));
+			ImGui::TextColored({ 1.0f, 0.3f, 0.3f, 1.0f }, "[\xe2\x9c\x97] Build Failed");
 	}
 
 	// --- プログレスバー ---
