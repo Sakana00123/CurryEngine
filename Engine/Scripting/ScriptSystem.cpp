@@ -140,7 +140,7 @@ void ScriptSystem::Initialize()
 	s_scriptWatcher->RequestBuild(); // 起動時に一度ビルドを要求して最新のスクリプトを読み込む  
 #endif // _DEBUG
 
-	LOG_INFO("[ScriptSystem] Script host initialized successfully.");
+	//LOG_INFO("[ScriptSystem] Script host initialized successfully.");
 	return;
 }
 

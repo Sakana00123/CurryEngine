@@ -18,7 +18,7 @@ public static unsafe class ScriptBridge
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
     public static void* CreateScript(byte* typeNameUtf8, ulong ownerId, ulong componentId)
     {
-        Debug.Log($"CreateScript: typeNameUtf8={Marshal.PtrToStringUTF8((nint)typeNameUtf8)} ownerId={ownerId} componentId={componentId}");
+        //Debug.Log($"CreateScript: typeNameUtf8={Marshal.PtrToStringUTF8((nint)typeNameUtf8)} ownerId={ownerId} componentId={componentId}");
         try
         {
             var typeName = Marshal.PtrToStringUTF8((nint)typeNameUtf8)!;
@@ -39,7 +39,7 @@ public static unsafe class ScriptBridge
             var ptr = GCHandle.ToIntPtr(handle);
             s_handles[ptr] = handle;
 
-            Debug.Log($"CreateScript: 成功");
+            //Debug.Log($"CreateScript: 成功");
             return (void*)ptr;
         }
         catch (Exception ex)
@@ -273,7 +273,7 @@ public static unsafe class ScriptBridge
             var parametersJsonStr = Marshal.PtrToStringUTF8((nint)parametersJson)!;
             // JSON文字列をC#のオブジェクト配列に変換する。ScriptInspector側で適切に変換される想定。
             var parameters = ScriptInspector.ParseParameters(parametersJsonStr);
-            Debug.Log($"CallScriptMethod: methodName={methodName}, parametersJson={parametersJsonStr}, parameters.Length={parameters?.Length ?? 0}");
+            //Debug.Log($"CallScriptMethod: methodName={methodName}, parametersJson={parametersJsonStr}, parameters.Length={parameters?.Length ?? 0}");
             // メソッドをリフレクションで呼び出す
             var methodInfo = instance.GetType().GetMethod(methodName);
             if (methodInfo == null)

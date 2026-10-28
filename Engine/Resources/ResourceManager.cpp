@@ -273,7 +273,7 @@ void ResourceManager::LoadAllShaders()
 					}
 
 					if (shader) {
-						LOG_INFO("Loaded shader: " + path.string());
+						//LOG_INFO("Loaded shader: " + path.string());
 					} else {
 						LOG_WARNING("Failed to load shader: " + path.string());
 					}
@@ -301,7 +301,7 @@ void ResourceManager::LoadAllTextures()
 					std::string pathStr = (std::filesystem::path(EnginePaths::ImagesDataDir) / fs::relative(path, textureDir)).string();
 					auto texture = Load<AssetTexture>(pathStr);
 					if (texture) {
-						LOG_INFO("Loaded texture: " + path.string());
+						//LOG_INFO("Loaded texture: " + path.string());
 					} else {
 						LOG_WARNING("Failed to load texture: " + path.string());
 					}

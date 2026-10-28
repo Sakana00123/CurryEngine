@@ -689,7 +689,7 @@ void EditorGUI::SaveScene()
 		// JSONファイルに保存
 		JsonFileHandler::SaveJsonToFile(j, sceneFilePath.string());
 		// 保存完了のログを出力
-		LOG_INFO("Scene saved: " + sceneFilePath.string());
+		//LOG_INFO("Scene saved: " + sceneFilePath.string());
 
 		// バイナリファイルとしても保存
 		{
@@ -722,7 +722,7 @@ void EditorGUI::SaveSceneAs()
 		// JSONファイルに保存
 		JsonFileHandler::SaveJsonToFile(j, sceneFilePath.string());
 		// 保存完了のログを出力
-		LOG_INFO("Scene saved: " + sceneFilePath.string());
+		//LOG_INFO("Scene saved: " + sceneFilePath.string());
 
 		// バイナリファイルとしても保存
 		{

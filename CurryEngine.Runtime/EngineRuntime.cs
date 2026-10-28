@@ -130,9 +130,9 @@ public static class EngineRuntime
                 ReloadDiagnostics.AssertSharedTypeIdentity();
 
                 // 初期化完了ログ
-                Debug.Log("EngineInitialize 完了");
-                foreach (var typeName in ScriptRegistry.RegisteredNames)
-                    Debug.Log($"登録されたスクリプト: {typeName}");
+                //Debug.Log("EngineInitialize 完了");
+                //foreach (var typeName in ScriptRegistry.RegisteredNames)
+                //    Debug.Log($"登録されたスクリプト: {typeName}");
             }
             else
             {
@@ -187,9 +187,9 @@ public static class EngineRuntime
             ReloadDiagnostics.AssertSharedTypeIdentity();
 
 
-            Debug.Log("ReloadScripts 完了");
-            foreach (var typeName in ScriptRegistry.RegisteredNames)
-                Debug.Log($"登録されたスクリプト: {typeName}");
+            //Debug.Log("ReloadScripts 完了");
+            //foreach (var typeName in ScriptRegistry.RegisteredNames)
+            //    Debug.Log($"登録されたスクリプト: {typeName}");
             return 1;
         }
         catch (Exception ex)

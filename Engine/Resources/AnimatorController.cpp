@@ -658,11 +658,6 @@ void RuntimeAnimatorController::Update(float deltaTime, const AnimatorController
 				XMVECTOR worldDelta = XMVector3TransformNormal(globalDelta, worldMatrix);
 				XMStoreFloat3(&dT, worldDelta);
 				XMStoreFloat4(&dR, XMQuaternionMultiply(XMLoadFloat4(&r1), XMLoadFloat4(&r2)));
-
-				std::string rootMotionLastTimeStr = std::to_string(rootMotionLastNormalizedTime);
-				std::string frontNormalizedTimeStr = std::to_string(frontNormalizedTime);
-				std::u8string logMsg = u8"[RuntimeAnimatorController] ループで先頭に戻った: " + std::u8string(rootMotionLastTimeStr.begin(), rootMotionLastTimeStr.end()) + u8" -> " + std::u8string(frontNormalizedTimeStr.begin(), frontNormalizedTimeStr.end());
-				LOG_INFO(logMsg);
 			}
 			else
 			{

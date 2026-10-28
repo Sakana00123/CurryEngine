@@ -653,7 +653,7 @@ void BuildSettingsWindow::RunBuild()
 	CloseHandle(hWritePipe);
 
 	m_isBuilding = true;
-	LOG_INFO("[Build] Build started.");
+	//LOG_INFO("[Build] Build started.");
 
 	// --- 読み取りスレッド ---
 	std::thread([this, hReadPipe, pi]() mutable

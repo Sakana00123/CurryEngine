@@ -91,7 +91,7 @@ namespace CurryEngine
 		auto selection = objectManager->GetEditorSelection();
 		auto& objects = objectManager->GetAllMutable();
 		auto selectNode = selection->GetPrimarySelected().get();
-		if (ImGui::Begin(reinterpret_cast<const char*>(u8"階層###Hierarchy"), nullptr, ImGuiWindowFlags_None))
+		if (ImGui::Begin(reinterpret_cast<const char*>(u8"ヒエラルキー###Hierarchy"), nullptr, ImGuiWindowFlags_None))
 		{
 			auto* window = ImGui::GetCurrentWindow();
 			bool isNotDestroyObject = false;

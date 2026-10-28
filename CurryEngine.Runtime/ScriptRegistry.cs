@@ -40,7 +40,7 @@ public static class ScriptRegistry
 
             RegisterType(type);
             NativeMethods.ScriptNames_Add(type.Name);   // C++側にも型名を登録
-            Debug.Log($"登録完了: {type.Name}");
+            //Debug.Log($"登録完了: {type.Name}");
         }
     }
 

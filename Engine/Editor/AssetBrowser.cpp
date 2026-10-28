@@ -84,7 +84,7 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 					//	CurryEngine::Resources::ImportSettingsWindow::OpenForNewAsset(meta->id);
 					//}
 
-					LOG_INFO(u8"Imported: " + dst.u8string());
+					//LOG_INFO(u8"Imported: " + dst.u8string());
 					anySucceeded = true;
 				}
 				catch (const fs::filesystem_error& e)
@@ -205,7 +205,7 @@ void AssetBrowser::DrawGUI()
 	if (isOpen)
 	{
 		ZoneScopedN("AssetBrowser::DrawGUI");
-		ImGui::Begin(reinterpret_cast<const char*>(u8"アセットブラウザー###Asset Browser"), &isOpen);
+		ImGui::Begin(reinterpret_cast<const char*>(u8"アセットブラウザ###Asset Browser"), &isOpen);
 		ImGuiWindow* window = ImGui::GetCurrentWindow();
 #if 1
 		// currentDirectoryが空の場合はAssetsフォルダを表示する
@@ -1664,7 +1664,7 @@ void AssetBrowser::DrawDeleteConfirmModal()
 					LOG_ERROR("Failed to delete " + asset.string() + ": " + ec.message() + " (Code: " + std::to_string(ec.value()) + ")");
 				}
 				else {
-					LOG_INFO(u8"Deleted: " + asset.u8string());
+					//LOG_INFO(u8"Deleted: " + asset.u8string());
 				}
 			}
 			lastClickedAsset.clear();
