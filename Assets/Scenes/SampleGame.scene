@@ -1,7 +1,7 @@
 {
     "editorCamera": {
         "aspect": 1.7777777910232544,
-        "distance": 5.499998569488525,
+        "distance": 11.09999942779541,
         "farZ": 1000.0,
         "fieldOfView": 60.0,
         "maxAngleX": 70.0,
@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            10.001093864440918,
-            8.149083137512207,
-            -2.8576500415802
+            8.179788589477539,
+            3.357221841812134,
+            -23.582128524780273
         ],
         "rotateSpeed": 3.0,
         "rotation": [
-            0.2388710230588913,
-            -0.09426871687173843,
-            0.023304222151637077,
-            0.9661837220191956
+            0.005378803238272667,
+            -0.8635854721069336,
+            0.009211312048137188,
+            0.5040896534919739
         ],
         "speed": 3.0
     },
@@ -112,6 +112,97 @@
                 {
                     "coordinateSystem": 0,
                     "enabledSelf": true,
+                    "id": "2169751753281115637",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        15.0,
+                        -23.400001525878906
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": false,
+                    "blendEnable": false,
+                    "enableShadow": false,
+                    "enabledSelf": true,
+                    "filePath": "./TestAssets/Stage/Stage2.gltf",
+                    "id": "6444929986356997621",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": ""
+                            },
+                            "1": {
+                                "materialTextures[1]": ""
+                            },
+                            "2": {
+                                "materialTextures[2]": ""
+                            },
+                            "3": {
+                                "materialTextures[3]": ""
+                            },
+                            "4": {
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                },
+                {
+                    "autoFit": false,
+                    "contactOffset": 0.019999999552965164,
+                    "convex": false,
+                    "enabledSelf": true,
+                    "id": "14628673940971948619",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "MeshCollider",
+                    "priority": 2000,
+                    "type": "MeshCollider"
+                }
+            ],
+            "id": "99856889884812067",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Stage2",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 1000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
                     "id": "7302929539978902615",
                     "m_eulerAngles": [
                         0.0,
@@ -153,7 +244,7 @@
             "name": "Laser",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 1000,
+            "priority": 2000,
             "version": 1
         },
         {
@@ -205,7 +296,7 @@
             "name": "Foot",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 2000,
+            "priority": 3000,
             "version": 1
         },
         {
@@ -323,7 +414,7 @@
             "name": "Cube",
             "parent": "0",
             "parentId": "0",
-            "priority": 3000,
+            "priority": 4000,
             "version": 1
         },
         {
@@ -441,7 +532,7 @@
             "name": "Cube (1)",
             "parent": "0",
             "parentId": "0",
-            "priority": 4000,
+            "priority": 5000,
             "version": 1
         },
         {
@@ -563,7 +654,7 @@
             "name": "Cube (2)",
             "parent": "0",
             "parentId": "0",
-            "priority": 5000,
+            "priority": 6000,
             "version": 1
         },
         {
@@ -580,9 +671,9 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        -1.1000001430511475,
+                        11.69999885559082,
                         0.5,
-                        0.0
+                        -20.000003814697266
                     ],
                     "priority": 0,
                     "rotation": [
@@ -694,12 +785,12 @@
                 }
             ],
             "id": "4984317925886415417",
-            "isDefaultOpenOnHierarchy": true,
+            "isDefaultOpenOnHierarchy": false,
             "layer": 4,
             "name": "Jammo",
             "parent": "0",
             "parentId": "0",
-            "priority": 6000,
+            "priority": 7000,
             "version": 1
         },
         {
@@ -808,7 +899,7 @@
             "name": "AttackCollider",
             "parent": "837495356795042458",
             "parentId": "0",
-            "priority": 7000,
+            "priority": 8000,
             "version": 1
         },
         {
@@ -940,7 +1031,7 @@
             "name": "Mixamo",
             "parent": "0",
             "parentId": "0",
-            "priority": 8000,
+            "priority": 9000,
             "version": 1
         },
         {
@@ -957,9 +1048,9 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        2.000000476837158,
+                        13.300003051757813,
                         0.5,
-                        0.0
+                        -25.10000228881836
                     ],
                     "priority": 0,
                     "rotation": [
@@ -1090,7 +1181,7 @@
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
-            "priority": 9000,
+            "priority": 10000,
             "version": 1
         },
         {
@@ -1204,7 +1295,7 @@
             "name": "can",
             "parent": "0",
             "parentId": "0",
-            "priority": 10000,
+            "priority": 11000,
             "version": 1
         },
         {
@@ -1246,7 +1337,7 @@
             "name": "CameraFocusTarget",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 11000,
+            "priority": 12000,
             "version": 1
         },
         {
@@ -1365,7 +1456,7 @@
             "name": "PlayerHPBar",
             "parent": "7087144494191658523",
             "parentId": "0",
-            "priority": 12000,
+            "priority": 13000,
             "version": 1
         },
         {
@@ -1479,11 +1570,11 @@
             "name": "box",
             "parent": "0",
             "parentId": "0",
-            "priority": 13000,
+            "priority": 14000,
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "anchorMax": [
@@ -1554,12 +1645,12 @@
                 }
             ],
             "id": "7087144494191658523",
-            "isDefaultOpenOnHierarchy": true,
+            "isDefaultOpenOnHierarchy": false,
             "layer": 0,
             "name": "Canvas",
             "parent": "0",
             "parentId": "0",
-            "priority": 14000,
+            "priority": 15000,
             "version": 1
         },
         {
@@ -1608,11 +1699,11 @@
             "name": "EventSystem",
             "parent": "0",
             "parentId": "0",
-            "priority": 15000,
+            "priority": 16000,
             "version": 1
         },
         {
-            "activeSelf": false,
+            "activeSelf": true,
             "components": [
                 {
                     "coordinateSystem": 0,
@@ -1625,9 +1716,9 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        0.0,
+                        13.09999942779541,
                         0.5,
-                        0.0
+                        -23.19999885559082
                     ],
                     "priority": 0,
                     "rotation": [
@@ -1760,7 +1851,7 @@
             "name": "Player",
             "parent": "0",
             "parentId": "0",
-            "priority": 16000,
+            "priority": 17000,
             "version": 1
         },
         {
@@ -1815,7 +1906,7 @@
             "name": "Directional Light",
             "parent": "0",
             "parentId": "0",
-            "priority": 17000,
+            "priority": 18000,
             "version": 1
         },
         {
@@ -1916,7 +2007,7 @@
             "name": "Ground",
             "parent": "0",
             "parentId": "0",
-            "priority": 18000,
+            "priority": 19000,
             "version": 1
         },
         {
@@ -2038,7 +2129,7 @@
             "name": "PlayerBall",
             "parent": "0",
             "parentId": "0",
-            "priority": 19000,
+            "priority": 20000,
             "version": 1
         },
         {
@@ -2093,7 +2184,7 @@
             "name": "EnemySpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 20000,
+            "priority": 21000,
             "version": 1
         },
         {
@@ -2148,7 +2239,7 @@
             "name": "ObjectSpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 21000,
+            "priority": 22000,
             "version": 1
         }
     ]

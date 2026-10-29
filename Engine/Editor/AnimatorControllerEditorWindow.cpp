@@ -1238,7 +1238,7 @@ namespace CurryEngine::Editor
         static std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> clipMap;
         CurryEngine::Resources::AssetId result = currentClipId;
 		ImGui::PushID(popupId);
-        if (ImGui::SmallButton("..."))
+        if (ImGui::SmallButton("...##Clip"))
         {
             ImGui::OpenPopup(popupId);
             clipMap.clear();
@@ -1260,11 +1260,13 @@ namespace CurryEngine::Editor
                 if (searchBuffer[0] != '\0' && clip->name.find(searchBuffer) == std::string::npos)
 					continue;
 
+				ImGui::PushID(clipId.id.c_str());
                 if (ImGui::Selectable(clip->name.c_str()))
                 {
                     controller->animationClips[clipId] = clip;
                     result = clipId;
                 }
+				ImGui::PopID();
             }
             ImGui::EndPopup();
         }

@@ -103,7 +103,7 @@ public:
 private:
 	// 内部で使用するリソースや状態をここに追加
 	//static const uint32_t VertexCapacity = 3 * 1024; // 描画する頂点の最大数
-	static const uint32_t VertexCapacity = 3 * 32768; // 描画する頂点の最大数
+	static const uint32_t VertexCapacity = 3 * 65536; // 描画する頂点の最大数
 
 	/** @brief Vertex を表す構造体です。 */
 	struct Vertex

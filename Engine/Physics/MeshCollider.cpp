@@ -6,6 +6,8 @@
 
 REGISTER_COMPONENT(MeshCollider, "Physics")
 
+#define USE_GLTF_MODEL_RENDERER 1
+
 void MeshCollider::Initialize()
 {
 	// デバッグプリミティブの準備など、必要な初期化処理をここに実装します。
@@ -15,7 +17,7 @@ void MeshCollider::Initialize()
 void MeshCollider::Register()
 {
 	// ここでMeshColliderを持つゲームオブジェクトにMeshColliderを追加し、物理エンジンに登録する処理を実装
-#if 0
+#if USE_GLTF_MODEL_RENDERER
 	GltfModelRenderer* modelRenderer = GetOwner()->GetComponent<GltfModelRenderer>();
 #else
 	MeshRenderer* meshRenderer = GetOwner()->GetComponent<MeshRenderer>();
@@ -36,7 +38,7 @@ void MeshCollider::Register()
 	{
 		MeshColliderData data;
 		
-#if 0
+#if USE_GLTF_MODEL_RENDERER
 		ModelAsset* modelAsset = modelRenderer->GetModelAsset();
 
 		if (modelAsset->batchMeshes.size() > 0)
