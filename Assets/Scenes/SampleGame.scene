@@ -277,188 +277,6 @@
             "version": 1
         },
         {
-            "activeSelf": false,
-            "components": [
-                {
-                    "coordinateSystem": 0,
-                    "enabledSelf": true,
-                    "id": "9472051562113259974",
-                    "m_eulerAngles": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "name": "Transform",
-                    "position": [
-                        0.0,
-                        15.0,
-                        -23.399999618530273
-                    ],
-                    "priority": 0,
-                    "rotation": [
-                        -0.0,
-                        0.0,
-                        -0.0,
-                        1.0
-                    ],
-                    "scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "type": "Transform"
-                },
-                {
-                    "animationEnable": true,
-                    "blendEnable": true,
-                    "enableShadow": true,
-                    "enabledSelf": true,
-                    "filePath": "./TestAssets/Stage/StageTest/Stage2.gltf",
-                    "id": "8778564680012572304",
-                    "material": {
-                        "blendState": 5,
-                        "depthStencilState": 4,
-                        "rasterizerState": 6,
-                        "shaders": {
-                            "0": "./Assets/Shaders/gltf_model_ps.cso"
-                        },
-                        "textures": {
-                            "0": {
-                                "materialTextures[0]": ""
-                            },
-                            "1": {
-                                "materialTextures[1]": ""
-                            },
-                            "2": {
-                                "materialTextures[2]": ""
-                            },
-                            "3": {
-                                "materialTextures[3]": ""
-                            },
-                            "4": {
-                                "materialTextures[4]": ""
-                            }
-                        }
-                    },
-                    "name": "GltfModelRenderer",
-                    "priority": 1000,
-                    "staticBatching": false,
-                    "type": "GltfModelRenderer"
-                },
-                {
-                    "autoFit": false,
-                    "contactOffset": 0.019999999552965164,
-                    "convex": false,
-                    "enabledSelf": true,
-                    "id": "16810476107406267935",
-                    "isTrigger": false,
-                    "material": 0,
-                    "name": "MeshCollider",
-                    "priority": 2000,
-                    "type": "MeshCollider"
-                }
-            ],
-            "id": "3820681824167151027",
-            "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
-            "name": "Stage2 (1)",
-            "parent": "0",
-            "parentId": "0",
-            "priority": 3000,
-            "version": 1
-        },
-        {
-            "activeSelf": false,
-            "components": [
-                {
-                    "coordinateSystem": 0,
-                    "enabledSelf": true,
-                    "id": "2169751753281115637",
-                    "m_eulerAngles": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "name": "Transform",
-                    "position": [
-                        0.0,
-                        15.0,
-                        -23.400001525878906
-                    ],
-                    "priority": 0,
-                    "rotation": [
-                        -0.0,
-                        0.0,
-                        -0.0,
-                        1.0
-                    ],
-                    "scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "type": "Transform"
-                },
-                {
-                    "animationEnable": false,
-                    "blendEnable": false,
-                    "enableShadow": false,
-                    "enabledSelf": true,
-                    "filePath": "./TestAssets/Stage/Stage2.gltf",
-                    "id": "6444929986356997621",
-                    "material": {
-                        "blendState": 5,
-                        "depthStencilState": 4,
-                        "rasterizerState": 6,
-                        "shaders": {
-                            "0": "./Assets/Shaders/gltf_model_ps.cso"
-                        },
-                        "textures": {
-                            "0": {
-                                "materialTextures[0]": ""
-                            },
-                            "1": {
-                                "materialTextures[1]": ""
-                            },
-                            "2": {
-                                "materialTextures[2]": ""
-                            },
-                            "3": {
-                                "materialTextures[3]": ""
-                            },
-                            "4": {
-                                "materialTextures[4]": ""
-                            }
-                        }
-                    },
-                    "name": "GltfModelRenderer",
-                    "priority": 1000,
-                    "staticBatching": false,
-                    "type": "GltfModelRenderer"
-                },
-                {
-                    "autoFit": false,
-                    "contactOffset": 0.019999999552965164,
-                    "convex": false,
-                    "enabledSelf": true,
-                    "id": "14628673940971948619",
-                    "isTrigger": false,
-                    "material": 0,
-                    "name": "MeshCollider",
-                    "priority": 2000,
-                    "type": "MeshCollider"
-                }
-            ],
-            "id": "99856889884812067",
-            "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
-            "name": "Stage2",
-            "parent": "0",
-            "parentId": "0",
-            "priority": 4000,
-            "version": 1
-        },
-        {
             "activeSelf": true,
             "components": [
                 {
@@ -505,7 +323,7 @@
             "name": "Laser",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 5000,
+            "priority": 3000,
             "version": 1
         },
         {
@@ -557,7 +375,7 @@
             "name": "Foot",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 6000,
+            "priority": 4000,
             "version": 1
         },
         {
@@ -675,7 +493,7 @@
             "name": "Cube",
             "parent": "0",
             "parentId": "0",
-            "priority": 7000,
+            "priority": 5000,
             "version": 1
         },
         {
@@ -793,7 +611,7 @@
             "name": "Cube (1)",
             "parent": "0",
             "parentId": "0",
-            "priority": 8000,
+            "priority": 6000,
             "version": 1
         },
         {
@@ -915,7 +733,7 @@
             "name": "Cube (2)",
             "parent": "0",
             "parentId": "0",
-            "priority": 9000,
+            "priority": 7000,
             "version": 1
         },
         {
@@ -1051,7 +869,7 @@
             "name": "Jammo",
             "parent": "0",
             "parentId": "0",
-            "priority": 10000,
+            "priority": 8000,
             "version": 1
         },
         {
@@ -1160,7 +978,7 @@
             "name": "AttackCollider",
             "parent": "837495356795042458",
             "parentId": "0",
-            "priority": 11000,
+            "priority": 9000,
             "version": 1
         },
         {
@@ -1292,7 +1110,7 @@
             "name": "Mixamo",
             "parent": "0",
             "parentId": "0",
-            "priority": 12000,
+            "priority": 10000,
             "version": 1
         },
         {
@@ -1442,7 +1260,7 @@
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
-            "priority": 13000,
+            "priority": 11000,
             "version": 1
         },
         {
@@ -1556,7 +1374,7 @@
             "name": "can",
             "parent": "0",
             "parentId": "0",
-            "priority": 14000,
+            "priority": 12000,
             "version": 1
         },
         {
@@ -1598,7 +1416,7 @@
             "name": "CameraFocusTarget",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 15000,
+            "priority": 13000,
             "version": 1
         },
         {
@@ -1717,7 +1535,7 @@
             "name": "PlayerHPBar",
             "parent": "7087144494191658523",
             "parentId": "0",
-            "priority": 16000,
+            "priority": 14000,
             "version": 1
         },
         {
@@ -1831,7 +1649,7 @@
             "name": "box",
             "parent": "0",
             "parentId": "0",
-            "priority": 17000,
+            "priority": 15000,
             "version": 1
         },
         {
@@ -1911,7 +1729,7 @@
             "name": "Canvas",
             "parent": "0",
             "parentId": "0",
-            "priority": 18000,
+            "priority": 16000,
             "version": 1
         },
         {
@@ -1960,7 +1778,7 @@
             "name": "EventSystem",
             "parent": "0",
             "parentId": "0",
-            "priority": 19000,
+            "priority": 17000,
             "version": 1
         },
         {
@@ -2112,7 +1930,7 @@
             "name": "Player",
             "parent": "0",
             "parentId": "0",
-            "priority": 20000,
+            "priority": 18000,
             "version": 1
         },
         {
@@ -2167,7 +1985,7 @@
             "name": "Directional Light",
             "parent": "0",
             "parentId": "0",
-            "priority": 21000,
+            "priority": 19000,
             "version": 1
         },
         {
@@ -2268,7 +2086,7 @@
             "name": "Ground",
             "parent": "0",
             "parentId": "0",
-            "priority": 22000,
+            "priority": 20000,
             "version": 1
         },
         {
@@ -2390,7 +2208,7 @@
             "name": "PlayerBall",
             "parent": "0",
             "parentId": "0",
-            "priority": 23000,
+            "priority": 21000,
             "version": 1
         },
         {
@@ -2445,7 +2263,7 @@
             "name": "EnemySpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 24000,
+            "priority": 22000,
             "version": 1
         },
         {
@@ -2500,7 +2318,7 @@
             "name": "ObjectSpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 25000,
+            "priority": 23000,
             "version": 1
         }
     ]
