@@ -58,7 +58,8 @@ public class PlayerController : Behaviour
         // 回転処理
         if (direction != Vector3.zero)
         {
-            Vector3 forward = cameraForward;
+            //Vector3 forward = cameraForward;
+            Vector3 forward = direction;
             forward.y = 0f; // 水平方向のみに制限
             Quaternion targetRotation = Quaternion.LookRotation(forward);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.DeltaTime * 5f);
