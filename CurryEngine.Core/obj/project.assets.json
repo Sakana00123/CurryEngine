@@ -8,23 +8,23 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\dheit\\.nuget\\packages\\": {},
+    "C:\\Users\\2240001\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dheit\\Desktop\\GitHubProjects\\PersonalProduction\\CurryEngine\\CurryEngine.Core\\CurryEngine.Core.csproj",
+      "projectUniqueName": "C:\\Users\\2240001\\Desktop\\IndieProduction\\CurryEngine\\CurryEngine.Core\\CurryEngine.Core.csproj",
       "projectName": "CurryEngine.Core",
-      "projectPath": "C:\\Users\\dheit\\Desktop\\GitHubProjects\\PersonalProduction\\CurryEngine\\CurryEngine.Core\\CurryEngine.Core.csproj",
-      "packagesPath": "C:\\Users\\dheit\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dheit\\Desktop\\GitHubProjects\\PersonalProduction\\CurryEngine\\CurryEngine.Core\\obj\\",
+      "projectPath": "C:\\Users\\2240001\\Desktop\\IndieProduction\\CurryEngine\\CurryEngine.Core\\CurryEngine.Core.csproj",
+      "packagesPath": "C:\\Users\\2240001\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\2240001\\Desktop\\IndieProduction\\CurryEngine\\CurryEngine.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\dheit\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\2240001\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -33,6 +33,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

@@ -3,8 +3,8 @@
 #include "Engine/Rendering/Pipeline/Graphics.h"
 #include "Engine/Rendering/Renderers/GltfModelRenderer.h"
 
-CONST LONG SHADOWMAP_WIDTH{ 2048 };
-CONST LONG SHADOWMAP_HEIGHT{ 2048 };
+CONST LONG SHADOWMAP_WIDTH{ 512 };
+CONST LONG SHADOWMAP_HEIGHT{ 512 };
 
 void ShadowMapPass::Initialize()
 {

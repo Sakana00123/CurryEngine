@@ -19,6 +19,7 @@ public class Enemy : Behaviour
     [SerializeField] int attackDamage = 10;
     [SerializeField] float attackCooldown = 3f;
     [SerializeField] float knockbackForce = 5f;
+    [SerializeField] bool ignoreMoveY = true;
     Animator? animator;
     AudioSource? audioSource;
 
@@ -76,7 +77,11 @@ public class Enemy : Behaviour
         {
             // プレイヤーの方向を向く
             Vector3 directionToPlayer = playerObject.transform.position - transform.position;
-            directionToPlayer.y = 0f; // 水平方向のみに制限
+            //directionToPlayer.y = 0f; // 水平方向のみに制限
+            if (ignoreMoveY)
+            {
+                directionToPlayer.y = 0f; // Y軸方向の移動を無視する場合
+            }
 
             if (directionToPlayer != Vector3.zero)
             {

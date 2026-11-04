@@ -1,7 +1,7 @@
 {
-    "id": "f8826ba4328f1bcc228ce25c1506cd79",
+    "id": "f38affd0fefcbf47f41e74fe805ee168",
     "importSettings": null,
-    "isFolder": false,
+    "isFolder": true,
     "path": [
         84,
         101,
@@ -14,20 +14,11 @@
         116,
         115,
         92,
-        104,
-        117,
-        116,
-        97,
+        68,
+        114,
         111,
-        92,
-        115,
-        107,
-        105,
         110,
-        46,
-        98,
-        109,
-        112
+        101
     ],
     "type": "Unknown"
 }

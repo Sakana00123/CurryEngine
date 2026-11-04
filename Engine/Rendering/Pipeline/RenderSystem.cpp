@@ -159,6 +159,7 @@ void RenderSystem::Render()
 			}
 
             // アニメーションプレビュー用の描画処理
+            if (0)
             {
                 EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_ANIMATION_PREVIEW);
                 cameraPos = editorCamera->GetPosition();
