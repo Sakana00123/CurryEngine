@@ -28,34 +28,34 @@ internal static partial class NativeMethods
     // ------------------------------------ Input -----------------------------------------
 
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_GetKey(int keyCode);
 
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_GetKeyDown(int keyCode);
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_GetKeyUp(int keyCode);
 
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_GetAction([MarshalAs(UnmanagedType.LPUTF8Str)] string actionName);
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_GetActionDown([MarshalAs(UnmanagedType.LPUTF8Str)] string actionName);
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_GetActionUp([MarshalAs(UnmanagedType.LPUTF8Str)] string actionName);
 
     //[LibraryImport(Dll)]
-    //[return: MarshalAs(UnmanagedType.Bool)]
+    //[return: MarshalAs(UnmanagedType.I1)]
     //internal static partial bool Input_GetMouseButton(int button);
     //[LibraryImport(Dll)]
-    //[return: MarshalAs(UnmanagedType.Bool)]
+    //[return: MarshalAs(UnmanagedType.I1)]
     //internal static partial bool Input_GetMouseButtonDown(int button);
     //[LibraryImport(Dll)]
-    //[return: MarshalAs(UnmanagedType.Bool)]
+    //[return: MarshalAs(UnmanagedType.I1)]
     //internal static partial bool Input_GetMouseButtonUp(int button);
 
     [LibraryImport(Dll)] internal static partial void Input_GetAxis(int axis, out Vector2 value);
@@ -70,19 +70,19 @@ internal static partial class NativeMethods
     //[LibraryImport(Dll)] internal static partial int Input_GetGamepadButton(int gamepadIndex, int button);
 
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_SetCursorLock(int cursorLock, int changeVisible);
 
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_GetCursorLock();
     
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_GetCursorVisible();
 
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Input_IsGamepadConnected();
 
     // ------------------------------------- Debug -----------------------------------------
@@ -128,7 +128,7 @@ internal static partial class NativeMethods
     //[LibraryImport(Dll)] internal static partial float Camera_GetOrthographicSize(ulong cameraId);
     //[LibraryImport(Dll)] internal static partial void Camera_SetOrthographicSize(ulong cameraId, float orthographicSize);
     //[LibraryImport(Dll)]
-    //[return: MarshalAs(UnmanagedType.Bool)] internal static partial bool Camera_GetIsOrthographic(ulong cameraId);
+    //[return: MarshalAs(UnmanagedType.I1)] internal static partial bool Camera_GetIsOrthographic(ulong cameraId);
     //[LibraryImport(Dll)] internal static partial void Camera_SetIsOrthographic(ulong cameraId, bool isOrthographic);
     [LibraryImport(Dll)] internal static partial float Camera_GetAspect(ulong cameraId);
     [LibraryImport(Dll)] internal static partial void Camera_SetAspect(ulong cameraId, float aspect);
@@ -142,7 +142,7 @@ internal static partial class NativeMethods
     [LibraryImport(Dll)] internal static partial void Physics_SetGravity(Vector3 gravity);
     [LibraryImport(Dll)] internal static partial Vector3 Physics_GetGravity();
 
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     [LibraryImport(Dll)] internal static partial bool Physics_Raycast(Vector3 origin, Vector3 direction, out RaycastHit hitInfo, float maxDistance, int layerMask);
 
     //[LibraryImport(Dll)] internal static partial void Physics_RaycastAll(Vector3 origin, Vector3 direction, float maxDistance, out IntPtr hitInfos, out int hitCount);
@@ -167,13 +167,13 @@ internal static partial class NativeMethods
 
     [LibraryImport(Dll)] internal static partial ulong GameObject_FindByName([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
 
-    [LibraryImport(Dll)] internal static partial void GameObject_SetActive(ulong objectId,[MarshalAs(UnmanagedType.Bool)] bool active);
+    [LibraryImport(Dll)] internal static partial void GameObject_SetActive(ulong objectId,[MarshalAs(UnmanagedType.I1)] bool active);
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool GameObject_IsActive(ulong objectId);
 
     [LibraryImport(Dll)] 
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool GameObject_IsValid(ulong objectId);
 
 
@@ -219,7 +219,7 @@ internal static partial class NativeMethods
     //[LibraryImport(Dll)] internal static partial void Entity_AddComponent(ulong ownerId, [MarshalAs(UnmanagedType.LPUTF8Str)] string typeName);
     //[LibraryImport(Dll)] internal static partial void Entity_RemoveComponent(ulong ownerId, [MarshalAs(UnmanagedType.LPUTF8Str)] string typeName);
     //[LibraryImport(Dll)] internal static partial void Entity_GetComponent(ulong ownerId, [MarshalAs(UnmanagedType.LPUTF8Str)] string typeName, out IntPtr componentData);
-    [LibraryImport(Dll)] [return: MarshalAs(UnmanagedType.Bool)] internal static partial bool Entity_HasComponent(ulong ownerId, [MarshalAs(UnmanagedType.LPUTF8Str)] string typeName);
+    [LibraryImport(Dll)] [return: MarshalAs(UnmanagedType.I1)] internal static partial bool Entity_HasComponent(ulong ownerId, [MarshalAs(UnmanagedType.LPUTF8Str)] string typeName);
 
 
     [LibraryImport(Dll)] internal static partial int Scene_GetAllIds(ulong[] outBuffer, int bufferSize); // 事前に確保されたバッファを渡す方式。呼び出し側でサイズを管理する。
@@ -290,7 +290,7 @@ internal static partial class NativeMethods
     [LibraryImport(Dll)] internal static partial void Component_Destroy(ulong objectId);
 
     [LibraryImport(Dll)]
-    [return: MarshalAs(UnmanagedType.Bool)]
+    [return: MarshalAs(UnmanagedType.I1)]
     internal static partial bool Component_IsValid(ulong objectId);
 
     [LibraryImport(Dll)] internal static partial ulong Component_GetOwner(ulong objectId);

@@ -1,0 +1,16 @@
+{
+    "scenesInBuild": {
+        "firstScene": "Main",
+        "loadingScene": {
+            "name": ""
+        },
+        "scenes": [
+            {
+                "enabled": true,
+                "index": 0,
+                "name": "Main",
+                "path": "./Assets/Scenes/Main.scene"
+            }
+        ]
+    }
+}

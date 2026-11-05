@@ -10,11 +10,13 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./Tools/Packaging/Build-
 
 同じバージョンの出力は上書きしません。既定の出力先は `BuildOutput/Engines/CurryEngine-<version>-win-x64.zip` です。隣に展開済みフォルダとZIPのSHA256ファイルを保存します。
 
+同梱する作品の配布元は `Packaging/Projects/CurryEngineProject/` です。作品を更新するときは、ここにある `Assets/`（`.meta` を含む）、`ProjectSettings/`、`imgui.ini` に反映してからバッチを実行します。`Project.curryproject` は指定されたエンジンバージョンで梱包時に生成します。
+
 ## 提出先での使い方
 
 1. ZIP全体を書き込み可能なフォルダへ展開します。
 2. `StartEditor.bat` をダブルクリックします。
-3. `StartEditor.bat` と同じフォルダ内に `CurryEngineProject` を作成し、エディターで開きます。次回は同じプロジェクトを開きます。エンジン本体は `Engine/` に入っています。
+3. `StartEditor.bat` と同じフォルダ内にある同梱の `CurryEngineProject` が開きます。エンジン本体は `Engine/` に入っています。
 
 別の場所を使う場合は `StartEditor.bat "D:\MyProject"` のようにプロジェクトフォルダを指定します。既存プロジェクトはこのエンジンのバージョンと一致する必要があります。エンジンとプロジェクトのフォルダは互いの中に配置できません。
 
@@ -23,10 +25,10 @@ CurryHubがある場合は **Engine Versions → Add** から `Engine/CurryEngin
 ## 構成
 
 - ネイティブ側はReleaseでビルドし、`CURRY_EDITOR` と `USE_IMGUI` で編集・再生機能を有効化します。従来のDebug開発構成と完成ゲーム用Release構成も維持します。
-- DirectXTexもReleaseでビルドします。assimpは `x64/Release/assimp.dll` を使います。
+- DirectXTexとDirectXTKもReleaseでビルドします。assimpは `External/assimp/lib/Release/assimp.dll` を使います。
 - Visual StudioのRedistフォルダから再配布用x64 C++ランタイムを同梱します。Debugランタイム依存を検出した場合はZIP作成を失敗させます。
 - `DotNet/` に作成PCの安定版.NET 9 SDKと、それに一致するhostfxr・ランタイム・参照パック、ライセンス文書をコピーします。エディターはこのSDKとランタイムを優先します。同梱フォルダが壊れている場合、インストール済み.NETへ黙って切り替えません。
-- テンプレート・フォント・画像・今回生成したシェーダーを収集します。利用者の作品データ、UserScripts、開発用PDBは含めません。
+- エンジン側にはテンプレート・フォント・画像・今回生成したシェーダーを収録します。作品側には配布元の素材と設定を収録します。ソリューション、C# プロジェクト、キャッシュ、ログは展開後に生成されます。
 - `engine.json` と `version.txt` にバージョンを、`package-files.json` にペイロードのSHA256を記録します。
 
 対象はWindows 10/11 x64、Direct3D 11.1に対応するGPUとドライバーです。32ビットWindowsやすべてのハードウェアでの動作を保証するものではありません。通常の起動・編集・再生ではPowerShell 7、Visual Studio、.NETの別途インストールを必要としない構成です。
@@ -37,7 +39,7 @@ CurryHubがある場合は **Engine Versions → Add** から `Engine/CurryEngin
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./Tests/Run-EditorPackageTests.ps1
 ```
 
-梱包テストは入力検証、既存ファイル保護、日本語・空白・引用符を含む引数、タイムアウト、ZIPの圧縮・展開を検証します。パッケージ作成処理では展開したエンジンで新規プロジェクト作成・検証・ソリューション生成・同梱SDKでのC#ビルドを実行し、共有エンジンの内容が変わらないことも確認します。
+梱包テストは入力検証、既存ファイル保護、日本語・空白・引用符を含む引数、タイムアウト、ZIPの圧縮・展開を検証します。パッケージ作成処理では展開したエンジンで新規プロジェクトを作成し、新規・同梱の両プロジェクトでプロジェクト検証、ソリューション生成、同梱SDKでのC#ビルドを実行します。共有エンジンの内容が変わらないことも確認します。
 
 ビルドログは `Library/Packaging/<実行ID>`、梱包・展開検証は出力先の `.curry-package-<実行ID>` に残します。起動ログはプロジェクトの `Logs/startup.log` です。
 

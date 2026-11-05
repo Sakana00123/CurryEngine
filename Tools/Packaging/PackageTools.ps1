@@ -74,11 +74,21 @@ function Copy-PackageFile([string]$Source, [string]$Destination) {
     Copy-Item -LiteralPath $Source -Destination $Destination -ErrorAction Stop
 }
 
+function Get-PackageFileHash([string]$Path) {
+    $stream = [IO.File]::OpenRead($Path)
+    try {
+        $sha256 = [Security.Cryptography.SHA256]::Create()
+        try {
+            return [BitConverter]::ToString($sha256.ComputeHash($stream)).Replace('-', '').ToLowerInvariant()
+        } finally { $sha256.Dispose() }
+    } finally { $stream.Dispose() }
+}
+
 function Get-PackageHashes([string]$Directory) {
     $hashes = [ordered]@{}
-    foreach ($file in Get-ChildItem -LiteralPath $Directory -File -Recurse | Sort-Object FullName) {
+    foreach ($file in Get-ChildItem -LiteralPath $Directory -File -Recurse -Force | Sort-Object FullName) {
         $relative = (Get-PackageRelativePath $Directory $file.FullName).Replace('\', '/')
-        $hashes[$relative] = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+        $hashes[$relative] = Get-PackageFileHash $file.FullName
     }
     return $hashes
 }
@@ -98,7 +108,7 @@ function Copy-EditorPayload {
     foreach ($name in 'deps', 'runtimeconfig') {
         Copy-PackageFile "$ManagedDirectory/bin/CurryEngine.Runtime/release/CurryEngine.Runtime.$name.json" "$Destination/CurryEngine.Runtime.$name.json"
     }
-    Copy-PackageFile "$RepoRoot/x64/Release/assimp.dll" "$Destination/assimp.dll"
+    Copy-PackageFile "$RepoRoot/External/assimp/lib/Release/assimp.dll" "$Destination/assimp.dll"
     Copy-PackageFile "$RepoRoot/External/DotNetHost/9.0.10/runtimes/win-x64/native/nethost.dll" "$Destination/nethost.dll"
     foreach ($font in 'NotoSansJP-Medium.ttf', 'NotoSansSC-Medium.ttf') {
         Copy-PackageFile "$RepoRoot/Data/Fonts/$font" "$Destination/Resources/Data/Fonts/$font"
@@ -173,12 +183,36 @@ function Test-NativePackageDependencies {
     return $dependencies
 }
 
+function Assert-EditorProjectSource([string]$Source) {
+    foreach ($relative in 'Assets/Scenes/Main.scene', 'ProjectSettings/settings.json',
+        'ProjectSettings/EditorConfig.json', 'ProjectSettings/Physics.json', 'ProjectSettings/Input.json', 'imgui.ini') {
+        $path = Join-Path $Source $relative
+        if (-not (Test-Path -LiteralPath $path -PathType Leaf) -or (Get-Item -LiteralPath $path -Force).Length -eq 0) {
+            throw "Missing or empty bundled project input: $path"
+        }
+    }
+}
+
+function Copy-EditorProject {
+    param([string]$Source, [string]$Destination, [string]$Version)
+    Assert-EditorProjectSource $Source
+    if (Test-Path -LiteralPath $Destination) { throw "Project staging destination already exists: $Destination" }
+    $null = [IO.Directory]::CreateDirectory($Destination)
+    foreach ($directory in 'Assets', 'ProjectSettings') {
+        Copy-Item -LiteralPath (Join-Path $Source $directory) -Destination $Destination -Recurse -Force
+    }
+    Copy-PackageFile "$Source/imgui.ini" "$Destination/imgui.ini"
+    Write-PackageJson "$Destination/Project.curryproject" ([ordered]@{
+        formatVersion = 1; name = 'CurryEngineProject'; engineVersion = $Version
+    })
+}
+
 function Test-EditorPackageCommands {
     param([string]$PackageDirectory, [string]$TestDirectory, [string]$Version)
     $null = [IO.Directory]::CreateDirectory($TestDirectory)
     $EngineDirectory = Join-Path $PackageDirectory 'Engine'
     $before = Get-PackageHashes $EngineDirectory | ConvertTo-Json -Compress
-    $projectRoot = Join-Path $PackageDirectory 'CurryEngineProject'
+    $projectRoot = Join-Path $TestDirectory 'BlankProject'
     $exe = Join-Path $EngineDirectory 'CurryEngine.exe'
     $created = Invoke-PackageTool $exe @('--create-project', $projectRoot, '--name', '新規作品 & space') $TestDirectory "$TestDirectory/create.log" 120 | ConvertFrom-Json
     if (-not $created.created -or [IO.Path]::GetFullPath($created.projectFile) -ne "$projectRoot/Project.curryproject".Replace('/', '\')) {
@@ -187,13 +221,24 @@ function Test-EditorPackageCommands {
     foreach ($relative in 'Project.sln', 'Assembly-CSharp.csproj', 'imgui.ini', 'Assets/Scenes/Main.scene', 'Assets/Scripts/HelloCurry.cs', 'ProjectSettings/settings.json') {
         if (-not (Test-Path -LiteralPath "$projectRoot/$relative" -PathType Leaf)) { throw "Creation missed: $relative" }
     }
-    if ((Get-FileHash -LiteralPath "$projectRoot/imgui.ini" -Algorithm SHA256).Hash -cne
-        (Get-FileHash -LiteralPath "$EngineDirectory/Templates/Empty/imgui.ini" -Algorithm SHA256).Hash) {
+    if ((Get-PackageFileHash "$projectRoot/imgui.ini") -cne
+        (Get-PackageFileHash "$EngineDirectory/Templates/Empty/imgui.ini")) {
         throw 'Template imgui.ini changed during project creation.'
     }
-    $valid = Invoke-PackageTool $exe @('--validate-project', $created.projectFile) $TestDirectory "$TestDirectory/validate.log" 120 | ConvertFrom-Json
+    Test-PackagedProject $EngineDirectory $created.projectFile $TestDirectory $Version
+    $bundledTest = Join-Path $TestDirectory 'Bundled'
+    $null = [IO.Directory]::CreateDirectory($bundledTest)
+    Test-PackagedProject $EngineDirectory (Join-Path $PackageDirectory 'CurryEngineProject/Project.curryproject') $bundledTest $Version
+    if ($before -cne (Get-PackageHashes $EngineDirectory | ConvertTo-Json -Compress)) { throw 'Smoke test changed shared engine files.' }
+}
+
+function Test-PackagedProject {
+    param([string]$EngineDirectory, [string]$ProjectFile, [string]$TestDirectory, [string]$Version)
+    $projectRoot = Split-Path $ProjectFile -Parent
+    $exe = Join-Path $EngineDirectory 'CurryEngine.exe'
+    $valid = Invoke-PackageTool $exe @('--validate-project', $ProjectFile) $TestDirectory "$TestDirectory/validate.log" 120 | ConvertFrom-Json
     if (-not $valid.valid -or $valid.engineVersion -cne $Version) { throw 'Project validation/version mismatch.' }
-    $generated = Invoke-PackageTool $exe @('--generate-solution', $created.projectFile) $TestDirectory "$TestDirectory/generate.log" 120 | ConvertFrom-Json
+    $generated = Invoke-PackageTool $exe @('--generate-solution', $ProjectFile) $TestDirectory "$TestDirectory/generate.log" 120 | ConvertFrom-Json
     if (-not $generated.generated) { throw 'Solution generation failed.' }
     # Pin the same stable SDK selection when the chosen output directory is outside the repository.
     Write-PackageJson "$projectRoot/global.json" @{ sdk = @{ version = '9.0.100'; rollForward = 'latestFeature'; allowPrerelease = $false } }
@@ -209,7 +254,6 @@ function Test-EditorPackageCommands {
     }
     $null = Invoke-PackageTool "$EngineDirectory/DotNet/dotnet.exe" @('build', "$projectRoot/Project.sln", '-c', 'Release', '--nologo', '-p:NuGetAudit=false') $projectRoot "$TestDirectory/scripts-build.log" 300 $environment
     if (-not (Test-Path -LiteralPath "$projectRoot/Library/ScriptAssemblies/Assembly-CSharp.dll")) { throw 'Script assembly was not produced.' }
-    if (($before) -cne (Get-PackageHashes $EngineDirectory | ConvertTo-Json -Compress)) { throw 'Smoke test changed shared engine files.' }
 }
 
 function Publish-EditorPackage {
@@ -226,7 +270,7 @@ function Publish-EditorPackage {
     $extracted = Join-Path $StagingDirectory 'Extracted Engine 日本語 & space'
     [IO.Compression.ZipFile]::ExtractToDirectory($zip, $extracted)
     foreach ($entry in $hashes.GetEnumerator()) {
-        $hash = (Get-FileHash -LiteralPath (Join-Path $extracted $entry.Key) -Algorithm SHA256).Hash.ToLowerInvariant()
+        $hash = Get-PackageFileHash (Join-Path $extracted $entry.Key)
         if ($hash -cne $entry.Value) { throw "ZIP content mismatch: $($entry.Key)" }
     }
     Test-EditorPackageCommands $extracted (Join-Path $StagingDirectory 'Smoke') $Version
@@ -239,7 +283,7 @@ function Publish-EditorPackage {
     }
     [IO.Directory]::Move($PackageDirectory, $target)
     [IO.File]::Move($zip, $zipTarget)
-    $zipHash = (Get-FileHash -LiteralPath $zipTarget -Algorithm SHA256).Hash.ToLowerInvariant()
+    $zipHash = Get-PackageFileHash $zipTarget
     [IO.File]::WriteAllText("$zipTarget.sha256", "$zipHash  $name.zip`n")
     return [pscustomobject]@{ PackageDirectory = $target; Zip = $zipTarget; Sha256 = $zipHash }
 }

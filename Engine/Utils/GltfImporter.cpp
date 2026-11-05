@@ -172,7 +172,10 @@ namespace CurryEngine
                     FetchAnimations(*gltfModel, asset);
                 }
 
-                std::ofstream ofs(cerealFilePath.c_str(), std::ios::binary);
+                std::filesystem::create_directories(cerealFilePath.parent_path());
+                std::ofstream ofs(cerealFilePath, std::ios::binary);
+                if (!ofs)
+                    throw std::runtime_error("Could not open glTF cache for writing: " + cerealFilePath.string());
                 cereal::BinaryOutputArchive serialization(ofs);
                 serialization(
                     cereal::make_nvp("scenes", scenes),

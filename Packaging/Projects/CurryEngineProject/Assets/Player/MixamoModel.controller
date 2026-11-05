@@ -1,0 +1,145 @@
+{
+    "animationClipIds": [
+        "8815b2626151ccf0d4e75e4428dac612",
+        "2a5aed0b70866f8a192ce104f7a560b8",
+        "4730922d9ff5dedf127f1dbaaab0d5eb",
+        "12cc8ccfb9a7bcaad96065f0b9467aea",
+        "87e35258e7c791c2c47213b290835f7f",
+        "6c4a5a55b324ecc0a88caeec875b60fc",
+        "38679cb8bb58c4f9c2d3d40ba163829f"
+    ],
+    "animationTimelineIds": [],
+    "defaultStateIndex": 0,
+    "modelAssetId": "76a36a040d13ff3bbd57d55316f50ad8",
+    "name": "MixamoModel",
+    "parameters": [],
+    "states": [
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "8815b2626151ccf0d4e75e4428dac612",
+            "editorPosition": [
+                0.0,
+                0.0
+            ],
+            "loop": false,
+            "name": "Move",
+            "rootMotion": false,
+            "rootNodeIndex": 1,
+            "speed": 1.0,
+            "timelineId": ""
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "2a5aed0b70866f8a192ce104f7a560b8",
+            "editorPosition": [
+                0.0,
+                50.0
+            ],
+            "loop": false,
+            "name": "Dodge",
+            "rootMotion": false,
+            "rootNodeIndex": 1,
+            "speed": 1.0,
+            "timelineId": ""
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "4730922d9ff5dedf127f1dbaaab0d5eb",
+            "editorPosition": [
+                0.0,
+                100.0
+            ],
+            "loop": false,
+            "name": "BigJump",
+            "rootMotion": false,
+            "rootNodeIndex": 1,
+            "speed": 1.0,
+            "timelineId": ""
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "12cc8ccfb9a7bcaad96065f0b9467aea",
+            "editorPosition": [
+                0.0,
+                150.0
+            ],
+            "loop": false,
+            "name": "Flip",
+            "rootMotion": false,
+            "rootNodeIndex": 1,
+            "speed": 1.0,
+            "timelineId": ""
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "6c4a5a55b324ecc0a88caeec875b60fc",
+            "editorPosition": [
+                0.0,
+                200.0
+            ],
+            "loop": false,
+            "name": "Failling",
+            "rootMotion": false,
+            "rootNodeIndex": 1,
+            "speed": 1.0,
+            "timelineId": ""
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "38679cb8bb58c4f9c2d3d40ba163829f",
+            "editorPosition": [
+                0.0,
+                250.0
+            ],
+            "loop": false,
+            "name": "Jump",
+            "rootMotion": false,
+            "rootNodeIndex": 1,
+            "speed": 1.0,
+            "timelineId": ""
+        },
+        {
+            "blendEntries": [],
+            "blendParamXIndex": -1,
+            "blendParamYIndex": -1,
+            "blendSmoothTime": 0.0,
+            "blendType": 0,
+            "clipId": "87e35258e7c791c2c47213b290835f7f",
+            "editorPosition": [
+                0.0,
+                300.0
+            ],
+            "loop": false,
+            "name": "StandingJump",
+            "rootMotion": false,
+            "rootNodeIndex": 1,
+            "speed": 1.0,
+            "timelineId": ""
+        }
+    ],
+    "transitions": []
+}

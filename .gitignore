@@ -49,6 +49,8 @@ Data/Shaders/
 Assets/Shaders/
 BuildOutput/
 imgui.ini
+!/Templates/Empty/imgui.ini
+!/Packaging/Projects/CurryEngineProject/imgui.ini
 CurryEngine/x64/
 Document/latex/
 CurryEngine.Runtime/obj/
