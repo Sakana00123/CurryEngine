@@ -104,6 +104,56 @@ public:
 	 */
 	void SetClampDistance(float min, float max) { minDistance = min, maxDistance = max; }
 
+	/** @brief 距離を取得します。*/
+	float GetDistance() const { return distance; }
+
+	/** @brief 最小距離を取得します。*/
+	float GetMinDistance() const { return minDistance; }
+
+	/** @brief 最大距離を取得します。*/
+	float GetMaxDistance() const { return maxDistance; }
+
+	/** @brief 移動速度を取得します。*/
+	float GetSpeed() const { return speed; }
+
+	/** @brief 移動速度を設定します。*/
+	void SetSpeed(float s) { speed = s; }
+
+	/** @brief 回転速度を取得します。*/
+	float GetRotateSpeed() const { return rotateSpeed; }
+
+	/** @brief 回転速度を設定します。*/
+	void SetRotateSpeed(float s) { rotateSpeed = s; }
+
+	/** @brief X 軸の最大角を取得します。*/
+	float GetMaxAngleX() const { return maxAngleX; }
+
+	/** @brief X 軸の最小角を取得します。*/
+	float GetMinAngleX() const { return minAngleX; }
+
+	/** @brief 視野角を取得します。*/
+	float GetFieldOfView() const { return fieldOfView; }
+
+	/** @brief 視野角を設定します。*/
+	void SetFieldOfView(float fov) { fieldOfView = fov; }
+
+	/** @brief アスペクト比を取得します。*/
+	float GetAspect() const { return aspect; }
+
+	/** @brief アスペクト比を設定します。*/
+	void SetAspect(float a) { aspect = a; }
+
+	/** @brief 近クリップ面を取得します。*/
+	float GetNearClip() const { return nearZ; }
+
+	/** @brief 近クリップ面を設定します。*/
+	void SetNearClip(float z) { nearZ = z; }
+
+	/** @brief 遠クリップ面を取得します。*/
+	float GetFarClip() const { return farZ; }
+
+	/** @brief 遠クリップ面を設定します。*/
+	void SetFarClip(float z) { farZ = z; }
 
 	/** @brief シリアライズ。*/
 	json Serialize() const;

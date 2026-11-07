@@ -30,6 +30,7 @@
 #include "Engine/Rendering/Lights/SpotLightComponent.h"
 #include "Engine/Utils/RectTransformUtils.h"
 #include "Engine/UI/Mask.h"
+#include <Engine\Rendering\Renderers\GltfModelRenderer.h>
 
 GameObject* GameObjectFactory::Create(Scene* scene, const std::string& name) {
 	std::shared_ptr<GameObject> object = std::make_shared<GameObject>();
@@ -272,7 +273,9 @@ GameObject* GameObjectFactory::CreateSphere(Scene* scene, const std::string& nam
 }
 GameObject* GameObjectFactory::CreateModel(Scene* scene, const std::string& name, const std::u8string& filePath, bool staticBatching) {
 	GameObject* obj = Create(scene, name);
-	//obj->AddComponent<GltfModelRenderer>()->LoadModel(Graphics::GetDevice(), filePath, staticBatching);
+#if 1
+	obj->AddComponent<GltfModelRenderer>()->LoadModel(Graphics::GetDevice(), std::string(filePath.begin(), filePath.end()), staticBatching);
+#else
 	MeshRenderer* meshRenderer = obj->AddComponent<MeshRenderer>();
 	meshRenderer->meshAssetPath = std::string(filePath.begin(), filePath.end());
 	if (!filePath.empty())
@@ -284,6 +287,7 @@ GameObject* GameObjectFactory::CreateModel(Scene* scene, const std::string& name
 			meshRenderer->modelRenderer->SetModelAsset(asset);
 		}
 	}
+#endif // 1
 	return obj;
 }
 GameObject* GameObjectFactory::CreateAudioSource(Scene* scene, const std::string& name, const wchar_t* filePath) {

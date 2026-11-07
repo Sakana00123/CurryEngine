@@ -1,6 +1,6 @@
 {
   "void":                 { "csType": "void",       "source": "primitive" },
-  "bool":                 { "csType": "bool",       "source": "primitive", "marshalAttr": "UnmanagedType.Bool" },
+  "bool":                 { "csType": "bool",       "source": "primitive", "marshalAttr": "UnmanagedType.I1" },
   "int":                  { "csType": "int",        "source": "primitive" },
   "uint":                 { "csType": "uint",       "source": "primitive" },
   "long":                 { "csType": "long",       "source": "primitive" },

@@ -20,6 +20,8 @@
 std::vector<Rigidbody*> Physics::s_pendingRigidbodies;
 std::vector<Collider*> Physics::s_pendingColliders;
 
+static bool s_debugDrawEnabled = false;
+
 // --- ヘルパー関数 ---
 
 static physx::PxVec3 ToPxVec3(const Vector3& vec)
@@ -910,6 +912,8 @@ void Physics::FixedUpdate(float fixedDeltaTime)
 
 void Physics::RenderDebug(RenderContext* renderContext)
 {
+	if (!s_debugDrawEnabled) return; // デバッグ描画が無効な場合は処理をスキップ
+
 	// ここで物理エンジンに関連するデバッグ描画を行う処理を実装
 	// PhysXのデバッグ描画を呼び出す
 	if (pxScene)
@@ -1324,6 +1328,7 @@ void Physics::DrawGUI()
 
 	{
 		ImGui::Begin("Physics");
+		ImGui::Checkbox("Debug Render Enabled", &s_debugDrawEnabled);
 
 		static bool enableRaycasts = false;
 		ImGui::Checkbox("Enable Test Raycasts", &enableRaycasts);

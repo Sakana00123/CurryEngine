@@ -155,7 +155,7 @@ void MaterialNodeEditor::NodeEditorShutdown()
 
 void MaterialNodeEditor::DrawNodeEditor(NodeEditorState& state)
 {
-	ImGui::Begin("Animator Controller Editor", &s_isOpen);
+	ImGui::Begin("Animator Controller Editor###Legacy Animator Controller Editor", &s_isOpen);
 
 	ImNodes::EditorContextSet(state.context);
 

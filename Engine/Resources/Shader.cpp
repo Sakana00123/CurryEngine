@@ -369,11 +369,13 @@ void Shader::ReflectConstantBufferLayouts(ID3D11ShaderReflection* pReflection, D
 		cb->GetDesc(&cbDesc);
 
 		// TODO: この関数内で定数バッファ以外も処理する場合はここを変更
+#if 0
 		if (cbDesc.Type != D3D_CT_CBUFFER)
 		{
 			LOG_WARNING(std::format("Skipping non-constant buffer: {}", cbDesc.Name));
 			continue; // 定数バッファ以外はスキップ
 		}
+#endif // 0
 
 		ShaderReflectionData::ConstantBufferLayout layout;
 		layout.name = cbDesc.Name;

@@ -580,7 +580,7 @@ void AudioSource::DrawProperty(const PropertyDrawContext& context)
 		ImGui::Text("High Peak: %.4f", analyzerResult.highPeak);
 
 		// 低周波数帯域のレベル表示
-		ImGui::PlotLines("Low Bands", 
+		ImGui::PlotLines("Low Bands",
 			reinterpret_cast<const float*>(analyzerResult.lowBands.data()), 
 			static_cast<int>(analyzerResult.lowBands.size()), 
 			0, nullptr, 0.0f, 1.0f, ImVec2(0, 100));

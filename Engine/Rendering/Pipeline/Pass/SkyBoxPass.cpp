@@ -48,24 +48,21 @@ void SkyBoxPass::DrawProperty()
 {
 	// ImGui を使用してプロパティを描画
 #ifdef USE_IMGUI
-	if (ImGui::CollapsingHeader("SkyBoxPass"), ImGuiTreeNodeFlags_DefaultOpen)
+	ImGui::Text("Skymap:");
+	if (skymap)
 	{
-		ImGui::Text("Skymap:");
-		if (skymap)
-		{
-			ImGui::Text("Loaded");
-		}
-		else
-		{
-			ImGui::Text("Not Loaded");
-		}
-		ImGui::Separator();
-		// ゲーム背景テクスチャのプロパティ
-		ImGui::Text("Game Background Material:");
-		if (backgroundMaterial)
-		{
-			backgroundMaterial->DrawProperty();
-		}
+		ImGui::Text("Loaded");
+	}
+	else
+	{
+		ImGui::Text("Not Loaded");
+	}
+	ImGui::Separator();
+	// ゲーム背景テクスチャのプロパティ
+	ImGui::Text("Game Background Material:");
+	if (backgroundMaterial)
+	{
+		backgroundMaterial->DrawProperty();
 	}
 #endif // USE_IMGUI
 }

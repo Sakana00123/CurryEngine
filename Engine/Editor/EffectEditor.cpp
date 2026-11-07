@@ -184,7 +184,7 @@ void EffectEditor::DrawGUI(RenderContext* context)
 
 			// すべてのエフェクトをロードするボタン
 			SameLineIfButtonFits("Load All Effects");
-			if (ImGui::Button("Load All Effects")) 
+			if (ImGui::Button("Load All Effects"))
 			{
 				std::filesystem::path effectDirectory = std::filesystem::current_path() / "Assets" / "Effects";
 				// ディレクトリを選択するダイアログを表示

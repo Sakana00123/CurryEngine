@@ -18,6 +18,8 @@ function Fixture([string]$Path, [string]$Text = 'fixture') {
     $null = [IO.Directory]::CreateDirectory((Split-Path $Path -Parent))
     [IO.File]::WriteAllText($Path, $Text)
 }
+Fixture "$root/hash.txt" 'abc'
+Check ((Get-PackageFileHash "$root/hash.txt") -ceq 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad') 'SHA256 mismatch'
 foreach ($version in '0.1.0', '1.2.3-dev.1', '1.0.0-rc-2') { Assert-PackageVersion $version; $script:checks++ }
 foreach ($version in '', '../escape', '1.0', '1.0.0/evil', '1.0.0;Remove-Item', '1.0.0 ', '1.0.0..') {
     Reject { Assert-PackageVersion $version } "Invalid version accepted: $version"
@@ -25,10 +27,10 @@ foreach ($version in '', '../escape', '1.0', '1.0.0/evil', '1.0.0;Remove-Item', 
 $fixtureRepo = Join-Path $root '入力 repo & 日本語'
 $native = Join-Path $root 'native'
 $managed = Join-Path $root 'managed'
-foreach ($path in 'x64/Release/assimp.dll', 'External/DotNetHost/9.0.10/runtimes/win-x64/native/nethost.dll',
+foreach ($path in 'External/assimp/lib/Release/assimp.dll', 'External/DotNetHost/9.0.10/runtimes/win-x64/native/nethost.dll',
     'Data/Fonts/NotoSansJP-Medium.ttf', 'Data/Fonts/NotoSansSC-Medium.ttf', 'Data/Icon/editorIcons.png', 'Data/Default/button.png',
     'Shader/geometric_primitive_vs.hlsl', 'Shader/geometric_primitive_ps.hlsl', 'Shader/common.hlsli',
-    'Templates/Empty/Assets/Scenes/Main.scene', 'Templates/Empty/Assets/Scripts/HelloCurry.cs',
+    'Templates/Empty/imgui.ini', 'Templates/Empty/Assets/Scenes/Main.scene', 'Templates/Empty/Assets/Scripts/HelloCurry.cs',
     'Templates/Empty/ProjectSettings/settings.json', 'Templates/Empty/ProjectSettings/EditorConfig.json',
     'Templates/Empty/ProjectSettings/Physics.json', 'Templates/Empty/ProjectSettings/Input.json',
     'Assets/Scenes/UserGame.scene', 'UserScripts/Secret.cs', 'Data/Icon/unwanted.log', 'Shader/unwanted.obj',
@@ -44,7 +46,7 @@ $payload = Join-Path $root 'payload'
 Copy-EditorPayload $fixtureRepo $native $managed $payload
 foreach ($path in 'CurryEngine.exe', 'CurryEngine.Runtime.runtimeconfig.json', 'Resources/Shader/common.hlsli',
     'Resources/Assets/Shaders/geometric_primitive_vs.cso', 'Resources/Data/Shaders/geometric_primitive_ps.cso',
-    'Templates/Empty/Assets/Scenes/Main.scene', 'Templates/Empty/additional.log',
+    'Templates/Empty/imgui.ini', 'Templates/Empty/Assets/Scenes/Main.scene', 'Templates/Empty/additional.log',
     'Templates/Other/Assets/Nested/example.txt', 'Templates/Other/empty.txt',
     'Templates/Other/EmptyDirectory', 'Templates/README.txt') { Check (Test-Path -LiteralPath "$payload/$path") "Missing payload: $path" }
 Check ((Get-PackageHashes "$fixtureRepo/Templates" | ConvertTo-Json -Compress) -ceq
@@ -54,6 +56,19 @@ foreach ($path in 'Assets', 'UserScripts', 'Assembly-CSharp.dll', 'CurryEngine.p
     Check (-not (Test-Path -LiteralPath "$payload/$path")) "Unwanted payload: $path"
 }
 Reject { Copy-EditorPayload $fixtureRepo $native $managed $payload } 'Existing staging was overwritten'
+$projectSource = Join-Path $root 'ProjectSource'
+$projectPayload = Join-Path $root 'CurryEngineProject'
+Reject { Copy-EditorProject $projectSource $projectPayload '1.2.3' } 'Missing bundled project accepted'
+foreach ($path in 'Assets/Scenes/Main.scene', 'Assets/Scenes/Main.scene.meta', 'ProjectSettings/settings.json',
+    'ProjectSettings/EditorConfig.json', 'ProjectSettings/Physics.json', 'ProjectSettings/Input.json', 'imgui.ini',
+    'Library/obj/cache', 'Logs/startup.log', 'Assembly-CSharp.csproj', 'Project.sln') { Fixture "$projectSource/$path" }
+Copy-EditorProject $projectSource $projectPayload '1.2.3'
+$projectFiles = Get-PackageHashes $projectPayload
+Check ($projectFiles.Contains('Assets/Scenes/Main.scene.meta')) 'Bundled asset metadata missing'
+Check ($projectFiles.Count -eq 8) 'Unexpected files in bundled project'
+$projectManifest = Get-Content -LiteralPath "$projectPayload/Project.curryproject" -Raw | ConvertFrom-Json
+Check ($projectManifest.engineVersion -ceq '1.2.3') 'Bundled project version mismatch'
+Reject { Copy-EditorProject $projectSource $projectPayload '2.0.0' } 'Existing project staging was overwritten'
 $before = Get-PackageHashes $payload | ConvertTo-Json -Compress
 Reject { Copy-PackageFile "$root/missing" "$payload/CurryEngine.exe" } 'Missing input accepted'
 Check ($before -ceq (Get-PackageHashes $payload | ConvertTo-Json -Compress)) 'Missing input damaged payload'

@@ -103,9 +103,8 @@ void ScriptComponent::Initialize()
         ScriptSystem::AwakeScript(m_gcHandle);
         //m_isStartCalled = false; // Start はまだ呼び出されていない状態にする(Update 内で呼び出すため)
 
-        // TODO:一時的な措置。スクリプトが有効化されたときに OnEnable を呼び出す。C++のライフサイクルを完全に理解してから見直すこと。
         OnEnable(); // ここに来てる時点でスクリプトが有効化されてるのでここで強制的に呼び出す
-        LOG_INFO("[ScriptComponent] Created: " + scriptName);
+        //LOG_INFO("[ScriptComponent] Created: " + scriptName);
     }
     else
     {

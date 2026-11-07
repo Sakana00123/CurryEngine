@@ -483,7 +483,7 @@ void PrimitiveRenderer::CastShadow(RenderContext* rtx)
 void PrimitiveRenderer::DrawProperty(const PropertyDrawContext& context)
 {
 
-	if (ImGui::BeginCombo("Shape", 
+	if (ImGui::BeginCombo("Shape",
 		shape == Shape::Cube ? "Cube" : shape == Shape::Cylinder ? "Cylinder" : "Sphere"))
 	{
 		if (ImGui::Selectable("Cube", shape == Shape::Cube))

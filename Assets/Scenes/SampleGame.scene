@@ -1,7 +1,7 @@
 {
     "editorCamera": {
         "aspect": 1.7777777910232544,
-        "distance": 5.499998569488525,
+        "distance": 13.000004768371582,
         "farZ": 1000.0,
         "fieldOfView": 60.0,
         "maxAngleX": 70.0,
@@ -10,16 +10,16 @@
         "minDistance": 0.10000000149011612,
         "nearZ": 0.10000000149011612,
         "position": [
-            10.226760864257813,
-            5.967113971710205,
-            1.4063432216644287
+            -2.596630573272705,
+            -2.8848626613616943,
+            -4.5304155349731445
         ],
-        "rotateSpeed": 30.0,
+        "rotateSpeed": 3.0,
         "rotation": [
-            0.2209341824054718,
-            -0.077481210231781,
-            0.01760857179760933,
-            0.9720466136932373
+            0.050948504358530045,
+            -0.949004054069519,
+            0.22483356297016144,
+            0.21504783630371094
         ],
         "speed": 3.0
     },
@@ -39,21 +39,21 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        0.0,
-                        3.0,
-                        -2.5
+                        5.0,
+                        5.0,
+                        9.0
                     ],
                     "priority": 0,
                     "rotation": [
-                        0.258819043636322,
-                        0.0,
-                        0.0,
-                        0.9659258127212524
+                        0.0449434295296669,
+                        -0.9512511491775513,
+                        0.16773124039173126,
+                        0.2548869848251343
                     ],
                     "scale": [
-                        1.0,
-                        0.9999982714653015,
-                        0.9999982714653015
+                        0.9999999403953552,
+                        0.9999979138374329,
+                        0.9999975562095642
                     ],
                     "type": "Transform"
                 },
@@ -87,7 +87,7 @@
                     "minDistance": 2.0,
                     "name": "ThirdPersonCameraController",
                     "priority": 2000,
-                    "rotationSpeed": 100.0,
+                    "rotationSpeed": 10.0,
                     "targetDistance": 25.0,
                     "targetTransformId": "7930224090107038306",
                     "type": "ThirdPersonCameraController",
@@ -104,6 +104,435 @@
             "parent": "0",
             "parentId": "0",
             "priority": 0,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "12643909588513614680",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        1.4551915228366852e-10,
+                        1.899999976158142,
+                        4.172325134277344e-07
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0000001192092896
+                    ],
+                    "scale": [
+                        0.25,
+                        0.25,
+                        0.25
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": "./TestAssets/Drone/Drone.glb",
+                    "id": "689674201746592027",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": ""
+                            },
+                            "1": {
+                                "materialTextures[1]": ""
+                            },
+                            "2": {
+                                "materialTextures[2]": ""
+                            },
+                            "3": {
+                                "materialTextures[3]": ""
+                            },
+                            "4": {
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                },
+                {
+                    "enabledSelf": true,
+                    "fields": {
+                        "attackCooldown": 3,
+                        "attackDamage": 10,
+                        "chaseDistance": 40,
+                        "health": 100,
+                        "ignoreMoveY": false,
+                        "knockbackForce": 5,
+                        "playerObject": "GameObject(objectId: 4984317925886415417)",
+                        "speed": 5,
+                        "stopDistance": 2.5
+                    },
+                    "id": "12542552299559311329",
+                    "name": "ScriptComponent",
+                    "priority": 2000,
+                    "scriptName": "Enemy",
+                    "type": "ScriptComponent"
+                },
+                {
+                    "autoFit": false,
+                    "contactOffset": 0.019999999552965164,
+                    "convex": true,
+                    "enabledSelf": true,
+                    "id": "2481601064045578174",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "MeshCollider",
+                    "priority": 3000,
+                    "type": "MeshCollider"
+                },
+                {
+                    "constraints": 56,
+                    "enabledSelf": true,
+                    "id": "8269464044517367314",
+                    "isKinematic": false,
+                    "mass": 1.0,
+                    "name": "Rigidbody",
+                    "priority": 4000,
+                    "sleepThreshold": 0.004999999888241291,
+                    "type": "Rigidbody",
+                    "useCCD": false,
+                    "useGravity": false
+                }
+            ],
+            "id": "12966570096453237824",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Drone_1",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 1000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "1895139749786365061",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        12.20000171661377,
+                        3.500000476837158,
+                        -36.10000228881836
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "color": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "enabledSelf": true,
+                    "id": "2057868816179352398",
+                    "intensity": 1.0,
+                    "name": "PointLightComponent",
+                    "priority": 1000,
+                    "range": 20.0,
+                    "type": "PointLightComponent"
+                }
+            ],
+            "id": "10728335749304274240",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Point Light",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 2000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "6777755826726458097",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        11.199999809265137,
+                        0.5,
+                        -23.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": "./TestAssets/PBRCharacter/PBRCharacter.gltf",
+                    "id": "11951193510465669302",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": ""
+                            },
+                            "1": {
+                                "materialTextures[1]": ""
+                            },
+                            "2": {
+                                "materialTextures[2]": ""
+                            },
+                            "3": {
+                                "materialTextures[3]": ""
+                            },
+                            "4": {
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                }
+            ],
+            "id": "14819627079480848379",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "PBRCharacter",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 3000,
+            "version": 1
+        },
+        {
+            "activeSelf": false,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "13276151072568307856",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": "./TestAssets/Stage3/Stage.gltf",
+                    "id": "11462920920388679499",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": ""
+                            },
+                            "1": {
+                                "materialTextures[1]": ""
+                            },
+                            "2": {
+                                "materialTextures[2]": ""
+                            },
+                            "3": {
+                                "materialTextures[3]": ""
+                            },
+                            "4": {
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                }
+            ],
+            "id": "6822223792608851690",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Stage",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 4000,
+            "version": 1
+        },
+        {
+            "activeSelf": true,
+            "components": [
+                {
+                    "coordinateSystem": 0,
+                    "enabledSelf": true,
+                    "id": "17537228848387480500",
+                    "m_eulerAngles": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "name": "Transform",
+                    "position": [
+                        -25.799999237060547,
+                        6.999999523162842,
+                        -13.60000228881836
+                    ],
+                    "priority": 0,
+                    "rotation": [
+                        -0.0,
+                        0.0,
+                        -0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "type": "Transform"
+                },
+                {
+                    "animationEnable": true,
+                    "blendEnable": true,
+                    "enableShadow": true,
+                    "enabledSelf": true,
+                    "filePath": "./TestAssets/Stage3/Stage2.gltf",
+                    "id": "8615622107720189698",
+                    "material": {
+                        "blendState": 5,
+                        "depthStencilState": 4,
+                        "rasterizerState": 6,
+                        "shaders": {
+                            "0": "./Assets/Shaders/gltf_model_ps.cso"
+                        },
+                        "textures": {
+                            "0": {
+                                "materialTextures[0]": ""
+                            },
+                            "1": {
+                                "materialTextures[1]": ""
+                            },
+                            "2": {
+                                "materialTextures[2]": ""
+                            },
+                            "3": {
+                                "materialTextures[3]": ""
+                            },
+                            "4": {
+                                "materialTextures[4]": ""
+                            }
+                        }
+                    },
+                    "name": "GltfModelRenderer",
+                    "priority": 1000,
+                    "staticBatching": false,
+                    "type": "GltfModelRenderer"
+                },
+                {
+                    "autoFit": false,
+                    "contactOffset": 0.019999999552965164,
+                    "convex": false,
+                    "enabledSelf": true,
+                    "id": "16537371716671808930",
+                    "isTrigger": false,
+                    "material": 0,
+                    "name": "MeshCollider",
+                    "priority": 2000,
+                    "type": "MeshCollider"
+                }
+            ],
+            "id": "12680235547323911473",
+            "isDefaultOpenOnHierarchy": true,
+            "layer": 0,
+            "name": "Stage2 (2)",
+            "parent": "0",
+            "parentId": "0",
+            "priority": 5000,
             "version": 1
         },
         {
@@ -139,7 +568,7 @@
                     "type": "Transform"
                 },
                 {
-                    "effectAssetId": "10aeaf378230853c95ce0f7fa331a222",
+                    "effectAssetId": "abbf543d1e7ad0d3a1e81e02b22940af",
                     "enabledSelf": true,
                     "id": "16143980965371795426",
                     "name": "EffekseerEffectComponent",
@@ -153,7 +582,7 @@
             "name": "Laser",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 1000,
+            "priority": 6000,
             "version": 1
         },
         {
@@ -205,7 +634,7 @@
             "name": "Foot",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 2000,
+            "priority": 7000,
             "version": 1
         },
         {
@@ -222,7 +651,7 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        6.099998950958252,
+                        25.699996948242188,
                         3.599999189376831,
                         7.19999885559082
                     ],
@@ -323,7 +752,7 @@
             "name": "Cube",
             "parent": "0",
             "parentId": "0",
-            "priority": 3000,
+            "priority": 8000,
             "version": 1
         },
         {
@@ -340,7 +769,7 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        6.099998950958252,
+                        25.699996948242188,
                         3.599999189376831,
                         15.899998664855957
                     ],
@@ -441,7 +870,7 @@
             "name": "Cube (1)",
             "parent": "0",
             "parentId": "0",
-            "priority": 4000,
+            "priority": 9000,
             "version": 1
         },
         {
@@ -458,7 +887,7 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        6.0,
+                        25.0,
                         4.0,
                         22.0
                     ],
@@ -563,7 +992,7 @@
             "name": "Cube (2)",
             "parent": "0",
             "parentId": "0",
-            "priority": 5000,
+            "priority": 10000,
             "version": 1
         },
         {
@@ -580,9 +1009,9 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        -1.1000001430511475,
+                        -0.818000853061676,
                         0.5,
-                        0.0
+                        3.0649971961975098
                     ],
                     "priority": 0,
                     "rotation": [
@@ -682,7 +1111,6 @@
                         "attackCollider": "Component(objectId: 9158306600258995034, ownerId: 4984317925886415417)",
                         "attackColliderObject": "GameObject(objectId: 4984317925886415417)",
                         "hoveringForce": 5,
-                        "jumpEffect": "Component(objectId: 16143980965371795426, ownerId: 9887235595685037119)",
                         "jumpForce": 100,
                         "maxHoveringTime": 1,
                         "speed": 0
@@ -700,7 +1128,7 @@
             "name": "Jammo",
             "parent": "0",
             "parentId": "0",
-            "priority": 6000,
+            "priority": 11000,
             "version": 1
         },
         {
@@ -809,7 +1237,7 @@
             "name": "AttackCollider",
             "parent": "837495356795042458",
             "parentId": "0",
-            "priority": 7000,
+            "priority": 12000,
             "version": 1
         },
         {
@@ -941,7 +1369,7 @@
             "name": "Mixamo",
             "parent": "0",
             "parentId": "0",
-            "priority": 8000,
+            "priority": 13000,
             "version": 1
         },
         {
@@ -958,9 +1386,9 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        2.000000476837158,
+                        1.7820029258728027,
                         0.5,
-                        0.0
+                        -5.335002899169922
                     ],
                     "priority": 0,
                     "rotation": [
@@ -1029,8 +1457,9 @@
                         "attackDamage": 10,
                         "chaseDistance": 30,
                         "health": 100,
+                        "ignoreMoveY": true,
                         "knockbackForce": 500,
-                        "playerObject": "GameObject(objectId: 837495356795042458)",
+                        "playerObject": "GameObject(objectId: 4984317925886415417)",
                         "speed": 3,
                         "stopDistance": 3
                     },
@@ -1091,121 +1520,7 @@
             "name": "Enemy",
             "parent": "0",
             "parentId": "0",
-            "priority": 9000,
-            "version": 1
-        },
-        {
-            "activeSelf": true,
-            "components": [
-                {
-                    "coordinateSystem": 0,
-                    "enabledSelf": true,
-                    "id": "7615580201513619273",
-                    "m_eulerAngles": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "name": "Transform",
-                    "position": [
-                        1.899999976158142,
-                        1.0,
-                        2.3999998569488525
-                    ],
-                    "priority": 0,
-                    "rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "scale": [
-                        0.30000001192092896,
-                        0.15000000596046448,
-                        0.15000000596046448
-                    ],
-                    "type": "Transform"
-                },
-                {
-                    "color": [
-                        0.7900000214576721,
-                        0.8500000238418579,
-                        0.9200000166893005,
-                        1.0
-                    ],
-                    "enabledSelf": true,
-                    "id": "12694671673839701633",
-                    "material": {
-                        "blendState": 5,
-                        "cbuffers": {
-                            "1": {
-                                "materialColor": [
-                                    0.7900000214576721,
-                                    0.8500000238418579,
-                                    0.9200000166893005,
-                                    1.0
-                                ]
-                            }
-                        },
-                        "depthStencilState": 4,
-                        "rasterizerState": 6,
-                        "shaders": {
-                            "0": "./Assets/Shaders/geometric_primitive_ps.cso",
-                            "1": "./Assets/Shaders/geometric_primitive_vs.cso"
-                        },
-                        "textures": {
-                            "0": {
-                                "texture0": ""
-                            }
-                        }
-                    },
-                    "name": "PrimitiveRenderer",
-                    "priority": 1000,
-                    "shape": 0,
-                    "type": "PrimitiveRenderer"
-                },
-                {
-                    "autoFit": true,
-                    "center": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "contactOffset": 0.019999999552965164,
-                    "enabledSelf": true,
-                    "id": "11185722893268622210",
-                    "isTrigger": false,
-                    "material": 9,
-                    "name": "BoxCollider",
-                    "priority": 2000,
-                    "size": [
-                        0.30000001192092896,
-                        0.15000000596046448,
-                        0.15000000596046448
-                    ],
-                    "type": "BoxCollider"
-                },
-                {
-                    "constraints": 0,
-                    "enabledSelf": true,
-                    "id": "16521798373491043292",
-                    "isKinematic": false,
-                    "mass": 0.5,
-                    "name": "Rigidbody",
-                    "priority": 3000,
-                    "sleepThreshold": 0.004999999888241291,
-                    "type": "Rigidbody",
-                    "useCCD": false,
-                    "useGravity": true
-                }
-            ],
-            "id": "7782955488984015982",
-            "isDefaultOpenOnHierarchy": true,
-            "layer": 0,
-            "name": "can",
-            "parent": "0",
-            "parentId": "0",
-            "priority": 10000,
+            "priority": 14000,
             "version": 1
         },
         {
@@ -1247,7 +1562,7 @@
             "name": "CameraFocusTarget",
             "parent": "4984317925886415417",
             "parentId": "0",
-            "priority": 11000,
+            "priority": 15000,
             "version": 1
         },
         {
@@ -1366,7 +1681,7 @@
             "name": "PlayerHPBar",
             "parent": "7087144494191658523",
             "parentId": "0",
-            "priority": 12000,
+            "priority": 16000,
             "version": 1
         },
         {
@@ -1383,7 +1698,7 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        3.6000008583068848,
+                        21.569072723388672,
                         1.4000000953674316,
                         2.3999998569488525
                     ],
@@ -1397,7 +1712,7 @@
                     "scale": [
                         1.7487901449203491,
                         1.1699998378753662,
-                        1.28000009059906
+                        1.2800002098083496
                     ],
                     "type": "Transform"
                 },
@@ -1456,7 +1771,7 @@
                     "size": [
                         1.7487901449203491,
                         1.1699998378753662,
-                        1.28000009059906
+                        1.2800002098083496
                     ],
                     "type": "BoxCollider"
                 },
@@ -1480,11 +1795,11 @@
             "name": "box",
             "parent": "0",
             "parentId": "0",
-            "priority": 13000,
+            "priority": 17000,
             "version": 1
         },
         {
-            "activeSelf": true,
+            "activeSelf": false,
             "components": [
                 {
                     "anchorMax": [
@@ -1533,7 +1848,7 @@
                     ],
                     "size": [
                         1920.0,
-                        1080.0
+                        1009.0
                     ],
                     "type": "RectTransform"
                 },
@@ -1555,12 +1870,12 @@
                 }
             ],
             "id": "7087144494191658523",
-            "isDefaultOpenOnHierarchy": true,
+            "isDefaultOpenOnHierarchy": false,
             "layer": 0,
             "name": "Canvas",
             "parent": "0",
             "parentId": "0",
-            "priority": 14000,
+            "priority": 18000,
             "version": 1
         },
         {
@@ -1609,7 +1924,7 @@
             "name": "EventSystem",
             "parent": "0",
             "parentId": "0",
-            "priority": 15000,
+            "priority": 19000,
             "version": 1
         },
         {
@@ -1626,9 +1941,9 @@
                     ],
                     "name": "Transform",
                     "position": [
-                        0.0,
+                        13.09999942779541,
                         0.5,
-                        0.0
+                        -23.19999885559082
                     ],
                     "priority": 0,
                     "rotation": [
@@ -1697,7 +2012,6 @@
                         "attackCollider": "Component(objectId: 6691945147698394091, ownerId: 7141469550880191553)",
                         "attackColliderObject": "GameObject(objectId: 7141469550880191553)",
                         "hoveringForce": 5,
-                        "jumpEffect": null,
                         "jumpForce": 12.5,
                         "maxHoveringTime": 2,
                         "speed": 0
@@ -1757,12 +2071,12 @@
                 }
             ],
             "id": "837495356795042458",
-            "isDefaultOpenOnHierarchy": true,
+            "isDefaultOpenOnHierarchy": false,
             "layer": 4,
             "name": "Player",
             "parent": "0",
             "parentId": "0",
-            "priority": 16000,
+            "priority": 20000,
             "version": 1
         },
         {
@@ -1817,7 +2131,7 @@
             "name": "Directional Light",
             "parent": "0",
             "parentId": "0",
-            "priority": 17000,
+            "priority": 21000,
             "version": 1
         },
         {
@@ -1918,7 +2232,7 @@
             "name": "Ground",
             "parent": "0",
             "parentId": "0",
-            "priority": 18000,
+            "priority": 22000,
             "version": 1
         },
         {
@@ -2040,7 +2354,7 @@
             "name": "PlayerBall",
             "parent": "0",
             "parentId": "0",
-            "priority": 19000,
+            "priority": 23000,
             "version": 1
         },
         {
@@ -2095,7 +2409,7 @@
             "name": "EnemySpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 20000,
+            "priority": 24000,
             "version": 1
         },
         {
@@ -2150,7 +2464,7 @@
             "name": "ObjectSpawner",
             "parent": "0",
             "parentId": "0",
-            "priority": 21000,
+            "priority": 25000,
             "version": 1
         }
     ]

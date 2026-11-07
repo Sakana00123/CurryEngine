@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AssetBrowser.h"
-#include "LegacyModelCache.h"
 #include "AnimationEditor.h"
 #include <string>
 #include <vector>
@@ -85,7 +84,7 @@ void AssetBrowser::InitializeDropTarget(HWND hwnd)
 					//	CurryEngine::Resources::ImportSettingsWindow::OpenForNewAsset(meta->id);
 					//}
 
-					LOG_INFO(u8"Imported: " + dst.u8string());
+					//LOG_INFO(u8"Imported: " + dst.u8string());
 					anySucceeded = true;
 				}
 				catch (const fs::filesystem_error& e)
@@ -375,23 +374,6 @@ void AssetBrowser::Refresh()
 
 	// キャッシュをクリア
 	cacheSearchResults.clear();
-
-#if defined(_DEBUG) || defined(CURRY_EDITOR)
-	// ./Assets/Models以下のすべてのcereal/batchCerealファイルを削除（古いキャッシュが残っていると問題になるため）
-	try
-	{
-		for (const auto& removed : CurryEngine::RemoveLegacyModelCaches(s_AssetPath / "Models"))
-		{
-			LOG_INFO(u8"Deleted old cache file: " + removed.u8string());
-		}
-	}
-	catch (const fs::filesystem_error& error)
-	{
-		// Cache cleanup is best-effort, including when files disappear during a refresh.
-		LOG_WARNING(std::string("Could not clean legacy model caches: ") + error.what());
-	}
-#endif // _DEBUG
-
 }
 
 void AssetBrowser::StartRename(const fs::path& assetPath)
@@ -685,16 +667,26 @@ void AssetBrowser::SearchAssets(const fs::path& root, const std::u8string& keywo
 		}
 	}
 
+	std::vector<fs::directory_entry> entries;
+	for (const auto& entry : filesystem::directory_iterator(root))
+	{
+		if (entry.path().extension() == ".meta")
+			continue; // .metaファイルは除外
+
+		entries.push_back(entry);
+	}
+
+	//キーワードが空ならすべて返す
 	if (keyword.empty())
 	{
-		for (const auto& entry : filesystem::directory_iterator(root))
+		for (const auto& entry : entries)
 		{
 			results.push_back(entry);
 		}
 	}
-	else
+	else //キーワードでフィルタリング
 	{
-		for (const auto& entry : filesystem::recursive_directory_iterator(root))
+		for (const auto& entry : entries)
 		{
 			std::u8string lowerName = entry.path().u8string();
 			std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
@@ -1668,7 +1660,7 @@ void AssetBrowser::DrawDeleteConfirmModal()
 					LOG_ERROR("Failed to delete " + asset.string() + ": " + ec.message() + " (Code: " + std::to_string(ec.value()) + ")");
 				}
 				else {
-					LOG_INFO(u8"Deleted: " + asset.u8string());
+					//LOG_INFO(u8"Deleted: " + asset.u8string());
 				}
 			}
 			lastClickedAsset.clear();

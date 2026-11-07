@@ -11,7 +11,7 @@ public class PlayerController : Behaviour
     public float hoveringForce = 5.0f;
     public Collider? attackCollider;
     public GameObject? attackColliderObject;
-    public EffekseerEffectComponent? jumpEffect;
+    //public EffekseerEffectComponent? jumpEffect;
     Vector2 prevInput = Vector2.zero;
     int jumpCount = 0;
     int attackCount = 0;
@@ -58,7 +58,8 @@ public class PlayerController : Behaviour
         // 回転処理
         if (direction != Vector3.zero)
         {
-            Vector3 forward = cameraForward;
+            //Vector3 forward = cameraForward;
+            Vector3 forward = direction;
             forward.y = 0f; // 水平方向のみに制限
             Quaternion targetRotation = Quaternion.LookRotation(forward);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.DeltaTime * 5f);
@@ -121,7 +122,7 @@ public class PlayerController : Behaviour
                             //animator.CrossFadeInFixedTime("JumpStart", 0.1f);
                             animator.CrossFadeInFixedTime("Jump", 0.1f);
                             jumpCount++;
-                            jumpEffect?.PlayEffect();
+                            //jumpEffect?.PlayEffect();
                         }
                         break;
                     }

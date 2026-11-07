@@ -6,7 +6,7 @@
       <AdditionalIncludeDirectories>$(GeneratedRoot);$(GeneratedRoot)\Interop;$(GeneratedRoot)\Reflection;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(PackageDirectXTex);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PackageDirectXTex);$(PackageDirectXTK);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ObjectFileOutput>$(OutDir)Shaders\%(Filename).cso</ObjectFileOutput>

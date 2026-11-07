@@ -3,6 +3,7 @@
 #include "Engine/Core/EnginePaths.h"
 #include "Engine/Editor/Console.h"
 #include "Engine/Scripting/ScriptSystem.h"
+#include "Engine/Utils/stdUtiles.h"
 #include <Windows.h>
 #include <filesystem>
 
@@ -138,8 +139,8 @@ void ScriptWatcher::WatchLoop()
 				std::filesystem::path relativePath(fileName);
 
 				if (IsValidCsFile(relativePath)) {
-					LOG_INFO(u8"[ScriptWatcher] 変更検知: "
-						+ relativePath.u8string());
+					//LOG_INFO(u8"[ScriptWatcher] 変更検知: "
+					//	+ relativePath.u8string());
 					RequestBuild();
 				}
 				// 次のエントリがなければループを抜ける
@@ -180,7 +181,7 @@ void ScriptWatcher::BuildLoop()
 		}
 
 		// ビルド成功時はスクリプトをリロード
-		LOG_INFO(u8"[ScriptWatcher] ビルド成功。スクリプトをリロードします。");
+		//LOG_INFO(u8"[ScriptWatcher] ビルド成功。スクリプトをリロードします。");
 		if (m_running) m_onReloaded();
 	}
 }
@@ -226,16 +227,34 @@ bool ScriptWatcher::BuildProject(const BuildCommand& command)
         CREATE_NO_WINDOW, nullptr, workingDirectory.c_str(), &startup, &process);
     CloseHandle(writePipe);
     if (!started) { CloseHandle(readPipe); LOG_ERROR("Failed to start dotnet build."); return false; }
-    char buffer[4096];
-    DWORD bytes = 0;
-    while (ReadFile(readPipe, buffer, sizeof(buffer), &bytes, nullptr) && bytes)
-        LOG_INFO(std::string(buffer, bytes));
+	char buf[4096];
+	DWORD n = 0;
+	std::string pending;
+	while (ReadFile(readPipe, buf, sizeof(buf), &n, nullptr) && n) {
+		pending.append(buf, n);
+		size_t pos;
+		while ((pos = pending.find('\n')) != std::string::npos) {
+			std::string line = pending.substr(0, pos);
+			if (!line.empty() && line.back() == '\r') line.pop_back();
+			pending.erase(0, pos + 1);
+			std::wstring wline = StringToWstring(line);
+			//if (wline.find(L"error") != std::wstring::npos) {
+			//	LOG_ERROR("[ScriptWatcher] " + line);
+			//} else if (wline.find(L"warning") != std::wstring::npos) {
+			//	LOG_WARNING("[ScriptWatcher] " + line);
+			//} else {
+			//	LOG_INFO("[ScriptWatcher] " + line);
+			//}
+			OutputDebugStringW((L"[ScriptWatcher] " + wline).c_str());
+			OutputDebugStringW(L"\n");
+		}
+	}
     CloseHandle(readPipe);
     WaitForSingleObject(process.hProcess, INFINITE);
     DWORD code = 1;
     GetExitCodeProcess(process.hProcess, &code);
     CloseHandle(process.hThread);
     CloseHandle(process.hProcess);
-    // Exit code is authoritative; localized messages such as "0 errors" are not failures.
+	LOG_INFO(std::format("[ScriptWatcher] Build finished for {} (exit code: {})", command.projectPath.string(), code));
     return code == 0;
 }

@@ -33,7 +33,7 @@ namespace CurryEngine
             if (path == path.parent_path()) break;
         }
         const auto templateRoot = engine / "Templates/Empty";
-        const char* files[] = {"Assets/Scenes/Main.scene", "Assets/Scripts/HelloCurry.cs",
+        const char* files[] = {"imgui.ini", "Assets/Scenes/Main.scene", "Assets/Scripts/HelloCurry.cs",
             "ProjectSettings/settings.json", "ProjectSettings/EditorConfig.json", "ProjectSettings/Physics.json", "ProjectSettings/Input.json"};
         for (auto file : files)
             if (!fs::is_regular_file(templateRoot / file)) throw std::runtime_error(std::string("Missing template file: ") + file);

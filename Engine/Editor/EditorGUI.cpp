@@ -28,6 +28,7 @@
 #include "Engine/Resources/Texture.h"
 #include "Engine/EditorSupport/EditorSelection.h"
 #include "Engine/Rendering/Pipeline/Graphics.h"
+#include "Engine/Rendering/Pipeline/RenderSystem.h"
 
 #include "BuildSettingsWindow.h"
 #include <Engine\EditorConfig\EditorConfigManager.h>
@@ -348,6 +349,44 @@ float EditorGUI::DrawSceneViewToolbar()
 			ImGui::EndPopup();
 		}
 
+		// ギズモのスナップ設定ボタンの右にスペースを追加
+		ImGui::SameLine();
+		ImGui::Dummy(ImVec2(10.0f, 0.0f)); // 10ピクセルのスペース
+		ImGui::SameLine();
+		// シーンビューのカメラの設定ボタン
+		if (ImGui::Button("Camera Settings"))
+		{
+			ImGui::OpenPopup("CameraSettingsPopup");
+		}
+		if (ImGui::BeginPopup("CameraSettingsPopup"))
+		{
+			Scene* scene = SceneManager::GetCurrentScene();
+			if (scene)
+			{
+				if (EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_SCENE_VIEW))
+				{
+					ImGui::Text("Camera Settings");
+					ImGui::SameLine(0.0f, ImGui::GetStyle().ItemSpacing.x);
+					if (ImGui::Button("Reset"))
+					{
+						editorCamera->SetSpeed(3.0f);
+						editorCamera->SetRotateSpeed(3.0f);
+					}
+					ImGui::Separator();
+					float moveSpeed = editorCamera->GetSpeed();
+					if (ImGui::DragFloat("Move Speed", &moveSpeed, 0.1f, 0.1f, 100.0f))
+					{
+						editorCamera->SetSpeed(moveSpeed);
+					}
+					float sensitivity = editorCamera->GetRotateSpeed();
+					if (ImGui::DragFloat("Sensitivity", &sensitivity, 0.01f, 0.01f, 100.0f))
+					{
+						editorCamera->SetRotateSpeed(sensitivity); // 回転速度を感度に基づいて設定
+					}
+				}
+			}
+			ImGui::EndPopup();
+		}
 		
 	}
 	ImGui::EndChild();
@@ -574,6 +613,14 @@ void EditorGUI::DrawWindowMenu()
 	{
 		Console::Show();
 	}
+	if (ImGui::MenuItem("Render System"))
+	{
+		RenderSystem::ShowRenderSystemWindow();
+	}
+	if (ImGui::MenuItem("History"))
+	{
+		RenderSystem::ShowHistoryWindow();
+	}
 	if (ImGui::MenuItem("SceneParametersEditor"))
 	{
 		SceneParametersEditor::Show();
@@ -642,7 +689,7 @@ void EditorGUI::SaveScene()
 		// JSONファイルに保存
 		JsonFileHandler::SaveJsonToFile(j, sceneFilePath.string());
 		// 保存完了のログを出力
-		LOG_INFO("Scene saved: " + sceneFilePath.string());
+		//LOG_INFO("Scene saved: " + sceneFilePath.string());
 
 		// バイナリファイルとしても保存
 		{
@@ -675,7 +722,7 @@ void EditorGUI::SaveSceneAs()
 		// JSONファイルに保存
 		JsonFileHandler::SaveJsonToFile(j, sceneFilePath.string());
 		// 保存完了のログを出力
-		LOG_INFO("Scene saved: " + sceneFilePath.string());
+		//LOG_INFO("Scene saved: " + sceneFilePath.string());
 
 		// バイナリファイルとしても保存
 		{

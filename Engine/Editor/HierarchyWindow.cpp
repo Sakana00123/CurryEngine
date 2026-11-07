@@ -308,11 +308,6 @@ namespace CurryEngine
 						}
 					}
 
-					if (ImGui::IsItemHovered())
-					{
-						ImGui::SetTooltip("Priority: %d\nID: %d", object->GetPriority(), object->GetId().Value());
-					}
-
 					// ノードIDを戻す
 					ImGui::PopID();
 					//開かれている場合、子階層にも同じ処理をする

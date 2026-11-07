@@ -159,6 +159,7 @@ void RenderSystem::Render()
 			}
 
             // アニメーションプレビュー用の描画処理
+            if (0)
             {
                 EditorCamera* editorCamera = scene->GetEditorCamera(EDITOR_CAMERA_ANIMATION_PREVIEW);
                 cameraPos = editorCamera->GetPosition();
@@ -296,7 +297,6 @@ void RenderSystem::Render()
         }
 
         // デバッグ用: Undo/Redoの内容表示
-		static bool showHistoryWindow = true;
 		if (showHistoryWindow)
         {
 			ImGui::Begin("History", &showHistoryWindow);
@@ -339,7 +339,6 @@ void RenderSystem::Render()
 void RenderSystem::DrawEditorGUI()
 {
 #ifdef USE_IMGUI
-	static bool showRenderSystemWindow = true;
 	if (showRenderSystemWindow)
     {
         ImGui::Begin("Render System", &showRenderSystemWindow);
@@ -357,6 +356,16 @@ void RenderSystem::DrawEditorGUI()
     }
 
 #endif // USE_IMGUI
+}
+
+void RenderSystem::ShowRenderSystemWindow()
+{
+	showRenderSystemWindow = true;
+}
+
+void RenderSystem::ShowHistoryWindow()
+{
+	showHistoryWindow = true;
 }
 
 void RenderSystem::OnSizeChanged(ID3D11Device* device, uint32_t width, uint32_t height)

@@ -365,12 +365,12 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 			if (fieldIsEnum)
 			{
 				// 列挙型は int から元の型にキャストして戻り値を返す
-				ofs << "    return static_cast<int>(" << field.type << "{}); // Return Value When an Object Is Not Found\n";
+				ofs << "    return static_cast<int>(" << field.type << "{});\n";
 			}
 			else
 			{
 				std::string returnValue = returnType + "{};";
-				ofs << "    return " << returnValue << "// Return Value When an Object Is Not Found\n";
+				ofs << "    return " << returnValue << "\n";
 			}
 		}
 		ofs << "}\n";
@@ -421,7 +421,6 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		}
 		ofs << ")\n{\n";
 		ofs << "    if (auto comp = Get" << className << "ById(objectId)) {\n";
-		ofs << "        // Implementing API processing using `comp`\n";
 		// メソッドの呼び出し
 		if (returnType != "void")
 		{
@@ -460,12 +459,12 @@ void Generater::GenerateSource(const ClassInfo& info, const std::string& outPath
 		{
 			if (retIsEnum)
 			{
-				ofs << "    return static_cast<int>(" << returnType << "{}); // Return Value When an Object Is Not Found\n";
+				ofs << "    return static_cast<int>(" << returnType << "{});\n";
 			}
 			else
 			{
 				std::string returnValue = returnType + "{};";
-				ofs << "    return " << returnValue << "// Return Value When an Object Is Not Found\n";
+				ofs << "    return " << returnValue << "\n";
 			}
 		}
 		ofs << "}\n";

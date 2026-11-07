@@ -106,19 +106,19 @@ bool ClassMeta::IsDerivedFrom(const std::string& baseName) const
 void ReflectionRegistry::Register(const ClassMeta& meta)
 {
 	GetClassRegistry()[meta.name] = meta;
-	LOG_INFO("class: " + meta.name + ", fields: " + std::to_string(meta.properties.size()) + ", methods: " + std::to_string(meta.methods.size()));
+	//LOG_INFO("class: " + meta.name + ", fields: " + std::to_string(meta.properties.size()) + ", methods: " + std::to_string(meta.methods.size()));
 }
 
 void ReflectionRegistry::RegisterEnum(const EnumInfo& meta)
 {
 	GetEnumRegistry()[meta.name] = meta;
-	LOG_INFO("enum: " + meta.name + ", values: " + std::to_string(meta.values.size()));
+	//LOG_INFO("enum: " + meta.name + ", values: " + std::to_string(meta.values.size()));
 }
 
 void ReflectionRegistry::RegisterStruct(const StructInfo& meta)
 {
 	GetStructRegistry()[meta.name] = meta;
-	LOG_INFO("struct: " + meta.name + ", fields: " + std::to_string(meta.properties.size()));
+	//LOG_INFO("struct: " + meta.name + ", fields: " + std::to_string(meta.properties.size()));
 }
 
 const ClassMeta* ReflectionRegistry::FindClass(const std::string& name)

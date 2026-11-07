@@ -96,10 +96,10 @@ private:
 	C_PROPERTY(Range(1,20))
 	float zoomSpeed = 10.f; // ズーム速度(スムーズ時)
 
-	C_PROPERTY(ReadOnly)
-	float distance = 25.f; // カメラ距離(現在値)
-	C_PROPERTY(ReadOnly)
-	float targetDistance = 25.f; // 目標距離(ズーム先)
+	C_PROPERTY(ReadOnly, NonSerialized)
+	float distance = 5.f; // カメラ距離(現在値)
+	C_PROPERTY(ReadOnly, NonSerialized)
+	float targetDistance = 5.f; // 目標距離(ズーム先)
 	C_PROPERTY(ReadOnly)
 	float minDistance = 2.f; // 最小距離
 	C_PROPERTY(ReadOnly)

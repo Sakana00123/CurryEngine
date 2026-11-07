@@ -45,7 +45,7 @@ ENGINE_API int Component_GetEnabled(uint64_t objectId)
 	{
 		return comp->IsEnabled() ? 1 : 0; // 有効なら 1、無効なら 0 を返す
 	}
-	LOG_WARNING(std::format("Component_GetEnable: Component with ID {} not found.", objectId));
+	//LOG_WARNING(std::format("Component_GetEnable: Component with ID {} not found.", objectId));
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
 }
 
@@ -55,7 +55,7 @@ ENGINE_API void Component_SetEnabled(uint64_t objectId, int enable)
 	{
 		comp->SetEnabled(enable != 0); // enable が 0 でなければ有効にする
 	}
-	LOG_WARNING(std::format("Component_SetEnable: Component with ID {} not found.", objectId));
+	//LOG_WARNING(std::format("Component_SetEnable: Component with ID {} not found.", objectId));
 }
 
 ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
@@ -72,7 +72,7 @@ ENGINE_API uint64_t Component_GetOwner(uint64_t objectId)
 			return 0; // 所有者が存在しない場合は 0 を返す
 		}
 	}
-	LOG_WARNING(std::format("Component_GetOwner: Component with ID {} not found.", objectId));
+	//LOG_WARNING(std::format("Component_GetOwner: Component with ID {} not found.", objectId));
 	return 0; // オブジェクトやコンポーネントが見つからない場合は 0 を返す
 }
 

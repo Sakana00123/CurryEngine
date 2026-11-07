@@ -9,6 +9,11 @@ param(
 . "$PSScriptRoot/PackageTools.ps1"
 Assert-PackageVersion $Version
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$projectSource = Join-Path $repoRoot 'Packaging/Projects/CurryEngineProject'
+Assert-EditorProjectSource $projectSource
+if (-not (Test-Path -LiteralPath "$repoRoot/External/assimp/lib/Release/assimp.dll" -PathType Leaf)) {
+    throw 'The Release assimp.dll is missing from External/assimp/lib/Release.'
+}
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $repoRoot 'BuildOutput/Engines' }
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
 $target = Join-Path $OutputDirectory "CurryEngine-$Version-win-x64"
@@ -26,7 +31,8 @@ $null = Get-Command dotnet -ErrorAction Stop
 $runId = [Guid]::NewGuid().ToString('N')
 $build = Join-Path $repoRoot "Library/Packaging/$runId"
 $stage = Join-Path $OutputDirectory ".curry-package-$runId"
-$engine = Join-Path $stage 'Engine'
+$package = Join-Path $stage 'Package'
+$engine = Join-Path $package 'Engine'
 $null = [IO.Directory]::CreateDirectory($build)
 $null = [IO.Directory]::CreateDirectory($stage)
 $native = Join-Path $build 'native'
@@ -46,9 +52,12 @@ try {
     Write-Host '[2/6] Building the portable editor and shaders (Release x64)...'
     $null = Invoke-PackageTool $msbuild @('External/DirectXTex/DirectXTex_Desktop_2022.vcxproj', '/t:Build', '/p:Configuration=Release', '/p:Platform=x64',
         "/p:OutDir=$build/directxtex/", "/p:IntDir=$build/directxtex-obj/", '/nologo', '/v:minimal') $repoRoot "$build/directxtex-build.log"
+    $null = Invoke-PackageTool $msbuild @('External/DirectXTK-main/DirectXTK_Desktop_2022.vcxproj', '/t:Build', '/p:Configuration=Release', '/p:Platform=x64',
+        "/p:OutDir=$build/directxtk/", "/p:IntDir=$build/directxtk-obj/", '/nologo', '/v:minimal') $repoRoot "$build/directxtk-build.log"
     $null = Invoke-PackageTool $msbuild @('CurryEngine.vcxproj', '/t:Build', '/p:Configuration=Release', '/p:Platform=x64',
         '/p:PreBuildEventUseInBuild=false', '/p:PostBuildEventUseInBuild=false', '/p:BuildProjectReferences=false',
-        "/p:CL_MPCount=$BuildWorkers", "/p:SolutionDir=$repoRoot/", "/p:GeneratedRoot=$generated", "/p:PackageDirectXTex=$build/directxtex",
+        "/p:CL_MPCount=$BuildWorkers", "/p:SolutionDir=$repoRoot/", "/p:GeneratedRoot=$generated",
+        "/p:PackageDirectXTex=$build/directxtex", "/p:PackageDirectXTK=$build/directxtk",
         "/p:ForceImportBeforeCppTargets=$PSScriptRoot/EditorPackage.targets", "/p:IntDir=$build/native-obj/", "/p:OutDir=$native/",
         '/nologo', '/v:minimal') $repoRoot "$build/native-build.log"
 
@@ -69,15 +78,17 @@ try {
         nativeDependencies = $dependencies
     })
     [IO.File]::WriteAllText("$engine/version.txt", "$Version`n", [Text.UTF8Encoding]::new($false))
-    Copy-PackageFile "$PSScriptRoot/PackageREADME.txt" "$engine/README.txt"
+    Copy-PackageFile "$PSScriptRoot/StartEditor.bat" "$package/StartEditor.bat"
+    Copy-PackageFile "$PSScriptRoot/PackageREADME.txt" "$package/README.txt"
+    Copy-EditorProject $projectSource (Join-Path $package 'CurryEngineProject') $Version
 
     Write-Host '[5/6] Creating ZIP, checking its contents and testing the extracted engine...'
-    $result = Publish-EditorPackage $engine $OutputDirectory $Version $stage
+    $result = Publish-EditorPackage $package $OutputDirectory $Version $stage
     Write-Host '[6/6] Package completed.'
-    Write-Host "Engine: $($result.EngineDirectory)/CurryEngine.exe"
+    Write-Host "Engine: $($result.PackageDirectory)/Engine/CurryEngine.exe"
     Write-Host "ZIP: $($result.Zip)"
     Write-Host "SHA256: $($result.Sha256)"
-    Write-Host 'Validation: create project, validate project, generate solution, build C# scripts; shared engine unchanged.'
+    Write-Host 'Validation: create a blank project; validate, generate solutions and build scripts for both projects; shared engine unchanged.'
     Write-Host 'Rendering/editor play and clean-machine setup are not exercised by this command.'
     $result
 } catch {
