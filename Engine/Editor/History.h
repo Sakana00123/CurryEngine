@@ -10,12 +10,12 @@ namespace CurryEngine
 	{
 	public:
 		// コマンドを実行し、履歴に追加する
-		static void ExecuteCommand(std::shared_ptr<IEditorCommand> command)
+		static CommandResult ExecuteCommand(std::shared_ptr<IEditorCommand> command)
 		{
-			GetUndoRedoStack().ExecuteCommand(std::move(command));
+			return GetUndoRedoStack().ExecuteCommand(std::move(command));
 		}
-		static void Undo() { GetUndoRedoStack().Undo(); }
-		static void Redo() { GetUndoRedoStack().Redo(); }
+		static CommandResult Undo() { return GetUndoRedoStack().Undo(); }
+		static CommandResult Redo() { return GetUndoRedoStack().Redo(); }
 		static bool CanUndo() { return GetUndoRedoStack().CanUndo(); }
 		static bool CanRedo() { return GetUndoRedoStack().CanRedo(); }
 

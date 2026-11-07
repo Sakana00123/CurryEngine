@@ -289,11 +289,19 @@ void RenderSystem::Render()
     {
         if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_Z))
         {
-            CurryEngine::History::Undo();
+            auto result = CurryEngine::History::Undo();
+            if (!result.success)
+            {
+                LOG_ERROR(std::format("Undo failed: {}", result.message));
+			}
         }
         if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_Y))
         {
-            CurryEngine::History::Redo();
+            auto result = CurryEngine::History::Redo();
+            if (!result.success)
+            {
+                LOG_ERROR(std::format("Redo failed: {}", result.message));
+            }
         }
 
         // デバッグ用: Undo/Redoの内容表示

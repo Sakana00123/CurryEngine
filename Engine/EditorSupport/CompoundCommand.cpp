@@ -13,17 +13,25 @@ namespace CurryEngine
 		return m_commands.empty();
 	}
 
-	void CompoundCommand::Execute()
+	CommandResult CompoundCommand::Execute()
 	{
 		for (const auto& command : m_commands) {
-			command->Execute();
+			auto result = command->Execute();
+			if (!result.success) {
+				return result;
+			}
 		}
+		return { true, "" };
 	}
-	void CompoundCommand::Undo()
+	CommandResult CompoundCommand::Undo()
 	{
 		for (auto it = m_commands.rbegin(); it != m_commands.rend(); ++it) {
-			(*it)->Undo();
+			auto result = (*it)->Undo();
+			if (!result.success) {
+				return result;
+			}
 		}
+		return { true, "" };
 	}
 	std::string CompoundCommand::GetDescription() const
 	{

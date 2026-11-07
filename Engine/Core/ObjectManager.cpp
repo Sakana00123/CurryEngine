@@ -727,7 +727,11 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 					));
 				}
 				// コマンドを履歴に追加
-				History::ExecuteCommand(cmd);
+				if (auto result = History::ExecuteCommand(cmd); !result.success)
+				{
+					std::string message = "Failed to execute command: " + result.message;
+					LOG_WARNING(message);
+				}
 			}
 			initialWorlds.clear(); // 操作開始前のワールド行列の保存をクリア
 		}

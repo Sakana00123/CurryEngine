@@ -23,8 +23,34 @@ namespace CurryEngine
 			, m_newValue(std::move(newValue)) { }
 
 		// IEditorCommandの実装
-		void Execute() override { m_setter(m_newValue); }
-		void Undo() override { m_setter(m_oldValue); }
+		CommandResult Execute() override
+		{
+			CommandResult result{ .success = true, .message = "" };
+			if (m_setter)
+			{
+				m_setter(m_newValue);
+			}
+			else 
+			{
+				result.success = false;
+				result.message = "Setter function is not set.";
+			}
+			return result;
+		}
+		CommandResult Undo() override
+		{
+			CommandResult result{ .success = true, .message = "" };
+			if (m_setter)
+			{
+				m_setter(m_oldValue);
+			}
+			else 
+			{
+				result.success = false;
+				result.message = "Setter function is not set.";
+			}
+			return result;
+		}
 		std::string GetDescription() const override { return m_description; }
 	private:
 		std::string m_description;

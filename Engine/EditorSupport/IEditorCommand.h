@@ -3,6 +3,12 @@
 
 namespace CurryEngine
 {
+	struct CommandResult
+	{
+		bool success;
+		std::string message;
+	};
+
 	/** @brief IEditorCommand を表すクラスです。 */
 	class IEditorCommand
 	{
@@ -14,11 +20,12 @@ namespace CurryEngine
 		/**
 		 * @brief 処理を実行します。
 		 */
-		virtual void Execute() = 0;
+		virtual CommandResult Execute() = 0;
 		/**
 		 * @brief Undo の処理を行います。
 		 */
-		virtual void Undo() = 0;
+		virtual CommandResult Undo() = 0;
+
 		virtual std::string GetDescription() const { return "No description provided."; }
 	};
 }
