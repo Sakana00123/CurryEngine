@@ -138,10 +138,25 @@ namespace CurryEngine
                     std::make_shared<SetValueCommand<CommandData>>(
                         description,
                         [](const CommandData& data) {
+							CurryEngine::CommandResult result{ .success = true, .message = "" };
+                            if (data.ctx.Primary() == nullptr)
+                            {
+                                result.success = false;
+                                result.message = "No primary target object.";
+                                return result;
+							}
                             PropertyDrawHelper::ApplyToAll<Quaternion>(data.ctx, data.prop, data.quat);
-                            // Quaternion と同時にオイラー角も復元 → ToEuler() が呼ばれない
-                            data.eulerState->Prev(data.prop.name) = data.euler;
-                            data.externalChangeState->Prev(data.prop.name) = data.quat;
+                            if (data.eulerState && data.externalChangeState)
+                            {
+                                data.eulerState->Prev(data.prop.name) = data.euler;
+                                data.externalChangeState->Prev(data.prop.name) = data.quat;
+							}
+                            else 
+                            {
+                                result.success = false;
+                                result.message = "DrawerState pointers are null.";
+							}
+							return result;
                         },
                         CommandData{ context, prop, quatBefore, eulerOnActivated, &m_eulerState, &m_externalChangeState },
                         CommandData{ context, prop, quatAfter,  euler,            &m_eulerState, &m_externalChangeState }

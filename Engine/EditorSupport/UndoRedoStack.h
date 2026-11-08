@@ -14,7 +14,10 @@ namespace CurryEngine
 		{
 			auto result = command->Execute();
 			if (!result.success)
+			{
+				LOG_WARNING("Failed to execute command: " + result.message);
 				return result;
+			}
 			m_undoStack.push(std::move(command));
 			ClearRedo(); // 新しいコマンドが実行されたときにRedoスタックをクリア
 			return result;

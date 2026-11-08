@@ -2,6 +2,9 @@
 
 #ifdef USE_IMGUI
 #include <imgui.h>
+#include <functional>
+#include <type_traits>
+#include <utility>
 #include "Engine/Editor/History.h"
 #include "Engine/EditorSupport/SetValueCommand.h"
 #include "Engine/Core/Object.h"
@@ -50,27 +53,52 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 			std::make_shared<CurryEngine::SetValueCommand<std::pair<std::string, type>>>( \
 				"Set " + std::string(name) + " old:" + oldValueStr + " new:" + newValueStr, \
 				[this](const std::pair<std::string, type>& pair) { \
+					CurryEngine::CommandResult result{ .success = true, .message = "" }; \
 					if (Object* object = dynamic_cast<Object*>(this)) { \
 						auto* prop = object->GetClassMeta()->FindProperty(pair.first); /*プロパティのメタ情報を取得*/ \
 						if (prop) { \
 							prop->setter(this, pair.second); /*プロパティの値を変更*/ \
 						} \
 						else { \
-							LOG_ERROR("Property not found: " + pair.first); /*プロパティが見つからない場合はエラーログを出力*/ \
+							result.success = false; \
+							result.message = "Property not found: " + pair.first; \
 						} \
 					} \
+					else { \
+						result.success = false; \
+						result.message = "Object is not derived from Object class."; \
+					} \
+					return result; \
 				}, \
 				std::make_pair(std::string(name), oldValue), \
 				std::make_pair(std::string(name), newValue) \
 			) \
 		);
 
+template<class T, class Setter>
+auto AdaptPropertySetter(Setter && setter)
+{
+	return [fn = std::forward<Setter>(setter)](const T& value) mutable
+		-> CurryEngine::CommandResult
+		{
+			if constexpr (std::is_void_v<decltype(std::invoke(fn, value))>)
+			{
+				std::invoke(fn, value);
+				return { true, "" };
+			}
+			else
+			{
+				return std::invoke(fn, value);
+			}
+		};
+}
+
 // ジェネリックなプロパティコマンド。Objectクラスを継承していなくても使用可能。プロパティの値をセットする関数は引数 setter で渡す必要がある。setter は新しい値を引数に取り、プロパティの値を変更する関数でなければならない。
 #define IMGUI_PROPERTY_COMMAND_CUSTOM(name, newValue, oldValue, newValueStr, oldValueStr, setter) \
 		CurryEngine::History::ExecuteCommand( \
 			std::make_shared<CurryEngine::SetValueCommand<decltype(newValue)>>( \
 				"Set " + std::string(name) + " old:" + oldValueStr + " new:" + newValueStr, \
-				setter, \
+				AdaptPropertySetter<decltype(newValue)>(setter), \
 				oldValue, \
 				newValue \
 			) \
@@ -425,8 +453,18 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 							std::make_shared<CurryEngine::SetValueCommand<std::pair<std::string, std::pair<ObjectId, ObjectId>>>>( \
 								"Set " + name + " Component reference", \
 								[this](const std::pair<std::string, std::pair<ObjectId, ObjectId>>& pair) { \
-								std::string valueStr = "Component(objectId: " + std::to_string(pair.second.first.Value()) + ", ownerId: " + std::to_string(pair.second.second.Value()) + ")"; \
-									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
+									CurryEngine::CommandResult result{ .success = true, .message = "" }; \
+									if (m_gcHandle != nullptr) \
+									{ \
+										std::string valueStr = "Component(objectId: " + std::to_string(pair.second.first.Value()) + ", ownerId: " + std::to_string(pair.second.second.Value()) + ")"; \
+										ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
+									} \
+									else \
+									{ \
+										result.success = false; \
+										result.message = "m_gcHandle is nullptr."; \
+									} \
+									return result; \
 								}, \
 								std::make_pair(name, std::make_pair(v, ownerV)), /* 変更前の値 */ \
 								std::make_pair(name, std::make_pair(droppedId, droppedOwnerId)) /* 変更後の値 */ \
@@ -447,8 +485,18 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 						std::make_shared<CurryEngine::SetValueCommand<std::pair<std::string, std::pair<ObjectId, ObjectId>>>>( \
 							"Clear " + name + " Component reference", \
 							[this](const std::pair<std::string, std::pair<ObjectId, ObjectId>>& pair) { \
-								std::string valueStr = "Component(objectId: " + std::to_string(pair.second.first.Value()) + ", ownerId: " + std::to_string(pair.second.second.Value()) + ")"; \
-								ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
+								CurryEngine::CommandResult result{ .success = true, .message = "" }; \
+								if (m_gcHandle != nullptr) \
+								{ \
+									std::string valueStr = "Component(objectId: " + std::to_string(pair.second.first.Value()) + ", ownerId: " + std::to_string(pair.second.second.Value()) + ")"; \
+									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
+								} \
+								else \
+								{ \
+									result.success = false; \
+									result.message = "m_gcHandle is nullptr."; \
+								} \
+								return result; \
 							}, \
 							std::make_pair(name, std::make_pair(v, ownerV)), /* 変更前の値 */ \
 							std::make_pair(name, std::make_pair(ObjectId::Invalid(), ObjectId::Invalid())) /* 変更後の値 */ \
@@ -478,8 +526,18 @@ constexpr float ImGuiPropertyNameWidth = 120.0f; // プロパティ名の幅を�
 							std::make_shared<CurryEngine::SetValueCommand<std::pair<std::string, ObjectId>>>( \
 								"Set " + name + " GameObject reference", \
 								[this](const std::pair<std::string, ObjectId>& pair) { \
-									std::string valueStr = "GameObject(objectId: " + std::to_string(pair.second.Value()) + ")"; \
-									ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
+									CurryEngine::CommandResult result{ .success = true, .message = "" }; \
+									if (m_gcHandle != nullptr) \
+									{ \
+										std::string valueStr = "GameObject(objectId: " + std::to_string(pair.second.Value()) + ")"; \
+										ScriptSystem::SetScriptField(m_gcHandle, pair.first.c_str(), valueStr); \
+									} \
+									else \
+									{ \
+										result.success = false; \
+										result.message = "m_gcHandle is nullptr."; \
+									} \
+									return result; \
 								}, \
 								std::make_pair(name, v), /* 変更前の値 */ \
 								std::make_pair(name, droppedId) /* 変更後の値 */ \

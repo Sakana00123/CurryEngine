@@ -709,19 +709,58 @@ void ObjectManager::DrawGuizmo(RenderContext* rtx)
 					// コマンドを作成して履歴に追加
 					cmd->AddCommand(std::make_unique<SetValueCommand<Vector3>>(
 						"Position",
-						[t](const Vector3& value) { t->SetWorldPosition(value); },
+						[t](const Vector3& value)
+						{
+							CommandResult result = { true, "" };
+							if (t)
+							{
+								t->SetWorldPosition(value);
+							}
+							else
+							{
+								result.success = false;
+								result.message = "Transform is null.";
+							}
+							return result;
+						},
 						prevPos,
 						newPosVec
 					));
 					cmd->AddCommand(std::make_unique<SetValueCommand<Vector3>>(
 						"Scale",
-						[t](const Vector3& value) { t->SetWorldScale(value); },
+						[t](const Vector3& value)
+						{
+							CommandResult result = { true, "" };
+							if (t)
+							{
+								t->SetWorldScale(value);
+							}
+							else
+							{
+								result.success = false;
+								result.message = "Transform is null.";
+							}
+							return result;
+						},
 						prevScale,
 						newScaleVec
 					));
 					cmd->AddCommand(std::make_unique<SetValueCommand<Quaternion>>(
 						"Rotation",
-						[t](const Quaternion& value) { t->SetWorldRotation(value); },
+						[t](const Quaternion& value)
+						{
+							CommandResult result = { true, "" };
+							if (t)
+							{
+								t->SetWorldRotation(value);
+							}
+							else
+							{
+								result.success = false;
+								result.message = "Transform is null.";
+							}
+							return result;
+						},
 						prevRot,
 						newRotQuat
 					));

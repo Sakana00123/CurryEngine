@@ -1,7 +1,7 @@
 {
     "lastOpenedScenePath": "SampleGame",
     "viewConfig": {
-        "guizmoPivotMode": 1,
+        "guizmoPivotMode": 0,
         "rotationSnap": {
             "enabled": true,
             "snapAllAxes": false,
