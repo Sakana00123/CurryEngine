@@ -312,70 +312,27 @@ void RenderSystem::Render()
             {
                 if (ImGui::Button("Undo"))
                 {
-                    auto result = CurryEngine::History::Undo();
-                    if (!result.success)
+					if (CurryEngine::History::CanUndo())
                     {
-                        LOG_ERROR(std::format("Undo failed: {}", result.message));
+                        auto result = CurryEngine::History::Undo();
+                        if (!result.success)
+                        {
+                            LOG_ERROR(std::format("Undo failed: {}", result.message));
+                        }
                     }
 				}
 				ImGui::SameLine();
                 if (ImGui::Button("Redo"))
                 {
-                    auto result = CurryEngine::History::Redo();
-                    if (!result.success)
+					if (CurryEngine::History::CanRedo())
                     {
-                        LOG_ERROR(std::format("Redo failed: {}", result.message));
-					}
-				}
-				ImGui::SameLine();
-                // テスト用
-                {
-					// 成功するA,B、失敗するCの3つのアクションをまとめてUndo/Redoするテスト
-					static int testValue = 0;
-                    if (ImGui::Button("Test Undo/Redo"))
-                    {
-                        auto setter = [&](const int& value) -> CurryEngine::CommandResult
-                        {
-                            testValue = value;
-                            return { true, "" };
-						};
-                        auto failedSetter = [&](const int& value) -> CurryEngine::CommandResult
-                            {
-                                return { false, "Failed to set value." };
-                            };
-                        auto firstOnlySetter = [&](const int& value) -> CurryEngine::CommandResult
-                        {
-							static bool firstCall = true;
-                            if (firstCall)
-                            {
-								firstCall = false;
-                                testValue = value;
-                                return { true, "" };
-                            }
-                            else
-                            {
-                                return { false, "Failed to set value. This setter only allows the first call." };
-                            }
-							};
-
-                        auto actionA = std::make_unique<CurryEngine::SetValueCommand<int>>("Action A", firstOnlySetter, testValue, 10);
-						auto actionB = std::make_unique<CurryEngine::SetValueCommand<int>>("Action B", setter, testValue, 20);
-						auto actionC = std::make_unique<CurryEngine::SetValueCommand<int>>("Action C", setter, testValue, 30);
-
-						auto compoundAction = std::make_shared<CurryEngine::CompoundCommand>("Compound Action");
-                        compoundAction->AddCommand(std::move(actionA));
-                        compoundAction->AddCommand(std::move(actionB));
-                        compoundAction->AddCommand(std::move(actionC));
-                        auto result = CurryEngine::History::ExecuteCommand(compoundAction);
+                        auto result = CurryEngine::History::Redo();
                         if (!result.success)
                         {
-                            LOG_ERROR(std::format("Compound Action failed: {}", result.message));
-						}
-					}
-					ImGui::SameLine();
-					ImGui::Text("Test Value: %d", testValue);
-                }
-
+                            LOG_ERROR(std::format("Redo failed: {}", result.message));
+                        }
+                    }
+				}
 
                 if (ImGui::BeginChild("HistoryChild", ImVec2(0, 0), true))
                 {
