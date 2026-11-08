@@ -53,9 +53,14 @@ imgui.ini
 !/Packaging/Projects/CurryEngineProject/imgui.ini
 CurryEngine/x64/
 Document/latex/
+CurryEngine.Core/obj/
+CurryEngine.Core/bin/
 CurryEngine.Runtime/obj/
+CurryEngine.Runtime/bin/
 CurryEngine.API/obj/
+CurryEngine.API/bin/
 UserScripts/obj/
+UserScripts/bin/
 Generated/
 Assets/Saves/Achievements.json
 Assets/Saves/Achievements.bin
