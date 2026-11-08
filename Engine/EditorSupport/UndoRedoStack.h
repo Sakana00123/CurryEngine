@@ -10,29 +10,43 @@ namespace CurryEngine
 	{
 	public:
 		// コマンドを実行し、Undoスタックに追加する
-		void ExecuteCommand(std::shared_ptr<IEditorCommand> command)
+		CommandResult ExecuteCommand(std::shared_ptr<IEditorCommand> command)
 		{
-			command->Execute();
+			auto result = command->Execute();
+			if (!result.success)
+			{
+				LOG_WARNING("Failed to execute command: " + result.message);
+				return result;
+			}
 			m_undoStack.push(std::move(command));
 			ClearRedo(); // 新しいコマンドが実行されたときにRedoスタックをクリア
+			return result;
 		}
-		void Undo()
+		CommandResult Undo()
 		{
 			if (!CanUndo())
-				return;
-			auto command = std::move(m_undoStack.top());
-			m_undoStack.pop();
-			command->Undo();
-			m_redoStack.push(std::move(command));
+				return CommandResult{ .success = false, .message = "Undo stack is empty." };
+			auto command = m_undoStack.top();
+			auto result = command->Undo();
+			if (result.success)
+			{
+				m_redoStack.push(std::move(command));
+				m_undoStack.pop();
+			}
+			return result;
 		}
-		void Redo()
+		CommandResult Redo()
 		{
 			if (!CanRedo())
-				return;
-			auto command = std::move(m_redoStack.top());
-			m_redoStack.pop();
-			command->Execute();
-			m_undoStack.push(std::move(command));
+				return CommandResult{ .success = false, .message = "Redo stack is empty." };
+			auto command = m_redoStack.top();
+			auto result = command->Execute();
+			if (result.success)
+			{
+				m_undoStack.push(std::move(command));
+				m_redoStack.pop();
+			}
+			return result;
 		}
 
 		bool CanUndo() const { return !m_undoStack.empty(); }

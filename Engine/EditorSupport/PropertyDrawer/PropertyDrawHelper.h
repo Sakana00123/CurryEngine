@@ -156,9 +156,17 @@ namespace CurryEngine
 							std::make_shared<SetValueCommand<std::pair<SetValueCommandDesc, T>>>(
 								description,
 								[](const std::pair<SetValueCommandDesc, T>& data) {
+									CurryEngine::CommandResult result{ .success = true, .message = "" };
+									if (data.first.ctx.Primary() == nullptr)
+									{
+										result.success = false;
+										result.message = "No primary target object.";
+										return result;
+									}
 									// Execute: 新しい値をセット
 									const auto& [desc, newValue] = data;
 									PropertyDrawHelper::ApplyToAll<T>(desc.ctx, desc.prop, newValue);
+									return result;
 								},
 								std::make_pair(descriptionStruct, prev), // oldValue
 								std::make_pair(descriptionStruct, currentValue) // newValue

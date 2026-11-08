@@ -480,7 +480,17 @@ void Transform::DrawProperty(const PropertyDrawContext& context)
 					std::string newPositionStr = "(" + std::to_string(newPosition.x) + ", " + std::to_string(newPosition.y) + ", " + std::to_string(newPosition.z) + ")";
 					std::string prevPositionStr = "(" + std::to_string(prevPosition.x) + ", " + std::to_string(prevPosition.y) + ", " + std::to_string(prevPosition.z) + ")";
 					IMGUI_PROPERTY_COMMAND_CUSTOM("position", newPosition, prevPosition, newPositionStr, prevPositionStr, [this](const Vector3& value) {
-						SetPosition(value);
+						CurryEngine::CommandResult result;
+						if (this && id.IsValid())
+						{
+							SetPosition(value);
+						}
+						else 
+						{
+							result.success = false;
+							result.message = "Transform is null.";
+						}
+						return result;
 						});
 				}
 				prevPosition = newPosition;

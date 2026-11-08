@@ -27,6 +27,7 @@
 #include <Engine\Editor\ImportSettings\ImportSettingsWindow.h>
 #include <Engine\Editor\AnimationEditor.h>
 #include <Engine\Editor\AnimatorControllerEditor.h>
+#include <Engine\EditorSupport\CompoundCommand.h>
 
 void RenderSystem::Initialize(Time* time)
 {
@@ -289,11 +290,19 @@ void RenderSystem::Render()
     {
         if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_Z))
         {
-            CurryEngine::History::Undo();
+            auto result = CurryEngine::History::Undo();
+            if (!result.success)
+            {
+                LOG_ERROR(std::format("Undo failed: {}", result.message));
+			}
         }
         if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_Y))
         {
-            CurryEngine::History::Redo();
+            auto result = CurryEngine::History::Redo();
+            if (!result.success)
+            {
+                LOG_ERROR(std::format("Redo failed: {}", result.message));
+            }
         }
 
         // デバッグ用: Undo/Redoの内容表示
@@ -301,19 +310,48 @@ void RenderSystem::Render()
         {
 			ImGui::Begin("History", &showHistoryWindow);
             {
-                std::vector<std::string> undoDescriptions, redoDescriptions;
-                CurryEngine::History::GetUndoRedoDescriptions(undoDescriptions, redoDescriptions);
-                ImGui::Text("Undo Stack:");
-                for (const auto& action : undoDescriptions)
+                if (ImGui::Button("Undo"))
                 {
-                    ImGui::BulletText("%s", action.c_str());
-                }
-                ImGui::Separator();
-                ImGui::Text("Redo Stack:");
-                for (const auto& action : redoDescriptions)
+					if (CurryEngine::History::CanUndo())
+                    {
+                        auto result = CurryEngine::History::Undo();
+                        if (!result.success)
+                        {
+                            LOG_ERROR(std::format("Undo failed: {}", result.message));
+                        }
+                    }
+				}
+				ImGui::SameLine();
+                if (ImGui::Button("Redo"))
                 {
-                    ImGui::BulletText("%s", action.c_str());
+					if (CurryEngine::History::CanRedo())
+                    {
+                        auto result = CurryEngine::History::Redo();
+                        if (!result.success)
+                        {
+                            LOG_ERROR(std::format("Redo failed: {}", result.message));
+                        }
+                    }
+				}
+
+                if (ImGui::BeginChild("HistoryChild", ImVec2(0, 0), true))
+                {
+					// Undo/Redoの内容表示
+                    std::vector<std::string> undoDescriptions, redoDescriptions;
+                    CurryEngine::History::GetUndoRedoDescriptions(undoDescriptions, redoDescriptions);
+                    ImGui::Text("Undo Stack:");
+                    for (const auto& action : undoDescriptions)
+                    {
+                        ImGui::BulletText("%s", action.c_str());
+                    }
+                    ImGui::Separator();
+                    ImGui::Text("Redo Stack:");
+                    for (const auto& action : redoDescriptions)
+                    {
+                        ImGui::BulletText("%s", action.c_str());
+                    }
                 }
+				ImGui::EndChild();
             }
             ImGui::End();
         }

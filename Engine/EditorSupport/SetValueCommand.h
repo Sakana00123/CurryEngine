@@ -16,19 +16,45 @@ namespace CurryEngine
 		/// <param name="setter">値をセットする関数。ExecuteとUndoの両方で呼び出される。</param>
 		/// <param name="oldValue">古い値。Undoでセットされる。</param>
 		/// <param name="newValue">新しい値。Executeでセットされる。</param>
-		SetValueCommand(const std::string& description, std::function<void(const T&)> setter, T oldValue, T newValue)
+		SetValueCommand(const std::string& description, std::function<CommandResult(const T&)> setter, T oldValue, T newValue)
 			: m_description(description)
 			, m_setter(std::move(setter))
 			, m_oldValue(std::move(oldValue))
 			, m_newValue(std::move(newValue)) { }
 
 		// IEditorCommandの実装
-		void Execute() override { m_setter(m_newValue); }
-		void Undo() override { m_setter(m_oldValue); }
+		CommandResult Execute() override
+		{
+			CommandResult result{ .success = true, .message = "" };
+			if (m_setter)
+			{
+				result = m_setter(m_newValue);
+			}
+			else 
+			{
+				result.success = false;
+				result.message = m_description + ": Setter function is not set.";
+			}
+			return result;
+		}
+		CommandResult Undo() override
+		{
+			CommandResult result{ .success = true, .message = "" };
+			if (m_setter)
+			{
+				result = m_setter(m_oldValue);
+			}
+			else 
+			{
+				result.success = false;
+				result.message = m_description + ": Setter function is not set.";
+			}
+			return result;
+		}
 		std::string GetDescription() const override { return m_description; }
 	private:
 		std::string m_description;
-		std::function<void(const T&)> m_setter;
+		std::function<CommandResult(const T&)> m_setter;
 		T m_oldValue;
 		T m_newValue;
 	};

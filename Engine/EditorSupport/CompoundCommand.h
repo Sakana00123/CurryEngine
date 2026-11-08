@@ -34,12 +34,12 @@ namespace CurryEngine
 		/**
 		 * @brief 処理を実行します。
 		 */
-		void Execute() override;
+		CommandResult Execute() override;
 		
 		/**
 		 * @brief Undo の処理を行います。
 		 */
-		void Undo() override;
+		CommandResult Undo() override;
 
 		/**
 		 * @brief GetDescription に対応する値を取得します。
