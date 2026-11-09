@@ -42,7 +42,10 @@
 *.out
 *.app
 *.filters
-x64/
+/x64/
+/Tools/MetaParser/x64/
+/External/DirectXTex/Bin/
+/External/FBX SDK/2020.3.9/lib/
 .vs/
 reflection_capture_tool/
 Data/Shaders/
