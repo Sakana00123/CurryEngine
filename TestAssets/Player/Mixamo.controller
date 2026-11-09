@@ -1,9 +1,9 @@
 {
     "animationClipIds": [
-        "8815b2626151ccf0d4e75e4428dac612",
         "12cc8ccfb9a7bcaad96065f0b9467aea",
         "38679cb8bb58c4f9c2d3d40ba163829f",
-        "6c4a5a55b324ecc0a88caeec875b60fc"
+        "6c4a5a55b324ecc0a88caeec875b60fc",
+        "8815b2626151ccf0d4e75e4428dac612"
     ],
     "animationTimelineIds": [],
     "defaultStateIndex": 0,

@@ -47,6 +47,8 @@ namespace CurryEngine
 			 */
 			bool operator!=(const AssetId& other) const { return id != other.id; }
 
+			bool operator<(const AssetId& other) const { return id < other.id; }
+
 			/**
 			 * @brief JSONシリアライズ関数。AssetIdをJSON形式に変換します。
 			 * @param j JSONオブジェクト

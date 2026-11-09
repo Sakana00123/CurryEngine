@@ -91,8 +91,8 @@
       <AssemblerOutputFile>.\Data\Shaders\%(Filename).cod</AssemblerOutputFile>
     </FxCompile>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /Y "$(ProjectDir)External\DotNetHost\9.0.10\runtimes\win-x64\native\nethost.dll" "$(TargetDir)nethost.dll" || exit /b 1
+copy /Y "$(ProjectDir)External\assimp\lib\Release\assimp.dll" "$(TargetDir)assimp.dll" || exit /b 1</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>pushed "$(SolutionDir)"
@@ -130,8 +130,8 @@ popd</Command>
       <AssemblerOutputFile>.\Data\Shaders\%(Filename).cod</AssemblerOutputFile>
     </FxCompile>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /Y "$(ProjectDir)External\DotNetHost\9.0.10\runtimes\win-x64\native\nethost.dll" "$(TargetDir)nethost.dll" || exit /b 1
+copy /Y "$(ProjectDir)External\assimp\lib\Release\assimp.dll" "$(TargetDir)assimp.dll" || exit /b 1</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>pushed "$(SolutionDir)"

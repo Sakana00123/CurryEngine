@@ -2,6 +2,7 @@
 #include "Engine/Core/Reflection/Meta.h"
 #include "Engine/Resources/AnimationClip.h"
 #include "Engine/Resources/AssetId.h"
+#include <map>
 #include <unordered_map>
 #include <Engine\Resources\AnimationEvent.h>
 
@@ -113,8 +114,8 @@ public:
 	CurryEngine::Resources::AssetId modelAssetId; // このAnimatorControllerが対象とするメッシュのアセットID(現状はエディタでの表示用のみ使用)
 	int defaultStateIndex = 0; // デフォルトのアニメーションステートのインデックス
 
-	std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> animationClips; // アニメーションクリップのリスト
-	std::unordered_map<CurryEngine::Resources::AssetId, std::shared_ptr<CurryEngine::Resources::AnimationTimeline>> animationTimelines; // AnimationTimelineのリスト
+	std::map<CurryEngine::Resources::AssetId, std::shared_ptr<AnimationClip>> animationClips; // アニメーションクリップのリスト
+	std::map<CurryEngine::Resources::AssetId, std::shared_ptr<CurryEngine::Resources::AnimationTimeline>> animationTimelines; // AnimationTimelineのリスト
 
 	/**
 	 * @brief LoadFromFile に対応する値を取得します。
