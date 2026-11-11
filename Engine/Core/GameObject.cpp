@@ -318,6 +318,7 @@ void GameObject::OnDestroy() {
     }
 	// 破棄後にコンポーネントリストをクリア
 	_components.clear();
+	transform = nullptr;
 }
 //すべてのコンポーネントのインスペクタ描画
 void GameObject::DrawProperty() {

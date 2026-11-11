@@ -153,6 +153,8 @@ public:
 
 	/** @brief オブジェクトの選択とインスペクタ表示をリセットします。*/
 	void Reset();
+
+	bool DestroyEmptyGameObjectImmediate(const ObjectId& id);
 private:
 	
 	/** @brief 指定したオブジェクトとその子オブジェクトを破棄します。*/

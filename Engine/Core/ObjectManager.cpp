@@ -1092,6 +1092,70 @@ void ObjectManager::Reset()
 	}
 }
 
+bool ObjectManager::DestroyEmptyGameObjectImmediate(const ObjectId& id)
+{
+	// IDに対応するGameObjectを検索
+	GameObject* object = FindInObjects(id);
+	if (!object)
+	{
+		LOG_ERROR("DestroyEmptyGameObjectImmediate: GameObject with ID " + std::to_string(id.Value()) + " not found.");
+		return false;
+	}
+	bool isEmpty = object->GetChildren().empty() && object->GetAllComponents().size() == 1 && object->GetComponent<Transform>() != nullptr; // Transform以外のコンポーネントがないか確認
+	bool isNotErased = std::find(erases.begin(), erases.end(), Find_Ptr(id)) == erases.end(); // すでに削除予定リストにあるか確認
+
+	if (isEmpty && isNotErased)
+	{
+		// 選択中のオブジェクトが削除対象の場合、選択を解除
+		if (selection)
+		{
+			if (selection->IsSelected(inspectorNode))
+			{
+				LockInspector(false);
+				inspectorNode = nullptr;
+			}
+			if (selection->IsSelected(object))
+			{
+				selection->Clear();
+			}
+		}
+		if (inspectorNode == object)
+		{
+			LockInspector(false);
+			inspectorNode = nullptr;
+		}
+		// 非アクティブにしてから親子関係を解除
+		object->SetActive(false);
+		object->SetParent(nullptr);
+		ObjectId transformId = object->GetTransform()->GetId();
+		/*std::vector<ObjectId> componentIds;
+		for (const auto& comp : object->GetAllComponents())
+		{
+			componentIds.push_back(comp->GetId());
+		}*/
+
+		// OnDestroyを呼び出す
+		object->OnDestroy();
+
+
+		// コンポーネントキャッシュからTransformを削除
+		componentCacheMap.erase(transformId);
+		existingComponentIds.erase(transformId);
+
+		// オブジェクトを削除
+		auto it = std::remove_if(objects.begin(), objects.end(), [&](const std::shared_ptr<GameObject>& obj) {
+			return obj.get() == object;
+			});
+		if (it != objects.end()) {
+			objects.erase(it, objects.end());
+		}
+		LOG_INFO("DestroyEmptyGameObjectImmediate: Destroyed GameObject with ID " + std::to_string(id.Value()) + ".");
+		return true;
+	}
+	LOG_ERROR("DestroyEmptyGameObjectImmediate: Failed to destroy GameObject with ID " + std::to_string(id.Value()) + ". It may not be empty or may not exist.");
+	return false;
+}
+
 void ObjectManager::SelectInspectorNode(GameObject* node)
 {
 	if (!lockInspector) {

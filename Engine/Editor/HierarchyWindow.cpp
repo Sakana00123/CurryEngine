@@ -535,6 +535,37 @@ namespace CurryEngine
 							}
 							selection->Clear();
 						}
+						if (ImGui::MenuItem("TestDeleteImmediate"))
+						{
+							auto selectAll = selection->GetSelectedAll();
+							for (int i = static_cast<int>(selectAll.size()) - 1; i >= 0; --i)
+							{
+								if (selectAll[i])
+								{
+									if (objectManager->DestroyEmptyGameObjectImmediate(selectAll[i]->GetId()))
+									{
+										// 削除成功したらもう一度削除を試みる（失敗することを確認するため）
+										if (objectManager->DestroyEmptyGameObjectImmediate(selectAll[i]->GetId()))
+										{
+											// 削除成功（これはバグ）
+											LOG_WARNING(std::format("DestroyEmptyGameObjectImmediate: Object {} was deleted twice, which is unexpected.", selectAll[i]->GetName()));
+										}
+										else
+										{
+											// 削除失敗（これは期待される挙動）
+											LOG_INFO(std::format("DestroyEmptyGameObjectImmediate: Object {} was deleted successfully, and the second deletion attempt failed as expected.", selectAll[i]->GetName()));
+										}
+									}
+									else
+									{
+										// 削除失敗（これはバグ）
+										LOG_WARNING(std::format("DestroyEmptyGameObjectImmediate: Object {} could not be deleted, which is unexpected.", selectAll[i]->GetName()));
+									}
+								}
+							}
+							selection->Clear();
+						}
+
 						// 複製ボタン
 						if (ImGui::MenuItem("Duplicate", "Ctrl+D", false))
 						{
