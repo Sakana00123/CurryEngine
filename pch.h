@@ -9,8 +9,14 @@
 #include <functional>
 #include <algorithm>
 
-// Windows / DirectX
+// WindowsネットワークAPI
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+
+// Windows API
 #include <Windows.h>
+
+// DirectX
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <wrl/client.h> // Microsoft::WRL::ComPtr

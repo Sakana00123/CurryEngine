@@ -42,6 +42,8 @@
 
 #include "Engine/Resources/AssetDatabase.h"
 
+#include "Engine/EditorAssistant/GatewayTcpClient.h"
+#include "Engine/EditorAssistant/GatewayProtocol.h"
 
 CONST LONG SHADOWMAP_WIDTH{ 2048 };
 CONST LONG SHADOWMAP_HEIGHT{ 2048 };
@@ -77,6 +79,42 @@ Framework::Framework(HWND hwnd)
     CurryEngine::RecordStartupStage("Initializing asset drop target");
     AssetBrowser::InitializeDropTarget(hwnd);
 
+    // テストコード
+    {
+        using namespace CurryEngine::EditorAssistant;
+
+        GatewayTcpClient client;
+
+        if (client.Connect("127.0.0.1", 8765))
+        {
+            nlohmann::json request = {
+                {"request_id", "1"},
+                {"type", "ping"}
+            };
+
+            nlohmann::json response;
+
+            if (GatewayProtocol::SendJsonData(client, request) &&
+                GatewayProtocol::ReceiveJsonData(client, response))
+            {
+                if (response.value("type", "") == "pong" &&
+                    response.value("request_id", "") == "1")
+                {
+                    LOG_INFO(u8"[GatewayTest] ping/pong通信成功");
+                }
+                else
+                {
+                    LOG_ERROR(u8"[GatewayTest] 応答内容が不正です");
+                }
+            }
+            else
+            {
+                LOG_ERROR(u8"[GatewayTest] 通信失敗");
+            }
+        }
+
+        client.Disconnect();
+    }
 
 #if defined(_DEBUG) || defined(CURRY_EDITOR)
     CurryEngine::RecordStartupStage("Loading editor settings");
