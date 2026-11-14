@@ -84,7 +84,7 @@ namespace CurryEngine::EditorAssistant
 		return m_socket != INVALID_SOCKET;
 	}
 
-	bool GatewayTcpClient::SendAll(const void* data, size_t size)
+	bool GatewayTcpClient::Send(const void* data, size_t size)
 	{
 		if (!IsConnected())
 		{
@@ -101,6 +101,7 @@ namespace CurryEngine::EditorAssistant
 		const char* bytes = static_cast<const char*>(data);
 		size_t sent = 0;
 
+		// 送信するデータをチャンクに分けて送信
 		while (sent < size)
 		{
 			const int chunk = static_cast<int>(std::min<size_t>(size - sent, MIN_CHUNK_SIZE));
@@ -127,7 +128,7 @@ namespace CurryEngine::EditorAssistant
 		return true;
 	}
 
-	bool GatewayTcpClient::ReceiveExact(void* buffer, size_t size)
+	bool GatewayTcpClient::Receive(void* buffer, size_t size)
 	{
 		if (!IsConnected())
 		{

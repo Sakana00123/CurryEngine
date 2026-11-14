@@ -167,6 +167,8 @@ popd</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Engine\Animation\Animator.cpp" />
+    <ClCompile Include="Engine\EditorAssistant\AIChatWindow.cpp" />
+    <ClCompile Include="Engine\EditorAssistant\AIClient.cpp" />
     <ClCompile Include="Engine\EditorAssistant\GatewayProtocol.cpp" />
     <ClCompile Include="Engine\EditorAssistant\GatewayTcpClient.cpp" />
     <ClCompile Include="Engine\Editor\InputSettingsWindow.cpp" />
@@ -687,6 +689,8 @@ popd</Command>
     <ClInclude Include="Archive\sprite_batch.h" />
     <ClInclude Include="Archive\static_mesh.h" />
     <ClInclude Include="Engine\Animation\Animator.h" />
+    <ClInclude Include="Engine\EditorAssistant\AIChatWindow.h" />
+    <ClInclude Include="Engine\EditorAssistant\AIClient.h" />
     <ClInclude Include="Engine\EditorAssistant\GatewayProtocol.h" />
     <ClInclude Include="Engine\EditorAssistant\GatewayTcpClient.h" />
     <ClInclude Include="Engine\Editor\InputSettingsWindow.h" />

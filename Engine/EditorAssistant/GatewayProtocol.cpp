@@ -55,13 +55,13 @@ namespace CurryEngine::EditorAssistant
 		};
 
 		// ヘッダーを送信
-		if (!client.SendAll(header.data(), header.size()))
+		if (!client.Send(header.data(), header.size()))
 		{
 			LOG_ERROR(u8"[GatewayProtocol] ヘッダーの送信に失敗しました。");
 			return false;
 		}
 		// JSONペイロードを送信
-		if (!client.SendAll(payload.data(), payload.size()))
+		if (!client.Send(payload.data(), payload.size()))
 		{
 			LOG_ERROR(u8"[GatewayProtocol] JSONペイロードの送信に失敗しました。");
 			return false;
@@ -73,7 +73,7 @@ namespace CurryEngine::EditorAssistant
 		Header header{};
 
 		// ヘッダーを受信
-		if (!client.ReceiveExact(header.data(), header.size()))
+		if (!client.Receive(header.data(), header.size()))
 		{
 			LOG_ERROR(u8"[GatewayProtocol] ヘッダーの受信に失敗しました。");
 			return false;
@@ -102,7 +102,7 @@ namespace CurryEngine::EditorAssistant
 		std::string payload(length, '\0');
 
 		// JSONペイロードを受信
-		if (!client.ReceiveExact(payload.data(), payload.size()))
+		if (!client.Receive(payload.data(), payload.size()))
 		{
 			LOG_ERROR(u8"[GatewayProtocol] JSONペイロードの受信に失敗しました。");
 			return false;

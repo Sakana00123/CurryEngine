@@ -41,7 +41,7 @@ namespace CurryEngine::EditorAssistant
 		 * @param size 送信するデータのサイズ（バイト単位）
 		 * @return 送信に成功した場合はtrue、失敗した場合はfalse
 		 */
-		bool SendAll(const void* data, size_t size);
+		bool Send(const void* data, size_t size);
 
 		/**
 		 * @brief TCPサーバーからデータを受信する
@@ -49,7 +49,7 @@ namespace CurryEngine::EditorAssistant
 		 * @param size 受信するデータのサイズ（バイト単位）
 		 * @return 受信に成功した場合はtrue、失敗した場合はfalse
 		 */
-		bool ReceiveExact(void* buffer, size_t size);
+		bool Receive(void* buffer, size_t size);
 
 	private:
 		// Winsock2のソケット
