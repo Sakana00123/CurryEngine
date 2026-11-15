@@ -293,7 +293,7 @@ void RenderSystem::Render()
     {
 		ZoneScopedN("RenderSystem::DrawAIChatWindow");
 
-		static CurryEngine::EditorAssistant::AIChatWindow aiChat(CurryEngine::EditorAssistant::AIChatWindow::Mode::Gateway);
+		static CurryEngine::EditorAssistant::AIChatWindow aiChat(CurryEngine::EditorAssistant::AIChatWindow::Mode::Chat);
         static bool showAIChat = true;
 
         aiChat.Draw(showAIChat);
