@@ -155,7 +155,7 @@ namespace CurryEngine::EditorAssistant
 		// mutexを解放してから実行
 		try
 		{
-			if (completion->callback)
+			if (completion.has_value() && completion->callback)
 				completion->callback(completion->result.message);
 		}
 		catch (...)
@@ -243,7 +243,7 @@ namespace CurryEngine::EditorAssistant
 			// 未接続なら接続する
 			if (!m_tcpClient->IsConnected())
 			{
-				if (!m_tcpClient->Connect("127.0.0.1", 5000))
+				if (!m_tcpClient->Connect("127.0.0.1", 8765))
 				{
 					result.error = "Gatewayへの接続に失敗";
 				}

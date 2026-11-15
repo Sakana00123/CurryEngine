@@ -7,6 +7,7 @@
 #include <cfloat>
 #include <string_view>
 #include <utility>
+#include <Engine\Scenes\SceneManager.h>
 
 namespace CurryEngine::EditorAssistant
 {
@@ -17,6 +18,7 @@ namespace CurryEngine::EditorAssistant
 
     void AIChatWindow::Draw(bool& open)
     {
+		// 返信待ちのメッセージがある場合は、ポーリングして返信を取得する
         PollReply();
         if (!open)
             return;
@@ -37,9 +39,8 @@ namespace CurryEngine::EditorAssistant
                 available - 2.0f * gutter));
             const float inset = (available - width) * 0.5f;
 
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + inset);
-            if (ImGui::Button(reinterpret_cast<const char*>(u8"新規チャット")))
-                NewChat();
+			// 上部のツールバーを描画
+			DrawToolbar(inset, width);
 
             const float line = ImGui::GetTextLineHeight();
             const float room = ImGui::GetContentRegionAvail().y;
@@ -65,6 +66,44 @@ namespace CurryEngine::EditorAssistant
         m_followLatest = true;
         m_scrollToBottom = true;
         m_focusInput = true;
+    }
+
+    void AIChatWindow::DrawToolbar(float inset, float width)
+    {
+        const ImGuiStyle& style = ImGui::GetStyle();
+        const float left = ImGui::GetCursorPosX() + inset;
+
+        ImGui::SetCursorPosX(left);
+        if (ImGui::Button(reinterpret_cast<const char*>(u8"新規チャット")))
+            NewChat();
+
+        const float newChatWidth = ImGui::GetItemRectSize().x;
+        const float labelWidth = (std::max)(
+            ImGui::CalcTextSize("Chat").x,
+            ImGui::CalcTextSize("Agent").x);
+
+        // 矢印の幅も含め、どちらを選択しても同じ幅にする。
+        const float comboWidth = labelWidth + ImGui::GetFrameHeight()
+            + 2.0f * style.FramePadding.x + style.ItemInnerSpacing.x;
+        const float comboX = left + width - comboWidth;
+
+        // 同じ行に収まるときは「新規チャット」の右に並べる。
+        if (comboX >= left + newChatWidth + style.ItemSpacing.x)
+            ImGui::SameLine();
+
+        ImGui::SetCursorPosX((std::max)(left, comboX));
+
+        const char* const modeLabels[] = { "Chat", "Agent" };
+        int selectedMode = m_mode == Mode::Agent ? 1 : 0;
+
+        ImGui::BeginDisabled(m_gatewayBusy);
+        ImGui::SetNextItemWidth(comboWidth);
+        if (ImGui::Combo("##chat_mode", &selectedMode,
+            modeLabels, IM_ARRAYSIZE(modeLabels)))
+        {
+            m_mode = selectedMode == 0 ? Mode::Chat : Mode::Agent;
+        }
+        ImGui::EndDisabled();
     }
 
     void AIChatWindow::DrawHistory(float inset, float width, float footerHeight)
@@ -302,8 +341,6 @@ namespace CurryEngine::EditorAssistant
             status = reinterpret_cast<const char*>(u8"応答を待っています…");
         else if (m_gatewayBusy)
             status = reinterpret_cast<const char*>(u8"前の通信の完了を待っています…");
-        else if (!status && m_mode == Mode::Demo)
-            status = reinterpret_cast<const char*>(u8"デモ");
 
         const auto* shortcut = reinterpret_cast<const char*>(
             u8"Enter で送信 · Shift+Enter で改行");
@@ -333,40 +370,40 @@ namespace CurryEngine::EditorAssistant
         }
     }
 
+    bool AIChatWindow::SendRequest(
+        const char* type, const nlohmann::json& payload,
+        const std::shared_ptr<PendingReply>& reply)
+    {
+        auto& client = AIClient::Instance();
+        const auto request = AIMessage::Create(&client, type, payload);
+        const std::weak_ptr<PendingReply> target = reply;
+
+        reply->payload = nullptr;
+        if (!client.SendPrompt(request, [target](const AIMessage& response)
+            {
+                if (const auto pending = target.lock())
+                    pending->payload = response.payload;
+            }))
+        {
+            m_notice = reinterpret_cast<const char*>(
+                u8"メッセージを送信できませんでした");
+            return false;
+        }
+
+        m_gatewayBusy = true;
+        return true;
+    }
+
     void AIChatWindow::Send()
     {
         std::string prompt(m_input.data());
         auto reply = std::make_shared<PendingReply>();
+        reply->prompt = prompt;
         m_focusInput = true;
 
-        if (m_mode == Mode::Gateway)
-        {
-            auto& client = AIClient::Instance();
-            const auto request = AIMessage::Create(
-                &client, "chat", nlohmann::json{ {"message", prompt} });
-            const std::weak_ptr<PendingReply> target = reply;
-
-            if (!client.SendPrompt(request, [target](const AIMessage& response)
-                {
-                    const auto pending = target.lock();
-                    if (!pending)
-                        return;
-
-                    const auto value = response.payload.find("message");
-                    if (value != response.payload.end() && value->is_string())
-                        pending->text = value->get<std::string>();
-                }))
-            {
-                m_notice = reinterpret_cast<const char*>(u8"メッセージを送信できませんでした");
-                return;
-            }
-
-            m_gatewayBusy = true;
-        }
-        else
-        {
-            m_demoReplyAt = ImGui::GetTime() + 0.7;
-        }
+        const char* type = m_mode == Mode::Agent ? "agent" : "chat";
+        if (!SendRequest(type, { {"message", prompt} }, reply))
+            return;
 
         m_messages.push_back({ Role::User, std::move(prompt) });
         m_pending = std::move(reply);
@@ -377,40 +414,56 @@ namespace CurryEngine::EditorAssistant
 
     void AIChatWindow::PollReply()
     {
-        if (m_mode == Mode::Gateway)
-        {
-            auto& client = AIClient::Instance();
-            client.Update();
-            if (!m_gatewayBusy || client.IsProcessing())
-                return;
-            m_gatewayBusy = false;
-        }
-        else
-        {
-            if (!m_pending || ImGui::GetTime() < m_demoReplyAt)
-                return;
+        auto& client = AIClient::Instance();
+        client.Update();
 
-            m_pending->text = reinterpret_cast<const char*>(
-                u8"選択したオブジェクトを移動するには、"
-                u8"プロパティエディターで Transform を開き、"
-                u8"Position の X・Y・Z を変更します。\n\n"
-                u8"シーン上の移動ギズモでも位置を調整できます。");
-        }
-
-        if (!m_pending)
+        if (!m_gatewayBusy || client.IsProcessing())
             return;
 
-        if (m_pending->text.empty())
+        m_gatewayBusy = false;
+        auto reply = std::move(m_pending);
+        if (!reply)
+            return;
+
+        const auto tool = reply->payload.find("tool_call");
+        if (m_mode == Mode::Agent && tool != reply->payload.end())
         {
-            m_notice = reinterpret_cast<const char*>(u8"有効な応答を受信できませんでした");
-        }
-        else
-        {
-            m_messages.push_back({ Role::Assistant, std::move(m_pending->text) });
-            m_notice = nullptr;
-            m_scrollToBottom = m_scrollToBottom || m_followLatest;
+            if (reply->awaitingFinal || !tool->is_string() ||
+                tool.value().get<std::string>() != std::string("get_scene_object_count"))
+            {
+                m_notice = reinterpret_cast<const char*>(u8"不正なツール呼び出しです");
+                return;
+            }
+
+            const auto* scene = SceneManager::GetCurrentScene();
+            if (!scene)
+            {
+                m_notice = reinterpret_cast<const char*>(u8"現在のシーンがありません");
+                return;
+            }
+
+            reply->awaitingFinal = true;
+            if (SendRequest("agent_tool_result",
+                {
+                    {"message", reply->prompt},
+                    {"count", scene->GetSceneObjectsSize()},
+                }, reply))
+            {
+                m_pending = std::move(reply);
+            }
+            return;
         }
 
-        m_pending.reset();
+        const auto text = reply->payload.find("message");
+        if (text == reply->payload.end() || !text->is_string() ||
+            text->get_ref<const std::string&>().empty())
+        {
+            m_notice = reinterpret_cast<const char*>(u8"有効な応答を受信できませんでした");
+            return;
+        }
+
+        m_messages.push_back({ Role::Assistant, text->get<std::string>() });
+        m_notice = nullptr;
+        m_scrollToBottom = m_scrollToBottom || m_followLatest;
     }
 }
