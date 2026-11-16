@@ -6,6 +6,7 @@
 #include <vector>
 #include <json.hpp>
 
+class Scene;
 namespace CurryEngine::EditorAssistant
 {
     /**
@@ -49,6 +50,7 @@ namespace CurryEngine::EditorAssistant
             std::string prompt;
             nlohmann::json payload;
             bool awaitingFinal = false;
+			const Scene* editSceneAtSend = nullptr;
         };
 
         void NewChat();

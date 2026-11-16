@@ -297,66 +297,6 @@ void RenderSystem::Render()
         static bool showAIChat = true;
 
         aiChat.Draw(showAIChat);
-
-		//static bool showAIChatWindow = true;
-		//static char inputBuffer[1024] = { 0 };
-
-		//// AIチャットウィンドウの表示
-  //      if (showAIChatWindow)
-  //      {
-  //          ImGui::Begin("AI Chat", &showAIChatWindow);
-  //          {
-  //              // 入力欄
-  //              ImGui::InputTextMultiline("##input", inputBuffer, sizeof(inputBuffer), ImVec2(-1, 100));
-  //              // 送信ボタン
-  //              if (ImGui::Button("Send"))
-  //              {
-		//			nlohmann::json payload;
-		//			payload["message"] = inputBuffer;
-
-		//			auto message = CurryEngine::EditorAssistant::AIMessage::Create(
-  //                      &CurryEngine::EditorAssistant::AIClient::Instance(),
-  //                      "chat",
-		//				payload
-  //                  );
-
-  //                  // 入力内容をAIに送信
-  //                  CurryEngine::EditorAssistant::AIClient::Instance().SendPrompt(message);
-  //              }
-  //          }
-  //          ImGui::End();
-		//}
-
-  //      if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_Enter))
-  //      {
-		//	// Ctrl + EnterでAIにリクエストを送信
-  //          nlohmann::json payload;
-  //          payload["message"] = inputBuffer;
-
-  //          auto message = CurryEngine::EditorAssistant::AIMessage::Create(
-  //              &CurryEngine::EditorAssistant::AIClient::Instance(),
-  //              "chat",
-  //              payload
-  //          );
-
-  //          static CurryEngine::EditorAssistant::AIClient::ResponseCallback responseCallback = [&](const CurryEngine::EditorAssistant::AIMessage& response) {
-  //              // レスポンスを受信した際の処理
-  //              if (response.IsValid())
-  //              {
-  //                  // レスポンスの内容を取得
-  //                  std::string message = response.payload.value("message", "");
-		//			// 受信したメッセージをログに出力
-		//			LOG_INFO(std::format("Received AI response: {}", message));
-  //              }
-  //              else
-  //              {
-  //                  LOG_ERROR("Received invalid AI response.");
-		//		}
-		//		};
-
-  //          CurryEngine::EditorAssistant::AIClient::Instance().SendPrompt(message, responseCallback);
-  //      }
-
     }
 
     // Undo/Redoテスト用 (確認が終わったら別場所に移す)
