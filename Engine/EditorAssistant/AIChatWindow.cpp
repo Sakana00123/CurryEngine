@@ -448,8 +448,196 @@ namespace CurryEngine::EditorAssistant
             const auto& toolName = tool->get_ref<const std::string&>();
             auto* scene = SceneManager::GetCurrentScene();
 
+			// ツール呼び出しの引数を検証し、オブジェクトを作成するラムダ関数
+            const auto applyCreateObject = [&](const json& payload) -> bool {
+                const auto args = payload.find("arguments");
+                if (args == payload.end() || !args->is_object())
+                    return false;
+                const auto nameArg = args->find("name");
+                if (nameArg == args->end() || !nameArg->is_string())
+                    return false;
+                const auto& name = nameArg->get_ref<const std::string&>();
+                if (name.find_first_not_of(' ') == std::string::npos ||
+                    std::any_of(name.begin(), name.end(), [](unsigned char ch)
+                        {
+                            return ch < 0x20 || ch == 0x7f;
+                        }))
+                    return false;
+                const auto kindArg = args->find("kind");
+                if (kindArg == args->end() || !kindArg->is_string())
+                    return false;
+                const auto& kind = kindArg->get_ref<const std::string&>();
+                const GameObject* created = nullptr;
+                if (kind == "empty")
+                    created = GameObjectFactory::Create(scene, name);
+                else if (kind == "cube")
+                    created = GameObjectFactory::CreateCube(scene, name);
+                else if (kind == "sphere")
+                    created = GameObjectFactory::CreateSphere(scene, name);
+                else if (kind == "cylinder")
+                    created = GameObjectFactory::CreateCylinder(scene, name);
+                else
+                    return false;
+                std::string message = created->GetName();
+                message += reinterpret_cast<const char*>(u8" を作成しました。");
+                reply->payload = { {"message", std::move(message)} };
+                return true;
+            };
+
+			// ツール呼び出しの引数を検証し、オブジェクトの変換を適用するラムダ関数
+            const auto applyEditTransform = [&](const json& payload) -> bool {
+                const auto args = payload.find("arguments");
+                if (args == payload.end() || !args->is_object())
+                    return false;
+                const auto idArg = args->find("objectId");
+                if (idArg == args->end() || !idArg->is_string())
+                    return false;
+                ObjectId id = ObjectId::FromString(idArg->get_ref<const std::string&>());
+                const auto* object = scene->FindGameObjectById(id);
+                if (!object)
+                    return false;
+                // 変換の設定
+                std::string message = object->GetName() + "の";
+                const auto positionArg = args->find("position");
+                const auto localPositionArg = args->find("localPosition");
+                const auto rotationArg = args->find("rotation");
+                const auto localRotationArg = args->find("localRotation");
+                const auto scaleArg = args->find("scale");
+                const auto localScaleArg = args->find("localScale");
+
+                if (positionArg != args->end() && positionArg->is_object())
+                {
+                    json j = *positionArg;
+                    Vector3 position(
+                        j.value("x", 0.0f),
+                        j.value("y", 0.0f),
+                        j.value("z", 0.0f));
+                    object->GetTransform()->SetWorldPosition(position);
+
+                    // メッセージを日本語でフォーマットして追加
+                    std::string formatedPosition = std::format("({:.2f}, {:.2f}, {:.2f})", position.x, position.y, position.z);
+                    std::string setPositionMessage = std::format("positionを {} に設定しました。", formatedPosition);
+                    std::u8string messageUtf8 = std::u8string(setPositionMessage.begin(), setPositionMessage.end());
+                    message += reinterpret_cast<const char*>(messageUtf8.c_str());
+                }
+                if (localPositionArg != args->end() && localPositionArg->is_object())
+                {
+                    json j = *localPositionArg;
+                    Vector3 localPosition(
+                        j.value("x", 0.0f),
+                        j.value("y", 0.0f),
+                        j.value("z", 0.0f));
+                    object->GetTransform()->SetPosition(localPosition);
+
+                    // メッセージを日本語でフォーマットして追加
+                    std::string formatedLocalPosition = std::format("({:.2f}, {:.2f}, {:.2f})", localPosition.x, localPosition.y, localPosition.z);
+                    std::string setLocalPositionMessage = std::format("localPositionを {} に設定しました。", formatedLocalPosition);
+                    std::u8string messageUtf8 = std::u8string(setLocalPositionMessage.begin(), setLocalPositionMessage.end());
+                    message += reinterpret_cast<const char*>(messageUtf8.c_str());
+                }
+                if (rotationArg != args->end() && rotationArg->is_object())
+                {
+                    json j = *rotationArg;
+                    Vector3 rotation(
+                        j.value("x", 0.0f),
+                        j.value("y", 0.0f),
+                        j.value("z", 0.0f));
+                    object->GetTransform()->SetWorldRotation(rotation);
+
+                    // メッセージを日本語でフォーマットして追加
+                    std::string formatedRotation = std::format("({:.2f}, {:.2f}, {:.2f})", rotation.x, rotation.y, rotation.z);
+                    std::string setRotationMessage = std::format("rotationを {} に設定しました。", formatedRotation);
+                    std::u8string messageUtf8 = std::u8string(setRotationMessage.begin(), setRotationMessage.end());
+                    message += reinterpret_cast<const char*>(messageUtf8.c_str());
+                }
+                if (localRotationArg != args->end() && localRotationArg->is_object())
+                {
+                    json j = *localRotationArg;
+                    Vector3 localRotation(
+                        j.value("x", 0.0f),
+                        j.value("y", 0.0f),
+                        j.value("z", 0.0f));
+                    object->GetTransform()->SetRotation(localRotation);
+
+                    // メッセージを日本語でフォーマットして追加
+                    std::string formatedLocalRotation = std::format("({:.2f}, {:.2f}, {:.2f})", localRotation.x, localRotation.y, localRotation.z);
+                    std::string setLocalRotationMessage = std::format("localRotationを {} に設定しました。", formatedLocalRotation);
+                    std::u8string messageUtf8 = std::u8string(setLocalRotationMessage.begin(), setLocalRotationMessage.end());
+                    message += reinterpret_cast<const char*>(messageUtf8.c_str());
+                }
+                if (scaleArg != args->end() && scaleArg->is_object())
+                {
+                    json j = *scaleArg;
+                    Vector3 scale(
+                        j.value("x", 1.0f),
+                        j.value("y", 1.0f),
+                        j.value("z", 1.0f));
+                    object->GetTransform()->SetWorldScale(scale);
+
+                    // メッセージを日本語でフォーマットして追加
+                    std::string formatedScale = std::format("({:.2f}, {:.2f}, {:.2f})", scale.x, scale.y, scale.z);
+                    std::string setScaleMessage = std::format("scaleを {} に設定しました。", formatedScale);
+                    std::u8string messageUtf8 = std::u8string(setScaleMessage.begin(), setScaleMessage.end());
+                    message += reinterpret_cast<const char*>(messageUtf8.c_str());
+                }
+                if (localScaleArg != args->end() && localScaleArg->is_object())
+                {
+                    json j = *localScaleArg;
+                    Vector3 localScale(
+                        j.value("x", 1.0f),
+                        j.value("y", 1.0f),
+                        j.value("z", 1.0f));
+                    j.value("z", 1.0f);
+                    object->GetTransform()->SetScale(localScale);
+
+                    // メッセージを日本語でフォーマットして追加
+                    std::string formatedLocalScale = std::format("({:.2f}, {:.2f}, {:.2f})", localScale.x, localScale.y, localScale.z);
+                    std::string setLocalScaleMessage = std::format("localScaleを {} に設定しました。", formatedLocalScale);
+                    std::u8string messageUtf8 = std::u8string(setLocalScaleMessage.begin(), setLocalScaleMessage.end());
+                    message += reinterpret_cast<const char*>(messageUtf8.c_str());
+                }
+
+                reply->payload = { {"message", std::move(message)} };
+                return true;
+            };
+
+			// ツール呼び出しの引数を検証し、シーン内のオブジェクトを名前で検索するラムダ関数
+            const auto applyFindSceneObjects = [&](const json& payload) -> bool {
+                const auto args = payload.find("arguments");
+                if (args == payload.end() || !args->is_object())
+                    return false;
+                const auto nameArg = args->find("name");
+                if (nameArg == args->end() || !nameArg->is_string())
+                    return false;
+                const auto& name = nameArg->get_ref<const std::string&>();
+                if (name.find_first_not_of(' ') == std::string::npos)
+                    return false;
+                std::string message;
+                int count = 0;
+                for (const auto& object : scene->GetAllSceneObjects())
+                {
+                    if (!object || object->GetName() != name)
+                        continue;
+                    // メッセージにオブジェクトの情報を追加
+                    if (!message.empty())
+                        message += '\n';
+                    message += std::format("{}  objectId: {}", name, object->GetId().ToString());
+                    if (const auto* parent = object->GetParent())
+                    {
+                        message += reinterpret_cast<const char*>(u8"  親: ");
+                        message += parent->GetName();
+                    }
+                    count++;
+                }
+                if (message.empty())
+                    message = reinterpret_cast<const char*>(u8"指定された名前のGameObjectが見つかりません。");
+                reply->payload = { {"message", std::move(message)} };
+                return true;
+            };
+
+			// ツール呼び出しの種類に応じて処理を分岐
             if (toolName == "CreateObject")
-            {
+			{ // オブジェクトを作成するツール呼び出し
                 if (!scene || scene != reply->editSceneAtSend ||
                     SceneManager::state != SceneManager::State::Editing ||
                     SceneManager::GetLoadingSceneOrCurrentScene() != scene)
@@ -459,197 +647,30 @@ namespace CurryEngine::EditorAssistant
                     return;
                 }
 
-                const auto args = reply->payload.find("arguments");
-                if (args == reply->payload.end() || !args->is_object())
+				// ツール呼び出しの引数を検証し、オブジェクトを作成する
+                if (!applyCreateObject(reply->payload))
                 {
-                    m_notice = reinterpret_cast<const char*>(u8"生成の引数が不正です");
+                    m_notice = reinterpret_cast<const char*>(u8"引数が不正です");
                     return;
-                }
-
-                const auto nameArg = args->find("name");
-                if (nameArg == args->end() || !nameArg->is_string())
-                {
-                    m_notice = reinterpret_cast<const char*>(u8"名前を指定してください");
-                    return;
-                }
-
-                const auto& name = nameArg->get_ref<const std::string&>();
-                if (name.find_first_not_of(' ') == std::string::npos ||
-                    std::any_of(name.begin(), name.end(), [](unsigned char ch)
-                        {
-                            return ch < 0x20 || ch == 0x7f;
-                        }))
-                {
-                    m_notice = reinterpret_cast<const char*>(u8"名前が不正です");
-                    return;
-                }
-
-                //const auto* created = GameObjectFactory::Create(scene, name);
-                const auto kindArg = args->find("kind");
-                if (kindArg == args->end() || !kindArg->is_string())
-                {
-                    m_notice = reinterpret_cast<const char*>(u8"生成する種類を指定してください。");
-                    return;
-                }
-
-                const auto& kind = kindArg->get_ref<const std::string&>();
-                const GameObject* created = nullptr;
-                if (kind == "empty")
-                {
-                    created = GameObjectFactory::Create(scene, name);
-                }
-                else if (kind == "cube")
-                {
-                    created = GameObjectFactory::CreateCube(scene, name);
-                }
-                else if (kind == "sphere")
-                {
-                    created = GameObjectFactory::CreateSphere(scene, name);
-                }
-                else if (kind == "cylinder")
-                {
-                    created = GameObjectFactory::CreateCylinder(scene, name);
-                }
-                else
-                {
-                    m_notice = reinterpret_cast<const char*>(u8"未対応の生成種類です。");
-                    return;
-                }
-                std::string message = created->GetName();
-                message += reinterpret_cast<const char*>(u8" を作成しました。");
-                reply->payload = { {"message", std::move(message)} };
+				}
             }
             else if (toolName == "EditTransform")
-            {
+			{ // オブジェクトのTransformを編集するツール呼び出し
                 if (!scene)
                 {
                     m_notice = reinterpret_cast<const char*>(u8"現在のシーンがありません");
                     return;
                 }
-                const auto args = reply->payload.find("arguments");
-                if (args == reply->payload.end() || !args->is_object())
+
+				// ツール呼び出しの引数を検証し、オブジェクトの変換を適用する
+                if (!applyEditTransform(reply->payload))
                 {
                     m_notice = reinterpret_cast<const char*>(u8"引数が不正です");
-                    return;
+					return;
                 }
-                const auto idArg = args->find("objectId");
-				if (idArg == args->end() || !idArg->is_string())
-                {
-                    m_notice = reinterpret_cast<const char*>(u8"オブジェクトIDを指定してください");
-                    return;
-                }
-                ObjectId id = ObjectId::FromString(idArg->get_ref<const std::string&>());
-                const auto* object = scene->FindGameObjectById(id);
-                if (!object)
-                {
-                    m_notice = reinterpret_cast<const char*>(u8"指定されたオブジェクトが見つかりません");
-                    return;
-                }
-
-				// 変換の設定
-                std::string message = object->GetName();
-				const auto positionArg = args->find("position");
-				const auto localPositionArg = args->find("localPosition");
-				const auto rotationArg = args->find("rotation");
-				const auto localRotationArg = args->find("localRotation");
-				const auto scaleArg = args->find("scale");
-				const auto localScaleArg = args->find("localScale");
-                if (positionArg != args->end() && positionArg->is_object())
-                {
-                    json j = *positionArg;
-                    Vector3 position(
-						j.value("x", 0.0f),
-						j.value("y", 0.0f),
-						j.value("z", 0.0f));
-					object->GetTransform()->SetWorldPosition(position);
-
-					// メッセージを日本語でフォーマットして追加
-					std::string formatedPosition = std::format("({:.2f}, {:.2f}, {:.2f})", position.x, position.y, position.z);
-					std::string setPositionMessage = std::format("positionを {} に設定しました。", formatedPosition);
-					std::u8string messageUtf8 = std::u8string(setPositionMessage.begin(), setPositionMessage.end());
-					message += reinterpret_cast<const char*>(messageUtf8.c_str());
-                }
-                if (localPositionArg != args->end() && localPositionArg->is_object())
-                {
-                    json j = *localPositionArg;
-                    Vector3 localPosition(
-						j.value("x", 0.0f),
-						j.value("y", 0.0f),
-						j.value("z", 0.0f));
-					object->GetTransform()->SetPosition(localPosition);
-
-					// メッセージを日本語でフォーマットして追加
-					std::string formatedLocalPosition = std::format("({:.2f}, {:.2f}, {:.2f})", localPosition.x, localPosition.y, localPosition.z);
-					std::string setLocalPositionMessage = std::format("localPositionを {} に設定しました。", formatedLocalPosition);
-					std::u8string messageUtf8 = std::u8string(setLocalPositionMessage.begin(), setLocalPositionMessage.end());
-					message += reinterpret_cast<const char*>(messageUtf8.c_str());
-				}
-                if (rotationArg != args->end() && rotationArg->is_object())
-                {
-                    json j = *rotationArg;
-                    Vector3 rotation(
-						j.value("x", 0.0f),
-						j.value("y", 0.0f),
-						j.value("z", 0.0f));
-					object->GetTransform()->SetWorldRotation(rotation);
-
-					// メッセージを日本語でフォーマットして追加
-					std::string formatedRotation = std::format("({:.2f}, {:.2f}, {:.2f})", rotation.x, rotation.y, rotation.z);
-					std::string setRotationMessage = std::format("rotationを {} に設定しました。", formatedRotation);
-					std::u8string messageUtf8 = std::u8string(setRotationMessage.begin(), setRotationMessage.end());
-					message += reinterpret_cast<const char*>(messageUtf8.c_str());
-				}
-                if (localRotationArg != args->end() && localRotationArg->is_object())
-                {
-                    json j = *localRotationArg;
-					Vector3 localRotation(
-						j.value("x", 0.0f),
-						j.value("y", 0.0f),
-						j.value("z", 0.0f));
-					object->GetTransform()->SetRotation(localRotation);
-
-					// メッセージを日本語でフォーマットして追加
-					std::string formatedLocalRotation = std::format("({:.2f}, {:.2f}, {:.2f})", localRotation.x, localRotation.y, localRotation.z);
-					std::string setLocalRotationMessage = std::format("localRotationを {} に設定しました。", formatedLocalRotation);
-					std::u8string messageUtf8 = std::u8string(setLocalRotationMessage.begin(), setLocalRotationMessage.end());
-					message += reinterpret_cast<const char*>(messageUtf8.c_str());
-                }
-                if (scaleArg != args->end() && scaleArg->is_object())
-                {
-                    json j = *scaleArg;
-                    Vector3 scale(
-						j.value("x", 1.0f),
-						j.value("y", 1.0f),
-						j.value("z", 1.0f));
-					object->GetTransform()->SetWorldScale(scale);
-
-					// メッセージを日本語でフォーマットして追加
-					std::string formatedScale = std::format("({:.2f}, {:.2f}, {:.2f})", scale.x, scale.y, scale.z);
-					std::string setScaleMessage = std::format("scaleを {} に設定しました。", formatedScale);
-					std::u8string messageUtf8 = std::u8string(setScaleMessage.begin(), setScaleMessage.end());
-					message += reinterpret_cast<const char*>(messageUtf8.c_str());
-				}
-                if (localScaleArg != args->end() && localScaleArg->is_object())
-                {
-                    json j = *localScaleArg;
-					Vector3 localScale(
-						j.value("x", 1.0f),
-						j.value("y", 1.0f),
-						j.value("z", 1.0f));
-						j.value("z", 1.0f);
-					object->GetTransform()->SetScale(localScale);
-
-					// メッセージを日本語でフォーマットして追加
-					std::string formatedLocalScale = std::format("({:.2f}, {:.2f}, {:.2f})", localScale.x, localScale.y, localScale.z);
-					std::string setLocalScaleMessage = std::format("localScaleを {} に設定しました。", formatedLocalScale);
-					std::u8string messageUtf8 = std::u8string(setLocalScaleMessage.begin(), setLocalScaleMessage.end());
-					message += reinterpret_cast<const char*>(messageUtf8.c_str());
-				}
-
-				reply->payload = { {"message", std::move(message)} };
             }
             else if (toolName == "GetSceneObjectCount")
-            {
+			{ // シーン内のオブジェクト数を取得するツール呼び出し
                 if (!scene)
                 {
                     m_notice = reinterpret_cast<const char*>(u8"現在のシーンがありません");
@@ -668,7 +689,7 @@ namespace CurryEngine::EditorAssistant
                 return;
             }
             else if (toolName == "FindSceneObjects")
-            {
+			{ // シーン内のオブジェクトを名前で検索するツール呼び出し
                 if (!scene)
                 {
                     m_notice = reinterpret_cast<const char*>(u8"現在のシーンがありません");
@@ -691,28 +712,87 @@ namespace CurryEngine::EditorAssistant
                 }
 
                 const auto& name = nameArg->get_ref<const std::string&>();
-                std::string message;
-
+                std::string message{};
+				int count = 0;
+                std::string foundIdStr{ ObjectId::Invalid().ToString() };
                 for (const auto& object : scene->GetAllSceneObjects())
                 {
                     if (!object || object->GetName() != name)
                         continue;
 
+					// メッセージにオブジェクトの情報を追加
                     if (!message.empty())
                         message += '\n';
 
-                    message += std::format("{}  objectId: {}", name, object->GetId().ToString());
+                    foundIdStr = object->GetId().ToString();
+                    message += std::format("{}  objectId: {}", name, foundIdStr);
                     if (const auto* parent = object->GetParent())
                     {
                         message += reinterpret_cast<const char*>(u8"  親: ");
                         message += parent->GetName();
                     }
+					count++;
                 }
 
-                if (message.empty())
-                    message = reinterpret_cast<const char*>(u8"指定された名前のGameObjectが見つかりません。");
+                if (count == 1)
+                {
+					// 1つだけ見つかった場合、thenが指定されていればその処理を実行する
+                    const auto thenArg = reply->payload.find("then");
+                    if (thenArg == reply->payload.end())
+                    {
+                        // 名前検索だけの依頼では、これまでどおり候補を表示する。
+                        if (message.empty())
+                        {
+                            message = reinterpret_cast<const char*>(
+                                u8"指定された名前のGameObjectが見つかりません。");
+                        }
 
-                reply->payload = { {"message", std::move(message)} };
+                        reply->payload = { {"message", message} };
+                    }
+                    else
+                    {
+                        // 検索に続いて編集する場合は、送信時の編集シーンを確認する。
+                        if (scene != reply->editSceneAtSend ||
+                            SceneManager::state != SceneManager::State::Editing ||
+                            SceneManager::GetLoadingSceneOrCurrentScene() != scene)
+                        {
+                            m_notice = reinterpret_cast<const char*>(
+                                u8"送信時のシーンを編集中に実行してください");
+                            return;
+                        }
+
+                        if (count != 1)
+                        {
+                            m_notice = count == 0
+                                ? reinterpret_cast<const char*>(u8"指定されたGameObjectが見つかりません")
+                                : reinterpret_cast<const char*>(u8"同名のGameObjectが複数あります。objectIdを指定してください");
+                            return;
+                        }
+
+                        if (!thenArg->is_object() ||
+                            !thenArg->contains("tool") ||
+                            thenArg->at("tool") != "EditTransform")
+                        {
+                            m_notice = reinterpret_cast<const char*>(u8"後続のツール指定が不正です");
+                            return;
+                        }
+
+                        const auto editArgs = thenArg->find("arguments");
+                        if (editArgs == thenArg->end() || !editArgs->is_object() || editArgs->empty())
+                        {
+                            m_notice = reinterpret_cast<const char*>(u8"編集の引数が不正です");
+                            return;
+                        }
+
+                        // 座標などの編集内容を残し、検索で特定した objectId を補う。
+                        json resolvedArgs = *editArgs;
+                        resolvedArgs["objectId"] = foundIdStr;
+
+                        const json editPayload = { {"arguments", (resolvedArgs)} };
+                        if (!applyEditTransform(editPayload))
+                            return;
+                    }
+				}
             }
             else
             {
