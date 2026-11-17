@@ -654,6 +654,66 @@ namespace CurryEngine::EditorAssistant
                     return;
 				}
             }
+            else if (toolName == "CreateWall")
+            {
+                if (!scene || scene != reply->editSceneAtSend ||
+                    SceneManager::state != SceneManager::State::Editing ||
+                    SceneManager::GetLoadingSceneOrCurrentScene() != scene)
+                {
+                    m_notice = reinterpret_cast<const char*>(
+                        u8"送信時のシーンを編集中に実行してください");
+                    return;
+                }
+
+                const auto args = reply->payload.find("arguments");
+                if (args == reply->payload.end() || !args->is_object())
+                {
+                    m_notice = reinterpret_cast<const char*>(u8"壁の引数が不正です");
+                    return;
+                }
+
+                const auto rowsArg = args->find("rows");
+                const auto columnsArg = args->find("columns");
+                if (rowsArg == args->end() || !rowsArg->is_number_integer() ||
+                    columnsArg == args->end() || !columnsArg->is_number_integer())
+                {
+                    m_notice = reinterpret_cast<const char*>(u8"段数と列数を整数で指定してください");
+                    return;
+                }
+
+                constexpr int maxDimension = 16;
+                const auto rowsValue = rowsArg->get<double>();
+                const auto columnsValue = columnsArg->get<double>();
+                if (rowsValue < 1 || rowsValue > maxDimension ||
+                    columnsValue < 1 || columnsValue > maxDimension)
+                {
+                    m_notice = reinterpret_cast<const char*>(u8"段数と列数は1～16で指定してください");
+                    return;
+                }
+
+                const int rows = static_cast<int>(rowsValue);
+                const int columns = static_cast<int>(columnsValue);
+
+                for (int row = 0; row < rows; ++row)
+                {
+                    for (int column = 0; column < columns; ++column)
+                    {
+                        const auto name = std::format(
+                            "WallCube_{}_{}", row + 1, column + 1);
+                        auto* cube = GameObjectFactory::CreateCube(scene, name);
+
+                        cube->GetTransform()->SetWorldPosition(Vector3(
+                            static_cast<float>(column) + 0.5f,
+                            static_cast<float>(row) + 0.5f,
+                            0.0f));
+                    }
+                }
+
+                auto message = std::format(
+                    "横{}列・縦{}段の壁を作成しました。キューブは{}個です。",
+                    columns, rows, rows * columns);
+                reply->payload = { {"message", std::move(message)} };
+            }
             else if (toolName == "EditTransform")
 			{ // オブジェクトのTransformを編集するツール呼び出し
                 if (!scene)
