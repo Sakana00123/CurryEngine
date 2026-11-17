@@ -448,7 +448,7 @@ namespace CurryEngine::EditorAssistant
             const auto& toolName = tool->get_ref<const std::string&>();
             auto* scene = SceneManager::GetCurrentScene();
 
-            if (toolName == "create_object")
+            if (toolName == "CreateObject")
             {
                 if (!scene || scene != reply->editSceneAtSend ||
                     SceneManager::state != SceneManager::State::Editing ||
@@ -484,12 +484,42 @@ namespace CurryEngine::EditorAssistant
                     return;
                 }
 
-                const auto* created = GameObjectFactory::Create(scene, name);
+                //const auto* created = GameObjectFactory::Create(scene, name);
+                const auto kindArg = args->find("kind");
+                if (kindArg == args->end() || !kindArg->is_string())
+                {
+                    m_notice = reinterpret_cast<const char*>(u8"生成する種類を指定してください。");
+                    return;
+                }
+
+                const auto& kind = kindArg->get_ref<const std::string&>();
+                const GameObject* created = nullptr;
+                if (kind == "empty")
+                {
+                    created = GameObjectFactory::Create(scene, name);
+                }
+                else if (kind == "cube")
+                {
+                    created = GameObjectFactory::CreateCube(scene, name);
+                }
+                else if (kind == "sphere")
+                {
+                    created = GameObjectFactory::CreateSphere(scene, name);
+                }
+                else if (kind == "cylinder")
+                {
+                    created = GameObjectFactory::CreateCylinder(scene, name);
+                }
+                else
+                {
+                    m_notice = reinterpret_cast<const char*>(u8"未対応の生成種類です。");
+                    return;
+                }
                 std::string message = created->GetName();
                 message += reinterpret_cast<const char*>(u8" を作成しました。");
                 reply->payload = { {"message", std::move(message)} };
             }
-            else if (toolName == "set_transform")
+            else if (toolName == "EditTransform")
             {
                 if (!scene)
                 {
@@ -519,11 +549,11 @@ namespace CurryEngine::EditorAssistant
 				// 変換の設定
                 std::string message = object->GetName();
 				const auto positionArg = args->find("position");
-				const auto localPositionArg = args->find("local_position");
+				const auto localPositionArg = args->find("localPosition");
 				const auto rotationArg = args->find("rotation");
-				const auto localRotationArg = args->find("local_rotation");
+				const auto localRotationArg = args->find("localRotation");
 				const auto scaleArg = args->find("scale");
-				const auto localScaleArg = args->find("local_scale");
+				const auto localScaleArg = args->find("localScale");
                 if (positionArg != args->end() && positionArg->is_object())
                 {
                     json j = *positionArg;
@@ -550,7 +580,7 @@ namespace CurryEngine::EditorAssistant
 
 					// メッセージを日本語でフォーマットして追加
 					std::string formatedLocalPosition = std::format("({:.2f}, {:.2f}, {:.2f})", localPosition.x, localPosition.y, localPosition.z);
-					std::string setLocalPositionMessage = std::format("local_positionを {} に設定しました。", formatedLocalPosition);
+					std::string setLocalPositionMessage = std::format("localPositionを {} に設定しました。", formatedLocalPosition);
 					std::u8string messageUtf8 = std::u8string(setLocalPositionMessage.begin(), setLocalPositionMessage.end());
 					message += reinterpret_cast<const char*>(messageUtf8.c_str());
 				}
@@ -580,7 +610,7 @@ namespace CurryEngine::EditorAssistant
 
 					// メッセージを日本語でフォーマットして追加
 					std::string formatedLocalRotation = std::format("({:.2f}, {:.2f}, {:.2f})", localRotation.x, localRotation.y, localRotation.z);
-					std::string setLocalRotationMessage = std::format("local_rotationを {} に設定しました。", formatedLocalRotation);
+					std::string setLocalRotationMessage = std::format("localRotationを {} に設定しました。", formatedLocalRotation);
 					std::u8string messageUtf8 = std::u8string(setLocalRotationMessage.begin(), setLocalRotationMessage.end());
 					message += reinterpret_cast<const char*>(messageUtf8.c_str());
                 }
@@ -611,14 +641,14 @@ namespace CurryEngine::EditorAssistant
 
 					// メッセージを日本語でフォーマットして追加
 					std::string formatedLocalScale = std::format("({:.2f}, {:.2f}, {:.2f})", localScale.x, localScale.y, localScale.z);
-					std::string setLocalScaleMessage = std::format("local_scaleを {} に設定しました。", formatedLocalScale);
+					std::string setLocalScaleMessage = std::format("localScaleを {} に設定しました。", formatedLocalScale);
 					std::u8string messageUtf8 = std::u8string(setLocalScaleMessage.begin(), setLocalScaleMessage.end());
 					message += reinterpret_cast<const char*>(messageUtf8.c_str());
 				}
 
 				reply->payload = { {"message", std::move(message)} };
             }
-            else if (toolName == "get_scene_object_count")
+            else if (toolName == "GetSceneObjectCount")
             {
                 if (!scene)
                 {
@@ -636,6 +666,53 @@ namespace CurryEngine::EditorAssistant
                     m_pending = std::move(reply);
                 }
                 return;
+            }
+            else if (toolName == "FindSceneObjects")
+            {
+                if (!scene)
+                {
+                    m_notice = reinterpret_cast<const char*>(u8"現在のシーンがありません");
+                    return;
+                }
+
+                const auto args = reply->payload.find("arguments");
+                if (args == reply->payload.end() || !args->is_object())
+                {
+                    m_notice = reinterpret_cast<const char*>(u8"検索の引数が不正です");
+                    return;
+                }
+
+                const auto nameArg = args->find("name");
+                if (nameArg == args->end() || !nameArg->is_string() ||
+                    nameArg->get_ref<const std::string&>().empty())
+                {
+                    m_notice = reinterpret_cast<const char*>(u8"検索する名前を指定してください");
+                    return;
+                }
+
+                const auto& name = nameArg->get_ref<const std::string&>();
+                std::string message;
+
+                for (const auto& object : scene->GetAllSceneObjects())
+                {
+                    if (!object || object->GetName() != name)
+                        continue;
+
+                    if (!message.empty())
+                        message += '\n';
+
+                    message += std::format("{}  objectId: {}", name, object->GetId().ToString());
+                    if (const auto* parent = object->GetParent())
+                    {
+                        message += reinterpret_cast<const char*>(u8"  親: ");
+                        message += parent->GetName();
+                    }
+                }
+
+                if (message.empty())
+                    message = reinterpret_cast<const char*>(u8"指定された名前のGameObjectが見つかりません。");
+
+                reply->payload = { {"message", std::move(message)} };
             }
             else
             {
