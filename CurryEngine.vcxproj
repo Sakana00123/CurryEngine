@@ -839,7 +839,6 @@ popd</Command>
     <ClInclude Include="Engine\Editor\History.h" />
     <ClInclude Include="Engine\Editor\HlslEditor.h" />
     <ClInclude Include="Engine\Editor\Console.h" />
-    <ClInclude Include="Engine\Attributes\ComponentAttributes.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Audio\AudioSource.h" />
     <ClInclude Include="Engine\Core\Color.h" />
