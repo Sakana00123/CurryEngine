@@ -42,7 +42,7 @@ public static class EngineRuntime
                 var shared = SharedAssemblyRegistry.TryGet(assemblyName.Name!);
                 if (shared != null)
                 {
-                    Debug.Log($"[Resolving] SharedAssemblyRegistry からロード: {assemblyName.Name}");
+                    //Debug.Log($"[Resolving] SharedAssemblyRegistry からロード: {assemblyName.Name}");
                     return shared;
                 }
                 // System系アセンブリは、Default ALCと共有する
@@ -51,7 +51,7 @@ public static class EngineRuntime
                     assemblyName.Name == "netstandard" ||
                     assemblyName.Name == "mscorlib")
                 {
-                    Debug.Log($"[Resolving] Default ALC からロード: {assemblyName.Name}");
+                    //Debug.Log($"[Resolving] Default ALC からロード: {assemblyName.Name}");
                     return null; // 親ALCに委譲
                 }
                 // それ以外のアセンブリは、実行可能ファイルのディレクトリからロードする。
@@ -59,10 +59,10 @@ public static class EngineRuntime
                 var path = Path.Combine(exeDir, $"{assemblyName.Name}.dll");
                 if (File.Exists(path))
                 {
-                    Debug.Log($"[Resolving] {path} からロード");
+                    //Debug.Log($"[Resolving] {path} からロード");
                     return context.LoadFromAssemblyPath(path);
                 }
-                Debug.Log($"[Resolving] {assemblyName.Name} は見つからず、親ALCに委譲");
+                //Debug.Log($"[Resolving] {assemblyName.Name} は見つからず、親ALCに委譲");
                 return null; // 親ALCに委譲
             };
 

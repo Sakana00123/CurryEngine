@@ -120,11 +120,22 @@ namespace CurryEngine
 
 			// 結果をログ出力
 			for (const auto& path : orphanedMetas)
-				LOG_WARNING(u8"Orphaned .meta (no asset file): " + path.u8string());
+			{
+				// .metaがあるが実フォルダがない場合はフォルダを生成
+				if (std::filesystem::is_directory(path))
+				{
+					LOG_WARNING(u8"Orphaned .meta (no folder): " + path.u8string() + u8", creating folder.");
+					std::filesystem::create_directories(path);
+				}
+				else
+				{
+					LOG_WARNING(u8"Orphaned .meta (no asset file): " + path.u8string());
+				}
+			}
 
 			for (const auto& path : missingMetas)
 			{
-				// 自動修復: .metaがないなら新規Import
+				// .metaがないなら新規Import
 				LOG_WARNING(u8"Missing .meta, auto-importing: " + path.u8string());
 				Import(path);
 			}

@@ -21,14 +21,14 @@ sealed class ScriptLoadContext : AssemblyLoadContext
         var shared = SharedAssemblyRegistry.TryGet(name.Name!);
         if (shared != null)
         {
-            Debug.Log($"[ScriptLoadContext] SharedAssemblyRegistry からロード: {name.Name}");
+            //Debug.Log($"[ScriptLoadContext] SharedAssemblyRegistry からロード: {name.Name}");
             return shared;
         }
 
         // System系アセンブリは、Default ALCと共有する
         if (IsSharedAssembly(name.Name))
         {
-            Debug.Log($"[ScriptLoadContext] Default ALC からロード: {name.Name}");
+            //Debug.Log($"[ScriptLoadContext] Default ALC からロード: {name.Name}");
             return null;
         }
 
@@ -36,12 +36,12 @@ sealed class ScriptLoadContext : AssemblyLoadContext
         var path = Path.Combine(m_dir, $"{name.Name}.dll");
         if (File.Exists(path))
         {
-            Debug.Log($"[ScriptLoadContext] {path} からロード");
+            //Debug.Log($"[ScriptLoadContext] {path} からロード");
             return LoadFromAssemblyPath(path);
         }
 
         // 見つからなかった場合は null を返すと、親ALCでのロードが試みられる
-        Debug.Log($"[ScriptLoadContext] {name.Name} は見つからず、親ALCに委譲");
+        //Debug.Log($"[ScriptLoadContext] {name.Name} は見つからず、親ALCに委譲");
         return null;
     }
 

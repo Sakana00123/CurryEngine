@@ -1531,6 +1531,7 @@ void Physics::UnregisterPendingCollider(Collider* collider)
 
 void Physics::FlushPendingRegistrations()
 {
+	ZoneScopedN("Physics::FlushPendingRegistrations()");
 	// 保留中のRigidbodyとColliderを物理エンジンに登録する処理を実装
 	// Rigidbodyの登録
 	for (Rigidbody* rigidbody : s_pendingRigidbodies)

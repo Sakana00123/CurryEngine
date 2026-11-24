@@ -50,14 +50,14 @@ namespace CurryEngine.Scripting
     {
         public static void AssertSharedTypeIdentity()
         {
-            var core = SharedAssemblyRegistry.TryGet("CurryEngine.Core");
-            Debug.Log($"Core Assembly identity: {core?.GetHashCode()}");
+            //var core = SharedAssemblyRegistry.TryGet("CurryEngine.Core");
+            //Debug.Log($"Core Assembly identity: {core?.GetHashCode()}");
 
-            var runtime = SharedAssemblyRegistry.TryGet("CurryEngine.Runtime");
-            Debug.Log($"Runtime Assembly identity: {runtime?.GetHashCode()}");
+            //var runtime = SharedAssemblyRegistry.TryGet("CurryEngine.Runtime");
+            //Debug.Log($"Runtime Assembly identity: {runtime?.GetHashCode()}");
 
-            var api = SharedAssemblyRegistry.TryGet("CurryEngine.API");
-            Debug.Log($"API Assembly identity: {api?.GetHashCode()}");
+            //var api = SharedAssemblyRegistry.TryGet("CurryEngine.API");
+            //Debug.Log($"API Assembly identity: {api?.GetHashCode()}");
         }
     }
 }
