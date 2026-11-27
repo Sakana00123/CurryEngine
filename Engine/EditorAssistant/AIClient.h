@@ -90,7 +90,7 @@ namespace CurryEngine::EditorAssistant
 		 * @param port 接続先のポート番号
 		 * @return 接続に成功した場合は0、失敗した場合はエラーコードを返す
 		 */
-		bool Connect(const std::string& host, std::uint16_t port);
+		bool Connect(const std::string& host = "127.0.0.1", std::uint16_t port = 8765);
 		
 		/**
 		 * @brief AIサーバーから切断する

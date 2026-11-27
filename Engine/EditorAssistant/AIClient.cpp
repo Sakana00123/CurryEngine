@@ -152,15 +152,32 @@ namespace CurryEngine::EditorAssistant
 			m_completed.reset();
 		}
 
+		if (!completion.has_value())
+			return;
+
+		if (!completion->result.success)
+		{
+			std::string errorMessage = completion->result.error.empty() ? "不明なエラー" : completion->result.error;
+			std::u8string errorMessageUtf8 = std::u8string(errorMessage.begin(), errorMessage.end());
+			LOG_ERROR(u8"[AIClient] AIサーバーからの応答にエラーが含まれています: " + errorMessageUtf8);
+		}
+
 		// mutexを解放してから実行
 		try
 		{
-			if (completion.has_value() && completion->callback)
+			if (completion->callback)
 				completion->callback(completion->result.message);
+		}
+		catch (const std::exception& e)
+		{
+			std::string errorMessage = e.what();
+			std::u8string errorMessageUtf8 = std::u8string(errorMessage.begin(), errorMessage.end());
+			LOG_ERROR(u8"[AIClient] コールバックの実行中に例外が発生しました: " + errorMessageUtf8);
 		}
 		catch (...)
 		{
-			// 実運用ではログ出力する
+			// 不明な例外が発生した場合はログに記録する
+			LOG_ERROR(u8"[AIClient] コールバックの実行中に不明な例外が発生しました。");
 		}
 
 		{
@@ -306,17 +323,19 @@ namespace CurryEngine::EditorAssistant
 							result.error = "不正な応答タイプ";
 						}
 					}
-					catch (const nlohmann::json::exception&)
+					catch (const nlohmann::json::exception& e)
 					{
-						result.error = "応答JSONが不正です";
+						result.error = std::format("応答JSONが不正です: {}", e.what());
 					}
 				}
 			}
 
-			// 通信またはプロトコルエラー後は切断
+			// エラーが発生した場合は切断してログに記録
 			if (!result.success)
 			{
-				m_tcpClient->Disconnect();
+				Disconnect();
+				LOG_ERROR(u8"[AIClient] AIサーバーとの通信中にエラーが発生しました: " + std::u8string(result.error.begin(), result.error.end()));
+				return;
 			}
 
 			// 完了結果を保存

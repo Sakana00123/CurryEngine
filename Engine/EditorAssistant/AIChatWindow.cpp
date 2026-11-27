@@ -379,6 +379,16 @@ namespace CurryEngine::EditorAssistant
         const std::shared_ptr<PendingReply>& reply)
     {
         auto& client = AIClient::Instance();
+        if (!client.IsConnected())
+        {
+			// 接続されていない場合は、接続を試みる
+            if (!client.Connect())
+            {
+                m_notice = reinterpret_cast<const char*>(
+                    u8"AI サーバーに接続できませんでした");
+                return false;
+			}
+		}
         const auto request = AIMessage::Create(&client, type, payload);
         const std::weak_ptr<PendingReply> target = reply;
 

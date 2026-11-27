@@ -84,7 +84,7 @@ Framework::Framework(HWND hwnd)
     {
         using namespace CurryEngine::EditorAssistant;
 
-		AIClient::Instance().Connect("127.0.0.1", 8765);
+		AIClient::Instance().Connect();
 
 
 
